@@ -1,0 +1,26 @@
+{
+  "name": "product-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lapeterson01/product-list.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lapeterson01/product-list/issues"
+  },
+  "homepage": "https://github.com/lapeterson01/product-list#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "faker": "^4.1.0",
+    "mongoose": "^5.0.7"
+  }
+}

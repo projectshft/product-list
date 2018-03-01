@@ -8,7 +8,7 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
-  extended: false
+	extended: false
 }))
 
 const mainRoutes = require('./routes/main')
@@ -16,5 +16,5 @@ const mainRoutes = require('./routes/main')
 app.use(mainRoutes)
 
 app.listen(8000, () => {
-  console.log('Node.js listening on port ' + 8000)
+	console.log('Node.js listening on port ' + 8000)
 })

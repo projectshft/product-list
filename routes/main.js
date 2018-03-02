@@ -26,8 +26,8 @@ router.get('/generate-fake-data', (req, res) => {
 
 router.get('/products', (req, res) => {
 	let itemsToSkip = 0
-	let query = parseInt(req.query.page)
-	if (query) { itemsToSkip = (query - 1) * 10 }
+	let pageRequested = parseInt(req.query.page)
+	if (pageRequested) { itemsToSkip = (pageRequested - 1) * 10 }
   
 	Product.find().skip(itemsToSkip).limit(10).exec((err, data) => {
 		res.send(data)
@@ -40,12 +40,12 @@ router.get('/products/:product', (req, res) => {
 	})
 })
 
-// GET / reviews: Returns ALL the reviews, but limited to 40 at a time.This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options page query to paginate.
 router.get('/reviews', (req, res) => {
 	let reviews = []
 	let itemsToSkip = 0
-	let query = parseInt(req.query.page)
-	if (query) { itemsToSkip = (query - 1) * 10 }
+	let pageRequested = parseInt(req.query.page)
+
+	if (pageRequested) { itemsToSkip = (pageRequested - 1) * 10 }
 
 	Product.find().skip(itemsToSkip).limit(40).exec((err, data) => {
 		for (let i = 0; i < data.length; i++) { 
@@ -56,7 +56,18 @@ router.get('/reviews', (req, res) => {
 })
 
 router.post('/products', (req, res) => {
-// POST / products: Creates a new product in the database
+	let newProduct = new Product()
+	let productDetails = req.body
+
+	newProduct.category = productDetails.category
+	newProduct.image = productDetails.image
+	newProduct.name = productDetails.name
+	newProduct.price = productDetails.price
+
+	newProduct.save((err) => {
+		if (err) throw err
+	})
+	res.send(newProduct)
 })
 
 router.post('/:products/reviews', (req, res) => {

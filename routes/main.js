@@ -7,7 +7,6 @@ router.get('/generate-fake-data', (req, res) => {
 	for (let i = 0; i < 90; i++) {
 		let product = new Product()
 		let review = {}
-
 		product.category = faker.commerce.department()
 		product.name = faker.commerce.productName()
 		product.price = faker.commerce.price()
@@ -45,7 +44,9 @@ router.get('/reviews', (req, res) => {
 	let itemsToSkip = 0
 	let pageRequested = parseInt(req.query.page)
 
-	if (pageRequested) { itemsToSkip = (pageRequested - 1) * 10 }
+	if (pageRequested) {
+		itemsToSkip = (pageRequested - 1) * 10
+	}
 
 	Product.find().skip(itemsToSkip).limit(40).exec((err, data) => {
 		for (let i = 0; i < data.length; i++) { 
@@ -71,18 +72,43 @@ router.post('/products', (req, res) => {
 })
 
 router.post('/:products/reviews', (req, res) => {
-// POST /: products / reviews: Creates a new review in the database by adding it to the correct product's reviews array.
+	let newReview = {}
+	newReview.userName = req.body.userName
+	newReview.text = req.body.text
+	Product.findById(req.params.products).exec((err, product) => {
+		if (err) throw err
+		newReview.product = product
+		product.reviews.push(newReview)
+		product.save((err) => {
+			if (err) throw err
+		})
+		//If I try to send back the product, I get a call stack error. 
+		// but with a string it works fine. Weird.
+		res.send('Review saved.') 
+	})
 })
 
-router.delete('/products/product:', (req, res) => {
-// DELETE / products /: product: Deletes a product by id
+router.delete('/products/:product', (req, res) => {
+	Product.findByIdAndRemove(req.params.product, (err, data) => {
+		if (err) {
+			res.send(err)
+		} else {
+			res.send(data)
+		}
+	})	
 })
 
 router.delete('/reviews/:review', (req, res) => {
-// DELETE / reviews /: review: Deletes a review by id
+	Product.find( {'reviews': {$elemMatch: {'_id': req.params.review}}}).exec( (err, data) => {
+		data[0].reviews.id(req.params.review).remove()
+		data[0].save( (err) => {
+			if (err) {
+				res.send(err)
+			} else {
+				res.send('Review removed.')
+			}
+		})
+	})
 })
-
-
-
 
 module.exports = router

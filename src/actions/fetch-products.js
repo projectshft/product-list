@@ -17,8 +17,6 @@ export function fetchProducts(query, category, sortBy, page) {
 
     const request = axios.get(url);
 
-    console.log('Request', request);
-
     return {
         type: FETCH_PRODUCTS,
         payload: request

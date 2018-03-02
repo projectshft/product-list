@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../actions/index';
+import { fetchProducts } from '../actions/fetch-products';
 
 class ProductList extends Component {
     componentDidMount() {
@@ -9,24 +10,25 @@ class ProductList extends Component {
     }
 
     renderProducts() {
-        if (this.props.products.products) {
-            return this.props.products.products.map( product => {
-                return (
-                    <div className="col text-center products" key={product._id}>
-                        <img className="product-image" src={product.image} />
-                        <h3>{product.name}</h3>
-                        <h5>{product.category}</h5>
-                        <h6>${product.price}</h6>
-                    </div>
-                )
-            })
-        }
+        return this.props.products.products.map( product => {
+            return (
+                <Link to={`/${product._id}`} className="col text-center products" key={product._id}>
+                    <img className="product-image" src={product.image} alt="" />
+                    <h3>{product.name}</h3>
+                    <h5>{product.category}</h5>
+                    <h6>${product.price}</h6>
+                </Link>
+            )
+        })
     }
 
     render() {
+        if (!this.props.products.products) {
+            return <div>Loading...</div>
+        }
+
         return (
             <div>
-                <h1>Product List</h1>
                 <div className="row">
                     {this.renderProducts()}
                 </div>

@@ -12,3 +12,8 @@
     height: auto;
     width: 240px;
 }
+
+.product-detail-name {
+    font-size: 50px;
+    margin: 20px;
+}

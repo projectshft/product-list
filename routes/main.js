@@ -22,7 +22,7 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
     let page = parseInt(req.query.page) || 1;
-    let amountToSkip = (page - 1) * 10;
+    let amountToSkip = (page - 1) * 9;
     var query = {};
     if (req.query.category) {
         query.category = req.query.category;
@@ -35,7 +35,11 @@ router.get('/products', (req, res, next) => {
             sort.price = 'asc';
         }
     }
-    Product.find(query).skip(amountToSkip).limit(10).sort(sort).exec((err, products) => {
+    const search = req.query.search || "";
+    if (search) {
+        query.$text = { $search: search };
+    }
+    Product.find(query).skip(amountToSkip).limit(9).sort(sort).exec((err, products) => {
         if (err) throw err;
         res.send(products);
     })
@@ -93,13 +97,13 @@ router.delete('/products/:product', (req, res, next) => {
     Review.remove({product: req.params.product}, (err) => {
         if (err) throw err;
     })
-    res.send();
+    res.end();
 });
 
 router.delete('/reviews/:review', (req, res, next) => {
     Review.findByIdAndRemove(req.params.review, (err) => {
         if (err) throw err;
-        res.send();
+        res.end();
     })
 });
 

@@ -7,7 +7,8 @@ const productSchema = new Schema({
   price: Number,
   image: String,
   reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}]
-})
+});
+productSchema.index({name: 'text'});
 
 const reviewSchema = new Schema({
   userName: String,

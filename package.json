@@ -4,8 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "react-scripts start",
+    "prod": "npm run build && serve build",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -18,9 +21,21 @@
   },
   "homepage": "https://github.com/lapeterson01/product-list#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "bootstrap": "^4.0.0",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "faker": "^4.1.0",
-    "mongoose": "^5.0.7"
+    "mongoose": "^5.0.7",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-promise": "^0.5.3"
+  },
+  "devDependencies": {
+    "react-scripts": "^1.1.1"
   }
 }

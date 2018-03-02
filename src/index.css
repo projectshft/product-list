@@ -1,0 +1,14 @@
+.search-bar-area {
+    border-left: 1px grey solid;
+}
+
+.products {
+    border: 1px black solid;
+    padding: 10px;
+    margin: 10px;
+}
+
+.product-image {
+    height: auto;
+    width: 240px;
+}

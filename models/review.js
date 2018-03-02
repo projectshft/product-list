@@ -7,4 +7,4 @@ const ReviewSchema = new Schema({
   product: String
 })
 
-module.exports.model = { ReviewSchema: ReviewSchema, Review: mongoose.model('Review', ReviewSchema) }
+module.exports = { ReviewSchema: ReviewSchema, Review: mongoose.model('Review', ReviewSchema) }

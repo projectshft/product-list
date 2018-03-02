@@ -1,11 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
-const { Product } = require('../models/product')
-
-router.param('product', function(req, res, next, id) {
-  req.product = Product.findOne({ _id: id })
-  next()
-})
+const Product = require('../models/product')
+const { Review, ReviewSchema } = require('../models/review')
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -15,65 +11,145 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-    product.reviews = []; // Add in reviews array
+    product.reviews = []
 
-    product.save((err) => {
-      if (err) throw err
-    })
+    for (let j = 0; j < 5; j++) {
+      let newReview = new Review({
+        userName: faker.internet.userName(),
+        text: faker.lorem.sentence(),
+        product: product._id
+      })
+      product.reviews.push(newReview)
+    }
+
+    product.save((error) => {
+      if (error) { throw error }
+    })  
   }
   res.end()
 })
 
 router.get('/products', (req, res, next) => {
-  let numberOfProductsToSkip = 0;
-  if (req.query.page && req.query.page > 0) {
-    numberOfProductsToSkip = (req.query.page - 1) * 10
+  const productsPerPage = 9;
+  const pageNumber = req.query.page > 0 ? req.query.page : 1
+  const productsByFilter = req.query.category ? { category: req.query.category } : {}
+  let sortFilter = ''
+  if (req.query.price === 'highest') {
+    sortFilter = '-price'
+  } else if (req.query.price === 'lowest') {
+    sortFilter = 'price'
   }
-  Product.find({})
-    .skip(numberOfProductsToSkip)
-    .limit(10)
+  Product.find(productsByFilter)
+    .skip((productsPerPage * pageNumber) - productsPerPage)
+    .limit(productsPerPage)
+    .sort(sortFilter)
     .exec( (error, products) => {
+      if (error) { throw error }
       res.send(products)
     })
 })
 
+router.get('/products/:product', (req, res) => {
+  Product.findById(req.params.product, (error, product) => {
+    if (error) { throw error }
+    if (!product) {
+      res.writeHead(404, 'Resource not found.')
+      return res.end()
+    }
+    res.send(product)
+  })
+})
+
+router.get('/reviews', (req, res, next) => {
+  const reviewsPerPage = 40
+  const pageNumber = req.query.page > 0 ? req.query.page : 1
+  Product.find({})
+    .select('reviews -_id')
+    .exec( (error, productReviews) => {
+      let reviewsArray = []
+      productReviews.forEach( (product) => {
+        reviewsArray = reviewsArray.concat(product.reviews)
+      })
+      let startIndex = (reviewsPerPage * pageNumber) - reviewsPerPage
+      let endIndex = reviewsPerPage * pageNumber
+      res.send(reviewsArray.slice(startIndex, endIndex))
+    })
+})
+
 router.post('/products', (req, res, next) => {
-  // req.body.category = 
-  // req.body.name = 
-  // req.body.price = req.body.price || 0
-  // req.body.image = req.body.image || 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-  // req.body.reviews = [];
+  let fakerReviews = []
   Product.create({
     category: req.body.category || 'Uncategorized',
     name: req.body.name || 'New Product',
     price: req.body.price || 0,
     image: req.body.image || 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png',
     reviews: []
-  }, (err, data) => {
-    if (err) {
-      return console.error(err)
+  }, (error, product) => {
+    if (error) { throw error }
+    for (let i = 0; i < 5; i++) {
+      let newReview = new Review({
+        userName: faker.internet.userName(),
+        text: faker.lorem.sentence(),
+        product: product._id
+      })
+      fakerReviews.push(newReview)
     }
-    console.log(data)
+    product.reviews = product.reviews.concat(fakerReviews)
+    product.save()
   })
+  res.writeHead(200, 'Success - added product')
   res.end()
 })
 
-router.get('/products/:product', (req, res, next) => {
-  res.send(req.product)
+router.post('/:product/reviews', (req, res, next) => {
+  Product.findById(req.params.product, (error, product) => {
+    if (error) { throw error }
+    if (!product) {
+      res.writeHead(404, 'Resource not found.')
+      return res.end()
+    }
+    let newReview = {
+      userName: req.body.userName || 'User',
+      text: req.body.text || '',
+      product: product._id
+    }
+    product.reviews.push(newReview)
+    product.save((error) => {
+      if (error) throw error
+    })
+    res.writeHead(200, 'Success - added review')
+    res.end()
+  })
 })
 
-router.get('/reviews', (req, res, next) => {
-  let reviewsPerPage = 40
-  let pageNumber = req.query.page || 0
-  if (pageNumber > 0) {
-    numberOfReviewsToSkip = (req.query.page - 1) * reviewsPerPage;
-  }
-  Product.find({})
-    .skip(numberOfReviewsToSkip)
-    .limit(reviewsPerPage)
-    .exec( (error, products) => {
-      res.send(products)
+router.delete('/products/:product', (req, res) => {
+  Product.findOneAndRemove({ _id: req.params.product}, (error, product) => {
+    if (error) { throw error }
+    if (!product) {
+      res.writeHead(404, 'Resource not found.')
+      return res.end()
+    }
+    res.send(product)
+  })
+})
+
+router.delete('/reviews/:review', (req, res) => {
+  Product.findOne({ reviews: { $elemMatch: { _id: req.params.review }} }, (error, product) => {
+    if (error) { throw error }
+    if (!product) {
+      res.writeHead(404, 'Resource not found.')
+      return res.end()
+    }
+    const indexOfReviewToRemove = product.reviews.findIndex( (review) => {
+      return review.id === req.params.review
     })
+    const removedReview = product.reviews[indexOfReviewToRemove]
+    product.reviews.splice(indexOfReviewToRemove, 1)
+    product.save( (error) => {
+      if (error) { throw error }
+    })
+    res.send(removedReview) 
+  })
 })
 
 module.exports = router

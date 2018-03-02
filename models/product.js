@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const ReviewSchema = require('../models/review').schema
+const { ReviewSchema } = require('../models/review')
 
 const ProductSchema = new Schema({
   category: String,
@@ -10,4 +10,4 @@ const ProductSchema = new Schema({
   reviews: [ReviewSchema]
 })
 
-module.exports = { ProductSchema: ProductSchema, Product: mongoose.model('Product', ProductSchema) }
+module.exports = mongoose.model('Product', ProductSchema)

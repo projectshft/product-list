@@ -52,17 +52,13 @@ router.get('/products/:product', (req, res, next) => {
     })
 });
 
-router.get('/products/:product/reviews', (req, res, next) => {
-    // let page = parseInt(req.query.page) || 1;
-    // let amountToSkip = (page - 1) * 40;
-    Review.find({product: req.params.product}, (err, reviews) => {
+router.get('/reviews', (req, res, next) => {
+    let page = parseInt(req.query.page) || 1;
+    let amountToSkip = (page - 1) * 40;
+    Review.find().skip(amountToSkip).limit(40).exec((err, reviews) => {
         if (err) throw err;
         res.send(reviews);
     })
-    // Review.find().skip(amountToSkip).limit(40).exec((err, reviews) => {
-    //     if (err) throw err;
-    //     res.send(reviews);
-    // })
 });
 
 router.post('/products', (req, res, next) => {

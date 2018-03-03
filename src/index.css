@@ -25,3 +25,17 @@
 .link {
     color: black;
 }
+
+.btn-link {
+    border: none;
+    font-size: 25px;
+    margin-top: 35px;
+}
+
+.btn-link:hover {
+    cursor: pointer;
+}
+
+.container {
+    margin-bottom: 120px;
+}

@@ -46,17 +46,18 @@ class Product extends Component {
             return <div>Loading...</div>
         }
 
-        const { reviews } = this.props.reviews;
+        // const { reviews } = this.props.reviews;
 
-        return reviews.map((review) => {
+        // return reviews.map((review) => {
             return (
                 <div>
                     <hr/>
-                    <h4><b>{review.userName}:</b></h4>
-                    <h5>{review.text}</h5>
+                    <h1>Reviews</h1>
+                    {/* <h4><b>{review.userName}:</b></h4>
+                    <h5>{review.text}</h5> */}
                 </div>
             )
-        })
+        // })
     }
 
     render() {

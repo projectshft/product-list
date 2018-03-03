@@ -17,3 +17,11 @@
     font-size: 50px;
     margin: 20px;
 }
+
+.product-detail-image {
+    height: 240px;
+}
+
+.link {
+    color: black;
+}

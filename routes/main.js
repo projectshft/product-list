@@ -9,7 +9,7 @@ router.get('/generate-fake-data', (req, res, next) => {
         category: faker.commerce.department(),
         name: faker.commerce.productName(),
         price: faker.commerce.price(),
-        image: 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png',
+        image: faker.image.imageUrl(),
         reviews: []
     })
 
@@ -52,13 +52,17 @@ router.get('/products/:product', (req, res, next) => {
     })
 });
 
-router.get('/reviews', (req, res, next) => {
-    let page = parseInt(req.query.page) || 1;
-    let amountToSkip = (page - 1) * 40;
-    Review.find().skip(amountToSkip).limit(40).exec((err, reviews) => {
+router.get('/products/:product/reviews', (req, res, next) => {
+    // let page = parseInt(req.query.page) || 1;
+    // let amountToSkip = (page - 1) * 40;
+    Review.find({product: req.params.product}, (err, reviews) => {
         if (err) throw err;
         res.send(reviews);
     })
+    // Review.find().skip(amountToSkip).limit(40).exec((err, reviews) => {
+    //     if (err) throw err;
+    //     res.send(reviews);
+    // })
 });
 
 router.post('/products', (req, res, next) => {

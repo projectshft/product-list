@@ -14,9 +14,9 @@ class ProductList extends Component {
             return (
                 <Link to={`/${product._id}`} className="col text-center products" key={product._id}>
                     <img className="product-image" src={product.image} alt="" />
-                    <h3>{product.name}</h3>
-                    <h5>{product.category}</h5>
-                    <h6>${product.price}</h6>
+                    <h3 className="link">{product.name}</h3>
+                    <h5 className="link">{product.category}</h5>
+                    <h6 className="link">${product.price}</h6>
                 </Link>
             )
         })

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/fetch-products';
@@ -36,9 +37,9 @@ class Header extends Component {
     render() {
         return (
             <div>
-                <div className="row justify-content-center">
-                    <h1>PRODUCTS</h1>
-                </div>
+                <Link to='/' className="row justify-content-center">
+                    <h1 className="link">PRODUCTS</h1>
+                </Link>
                 <div className="row">
                     <form onSubmit={this.onFormSubmit} className="input-group">
                         <div className="col">

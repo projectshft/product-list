@@ -43,7 +43,13 @@ router.get('/products', (req, res) => {
 	}
 	
 	Product.count(categoryFilter, (err, count) => {
+		if (err) {
+			return res.json({error: err})
+		}
 		Product.find(categoryFilter).sort(sortFilter).skip(pageFilter).limit(9).exec((err, products) => {
+			if (err) {
+				return res.json({ error: err })
+			}
 			let data = {}
 			data.products = products
 			data.count = count

@@ -29,9 +29,9 @@ router.get('/products', (req, res) => {
 	}
 
 	let sortFilter = {}
-	if (req.query.price == 'highest') {
+	if (req.query.sort == 'highest') {
 		sortFilter = { price: -1}
-	} else if (req.query.price == 'lowest') {
+	} else if (req.query.sort == 'lowest') {
 		sortFilter = { price: 'asc'}
 	}
 
@@ -41,8 +41,13 @@ router.get('/products', (req, res) => {
 		pageFilter = (pageRequested - 1) * 10
 	}
 
-	Product.find(categoryFilter).sort(sortFilter).skip(pageFilter).limit(9).exec((err, data) => {
-		res.send(data)
+	Product.count(categoryFilter, (err, count) => {
+		Product.find(categoryFilter).sort(sortFilter).skip(pageFilter).limit(9).exec((err, products) => {
+			let data = {}
+			data.products = products
+			data.count = count
+			res.send(data)
+		})
 	})
 })
 

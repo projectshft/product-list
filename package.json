@@ -19,6 +19,7 @@
   "dependencies": {
     "ajv": "^6.2.0",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "epress": "0.0.1-security",
     "express": "^4.16.2",
     "faker": "^4.1.0",

@@ -37,10 +37,11 @@ router.get('/products', (req, res) => {
 
 	let pageFilter = 0
 	let pageRequested = parseInt(req.query.page)
+	
 	if (pageRequested) {
-		pageFilter = (pageRequested - 1) * 10
+		pageFilter = (pageRequested - 1) * 9
 	}
-
+	
 	Product.count(categoryFilter, (err, count) => {
 		Product.find(categoryFilter).sort(sortFilter).skip(pageFilter).limit(9).exec((err, products) => {
 			let data = {}

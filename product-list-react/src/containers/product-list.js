@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { fetchProducts } from '../actions/index'
 import { bindActionCreators } from 'redux'
 
-//export each step as a div
+
 class ProductList extends Component {
 
 	renderProducts() {
@@ -30,11 +30,10 @@ class ProductList extends Component {
 
 	renderPaginationButtons() {
 		let count = this.props.response.count
-		console.log(count)
-		if (count > 9) {
+		if (count >= 9) {
 			let pages = count / 9
-			//if there is a remainder, we'll need one extra page.
-			if (count % 9) {pages++}
+			// if there is a remainder, we'll need one extra page.
+			if (count % 9) {pages += 1}
 
 			//create an array of page numbers
 			let pageNumbers = []
@@ -44,11 +43,9 @@ class ProductList extends Component {
 			return pageNumbers.map( page => {
 				let pageButton = null
 				pageButton = (
-				
-						<button className='btn btn-link' key={page}>
-							{page}
-						</button>
-					
+					<button className='btn btn-link' key={page} onClick={() => { this.props.onButtonClick(page)}}>
+						{page}
+					</button>
 				)
 				return pageButton
 			})

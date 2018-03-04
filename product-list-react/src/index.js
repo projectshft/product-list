@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from 'redux'
 import promise from 'redux-promise'
 import reducers from './reducers'
 
-import ProductList from './containers/product-list'
 import SearchBar from './containers/search-bar'
 import 'bootstrap/dist/css/bootstrap.css'
 import './index.css'
@@ -16,9 +15,8 @@ const store = createStoreWithMiddleware(reducers)
 
 const App = () => {
 	return (
-		<div className='container-fluid main'>
+		<div className='container-fluid'>
 			<SearchBar />
-			<ProductList />
 		</div>
 	)
 }

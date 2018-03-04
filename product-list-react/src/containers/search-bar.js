@@ -44,13 +44,6 @@ export class SearchBar extends Component {
 	onFormSubmit(event) {
 	// Placeholder for implementing product name search.
 		event.preventDefault()
-		this.setState({ pageNumber: 1 }, () => {
-			let category = this.state.category
-			let sortBy = this.state.sortBy
-			let pageNumber = this.state.pageNumber
-			let searchTerm = this.state.searchTerm
-			this.props.fetchProducts(category, sortBy, pageNumber, searchTerm)
-		})
 	}
 
 	pageButtonClick(page) {

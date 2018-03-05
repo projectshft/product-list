@@ -18,32 +18,38 @@ export class SearchBar extends Component {
 	}
 
 	onInputChange(event) {
-		//placeholder for search functionality.
 		this.setState({ searchTerm: event.target.value })
 	}
 
 	onFormSubmit(event) {
 		// Placeholder for implementing product name search.
 		event.preventDefault()
+		let searchTerm = this.state.searchTerm
+		let category = this.state.category
+		let sortBy = this.state.sortBy
+		let pageNumber = this.state.pageNumber
+		this.props.fetchProducts(searchTerm, category, sortBy, pageNumber)
 	}
 
 	categoryChange(event) {
 		this.setState({ category: event.target.value, pageNumber: 1 }, () => {
+			let searchTerm = this.state.searchTerm
 			let category = this.state.category
 			let sortBy = this.state.sortBy
 			let pageNumber = this.state.pageNumber
 
-			this.props.fetchProducts(category, sortBy, pageNumber) 
+			this.props.fetchProducts(searchTerm, category, sortBy, pageNumber) 
 		})
 	}
 
 	sortChange(event) {
 		this.setState({ sortBy: event.target.value }, () => {
+			let searchTerm = this.state.searchTerm
 			let category = this.state.category
 			let sortBy = this.state.sortBy
 			let pageNumber = this.state.pageNumber
 
-			this.props.fetchProducts(category, sortBy, pageNumber)
+			this.props.fetchProducts(searchTerm, category, sortBy, pageNumber)
 		})
 	}
 
@@ -61,11 +67,12 @@ export class SearchBar extends Component {
 		this.setState({previousClick: event.target})
 
 		this.setState({ pageNumber: page }, () => {
+			let searchTerm = this.state.searchTerm
 			let category = this.state.category
 			let sortBy = this.state.sortBy
 			let pageNumber = this.state.pageNumber
 
-			this.props.fetchProducts(category, sortBy, pageNumber)
+			this.props.fetchProducts(searchTerm, category, sortBy, pageNumber)
 		})
 
 	}
@@ -73,7 +80,7 @@ export class SearchBar extends Component {
 	render () {
 		//Fetch products on intial page load.
 		if (!this.state.category && !this.state.pageNumber && !this.state.sort && !this.state.searchTerm) {
-			this.props.fetchProducts('','','')
+			this.props.fetchProducts('','','','')
 		}
 
 		return (

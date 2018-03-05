@@ -23,9 +23,15 @@ router.get('/generate-fake-data', (req, res) => {
 })
 
 router.get('/products', (req, res) => {
-	let categoryFilter = {}
+
+	let categoryAndSearchFilter = {}
 	if (req.query.category) {
-		categoryFilter = { category: req.query.category }
+		categoryAndSearchFilter = { category: req.query.category }
+	}
+
+	if (req.query.searchTerm) {
+		let term = new RegExp(req.query.searchTerm, 'i')
+		categoryAndSearchFilter.name = term
 	}
 
 	let sortFilter = {}
@@ -42,11 +48,11 @@ router.get('/products', (req, res) => {
 		pageFilter = (pageRequested - 1) * 9
 	}
 	
-	Product.count(categoryFilter, (err, count) => {
+	Product.count(categoryAndSearchFilter, (err, count) => {
 		if (err) {
 			return res.json({error: err})
 		}
-		Product.find(categoryFilter).sort(sortFilter).skip(pageFilter).limit(9).exec((err, products) => {
+		Product.find(categoryAndSearchFilter).sort(sortFilter).skip(pageFilter).limit(9).exec((err, products) => {
 			if (err) {
 				return res.json({ error: err })
 			}

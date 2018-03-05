@@ -9,18 +9,18 @@ export const GET_COUNT = "GET_COUNT"
 export const SET_CATEGORY = "SET_CATEGORY"
 export const SET_PAGE = "SET_PAGE"
 export const SET_SORT = "SET_SORT"
+export const GET_CATEGORIES = "GET_CATEGORIES"
 
 export const POPULATE_PRODUCTS = "POPULATE_PRODUCTS"
 
 export function fetchProducts(query) {
-  console.log(query)
   const category = query.category
   const page = query.page
   const price = query.price
   let urlQuery = ""
   if (category || page || price) {
     const categoryQuery = category ? "category="+category : ""
-    const pageQuery = page ? "page="+category : ""
+    const pageQuery = page ? "page="+page : ""
     const sortQuery = price ? "price="+price : ""
     urlQuery = `?${pageQuery}&${categoryQuery}&${sortQuery}`
   }
@@ -62,18 +62,30 @@ export function populateProducts() {
   };
 }
 
-export function getCount(category,page,sort) {
+export function getCount(query) {
+  const category = query.category
+  const page = query.page
+  const price = query.price
   let urlQuery = ""
-  if (category || page || sort) {
+  if (category || page || price) {
     const categoryQuery = category ? "category="+category : ""
-    const pageQuery = page ? "page="+category : ""
-    const sortQuery = sort ? "price="+sort : ""
+    const pageQuery = page ? "page="+page : ""
+    const sortQuery = price ? "price="+price : ""
     urlQuery = `?${pageQuery}&${categoryQuery}&${sortQuery}`
   }
   const url = `${ROOT_URL}/products/count${urlQuery}`
   const request = axios.get(url, {headers: { "Content-Type" : "application/json"}})
   return {
     type: GET_COUNT,
+    payload: request
+  };
+}
+
+export function getCategories() {
+  const url = `${ROOT_URL}/products/categories`
+  const request = axios.get(url, {headers: { "Content-Type" : "application/json"}})
+  return {
+    type: GET_CATEGORIES,
     payload: request
   };
 }

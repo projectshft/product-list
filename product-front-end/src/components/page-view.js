@@ -14,7 +14,6 @@ class Products extends Component {
   }
 
   render() {
-
     return (
       <div className="container-fluid">
         <h2 className="text-center my-5">Products</h2>

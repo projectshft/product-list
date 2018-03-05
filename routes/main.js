@@ -36,7 +36,6 @@ router.get('/products', (req, res, next) => {
     sortOrder = (req.query.price == 'lowest') ? 'price' : '-price' 
   }
   Product.find(categoryObj).sort(sortOrder).skip(productsToSkip).limit(pageLimit).exec((error, products) => {
-    let numberOfProducts = Product.count()
     res.send(products)
   })
 })
@@ -45,6 +44,12 @@ router.get('/products/count', (req, res, next) => {
   let categoryObj = req.query.category ? {category:req.query.category} : {}
   Product.count(categoryObj, (error, count) => {
     res.send({count})
+  })
+})
+
+router.get('/products/categories', (req, res, next) => {
+  Product.distinct("category", (error, categories) => {
+    res.send(categories)
   })
 })
 

@@ -9,11 +9,26 @@ class Footer extends Component {
   constructor(props) {
     super(props)
 
-    this.props.getCount().then(response => {
+    this.state = {
+      page: 1
+    }
+
+    this.handlePageChange = this.handlePageChange.bind(this);
+
+
+    this.props.getCount(this.props.query).then(response => {
       if (this.props.count < 100) {
-        console.log("getting products")
         this.props.populateProducts()
       }
+    })
+  }
+
+  handlePageChange(page) {
+    this.setState({page: parseInt(page)}, () => {
+      this.props.setPage(this.state.page)
+      this.props.fetchProducts(this.props.query).then(response => {
+        this.props.getCount(this.props.query)
+      })
     })
   }
 
@@ -31,7 +46,7 @@ class Footer extends Component {
             {
               this.props.pages.map((page, i) => {
                 return(
-                  <li key={i} className="page-item"><a className="page-link" href="#" onClick={()=>{this.props.setPage(i)}}>{i+1}</a></li>
+                  <li key={i} className={this.state.page == i+1 ? 'active page-item':'page-item'}><a className="page-link" href="#" onClick={()=>{this.handlePageChange(i+1)}}>{i+1}</a></li>
                 )
               })
             }
@@ -50,7 +65,7 @@ class Footer extends Component {
 
 
 function mapStateToProps(state) {
-  return { products: state.products, query: state.query, pages: state.pages };
+  return { products: state.products, query: state.query, pages: state.pages, count: state.count };
 }
 
 function mapDispatchToProps(dispatch) {

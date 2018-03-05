@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import Dropdown, { DropdownTrigger, DropdownContent }  from 'react-simple-dropdown'
-import { setCategory, setSort } from '../actions'
+import { setCategory, setSort, fetchProducts, getCategories, getCount } from '../actions'
 import './header.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'font-awesome/css/font-awesome.css'
@@ -9,44 +8,76 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 
 class Header extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      category: "All",
+      sortOrder: ""
+    }
+
+    this.props.getCategories()
+
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
+
+  }
+
+  handleCategoryChange(event) {
+    this.setState({category: event.target.value}, () => {
+      this.props.setCategory(this.state.category)
+      this.props.fetchProducts(this.props.query).then(response => {
+        this.props.getCount(this.props.query)
+      })
+    })
+
+  }
+
+  handleSortChange(event) {
+    this.setState({sortOrder: event.target.value}, () => {
+      this.props.setSort(this.state.sortOrder)
+      this.props.fetchProducts(this.props.query).then(response => {
+        this.props.getCount(this.props.query)
+      })
+    });
+
+  }
+
   render() {
     return(
       <nav className="front navbar navbar-expand navbar-light bg-light">
         <form className="form-inline my-2 my-lg-0">
           <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"></input>
-          <button className="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+          <button className="btn btn-outline-primary" type="submit">Search</button>
         </form>
         <ul className="navbar-nav ml-auto">
-          <li className="nav-item"> Filter by Category:
+          <li className="nav-item mr-5"> Filter by Category:
             <div>
-              <Dropdown>
-                <DropdownTrigger>Games <Icon name="angle-down"/></DropdownTrigger>
-                <DropdownContent>
-                  <div className="list-group my-2 my-lg-0 ml-auto">
-                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Games")}}>Games</button>
-                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Tools")}}>Tools</button>
-                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Health")}}>Health</button>
-                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Clothing")}}>Clothing</button>
-                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Home")}}>Home</button>
-                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Electronics")}}>Electronics</button>
-                  </div>
-                </DropdownContent>
-              </Dropdown>
+              <div className="list-group ml-auto">
+                <select className="form-control mt-3 mb-2" value={this.state.category} onChange={this.handleCategoryChange}>
+                  <option className="category" value="">All</option>
+                  {
+                    this.props.categories.map((category, i) => {
+                      return(
+                        <option key={i} className="category" value={category}>{category}</option>
+                      )
+                    })
+                  }
+                </select>
+              </div>
             </div>
 
           </li>
-          <li className="invisible"> ---- </li>
-          <li className="nav-item my-2 my-lg-0"> Sort by Price:
+          <li className="nav-item"> Sort by Price:
             <div>
-              <Dropdown>
-                <DropdownTrigger>Low to High <Icon name="angle-down"/></DropdownTrigger>
-                <DropdownContent>
-                  <div className="list-group mt-2">
-                    <button type="button" className="list-group-item list-group-item-action">Low to High</button>
-                    <button type="button" className="list-group-item list-group-item-action">High to Low</button>
-                  </div>
-                </DropdownContent>
-              </Dropdown>
+              <div className="list-group ml-auto">
+                <select className="form-control mt-3 mb-2" value={this.state.sortOrder} onChange={this.handleSortChange}>
+                  <option className="category" value="">None</option>
+                  <option className="category" value="lowest">Low to High</option>
+                  <option className="category" value="highest">High to Low</option>
+
+                </select>
+              </div>
             </div>
           </li>
         </ul>
@@ -59,11 +90,11 @@ class Header extends Component {
 }
 
 function mapStateToProps(state) {
-  return { products: state.products, query: state.query, pages: state.pages };
+  return { products: state.products, query: state.query, pages: state.pages, categories: state.categories };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setCategory: setCategory, setSort: setSort }, dispatch);
+  return bindActionCreators({ setCategory: setCategory, setSort: setSort, fetchProducts:fetchProducts, getCategories:getCategories, getCount: getCount }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

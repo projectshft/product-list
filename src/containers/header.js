@@ -37,7 +37,7 @@ class Header extends Component {
     render() {
         return (
             <div>
-                <Link to='/' className="row justify-content-center">
+                <Link to='/' className="row justify-content-center" style={{textDecoration: 'none'}}>
                     <h1 className="link">PRODUCTS</h1>
                 </Link>
                 <div className="row">

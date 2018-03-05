@@ -6,7 +6,6 @@ export const POST_REVIEW = 'POST_REVIEW';
 
 export function postReview(userName, text, id) {
     const request = axios.post(`${ROOT_URL}/products/${id}/reviews`);
-    debugger;
 
     return {
         type: POST_REVIEW,

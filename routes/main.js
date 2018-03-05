@@ -9,7 +9,7 @@ router.get('/generate-fake-data', (req, res, next) => {
         category: faker.commerce.department(),
         name: faker.commerce.productName(),
         price: faker.commerce.price(),
-        image: faker.image.imageUrl(),
+        image: "https://vignette.wikia.nocookie.net/detectiveconan96/images/7/72/Generic_Male_Profile.jpg/revision/latest?cb=20140709000724",
         reviews: []
     })
 
@@ -50,7 +50,7 @@ router.get('/products', (req, res, next) => {
 });
 
 router.get('/products/:product', (req, res, next) => {
-    Product.findById(req.params.product, (err, product) => {
+    Product.findById(req.params.product).populate('reviews').exec((err, product) => {
         if (err) throw err;
         res.send(product);
     })

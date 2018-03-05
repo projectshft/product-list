@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { fetchProduct } from '../actions/fetch-product';
-import { fetchReviews } from '../actions/fetch-reviews';
 import { postReview } from '../actions/post-review';
 
 class Product extends Component {
@@ -12,7 +11,6 @@ class Product extends Component {
 
         const { productId } = this.props.match.params;
         this.props.fetchProduct(productId)
-        this.props.fetchReviews(productId)
 
         this.state = {
             userName: "",
@@ -32,32 +30,31 @@ class Product extends Component {
         event.preventDefault();
 
         const { productId } = this.props.match.params;
-        debugger;
         this.props.postReview(this.state.userName, this.state.text, productId);
         this.setState({
             userName: "",
             text: ""
         })
-        fetchReviews(productId)
+        this.props.fetchProduct(productId);
+        window.location.reload();
     }
 
-    renderReviews = (productId) => {
-        if (!this.props.reviews.reviews) {
+    renderReviews = () => {
+        const reviews = this.props.product.product.reviews;
+
+        if (!reviews) {
             return <div>Loading...</div>
         }
 
-        // const { reviews } = this.props.reviews;
-
-        // return reviews.map((review) => {
+        return reviews.map((review) => {
             return (
-                <div>
+                <div className="reviews">
                     <hr/>
-                    <h1>Reviews</h1>
-                    {/* <h4><b>{review.userName}:</b></h4>
-                    <h5>{review.text}</h5> */}
+                    <h4><b>{review.userName}:</b></h4>
+                    <h5>{review.text}</h5>
                 </div>
             )
-        // })
+        })
     }
 
     render() {
@@ -73,8 +70,8 @@ class Product extends Component {
                     <div className="row justify-content-center">
                         <h1 className="product-detail-name">{product.name}</h1>
                     </div>
-                    <div className="row justify-content-center product-detail-image">
-                        <img src={product.image} alt="" />
+                    <div className="row justify-content-center">
+                        <img className="product-detail-image" src={product.image} alt="" />
                     </div>
                     <div className="row justify-content-center">
                         <h3>{product.category}</h3>
@@ -83,8 +80,13 @@ class Product extends Component {
                         <h5>${product.price}</h5>
                     </div>
                 </div>
+                <hr/>
+                <hr/>
                 <div>
-                    {this.renderReviews(product._id)}
+                    <div className="row justify-content-center">
+                        <h1>Reviews</h1>
+                    </div>
+                    {this.renderReviews()}
                 </div>
                 <div>
                     <hr/>
@@ -97,13 +99,13 @@ class Product extends Component {
                                 value={this.state.userName}
                                 onChange={this.onUserNameInputChange}
                             />
-                            <input
+                            <textarea
                                 placeholder="Review"
                                 className="form-control"
                                 value={this.state.text}
                                 onChange={this.onTextInputChange}
                             />
-                            <button type="button" className="btn btn-primary">Submit</button>
+                            <button type="submit" className="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -113,14 +115,11 @@ class Product extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ fetchProduct, fetchReviews, postReview }, dispatch)
+    return bindActionCreators({ fetchProduct, postReview }, dispatch)
 }
 
-const mapStateToProps = (state) => {
-    return {
-        product: state.product,
-        reviews: state.reviews
-    }
+const mapStateToProps = (product) => {
+    return product
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

@@ -48,7 +48,7 @@ class Product extends Component {
 
         return reviews.map((review) => {
             return (
-                <div className="reviews">
+                <div key={review._id} className="reviews">
                     <hr/>
                     <h4><b>{review.userName}:</b></h4>
                     <h5>{review.text}</h5>

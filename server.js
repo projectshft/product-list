@@ -5,6 +5,9 @@ const bodyParser = require('body-parser')
 mongoose.connect('mongodb://localhost/products')
 
 const app = express()
+const cors = require('cors')
+
+app.use(cors())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({

@@ -4,6 +4,7 @@ const Product = require('../models/product')
 const Review = require('../models/review')
 const ObjectId = require('mongoose').Types.ObjectId
 
+
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
@@ -28,14 +29,22 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
   let pageLimit = 9
-  let productsToSkip = req.query.page ? (parseInt(req.query.page)-1)*pageLimit: 0
+  let productsToSkip = req.query.page ? (parseInt(req.query.page)-1)*pageLimit : 0
   let categoryObj = req.query.category ? {category:req.query.category} : {}
   let sortOrder = null
   if (req.query.price) {
     sortOrder = (req.query.price == 'lowest') ? 'price' : '-price' 
   }
   Product.find(categoryObj).sort(sortOrder).skip(productsToSkip).limit(pageLimit).exec((error, products) => {
+    let numberOfProducts = Product.count()
     res.send(products)
+  })
+})
+
+router.get('/products/count', (req, res, next) => {
+  let categoryObj = req.query.category ? {category:req.query.category} : {}
+  Product.count(categoryObj, (error, count) => {
+    res.send({count})
   })
 })
 

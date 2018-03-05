@@ -1,11 +1,12 @@
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import Dropdown, { DropdownTrigger, DropdownContent }  from 'react-simple-dropdown'
+import { setCategory, setSort } from '../actions'
 import './header.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'font-awesome/css/font-awesome.css'
 import {Icon} from 'react-fa'
+import { connect } from "react-redux"
+import { bindActionCreators } from "redux"
 
 class Header extends Component {
   render() {
@@ -22,19 +23,19 @@ class Header extends Component {
                 <DropdownTrigger>Games <Icon name="angle-down"/></DropdownTrigger>
                 <DropdownContent>
                   <div className="list-group my-2 my-lg-0 ml-auto">
-                    <button type="button" className="list-group-item list-group-item-action">Games</button>
-                    <button type="button" className="list-group-item list-group-item-action">Tools</button>
-                    <button type="button" className="list-group-item list-group-item-action">Health</button>
-                    <button type="button" className="list-group-item list-group-item-action">Clothing</button>
-                    <button type="button" className="list-group-item list-group-item-action">Home</button>
-                    <button type="button" className="list-group-item list-group-item-action">Electronics</button>
+                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Games")}}>Games</button>
+                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Tools")}}>Tools</button>
+                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Health")}}>Health</button>
+                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Clothing")}}>Clothing</button>
+                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Home")}}>Home</button>
+                    <button type="button" className="list-group-item list-group-item-action" onClick={()=>{this.props.setCategory("Electronics")}}>Electronics</button>
                   </div>
                 </DropdownContent>
               </Dropdown>
             </div>
 
           </li>
-          <li className="invisible"> ----------- </li>
+          <li className="invisible"> ---- </li>
           <li className="nav-item my-2 my-lg-0"> Sort by Price:
             <div>
               <Dropdown>
@@ -57,4 +58,12 @@ class Header extends Component {
   }
 }
 
-export default Header
+function mapStateToProps(state) {
+  return { products: state.products, query: state.query, pages: state.pages };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ setCategory: setCategory, setSort: setSort }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

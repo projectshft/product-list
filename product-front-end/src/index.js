@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Header from './components/header';
 import Main from './components/page-view';
+import Footer from './components/footer';
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -17,6 +18,7 @@ ReactDOM.render(
     <div>
       <Header />
       <Main />
+      <Footer />
       {/* <Switch>
           <Route exact path="/" component={page-view} />
           <Route path="/test" component={Test} />

@@ -29,6 +29,13 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
+router.get('/products-count', (req, res, next) => {
+  Product.count({}, (error, count) => {
+    if (error) { throw error }
+    res.send(`${count}`)
+  })
+})
+
 router.get('/products', (req, res, next) => {
   const productsPerPage = 9;
   const pageNumber = req.query.page > 0 ? req.query.page : 1

@@ -75,7 +75,7 @@ router.get('/reviews', (req, res) => {
 
 	Product.find().skip(pageFilter).limit(40).exec((err, data) => {
 		for (let i = 0; i < data.length; i++) { 
-			//I should update this with a concat method to catch multiple reviews per product.
+			//I should update this with a different method to catch multiple reviews per product.
 			reviews.push(data[i].reviews[0])
 		}
 		res.send(reviews)

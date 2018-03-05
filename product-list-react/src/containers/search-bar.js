@@ -16,9 +16,14 @@ export class SearchBar extends Component {
 		this.onInputChange = this.onInputChange.bind(this)
 	}
 
-	//placeholder for search functionality.
 	onInputChange(event) {
+		//placeholder for search functionality.
 		this.setState({ searchTerm: event.target.value })
+	}
+
+	onFormSubmit(event) {
+		// Placeholder for implementing product name search.
+		event.preventDefault()
 	}
 
 	categoryChange(event) {
@@ -39,11 +44,6 @@ export class SearchBar extends Component {
 
 			this.props.fetchProducts(category, sortBy, pageNumber)
 		})
-	}
-
-	onFormSubmit(event) {
-	// Placeholder for implementing product name search.
-		event.preventDefault()
 	}
 
 	pageButtonClick(page) {
@@ -82,7 +82,7 @@ export class SearchBar extends Component {
 									/>
 
 									<span className='col text-left'>
-										<button type='submit' className='btn btn-primary'>Submit</button>
+										<button type='submit' className='btn btn-primary'>Search</button>
 									</span>
 								</form>
 							</div>

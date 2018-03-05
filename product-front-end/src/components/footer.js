@@ -10,7 +10,7 @@ class Footer extends Component {
     super(props)
 
     this.state = {
-      page: 1
+      page: this.props.query.page
     }
 
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -23,7 +23,10 @@ class Footer extends Component {
     })
   }
 
-  handlePageChange(page) {
+  handlePageChange(page,event) {
+    if (event) {
+      event.preventDefault()
+    }
     this.setState({page: parseInt(page)}, () => {
       this.props.setPage(this.state.page)
       this.props.fetchProducts(this.props.query).then(response => {
@@ -32,13 +35,19 @@ class Footer extends Component {
     })
   }
 
+  componentWillReceiveProps() {
+    if (this.props.query.page != this.state.page) {
+      this.handlePageChange(this.props.query.page)
+    }
+  }
+
   render() {
     return (
       <div className="mb-5">
         <nav className="my-3" aria-label="Page navigation">
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <a className="page-link" href="#" aria-label="Previous">
+              <a className="page-link" onClick={(event)=>{this.handlePageChange(this.props.query.page-1, event)}} href="#" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
                 <span className="sr-only">Previous</span>
               </a>
@@ -46,12 +55,12 @@ class Footer extends Component {
             {
               this.props.pages.map((page, i) => {
                 return(
-                  <li key={i} className={this.state.page == i+1 ? 'active page-item':'page-item'}><a className="page-link" href="#" onClick={()=>{this.handlePageChange(i+1)}}>{i+1}</a></li>
+                  <li key={i} className={this.state.page == i+1 ? 'active page-item':'page-item'}><a className="page-link" href="#" onClick={(event)=>{this.handlePageChange(i+1,event)}}>{i+1}</a></li>
                 )
               })
             }
             <li className="page-item">
-              <a className="page-link" href="#" aria-label="Next">
+              <a onClick={(event)=>{this.handlePageChange(this.props.query.page+1,event)}} className="page-link" href="#" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
                 <span className="sr-only">Previous</span>
               </a>

@@ -3,17 +3,15 @@ import axios from "axios";
 const ROOT_URL = "http://localhost:8000";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
-
 export const GET_COUNT = "GET_COUNT"
-
 export const SET_CATEGORY = "SET_CATEGORY"
 export const SET_PAGE = "SET_PAGE"
 export const SET_SORT = "SET_SORT"
 export const GET_CATEGORIES = "GET_CATEGORIES"
-
 export const POPULATE_PRODUCTS = "POPULATE_PRODUCTS"
+export const SUBMIT_SEARCH = "SUBMIT_SEARCH"
 
-export function fetchProducts(query) {
+function queryHelper(query) {
   const category = query.category
   const page = query.page
   const price = query.price
@@ -24,6 +22,11 @@ export function fetchProducts(query) {
     const sortQuery = price ? "price="+price : ""
     urlQuery = `?${pageQuery}&${categoryQuery}&${sortQuery}`
   }
+  return urlQuery
+}
+
+export function fetchProducts(query) {
+  let urlQuery = queryHelper(query)
   const url = `${ROOT_URL}/products${urlQuery}`
   const request = axios.get(url, {headers: { "Content-Type" : "application/json"}})
   return {
@@ -63,16 +66,7 @@ export function populateProducts() {
 }
 
 export function getCount(query) {
-  const category = query.category
-  const page = query.page
-  const price = query.price
-  let urlQuery = ""
-  if (category || page || price) {
-    const categoryQuery = category ? "category="+category : ""
-    const pageQuery = page ? "page="+page : ""
-    const sortQuery = price ? "price="+price : ""
-    urlQuery = `?${pageQuery}&${categoryQuery}&${sortQuery}`
-  }
+  let urlQuery = queryHelper(query)
   const url = `${ROOT_URL}/products/count${urlQuery}`
   const request = axios.get(url, {headers: { "Content-Type" : "application/json"}})
   return {
@@ -86,6 +80,15 @@ export function getCategories() {
   const request = axios.get(url, {headers: { "Content-Type" : "application/json"}})
   return {
     type: GET_CATEGORIES,
+    payload: request
+  };
+}
+
+export function submitSearch() {
+  const url = `${ROOT_URL}/products/categories`
+  const request = axios.get(url, {headers: { "Content-Type" : "application/json"}})
+  return {
+    type: SUBMIT_SEARCH,
     payload: request
   };
 }

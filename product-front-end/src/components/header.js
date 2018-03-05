@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { setCategory, setSort, fetchProducts, getCategories, getCount } from '../actions'
+import { setCategory, setSort, fetchProducts, getCategories, getCount, submitSearch, setPage } from '../actions'
 import './header.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'font-awesome/css/font-awesome.css'
@@ -12,6 +12,7 @@ class Header extends Component {
     super(props)
 
     this.state = {
+      searchTerm: "",
       category: "All",
       sortOrder: ""
     }
@@ -26,8 +27,10 @@ class Header extends Component {
   handleCategoryChange(event) {
     this.setState({category: event.target.value}, () => {
       this.props.setCategory(this.state.category)
+      this.props.setPage(1)
       this.props.fetchProducts(this.props.query).then(response => {
         this.props.getCount(this.props.query)
+
       })
     })
 
@@ -40,15 +43,19 @@ class Header extends Component {
         this.props.getCount(this.props.query)
       })
     });
-
   }
+
+  handleSearchTyping(event) {
+    this.setState({searchTerm:event.target.value})
+  }
+
 
   render() {
     return(
       <nav className="front navbar navbar-expand navbar-light bg-light">
         <form className="form-inline my-2 my-lg-0">
           <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"></input>
-          <button className="btn btn-outline-primary" type="submit">Search</button>
+          <button className="btn btn-outline-primary" value={this.state.searchTerm} onChange={this.handleSearchTyping} onClick={(event)=>this.props.submitSearch(event)} type="submit">Search</button>
         </form>
         <ul className="navbar-nav ml-auto">
           <li className="nav-item mr-5"> Filter by Category:
@@ -94,7 +101,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setCategory: setCategory, setSort: setSort, fetchProducts:fetchProducts, getCategories:getCategories, getCount: getCount }, dispatch);
+  return bindActionCreators({ setCategory: setCategory, setSort: setSort, fetchProducts:fetchProducts, getCategories:getCategories, getCount: getCount, submitSearch: submitSearch, setPage:setPage }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

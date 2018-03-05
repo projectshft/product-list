@@ -11,7 +11,8 @@ export class SearchBar extends Component {
 			category: '',
 			sortBy: '',
 			pageNumber: 0,
-			searchTerm: ''
+			searchTerm: '',
+			previousClick: ''
 		}
 		this.onInputChange = this.onInputChange.bind(this)
 	}
@@ -46,7 +47,19 @@ export class SearchBar extends Component {
 		})
 	}
 
-	pageButtonClick(page) {
+	pageButtonClick(page, event) {
+		//set the previous button clicked back to its regular settings.
+		if (this.state.previousClick) {
+			let lastButton = this.state.previousClick;
+			lastButton.removeAttribute('class', 'buttonSelected')
+			lastButton.setAttribute('class', 'btn btn-link')
+			lastButton.disabled = false;
+		}
+		//set the current button clicked to be disabled
+		event.target.setAttribute('class', 'btn btn-link buttonSelected')
+		event.target.disabled = true;
+		this.setState({previousClick: event.target})
+
 		this.setState({ pageNumber: page }, () => {
 			let category = this.state.category
 			let sortBy = this.state.sortBy
@@ -72,7 +85,6 @@ export class SearchBar extends Component {
 						<div className='row'>
 							<div className='col-6'>
 								<form className='form-row' onSubmit={this.onFormSubmit.bind(this)}>
-
 									<input
 										className='col form-control'
 										type='text'
@@ -80,7 +92,6 @@ export class SearchBar extends Component {
 										placeholder='Search products'
 										onChange={this.onInputChange}
 									/>
-
 									<span className='col text-left'>
 										<button type='submit' className='btn btn-primary'>Search</button>
 									</span>
@@ -90,12 +101,16 @@ export class SearchBar extends Component {
 								<form className='form-row' onSubmit={this.onFormSubmit.bind(this)}>						
 									<select className='col form-control' value={this.state.category} onChange={this.categoryChange.bind(this)}>
 										<option value=''>Filter by Category</option>
+										<option value='Automotive'>Automotive</option>
+										<option value='Beauty'>Beauty</option>
 										<option value='Clothing'>Clothing</option>
+										<option value='Computers'>Computers</option>
+										<option value='Games'>Games</option>
+										<option value='Music'>Music</option>
 										<option value='Sports'>Sports</option>
 										<option value='Toys'>Toys</option>
-										<option value='Games'>Games</option>
+										
 									</select>
-
 									<select className='col form-control' value={this.state.sortBy} onChange={this.sortChange.bind(this)}>
 										<option value=''>Sort by...</option>
 										<option value='lowest'>Price: Low to High</option>

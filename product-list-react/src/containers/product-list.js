@@ -10,18 +10,21 @@ class ProductList extends Component {
 		return this.props.response.products.map((product, index) => {
 			let productNode = null
 			productNode = (
-				<div className='col-4 align-items-center text-center border border-primary rounded' key={index}>
-
+				<div className='col-4 align-items-center text-center product-main' key={index}>
 					<div className='row'>
-						<div className='col'>
-							<p>Category: {product.category}</p>
-						</div>
-						<div className='col text-right'>
-							<h4>${product.price}</h4>
+						<div className='col-11 product-col border border-primary rounded'>
+							<div className='row product-inner'>
+								<div className='col-8 text-left'>
+									<p>Category: {product.category}</p>
+								</div>
+								<div className='col-4 text-right'>
+									<h5>${product.price}</h5>
+								</div>
+							</div>
+							<img className='img img-fluid' src={product.image} alt={product.name} />
+							<h5>{product.name}</h5>
 						</div>
 					</div>
-					<img className='img img-fluid' src={product.image} alt={product.name} />
-					<h2>{product.name}</h2>
 				</div>
 			)
 			return productNode
@@ -43,7 +46,7 @@ class ProductList extends Component {
 			return pageNumbers.map( page => {
 				let pageButton = null
 				pageButton = (
-					<button className='btn btn-link' key={page} onClick={() => { this.props.onButtonClick(page)}}>
+					<button key={page} className='btn btn-link' onClick={(event) => { this.props.onButtonClick(page, event)}}>
 						{page}
 					</button>
 				)

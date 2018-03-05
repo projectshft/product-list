@@ -50,14 +50,14 @@ export class SearchBar extends Component {
 	pageButtonClick(page, event) {
 		//set the previous button clicked back to its regular settings.
 		if (this.state.previousClick) {
-			let lastButton = this.state.previousClick;
+			let lastButton = this.state.previousClick
 			lastButton.removeAttribute('class', 'buttonSelected')
 			lastButton.setAttribute('class', 'btn btn-link')
-			lastButton.disabled = false;
+			lastButton.disabled = false
 		}
 		//set the current button clicked to be disabled
 		event.target.setAttribute('class', 'btn btn-link buttonSelected')
-		event.target.disabled = true;
+		event.target.disabled = true
 		this.setState({previousClick: event.target})
 
 		this.setState({ pageNumber: page }, () => {
@@ -130,6 +130,5 @@ export class SearchBar extends Component {
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ fetchProducts }, dispatch)
 }
-
 
 export default connect(null, mapDispatchToProps)(SearchBar)

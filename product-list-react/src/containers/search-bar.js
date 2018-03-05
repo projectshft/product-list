@@ -37,7 +37,6 @@ export class SearchBar extends Component {
 			let category = this.state.category
 			let sortBy = this.state.sortBy
 			let pageNumber = this.state.pageNumber
-
 			this.props.fetchProducts(searchTerm, category, sortBy, pageNumber) 
 		})
 	}

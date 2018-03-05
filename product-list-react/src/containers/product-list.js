@@ -17,7 +17,7 @@ class ProductList extends Component {
 								<div className='col-8 text-left'>
 									<p>Category: {product.category}</p>
 								</div>
-								<div className='col-4 text-right'>
+								<div className='col-4 text-left'>
 									<h5>${product.price}</h5>
 								</div>
 							</div>

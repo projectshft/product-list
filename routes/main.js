@@ -23,6 +23,10 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {
     let page = parseInt(req.query.page) || 1;
     let amountToSkip = (page - 1) * 9;
+    let limit;
+    if (req.query.page) {
+        limit = 9;
+    }
     var query = {};
     if (req.query.category) {
         query.category = req.query.category;
@@ -39,7 +43,7 @@ router.get('/products', (req, res, next) => {
     if (search) {
         query.$text = { $search: search };
     }
-    Product.find(query).skip(amountToSkip).limit(9).sort(sort).exec((err, products) => {
+    Product.find(query).skip(amountToSkip).limit(limit).sort(sort).exec((err, products) => {
         if (err) throw err;
         res.send(products);
     })

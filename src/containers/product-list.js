@@ -8,7 +8,7 @@ class ProductList extends Component {
     constructor(props) {
         super(props);
 
-        this.props.fetchProducts();
+        this.props.fetchProducts(null, null, null, 1);
 
         this.state = {
             page: 1
@@ -45,19 +45,17 @@ class ProductList extends Component {
 
     renderPagination() {
         return (
-            <div>
-                <div className="row justify-content-center">
-                    <button onClick={this.onPageButtonClick} value="1" className="btn-link">1</button>
-                    <button onClick={this.onPageButtonClick} value="2" className="btn-link">2</button>
-                    <button onClick={this.onPageButtonClick} value="3" className="btn-link">3</button>
-                    <button onClick={this.onPageButtonClick} value="4" className="btn-link">4</button>
-                    <button onClick={this.onPageButtonClick} value="5" className="btn-link">5</button>
-                    <button onClick={this.onPageButtonClick} value="6" className="btn-link">6</button>
-                    <button onClick={this.onPageButtonClick} value="7" className="btn-link">7</button>
-                    <button onClick={this.onPageButtonClick} value="8" className="btn-link">8</button>
-                    <button onClick={this.onPageButtonClick} value="9" className="btn-link">9</button>
-                    <button onClick={this.onPageButtonClick} value="10" className="btn-link">10</button>
-                </div>
+            <div className="row justify-content-center">
+                <button onClick={this.onPageButtonClick} value="1" className="btn-link">1</button>
+                <button onClick={this.onPageButtonClick} value="2" className="btn-link">2</button>
+                <button onClick={this.onPageButtonClick} value="3" className="btn-link">3</button>
+                <button onClick={this.onPageButtonClick} value="4" className="btn-link">4</button>
+                <button onClick={this.onPageButtonClick} value="5" className="btn-link">5</button>
+                <button onClick={this.onPageButtonClick} value="6" className="btn-link">6</button>
+                <button onClick={this.onPageButtonClick} value="7" className="btn-link">7</button>
+                <button onClick={this.onPageButtonClick} value="8" className="btn-link">8</button>
+                <button onClick={this.onPageButtonClick} value="9" className="btn-link">9</button>
+                <button onClick={this.onPageButtonClick} value="10" className="btn-link">10</button>
             </div>
         )
     }
@@ -85,7 +83,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (products) => {
-    return products;
+    return products
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

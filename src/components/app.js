@@ -9,10 +9,11 @@ export default class App extends Component {
     render() {
         return (
             <div className='container'>
-                <Header />
                 <Switch>
-                    <Route exact path='/' component={ProductList} />
-                    <Route path='/:productId' component={Product} />
+                    <Header>
+                        <Route exact path='/' component={ProductList} />
+                        <Route path='/:productId' component={Product} />
+                    </Header>
                 </Switch>
             </div>
         )

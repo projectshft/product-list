@@ -6,6 +6,10 @@ export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
 export function fetchProducts(query, category, sortBy, page) {
     let url;
+    if (!page) {
+        page = 1;
+    }
+
     query && category && sortBy && page ? url = `${ROOT_URL}/products?search=${query}&category=${category}&price=${sortBy}&page=${page}` :
     query && category && sortBy ? url = `${ROOT_URL}/products?search=${query}&category=${category}&price=${sortBy}` :
     query && category && page ? url = `${ROOT_URL}/products?search=${query}&category=${category}&page=${page}` :

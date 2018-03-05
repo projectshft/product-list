@@ -38,23 +38,6 @@ class ProductList extends Component {
         this.renderProducts();
     }
 
-    renderPagination() {
-        return (
-            <div className="row justify-content-center">
-                <button onClick={this.onPageButtonClick} value="1" className={this.state.page == 1 ? "btn-link isPressed" : "btn-link"}>1</button>
-                <button onClick={this.onPageButtonClick} value="2" className={this.state.page == 2 ? "btn-link isPressed" : "btn-link"}>2</button>
-                <button onClick={this.onPageButtonClick} value="3" className={this.state.page == 3 ? "btn-link isPressed" : "btn-link"}>3</button>
-                <button onClick={this.onPageButtonClick} value="4" className={this.state.page == 4 ? "btn-link isPressed" : "btn-link"}>4</button>
-                <button onClick={this.onPageButtonClick} value="5" className={this.state.page == 5 ? "btn-link isPressed" : "btn-link"}>5</button>
-                <button onClick={this.onPageButtonClick} value="6" className={this.state.page == 6 ? "btn-link isPressed" : "btn-link"}>6</button>
-                <button onClick={this.onPageButtonClick} value="7" className={this.state.page == 7 ? "btn-link isPressed" : "btn-link"}>7</button>
-                <button onClick={this.onPageButtonClick} value="8" className={this.state.page == 8 ? "btn-link isPressed" : "btn-link"}>8</button>
-                <button onClick={this.onPageButtonClick} value="9" className={this.state.page == 9 ? "btn-link isPressed" : "btn-link"}>9</button>
-                <button onClick={this.onPageButtonClick} value="10" className={this.state.page == 10 ? "btn-link isPressed" : "btn-link"}>10</button>
-            </div>
-        )
-    }
-
     render() {
         if (!this.props.products.products) {
             return <div>Loading...</div>
@@ -66,7 +49,18 @@ class ProductList extends Component {
                     {this.renderProducts()}
                 </div>
                 <div>
-                    {this.renderPagination()}
+                    <div className="row justify-content-center">
+                        <button onClick={this.onPageButtonClick} value="1" className={this.state.page == 1 ? "btn-link isPressed" : "btn-link"}>1</button>
+                        <button onClick={this.onPageButtonClick} value="2" className={this.state.page == 2 ? "btn-link isPressed" : "btn-link"}>2</button>
+                        <button onClick={this.onPageButtonClick} value="3" className={this.state.page == 3 ? "btn-link isPressed" : "btn-link"}>3</button>
+                        <button onClick={this.onPageButtonClick} value="4" className={this.state.page == 4 ? "btn-link isPressed" : "btn-link"}>4</button>
+                        <button onClick={this.onPageButtonClick} value="5" className={this.state.page == 5 ? "btn-link isPressed" : "btn-link"}>5</button>
+                        <button onClick={this.onPageButtonClick} value="6" className={this.state.page == 6 ? "btn-link isPressed" : "btn-link"}>6</button>
+                        <button onClick={this.onPageButtonClick} value="7" className={this.state.page == 7 ? "btn-link isPressed" : "btn-link"}>7</button>
+                        <button onClick={this.onPageButtonClick} value="8" className={this.state.page == 8 ? "btn-link isPressed" : "btn-link"}>8</button>
+                        <button onClick={this.onPageButtonClick} value="9" className={this.state.page == 9 ? "btn-link isPressed" : "btn-link"}>9</button>
+                        <button onClick={this.onPageButtonClick} value="10" className={this.state.page == 10 ? "btn-link isPressed" : "btn-link"}>10</button>
+                    </div>
                 </div>
             </div>
         )

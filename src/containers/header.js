@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/fetch-products';
+import { fetchAllProducts } from '../actions/fetch-all-products';
 
 class Header extends Component {
     constructor(props) {
@@ -32,16 +33,19 @@ class Header extends Component {
 
         this.props.fetchProducts(this.state.term, this.state.category, this.state.sortBy);
         this.setState({ term: "" });
-        <Redirect to='/' />
     }
 
     renderCategories = () => {
-        const { products } = this.props.products;
+        fetchAllProducts();
+        if (!this.props.allProducts.allProducts) {
+            return;
+        }
+        const { allProducts } = this.props.allProducts;
         let categories = [];
 
-        for (let i = 0; i < products.length; i++) {
-            if (categories.indexOf(products[i].category) == -1) {
-                categories.push(products[i].category);
+        for (let i = 0; i < allProducts.length; i++) {
+            if (categories.indexOf(allProducts[i].category) == -1) {
+                categories.push(allProducts[i].category);
             }
         }
 
@@ -54,14 +58,8 @@ class Header extends Component {
         })
     }
 
-    render() {
-        if (!this.props.products.products) {
-            return (
-                <div> </div>
-            )
-        }
-
-        return (
+    render(){
+        return(
             <div>
                 <Link to='/' className="row justify-content-center" style={{textDecoration: 'none'}}>
                     <h1 className="link">PRODUCTS</h1>
@@ -92,18 +90,24 @@ class Header extends Component {
                     </form>
                 </div>
                 <hr />
+                {this.props.children}
 
             </div>
-        )
+         )
     }
+   
+
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ fetchProducts }, dispatch);
+    return bindActionCreators({ fetchProducts, fetchAllProducts }, dispatch);
 }
 
-const mapStateToProps = (products) => {
-    return products;
+const mapStateToProps = (state) => {
+    return {
+        products: state.products,
+        allProducts: state.allProducts
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

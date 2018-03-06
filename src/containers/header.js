@@ -8,6 +8,8 @@ import { fetchAllProducts } from '../actions/fetch-all-products';
 class Header extends Component {
     constructor(props) {
         super(props);
+        
+        this.props.fetchAllProducts();
 
         this.state = {
             term: "",
@@ -36,7 +38,6 @@ class Header extends Component {
     }
 
     renderCategories = () => {
-        this.props.fetchAllProducts();
         if (!this.props.allProducts.allProducts) {
             return;
         }

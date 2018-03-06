@@ -36,7 +36,7 @@ class Header extends Component {
     }
 
     renderCategories = () => {
-        fetchAllProducts();
+        this.props.fetchAllProducts();
         if (!this.props.allProducts.allProducts) {
             return;
         }

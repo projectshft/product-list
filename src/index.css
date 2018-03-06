@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+
+.border-custom {
+  border: solid 1px black;
+}
+
+.product-image {
+  height: 100px;
+}
+

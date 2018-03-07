@@ -30,23 +30,37 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 router.get('/products-count', (req, res, next) => {
-  Product.count({}, (error, count) => {
+  const productsByFilter = req.query.category ? { category: req.query.category } : {}
+  Product.count(productsByFilter, (error, count) => {
     if (error) { throw error }
     res.send(`${count}`)
   })
 })
 
+router.get('/products-categories', (req, res, next) => {
+  Product.find({})
+    .distinct('category')
+    .exec((error, categories) => {
+      if (error) { throw error }
+      res.send(categories.sort())
+    })
+})
+
 router.get('/products', (req, res, next) => {
   const productsPerPage = 9;
   const pageNumber = req.query.page > 0 ? req.query.page : 1
-  const productsByFilter = req.query.category ? { category: req.query.category } : {}
+  const productsByCategoryFilter = req.query.category ? { category: req.query.category } : {}
+  const productsBySearchQuery = req.query.query ? { name: new RegExp(req.query.query, 'i')} : {}
+  const productsByFilters = { ...productsByCategoryFilter, ...productsBySearchQuery }
+  
   let sortFilter = ''
   if (req.query.price === 'highest') {
     sortFilter = '-price'
   } else if (req.query.price === 'lowest') {
     sortFilter = 'price'
   }
-  Product.find(productsByFilter)
+
+  Product.find(productsByFilters)
     .skip((productsPerPage * pageNumber) - productsPerPage)
     .limit(productsPerPage)
     .sort(sortFilter)

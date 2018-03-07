@@ -1,0 +1,8 @@
+body {
+  background-color: #ccc;
+}
+
+.product-image {
+  /* m   */
+  max-height: 150px;
+}

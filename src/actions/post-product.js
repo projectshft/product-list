@@ -5,6 +5,7 @@ const ROOT_URL = 'http://localhost:8000';
 export const POST_PRODUCT = 'POST_PRODUCT';
 
 export function postProduct(name, category, price) {
+    // if name, category, and/or price input fields are empty, return faker data, otherwise return input data
     let productName;
     let productCategory;
     let productPrice;

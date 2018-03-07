@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
 import { postProduct } from '../actions/post-product';
@@ -31,12 +31,14 @@ class NewProduct extends Component {
     onFormSubmit = (event) => {
         event.preventDefault()
 
+        // create new product using information (name, category, price) user specified in input form
         this.props.postProduct(this.state.name, this.state.category, this.state.price);
         this.setState({
             name: "",
             category: "",
             price: ""
         })
+
     }
 
     render() {
@@ -66,7 +68,7 @@ class NewProduct extends Component {
                             value={this.state.price}
                             onChange={this.onPriceChange}
                         />
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <button to="/" type="submit" className="btn btn-primary">Submit</button>
                     </div>
                 </form>
                 <hr/>

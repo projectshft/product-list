@@ -12,15 +12,11 @@ class ProductList extends Component {
         // to render default first page on load
         this.props.fetchProducts();
         // to render pagination
-        // this.props.fetchAllProducts();
+        this.props.fetchAllProducts();
 
         this.state = {
             page: "1"
         }
-    }
-
-    componentDidMount() {
-        this.props.fetchAllProducts();
     }
 
     renderProducts() {

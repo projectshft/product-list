@@ -73,47 +73,32 @@ router.get('/reviews', (req, res, next) => {
     })
 });
 
-// create a new product with faker data
+// create a new product with faker data (or user input data if present)
 router.post('/products', (req, res, next) => {
+    const { body } = res.req;
     let product = new Product({
-        category: faker.commerce.department(),
-        name: faker.commerce.productName(),
-        price: faker.commerce.price(),
+        category: body.category || faker.commerce.department(),
+        name: body.name || faker.commerce.productName(),
+        price: body.price || faker.commerce.price(),
         image: "https://vignette.wikia.nocookie.net/detectiveconan96/images/7/72/Generic_Male_Profile.jpg/revision/latest?cb=20140709000724",
         reviews: []
     })
-    const { body } = res.req;
-    if (body.name) {
-        product.name = body.name;
-    }
-    if (body.category) {
-        product.category = body.category;
-    }
-    if (body.price) {
-        product.price = body.price;
-    }
     product.save((err, product) => {
         if (err) throw err;
         res.send(product);
     })
 });
 
-// create a new review with faker data
+// create a new review with faker data (or user input data if present)
 router.post('/products/:product/reviews', (req, res, next) => {
     Product.findById(req.params.product, (err, product) => {
         if (err) throw err;
+        const { body } = res.req;
         let review = new Review({
-            userName: faker.internet.userName(),
-            text: faker.random.words(),
+            userName: body.userName || faker.internet.userName(),
+            text: body.text || faker.random.words(),
             product: product._id
         })
-        const { body } = res.req;
-        if (body.userName) {
-            review.userName = body.userName;
-        }
-        if (body.text) {
-            review.text = body.text;
-        }
         review.save();
         // add review to product
         product.reviews.push(review);

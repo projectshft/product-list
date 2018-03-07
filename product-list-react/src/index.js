@@ -21,7 +21,6 @@ const App = () => {
 	)
 }
 
-
 ReactDOM.render(
 	<Provider store={store}>
 		<App />

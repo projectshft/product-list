@@ -40,16 +40,30 @@ class ProductList extends Component {
 
 			//create an array of page numbers
 			let pageNumbers = []
-			for (let i = 1; i <=pages; i++) {
+			for (let i = 1; i <= pages; i++) {
 				pageNumbers.push(i)
 			}
 			return pageNumbers.map( page => {
 				let pageButton = null
-				pageButton = (
-					<button key={page} className='btn btn-link' onClick={(event) => { this.props.onButtonClick(page, event)}}>
-						{page}
-					</button>
-				)
+				let currentPage = this.props.getCurrentPage()
+				//If the button being rendered matches our current page number, render it as selected.
+				if (page === currentPage) {
+					pageButton = (
+						<button key={page} className='btn btn-link buttonSelected' disabled onClick={
+							() => { this.props.pageButtonClick(page) }
+						}>
+							{page}
+						</button>
+					)
+				} else {
+					pageButton = (
+						<button key={page} className='btn btn-link' onClick={
+							() => { this.props.pageButtonClick(page) }
+						}>
+							{page}
+						</button>
+					)
+				}
 				return pageButton
 			})
 		}

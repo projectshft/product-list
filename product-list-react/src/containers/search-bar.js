@@ -10,9 +10,8 @@ export class SearchBar extends Component {
 		this.state = {
 			category: '',
 			sortBy: '',
-			pageNumber: 0,
-			searchTerm: '',
-			previousClick: ''
+			pageNumber: 1,
+			searchTerm: ''
 		}
 		this.onInputChange = this.onInputChange.bind(this)
 	}
@@ -22,13 +21,14 @@ export class SearchBar extends Component {
 	}
 
 	onFormSubmit(event) {
-		// Placeholder for implementing product name search.
 		event.preventDefault()
-		let searchTerm = this.state.searchTerm
-		let category = this.state.category
-		let sortBy = this.state.sortBy
-		let pageNumber = this.state.pageNumber
-		this.props.fetchProducts(searchTerm, category, sortBy, pageNumber)
+		this.setState({pageNumber: 1}, () => {
+			let searchTerm = this.state.searchTerm
+			let category = this.state.category
+			let sortBy = this.state.sortBy
+			let pageNumber = this.state.pageNumber
+			this.props.fetchProducts(searchTerm, category, sortBy, pageNumber)
+		})
 	}
 
 	categoryChange(event) {
@@ -47,38 +47,27 @@ export class SearchBar extends Component {
 			let category = this.state.category
 			let sortBy = this.state.sortBy
 			let pageNumber = this.state.pageNumber
-
 			this.props.fetchProducts(searchTerm, category, sortBy, pageNumber)
 		})
 	}
 
-	pageButtonClick(page, event) {
-		//set the previous button clicked back to its regular settings.
-		if (this.state.previousClick) {
-			let lastButton = this.state.previousClick
-			lastButton.removeAttribute('class', 'buttonSelected')
-			lastButton.setAttribute('class', 'btn btn-link')
-			lastButton.disabled = false
-		}
-		//set the current button clicked to be disabled
-		event.target.setAttribute('class', 'btn btn-link buttonSelected')
-		event.target.disabled = true
-		this.setState({previousClick: event.target})
-
+	pageButtonClick(page) {
 		this.setState({ pageNumber: page }, () => {
 			let searchTerm = this.state.searchTerm
 			let category = this.state.category
 			let sortBy = this.state.sortBy
 			let pageNumber = this.state.pageNumber
-
 			this.props.fetchProducts(searchTerm, category, sortBy, pageNumber)
 		})
+	}
 
+	getCurrentPage () {
+		return this.state.pageNumber
 	}
 
 	render () {
 		//Fetch products on intial page load.
-		if (!this.state.category && !this.state.pageNumber && !this.state.sort && !this.state.searchTerm) {
+		if (!this.state.category && !this.state.sort && !this.state.searchTerm) {
 			this.props.fetchProducts('','','','')
 		}
 
@@ -127,7 +116,7 @@ export class SearchBar extends Component {
 						</div>
 					</div>
 				</div>
-				<ProductList onButtonClick = {this.pageButtonClick.bind(this)} />
+				<ProductList pageButtonClick = {this.pageButtonClick.bind(this)} getCurrentPage = {this.getCurrentPage.bind(this)} />
 			</div>
 		)
 	}

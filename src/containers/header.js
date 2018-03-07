@@ -19,10 +19,6 @@ class Header extends Component {
         };
     }
 
-    setPage = () => {
-        console.log('nice')
-    }
-
     onInputChange = (event) => {
         this.setState({ term: event.target.value });
     }

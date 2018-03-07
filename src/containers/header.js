@@ -9,6 +9,7 @@ class Header extends Component {
     constructor(props) {
         super(props);
         
+        // fetch all products to use in dynamically filling the 'Categories' dropdown with all available categories in database
         this.props.fetchAllProducts();
 
         this.state = {
@@ -16,6 +17,10 @@ class Header extends Component {
             category: "",
             sortBy: ""
         };
+    }
+
+    setPage = () => {
+        console.log('nice')
     }
 
     onInputChange = (event) => {
@@ -33,19 +38,23 @@ class Header extends Component {
     onFormSubmit = (event) => {
         event.preventDefault();
 
+        // fetch list of products using information (category, search, price) user specified in header
         this.props.fetchProducts(this.state.term, this.state.category, this.state.sortBy);
         this.setState({ term: "" });
     }
 
     renderCategories = () => {
+        // a placeholder until allProducts is assigned data from database
         if (!this.props.allProducts.allProducts) {
             return;
         }
+
         const { allProducts } = this.props.allProducts;
         let categories = [];
 
+        // filter list of categories so that there are no repeats in dropdown tab
         for (let i = 0; i < allProducts.length; i++) {
-            if (categories.indexOf(allProducts[i].category) == -1) {
+            if (categories.indexOf(allProducts[i].category) === -1) {
                 categories.push(allProducts[i].category);
             }
         }
@@ -91,6 +100,7 @@ class Header extends Component {
                     </form>
                 </div>
                 <hr />
+                {/*Used to ensure Header component persists on all pages*/}
                 {this.props.children}
 
             </div>
@@ -101,6 +111,9 @@ class Header extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => {
+    // fetchProducts defaults to fetching products by page and is used to render product list to ProductList container
+    // fetchAllProducts does not limit products by page, category, search, or price, and is used to render categories
+    // in dropdown and render pagination numbers to ProductList container
     return bindActionCreators({ fetchProducts, fetchAllProducts }, dispatch);
 }
 

@@ -9,9 +9,11 @@ class Product extends Component {
     constructor(props) {
         super(props)
 
+        // fetch one product using product ID
         const { productId } = this.props.match.params;
         this.props.fetchProduct(productId)
 
+        // for user to post a review to product
         this.state = {
             userName: "",
             text: ""
@@ -29,6 +31,7 @@ class Product extends Component {
     onFormSubmit = (event) => {
         event.preventDefault();
 
+        // post new review using username and text input fields on product detail page
         const { productId } = this.props.match.params;
         this.props.postReview(this.state.userName, this.state.text, productId);
         this.setState({
@@ -36,16 +39,19 @@ class Product extends Component {
             text: ""
         })
         this.props.fetchProduct(productId);
+        // reload page so that new review shows
         window.location.reload();
     }
 
     renderReviews = () => {
         const reviews = this.props.product.product.reviews;
 
+        // placeholder until reviews is assigned data from database
         if (!reviews) {
             return <div>Loading...</div>
         }
 
+        // post all existing reviews
         return reviews.map((review) => {
             return (
                 <div key={review._id} className="reviews">
@@ -58,6 +64,7 @@ class Product extends Component {
     }
 
     render() {
+        // placeholder until product is assigned data from database
         if (!this.props.product.product) {
             return <div>Loading...</div>
         }
@@ -90,7 +97,7 @@ class Product extends Component {
                 </div>
                 <div>
                     <hr/>
-                    <form onSubmit={this.onFormSubmit} className="input-group">
+                    <form onSubmit={this.onFormSubmit.bind(this)} className="input-group">
                         <div className="col text-center">
                             <h2>Write a review:</h2>
                             <input

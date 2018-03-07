@@ -18,6 +18,4 @@ const mainRoutes = require('./routes/main')
 
 app.use(mainRoutes)
 
-app.listen(8000, () => {
-  console.log('Node.js listening on port ' + 8000)
-})
+app.listen(8000)

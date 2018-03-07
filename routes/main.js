@@ -79,9 +79,19 @@ router.post('/products', (req, res, next) => {
         category: faker.commerce.department(),
         name: faker.commerce.productName(),
         price: faker.commerce.price(),
-        image: 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png',
+        image: "https://vignette.wikia.nocookie.net/detectiveconan96/images/7/72/Generic_Male_Profile.jpg/revision/latest?cb=20140709000724",
         reviews: []
     })
+    const { body } = res.req;
+    if (body.name) {
+        product.name = body.name;
+    }
+    if (body.category) {
+        product.category = body.category;
+    }
+    if (body.price) {
+        product.price = body.price;
+    }
     product.save((err, product) => {
         if (err) throw err;
         res.send(product);
@@ -97,11 +107,12 @@ router.post('/products/:product/reviews', (req, res, next) => {
             text: faker.random.words(),
             product: product._id
         })
-        if (res.req.body.userName) {
-            review.userName = res.req.body.userName;
+        const { body } = res.req;
+        if (body.userName) {
+            review.userName = body.userName;
         }
-        if (res.req.body.text) {
-            review.text = res.req.body.text;
+        if (body.text) {
+            review.text = body.text;
         }
         review.save();
         // add review to product

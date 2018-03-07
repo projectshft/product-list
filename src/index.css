@@ -57,3 +57,7 @@
     cursor: unset;
     text-decoration: none;
 }
+
+.new-product-input {
+    margin: 25px;
+}

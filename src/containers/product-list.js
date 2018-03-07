@@ -12,17 +12,21 @@ class ProductList extends Component {
         // to render default first page on load
         this.props.fetchProducts();
         // to render pagination
-        this.props.fetchAllProducts();
+        // this.props.fetchAllProducts();
 
         this.state = {
             page: "1"
         }
     }
 
+    componentDidMount() {
+        this.props.fetchAllProducts();
+    }
+
     renderProducts() {
         return this.props.products.products.map( product => {
             return (
-                <Link to={`/${product._id}`} className="col text-center products" key={product._id}>
+                <Link to={`/products/${product._id}`} className="col text-center products" key={product._id}>
                     <img className="product-image" src={product.image} alt="" />
                     <h3 className="link">{product.name}</h3>
                     <h5 className="link">{product.category}</h5>
@@ -49,9 +53,9 @@ class ProductList extends Component {
 
         // render page numbers based off of how many products are in database
         const { allProducts } = this.props.allProducts;
-        const numberOfPages = allProducts.length / 9;
+        const numberOfPages = Math.ceil(allProducts.length / 9);
 
-        for (let i = 1; i < numberOfPages; i++) {
+        for (let i = 1; i <= numberOfPages; i++) {
             pages.push(i.toString());
         }
 

@@ -74,6 +74,9 @@ class Header extends Component {
                 <Link to='/' className="row justify-content-center" style={{textDecoration: 'none'}}>
                     <h1 className="link">PRODUCTS</h1>
                 </Link>
+                <Link to='/product/new' className="row justify-content-end">
+                    <h6>Want to add your product?</h6>
+                </Link>
                 <div className="row">
                     <form onSubmit={this.onFormSubmit} className="input-group">
                         <div className="col">

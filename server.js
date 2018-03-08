@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
-mongoose.connect('mongodb://localhost/products')
+mongoose.connect('mongodb://heroku_vql142fn:qrhjvdk275729c2foj60hjgpmu@ds261838.mlab.com:61838/heroku_vql142fn')
 
 const app = express()
 const cors = require('cors')

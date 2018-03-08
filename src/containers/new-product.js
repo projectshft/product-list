@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
 import { postProduct } from '../actions/post-product';
@@ -38,7 +37,10 @@ class NewProduct extends Component {
             category: "",
             price: ""
         })
-
+        // redirect to main page
+        this.props.history.push('/');
+        // refresh page to ensure new product shows
+        window.location.reload();
     }
 
     render() {

@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 
 import { fetchProduct } from '../actions/fetch-product';
 import { postReview } from '../actions/post-review';
+import { deleteProduct } from '../actions/delete-product';
+import { deleteReview } from '../actions/delete-review';
 
 class Product extends Component {
     constructor(props) {
@@ -43,6 +45,13 @@ class Product extends Component {
         window.location.reload();
     }
 
+    onDeleteReviewClick = (event) => {
+        const reviewId = event.target.value;
+
+        this.props.deleteReview(reviewId);
+        window.location.reload();
+    }
+
     renderReviews = () => {
         const reviews = this.props.product.product.reviews;
 
@@ -56,11 +65,28 @@ class Product extends Component {
             return (
                 <div key={review._id} className="reviews">
                     <hr/>
-                    <h4><b>{review.userName}:</b></h4>
-                    <h5>{review.text}</h5>
+                    <div className="d-flex">
+                        <div className="mr-auto p-2">
+                            <h4><b>{review.userName}:</b></h4>
+                            <h5>{review.text}</h5>
+                        </div>
+                        <div className="p-2">
+                            <button onClick={this.onDeleteReviewClick} value={review._id} type="button" className="btn-link">Delete</button>
+                        </div>
+                    </div>
                 </div>
             )
         })
+    }
+
+    onDeleteProductClick = () => {
+        const { productId } = this.props.match.params;
+
+        this.props.deleteProduct(productId);
+        // redirect to main page
+        this.props.history.push('/');
+        // refresh to ensure deleted product is gone
+        window.location.reload();
     }
 
     render() {
@@ -88,6 +114,9 @@ class Product extends Component {
                     </div>
                 </div>
                 <hr/>
+                <div className="row justify-content-end">
+                    <button onClick={this.onDeleteProductClick} type="button" className="btn btn-danger">Delete this Product</button>
+                </div>
                 <hr/>
                 <div>
                     <div className="row justify-content-center">
@@ -122,7 +151,7 @@ class Product extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ fetchProduct, postReview }, dispatch)
+    return bindActionCreators({ fetchProduct, postReview, deleteProduct, deleteReview }, dispatch)
 }
 
 const mapStateToProps = (product) => {

@@ -121,8 +121,8 @@ router.delete('/products/:product', (req, res, next) => {
 });
 
 // delete a review using review id
-router.delete('/reviews/:review', (req, res, next) => {
-    Review.findByIdAndRemove(req.params.review, (err) => {
+router.delete('/reviews/:reviewId', (req, res, next) => {
+    Review.findByIdAndRemove(req.params.reviewId, (err) => {
         if (err) throw err;
         res.end();
     })

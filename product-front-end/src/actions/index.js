@@ -84,8 +84,10 @@ export function getCategories() {
   };
 }
 
-export function submitSearch() {
-  const url = `${ROOT_URL}/products/categories`
+export function submitSearch(searchQuery) {
+  const searchQueryRegExp = ""
+  const urlQuery = `?${searchQueryRegExp}`
+  const url = `${ROOT_URL}/products/`
   const request = axios.get(url, {headers: { "Content-Type" : "application/json"}})
   return {
     type: SUBMIT_SEARCH,

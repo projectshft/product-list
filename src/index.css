@@ -1,0 +1,63 @@
+.search-bar-area {
+    border-left: 1px grey solid;
+}
+
+.products {
+    border: 1px black solid;
+    padding: 10px;
+    margin: 10px;
+}
+
+.product-image {
+    height: auto;
+    width: 240px;
+}
+
+.product-detail-name {
+    font-size: 50px;
+    margin: 20px;
+}
+
+.product-detail-image {
+    height: 240px;
+    width: auto;
+}
+
+.link {
+    color: black;
+    text-decoration: none;
+}
+
+.btn-link {
+    border: none;
+    font-size: 25px;
+    margin-top: 35px;
+}
+
+.btn-link:hover {
+    cursor: pointer;
+}
+
+.container {
+    margin-bottom: 120px;
+}
+
+.reviews {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.isPressed {
+    color: grey;
+    text-decoration: none;
+}
+
+.isPressed:hover {
+    color: grey;
+    cursor: unset;
+    text-decoration: none;
+}
+
+.new-product-input {
+    margin: 25px;
+}

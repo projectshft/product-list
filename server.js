@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
-mongoose.connect('mongodb://heroku_vql142fn:qrhjvdk275729c2foj60hjgpmu@ds261838.mlab.com:61838/heroku_vql142fn')
+mongoose.connect(process.env.MONGODB_URI)
 
 const app = express()
 const cors = require('cors')
@@ -18,6 +18,8 @@ const mainRoutes = require('./routes/main')
 
 app.use(mainRoutes)
 
-app.listen(8000, () => {
-  console.log('Node.js listening on port ' + 8000)
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+  console.log('Node.js listening on port ' + PORT)
 })

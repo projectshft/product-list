@@ -1,0 +1,21 @@
+.dropdown {
+    display: inline-block;
+}
+
+.dropdown__content {
+    display: none;
+    position: absolute;
+}
+
+.dropdown--active .dropdown__content {
+    display: block;
+}
+
+.invisible {
+  color: rgba(0, 0, 0, 0.7)
+}
+
+.front {
+  position: relative;
+  z-index: 5
+}

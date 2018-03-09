@@ -104,7 +104,6 @@ export class SearchBar extends Component {
 										<option value='Music'>Music</option>
 										<option value='Sports'>Sports</option>
 										<option value='Toys'>Toys</option>
-										
 									</select>
 									<select className='col form-control' value={this.state.sortBy} onChange={this.sortChange.bind(this)}>
 										<option value=''>Sort by...</option>

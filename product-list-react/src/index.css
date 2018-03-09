@@ -13,6 +13,7 @@ body {
 .product-col {
   width: 80%;
   margin: auto;
+  height: 20em;
 }
 
 .product-main {
@@ -21,6 +22,7 @@ body {
 
 .product-inner {
   padding-top: 5px;
+  height: 5em;
 }
 
 .buttonSelected:hover {

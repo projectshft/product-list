@@ -5,10 +5,10 @@ export default function(state = [], action) {
     case GET_COUNT:
       state=[]
       const count = action.payload.data.count
-      const pages = Math.ceil(parseInt(count) / 9)
+      const pages = Math.ceil(parseInt(count,10) / 9)
       const pageArray = Array(pages).fill().map((e,i)=>i+1)
       return pageArray
-  }
-
-    return state
+    default:
+      return state
+    }
 }

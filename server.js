@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect("mongodb://localhost/products")
 
 const app = express()
 const cors = require('cors')

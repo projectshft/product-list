@@ -5,7 +5,7 @@ export default function(state = [], action) {
     case GET_CATEGORIES:
       state = action.payload.data
       return state
-  }
-
-    return state
+    default:
+      return state
+    }
 }

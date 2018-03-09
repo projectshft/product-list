@@ -87,7 +87,7 @@ export function getCategories() {
 export function submitSearch(searchQuery) {
   const searchQueryRegExp = ""
   const urlQuery = `?${searchQueryRegExp}`
-  const url = `${ROOT_URL}/products/`
+  const url = `${ROOT_URL}/products/${urlQuery}`
   const request = axios.get(url, {headers: { "Content-Type" : "application/json"}})
   return {
     type: SUBMIT_SEARCH,

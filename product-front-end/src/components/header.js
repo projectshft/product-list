@@ -3,7 +3,6 @@ import { setCategory, setSort, fetchProducts, getCategories, getCount, submitSea
 import './header.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'font-awesome/css/font-awesome.css'
-import {Icon} from 'react-fa'
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 

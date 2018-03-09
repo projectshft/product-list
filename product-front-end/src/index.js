@@ -5,7 +5,6 @@ import Main from './components/page-view';
 import Footer from './components/footer';
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
 import promise from "redux-promise";
 import rootReducers from "./reducers";
 import 'bootstrap/dist/css/bootstrap.css'

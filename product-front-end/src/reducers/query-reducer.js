@@ -11,6 +11,7 @@ export default function(state = {}, action) {
     case SET_PAGE:
       state.page = action.payload
       return state
+    default:
+      return state
   }
-    return state
 }

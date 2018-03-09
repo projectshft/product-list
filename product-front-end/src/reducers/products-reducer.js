@@ -16,8 +16,7 @@ export default function(state = [], action) {
         })
         let newState = state.concat(data);
         return newState
+    default:
+      return state
   }
-
-    return state
-
 }

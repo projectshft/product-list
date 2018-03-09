@@ -36,7 +36,7 @@ router.get('/products', (req, res) => {
 
 	let sortFilter = {}
 	if (req.query.sort == 'highest') {
-		sortFilter = { price: -1}
+		sortFilter = { price: -1 }
 	} else if (req.query.sort == 'lowest') {
 		sortFilter = { price: 'asc'}
 	}

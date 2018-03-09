@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchProducts } from '../actions/index'
-import { bindActionCreators } from 'redux'
-
 
 class ProductList extends Component {
 
@@ -91,9 +88,4 @@ function mapStateToProps(state) {
 	}
 }
 
-
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ fetchProducts }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList)
+export default connect(mapStateToProps, null)(ProductList)

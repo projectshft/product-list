@@ -45,14 +45,14 @@ router.get('/products', (req, res) => {
 	let pageRequested = parseInt(req.query.page)
 	
 	if (pageRequested) {
-		pageFilter = (pageRequested - 1) * 9
+		pageFilter = (pageRequested - 1) * 12
 	}
 	
 	Product.count(categoryAndSearchFilter, (err, count) => {
 		if (err) {
 			return res.json({error: err})
 		}
-		Product.find(categoryAndSearchFilter).sort(sortFilter).skip(pageFilter).limit(9).exec((err, products) => {
+		Product.find(categoryAndSearchFilter).sort(sortFilter).skip(pageFilter).limit(12).exec((err, products) => {
 			if (err) {
 				return res.json({ error: err })
 			}

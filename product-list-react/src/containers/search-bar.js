@@ -78,23 +78,23 @@ export class SearchBar extends Component {
 						<h1>Products</h1>
 						<br></br>
 						<div className='row'>
-							<div className='col-6'>
-								<form className='form-row' onSubmit={this.onFormSubmit.bind(this)}>
+							<div className='col-md'>
+								<form className='form-row form-inline' onSubmit={this.onFormSubmit.bind(this)}>
 									<input
-										className='col form-control'
+										className='col-8 form-control form-inline'
 										type='text'
 										value={this.state.searchTerm}
 										placeholder='Search products'
 										onChange={this.onInputChange}
 									/>
-									<span className='col text-left'>
+									<span className='col-4 form-inline'>
 										<button type='submit' className='btn btn-primary'>Search</button>
 									</span>
 								</form>
 							</div>
-							<div className='col-6'>
+							<div className='col-sm'>
 								<form className='form-row' onSubmit={this.onFormSubmit.bind(this)}>						
-									<select className='col form-control' value={this.state.category} onChange={this.categoryChange.bind(this)}>
+									<select className='col-sm form-control drop-down' value={this.state.category} onChange={this.categoryChange.bind(this)}>
 										<option value=''>Filter by Category</option>
 										<option value='Automotive'>Automotive</option>
 										<option value='Beauty'>Beauty</option>
@@ -105,7 +105,7 @@ export class SearchBar extends Component {
 										<option value='Sports'>Sports</option>
 										<option value='Toys'>Toys</option>
 									</select>
-									<select className='col form-control' value={this.state.sortBy} onChange={this.sortChange.bind(this)}>
+									<select className='col-sm form-control drop-down' value={this.state.sortBy} onChange={this.sortChange.bind(this)}>
 										<option value=''>Sort by...</option>
 										<option value='lowest'>Price: Low to High</option>
 										<option value='highest'>Price: High to Low</option>
@@ -113,9 +113,9 @@ export class SearchBar extends Component {
 								</form>
 							</div>
 						</div>
+						<ProductList pageButtonClick={this.pageButtonClick.bind(this)} getCurrentPage={this.getCurrentPage.bind(this)} />
 					</div>
 				</div>
-				<ProductList pageButtonClick = {this.pageButtonClick.bind(this)} getCurrentPage = {this.getCurrentPage.bind(this)} />
 			</div>
 		)
 	}

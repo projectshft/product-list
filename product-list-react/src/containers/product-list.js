@@ -7,19 +7,21 @@ class ProductList extends Component {
 		return this.props.response.products.map((product, index) => {
 			let productNode = null
 			productNode = (
-				<div className='col-4 align-items-center text-center product-main' key={index}>
+				<div className='col-lg-4 col-md-5 col-sm-6 col-xs-12 align-items-center text-center product-main' key={index}>
 					<div className='row'>
 						<div className='col-11 product-col border border-primary rounded'>
 							<div className='row product-inner'>
-								<div className='col-8 text-left'>
+								<div className='col-8 col-sm-8 col-xs-12 text-left'>
 									<p>Category: {product.category}</p>
 								</div>
-								<div className='col-4 text-left'>
+								<div className='col-4 col-sm-4 col-xs-12 text-left'>
 									<h5>${product.price}</h5>
 								</div>
 							</div>
 							<img className='img img-fluid' src={product.image} alt={product.name} />
-							<h5>{product.name}</h5>
+							<div className='product-name'>
+								<h5>{product.name}</h5>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -30,10 +32,10 @@ class ProductList extends Component {
 
 	renderPaginationButtons() {
 		let count = this.props.response.count
-		if (count >= 9) {
-			let pages = count / 9
+		if (count >= 12) {
+			let pages = count / 12
 			// if there is a remainder, we'll need one extra page.
-			if (count % 9) {pages += 1}
+			if (count % 12) {pages += 1}
 
 			//create an array of page numbers
 			let pageNumbers = []

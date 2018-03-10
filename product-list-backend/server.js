@@ -5,7 +5,6 @@ const cors = require('cors')
 const app = express()
 mongoose.connect('mongodb://localhost/products')
 
-
 app.use(cors())
 
 app.use(bodyParser.json())

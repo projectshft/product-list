@@ -37,24 +37,48 @@ router.param('product', (request, response, next) => {
   }
 });
 
-router.get('/products', (request, response, next) => {
-  const perPage = 9
-
-  // return the first page by default
-  const page = request.query.page || 1
-
-  let query = Product
-    .find({})
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-
-        response.send(products)
-      })
+router.get('/products', (request, response) => {
+  let requestedCategory = request.query.category
+  let requestedPage = request.query.page
+  let requestedSort = request.query.price
+  let query;
+  let queryCount;
+  if(requestedCategory && requestedCategory !== 'DISREGARD'){
+    query = Product.find({category: { $regex: new RegExp(requestedCategory, 'i')}})
+    query.count((err, count) =>{
+      queryCount = count
     })
+    query = Product.find({category: { $regex: new RegExp(requestedCategory, 'i')}})
+  } else {
+    query = Product.find({})
+    query.count((err, count) => {
+      queryCount = count
+    })
+    query = Product.find({})
+  }
+  if(requestedSort == 'highest' || requestedSort == "lowest"){
+    switch(requestedSort){
+      case 'highest':
+        query = query.sort({price: -1});
+        break;
+      case 'lowest':
+        query = query.sort({price: 1});
+          break;
+    }
+  }
+
+  if (!requestedPage || requestedPage < 0) {
+      query.limit(9).exec((err, products) => {
+        if (err) throw err;
+        return response.send({ products: products, total: queryCount })
+      });
+
+  } else {
+    let startResultsNumber = (requestedPage - 1) * 9
+      query.skip(startResultsNumber).limit(9).exec((err, products) => {
+        return response.send({ products: products, total: queryCount });
+      })
+  }
 });
 
 router.get('/products/:product', (request, response) => {

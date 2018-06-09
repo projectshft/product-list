@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const cors = require('cors');
 
 mongoose.connect('mongodb://localhost/products')
 
@@ -12,13 +13,9 @@ app.use(bodyParser.urlencoded({
 }))
 
 const mainRoutes = require('./routes/main')
-
+app.use(cors());
+app.options('*', cors());
 app.use(mainRoutes)
-app.use(function(request, response, next){
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
 app.listen(8000, () => {
   console.log('Node.js listening on port ' + 8000)

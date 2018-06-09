@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Pagination} from 'react-bootstrap'
+import {Pagination} from 'react-bootstrap';
+import {setPage} from '../actions';
+import {bindActionCreators} from 'redux'
 
 class List extends Component {
+    constructor(props){
+        super(props)
+
+        this.state = {
+            currentPage: 1
+        }
+    }
     renderProducts() {
         let productsArray = this.props.products.map((product) => {
             return (
@@ -18,10 +27,9 @@ class List extends Component {
 
     renderPages() {
         let pagesArray = []
-        debugger;
-        for ( let i = 0; i < (this.props.total/9); i++){
+        for ( let i = 1; i < (this.props.total/9); i++){
             pagesArray.push(
-                <Pagination.Item active={false}>{i}</Pagination.Item>
+                <Pagination.Item onClick={() => {this.props.setPage(i, this.props.menu.category, this.props.menu.sort); this.setState({currentPage: i})}} active={i === this.state.currentPage}>{i}</Pagination.Item>
             )
         }
         return pagesArray;
@@ -46,8 +54,11 @@ class List extends Component {
     }
 }
 
-function mapStateToProps({products, total}){
-    return ({products, total})
+function mapStateToProps({products, total, menu}){
+    return ({products, total, menu})
+}
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({setPage}, dispatch)
 }
 
-export default connect(mapStateToProps)(List);
+export default connect(mapStateToProps, mapDispatchToProps)(List);

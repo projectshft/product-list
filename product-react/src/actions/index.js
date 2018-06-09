@@ -23,3 +23,16 @@ export function submitQuery(category, sort){
         return {type: FETCH_PRODUCTS, payload: request};
 }
 
+export function setPage(page, category, sort){
+    if(category == "Select Categories") {
+        category = 'DISREGARD'
+    }
+    if(sort == 'Select Sort'){
+        sort = 'DISREGARD'
+    }
+
+    let request = axios.get(`${ROOT_URL}/products?category=${category}&price=${sort}&page=${page}`);
+        return {type: FETCH_PRODUCTS, payload: request};
+}
+
+

@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 // Global Variables (api key should be in more secure place)
 const VALID_API_KEYS = ["88312679-04c9-4351-85ce-3ed75293b449","1a5c45d3-8ce7-44da-9e78-02fb3c1a71b7"];
 const CORS_HEADERS = {"Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, X-Authentication"};
-const PORT = 3000;
+const PORT = 8000;
 
 
 // Routes that the server can take. Please read their usage in the /routes folder.
@@ -65,6 +65,7 @@ app.use(bodyParser.urlencoded({
 
 // ==================================================== Routes ============================================================== //
 
+// Suppose to have different routers working on different routes, but... not using population, so they are intertwined.
 // Products Handler 
 app.use(productsRouter);
 

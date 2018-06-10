@@ -29,6 +29,7 @@ router.get('/products', (request, response, next) => {
     const perPage = 9
   
     const page = request.query.page || 1; // return the first page by default
+    const sort = request.query.price.toLowerCase();
     let productsQuery;
 
     if(page < 0 || page % 1 !== 0){ // checks if page entered if valid.
@@ -42,7 +43,7 @@ router.get('/products', (request, response, next) => {
     } 
 
     // switch cases to sort, default case not required.
-    switch(request.query.price){
+    switch(sort){
       case 'highest':
         productsQuery = productsQuery.sort({price:-1});
         break;

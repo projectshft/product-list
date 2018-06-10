@@ -39,7 +39,7 @@ router.param('productId', function(request, response, next, productId) {
 
 //========================== Router handler for different API request method related to Reviews(s) ===============================//
 
-// Product ID is verified in the router.param middleware at line 9 of this file.
+// Product ID is verified in the router.param middleware at line 28 of this file.
 // This route allow users to post reviews to the product.
 router.post('/:productId/reviews', (request, response, next) => {
     request.product.exec((err, product) => {
@@ -87,28 +87,6 @@ router.get('/reviews', (request, response, next) => {
             } else { // else return allReviews
                 return response.status(200).send(allReviews);
             }
-        })
-});
-
-// This route returns all reviewed products' id and their reviews.
-router.get('/reviews', (request, response, next) => {
-    let allReviews = [];
-    Product
-        .find({reviews: { $size: {$gt: 1}}}) //
-        .exec((err, products) =>{
-            if(err) throw err;
-            // for each product with review, push product id and its reviews to allReviews array
-            products.forEach((product) => {
-                let reviewDetail = {}
-                reviewDetail.productId = product.id;
-                reviewDetail.reviews = product.reviews;
-
-                allReviews.concat(reviewDetail);
-            });
-            if(allReviews.length == 0){
-                return response.status(404).send("No reviews found.");
-            }
-            return response.status(200).send(allReviews);
         })
 });
 

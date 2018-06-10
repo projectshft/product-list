@@ -73,7 +73,7 @@ router.get('/products', (request, response, next) => {
       })
 })
 
-// Product ID is verified in the router.param middleware at line 9 of this file.
+// Product ID is verified in the router.param middleware at line 13 of this file.
 // This route returns product requested by user using product ID
 router.get('/products/:productId', (request, response, next) => {
   request.product.exec((err, product) => {

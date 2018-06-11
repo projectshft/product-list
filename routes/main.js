@@ -90,9 +90,6 @@ router.get('/products', (req, res) => {
       Product.count(query).exec((err, productCount) => {
         if (err) return next(err)
 
-        // write the response headers and return the products requested and the number of products
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Authentication');
         return res.send({products: products, productCount: productCount})
       })
     })
@@ -100,9 +97,6 @@ router.get('/products', (req, res) => {
 
 // GET /products/:product: Returns a specific product by it's id
 router.get('/products/:product', (req, res) => {
-  // write the response headers and send back the requested product.
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Authentication');
   return res.send(req.product);
 })
 
@@ -124,10 +118,6 @@ router.get('/reviews', (req, res) => {
     products.forEach((product) => {
       reviews = reviews.concat(product.reviews)
     })
-
-    // write the response headers
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Authentication');
 
     // return the portion of the reviews that was requested
     return res.send(reviews.slice(skipCount, skipCount + perPage));

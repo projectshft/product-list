@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Pagination} from 'react-bootstrap';
-import {setPage} from '../actions';
-import {bindActionCreators} from 'redux'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Pagination } from 'react-bootstrap';
+import { setPage } from '../actions';
+import { bindActionCreators } from 'redux'
 
 class List extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -27,9 +27,9 @@ class List extends Component {
 
     renderPages() {
         let pagesArray = []
-        for ( let i = 1; i < (this.props.total/9); i++){
+        for (let i = 1; i < (this.props.total / 9); i++) {
             pagesArray.push(
-                <Pagination.Item key={i} onClick={() => {this.props.setPage(i, this.props.menu.category, this.props.menu.sort); this.setState({currentPage: i})}} active={i === this.state.currentPage}>{i}</Pagination.Item>
+                <Pagination.Item key={i} onClick={() => { this.props.setPage(i, this.props.menu.category, this.props.menu.sort); this.setState({ currentPage: i }) }} active={i === this.state.currentPage}>{i}</Pagination.Item>
             )
         }
         return pagesArray;
@@ -39,12 +39,12 @@ class List extends Component {
             return (
                 <div>
                     <div className="row">
-                    {this.renderProducts()}
+                        {this.renderProducts()}
                     </div>
                     <div className="row justify-content-center">
-                    <Pagination className="row text-center justify-content-center">
-                    {this.renderPages()}
-                    </Pagination>
+                        <Pagination className="row text-center justify-content-center">
+                            {this.renderPages()}
+                        </Pagination>
                     </div>
                 </div>
             )
@@ -56,11 +56,11 @@ class List extends Component {
     }
 }
 
-function mapStateToProps({products, total, menu}){
-    return ({products, total, menu})
+function mapStateToProps({ products, total, menu }) {
+    return ({ products, total, menu })
 }
-function mapDispatchToProps(dispatch){
-    return bindActionCreators({setPage}, dispatch)
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ setPage }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

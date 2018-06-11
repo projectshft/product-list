@@ -23,16 +23,17 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.param('product', (request, response, next) => {
   let requestedProductId = request.params.product
   try {
-  Product.findById(requestedProductId, (err, product) => {
-    if(err) throw err;
-    if(product !== {}){
-      request.product = product;
-      next() 
-    } else {
-      response.status(400).send('Product has no values')
-    }
-  })}
-  catch(err){
+    Product.findById(requestedProductId, (err, product) => {
+      if (err) throw err;
+      if (product !== {}) {
+        request.product = product;
+        next()
+      } else {
+        response.status(400).send('Product has no values')
+      }
+    })
+  }
+  catch (err) {
     response.send("Invalid Product Id")
   }
 });
@@ -43,12 +44,12 @@ router.get('/products', (request, response) => {
   let requestedSort = request.query.price
   let query;
   let queryCount;
-  if(requestedCategory && requestedCategory !== 'DISREGARD'){
-    query = Product.find({category: { $regex: new RegExp(requestedCategory, 'i')}})
-    query.count((err, count) =>{
+  if (requestedCategory && requestedCategory !== 'DISREGARD') {
+    query = Product.find({ category: { $regex: new RegExp(requestedCategory, 'i') } })
+    query.count((err, count) => {
       queryCount = count
     })
-    query = Product.find({category: { $regex: new RegExp(requestedCategory, 'i')}})
+    query = Product.find({ category: { $regex: new RegExp(requestedCategory, 'i') } })
   } else {
     query = Product.find({})
     query.count((err, count) => {
@@ -56,28 +57,28 @@ router.get('/products', (request, response) => {
     })
     query = Product.find({})
   }
-  if(requestedSort == 'Highest' || requestedSort == "Lowest"){
-    switch(requestedSort){
+  if (requestedSort == 'Highest' || requestedSort == "Lowest") {
+    switch (requestedSort) {
       case 'Highest':
-        query = query.sort({price: -1});
+        query = query.sort({ price: -1 });
         break;
       case 'Lowest':
-        query = query.sort({price: 1});
-          break;
+        query = query.sort({ price: 1 });
+        break;
     }
   }
 
   if (!requestedPage || requestedPage < 0) {
-      query.limit(9).exec((err, products) => {
-        if (err) throw err;
-        return response.send({ products: products, total: queryCount })
-      });
+    query.limit(9).exec((err, products) => {
+      if (err) throw err;
+      return response.send({ products: products, total: queryCount })
+    });
 
   } else {
     let startResultsNumber = (requestedPage - 1) * 9
-      query.skip(startResultsNumber).limit(9).exec((err, products) => {
-        return response.send({ products: products, total: queryCount });
-      })
+    query.skip(startResultsNumber).limit(9).exec((err, products) => {
+      return response.send({ products: products, total: queryCount });
+    })
   }
 });
 
@@ -86,7 +87,7 @@ router.get('/products/:product', (request, response) => {
 });
 
 router.get('/reviews', (request, response) => {
-  Product.find({reviews: {$exists: true, $ne : []}}).exec((err, docs) => {
+  Product.find({ reviews: { $exists: true, $ne: [] } }).exec((err, docs) => {
     let reviewsArray = []
     docs.forEach((product) => {
       reviewsArray.push(product.reviews)
@@ -97,7 +98,7 @@ router.get('/reviews', (request, response) => {
 
 router.post('/products', (request, response) => {
   let requestedProduct = request.body;
-  if(requestedProduct.category !== '' && requestedProduct.name !== '' && requestedProduct.price >= 0 && requestedProduct.image !== ''){
+  if (requestedProduct.category !== '' && requestedProduct.name !== '' && requestedProduct.price >= 0 && requestedProduct.image !== '') {
     let newProduct = new Product(requestedProduct);
     newProduct.save();
     response.send(newProduct);
@@ -106,14 +107,14 @@ router.post('/products', (request, response) => {
   }
 });
 
-router.post('/:product/reviews', (request, response) =>{
+router.post('/:product/reviews', (request, response) => {
   let requestedProduct = request.product;
   let newReview = new Review({
     userName: request.body.userName,
     text: request.body.text,
     product: request.product._id
   });
-  if(newReview.userName && newReview.userName !== '' && newReview.text && newReview.text !== ''){
+  if (newReview.userName && newReview.userName !== '' && newReview.text && newReview.text !== '') {
     request.product.reviews.push(newReview);
     request.product.save();
     return response.send(request.product);

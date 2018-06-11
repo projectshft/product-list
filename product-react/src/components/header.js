@@ -13,6 +13,7 @@ class Header extends Component{
             sort: null,
             query: ''
         }
+        this.props.submitQuery(this.props.menu.category, this.props.menu.sort)
     }
 
     renderDropdown = () => {

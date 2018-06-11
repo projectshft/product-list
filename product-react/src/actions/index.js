@@ -25,7 +25,7 @@ export function submitQuery(category, sort){
 }
 
 export function setPage(page, category, sort){
-    if(category == "Select Categories") {
+    if(category == "Select Category") {
         category = 'DISREGARD'
     }
     if(sort == 'Select Sort'){

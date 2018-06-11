@@ -1,7 +1,7 @@
 import {CHANGE_CATEGORY, CHANGE_SORT} from '../actions'
 
 export default function(state = {
-    category: "Select Categories",
+    category: "Select Category",
     sort: "Select Sort"
 }, action){
     switch(action.type){

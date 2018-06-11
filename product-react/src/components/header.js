@@ -16,10 +16,10 @@ class Header extends Component{
     }
 
     renderDropdown = () => {
-        let buttonValues = ['tools','electronics','home', 'grocery', 'clothing']
-        let buttonArray = buttonValues.map((value) => {
+        let buttonValues = ['Tools','Electronics','Home', 'Grocery', 'Clothing', 'Outdoors', 'Music', 'Automotive', 'Sports', 'Select Category']
+        let buttonArray = buttonValues.map((tag) => {
             return (
-                <MenuItem key={Math.random()} onClick={() => {this.props.setCategory(value)}}>{value}</MenuItem>
+                <MenuItem key={buttonValues.indexOf(tag)} onClick={() => {this.props.setCategory(tag)}}>{tag}</MenuItem>
             )
         })
         return buttonArray
@@ -51,8 +51,9 @@ class Header extends Component{
             key={Math.random()}
             id="sort"
             >
-            <MenuItem key={Math.random()} onClick={() => {this.props.setSort('highest')}}>Price: highest to lowest</MenuItem>
-            <MenuItem key={Math.random()} onClick={() => {this.props.setSort('lowest')}}>Price: lowest to highest</MenuItem>
+            <MenuItem key={'highest'} onClick={() => {this.props.setSort('Highest')}}>Price: highest to lowest</MenuItem>
+            <MenuItem key={'lowest'} onClick={() => {this.props.setSort('Lowest')}}>Price: lowest to highest</MenuItem>
+            <MenuItem key={'Sort'} onClick={() => {this.props.setSort('Select-Sort')}}>Select Sort</MenuItem>
             </DropdownButton>
             </div>
             </div>

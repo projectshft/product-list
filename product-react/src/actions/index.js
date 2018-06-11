@@ -13,12 +13,13 @@ export function setSort(sort){
 }
 
 export function submitQuery(category, sort){
-    if(category == "Select Categories") {
+    if(category == "Select Category" || category == "None") {
         category = 'DISREGARD'
     }
     if(sort == 'Select Sort'){
         sort = 'DISREGARD'
     }
+
     let request = axios.get(`${ROOT_URL}/products?category=${category}&price=${sort}`);
         return {type: FETCH_PRODUCTS, payload: request};
 }

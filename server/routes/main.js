@@ -56,12 +56,12 @@ router.get('/products', (request, response) => {
     })
     query = Product.find({})
   }
-  if(requestedSort == 'highest' || requestedSort == "lowest"){
+  if(requestedSort == 'Highest' || requestedSort == "Lowest"){
     switch(requestedSort){
-      case 'highest':
+      case 'Highest':
         query = query.sort({price: -1});
         break;
-      case 'lowest':
+      case 'Lowest':
         query = query.sort({price: 1});
           break;
     }

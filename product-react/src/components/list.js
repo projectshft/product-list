@@ -29,7 +29,7 @@ class List extends Component {
         let pagesArray = []
         for ( let i = 1; i < (this.props.total/9); i++){
             pagesArray.push(
-                <Pagination.Item onClick={() => {this.props.setPage(i, this.props.menu.category, this.props.menu.sort); this.setState({currentPage: i})}} active={i === this.state.currentPage}>{i}</Pagination.Item>
+                <Pagination.Item key={i} onClick={() => {this.props.setPage(i, this.props.menu.category, this.props.menu.sort); this.setState({currentPage: i})}} active={i === this.state.currentPage}>{i}</Pagination.Item>
             )
         }
         return pagesArray;
@@ -41,14 +41,16 @@ class List extends Component {
                     <div className="row">
                     {this.renderProducts()}
                     </div>
+                    <div className="row justify-content-center">
                     <Pagination className="row text-center justify-content-center">
                     {this.renderPages()}
                     </Pagination>
+                    </div>
                 </div>
             )
         } else {
             return (
-                <h4> LOADING.... </h4>
+                <h4> Click "Submit" to Search... </h4>
             )
         }
     }

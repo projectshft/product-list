@@ -12,7 +12,7 @@ router.get('/generate-fake-data', (request, response, next) => {
     product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.finance.amount(1, 100, 2);
-    product.image = `https://picsum.photos/200/300?image=${i}`;
+    product.image = `https://picsum.photos/200?image=${i}`;
 
     product.save((err) => {
       if (err) throw err

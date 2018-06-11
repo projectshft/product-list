@@ -67,6 +67,7 @@ class Header extends Component {
     // ===================== Auto Suggest functions END ================//
 
     // ======================== Dropdown function ======================//
+    // setting sort option to redux state
     selectPriceSort = (option) => {
         this.props.sortByPrice(option.label);
     };

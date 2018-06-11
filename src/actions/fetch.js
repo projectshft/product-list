@@ -4,14 +4,14 @@ const ROOT_URL = 'http://localhost:8000';
 
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
-export function fetchProducts(requestConfig, pageRequest){
+export function fetchProducts(requestConfig){
     const url = `${ROOT_URL}/products`;
 
     const config = {
         query: requestConfig.query,
         category: requestConfig.category,
         price: requestConfig.sortPrice || null,
-        page: pageRequest || 1
+        page: requestConfig.page || 1
     };
 
     const headersConfig = {

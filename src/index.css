@@ -167,10 +167,26 @@ body {
   padding: 8px 10px;
 }
 
-.search-bar,
+
 .custom-search-button {
   border-radius: 5px;
+}
+
+.search-bar{
+  width:70%;
   border: 1px solid #aaa;
 }
 
+.product-object {
+  float: left;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
 
+img {
+  width: 100%;
+}
+
+li {
+  padding: 20px;
+}

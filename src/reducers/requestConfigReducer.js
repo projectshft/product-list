@@ -4,7 +4,8 @@ import {FILTER_CATEGORY, SORT_BY_PRICE, SET_QUERY, SET_PAGE} from '../actions/re
 export default function(state = {
     category:"",
     sortPrice:"",
-    query:""
+    query:"",
+    page: 1
 }, action){
     switch(action.type){
         case SET_PAGE:

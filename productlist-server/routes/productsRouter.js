@@ -29,44 +29,31 @@ router.get('/products', (request, response, next) => {
     const perPage = 9
   
     const page = parseInt(request.query.page) || 1; // return the first page by default
-    const sort = request.query.price;
-    const query = request.query.query;
-    const category = request.query.category;
-    let productsQuery;
+    let sort;
+    let query = {
+      name: new RegExp(request.query.query, 'i'),
+      category: new RegExp(request.query.category, 'i')
+    }
 
     if(page < 0 || page % 1 !== 0){ // checks if page entered if valid.
       return response.status(400).send("Please enter valid positive interger only.")
     }
 
-    // if(query.length < 2){ // For some weird reason, 1 letter query is a success call??
-    //   return response.status(400).send("Please send a more specific query.")
-    // }
-
-    if(query && category){ // if both category and query are included in request
-      productsQuery = Product
-                        .find({name: new RegExp(request.query.query, 'i')})
-                        .find({category: new RegExp(request.query.category, 'i')});
-    } else if(category) { // if only category included in request
-      productsQuery = Product.find({category: new RegExp(request.query.category, 'i')});
-    } else if(query){ // if only query included in request
-      productsQuery = Product.find({name: new RegExp(request.query.query, 'i')});
-    } else { // else find all
-      productsQuery = Product.find({});
-    } 
-
-    if(sort){
+    if(request.query.price){
       // switch cases to sort, default case not required.
-      switch(sort.toLowerCase()){
+      switch(request.query.price.toLowerCase()){
         case 'highest':
-          productsQuery = productsQuery.sort({price:-1});
+          sort = {price:-1};
           break;
         case 'lowest':
-          productsQuery = productsQuery.sort({price: 1});
+          sort = {price: 1}
           break;
       }
-    }
+    } 
 
-    productsQuery
+    Product
+      .find(query)
+      .sort(sort)
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((err, products) => {
@@ -80,13 +67,10 @@ router.get('/products', (request, response, next) => {
           return response.status(404).send("No products found.");
         }
         
-        // Note that we're not sending `count` back at the moment,
-        // but in the future we might want to know how many are coming back
-        // When Success, return products.
-        Product.count().exec((err, count) => {
+        Product.count(query).exec((err, count) => {
           if (err) return next(err)
-          
-          return response.send(products);
+          let pageCount = Math.ceil(count / perPage);
+          return response.send({products: products, pageCount: pageCount});
         })
       })
       

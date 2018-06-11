@@ -28,35 +28,52 @@ router.param('productId', function(request, response, next, productId) {
 router.get('/products', (request, response, next) => {
     const perPage = 9
   
-    const page = request.query.page || 1; // return the first page by default
-    const sort = request.query.price.toLowerCase();
+    const page = parseInt(request.query.page) || 1; // return the first page by default
+    const sort = request.query.price;
+    const query = request.query.query;
+    const category = request.query.category;
     let productsQuery;
 
     if(page < 0 || page % 1 !== 0){ // checks if page entered if valid.
       return response.status(400).send("Please enter valid positive interger only.")
     }
-    
-    if(request.query.category) { // filter by category if included
+
+    // if(query.length < 2){ // For some weird reason, 1 letter query is a success call??
+    //   return response.status(400).send("Please send a more specific query.")
+    // }
+
+    if(query && category){ // if both category and query are included in request
+      productsQuery = Product
+                        .find({name: new RegExp(request.query.query, 'i')})
+                        .find({category: new RegExp(request.query.category, 'i')});
+    } else if(category) { // if only category included in request
       productsQuery = Product.find({category: new RegExp(request.query.category, 'i')});
-    } else {
+    } else if(query){ // if only query included in request
+      productsQuery = Product.find({name: new RegExp(request.query.query, 'i')});
+    } else { // else find all
       productsQuery = Product.find({});
     } 
 
-    // switch cases to sort, default case not required.
-    switch(sort){
-      case 'highest':
-        productsQuery = productsQuery.sort({price:-1});
-        break;
-      case 'lowest':
-        productsQuery = productsQuery.sort({price: 1});
-        break;
+    if(sort){
+      // switch cases to sort, default case not required.
+      switch(sort.toLowerCase()){
+        case 'highest':
+          productsQuery = productsQuery.sort({price:-1});
+          break;
+        case 'lowest':
+          productsQuery = productsQuery.sort({price: 1});
+          break;
+      }
     }
 
     productsQuery
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((err, products) => {
-        if (err) throw err;
+        if (err){
+          return response.status(500).send("Something bad happened.")
+        } 
+        // throw err // not sure what this does, but client was able to read server's dir?
 
         // If products is empty or undefined, return 404.
         if(!products || products.length == 0){
@@ -68,10 +85,11 @@ router.get('/products', (request, response, next) => {
         // When Success, return products.
         Product.count().exec((err, count) => {
           if (err) return next(err)
-  
+          
           return response.send(products);
         })
       })
+      
 })
 
 // Product ID is verified in the router.param middleware at line 13 of this file.

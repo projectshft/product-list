@@ -3,7 +3,8 @@ import Autosuggest from 'react-autosuggest';
 import Dropdown from 'react-dropdown'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {setQuery, filterCategory, sortByPrice} from '../actions/requestConfig';
+import {setPage, setQuery, filterCategory, sortByPrice} from '../actions/requestConfig';
+import {fetchProducts} from '../actions/fetch';
 
 // Drop down variables.
 const priceSortOptions = ["No Sorting","Lowest","Highest"];
@@ -75,9 +76,16 @@ class Header extends Component {
         this.setState({ query: searchValue });
     }
 
-    submitHandler = (event) => {
+    submitHandler = async (event) => {
         event.preventDefault();
-        this.props.setQuery(this.state.query);
+        this.props.setPage(1);
+        // Made this an async function, because query is saved at 2 places.
+        // 1) this component, 2) this props 
+        // This prevent user from sending this.state.query unintentionally, 
+        // when clicking on page 2 after modifying search bar, but not submitting it
+        // so there's a redux state, to keep track of the original query
+        await this.props.setQuery(this.state.query);
+        this.props.fetchProducts(this.props.requestConfig);
     }
   
     render() {
@@ -135,7 +143,7 @@ class Header extends Component {
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({setQuery, filterCategory, sortByPrice}, dispatch)
+    return bindActionCreators({setPage, setQuery, filterCategory, sortByPrice, fetchProducts}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

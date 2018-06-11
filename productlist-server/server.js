@@ -38,12 +38,14 @@ app.use(fakeData); // Generate Fake Data   GET /generate-fake-data
 // ======================================= Preprocessing Requests & Responses ============================================ //
 // Setting CORS header
 app.use(function(request, response, next) {
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, X-Authentication");
+    response.header("Access-Control-Allow-Origin", "*");
+    
     // Pre-flight Request
     if ('OPTIONS' == request.method) {
-        response.header("Access-Control-Allow-Origin", "*");
-        response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, X-Authentication");
-        response.status(200).send();
+        return response.status(200).send();
     }
+
     next();
 });
 

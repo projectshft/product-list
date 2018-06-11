@@ -1,4 +1,4 @@
-import {FILTER_CATEGORY, SORT_BY_PRICE, SET_QUERY} from '../actions/requestConfig'
+import {FILTER_CATEGORY, SORT_BY_PRICE, SET_QUERY, SET_PAGE} from '../actions/requestConfig'
 
 // This reducer only handles request configurations before sending to server
 export default function(state = {
@@ -7,6 +7,8 @@ export default function(state = {
     query:""
 }, action){
     switch(action.type){
+        case SET_PAGE:
+            return {...state, page: action.payload};
         case SET_QUERY:
             return {...state, query: action.payload};
         case FILTER_CATEGORY:

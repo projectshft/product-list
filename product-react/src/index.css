@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+img {
+  width: 200px;
+  height: 200px;
+
+}
+.top-buffer {
+  margin-top: 10px;
+}
+.outline {
+  outline:1px solid black;
+}
+
+.shadow {
+  box-shadow: 5px 5px 3px grey;
+}

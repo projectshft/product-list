@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const faker = require('faker');
-const Product = require('../models/product');
-const Review = require('../models/product');
+const Product = require('../models/product').Product;
+const Review = require('../models/product').Review;
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -51,19 +51,27 @@ router.get('/products/:id', (req, res, next) => {
 router.post('/products', (req, res, next) => {
   let newProductObj = new Product(req.body);
   newProductObj.save()
-  console.log(newProductObj);
   res.send(newProductObj)
 });
 
-router.post('/:product/reviews', (req, res, next) => {
-  // let productObject = Product.findById(req.params.product);
-  // let newProductReview = new Product(req.body); ....
-  let newReview ={
-    "userName" : req.body.userName,
-    "text" : req.body.text,
-    "productId" : req.params.product
-  };
-  res.send(newReview);
+router.post('/:productId/reviews', (req, res, next) => {
+  let newReview = new Review();
+
+  newReview.userName = req.body.userName;
+  newReview.text = req.body.text;
+  newReview.productId = req.params.productId;
+
+  newReview.save()
+
+  Product.findById(req.params.productId, (err, product) => {
+      if (err) {
+        //do soem error handling if you wnat
+        return next(err)
+      }
+      product.reviews.push(newReview);
+      product.save();
+      res.send(newReview);
+    });
 });
 
 module.exports = router

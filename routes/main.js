@@ -55,22 +55,41 @@ router.get('/reviews', (req, res, next) => {
   })
 });
 
-// router.post('/products', (req, res, next) => {
+router.post('/products', (req, res, next) => {
+  let newProduct = new Product(req.body);
+  newProduct.save();
+  if (err) return res.status(500).send(err);
+  return res.status(200).send(newProduct);
+});
 
-// });
+router.post('/:id/reviews', (req, res, next) => {
+  let newReview = new Review(req.body);
+  Product.findOneAndUpdate(req.params.id, newReview, (err, reviews)  => {
+    if (err) return res.status(500).send(err);
+    return res.send(review);
+  })
+});
 
-// router.post('/:productId/reviews', (req, res, next) => {
+router.delete('/products/:id', (req, res, next) => {
+  Product.findByIdAndRemove(req.params.id, (err, todo) => {
+    if(err) return res.status(500).send(err);
+    const response ={
+      message: "Product successfully deleted",
+      id: product._id
+    };
+    return res.status(200).send(response);
+  });
+});
 
-// });
-
-// router.delete('/products/productId', (req, res, next) => {
-
-// });
-
-// router.delete('/reviews/:reviewId', (req, res, next) => {
-
-// });
-
-
+router.delete('/reviews/:reviewId', (req, res, next) => {
+  Review.findByIdAndRemove(req.params.id, (err, review) => {
+    if(err) return res.status(500).send(err);
+    const response = {
+      message: "Review successfully deleted",
+      id: review._id
+    };
+    return res.status(200).send(response);
+  });
+});
 
 module.exports = router

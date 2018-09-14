@@ -56,12 +56,12 @@ router.post('/products', (req, res, next) => {
 });
 
 router.post('/:product/reviews', (req, res, next) => {
-  let productObject = Product.findById(req.params.product);
+  // let productObject = Product.findById(req.params.product);
   // let newProductReview = new Product(req.body); ....
   let newReview ={
     "userName" : req.body.userName,
     "text" : req.body.text,
-    "productId" : productObject
+    "productId" : req.params.product
   };
   res.send(newReview);
 });

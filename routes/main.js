@@ -11,6 +11,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+    product.reviews = [];
     product.save((err) => {
       if (err) throw err
     })
@@ -35,7 +36,7 @@ router.get('/products', (req, res, next) => {
 });
 
 router.get('/products/:id', (req, res, next) => {
-  Product.findById(req.params.id, (err, product) => {
+  Product.findById(req.params.id,(err, product) => {
     if(err) { 
       return next(err)
     }
@@ -63,30 +64,41 @@ router.post('/products', (req, res, next) => {
 });
 
 router.post('/:id/reviews', (req, res, next) => {
+  console.log(req.body)
   let newReview = new Review(req.body);
-  Product.findOneAndUpdate(req.params.id, newReview, (err, reviews)  => {
-    if (err) return res.status(500).send(err);
-    return res.send(review);
-  })
-});
+
+  newReview.userName = req.body.userName;
+  newReview.text = req.body.text;
+  newReview.id = req.params.id;
+  newReview.save()
+
+  console.log(newReview);
+
+  Product.findById(req.params.id, (err, product) => {
+      if (err) {
+        return next(err)
+      }
+      Product.reviews.push(newReview);
+      Product.save();
+      res.send(newReview);
+    });
+ });
 
 router.delete('/products/:id', (req, res, next) => {
-  Product.findByIdAndRemove(req.params.id, (err, todo) => {
+  Product.findByIdAndDelete(req.params.id, (err, product) => {
     if(err) return res.status(500).send(err);
     const response ={
       message: "Product successfully deleted",
-      id: product._id
     };
     return res.status(200).send(response);
   });
 });
 
 router.delete('/reviews/:reviewId', (req, res, next) => {
-  Review.findByIdAndRemove(req.params.id, (err, review) => {
+  Review.findByIdAndDelete(req.params.id, (err, review) => {
     if(err) return res.status(500).send(err);
     const response = {
       message: "Review successfully deleted",
-      id: review._id
     };
     return res.status(200).send(response);
   });

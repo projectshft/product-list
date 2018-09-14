@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+</head>
+<body>
+<section>
+    <h1 style="text-align: center">Products</h1>
+    <span class="search" style="float:right">
+        <input id="searchQuery" type=text placeholder="search products here">
+        <button id="submitSearch">Search</button>
+    </span>
+    <span style="float:left">
+        <div class="dropdown">
+            <button class="dropbtn">Sort</button>
+            <div class="sort-content">
+                <a href="#">Price: Low to High</a>
+                <a href="#">Price: High to Low</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Categories</button>
+            <div class="categories-content">
+                <a href="#">Health</a>
+                <a href="#">Clothing</a>
+                <a href="#">Home</a>
+                <a href="#">Electronics</a>
+                <a href="#">Outdoors</a>
+            </div>
+        </div>
+    </span>
+</section>
+<section>
+    <div>
+        Category: {selectedCategory}
+    </div>
+    <div class="grid-layout">
+
+    </div>
+
+</section>
+</body>
+</body>
+</html>

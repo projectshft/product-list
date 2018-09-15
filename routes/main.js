@@ -39,7 +39,9 @@ router.get('/generate-fake-data', (req, res, next) => {
 //     })
 // })
 
-
+//user should be able to make a get request using optional parameters of page and category
+//each page will represent 9 product.  If no page is specified, user will recieve first 9 products. If user specifies page=2, they will recieve products 10-18; and so on...
+//if user specifies a category, they will recieve product that belong to the specified category.
 router.get('/products?:page?:category?', (req, res, next) => {
   const perPage = 9
 

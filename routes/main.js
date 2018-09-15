@@ -22,24 +22,38 @@ router.get('/generate-fake-data', (req, res, next) => {
 //user should be able to make a get request using optional parameters of page and category
 //each page will represent 9 product.  If no page is specified, user will recieve first 9 products. If user specifies page=2, they will recieve products 10-18; and so on...
 //if user specifies a category, they will recieve product that belong to the specified category.
-router.get('/products?:page?:category?', (req, res, next) => {
+router.get('/products?:page?:category?:price?', (req, res, next) => {
   const page = req.query.page || 1;
-  const categoryInput = req.query.category;
   const perPage = 9;
-  let queryInput = {};
+  const category = req.query.category;
+  const price = req.query.price;
+  let query = {};
+  let sortQuery = {};
   
   //if there is a category, set the queryInput variable in mongo query find format
-  if(categoryInput) {
+  if (category) {
     //reformat category query param to ensure that the first letter is uppercase before searching the db
-    let formattedCategory = categoryInput.replace(/^\w/, c => c.toUpperCase());
+    let formattedCategory = category.replace(/^\w/, c => c.toUpperCase());
+    query = { category: formattedCategory }
+  }
 
-    queryInput = { category: formattedCategory }
+  //if a price sort order is sent in the request, set the priceQuery variable to the correct search parameter
+  if(price) {
+    if (price === 'highest') {
+      sortQuery = { price: 'desc' }
+    } else 
+    if(price === 'lowest') {
+      sortQuery = { price: 'asc'}
+    } else {
+      //error - must choose to sort by highest or lowest
+    }
   }
 
   Product
-    .find(queryInput)
+    .find(query)
     .skip((perPage * page) - perPage)
     .limit(perPage)
+    .sort(sortQuery)
     .exec((err, products) => {
       Product.count().exec((err, count) => {
         if (err) return next(err)
@@ -48,7 +62,6 @@ router.get('/products?:page?:category?', (req, res, next) => {
       })
     })
 });
-
 
 //returns a specific product by its id
 router.get('/products/:id', (req, res, next) => {

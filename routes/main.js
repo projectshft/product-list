@@ -43,29 +43,28 @@ router.get('/generate-fake-data', (req, res, next) => {
 //each page will represent 9 product.  If no page is specified, user will recieve first 9 products. If user specifies page=2, they will recieve products 10-18; and so on...
 //if user specifies a category, they will recieve product that belong to the specified category.
 router.get('/products?:page?:category?', (req, res, next) => {
-  const perPage = 9
-
-  // return the first page by default
-  const page = req.query.page || 1
-  let category = {}
-
-  if(category){
-    category = {"category": req.query.category};
+  const page = req.query.page || 1;
+  const categoryInput = req.query.category;
+  const perPage = 9;
+  let queryInput = {};
+  
+  //if there is a category, set the queryInput variable in mongo query find format
+  if(categoryInput) {
+    queryInput = {category: categoryInput}
   }
 
   Product
-    .find(category)
+    .find(queryInput)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
         res.send(products)
       })
     })
-})
+});
 
 
 //returns a specific product by its id
@@ -78,6 +77,25 @@ router.get('/products/:id', (req, res, next) => {
     res.send(product);
   });
 });
+
+router.get('/reviews', (req, res, next) => {
+  const perPage = 40
+
+  // return the first page by default
+  const page = req.query.page || 1
+
+  Review
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, reviews) => {
+      Product.count().exec((err, count) => {
+        if (err) return next(err)
+
+        res.send(reviews)
+      })
+    })
+})
 
 //creates a new product in the databas
 router.post('/products', (req, res, next) => {
@@ -120,7 +138,5 @@ router.delete('/products/:id', (req, res, next) => {
     return res.status(200).send(response);
   });
 });
-
-
 
 module.exports = router

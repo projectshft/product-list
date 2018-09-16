@@ -20,18 +20,18 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 router.get('/products?:category?:price', (req, res, next) => {
-  const perPage = 5
+  const perPage = 9
   const page = req.query.page || 1
   let category = {}
   let price = {}
 
-  if(category){
+  if(req.query.category){
     category = {"category": req.query.category};
   } else {
     options = null;
   }
 
-  if(price){
+  if(req.query.price){
     if(req.query.price === 'highest') {
       price = {"price": -1}
     } else if (req.query.price === 'lowest') {
@@ -42,7 +42,7 @@ router.get('/products?:category?:price', (req, res, next) => {
   }
 
   Product
-    .find({})
+    //.find({})
     .find(category)
     .sort(price)
     .skip((perPage * page) - perPage)

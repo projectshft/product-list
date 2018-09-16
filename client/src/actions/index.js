@@ -4,6 +4,7 @@ const ROOT_URL = `http://localhost:8000/products`;
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
+//this function is added to the product-list component and called when the component mounts so that the data is passed to that component
 export function fetchProducts() {
   const request = axios.get(ROOT_URL);
 

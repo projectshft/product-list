@@ -17,6 +17,7 @@ class ProductList extends Component {
     // const price = product.map(product => product.price);
     // const image = product.map(product => product.image);
 
+      //take the products fectched and map them into formatted product items
       products = this.props.products.map(product => {
         <div className="thumbnail ">
           <img src={product.image} />
@@ -27,8 +28,11 @@ class ProductList extends Component {
           </div>
 
         </div>
-      };
+      });
 
+      //return each formatted product items in a html element 
+      //this should be formatted more
+      //should the key go here or above?
       return (
 
         <div 
@@ -40,6 +44,7 @@ class ProductList extends Component {
       );
   }
 
+  //instructs how to insert this in the dom
   render() {
     return (
       <div className="container">
@@ -50,6 +55,7 @@ class ProductList extends Component {
       </div>
     );
   }
+}
 
 /*
 const rootReducer = combineReducers(
@@ -62,7 +68,6 @@ const rootReducer = combineReducers(
 */
 
 //map the redux state to this components props.
-
 //taking the redux state and passing it down to this components props
 function mapStateToProps({ products }) {
   console.log("product list info", products);

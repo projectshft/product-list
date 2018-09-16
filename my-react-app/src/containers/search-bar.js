@@ -26,7 +26,7 @@ class SearchBar extends Component {
         return (
         <div>
             <h1>Products</h1>
-            <span className="search">
+            <span id="search">
             <form onSubmit={this.onFormSubmit} className="input-group">
               <input
                 placeholder="Search Product Here"
@@ -40,17 +40,23 @@ class SearchBar extends Component {
             </form>
             </span>
 
-            <span className="filter">
+            <span id="filter">
                 <div className="dropdown">
-                    <button className="dropbtn">Sort
-                    </button>
+                    <button className="dropbtn btn-secondary">
+                    <font size="2">
+                    Sort
+                    </font>
+                    </button>   
                     <div className="sort-content">
                     <a href="#">Price: Low to High</a>
                     <a href="#">Price: High to Low</a>
                     </div>
                 </div>
                 <div className="dropdown">
-                    <button className="dropbtn">Categories
+                    <button className="dropbtn btn-secondary">
+                    <font size="2">
+                    Categories
+                    </font>
                     </button>
                     <div className="categories-content">
                     <a href="#">Health</a>

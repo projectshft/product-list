@@ -15,16 +15,21 @@ class ProductList extends Component {
 
     renderProduct() {
         console.log("render",this.props);
+
         if(this.props.products) {
             return this.props.products.map(product => {
                 return (
-                <li 
-                    key={product.name}
-                    onClick={() => this.props.fetchProduct(product)}
-                    className="list-group-item product-list-item"
-                >
-                {product.name}
-                </li>
+                    <div>
+                <tr key={product._id}>
+                    <td>{product.name} 
+                    <p>Category: {product.category}</p>
+                    <p>Price: ${product.price}</p>
+                    <p><img src={product.image} alt={product.name} height="64" width="64"/></p>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </div>
                 );
             });
         }
@@ -35,9 +40,18 @@ class ProductList extends Component {
 
     render() {
         return (
-            <ul className="list-group col-sm-4">
-                {this.renderProduct()}
-            </ul>
+            <table className="table table-hover">
+                <thead>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.renderProduct()}
+                </tbody>
+            </table>
         );
     }
 }

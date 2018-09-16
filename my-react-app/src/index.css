@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+form {
+  border: 10px;
+}
+
 h1 {
   text-align: center;
 }
@@ -14,6 +18,10 @@ h1 {
   padding: 10px;
   font-size: 10px;
   border: none;
+}
+
+.input-group {
+  margin: 20px 0px;
 }
 
 .dropdown {
@@ -65,8 +73,15 @@ span {
   float: right;
 }
 
-.search {
+#search {
   float: right;
+}
+
+#filter {
+  float: left;
+  padding: 22px 10px;
+  font-size: 10px;
+
 }
 
 

@@ -10,9 +10,14 @@ import reducers from "./reducers";
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
+//rightnow has dummy reducer
+//  const store = createStore(() => [], {}, applyMiddleware(ReduxPromise))
 
-//add provider for store
+const createStoreWithMiddlware = applyMiddleware(ReduxPromise)(createStore);
+
+//provider is a react component that reads changes from redux store and informs children components of state changes
+//store/app are passed as props/children to store
+// <Provider store={createStore(reducers)}>
 ReactDOM.render(
   <Provider store={createStore(reducers)}>
     <App />

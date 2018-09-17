@@ -18,4 +18,28 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
+router.get('/products', (req, res, next) => {
+    let pageLimit = 9
+})
+
+router.get('/products/:productId', (req, res, next) => {
+
+})
+
+router.post('/products', (req, res, next) => {
+
+})
+
+router.post('/:productId/reviews', (req, res, next) => {
+
+})
+
+router.delete('/products/:productId', (req, res, next) => {
+
+})
+
+router.delete('/reviews/:reviewId', (req, res, next) => {
+
+})
+
 module.exports = router

@@ -67,6 +67,10 @@ class SearchBar extends Component {
                     </div>
                 </div>
             </span>
+            <br />
+            <br />
+            <br />
+            <br />
         </div>
           );
         }

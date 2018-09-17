@@ -14,43 +14,29 @@ class ProductList extends Component {
     }
 
     renderProduct() {
-        console.log("render",this.props);
-
-        if(this.props.products) {
+        console.log("render",this.props.products[0]);
             return this.props.products.map(product => {
-                return (
-                    <div>
-                <tr key={product._id}>
-                    <td>{product.name} 
-                    <p>Category: {product.category}</p>
-                    <p>Price: ${product.price}</p>
-                    <p><img src={product.image} alt={product.name} height="64" width="64"/></p>
-                    </td>
-                    <td></td>
-                    <td></td>
+                return <tr>
+                <br />
+                <br />
+                <th width="40%">
+                    {product.name}
+                </th>
+                <th width="20%">
+                    ${product.price}
+                </th>
+                <th width="40%">
+                    Category: {product.category}
+                </th>
                 </tr>
-                </div>
-                );
-            });
+            })
         }
-        else {
-            return (<div>loading...</div>);
-        }
-    }
+    
 
     render() {
         return (
-            <table className="table table-hover">
-                <thead>
-                    <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.renderProduct()}
-                </tbody>
+            <table className="table table-striped table-bordered table-sm" cellSpacing="0" width="80%">
+                {this.renderProduct()}
             </table>
         );
     }

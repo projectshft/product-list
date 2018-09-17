@@ -2,6 +2,7 @@ import React from "react";
 import { Component } from "react";
 
 import ProductList from "../containers/product-list"
+import SearchBar from "./search_bar"
 
 //eventually put react router stuff here
 
@@ -12,15 +13,19 @@ export default class App extends Component {
     return (
       <div>
         <header>
-          <h1>
+        
+          <h1 className="pull-left">
             APP
           </h1>
+          <div className="pull-right">
+            <SearchBar />
+          </div>
+          
         </header>
 
-        <div>
+        <div className="main-content">
           <ProductList />
         </div>
-        
       </div> 
     );
   }

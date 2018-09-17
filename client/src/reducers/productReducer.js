@@ -1,8 +1,13 @@
-const initialState = {
-  items: [],
-}
+import { fetchProducts } from "../actions/index"
+import _ from "lodash"
 
 export default function (state = [], action) {
-  console.log('Action', action);
-  return state;
+  switch (action.type) {
+    case fetchProducts:
+      console.log("action", action.payload.data);
+      return action.payload.data;
+    default:
+      return state;
+  }
+
 }

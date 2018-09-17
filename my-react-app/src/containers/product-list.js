@@ -3,15 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProduct } from "../actions";
 
-class ProductList extends Component {
-    constructor(props) {
-        super(props);
-    }
-    
-    componentDidMount() {
-        console.log(this.props.fetchProduct());
-        this.props.fetchProduct();
-    }
+class ProductList extends Component {    
+
 
     renderProduct() {
         console.log("render",this.props.products[0]);

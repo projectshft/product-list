@@ -4,13 +4,19 @@ import { bindActionCreators } from "redux"
 import { fetchProduct } from "../actions/index"
 
 class SearchBar extends Component {
+  componentDidMount() {
+    this.props.fetchProduct({
+      category:"Tools",
+      price:"highest"
+    });
+}
     constructor(props) {
         super(props);
         this.state = { term: "" };
     
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
-      }
+ }
     
       onInputChange(event) {
         this.setState({ term: event.target.value });
@@ -21,7 +27,7 @@ class SearchBar extends Component {
         this.props.fetchProduct(this.state.term);
         this.setState({ term: "" });
       }
-
+      
     render() {
         return (
         <div>
@@ -48,8 +54,8 @@ class SearchBar extends Component {
                     </font>
                     </button>   
                     <div className="sort-content">
-                    <a href="#">Price: Low to High</a>
-                    <a href="#">Price: High to Low</a>
+                    <a>Price: Low to High</a>
+                    <a>Price: High to Low</a>
                     </div>
                 </div>
                 <div className="dropdown">
@@ -59,11 +65,11 @@ class SearchBar extends Component {
                     </font>
                     </button>
                     <div className="categories-content">
-                    <a href="#">Health</a>
-                    <a href="#">Clothing</a>
-                    <a href="#">Home</a>
-                    <a href="#">Electronics</a>
-                    <a href="#">Outdoors</a>
+                    <a>Garden</a>
+                    <a>Clothing</a>
+                    <a>Home</a>
+                    <a>Electronics</a>
+                    <a>Outdoors</a>
                     </div>
                 </div>
             </span>

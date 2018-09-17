@@ -1,96 +1,56 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-// import {fetchProducts} from "../actions";
 import {fetchProducts} from "../actions";
 
 class ProductList extends Component {
- 
-  
-  //when the component gets added to the dom
-  //get all the products
-  componentDidMount() {
+  constructor(props){
+    super(props);
+    // debugger
+    this.state = {
+      products: []
+    }
     
     this.props.fetchProducts();
   }
+  
+  //when the component gets added to the dom
+  //get all the products
+  // componentWillMount() {
+  //   console.log(this.props.fetchProducts());
+  //   this.props.fetchProducts()
+  // }
 
- 
-  renderProductList(){
-    console.log("render is recieiving these props: ", this.props.products);
-    
-    //take the products fectched and map them into formatted product items
-    return this.props.products.map(product => {
+  renderList() {
+    console.log(this.props.products);
+    return this.props.products.map((product) => {
+      console.log(this.props.products);
       return (
-        <div className='col-sm-4 col-lg-4 col-md-4 product-list' key={product._id} product={product}>
-          <div className="thumbnail ">
-            <img
-              className="img-thumbnail"
-              src={product.image}
-              alt={product.name}
-            />
-            <div className="caption">
-              <h3> {product.name} </h3>
-              <h4>{product.category}</h4>
-              <h4 className="pull-right"> {product.price} </h4>
-            </div>
-          </div>
-        </div>
-      );
+        <li key={product.name} className="list-group-item">{product.name}</li>
+      )
+    })
+  }
 
-      })
-    
-    }
-  
-
-
-      //return each formatted product items in a html element 
-      //this should be formatted more
-      //should the key go here or above?
-      // return (
-
-      //   <div>
-      //   {products}
-      //   </div>
-
-      // ); 
-
-  
-  //instructs how to insert this in the dom
-  render() 
-  {
+  render() {
     return (
-      <div className="container">
-        <div className="flex-row row">
-          ProductList
-
-          {this.renderProductList()}
-        </div>
-      </div>
+      <ul className="List-group col-sm-4">
+        {this.renderList()}
+      </ul>
     )
   }
-};
+}
 
-// render() {
-//   const {products} = this.props;
-//   console.log('products props: ', products);
-//   return (
-//     <div className="products row" >
-//       {products.map((product, index) => this.renderProductList(product, index))}
-//     </div>
-//   )
-// }
+function mapStateToProps({products}) {
+  //whatever is returned will show up as props inside of ProductList
+  console.log("state in mapstatetoprops in the product list component", {products})
+  return {products};
+}
 
+//Anything returned from this function will end up as props on the ProductList container
+const mapDispatchToProps = (dispatch) => {
+  //whenever fetchProducts is called the result should be passed to all of our reducers
+  return bindActionCreators({fetchProducts}, dispatch);
+}
 
-//map the redux state to this components props.
-//taking the redux state and passing it down to this components props
-function mapStateToProps (state) {
-  console.log("product list info", state);
-  return { products: state.products};
-};
-
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ fetchProducts }, dispatch);
-};
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+//Promote ProductList from a component to a container - it needs to know about this new dispatch method, selectBook.  Make it available as a prop
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList)

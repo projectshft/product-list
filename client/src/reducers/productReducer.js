@@ -13,7 +13,7 @@ export default function (state=[], action) {
       console.log("ACTION PASSED TO THE PRODUCT REDUCER IS: ", action.payload.products);
 
       return action.payload.products;
-    //if the action type doesn't match return the default state
+    //if the action type doesn't match return the default stateedit 
     default:
       return state;
   }

@@ -4,22 +4,22 @@ import { connect } from "react-redux";
 import {fetchProducts} from "../actions";
 
 class ProductList extends Component {
-  constructor(props){
-    super(props);
-    // debugger
-    this.state = {
-      products: []
-    }
+  // constructor(props){
+  //   super(props);
+  //   // debugger
+  //   this.state = {
+  //     products: []
+  //   }
     
-    this.props.fetchProducts();
-  }
-  
-  //when the component gets added to the dom
-  //get all the products
-  // componentWillMount() {
-  //   console.log(this.props.fetchProducts());
-  //   this.props.fetchProducts()
+  //   this.props.fetchProducts();
   // }
+  
+  // when the component gets added to the dom
+  // get all the products
+  componentDidMount() {
+    console.log(this.props.fetchProducts());
+    this.props.fetchProducts()
+  }
 
   renderList() {
     console.log(this.props.products);

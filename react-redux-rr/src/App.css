@@ -6,9 +6,21 @@
   background-color: cyan;
   height: 75px;
   padding: 20px;
-  color: white;
+
 }
 
 .App-title {
   font-size: 1.5em;
+}
+
+.navbar {
+  display: block;
+  overflow: hidden;
+  background-color: grey;
+}
+
+.navbar a {
+  float:left;
+ 
+ 
 }

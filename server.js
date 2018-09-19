@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const Product = require('./models/product')
+const Review = require('./models/reviews')
 
 mongoose.connect('mongodb://localhost/products')
 
@@ -25,3 +26,4 @@ Product.find().exec((error, result) => {
     console.log("These are your products");
     console.log(result);
 });
+

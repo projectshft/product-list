@@ -4,36 +4,35 @@ import { connect } from "react-redux";
 import {fetchProducts} from "../actions";
 
 class ProductList extends Component {
-  // constructor(props){
-  //   super(props);
-  //   // debugger
-  //   this.state = {
-  //     products: []
-  //   }
-    
-  //   this.props.fetchProducts();
-  // }
+
+  constructor(props){
+    super(props)
+
+  }
   
-  // when the component gets added to the dom
-  // get all the products
   componentDidMount() {
-    console.log(this.props.fetchProducts());
-    this.props.fetchProducts()
+    //console.log(fetchProducts());
+    this.props.fetchProducts();
   }
 
   renderList() {
-    console.log(this.props.products);
-    return this.props.products.map((product) => {
-      console.log(this.props.products);
+    const {products} = this.props
+    console.log(products);
+    return products.map((product) => {
       return (
-        <li key={product.name} className="list-group-item">{product.name}</li>
+        <div key={product.name} className="list-group col-sm-4 col-md-4 col-lg-4">
+        <li className="list-group-item col-sm-10 col-md-10 col-lg-10">{product.name}</li>
+        <li className="list-group-item col-sm-10 col-md-10 col-lg-10"><img src={product.image} /></li>
+        <li className="list-group-item col-sm-10 col-md-10 col-lg-10">{product.category}</li>
+        <li className="list-group-item col-sm-10 col-md-10 col-lg-10">$ {product.price}</li>  
+        </div>
       )
     })
   }
 
   render() {
     return (
-      <ul className="List-group col-sm-4">
+      <ul className="List-group col-sm-12">
         {this.renderList()}
       </ul>
     )

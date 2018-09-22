@@ -5,14 +5,15 @@ import _ from "lodash"
 
 //pass in the initial or default state and an the action that is called
 export default function (state=[], action) {
-
+// debugger;
   //action will move through all reducers to see if it matches the case (this reducer handles actions that are type=FETCH_PRODUCTS)
   switch (action.type) {
     //if the action type matches- return the payload
     case FETCH_PRODUCTS:
-      console.log("ACTION PASSED TO THE PRODUCT REDUCER IS: ", action.payload.products);
+      console.log("ACTION PASSED TO THE PRODUCT REDUCER IS: ", action.payload);
 
-      return action.payload.products;
+      //???????????????????????????????????????????????????????
+      return action.payload.data;
     //if the action type doesn't match return the default stateedit 
     default:
       return state;

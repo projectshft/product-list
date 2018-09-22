@@ -2,6 +2,7 @@ const router = require('express').Router();
 const faker = require('faker');
 const Product = require('../models/product').Product;
 const Review = require('../models/product').Review;
+const Category = require('../models/product').Category
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -73,6 +74,16 @@ router.get('/products/:id', (req, res, next) => {
     res.send(product);
   });
 });
+
+//returns a list of categories
+router.get('/categories', function (req, res, next) {
+  Product.find().distinct('category', function (err, categories) {
+    if (err) return next(err);
+    // console.log(Response.length);
+    res.send(categories);
+  });
+});
+
 
 router.get('/reviews', (req, res, next) => {
   const perPage = 40

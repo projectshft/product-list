@@ -2,10 +2,10 @@ import React, {Component } from 'react';
 
 class SearchBar extends React.Component{
   render() {
-    return <input />;
+    return (
+    <input />
+    )
   }
-  
-  
 };
-
+    
 export default SearchBar;

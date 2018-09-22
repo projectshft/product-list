@@ -18,5 +18,6 @@ const ProductSchema = new Schema({
 
 module.exports = {
   Review: mongoose.model('Review', reviewSchema),
-  Product: mongoose.model('Product', ProductSchema)
+  Product: mongoose.model('Product', ProductSchema),
+  Category: mongoose.model('Category', CategorySchema)
 };

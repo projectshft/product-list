@@ -1,28 +1,41 @@
+// import React, { Component } from "react";
+// import { connect } from "react-redux";
 
-import React, { Component } from "react";
+// class ProductList extends Component {
+//     renderProducts(product) {
+//         const name = product.map(product => product.name);
+//         const category = product.map(product => product.category);
+//         const price = product.map(product => product.price);
+//         const img = product.map(product => product.image);
+    
+//         return (
+//             <tr key = {product._id}>
+//                 <td> {name} </td>
+//                 <td> {category} </td>
+//                 <td> {price} </td>
+//                 <td> {img} </td>
+//             </tr>
+//         );
+//     }
+//     render() {
+//         return (
+//             <table>
+//             <tr>
+//                 <th>Name</th>
+//                 <th>Category</th>
+//                 <th>Price</th>
+//                 <th>Image</th>
+//             </tr>
+//             <tbody>
+//                 {this.props.product.map(this.renderProducts)}
+//             </tbody>
+//             </table>
+//         );
+//     }
+// }
 
-class SearchBar extends Component {
-  constructor(props) {
-    super(props);
+// function mapStateToProps({ products }) {
+//     return { products };
+// }
 
-    this.state = { term: "" };
-  }
-
-  render() {
-    return (
-      <div className="search-bar">
-        <input
-          value= "input here"//{this.state.term}
-          onChange={event => this.onInputChange(event.target.value)}
-        />
-      </div>
-    );
-  }
-
-  onInputChange(term) {
-    this.setState({ term });
-    this.props.onSearchTermChange(term);
-  }
-}
-
-export default SearchBar;
+// export default connect(mapStateToProps)(ProductList);

@@ -77,7 +77,9 @@ router.get('/products/:id', (req, res, next) => {
 
 //returns a list of categories
 router.get('/categories', function (req, res, next) {
-  Product.find().distinct('category', function (err, categories) {
+  Product
+  .find()
+  .distinct('category', function (err, categories) {
     if (err) return next(err);
     // console.log(Response.length);
     res.send(categories);

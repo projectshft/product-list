@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { fetchCategories } from "../actions";
 
 class CategoryDropdown extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.state = {
-      categories: [],
-      showMenu: false,
-    };
+    this.state= [
+      this.showMenu = false
+    ]
 
     this.showMenu = this.showMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-  }
+
+}
 
   componentDidMount() {
-     this.props.fetchCategoryList;
+    this.props.fetchCategories
   }
 
   showMenu(event) {
@@ -35,7 +38,7 @@ class CategoryDropdown extends Component {
     const {categories} = this.props
     console.log( 'categories are ' + categories);
     return categories.map((category) =>{
-      <button> Menu item 1 </button>
+      <button> {category} </button>
     });
   }
 
@@ -61,5 +64,18 @@ class CategoryDropdown extends Component {
     )
   }
 
- }       
-export default CategoryDropdown;
+ }
+ 
+function mapStateToProps({ categories }) {
+  //whatever is returned will show up as props inside of ProductList
+  console.log("state in mapstatetoprops in the categories list component", { categories })
+  return { categories };
+}
+
+//Anything returned from this function will end up as props on the ProductList container
+const mapDispatchToProps = (dispatch) => {
+  //whenever fetchProducts is called the result should be passed to all of our reducers
+  return bindActionCreators({ fetchCategories }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryDropdown)

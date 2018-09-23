@@ -30,7 +30,6 @@ router.get('/products', (req, res, next) => {
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.count().exec((err, count) => {
           if (err) return next(err)
   
@@ -53,13 +52,16 @@ router.get('/products/:product', (req, res, next) => {
 //   GET /reviews: Returns ALL the reviews, but limited to 40 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options page query to paginate.
 router.get('/reviews', (req, res, next) => {
     let reviewProduct = Product.findById(req.params.id)
-    let reviewMatch = Review.find(({_id: reviewProduct.params.id}), (err, product) => {
-        if (err) {
-            return next(err)
-        }
-        res.send()
-    })
-})
+    reviewProduct
+    .find({})
+    .limit()
+    .exec((err, reviews) => {
+        Review.count().exec((err, count) => {
+          if (err) return next(err)
+          res.send(reviews)
+        })
+      })
+    });
 
 //   POST /products: Creates a new product in the database
 router.post('/products', (req, res, next) => {

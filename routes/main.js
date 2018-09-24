@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+let products = {};
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -37,5 +38,14 @@ router.get('/products', (req, res, next) => {
         })
       })
   })
+
+router.get('/products/:id', (req, res, next) => {
+    Product.findById(req.params.id => {
+        if(error) {
+            return next(error)
+        }
+        res.send(product);
+    });
+});
 
 module.exports = router

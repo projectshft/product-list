@@ -7,9 +7,10 @@ const ProductSchema = new Schema({
   category: String,
   name: String,
   price: Number,
-  image: String
-})
+  image: String,
+  reviews: [{type: Schema.Types.ObjectId, ref: 'review'}]
+});
 
 ProductSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Product', ProductSchema)
+module.exports = mongoose.model('product', ProductSchema);

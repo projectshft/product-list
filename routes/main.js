@@ -31,20 +31,28 @@ const Review = require('../models/review');
 //create our paginating GET route
 router.get('/products', (req, res, next) => {
     const perPage = 9
-    //return the 1st page by default
+    // return the 1st page by default
     const page = req.query.page || 1
+    let category = req.query.category
+
+    let query = { };
+    if (category) {
+       query = {
+           category: category
+       }
+    }
+
     Product
-        .find({})
+        .find(query)
         .skip((perPage * page) - perPage)
         .limit(perPage)
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-        .exec((err, products) => {
-            Product.count().exec((err, count) => {
+        .exec((err, product) => {
+            Product.estimatedDocumentCount().exec((err, count) => {
                 if (err) return next(err)
-                res.send(products)
+                res.send(product)
             })
         })
-
 });
 
 router.get('/products/:ProductId', ((req, res, next) => {

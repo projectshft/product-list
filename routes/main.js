@@ -20,7 +20,7 @@ const Review = require('../models/review');
 //         });
 //         review.save()
 //         product.reviews.push(review);
-
+      
 //         product.save((err) => {
 //             if (err) throw err
 //         })
@@ -57,5 +57,24 @@ router.get('/products/:ProductId', ((req, res, next) => {
         })
 }))
 
+//Returns ALL the reviews, but limited to 40 per page
+router.get('/reviews', ((req, res, next) => {
+    //paginate
+    const perPage = 40
+    const page = req.query.page || 1
+    Product.find({})
+        .populate({
+            path: 'reviews'
+            // options: {limit: 40}
+        })
+        //paginate
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec((err, reviews) => {
+            if (err) return next(err)
+                res.send(reviews)
+            })
+        })
+)
 
 module.exports = router

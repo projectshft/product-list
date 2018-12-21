@@ -34,19 +34,33 @@ router.get('/products', (req, res, next) => {
     // return the 1st page by default
     const page = req.query.page || 1
     let category = req.query.category
+    let sortDirection = req.query.price
+    
+    let query = {};
 
-    let query = { };
+    //if the URL includes an optional query for category, add that category to the request body query object
     if (category) {
-       query = {
-           category: category
-       }
+        query = {
+            category: category
+        }
     }
+
+    // if the user chooses to sort, sort the found products in proper order by price
+    if (sortDirection == "highest") {
+         sortDirection = 'desc';
+    } else if (sortDirection == "lowest") {
+         sortDirection = "asc"
+    } else {
+         sortDirection = null
+    }
+
 
     Product
         .find(query)
         .skip((perPage * page) - perPage)
         .limit(perPage)
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        .sort({price: sortDirection})
         .exec((err, product) => {
             Product.estimatedDocumentCount().exec((err, count) => {
                 if (err) return next(err)

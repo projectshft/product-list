@@ -4,12 +4,14 @@ const bodyParser = require('body-parser');
 const mainRoute = require('./routes/main');
 const productsRoute = require('./routes/products');
 const reviewsRoute = require('./routes/reviews');
+const cors = require('cors');
 
 mongoose.connect('mongodb://localhost/products');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 app.use('/', mainRoute);
 app.use('/products', productsRoute);
 app.use('/reviews', reviewsRoute);

@@ -36,20 +36,24 @@ router.get('/generate-fake-data', (req,res,next) => {
    res.end()
 })
 
-// GET /products Returns products based on page and limit query parameters.
+// GET /products Returns products based on page, limit, and category query parameters.
 router.get('/products', (req,res,next) => {
    let page = parseInt(req.query.page) || 1;
    let limit = parseInt(req.query.limit) || 9;
    let itemsToSkip = (page - 1) * limit;
+   let category = req.query.category;
+   let categoryRegEx = new RegExp(category, "i");
+   let categorySelector = category ? {category: categoryRegEx} : {};
 
    Product
-      .find({}, {__v: 0})
+      .find(categorySelector, {__v: 0})
       .skip(itemsToSkip)
       .limit(limit)
       .populate('reviews', {__v: 0})
       .exec((err, products) => {
-         Product.count().exec((err, count) => {
+         Product.count( categorySelector, (err, count) => {
             if (err) throw err
+
             res.send({number_items: count, number_pages: Math.ceil(count/limit), current_page: page, products})
             res.end()
          })

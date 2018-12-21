@@ -122,19 +122,21 @@ router.post('/:productId/reviews', (req, res, next) => {
          reviewToAdd.text = req.body.text;
          reviewToAdd.product = product._id;
 
-         reviewToAdd.save((err, review) => {
-            if (err) throw err
-
-            res.send(review)
-         })
-
-         product.reviews.push(reviewToAdd);
-         Product
-            .findByIdAndUpdate(productId, {reviews: product.reviews}, {new: true})
-            .exec((err, product) => {
+         reviewToAdd
+            .save((err, review) => {
                if (err) throw err
-               res.end()
+
+               res.send(review)
+               product.reviews.push(reviewToAdd);
+               Product
+                  .findByIdAndUpdate(productId, {reviews: product.reviews})
+                  .exec((err, product) => {
+                     if (err) throw err
+
+                     res.end()
+                  });
             });
+
       });
 })
 
@@ -159,6 +161,16 @@ router.delete('/products/:productId', (req, res, next) => {
       })
 });
 
-// DELETE /reviews/:review Deletes a review by id
+// DELETE /reviews/:reviewId Deletes a review by id
+router.delete('/reviews/:reviewId', (req, res, next) => {
+   let reviewId = req.params.reviewId;
+   Review
+      .findByIdAndRemove(reviewId)
+      .exec((err,review) => {
+         if (err) throw err
+            res.send(review)
+            res.end()
+      });
+});
 
 module.exports = router

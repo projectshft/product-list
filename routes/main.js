@@ -20,7 +20,7 @@ const Review = require('../models/review');
 //         });
 //         review.save()
 //         product.reviews.push(review);
-      
+
 //         product.save((err) => {
 //             if (err) throw err
 //         })
@@ -49,12 +49,12 @@ router.get('/products', (req, res, next) => {
 
 router.get('/products/:ProductId', ((req, res, next) => {
     Product.findById(req.params.ProductId, (err, product) => {
-            if (err) {
-                return console.error(err);
-            } else {
-                res.send(product);
-            }
-        })
+        if (err) {
+            return console.error(err);
+        } else {
+            res.send(product);
+        }
+    })
 }))
 
 //Returns ALL the reviews, but limited to 40 per page
@@ -72,9 +72,9 @@ router.get('/reviews', ((req, res, next) => {
         .limit(perPage)
         .exec((err, reviews) => {
             if (err) return next(err)
-                res.send(reviews)
-            })
+            res.send(reviews)
         })
+})
 )
 
 //Creates a new product in the database
@@ -87,9 +87,22 @@ router.post('/products', ((req, res, next) => {
         reviews: []
     });
     newProduct.save((err) => {
-        if (err) return err
-        ;res.send(newProduct);
+        if (err) return err;
+        res.send(newProduct);
     });
 }))
+
+//Creates a new review in the database by adding it to the correct product's reviews array
+router.post('/:productId/reviews', (req, res, next) => {
+    const newReview = new Review({
+        userName: req.body.userName,
+        reviewText: req.body.reviewText,
+        product: req.params.productId
+    });
+    newReview.save((err) => {
+        if (err) return err;
+        res.send(newReview);
+    });
+})
 
 module.exports = router

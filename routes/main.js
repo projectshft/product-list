@@ -77,4 +77,19 @@ router.get('/reviews', ((req, res, next) => {
         })
 )
 
+//Creates a new product in the database
+router.post('/products', ((req, res, next) => {
+    const newProduct = new Product({
+        category: req.body.category,
+        name: req.body.name,
+        price: req.body.price,
+        image: req.body.image,
+        reviews: []
+    });
+    newProduct.save((err) => {
+        if (err) return err
+        ;res.send(newProduct);
+    });
+}))
+
 module.exports = router

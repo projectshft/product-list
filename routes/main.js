@@ -43,10 +43,10 @@ router.get('/products', (req,res,next) => {
    let itemsToSkip = (page - 1) * limit;
 
    Product
-      .find()
+      .find({}, {__v: 0})
       .skip(itemsToSkip)
       .limit(limit)
-      .populate('reviews')
+      .populate('reviews', {__v: 0})
       .exec((err, products) => {
          Product.count().exec((err, count) => {
             if (err) throw err
@@ -60,8 +60,8 @@ router.get('/products', (req,res,next) => {
 router.get('/products/:productId', (req,res,next) => {
 
    Product
-      .find({_id: req.params.productId })
-      .populate('reviews')
+      .find({_id: req.params.productId }, {__v: 0})
+      .populate('reviews', {__v: 0})
       .exec((err, products) => {
          if (err) throw err
          res.send(products[0])
@@ -76,10 +76,10 @@ router.get('/reviews', (req,res,next) => {
    let itemsToSkip = (page - 1) * limit;
 
    Review
-      .find()
+      .find({}, {__v: 0})
       .skip(itemsToSkip)
       .limit(limit)
-      .populate('product')
+      .populate('product', {__v: 0})
       .exec((err, reviews) => {
          Review.count().exec((err, count) => {
             if (err) throw err
@@ -108,16 +108,35 @@ router.post('/products', (req, res, next) => {
 })
 
 // POST /:productId/reviews Creates a new review in the database by adding it to the correct product's reviews array.
-// router.post('/:productId/reviews', (req, res, next) => {
-//    let reviewToAdd = new Review ();
+router.post('/:productId/reviews', (req, res, next) => {
+   let productId = req.params.productId;
+   Product
+      .findById(productId)
+      .populate('reviews')
+      .exec((err, product) => {
+         if(err) throw err
 
+         let reviewToAdd = new Review ();
 
-//    reviewToAdd.save((err, review) => {
-//       if (err) throw err
-//       res.send(review)
-//       res.end()
-//    })
-// })
+         reviewToAdd.userName = req.body.userName;
+         reviewToAdd.text = req.body.text;
+         reviewToAdd.product = product._id;
+
+         reviewToAdd.save((err, review) => {
+            if (err) throw err
+
+            res.send(review)
+         })
+
+         product.reviews.push(reviewToAdd);
+         Product
+            .findByIdAndUpdate(productId, {reviews: product.reviews}, {new: true})
+            .exec((err, product) => {
+               if (err) throw err
+            });
+      });
+   res.end()
+})
 
 // DELETE /products/:product Deletes a product by id
 // DELETE /reviews/:review Deletes a review by id

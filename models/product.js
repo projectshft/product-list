@@ -10,13 +10,7 @@ const ProductSchema = new Schema({
   reviews: [{type: Schema.Types.ObjectId, ref: 'review'}]
 })
 
-const Product = mongoose.model('Product', ProductSchema)
-
-Product.find((err, reviews) => {
-  Product.populate(reviews, {path: 'reviews'}, (err, data) => {
-    // console.log(data)
-  })
-})
+const Product = mongoose.model('Product', ProductSchema);
 
 module.exports = Product;
 

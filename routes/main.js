@@ -7,8 +7,8 @@ const Review = require('../models/review')
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
-
     let review = new Review();
+
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
@@ -39,6 +39,7 @@ router.get('/products', (req, res, next) => {
     .find({})
     .skip((perPage * page) - perPage)
     .limit(perPage)
+    .populate('reviews')
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Product.count().exec((err, count) => {
@@ -125,17 +126,17 @@ router.delete('/products/:product', (req, res) => {
   let productToRemoveId = req.params.product;
   Product.remove({_id: productToRemoveId}, (err, product) =>{
     if (err) throw err;
-  
-    // product.remove((err) => {
-    //   if (err) throw err;
-    // }) 
     res.send(`This product has been successfully removed from database`)
   })
 })
 
 //DELETE /reviews/:review : Deletes a review by id
 router.delete('/reviews/:review', (req, res) => {
-
+  let reviewToRemoveId = req.params.review;
+  Review.remove({_id: reviewToRemoveId}, (err, review) =>{
+    if (err) throw err;
+    res.send(`This review has been successfully removed from database`)
+  })
 })
 
 

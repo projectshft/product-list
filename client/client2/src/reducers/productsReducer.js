@@ -1,6 +1,6 @@
 import {GET_PRODUCTS} from '../actions'
 
-export const productListReducer = (state = [], action) => {
+const productListReducer = (state = [], action) => {
   switch (action.type) {
     case GET_PRODUCTS:
     //the request will be handled by the action middleware
@@ -9,3 +9,4 @@ export const productListReducer = (state = [], action) => {
       return state
   }
 }
+export default productListReducer

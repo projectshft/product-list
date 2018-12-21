@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-export class productList extends Component {
+export class ProductList extends Component {
   constructor(){
     
   }
@@ -24,4 +24,4 @@ const mapDispatchToProps = {
   
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(productList)
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList)

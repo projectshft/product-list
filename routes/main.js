@@ -105,7 +105,29 @@ router.post('/:productId/reviews', (req, res, next) => {
     });
 })
 
-//Deletes a product by id
+// Product to Delete:{
+//      _id: 5c1d1abfb2f1a12bec67dcbb
+//     reviews:Array
+// category:"Electronics"
+// name:"Refined Fresh Soap"
+// price:143
+// }
 
+
+
+//Deletes a product by id
+router.delete('/products/:productId', (req, res, next) => {
+    Product
+        .findByIdAndDelete(req.params.productId, (err) => {
+            if (err) throw err;
+            res.status(200).send("Delete was successful.");
+        })
+}
+)
+
+//Deletes a review by its id
+router.delete('/reviews/:reviewId', (req, res, next) => {
+
+})
 
 module.exports = router

@@ -51,6 +51,12 @@ router.param("product", async function (req, res, next, id) {
 
   next();
 });
+router.param("review", async function (req, res, next, id) {
+
+  req.review = await Review.findById(id).populate('products').exec();
+
+  next();
+});
 
 router.get('/product', async (req,res, next) => {
   let {page} = req.query || 1;
@@ -100,10 +106,42 @@ router.post("/products/:product/reviews", (req,res) => {
     rating:req.body.rating,
     product:req.product._id
   })
-  review.save()
+  req.product.reviews.push(review)
+  req.product.save()
+  .then(() => review.save())
   .then(result => res.send("review saved to database"))
   .catch(err => res.send(err));
-  
 });
+
+router.delete('/products/:product/reviews/:review' , async (req,res) => {
+  
+  await Product.updateOne({'_id':req.product._id},
+  {$pull:{'reviews':req.review._id}}).exec()
+
+  await req.product.save()
+  await Review.findByIdAndDelete(req.review._id).exec()
+  await req.review.save()
+  res.send()
+
+  
+  // let reviewModel = await Review.find({'_id':req.review._id})
+  // //first, remove the reference to the product review
+  // await .save()
+  //  await Product.find({'_id':req.product._id}).save()
+    
+  //   res.send("???")
+  
+ 
+//then remove the review from the database
+  
+  //5c1bf6af62f9834580b6113b product ID
+//review ID 5c1bf6af62f9834580b6113c
+  
+})
+
+router.delete('/products/:product', async (req, res) => {
+  await Product.findByIdAndDelete(req.product._id).exec();
+  res.send(200)
+})
 
 module.exports = router;

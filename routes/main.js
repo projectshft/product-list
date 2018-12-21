@@ -58,16 +58,32 @@ router.param("review", async function (req, res, next, id) {
   next();
 });
 
-router.get('/product', async (req,res, next) => {
+router.get('/products', async (req,res, next) => {
+//this is required because the category match is case-sensitive
+  const _capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }
   let {page} = req.query || 1;
+  let category = _capitalize(req.query.category) || "Grocery"
+  let {price} = req.query
+  if(price == "highest"){
+    price = -1
+  } else {
+    price = 1
+  }
+  
   const perPage = 10;
   
-  let results = await Product.find({}).skip((page * perPage) - perPage).limit(perPage)
+  let results = await Product.find({ category: category })
+  .sort({ price: price })
+  .skip((page * perPage) - perPage)
+  .limit(perPage)
   
   res.send(results)
 })
 
-router.get('/product/:product', (req, res) => {
+router.get('/products/:product', (req, res) => {
 
 //uses the param middleware to find the specific product by ID
   res.send(req.product)
@@ -123,19 +139,6 @@ router.delete('/products/:product/reviews/:review' , async (req,res) => {
   await req.review.save()
   res.send()
 
-  
-  // let reviewModel = await Review.find({'_id':req.review._id})
-  // //first, remove the reference to the product review
-  // await .save()
-  //  await Product.find({'_id':req.product._id}).save()
-    
-  //   res.send("???")
-  
- 
-//then remove the review from the database
-  
-  //5c1bf6af62f9834580b6113b product ID
-//review ID 5c1bf6af62f9834580b6113c
   
 })
 

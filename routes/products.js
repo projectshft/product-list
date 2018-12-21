@@ -4,12 +4,6 @@ const url = require('url');
 const Product = require('../models/Product');
 const Review = require('../models/Review');
 
-// let products;
-// Product.find({}, (err, prods) => {
-//   if (err) throw err;
-//   products = prods.map(p => p.toJSON());
-// });
-
 router.param('product', (req, res, next, id) => {
   Product.find({ _id: id }, (err, product) => {
     if (err) {
@@ -21,43 +15,76 @@ router.param('product', (req, res, next, id) => {
   });
 });
 
-// router.param('review', (req, res, next, id) => {
-//   Review.find({ _id: id }, (err, review) => {
-//     if (err) throw err;
+// GET products
+router.get('/', (req, res) => {
+  // Get page, category, and price sort from URL
+  const parsedURL = url.parse(req.originalUrl);
+  let { page, category, price } = qs.parse(parsedURL.query);
 
-//     req.review = review;
-//     console.log(req.review);
-//     next();
-//   });
-// });
+  // Determine price sort order
+  let sortOrder = price === 'highest' ? -1 : 1;
 
-// GET all the products
-router.get('/', (req, res, next) => {
-  Product.find({}, (err, products) => {
+  // User didn't specify page in query
+  typeof page === 'undefined' ? (page = 1) : (page = Number(page)); // 'zebra' === NaN
+
+  Product.paginate({}, { page, limit: 10 }, (err, products) => {
     if (err) throw err;
 
-    // Get max number of pages based on number of products
-    const numProducts = products.length;
-    const maxPages = Math.ceil(numProducts / 10);
+    // Both category and price filters
+    if (category && price) {
+      Product.paginate(
+        { category },
+        { page, limit: 10, sort: { price: sortOrder } },
+        (err, products) => {
+          if (err) throw err;
 
-    // Get page from URL
-    const parsedURL = url.parse(req.originalUrl);
-    let { page } = qs.parse(parsedURL.query);
-
-    // User didn't specify page in query
-    if (typeof page === 'undefined') {
-      page = 1;
-    } else {
-      page = Number(page); // 'zebra' === NaN
+          // Check page is valid
+          if (!page || page < 1 || page > products.pages) {
+            res.status(404).send('Page not found');
+          } else {
+            products.total === 0
+              ? res.status(404).send('Category not found :(')
+              : res.send(products);
+          }
+        }
+      );
     }
+    // Only category filter
+    else if (category) {
+      Product.paginate({ category }, { page, limit: 10 }, (err, products) => {
+        if (err) throw err;
 
-    // Page edge cases
-    if (!page || page < 1 || page > maxPages) {
-      res.status(404).send('Page not found!');
-    } else {
-      Product.paginate({}, { page, limit: 10 }, (err, products) => {
-        res.send(products);
+        // Check page is valid
+        if (!page || page < 1 || page > products.pages) {
+          res.status(404).send('Page not found');
+        } else {
+          products.total === 0
+            ? res.status(404).send('Category not found :(')
+            : res.send(products);
+        }
       });
+    }
+    // Only price filter
+    else if (price) {
+      Product.paginate(
+        {},
+        { page, limit: 10, sort: { price: sortOrder } },
+        (err, products) => {
+          if (err) throw err;
+
+          // Check page is valid
+          if (!page || page < 1 || page > products.pages) {
+            res.status(404).send('Page not found');
+          } else {
+            products.total === 0
+              ? res.status(404).send('No products found :(')
+              : res.send(products);
+          }
+        }
+      );
+    } else {
+      // Send all products
+      res.send(products);
     }
   });
 });

@@ -133,12 +133,32 @@ router.post('/:productId/reviews', (req, res, next) => {
             .findByIdAndUpdate(productId, {reviews: product.reviews}, {new: true})
             .exec((err, product) => {
                if (err) throw err
+               res.end()
             });
       });
-   res.end()
 })
 
 // DELETE /products/:product Deletes a product by id
+router.delete('/products/:productId', (req, res, next) => {
+   let productId = req.params.productId;
+   Product
+      .findByIdAndRemove(productId)
+      .populate('reviews')
+      .exec((err,product) => {
+         if (err) throw err
+
+         product.reviews.forEach(review => {
+            Review
+               .findByIdAndRemove(review._id)
+               .exec(err => {
+                  if (err) throw err
+               })
+         });
+         res.send(product)
+         res.end()
+      })
+});
+
 // DELETE /reviews/:review Deletes a review by id
 
 module.exports = router

@@ -8,7 +8,8 @@ import promise from "redux-promise";
 import reducers from "./reducers/rootReducer";
 
 import "bootstrap/dist/css/bootstrap.css";
-import { productListReducer } from "./reducers/productsReducer";
+import "./App.css";
+
 import ProductList from './components/productList'
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);

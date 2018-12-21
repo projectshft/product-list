@@ -1,10 +1,13 @@
 import {GET_PRODUCTS} from '../actions'
 
 const productListReducer = (state = [], action) => {
-  switch (action.type) {
+  const {type} = action;
+  switch (type) {
     case GET_PRODUCTS:
+    console.log(action.payload)
     //the request will be handled by the action middleware
-      return state.push(action.payload.data)
+    state = action.payload.results
+      return state
     default:
       return state
   }

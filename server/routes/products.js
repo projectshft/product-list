@@ -27,14 +27,14 @@ router.get('/', (req, res) => {
   // User didn't specify page in query
   typeof page === 'undefined' ? (page = 1) : (page = Number(page)); // 'zebra' === NaN
 
-  Product.paginate({}, { page, limit: 10 }, (err, products) => {
+  Product.paginate({}, { page, limit: 9 }, (err, products) => {
     if (err) throw err;
 
     // Both category and price filters
     if (category && price) {
       Product.paginate(
         { category },
-        { page, limit: 10, sort: { price: sortOrder } },
+        { page, limit: 9, sort: { price: sortOrder } },
         (err, products) => {
           if (err) throw err;
 
@@ -51,7 +51,7 @@ router.get('/', (req, res) => {
     }
     // Only category filter
     else if (category) {
-      Product.paginate({ category }, { page, limit: 10 }, (err, products) => {
+      Product.paginate({ category }, { page, limit: 9 }, (err, products) => {
         if (err) throw err;
 
         // Check page is valid
@@ -68,7 +68,7 @@ router.get('/', (req, res) => {
     else if (price) {
       Product.paginate(
         {},
-        { page, limit: 10, sort: { price: sortOrder } },
+        { page, limit: 9, sort: { price: sortOrder } },
         (err, products) => {
           if (err) throw err;
 

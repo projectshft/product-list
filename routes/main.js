@@ -44,9 +44,16 @@ router.get('/products', (req,res,next) => {
    let category = req.query.category;
    let categoryRegEx = new RegExp(category, "i");
    let categorySelector = category ? {category: categoryRegEx} : {};
+   let sortByPrice = {};
+   if ( req.query.price && req.query.price.match(/lowest/i) ) {
+      sortByPrice = { price: 'asc' };
+   } else if ( req.query.price && req.query.price.match(/highest/i) ) {
+      sortByPrice = { price: 'desc' };
+   }
 
    Product
       .find(categorySelector, {__v: 0})
+      .sort(sortByPrice)
       .skip(itemsToSkip)
       .limit(limit)
       .populate('reviews', {__v: 0})

@@ -105,4 +105,7 @@ router.post('/:productId/reviews', (req, res, next) => {
     });
 })
 
+//Deletes a product by id
+
+
 module.exports = router

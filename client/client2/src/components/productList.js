@@ -34,7 +34,6 @@ export class ProductList extends Component {
       )
     } 
     else {
-      console.log(this.props.products.products);
       return this.props.products.products.map(item => {
         return <Product productItemAsProps={item} />;
       });
@@ -46,7 +45,6 @@ export class ProductList extends Component {
   renderPaginationButtons = () => {
     let currentPage = this.props.products.page_number;
     let totalPages = this.props.products.page_count;
-    console.log(this.props)
     let buttons = []
     for (let i = 1; i <= totalPages; i++) {
       buttons.push(<Pagination>

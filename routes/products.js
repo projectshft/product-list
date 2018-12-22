@@ -3,7 +3,7 @@ const querystring = require('querystring');
 const Product = require('../models/product')
 const Review = require('../models/review')
 const url = require('url');
-const checkPageNumber = require('../utils');
+const { checkPageNumber, capitalize } = require('../utils');
 
 //look into middleware for handling errors
 
@@ -21,32 +21,44 @@ router.param('product', (req,res,next,id) => {
 })
 
 router.get('/', (req, res, next) => {
-  //design decision - products returned at a time
+  //design decision - # of products returned at a time
   const productLimitPerPage = 10;
-  //get the total number of products get the page number
-  Product.find({}, (err, products) => {
-    if (err) throw err;
-    const totalProducts = products.length;
+  let query = Product.find();
+  let totalProducts;
+  //first filter by the category if necessary
+  if (req.query.category) {
+    query.and({'category': capitalize(req.query.category)});
+  }
+  //then sort by the price if necessary
+  if (req.query.price) {
+    if (req.query.price === "highest") {
+      query.sort({'price': 'desc'}); 
+    } else if (req.query.price === "lowest") {
+      query.sort({'price': 'asc'}); 
+    } else {
+      res.status(400).send("Invalid price query - must be highest or lowest");
+    }
+  }
+  //then get the count 
+  query.count((err,num) => {
+    totalProducts = num;
+    //if there are none, it means there were none in the category
+    if (!totalProducts) {
+      res.status(404).send('No products found in that category');
+    }
     //util function which returns 0 if there was an error, 1 if no page was specified, and the correct number if a valid page was specified
     const page = checkPageNumber(req, totalProducts, productLimitPerPage);
     if (page === 0) {
       res.status(404).send('Page not found');
     } else {
     //once the page number is parsed, figure out if there was a category or sort by price passed
-    if (!req.query.category && !req.query.price) {
         //if neither, use mongoose's paginate package to return the requested page with a limit of 10 products
-        Product.paginate({}, { page: page, limit: productLimitPerPage }, (err, products) => {
+        Product.paginate(query, { page: page, limit: productLimitPerPage }, (err, products) => {
             res.send(products);
         })
-    } else if (req.query.category && !req.query.price) {
-      Product.find({'category': req.query.category}).paginate({ page: page, limit: productLimitPerPage }, (err, products) => {
-        res.send(products);
-    })
     }
-
-    }
-  })
-});
+  });
+})
 
 router.post('/', (req,res) => {
   const { category, price, name, image } = req.body;

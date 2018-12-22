@@ -27,8 +27,8 @@ router.get('/reviews', (req,res) => {
   })
 });
 
-router.delete('/:review', (req, res) => {
-  Review.findOneAndDelete({ _id: req.review._id }, (err, review) => {
+router.delete('/reviews/:review', (req, res) => {
+  Review.findOneAndDelete({ _id: req.params.review }, (err, review) => {
     if (err) throw err;
 
     // Remove the review from the product reviews array

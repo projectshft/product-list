@@ -27,6 +27,31 @@ router.get('/reviews', (req,res) => {
   })
 });
 
+router.delete('/:review', (req, res) => {
+  Review.findOneAndDelete({ _id: req.review._id }, (err, review) => {
+    if (err) throw err;
+
+    // Remove the review from the product reviews array
+    Product.findOne({ _id: review.product._id }, (err, product) => {
+      product.reviews.splice(product.reviews.indexOf(review._id), 1);
+      product.save(() => {
+        res.send( { success: true });
+      });
+    });
+  });
+});
+
+//   Product.find().populate('reviews', (err, reviews) => {
+//     console.log(reviews[0]);
+//     res.send();
+//   })
+// })
+//   {reviews: {_id: req.params.review}}, (err,review) => {
+//     console.log(review)
+//     res.send();
+//   })
+// })
+
 //route for initially generating data - development only
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -51,9 +76,11 @@ router.get('/generate-fake-reviews', async (req, res, next) => {
     let review = new Review();
     review.text = faker.lorem.paragraph();
     review.userName = faker.internet.userName();
+    review.product = product;
     let review2 = new Review();
     review2.text = faker.lorem.paragraph();
     review2.userName = faker.internet.userName();
+    review2.product = product;
     review.save();
     review2.save();
     product.reviews.push(review);

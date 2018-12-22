@@ -30,13 +30,20 @@ router.get('/', (req, res, next) => {
     //util function which returns 0 if there was an error, 1 if no page was specified, and the correct number if a valid page was specified
     const page = checkPageNumber(req, totalProducts, productLimitPerPage);
     if (page === 0) {
-      res.status(404);
-      res.send('Page not found');
+      res.status(404).send('Page not found');
     } else {
-    //use mongoose's paginate package to return the requested page with a limit of 10 products
-      Product.paginate({}, { page: page, limit: productLimitPerPage }, (err, products) => {
+    //once the page number is parsed, figure out if there was a category or sort by price passed
+    if (!req.query.category && !req.query.price) {
+        //if neither, use mongoose's paginate package to return the requested page with a limit of 10 products
+        Product.paginate({}, { page: page, limit: productLimitPerPage }, (err, products) => {
+            res.send(products);
+        })
+    } else if (req.query.category && !req.query.price) {
+      Product.find({'category': req.query.category}).paginate({ page: page, limit: productLimitPerPage }, (err, products) => {
         res.send(products);
-      })
+    })
+    }
+
     }
   })
 });
@@ -51,12 +58,10 @@ router.post('/', (req,res) => {
   newProduct.reviews = [];
   //name and price are required, category and image have defaults if not provided
   if (!name) {
-    res.status(400)
-    res.send('Product name is required');
+    res.status(400).send('Product name is required');
   }
   if (!price) {
-    res.status(400)
-    res.send('Product price is required');
+    res.status(400).send('Product price is required');
   }
   if (!category) {
     newProduct.category = '';
@@ -74,8 +79,7 @@ router.post('/', (req,res) => {
 router.get('/:product', (req,res) => {
   //make sure there was a valid product provided
   if (!req.product) {
-    res.status(404);
-    res.send("Product not found");
+    res.status(404).send("Product not found");
   }
  res.send(req.product);
 })
@@ -88,20 +92,35 @@ router.post('/:product/reviews', (req,res) => {
   newReview.product = req.product;
   //both text and userName are required
   if (!text) {
-    res.status(400);
-    res.send('Review text required');
+    res.status(400).send('Review text required');
   }
   if (!userName) {
-    res.status(400);
-    res.send('Review userName required');
+    res.status(400).send('Review userName required');
   }
-  Product.findByIdAndUpdate(req.product._id, (err, product) => {
-    if (err) throw err;
+  //find the product, push in the new review, and then save both the product and the review on their collections
+  Product.findById(req.product._id,(err, product) => {
     product.reviews.push(newReview);
-    newReview.save(() => {
-      res.send(newReview._id);
+    product.save(() => {
+      newReview.save(() => {
+        res.send(newReview._id);
+      })
     });
-  })  
+  });
 })
+
+router.delete('/:product', (req, res) => {
+  Product.findOneAndDelete({ _id: req.product._id }, (err, product) => {
+    if (err) throw err;
+
+    // Delete review docs
+    product.reviews.forEach(r => {
+      Review.findOneAndDelete({ _id: r._id }, err => {
+        if (err) throw err;
+      });
+    });
+
+    res.send( { success: true });
+  });
+});
 
 module.exports = router;

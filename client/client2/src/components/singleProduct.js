@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 const Product = (props) => {
   let product = props.productItemAsProps
-  console.log(product.image)
+
   return (
     
   <div className="col-md-4">

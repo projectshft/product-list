@@ -61,14 +61,12 @@ router.param("review", async function (req, res, next, id) {
 });
 
 router.get('/products', async (req,res, next) => {
-//this is required because the category match is case-sensitive
-  const _capitalize = (s) => {
-    if (typeof s !== 'string') return ''
-    return s.charAt(0).toUpperCase() + s.slice(1)
-  }
+//Setting up all the variables and search terms
+
+  let searchTerm = req.query.search
   let page = req.query.page || 1;
-  let category = _capitalize(req.query.category) || "Grocery"
-  let {price} = req.query
+  let category = "Grocery"
+  let {price} = req.query || "highest"
   if(price == "highest"){
     price = -1
   } else if(price === "lowest") {
@@ -76,18 +74,39 @@ router.get('/products', async (req,res, next) => {
   }
   
   const perPage = 12;
-  
-  let results = await Product.find({ category: category })
-  .sort({ price: price })
-  .skip((page * perPage) - perPage)
-  .limit(perPage)
-  
-  let productCount = await Product.count().exec()
-  res.send({total_products:productCount, 
-    page_count:(Math.floor(productCount/perPage)),
-    page_number:page,
-    results:results})
+  //this works but badly needs refactoring
+  if(!searchTerm){
+    Product.find({ category: category })
+      .sort({ price: price })
+      .skip((page * perPage) - perPage)
+      .limit(perPage).exec(async (err,result) => {
+        let productCount = await Product.count().exec()
+        res.send({
+          total_products: productCount,
+          page_count: (Math.floor(productCount / perPage)),
+          page_number: page,
+          products: result
+        })
+      })
+ 
+  }
+  else {
+    Product.find({ category: category,
+    $text:{$search:searchTerm, $caseSensitive:false} })
+      .sort({ price: price })
+      .skip((page * perPage) - perPage)
+      .limit(perPage).exec(async (err, result) => {
+        let productCount = await Product.count().exec()
+        res.send({
+          total_products: productCount,
+          page_count: (Math.floor(productCount / perPage)),
+          page_number: page,
+          products: result
+        })
+      })
+   }
 })
+
 
 router.get('/products/:product', (req, res) => {
 

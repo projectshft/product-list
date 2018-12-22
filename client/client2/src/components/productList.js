@@ -10,7 +10,7 @@ export class ProductList extends Component {
   componentDidMount (){
     //somehow get the products on the state
     const {fetchProducts} = this.props;
-    fetchProducts()
+    // fetchProducts()
    
   }
   renderProducts = () => {
@@ -30,6 +30,7 @@ export class ProductList extends Component {
       </div>;
   }
 }
+
 
 const mapStateToProps = (state) => ({
   products: state.products

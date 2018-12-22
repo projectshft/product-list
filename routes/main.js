@@ -9,43 +9,43 @@ const fetch = require('node-fetch')
 Generate and populate database with data
 NO LONGER NEEDED DATA AS OF 12/20/18 3:11 PM
 =====================================================*/
-router.get("/generate-fake-data", async (req, res, next) => {
+// router.get("/generate-fake-data", async (req, res, next) => {
   
 
     
     
-  for (let i = 0; i < 500; i++) {
-    let productImg = await fetch("https://picsum.photos/200/300/?random").then(r => r.url);
-    let numberOfReviews = Math.floor(Math.random()*20)
-    let product = new Product();
-    console.log(productImg)
-    product.category = faker.commerce.department();
-    product.name = faker.commerce.productName();
-    product.price = faker.commerce.price();
-    product.image = productImg,
-    product.description = faker.lorem.sentences();
-    product.reviews = []
+//   for (let i = 0; i < 500; i++) {
+//     let productImg = await fetch("https://picsum.photos/200/300/?random").then(r => r.url);
+//     let numberOfReviews = Math.floor(Math.random()*20)
+//     let product = new Product();
+//     console.log(productImg)
+//     product.category = faker.commerce.department();
+//     product.name = faker.commerce.productName();
+//     product.price = faker.commerce.price();
+//     product.image = productImg,
+//     product.description = faker.lorem.sentences();
+//     product.reviews = []
 
-    for (let k = 0; k < numberOfReviews; k++) {
-      let review = new Review({
-        username: faker.internet.userName(),
-        text: faker.lorem.paragraphs(),
-        rating: Math.floor(Math.random() * 11),
-        product:product._id
-      })
-      review.save()
-      product.reviews.push(review);
-    }
+//     for (let k = 0; k < numberOfReviews; k++) {
+//       let review = new Review({
+//         username: faker.internet.userName(),
+//         text: faker.lorem.paragraphs(),
+//         rating: Math.floor(Math.random() * 11),
+//         product:product._id
+//       })
+//       review.save()
+//       product.reviews.push(review);
+//     }
 
 
-    product.save(err => {
-      if (err) throw err;
-    });
-    // console.log(product.image)
-  }
-  console.log(("done"))
-  res.end("Success");
-});
+//     product.save(err => {
+//       if (err) throw err;
+//     });
+//     // console.log(product.image)
+//   }
+//   console.log(("done"))
+//   res.end("Success");
+// });
 
 router.param("product", async function (req, res, next, id) {
 
@@ -63,19 +63,20 @@ router.param("review", async function (req, res, next, id) {
 router.get('/products', async (req,res, next) => {
 //Setting up all the variables and search terms
 
-  let searchTerm = req.query.search
+  let search = req.query.search
   let page = req.query.page || 1;
-  let category = "Grocery"
-  let {price} = req.query || "highest"
-  if(price == "highest"){
-    price = -1
-  } else if(price === "lowest") {
+  page = parseInt(page)
+  let category = req.query.category || "Home"
+  let price = req.query.price
+  if(!price){
     price = 1
+  } else {
+    price = parseInt(price)
   }
   
   const perPage = 12;
   //this works but badly needs refactoring
-  if(!searchTerm){
+  if(!search){
     Product.find({ category: category })
       .sort({ price: price })
       .skip((page * perPage) - perPage)
@@ -92,7 +93,7 @@ router.get('/products', async (req,res, next) => {
   }
   else {
     Product.find({ category: category,
-    $text:{$search:searchTerm, $caseSensitive:false} })
+    $text:{$search:search, $caseSensitive:false} })
       .sort({ price: price })
       .skip((page * perPage) - perPage)
       .limit(perPage).exec(async (err, result) => {

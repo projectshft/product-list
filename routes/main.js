@@ -83,11 +83,11 @@ router.get('/products', async (req,res, next) => {
   //this works but badly needs refactoring
   if(!search){
     Product.find(mongoQueryObj)
-      .sort({ price: price })
-      .skip((page * perPage) - perPage).exec((err,result) => {
+      .sort({ price: price }).exec((err,result) => {
         
         res.send({
           total_products: result.length,
+          url:req.originalUrl,
           page_count: (Math.floor(result.length / perPage)),
           page_number: page,
           products: result.slice(page-1, page+11)
@@ -102,6 +102,7 @@ router.get('/products', async (req,res, next) => {
       .skip((page * perPage) - perPage).exec( (err, result) => {
         res.send({
           total_products: result.length,
+          url:req.originalUrl,
           page_count: (Math.floor(result.length / perPage)),
           page_number: page,
           products: result.slice(page - 1, page + 11)
@@ -116,6 +117,7 @@ router.get('/products/:product', (req, res) => {
 //uses the param middleware to find the specific product by ID
   res.send(req.product)
 })
+
 
 router.get('/reviews', async (req,res) => {
 

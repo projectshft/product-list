@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import { fetchProducts } from '../actions'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Button, ButtonGroup } from "reactstrap";
 
 
 class SearchBar extends Component {
@@ -24,6 +25,9 @@ class SearchBar extends Component {
   handleFormtyping = (searchTerm) => {
     this.setState({ searchTerm });
   }
+  onRadioBtnClick(sortByPrice) {
+    this.setState({ sortByPrice });
+  }
 
   render() {
     return <div>
@@ -33,6 +37,7 @@ class SearchBar extends Component {
             <Dropdown isOpen={this.state.dropdownOpen} toggle={() => this.toggleDropdown()}>
             <DropdownToggle caret>{`${this.state.category}`}</DropdownToggle>
               <DropdownMenu>
+                <DropdownItem onClick={() => this.setState({ category: "All" })}>All</DropdownItem>
                 <DropdownItem onClick={() => this.setState({category:"Computers"})}>Computers</DropdownItem>
                 <DropdownItem onClick={() => this.setState({category:"Electronics"})}>Electronics</DropdownItem>
                 <DropdownItem onClick={() => this.setState({category:"Games"})}>Games</DropdownItem>
@@ -55,6 +60,11 @@ class SearchBar extends Component {
               <DropdownItem onClick={() => this.setState({category:"Automotive"})}>Automotive</DropdownItem>
               </DropdownMenu>
             </Dropdown>
+            
+          <ButtonGroup>
+            <Button color="success" onClick={() => this.onRadioBtnClick(-1)} active={this.state.rSelected === 1}>Highest to Lowest</Button>
+            <Button color="info" onClick={() => this.onRadioBtnClick(1)} active={this.state.rSelected === -1}>Lowest To Highest</Button>
+          </ButtonGroup>           
             <button className="btn btn-outline-success my-2 my-sm-0" onClick={() => this.props.fetchProducts(this.state)}>
               Search
             </button>

@@ -2,8 +2,9 @@ const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
 const Review = require("../models/review");
+const User = require('../models/user')
 const fetch = require("node-fetch");
-
+const uid = require('rand-token').uid
 /*=====================================================
 Generate and populate database with data
 NO LONGER NEEDED DATA AS OF 12/20/18 3:11 PM
@@ -42,7 +43,82 @@ NO LONGER NEEDED DATA AS OF 12/20/18 3:11 PM
 //   res.end("Success");
 // });
 
-router.param("product", async function(req, res, next, id) {
+// router.get('/generate-fake-users' , (err,res )=> {
+//   for (let i = 0; i < 100; i++) {
+//     let user = new User({
+//       username: faker.internet.userName(),
+//       cart:[],
+//       password:faker.internet.password()
+//     })
+//     user.save(err => {
+//       if (err) throw err
+//     })
+//     res.send("done?")
+//   }
+// })
+let activeTokens = [];
+
+/*=====================================================
+let { token } = req.body;
+  let authUserToken = activeTokens.find(tokenObj => tokenObj.id === token);
+  //if undef send error
+  if (!authUserToken) {
+    return res.send(401)
+  } else {
+    let authUserModel = await User.findOne({ username: authUserToken.user })
+    if (!authUserModel) {
+      return res.send(404, 'User not found')
+    }
+    let product = await Product.findById(req.body.productId)
+    if (!product) {
+      return res.send(404, "Product not found")
+    }
+=====================================================*/
+
+router.use(async (req, res, next) => {
+  //token checking middleware, if a valid token is submitted it gets added to the request body
+  let { token } = req.body
+  if (!token) {
+    req.tokenObj = null;
+  } else {
+    let authUserToken = activeTokens.find(tokenObj => tokenObj.id === token);
+    if (!authUserToken) {
+      req.tokenObj = null;
+    } else {
+      req.tokenObj = authUserToken
+    }
+  }
+  next();
+})
+
+router.use(async (req, res, next) => {
+  if (req.tokenObj) {
+    let authUser = await User.findOne({ username: req.tokenObj.user })
+    if (!authUser) {
+      req.authUser = null;
+    } else {
+      req.authUser = authUser
+    }
+  }
+  else {
+    req.authUser = null;
+  }
+  next()
+})
+router.use(async (req, res, next) => {
+  if (req.authUser) {
+    let { productId } = req.body;
+    let product = await Product.findById(productId)
+    if (product) {
+      req.productModel = product;
+    }
+  } else {
+    req.productModel = null
+  }
+  next()
+})
+
+router.param("product", async function (req, res, next, id) {
   //this middleware grabs the matching product and adds it to the request
   req.product = await Product.findById(id)
     .populate("reviews")
@@ -50,7 +126,7 @@ router.param("product", async function(req, res, next, id) {
 
   next();
 });
-router.param("review", async function(req, res, next, id) {
+router.param("review", async function (req, res, next, id) {
   //this middleware grabs the review by ID and adds it to the request
   req.review = await Review.findById(id)
     .populate("products")
@@ -162,5 +238,71 @@ router.delete("/products/:product", async (req, res) => {
   await Product.findByIdAndDelete(req.product._id).exec();
   res.send(200);
 });
+
+router.post('/login', async (req, res) => {
+  let { user, passphrase } = req.body;
+  let userObj = await User.findOne({ username: user })
+  if (userObj.password !== passphrase) {
+    res.send(401, "Invalid credentials")
+  } else {
+    let userToken = req.token
+
+    if (!userToken) {
+      //make a new token
+      let newToken = {
+        //id:uid(16),
+        id: "123",
+        user: user,
+        updated: new Date()
+      }
+      activeTokens.push(newToken)
+      return res.send(newToken.id)
+    } else {
+      userToken.updated = new Date()
+      return res.send(userToken.id)
+    }
+  }
+})
+
+router.get('/me/cart', async (req, res) => {
+  if (!req.authUser || !req.tokenObj) {
+    return res.send(401, "Unauthorized access")
+  }
+  res.send(req.authUser.cart)
+})
+
+router.post('/me/cart', async (req, res) => {
+  if (!req.authUser || !req.tokenObj) {
+    return res.send(401, "Unauthorized access")
+  } else {
+    if(!req.productModel){
+      return res.send(404, "Product not found")
+    }
+    req.authUser.cart.push(req.productModel._id);
+    await req.authUser.save();
+    res.send(req.authUser.cart)
+  }
+
+})
+
+router.delete('/me/cart', async (req, res) => {
+  if (!req.authUser || !req.tokenObj) {
+    return res.send(401, "Unauthorized access")
+  } else {
+    if(!req.productModel){
+      return res.send(404, "Product not found")
+    }
+    req.authUser.cart = req.authUser.cart.filter(itemId => itemId != req.productModel.id);
+    await req.authUser.save();
+    res.send(req.authUser.cart)
+  }
+})
+
+/*=====================================================
+lucky user: {
+  "_id" : ObjectId("5c1f7e8e12154951c074a401"),
+"cart" : [ ], "username" : "Chelsea.Runolfsdottir",
+"password" : "50zTjGKHp7ij43p", "__v" : 0 }
+=====================================================*/
 
 module.exports = router;

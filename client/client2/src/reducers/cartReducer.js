@@ -14,6 +14,8 @@ const cartReducer = (state = [] , action) => {
       state = action.payload
       return state
     case GET_CART:
+    state = action.payload
+    console.log(state)
     return state
     default:
       return state

@@ -3,14 +3,14 @@ export const GET_CART = 'GET_CART'
 
 const ROOT_URL = "http://localhost:5000/me/cart";
 
-export const fetchProduct = async id => {
-  let requestUrl = `${ROOT_URL}${id}`;
-  console.log("Getting one product");
+export const getCart = async (token) => {
+ 
+  const initialRequest = await fetch(`${ROOT_URL}?token=${token}`);
 
-  const initialRequest = await fetch(requestUrl);
   const requestJSON = await initialRequest.json();
+  console.log(requestJSON)
   return {
-    type: GET_PRODUCT,
+    type: GET_CART,
     payload: requestJSON
   };
 };

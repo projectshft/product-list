@@ -56,6 +56,8 @@ NO LONGER NEEDED DATA AS OF 12/20/18 3:11 PM
 //     res.send("done?")
 //   }
 // })
+
+//this token array is being used until I want to make a token database.
 let activeTokens = [];
 
 /*=====================================================
@@ -77,7 +79,7 @@ let { token } = req.body;
 
 router.use(async (req, res, next) => {
   //token checking middleware, if a valid token is submitted it gets added to the request body
-  let { token } = req.body
+  let { token } = req.query
   if (!token) {
     req.tokenObj = null;
   } else {
@@ -266,17 +268,17 @@ router.post('/login', async (req, res) => {
 
 router.get('/me/cart', async (req, res) => {
   if (!req.authUser || !req.tokenObj) {
-    return res.send(401, "Unauthorized access")
+    return res.send(401)
   }
   res.send(req.authUser.cart)
 })
 
 router.post('/me/cart', async (req, res) => {
   if (!req.authUser || !req.tokenObj) {
-    return res.send(401, "Unauthorized access")
+    return res.send(401)
   } else {
     if(!req.productModel){
-      return res.send(404, "Product not found")
+      return res.send(404)
     }
     req.authUser.cart.push(req.productModel._id);
     await req.authUser.save();

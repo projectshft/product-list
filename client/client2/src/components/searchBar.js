@@ -8,6 +8,9 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap
 import { Button, ButtonGroup } from "reactstrap";
 import { FaDollarSign, FaAws, FaArrowUp, FaArrowDown } from "react-icons/fa";
 
+/*=====================================================
+TODO: add in cart component
+=====================================================*/
 
 class SearchBar extends Component {
   constructor(props) {
@@ -17,7 +20,8 @@ class SearchBar extends Component {
       dropdownOpen: false,
       category: "All",
       sortByPrice:1,
-      page:1
+      page:1,
+      cartHidden:true,
     };
   }
   toggleDropdown = () => {

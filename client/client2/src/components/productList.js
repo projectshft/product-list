@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
-import _ from "lodash";
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import { fetchProducts } from '../actions'
+import {getCart} from '../actions/getCart'
+import {addCart} from '../actions/addCart'
 import Product from './singleProduct'
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import queryString from "query-string";
 import { FaThumbsUp, FaQuestionCircle } from "react-icons/fa";
 
 export class ProductList extends Component {
-  componentDidMount() {
+  componentDidMount =  async () => {
     //somehow get the products on the state
-    const { fetchProducts } = this.props;
-    
+    const { getCart, addCart } = this.props;
+    await getCart("123")
+    // addCart("123", "5c1e98c14e65ee2a7095478f");
+    console.log(this.props)
   }
   renderProducts = () => {
     if (!this.props.products.products) {
@@ -89,11 +91,12 @@ export class ProductList extends Component {
 
 
 const mapStateToProps = (state) => ({
-  products: state.products
+  products: state.products,
+  cart:state.cart
 })
 
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchProducts }, dispatch);
+  bindActionCreators({ fetchProducts, getCart, addCart }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductList)

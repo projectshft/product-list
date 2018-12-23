@@ -1,5 +1,3 @@
-import queryString from "query-string";
-
 export const GET_PRODUCT = "GET_PRODUCT";
 
 const ROOT_URL = "http://localhost:5000/products/";

@@ -7,7 +7,6 @@ const productListReducer = (state = [], action) => {
   const {type} = action;
   switch (type) {
     case GET_PRODUCTS:
-      
       state = action.payload
       return state
     default:

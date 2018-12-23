@@ -11,6 +11,7 @@ const ProductSchema = new Schema({
   reviews: [{type: Schema.Types.ObjectId, ref: 'review'}]
 });
 
+//plug in paginate to allow easy page numbering
 ProductSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('product', ProductSchema);

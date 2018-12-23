@@ -41,17 +41,6 @@ router.delete('/reviews/:review', (req, res) => {
   });
 });
 
-//   Product.find().populate('reviews', (err, reviews) => {
-//     console.log(reviews[0]);
-//     res.send();
-//   })
-// })
-//   {reviews: {_id: req.params.review}}, (err,review) => {
-//     console.log(review)
-//     res.send();
-//   })
-// })
-
 //route for initially generating data - development only
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -92,4 +81,4 @@ router.get('/generate-fake-reviews', async (req, res, next) => {
  })
 
 
-module.exports = router
+module.exports = router;

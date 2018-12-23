@@ -1,6 +1,7 @@
 const querystring = require('querystring');
 const url = require('url');
 
+//a helper function to get the page number out of the products search query
 const checkPageNumber = (req, totalObjects, itemsPerPage) => {
   const maxPages = Math.ceil(totalObjects/itemsPerPage);
   //pull the page query off the URL
@@ -20,6 +21,7 @@ const checkPageNumber = (req, totalObjects, itemsPerPage) => {
   return page;
 };
 
+//ensures a string that has the first letter capitalized
 const capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 
 module.exports =  { checkPageNumber, capitalize };

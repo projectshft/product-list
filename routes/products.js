@@ -5,8 +5,7 @@ const Review = require('../models/review')
 const url = require('url');
 const { checkPageNumber, capitalize } = require('../utils');
 
-//look into middleware for handling errors
-
+//middleware to pull out the product path param
 router.param('product', (req,res,next,id) => {
   Product.find({_id: id}, (err, product) => {
     if (err && err.name === 'CastError') {
@@ -20,10 +19,17 @@ router.param('product', (req,res,next,id) => {
   })
 })
 
+//GET products route with 4 optional query params: search term, price sort, category, & page #
 router.get('/', (req, res, next) => {
   //design decision - # of products returned at a time
   const productLimitPerPage = 10;
-  let query = Product.find();
+  let query;
+  //filter by the search term first
+  if (req.query.search) {
+    query = Product.find({'name': {"$regex": `${req.query.search}`, "$options": "i"}});
+  } else {
+    query = Product.find();
+  }
   let totalProducts;
   //first filter by the category if necessary
   if (req.query.category) {
@@ -44,7 +50,7 @@ router.get('/', (req, res, next) => {
     totalProducts = num;
     //if there are none, it means there were none in the category
     if (!totalProducts) {
-      res.status(404).send('No products found in that category');
+      res.status(404).send('No products found');
     }
     //util function which returns 0 if there was an error, 1 if no page was specified, and the correct number if a valid page was specified
     const page = checkPageNumber(req, totalProducts, productLimitPerPage);
@@ -60,6 +66,7 @@ router.get('/', (req, res, next) => {
   });
 })
 
+//add a new product
 router.post('/', (req,res) => {
   const { category, price, name, image } = req.body;
   const newProduct = new Product();
@@ -88,6 +95,7 @@ router.post('/', (req,res) => {
 })
 
 
+//get a specific product by ID
 router.get('/:product', (req,res) => {
   //make sure there was a valid product provided
   if (!req.product) {
@@ -96,6 +104,7 @@ router.get('/:product', (req,res) => {
  res.send(req.product);
 })
 
+//add a new review to a specific product
 router.post('/:product/reviews', (req,res) => {
   const { text, userName } = req.body;
   const newReview = new Review();
@@ -120,17 +129,17 @@ router.post('/:product/reviews', (req,res) => {
   });
 })
 
+//delete a specific product
 router.delete('/:product', (req, res) => {
   Product.findOneAndDelete({ _id: req.product._id }, (err, product) => {
     if (err) throw err;
 
-    // Delete review docs
+    // also delete its reviews
     product.reviews.forEach(r => {
       Review.findOneAndDelete({ _id: r._id }, err => {
         if (err) throw err;
       });
     });
-
     res.send( { success: true });
   });
 });

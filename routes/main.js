@@ -36,14 +36,25 @@ router.get('/generate-fake-data', (req,res,next) => {
    res.end()
 })
 
-// GET /products Returns products based on page, limit, and category query parameters.
+/*
+GET /products Returns products based on the page, limit, and category query parameters. 
+   Metadata of the returned object includes:
+      "number_items": <The total number of items from the query>,
+      "number_pages": <The total number of pages from the query>,
+      "current_page": <The current page of the returned values in the response>,
+      "categories": <An array of all unique categories from the Products collection, case insensitive>
+*/
 router.get('/products', (req,res,next) => {
    let page = parseInt(req.query.page) || 1;
    let limit = parseInt(req.query.limit) || 9;
    let itemsToSkip = (page - 1) * limit;
+
+   //builds the category selector
    let category = req.query.category;
    let categoryRegEx = new RegExp(category, "i");
    let categorySelector = category ? {category: categoryRegEx} : {};
+
+   //builds the price sorter
    let sortByPrice = {};
    if ( req.query.price && req.query.price.match(/lowest/i) ) {
       sortByPrice = { price: 'asc' };
@@ -51,17 +62,52 @@ router.get('/products', (req,res,next) => {
       sortByPrice = { price: 'desc' };
    }
 
+   //builds the search selector
+   let searchSelector = {};
+   if (req.query.search) {
+      let searchTermsArray = req.query.search.split(' ');
+      let searchTermsArrayRegEx = searchTermsArray.map(term => new RegExp(term, "ig"));
+      searchSelector = { name: {$in: searchTermsArrayRegEx}};
+   }
+
+   //combine selectors
+   let combinedSelector = {...categorySelector, ...searchSelector};
+
+   //Builds an array of categories from the database.
+   let categories = [];
+   let uniqueCategories = [];
    Product
-      .find(categorySelector, {__v: 0})
+      .find({}, 'category', (err, databaseCategories) => {
+         if (err) throw err
+
+         databaseCategories.forEach(element => {
+            categories.push(element.category.toLowerCase())
+         });
+
+         //only include unique categories from the database, case insensitive
+         uniqueCategories = [...new Set(categories)];         
+      });
+
+   Product
+      .find(combinedSelector, {__v: 0})
       .sort(sortByPrice)
       .skip(itemsToSkip)
       .limit(limit)
       .populate('reviews', {__v: 0})
       .exec((err, products) => {
-         Product.count( categorySelector, (err, count) => {
+
+         Product
+            .count(combinedSelector, (err, count) => {
             if (err) throw err
 
-            res.send({number_items: count, number_pages: Math.ceil(count/limit), current_page: page, products})
+            res.send({
+               number_items: count, 
+               number_pages: Math.ceil(count/limit), 
+               current_page: page,
+               categories: uniqueCategories, 
+               products
+            })
+
             res.end()
          })
       })

@@ -16,5 +16,5 @@ const mainRoutes = require('./routes/main')
 app.use(mainRoutes)
 
 app.listen(8000, () => {
-   console.log('Node.js is listening on port-o-john ' + 8000)
+   console.log('Node.js is listening on port ' + 8000)
 })

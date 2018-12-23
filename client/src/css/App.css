@@ -1,0 +1,16 @@
+.active-page {
+  color: red
+}
+
+img {
+  object-fit: cover;
+}
+
+.page-num {
+  text-align: center;
+  justify-content: center;
+}
+
+.single-page-num {
+  padding: 2px;
+}

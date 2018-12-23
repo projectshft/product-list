@@ -22,7 +22,7 @@ router.param('product', (req,res,next,id) => {
 //GET products route with 4 optional query params: search term, price sort, category, & page #
 router.get('/', (req, res, next) => {
   //design decision - # of products returned at a time
-  const productLimitPerPage = 10;
+  const productLimitPerPage = 9;
   let query;
   //filter by the search term first
   if (req.query.search) {
@@ -50,7 +50,7 @@ router.get('/', (req, res, next) => {
     totalProducts = num;
     //if there are none, it means there were none in the category
     if (!totalProducts) {
-      res.status(404).send('No products found');
+      res.send('No products found');
     }
     //util function which returns 0 if there was an error, 1 if no page was specified, and the correct number if a valid page was specified
     const page = checkPageNumber(req, totalProducts, productLimitPerPage);

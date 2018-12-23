@@ -10,7 +10,7 @@ export const selectCategory = category => {
 export const setNewProducts = products => {
     return {
         type: "NEW_SEARCH",
-        payload: setNewProducts
+        payload: products
     };
 };
 

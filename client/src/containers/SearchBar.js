@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import axios from 'axios';
+import { setNewProducts, selectCategory, selectSort, setNumberOfPages } from "../actions/index";
 
 //contains all searching components (search bar, category filter, and price sort options)
 class SearchBar extends Component {
@@ -11,6 +12,11 @@ class SearchBar extends Component {
         term: '',
         categoryList: new Set()
       }
+    }
+
+    componentDidMount () {
+        this.productSearch();
+        this.setCategories();
     }
     
     onInputChange = term => {
@@ -27,7 +33,7 @@ class SearchBar extends Component {
     }
 
     //conduct a product search with the appropriate query params
-    productSearch = term => {
+    productSearch = () => {
      const url = '/products'
      const params = {
         category: this.props.currentCategory,
@@ -37,8 +43,9 @@ class SearchBar extends Component {
       };
       axios.get(url, { params })
      .then(res => {
-         console.log(res);
-       this.props.setNewProducts(res.docs);
+       console.log(res);
+       this.props.setNewProducts(res.data.docs);
+       this.props.setNumberOfPages(res.data.pages);
      })
      .catch(error => {
        console.error(error);
@@ -47,8 +54,9 @@ class SearchBar extends Component {
 
     //build the category list by pushing into a Set, which ensures no repeats
    setCategories = () => {
-       axios.get('/products').then(res => {
-           res.docs.forEach(product => {
+       axios.get('http://localhost:5000/products').then(res => {
+           console.log(res);
+           res.data.docs.forEach(product => {
             this.state.categoryList.add(product.category);
            })
        })
@@ -56,10 +64,13 @@ class SearchBar extends Component {
 
    //build the category list with all values
    renderCategories = () => {
-      [...this.state.categoryList].map(category => {
-          <option value = {category}>{category}</option>
-      })
-   }
+       console.log([...this.state.categoryList]);
+      return [...this.state.categoryList].map((category,index) => {
+          console.log('mapping categories', category)
+    return <option key={index} value = {category}>{category}</option>
+
+   })
+}
   
     render() {
       return (
@@ -84,13 +95,14 @@ class SearchBar extends Component {
       return {
           currentSort: state.currentSort,
           currentCategory: state.currentCategory,
-          activePage: state.activePage
+          activePage: state.activePage,
+          products: state.products
       }
   }
 
   function mapDispatchToProps(dispatch) {
       return bindActionCreators({
-        selectCategory, setNewProducts, setNumberofPages, selectSort
+        selectCategory, setNewProducts, setNumberOfPages, selectSort
       }, dispatch)
   }
   

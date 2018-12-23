@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ProductDetail from '../components/ProductDetail';
+import ProductDetail from './ProductDetail';
 import { connect } from "react-redux";
 
 
@@ -8,18 +8,26 @@ class ProductGrid extends Component {
 
   //build the list of products using the product detail
   renderList() {
-    return this.props.products.map((product, index) => {
-      return (
-        <ProductDetail key={index} product = {product} />
-      );
-    });
+    if (!this.props.products) {
+      return <div>Search a product to get started</div>
+    } else {
+      console.log('product grid', this.props.products);
+      return this.props.products.map((product, index) => {
+        return (
+          <ProductDetail key={index} product = {product} />
+        );
+      });
+    }
   }
 
   render() {
     return (
-      <ul className="list-group col-sm-4">
+      <div className="container">
+      <div className="row">
         {this.renderList()}
-      </ul>
+      </div>
+      </div>
+
     );
   }
 }

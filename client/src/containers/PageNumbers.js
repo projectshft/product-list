@@ -1,28 +1,27 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { goToSelectedPage } from "../actions/index";
+import PageNumberDetail from "./PageNumberDetail";
 
 //build the page numbers list at the bottom of the page
 class PageNumbers extends Component {
 
     //build a link for each page number and make the selected page active
     renderPageNumbers = () => {
-        let pageNumString = "";
-        for (i = 1; i <= this.props.numPages; i++) {
-            if (i == this.props.activePage) {
-                pageNumString += '<a className ="active" onClick={this.props.goToSelectedPage(i)} key={i}>{i}</a>'
-            } else {
-                pageNumString += '<a onClick={this.props.goToSelectedPage(i)} key={i}>{i}</a>'
-            }
+        console.log(this.props.numPages);
+        let pageNumArr = [];
+        for (let i = 1; i <= this.props.numPages; i++) {
+            pageNumArr.push(i);
         }
+        return pageNumArr.map((p,index) => <PageNumberDetail page={p} key={index} />)
     }
 
     render () {
-        return <Fragment>
-            {this.renderPageNumbers}
-        </Fragment>
+        return <div className="row page-num">
+            {this.renderPageNumbers()}
+        </div>
     };
-
 };
 
 function mapStateToProps(state) {

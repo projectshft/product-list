@@ -13,7 +13,7 @@ export class ProductList extends Component {
   componentDidMount =  async () => {
     //somehow get the products on the state
     const { getCart, addCart } = this.props;
-    await getCart("123")
+    // await getCart("123")
     // addCart("123", "5c1e98c14e65ee2a7095478f");
     console.log(this.props)
   }
@@ -92,7 +92,7 @@ export class ProductList extends Component {
 
 const mapStateToProps = (state) => ({
   products: state.products,
-  cart:state.cart
+  cart:state.cart,
 })
 
 

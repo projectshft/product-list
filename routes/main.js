@@ -252,16 +252,16 @@ router.post('/login', async (req, res) => {
     if (!userToken) {
       //make a new token
       let newToken = {
-        //id:uid(16),
-        id: "123",
+        id:uid(16),
+        // id: "123",
         user: user,
         updated: new Date()
       }
       activeTokens.push(newToken)
-      return res.send(newToken.id)
+      return res.send(JSON.stringify(newToken))
     } else {
       userToken.updated = new Date()
-      return res.send(userToken.id)
+      return res.send(JSON.stringify(userToken))
     }
   }
 })

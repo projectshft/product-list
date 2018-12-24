@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import { fetchProducts } from '../actions'
+import {login} from '../actions/login'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Button, ButtonGroup } from "reactstrap";
 import { FaDollarSign, FaAws, FaArrowUp, FaArrowDown } from "react-icons/fa";
@@ -15,14 +15,7 @@ TODO: add in cart component
 class SearchBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      searchTerm: "",
-      dropdownOpen: false,
-      category: "All",
-      sortByPrice:1,
-      page:1,
-      cartHidden:true,
-    };
+    this.state = { searchTerm: "", dropdownOpen: false, category: "All", sortByPrice: 1, page: 1, cartHidden: true, username: "Chelsea.Runolfsdottir", passphrase: "50zTjGKHp7ij43p" };
   }
   toggleDropdown = () => {
     this.setState({ dropdownOpen: !this.state.dropdownOpen })
@@ -30,6 +23,12 @@ class SearchBar extends Component {
   }
   handleFormtyping = (searchTerm) => {
     this.setState({ searchTerm });
+  }
+  handleUsernameTyping = (username ) => {
+    this.setState({username})
+  }
+  handlePassphraseTyping = (passphrase) => {
+    this.setState({ passphrase })
   }
   onRadioBtnClick(sortByPrice) {
     this.setState({ sortByPrice });
@@ -39,7 +38,17 @@ class SearchBar extends Component {
     return <div>
         <nav className="navbar navbar-dark bg-dark searchBar ">
           <div>
-          <Link to="/products"><h1 className="brand"><FaDollarSign/>camazon <FaAws /></h1></Link>
+            <Link to="/products">
+              <h1 className="brand">
+                <FaDollarSign />
+                camazon <FaAws />
+              </h1>
+            </Link>
+            <input className="form-control ml-auto" value={this.state.username} onChange={event => this.handleUsernameTyping(event.target.value)} placeholder="Username" />
+            <input type="password" className="form-control ml-auto" value={this.state.passphrase} onChange={event => this.handlePassphraseTyping(event.target.value)} placeholder="Password" />
+            <button className="btn btn-outline-info my-2 my-sm-0" onClick={() => this.props.login(this.state.username, this.state.passphrase)}>
+              Login
+            </button>
           </div>
           <div className="form-inline ml-auto">
             <input className="form-control ml-auto" value={this.state.searchTerm} onChange={event => this.handleFormtyping(event.target.value)} placeholder="Search for products" />
@@ -156,16 +165,18 @@ class SearchBar extends Component {
 
             <ButtonGroup>
               <Button color="success" onClick={() => this.onRadioBtnClick(-1)} active={this.state.rSelected === 1}>
-                <FaDollarSign /><FaArrowUp />
+                <FaDollarSign />
+                <FaArrowUp />
               </Button>
               <Button color="info" onClick={() => this.onRadioBtnClick(1)} active={this.state.rSelected === -1}>
-              <FaDollarSign /><FaArrowDown />
+                <FaDollarSign />
+                <FaArrowDown />
               </Button>
             </ButtonGroup>
             <Link to="/products">
               <button className="btn btn-outline-success my-2 my-sm-0" onClick={() => this.props.fetchProducts(this.state)}>
                 Search
-              </button>{" "}
+              </button>
             </Link>
           </div>
         </nav>
@@ -173,10 +184,15 @@ class SearchBar extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+  user:state.user
+})
+
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ fetchProducts }, dispatch);
+  return bindActionCreators({ fetchProducts, login }, dispatch);
 }
 
 
 
-export default connect(null, mapDispatchToProps)(SearchBar)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)

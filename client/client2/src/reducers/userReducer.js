@@ -1,10 +1,10 @@
-import {LOGIN} from './actions/login'
+// import {LOGIN} from './actions/login'
 
-const userReducer = (state = {token:""} , action) => {
+const userReducer = (state = {} , action) => {
   let {type} = action
   switch (type) {
-    case LOGIN:
-    state.token = action.payload
+    case "LOGIN":
+    state = action.payload
       return state
     default:
       return state

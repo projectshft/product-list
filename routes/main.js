@@ -9,8 +9,10 @@ router.get('/generate-fake-data', (req, res, next) => {
     let product = new Product();
     let review = new Review();
 
-    product.category = faker.commerce.department()
-    product.name = faker.commerce.productName()
+    let categoryData = faker.commerce.department();
+  
+    product.category = categoryData.trim().toLowerCase();
+    product.name = faker.commerce.productName();
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
 
@@ -34,36 +36,31 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
-
-  Product
-    .find({})
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .populate('reviews')
-    .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-        res.send(products)
+ //set up a query to represent the category property of the product
+  let category = req.query.category;
+  if (!category) {
+    Product
+      .find({})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .populate('reviews') //not working the way I'd expect
+      .exec((err, products) => {
+        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        Product.count().exec((err, count) => {
+          if (err) return next(err)
+          res.send(products)
+        })
       })
-    })
+    }
+  category = category.toLowerCase();
+  Product.find({ category: category}).exec((err, products) => {
+    // allow case insensitive querying
+    if (err) return next(err)
+    return res.send(products)
+  })  
 })
 
 //GET products by id
-// router.get('/products/:product', (req, res) => {
-//   const { product } = req.params;
-//   //this doesn't work :(
-//   if (!product) {
-//     res.writeHead(404, 'Product Not Found');
-//     return res.end("Product Not Found!");
-//   }
-//   Product.find({_id: product}).exec((err, product)=> {
-//     if (err) {
-//       console.log(err)
-//     }
-//       res.send(JSON.stringify(product))
-//   })
-// })
 
 router.get('/products/:product', (req, res) => {
   Product.findById(req.params.product, (err, product) =>{
@@ -93,18 +90,6 @@ router.get('/reviews', (req, res, next) => {
 
 //POST /products: Creates a new product in the database 
 router.post('/products', (req, res) => {
-//   let newProduct = new Product();
-
-//   newProduct.category = req.body.category;
-//   newProduct.name = req.body.name;
-//   newProduct.price = req.body.price;
-//   newProduct.image = req.body.image;
-
-//   newProduct.save((err) => {
-//     if (err) throw err
-//   })
-//   res.send(`${newProduct.name} has been added to the database`)
-// })
   let newProduct = new Product(req.body);
   newProduct.save()
   res.send(`${newProduct.name} has been successfully added to the database`);
@@ -115,7 +100,9 @@ router.post('/products/:product/review', (req, res) => {
   Product.findById(req.params.product, (err, product) => {   
     let newReview = new Review(req.body);
     newReview.save();
-    product.reviews.push(newReview._id);
+    let referenceId = newReview._id;
+    Review.findOne({id: referenceId}).populate(reviews)
+    product.reviews.push(referenceId);
   })
   res.send(`Review has been successfully added to the product`);
 })

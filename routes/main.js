@@ -96,6 +96,7 @@ router.use(async (req, res, next) => {
 router.use(async (req, res, next) => {
   if (req.tokenObj) {
     let authUser = await User.findOne({ username: req.tokenObj.user })
+    .populate('cart')
     if (!authUser) {
       req.authUser = null;
     } else {
@@ -245,7 +246,7 @@ router.post('/login', async (req, res) => {
   let { user, passphrase } = req.body;
   let userObj = await User.findOne({ username: user })
   if (userObj.password !== passphrase) {
-    res.send(401, "Invalid credentials")
+    res.status(401).send({ error: "invalid credentials" });
   } else {
     let userToken = req.token
 
@@ -268,17 +269,16 @@ router.post('/login', async (req, res) => {
 
 router.get('/me/cart', async (req, res) => {
   if (!req.authUser || !req.tokenObj) {
-    return res.send(401)
-  }
+    res.status(401).send({ error: "invalid credentials" });  }
   res.send(req.authUser.cart)
 })
 
 router.post('/me/cart', async (req, res) => {
   if (!req.authUser || !req.tokenObj) {
-    return res.send(401)
+    res.status(401).send({ error: "invalid credentials" });
   } else {
     if(!req.productModel){
-      return res.send(404)
+      res.status(404).send({ error: "product not found" });
     }
     req.authUser.cart.push(req.productModel._id);
     await req.authUser.save();
@@ -294,7 +294,7 @@ router.delete('/me/cart', async (req, res) => {
     if(!req.productModel){
       return res.send(404, "Product not found")
     }
-    req.authUser.cart = req.authUser.cart.filter(itemId => itemId != req.productModel.id);
+    req.authUser.cart = req.authUser.cart.filter(item => item.id != req.productModel.id);
     await req.authUser.save();
     res.send(req.authUser.cart)
   }

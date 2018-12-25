@@ -4,6 +4,8 @@ import { Badge } from "reactstrap";
 import {FaSearch} from 'react-icons/fa'
 import { bindActionCreators } from "redux";
 import { addCart } from '../actions/addCart';
+import { getCart } from "../actions/getCart";
+
 import { connect } from "react-redux";
 
 
@@ -21,6 +23,10 @@ class Product extends Component  {
   constructor(props) {
     super(props);
   }
+  addAndGetCart = async  (token, id) => {
+    await this.props.addCart(token,id)
+    await this.props.getCart(token)
+  }
 
   render () {
     let product = this.props.productItemAsProps
@@ -36,7 +42,7 @@ class Product extends Component  {
           <p>{product.description}</p>
           <div className="reviewBtn">
             <Link to={`/products/${product._id}`}>Reviews</Link>
-          <button className="btn btn-confirm" onClick={() => this.props.addCart(this.props.user.id,product._id)}>
+          <button className="btn btn-confirm" onClick={() => this.addAndGetCart(this.props.user.id,product._id)}>
             Add to cart
             </button>
           </div>
@@ -54,7 +60,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ addCart }, dispatch);
+  return bindActionCreators({ addCart, getCart }, dispatch);
 }
 
 

@@ -7,6 +7,7 @@ import {login} from '../actions/login'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Button, ButtonGroup } from "reactstrap";
 import { FaDollarSign, FaAws, FaArrowUp, FaArrowDown } from "react-icons/fa";
+import Cart from './Cart'
 
 /*=====================================================
 TODO: add in cart component
@@ -44,13 +45,16 @@ class SearchBar extends Component {
                 camazon <FaAws />
               </h1>
             </Link>
-            <input className="form-control ml-auto" value={this.state.username} onChange={event => this.handleUsernameTyping(event.target.value)} placeholder="Username" />
+            <div className="form-inline">
+            <input className="form-control form-inline ml-auto" value={this.state.username} onChange={event => this.handleUsernameTyping(event.target.value)} placeholder="Username" />
             <input type="password" className="form-control ml-auto" value={this.state.passphrase} onChange={event => this.handlePassphraseTyping(event.target.value)} placeholder="Password" />
             <button className="btn btn-outline-info my-2 my-sm-0" onClick={() => this.props.login(this.state.username, this.state.passphrase)}>
               Login
             </button>
           </div>
+          </div>
           <div className="form-inline ml-auto">
+          <Cart />
             <input className="form-control ml-auto" value={this.state.searchTerm} onChange={event => this.handleFormtyping(event.target.value)} placeholder="Search for products" />
             <Dropdown isOpen={this.state.dropdownOpen} toggle={() => this.toggleDropdown()}>
               <DropdownToggle caret>{`${this.state.category}`}</DropdownToggle>

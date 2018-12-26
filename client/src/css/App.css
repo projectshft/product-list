@@ -1,9 +1,32 @@
-.active-page {
-  color: red
+@import url('https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei');
+
+body {
+  background-color: bisque;
+  font-family: 'ZCOOL XiaoWei', serif;
+  text-align: center;
 }
 
 img {
   object-fit: cover;
+  padding: 5px;
+}
+
+input {
+  padding-right: 3px;
+}
+
+label {
+  padding: 3px;
+  margin-left: 5px;
+}
+
+select {
+  height: 2rem;
+  margin-left: 5px;
+}
+
+.active-page {
+  color: red
 }
 
 .page-num {
@@ -11,6 +34,24 @@ img {
   justify-content: center;
 }
 
+.single-page-num:hover {
+  cursor: pointer;
+}
+
 .single-page-num {
-  padding: 2px;
+  padding: 4px;
+  font-size: 1.2rem;
+}
+
+.page-select {
+  padding: 4px;
+}
+
+.product {
+  text-align: center;
+  background-color: lightblue;
+}
+
+.search-bar {
+  padding: 5px;
 }

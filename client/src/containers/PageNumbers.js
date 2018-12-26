@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { goToSelectedPage } from "../actions/index";
 import PageNumberDetail from "./PageNumberDetail";
 
 //build the page numbers list at the bottom of the page
@@ -9,7 +7,6 @@ class PageNumbers extends Component {
 
     //build a link for each page number and make the selected page active
     renderPageNumbers = () => {
-        console.log(this.props.numPages);
         let pageNumArr = [];
         for (let i = 1; i <= this.props.numPages; i++) {
             pageNumArr.push(i);
@@ -18,9 +15,14 @@ class PageNumbers extends Component {
     }
 
     render () {
-        return <div className="row page-num">
+        if (this.props.numPages === 0) {
+            return <div></div>
+        } else {
+            return <div className="row page-num">
+            <p className="page-select">Select Page: </p>
             {this.renderPageNumbers()}
-        </div>
+            </div>
+        }
     };
 };
 
@@ -31,10 +33,5 @@ function mapStateToProps(state) {
     };
   };
 
-  function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        goToSelectedPage
-      }, dispatch)
-  };
 
-  export default connect(mapStateToProps, mapDispatchToProps)(PageNumbers);
+  export default connect(mapStateToProps)(PageNumbers);

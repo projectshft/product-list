@@ -39,6 +39,14 @@ router.delete('/reviews/:review', (req, res) => {
   });
 });
 
+router.get('/categories', (req, res) => {
+  const query = Product.find({}).select('category -_id');
+   query.exec((err, categories) => {
+    if (err) throw err;
+    res.send(categories);
+  })
+})
+
 //route for initially generating data - development only
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {

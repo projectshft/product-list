@@ -38,24 +38,18 @@ router.get('/', (req, res, next) => {
   //then sort by the price if necessary
   if (req.query.price) {
     if (req.query.price === "highest") {
-      query.sort({'price': 'desc'}); 
+      query.sort({'price': -1}); 
     } else if (req.query.price === "lowest") {
-      query.sort({'price': 'asc'}); 
-    } else {
-      res.status(400).send("Invalid price query - must be highest or lowest");
-    }
+      query.sort({'price': 1}); 
+    } else {}
   }
   //then get the count 
   query.count((err,num) => {
     totalProducts = num;
-    //if there are none, it means there were none in the category
-    if (!totalProducts) {
-      res.send('No products found');
-    }
     //util function which returns 0 if there was an error, 1 if no page was specified, and the correct number if a valid page was specified
     const page = checkPageNumber(req, totalProducts, productLimitPerPage);
     if (page === 0) {
-      res.status(404).send('Page not found');
+      res.end();
     } else {
     //once the page number is parsed, figure out if there was a category or sort by price passed
         //if neither, use mongoose's paginate package to return the requested page with a limit of 10 products

@@ -25,4 +25,3 @@ const checkPageNumber = (req, totalObjects, itemsPerPage) => {
 const capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 
 module.exports =  { checkPageNumber, capitalize };
-

@@ -8,27 +8,25 @@ class ProductGrid extends Component {
 
   //build the list of products using the product detail
   renderList() {
-    if (!this.props.products) {
-      return <div>Search a product to get started</div>
-    } else {
-      console.log('product grid', this.props.products);
       return this.props.products.map((product, index) => {
         return (
           <ProductDetail key={index} product = {product} />
         );
       });
     }
-  }
 
   render() {
-    return (
-      <div className="container">
-      <div className="row">
+    if (!this.props.products || this.props.products.length === 0) {
+      return <div>No products found - try a new search</div>
+    } else {
+      return (
+        <div className="container">
+        <div className="row">
         {this.renderList()}
-      </div>
-      </div>
-
-    );
+        </div>
+        </div>
+      )
+    }
   }
 }
 

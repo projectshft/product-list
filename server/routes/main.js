@@ -3,7 +3,7 @@ const faker = require('faker')
 const Product = require('../models/product')
 const queryString = require('querystring')
 const Review = require('../models/review')
-const mongoose = require('mongoose')
+
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -45,17 +45,23 @@ router.get('/products', (req, res, next) => {
   const perPage = 9
 
   // return the first page by default
-  const {page} = req.query.page || 1
+  const page = req.query.page || 1
  //set up a query to represent the category property of the product
-  let {category} = req.query.category;
-  let {price} = req.query.price;
+  let category = req.query.category;
+  let price = req.query.price;
+  let priceSort;
 
+  if (price === 'highest') {
+    priceSort = -1 
+  } else {
+    priceSort = 1
+  };
+  
   if (!category && !price) {
-  Product
+    Product
     .find({})
     .skip((perPage * page) - perPage)
     .limit(perPage)
-    .populate('reviews') //not working the way I'd expect
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Product.count().exec((err, count) => {
@@ -65,26 +71,46 @@ router.get('/products', (req, res, next) => {
     })
   }
   //filter products by their category
-  if (category) {
+  if (category && !price) {
     category = category.toLowerCase();
-    Product.find({ category: category}).exec((err, products) => {
-      if (err) return next(err)
-      return res.send(products)
+    Product
+    .find({ category: category})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+      Product.count().exec((err, count) => {
+        if (err) return next(err)
+        return res.send(products)
+      })
     })
   }
   //sort products by price
-  if (price) {
-    if (price === 'highest') {
-      Product.find({}).sort({ price : -1 }).exec((err, products) => {
+  if (price && !category) {
+    Product.find({})
+    .sort({ price : priceSort })
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err)
+          return res.send(products)
+        })
+    })
+  }
+  //sort by price and filtered by category
+  if (price && category){
+    category = category.toLowerCase();
+    Product
+    .find({ category: category})
+    .sort({ price : priceSort })
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+      Product.count().exec((err, count) => {
         if (err) return next(err)
         return res.send(products)
       })
-    } else if (price === 'lowest') {
-      Product.find([{ $sort : { price: 'asc' }}]).exec((err, products) => {
-        if (err) return next(err)
-        return res.send(products)
-      })
-    }
+    })
   }
 })
 
@@ -124,12 +150,19 @@ router.post('/products', (req, res) => {
 })
 //POST /:product/review: Creates a new review in the database by adding it to the correct product's reviews array.
 router.post('/products/:product/review', (req, res) => {
+  //*****this will need addtional work*****
   //find product by id
+  let { productId } = req.params.product;
   Product.findById(req.params.product, (err, product) => {   
-    let newReview = new Review(req.body);
+    let newReview = new Review({
+        userName :  req.body.userName,
+        text : req.body.text,
+        product : productId
+    });
+    // newReview.product === productId;
     newReview.save();
     let referenceId = newReview._id;
-    Review.findOne({_id: referenceId}).populate(reviews)
+    Review.findOne({_id: referenceId});
     product.reviews.push(referenceId);
   })
   res.send(`Review has been successfully added to the product`);

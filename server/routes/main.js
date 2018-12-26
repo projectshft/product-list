@@ -3,65 +3,92 @@ const faker = require('faker')
 const Product = require('../models/product')
 const queryString = require('querystring')
 const Review = require('../models/review')
+const mongoose = require('mongoose')
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
-    let review = new Review();
+    //sets up a random amount of reviews for every product
+    let reviews = Math.floor(Math.random() * 10);
 
     let categoryData = faker.commerce.department();
-  
+    //this fixes issues with inconsistent white-spacing and casing in the department results of faker
     product.category = categoryData.trim().toLowerCase();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png';
+    product.reviews = [];
 
-    review.userName = faker.internet.userName();
-    review.text = faker.lorem.sentence();
+    for (let i = 0; i < reviews; i++) {
+      //populate the reviews section of products
+      let review = new Review({
+        userName :  faker.internet.userName(),
+        text : faker.lorem.sentence(),
+        product : product._id
+      });
+      review.save((err) => {
+        if (err) throw err
+      });
+      product.reviews.push(review);
+    }
 
     product.save((err) => {
       if (err) throw err
     })
 
-    review.save((err) => {
-      if (err) throw err
-    })
-  }
   res.end('Success!')
-})
+  }
+});
 
 //GET all products with a limit of 40 per page
 router.get('/products', (req, res, next) => {
   const perPage = 9
 
   // return the first page by default
-  const page = req.query.page || 1
+  const {page} = req.query.page || 1
  //set up a query to represent the category property of the product
-  let category = req.query.category;
-  if (!category) {
-    Product
-      .find({})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .populate('reviews') //not working the way I'd expect
-      .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-        Product.count().exec((err, count) => {
-          if (err) return next(err)
-          res.send(products)
-        })
+  let {category} = req.query.category;
+  let {price} = req.query.price;
+
+  if (!category && !price) {
+  Product
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .populate('reviews') //not working the way I'd expect
+    .exec((err, products) => {
+      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+      Product.count().exec((err, count) => {
+        if (err) return next(err)
+        return res.send(products)
+      })
+    })
+  }
+  //filter products by their category
+  if (category) {
+    category = category.toLowerCase();
+    Product.find({ category: category}).exec((err, products) => {
+      if (err) return next(err)
+      return res.send(products)
+    })
+  }
+  //sort products by price
+  if (price) {
+    if (price === 'highest') {
+      Product.find({}).sort({ price : -1 }).exec((err, products) => {
+        if (err) return next(err)
+        return res.send(products)
+      })
+    } else if (price === 'lowest') {
+      Product.find([{ $sort : { price: 'asc' }}]).exec((err, products) => {
+        if (err) return next(err)
+        return res.send(products)
       })
     }
-  category = category.toLowerCase();
-  Product.find({ category: category}).exec((err, products) => {
-    // allow case insensitive querying
-    if (err) return next(err)
-    return res.send(products)
-  })  
+  }
 })
 
 //GET products by id
-
 router.get('/products/:product', (req, res) => {
   Product.findById(req.params.product, (err, product) =>{
     res.send(product)
@@ -70,6 +97,7 @@ router.get('/products/:product', (req, res) => {
 
 //GET all reviews with a limit of 40 per page
 router.get('/reviews', (req, res, next) => {
+  //returns 40 review per page
   const perPage = 40
 
   // return the first page by default
@@ -101,7 +129,7 @@ router.post('/products/:product/review', (req, res) => {
     let newReview = new Review(req.body);
     newReview.save();
     let referenceId = newReview._id;
-    Review.findOne({id: referenceId}).populate(reviews)
+    Review.findOne({_id: referenceId}).populate(reviews)
     product.reviews.push(referenceId);
   })
   res.send(`Review has been successfully added to the product`);
@@ -125,7 +153,6 @@ router.delete('/reviews/:review', (req, res) => {
     res.send(`This review has been successfully removed from database`)
   })
 })
-
 
 module.exports = router
 

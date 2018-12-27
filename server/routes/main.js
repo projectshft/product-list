@@ -5,12 +5,11 @@ const queryString = require('querystring')
 const Review = require('../models/review')
 
 
-router.get('/generate-fake-data', (req, res, next) => {
+router.get('/api/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
     //sets up a random amount of reviews for every product
     let reviews = Math.floor(Math.random() * 10);
-
     let categoryData = faker.commerce.department();
     //this fixes issues with inconsistent white-spacing and casing in the department results of faker
     product.category = categoryData.trim().toLowerCase();
@@ -18,7 +17,6 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png';
     product.reviews = [];
-
     for (let i = 0; i < reviews; i++) {
       //populate the reviews section of products
       let review = new Review({
@@ -31,32 +29,32 @@ router.get('/generate-fake-data', (req, res, next) => {
       });
       product.reviews.push(review);
     }
-
     product.save((err) => {
       if (err) throw err
     })
-
   res.end('Success!')
   }
 });
 
-//GET all products with a limit of 40 per page
-router.get('/products', (req, res, next) => {
+//GET all products with a limit of 9 per page
+router.get('/api/products', (req, res, next) => {
   const perPage = 9
 
   // return the first page by default
   const page = req.query.page || 1
- //set up a query to represent the category property of the product
   let category = req.query.category;
   let price = req.query.price;
   let priceSort;
 
+  //in this format, this conditional will prevent a messy
+  //nested conditional within the querying
   if (price === 'highest') {
     priceSort = -1 
   } else {
     priceSort = 1
   };
   
+  //return the first 9 products with no specific conditions for their return
   if (!category && !price) {
     Product
     .find({})
@@ -70,6 +68,7 @@ router.get('/products', (req, res, next) => {
       })
     })
   }
+
   //filter products by their category
   if (category && !price) {
     category = category.toLowerCase();
@@ -84,7 +83,8 @@ router.get('/products', (req, res, next) => {
       })
     })
   }
-  //sort products by price
+
+  //sort by price but not filtered by category
   if (price && !category) {
     Product.find({})
     .sort({ price : priceSort })
@@ -97,7 +97,7 @@ router.get('/products', (req, res, next) => {
         })
     })
   }
-  //sort by price and filtered by category
+  //sort by price and filter by category
   if (price && category){
     category = category.toLowerCase();
     Product
@@ -115,14 +115,14 @@ router.get('/products', (req, res, next) => {
 })
 
 //GET products by id
-router.get('/products/:product', (req, res) => {
+router.get('/api/products/:product', (req, res) => {
   Product.findById(req.params.product, (err, product) =>{
     res.send(product)
   })
 })
 
 //GET all reviews with a limit of 40 per page
-router.get('/reviews', (req, res, next) => {
+router.get('/api/reviews', (req, res, next) => {
   //returns 40 review per page
   const perPage = 40
 
@@ -143,14 +143,14 @@ router.get('/reviews', (req, res, next) => {
 })
 
 //POST /products: Creates a new product in the database 
-router.post('/products', (req, res) => {
+router.post('/api/products', (req, res) => {
   let newProduct = new Product(req.body);
   newProduct.save()
   res.send(`${newProduct.name} has been successfully added to the database`);
 })
 //POST /:product/review: Creates a new review in the database by adding it to the correct product's reviews array.
-router.post('/products/:product/review', (req, res) => {
-  //*****this will need addtional work*****
+router.post('/api/products/:product/review', (req, res) => {
+  //*****this will need additional work*****
   //find product by id
   let { productId } = req.params.product;
   Product.findById(req.params.product, (err, product) => {   
@@ -169,7 +169,7 @@ router.post('/products/:product/review', (req, res) => {
 })
 
 //DELETE /products/:product: Deletes a product by id
-router.delete('/products/:product', (req, res) => {
+router.delete('/api/products/:product', (req, res) => {
   //find the product by the id
   let productToRemoveId = req.params.product;
   Product.remove({_id: productToRemoveId}, (err, product) =>{
@@ -179,7 +179,7 @@ router.delete('/products/:product', (req, res) => {
 })
 
 //DELETE /reviews/:review : Deletes a review by id
-router.delete('/reviews/:review', (req, res) => {
+router.delete('/api/reviews/:review', (req, res) => {
   let reviewToRemoveId = req.params.review;
   Review.remove({_id: reviewToRemoveId}, (err, review) =>{
     if (err) throw err;

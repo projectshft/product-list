@@ -4,7 +4,10 @@
   "description": "This project has been created by a student at Project Shift, a software engineering fellowship located in Downtown Durham.  The work in this repository is wholly of the student based on a sample starter project that can be accessed by looking at the repository that this project forks.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && yarn start",
+    "server": "nodemon server/server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,7 @@
   "homepage": "https://github.com/mortforn/product-list#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "boostrap": "^2.0.0",
     "chai": "^4.2.0",
     "chai-http": "^4.2.0",
     "chai-sorted": "^0.2.0",
@@ -28,5 +32,8 @@
     "mongoose": "^5.4.0",
     "nodemon": "^1.18.9",
     "querystring": "^0.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
   }
 }

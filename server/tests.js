@@ -11,7 +11,7 @@ describe('/get generate fake data', () => {
   it.only('should generate fake products', done => {
     chai
     .request(app)
-    .get('/generate-fake-data')
+    .get('/api/generate-fake-data')
     .end((err, res) => {
       assert.isNotNull(res.body);
       expect(err).to.be.null;
@@ -26,7 +26,7 @@ describe('/get products', () => {
   it.only('should GET all products', done => {
     chai
     .request(app)
-    .get('/products')
+    .get('/api/products')
     .end((err, res) => {
       assert.isNotNull(res.body);
       expect(err).to.be.null;
@@ -43,7 +43,7 @@ describe('/get reviews', () => {
   it.only('should GET all reviews', done => {
     chai
     .request(app)
-    .get('/reviews')
+    .get('/api/reviews')
     .end((err, res) => {
       assert.isNotNull(res.body);
       expect(err).to.be.null;
@@ -61,7 +61,7 @@ describe('/get products/:product', () => {
     //how do i get this to work???
     chai
     .request(app)
-    .get('/products/5c1d4ef7dac74071f15619a0')
+    .get('/api/products/5c1d4ef7dac74071f15619a0')
     .end((err, res) => {
       assert.isNotNull(res.body);
       expect(err).to.be.null;

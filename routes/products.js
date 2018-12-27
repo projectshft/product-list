@@ -1,13 +1,12 @@
 const router = require('express').Router()
-const querystring = require('querystring');
 const Product = require('../models/product')
 const Review = require('../models/review')
-const url = require('url');
 const { checkPageNumber, capitalize } = require('../utils');
 
 //middleware to pull out the product path param
 router.param('product', (req,res,next,id) => {
   Product.find({_id: id}, (err, product) => {
+    //if it's a bad ID, it will register as a CastError
     if (err && err.name === 'CastError') {
       res.status(404);
       res.send('Product not found: invalid product ID');
@@ -20,7 +19,7 @@ router.param('product', (req,res,next,id) => {
 })
 
 //GET products route with 4 optional query params: search term, price sort, category, & page #
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   //design decision - # of products returned at a time
   const productLimitPerPage = 9;
   let query;
@@ -31,7 +30,7 @@ router.get('/', (req, res, next) => {
     query = Product.find();
   }
   let totalProducts;
-  //first filter by the category if necessary
+  //first filter by the category if necessary (match the case appropriately)
   if (req.query.category) {
     query.and({'category': capitalize(req.query.category)});
   }
@@ -41,14 +40,18 @@ router.get('/', (req, res, next) => {
       query.sort({'price': -1}); 
     } else if (req.query.price === "lowest") {
       query.sort({'price': 1}); 
-    } else {}
+    } else {
+      //don't sort by anything
+    }
   }
   //then get the count 
   query.count((err,num) => {
+    if (err) throw err;
     totalProducts = num;
     //util function which returns 0 if there was an error, 1 if no page was specified, and the correct number if a valid page was specified
     const page = checkPageNumber(req, totalProducts, productLimitPerPage);
     if (page === 0) {
+      //no products found, but that's not an error - just something to be handled on client side
       res.end();
     } else {
     //once the page number is parsed, figure out if there was a category or sort by price passed
@@ -56,7 +59,7 @@ router.get('/', (req, res, next) => {
         Product.paginate(query, { page: page, limit: productLimitPerPage }, (err, products) => {
             res.send(products);
         })
-    }
+      }
   });
 })
 
@@ -82,7 +85,6 @@ router.post('/', (req,res) => {
   if (!image) {
     newProduct.image = 'http://lorempixel.com/640/480/cats';
   }
-
   newProduct.save(() => {
     res.send(newProduct._id);
   });

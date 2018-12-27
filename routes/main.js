@@ -6,7 +6,7 @@ const checkPageNumber = require('../utils');
 
 
 router.get('/reviews', (req,res) => {
-  //design decision - reviews returned at a time
+  //design decision - # of reviews returned at a time
   const reviewLimitPerPage = 40;
   Review.find({}, (err, reviews) => {
     if (err) throw err;
@@ -31,6 +31,7 @@ router.delete('/reviews/:review', (req, res) => {
 
     // Remove the review from the product reviews array
     Product.findOne({ _id: review.product._id }, (err, product) => {
+      if (err) throw err;
       product.reviews.splice(product.reviews.indexOf(review._id), 1);
       product.save(() => {
         res.send( { success: true });

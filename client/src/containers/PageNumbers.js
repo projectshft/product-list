@@ -31,7 +31,7 @@ function mapStateToProps(state) {
       activePage: state.activePage,
       numPages: state.numPages
     };
-  };
+};
 
 
-  export default connect(mapStateToProps)(PageNumbers);
+export default connect(mapStateToProps)(PageNumbers);

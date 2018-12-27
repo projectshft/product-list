@@ -14,10 +14,7 @@ class SearchBar extends Component {
       }
     }
 
-    componentDidMount () {
-        this.setCategories();
-    }
-    
+    //on any selection, update the appropriate prop/state and then reset the page count to 1
     onInputChange = term => {
       this.setState({term})
       this.props.goToSelectedPage(1);
@@ -35,37 +32,48 @@ class SearchBar extends Component {
 
     //conduct a product search with the appropriate query params
     productSearch = () => {
-     const url = '/products'
-     const params = {
-        category: this.props.currentCategory,
-        price: this.props.currentSort,
-        page: this.props.activePage,
-        search: this.state.term
-      };
-      axios.get(url, { params })
-     .then(res => {
-       if (res.data.docs) {
-        this.props.setNewProducts(res.data.docs);
-        this.props.setNumberOfPages(res.data.pages);
-       } else {
-           this.props.setNewProducts([]);
-           this.props.setNumberOfPages(0);
-       }
-     })
-     .catch(error => {
-       console.error(error);
-     });
-   }
+        const url = '/products'
+        const params = {
+            category: this.props.currentCategory,
+            price: this.props.currentSort,
+            page: this.props.activePage,
+            search: this.state.term
+        };
+        axios.get(url, { params })
+        .then(res => {
+            //if there are products in the response, then update the products and number of pages in the store
+            if (res.data.docs) {
+            this.props.setNewProducts(res.data.docs);
+            this.props.setNumberOfPages(res.data.pages);
+            //otherwise, make them empty
+            } else {
+            this.props.setNewProducts([]);
+            this.props.setNumberOfPages(0);
+            }
+        })
+        .catch(error => {
+        console.error(error);
+        });
+    }
 
     //build the category list by pushing into a Set, which ensures no repeats
-   setCategories = () => {
+    setCategories = () => {
+       let newCategorySet = new Set();
        axios.get('http://localhost:5000/categories').then(res => {
            res.data.forEach(category => {
-            this.state.categoryList.add(category.category);
+            newCategorySet.add(category.category);
            })
+       }).then(() => {
+        this.setState({ categoryList: newCategorySet })
        })
    }
 
+   //set the categories when it initially mounts
+   componentDidMount = () => {
+       this.setCategories();
+   }
+
+   //then every time there is an update in the search bar, fetch based on those updated params, which will re-render
    componentDidUpdate = () => {
        this.productSearch();
    }
@@ -92,7 +100,6 @@ class SearchBar extends Component {
               <option value="highest">Price: Highest to Lowest</option>
               <option value="lowest">Price: Lowest to Highest</option>
           </select>
-          <button onClick={this.productSearch}>Search</button>
           </div>
         );
       }

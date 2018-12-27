@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import ProductDetail from './ProductDetail';
 import { connect } from "react-redux";
 
-
-
 class ProductGrid extends Component {
 
   //build the list of products using the product detail
@@ -31,11 +29,9 @@ class ProductGrid extends Component {
 }
 
 function mapStateToProps(state) {
-    // Whatever is returned will show up as props
-    // inside of BookList
     return {
       products: state.products
     };
-  }
+}
 
 export default connect(mapStateToProps)(ProductGrid);

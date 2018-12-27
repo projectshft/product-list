@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './index.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+import SearchBar from './components/search_bar';
 
 class App extends Component {
   constructor(props) {
@@ -12,37 +13,24 @@ class App extends Component {
   componentDidMount() {
     fetch('/api/products?page=1')
       .then(res => res.json())
-      .then(products => this.setState({ products }))
-  //  )this.callApi()
-  //   // .then(res => this.setState({ products: res.express}))
-  //   .catch(err => console.log(err)
+      .then(products => this.setState({ products }, () => console.log('Products fetched :', products)));
   }
 
-  // callApi = async() => {
-  //   const response = await fetch('/api/products?page=1');
-  //   const body = await response.text();
-  //   await this.setState({products: JSON.parse(body).results})
-
-  //   if (response.status !== 200) throw Error(body.message);
-  //   return body;
-  // }
 
   render() {
-    console.log(this.state.products)
     return (
-      <div className="App">
-        <header className="App-header">
-        <div className="row">
-          <h1 className="col-md-2 col-md-offset-5">
+      <div className="App container container-fluid">
+          <h1 id="heading">
           PRODUCTS
           </h1>
+          <div className="row">
+            < SearchBar />
             <ul>
               {this.state.products.map(product =>
                 <li key={product._id}>{product.name}</li>
                 )}
             </ul>
         </div>
-        </header>
       </div>
     );
   }

@@ -37,7 +37,7 @@ router.get('/generate-fake-data', (req,res,next) => {
 })
 
 /*
-GET /products Returns products based on the page, limit, and category query parameters. 
+GET /products Returns products based on the page, limit, search, and category query parameters. 
    Metadata of the returned object includes:
       "number_items": <The total number of items from the query>,
       "number_pages": <The total number of pages from the query>,
@@ -70,7 +70,7 @@ router.get('/products', (req,res,next) => {
       searchSelector = { name: {$in: searchTermsArrayRegEx}};
    }
 
-   //combine selectors
+   //combine selectors for category and search
    let combinedSelector = {...categorySelector, ...searchSelector};
 
    //Builds an array of categories from the database.
@@ -95,7 +95,8 @@ router.get('/products', (req,res,next) => {
       .limit(limit)
       .populate('reviews', {__v: 0})
       .exec((err, products) => {
-
+         if (err) throw err
+         
          Product
             .count(combinedSelector, (err, count) => {
             if (err) throw err

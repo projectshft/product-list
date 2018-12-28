@@ -7,7 +7,6 @@ import {login} from '../actions/login'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Button, ButtonGroup } from "reactstrap";
 import { FaDollarSign, FaAws, FaArrowUp, FaArrowDown } from "react-icons/fa";
-import Cart from './Cart'
 
 /*=====================================================
 TODO: add in cart component
@@ -34,6 +33,15 @@ class SearchBar extends Component {
   onRadioBtnClick(sortByPrice) {
     this.setState({ sortByPrice });
   }
+  loggedInButton() {
+    if(this.props.user.user){
+      return (
+        <Link to='/me/cart'>
+          <button className="btn btn-default"> Click to view cart</button>
+        </Link>
+      )
+    }
+  }
 
   render() {
     return <div>
@@ -54,7 +62,7 @@ class SearchBar extends Component {
           </div>
           </div>
           <div className="form-inline ml-auto">
-          <Cart />
+          {this.loggedInButton()}
             <input className="form-control ml-auto" value={this.state.searchTerm} onChange={event => this.handleFormtyping(event.target.value)} placeholder="Search for products" />
             <Dropdown isOpen={this.state.dropdownOpen} toggle={() => this.toggleDropdown()}>
               <DropdownToggle caret>{`${this.state.category}`}</DropdownToggle>

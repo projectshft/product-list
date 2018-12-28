@@ -14,7 +14,10 @@ const cartReducer = (state = [] , action) => {
       state = action.payload
       return state
     case GET_CART:
+    console.log(action.payload,"reducer")
+    if(!action.payload.error){
     state = action.payload
+     }
     return state
     default:
       return state

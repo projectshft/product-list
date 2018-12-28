@@ -13,6 +13,8 @@ import "./App.css";
 import ProductList from './components/productList'
 import SearchBar from './components/searchBar'
 import Reviews from './components/Reviews'
+import Cart from "./components/Cart";
+
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -24,6 +26,7 @@ ReactDOM.render(
         <Switch>
           <Route exact path='/products' component={ProductList} />
           <Route path = '/products/:product' component={Reviews} />
+          <Route path='/me/cart' component={Cart} />
         </Switch>
       </div>
     </BrowserRouter>

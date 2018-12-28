@@ -13,11 +13,19 @@ import { deleteCart } from "../actions/deleteCart";
 
 
 export class Cart extends Component {
+  constructor(props){
+    super(props)
+    
+    this.state = {
+      cartHidden:true
+    }
+  }
   componentDidMount() {
     const {getCart} = this.props
-    // getCart(this.props.user.id);
+    getCart(this.props.user.id);
   }  
   _reduceCart (cartArray) {
+    console.log(cartArray)
     let reducedCart = []
   cartArray.forEach((currentItem) => {
     let thisItem = reducedCart.find(reducedCartItem => reducedCartItem.name === currentItem.name)
@@ -36,10 +44,11 @@ export class Cart extends Component {
     return reducedCart.map(cartItem => {
       return (
           <ListGroupItem className="cart-item">
-          <Link to={`products/${cartItem._id}`}>
+          <Link to={`/products/${cartItem._id}`}>
 
             <h5>{cartItem.name}</h5>
             <img src={cartItem.image} height="50px" width="50px" />
+            <p>{cartItem.description}</p>
             <p>X {cartItem.quantity}</p>
              </Link>
             <button onClick={()=> this.props.deleteCart(this.props.user.id, cartItem._id)} className="btn btn-danger">X</button>
@@ -50,16 +59,21 @@ export class Cart extends Component {
   }
 
   render() {
+    console.log(this.props,"cart")
+    if(this.props.user.user){
     return (
       <div>
-        <button className="btn btn-default" onClick={() => this.props.getCart(this.props.user.id)}> Click to get cart</button>
         <ListGroup>
           {this.renderCartItems(this.props.cart)}
-
         </ListGroup>
-    
-      </div>
+        </div>
     )
+    }
+    else {
+      return (
+        <h1>Please log in in order to see a cart</h1>
+      )
+    }
   }
 }
 

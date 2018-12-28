@@ -1,4 +1,3 @@
-// import {LOGIN} from './actions/login'
 
 const userReducer = (state = {} , action) => {
   let {type} = action

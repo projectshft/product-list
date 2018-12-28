@@ -1,7 +1,5 @@
 import {GET_PRODUCTS} from '../actions'
 
-
-
 const productListReducer = (state = [], action) => {
 
   const {type} = action;

@@ -1,8 +1,7 @@
-
-export const DELETE_CART = 'DELETE_CART'
 /*=====================================================
-TODO: finish this
+Deletes ALL products of that type from a users cart!
 =====================================================*/
+export const DELETE_CART = 'DELETE_CART'
 
 const ROOT_URL = "http://localhost:5000/me/cart";
 

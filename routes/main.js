@@ -7,7 +7,8 @@ const fetch = require("node-fetch");
 const uid = require('rand-token').uid
 /*=====================================================
 Generate and populate database with data
-NO LONGER NEEDED DATA AS OF 12/20/18 3:11 PM
+***if you want images, the second api requires some time (about .5 sec for each product)
+so keep that in mind when populating your database
 =====================================================*/
 // router.get("/generate-fake-data", async (req, res, next) => {
 
@@ -60,22 +61,6 @@ NO LONGER NEEDED DATA AS OF 12/20/18 3:11 PM
 //this token array is being used until I want to make a token database.
 let activeTokens = [];
 
-/*=====================================================
-let { token } = req.body;
-  let authUserToken = activeTokens.find(tokenObj => tokenObj.id === token);
-  //if undef send error
-  if (!authUserToken) {
-    return res.send(401)
-  } else {
-    let authUserModel = await User.findOne({ username: authUserToken.user })
-    if (!authUserModel) {
-      return res.send(404, 'User not found')
-    }
-    let product = await Product.findById(req.body.productId)
-    if (!product) {
-      return res.send(404, "Product not found")
-    }
-=====================================================*/
 
 router.use(async (req, res, next) => {
   //token checking middleware, if a valid token is submitted it gets added to the request body
@@ -96,7 +81,7 @@ router.use(async (req, res, next) => {
 router.use(async (req, res, next) => {
   if (req.tokenObj) {
     let authUser = await User.findOne({ username: req.tokenObj.user })
-    .populate('cart')
+      .populate('cart')
     if (!authUser) {
       req.authUser = null;
     } else {
@@ -253,7 +238,7 @@ router.post('/login', async (req, res) => {
     if (!userToken) {
       //make a new token
       let newToken = {
-        id:uid(16),
+        id: uid(16),
         // id: "123",
         user: user,
         updated: new Date()
@@ -269,7 +254,8 @@ router.post('/login', async (req, res) => {
 
 router.get('/me/cart', async (req, res) => {
   if (!req.authUser || !req.tokenObj) {
-    res.status(401).send({ error: "invalid credentials" });  }
+    res.status(401).send({ error: "invalid credentials" });
+  }
   res.send(req.authUser.cart)
 })
 
@@ -277,7 +263,7 @@ router.post('/me/cart', async (req, res) => {
   if (!req.authUser || !req.tokenObj) {
     res.status(401).send({ error: "invalid credentials" });
   } else {
-    if(!req.productModel){
+    if (!req.productModel) {
       res.status(404).send({ error: "product not found" });
     }
     req.authUser.cart.push(req.productModel._id);
@@ -291,13 +277,18 @@ router.delete('/me/cart', async (req, res) => {
   if (!req.authUser || !req.tokenObj) {
     return res.send(401, "Unauthorized access")
   } else {
-    if(!req.productModel){
+    if (!req.productModel) {
       return res.send(404, "Product not found")
     }
     req.authUser.cart = req.authUser.cart.filter(item => item.id != req.productModel.id);
     await req.authUser.save();
     res.send(req.authUser.cart)
   }
+})
+//this is only used to get a user to use. I haven't made a makeAccount feature just yet
+router.get('/get-user-data', async (req, res) => {
+  let foundUser = await User.findOne({});
+  res.send(foundUser)
 })
 
 /*=====================================================

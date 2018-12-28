@@ -1,7 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { Button, ButtonGroup } from "reactstrap";
 import { Link } from 'react-router-dom'
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { connect } from 'react-redux'
@@ -13,61 +10,60 @@ import { deleteCart } from "../actions/deleteCart";
 
 
 export class Cart extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    
+
     this.state = {
-      cartHidden:true
+      cartHidden: true
     }
   }
   componentDidMount() {
-    const {getCart} = this.props
+    const { getCart } = this.props
     getCart(this.props.user.id);
-  }  
-  _reduceCart (cartArray) {
+  }
+  //this is a helper function that takes the long array with repeated items and reduces to an array 
+  // of single cart objects with counts
+  _reduceCart(cartArray) {
     console.log(cartArray)
     let reducedCart = []
-  cartArray.forEach((currentItem) => {
-    let thisItem = reducedCart.find(reducedCartItem => reducedCartItem.name === currentItem.name)
-    if(!thisItem){
-      currentItem.quantity = 1;
-      reducedCart.push(currentItem)
-    } else {
-      thisItem.quantity ++
-    }
-  })
-  console.log(reducedCart)
-  return reducedCart
+    cartArray.forEach((currentItem) => {
+      let thisItem = reducedCart.find(reducedCartItem => reducedCartItem.name === currentItem.name)
+      if (!thisItem) {
+        currentItem.quantity = 1;
+        reducedCart.push(currentItem)
+      } else {
+        thisItem.quantity++
+      }
+    })
+    return reducedCart
   }
-  renderCartItems (cartArray) {
+  renderCartItems(cartArray) {
     let reducedCart = this._reduceCart(cartArray)
     return reducedCart.map(cartItem => {
       return (
-          <ListGroupItem className="cart-item">
+        <ListGroupItem className="cart-item">
           <Link to={`/products/${cartItem._id}`}>
-
             <h5>{cartItem.name}</h5>
             <img src={cartItem.image} height="50px" width="50px" />
             <p>{cartItem.description}</p>
             <p>X {cartItem.quantity}</p>
-             </Link>
-            <button onClick={()=> this.props.deleteCart(this.props.user.id, cartItem._id)} className="btn btn-danger">X</button>
-          </ListGroupItem >
+          </Link>
+          <button onClick={() => this.props.deleteCart(this.props.user.id, cartItem._id)} className="btn btn-danger">X</button>
+        </ListGroupItem >
       )
-       ;
     })
   }
 
   render() {
-    console.log(this.props,"cart")
-    if(this.props.user.user){
-    return (
-      <div>
-        <ListGroup>
-          {this.renderCartItems(this.props.cart)}
-        </ListGroup>
+    console.log(this.props, "cart")
+    if (this.props.user.user) {
+      return (
+        <div>
+          <ListGroup>
+            {this.renderCartItems(this.props.cart)}
+          </ListGroup>
         </div>
-    )
+      )
     }
     else {
       return (
@@ -78,12 +74,12 @@ export class Cart extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  cart:state.cart,
-  user:state.user
+  cart: state.cart,
+  user: state.user
 })
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({getCart, addCart, deleteCart}, dispatch)
+  return bindActionCreators({ getCart, addCart, deleteCart }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

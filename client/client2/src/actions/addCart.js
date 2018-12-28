@@ -1,5 +1,6 @@
 /*=====================================================
-TODO: figre out how to post with fetch API
+This action adds a product to a logged in user's cart
+the promise is resolved before going to the reducer
 =====================================================*/
 export const ADD_CART = 'ADD_CART';
 

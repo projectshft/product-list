@@ -5,24 +5,15 @@ import {FaSearch} from 'react-icons/fa'
 import { bindActionCreators } from "redux";
 import { addCart } from '../actions/addCart';
 import { getCart } from "../actions/getCart";
-
 import { connect } from "react-redux";
 
 
-
-/*=====================================================
-class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { searchTerm: "", dropdownOpen: false, category: "All", sortByPrice: 1, page: 1, cartHidden: true, username: "Chelsea.Runolfsdottir", passphrase: "50zTjGKHp7ij43p" };
-  }
-
-=====================================================*/
 
 class Product extends Component  {
   constructor(props) {
     super(props);
   }
+
   addAndGetCart = async  (token, id) => {
     await this.props.addCart(token,id)
     await this.props.getCart(token)
@@ -31,7 +22,8 @@ class Product extends Component  {
   render () {
     let product = this.props.productItemAsProps
 
-  return (<div className="col-md-4">
+  return (
+    <div className="col-md-4">
       <div className="productCard" data-id={product._id}>
         <div className="product">
           <h1>{product.name}</h1>
@@ -50,7 +42,7 @@ class Product extends Component  {
       </div>
     </div>
     )
-}
+  }
 }
 
 

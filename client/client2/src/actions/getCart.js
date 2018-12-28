@@ -6,7 +6,6 @@ const ROOT_URL = "http://localhost:5000/me/cart";
 export const getCart = async (token) => {
  
   const initialRequest = await fetch(`${ROOT_URL}?token=${token}`);
-  console.log("Getting cart?")
   
   const requestJSON = await initialRequest.json();
   return {

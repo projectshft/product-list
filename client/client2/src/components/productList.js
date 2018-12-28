@@ -10,13 +10,7 @@ import queryString from "query-string";
 import { FaThumbsUp, FaQuestionCircle } from "react-icons/fa";
 
 export class ProductList extends Component {
-  componentDidMount =  async () => {
-    //somehow get the products on the state
-    const { getCart, addCart } = this.props;
-    // await getCart("123")
-    // addCart("123", "5c1e98c14e65ee2a7095478f");
-    console.log(this.props)
-  }
+  
   renderProducts = () => {
     if (!this.props.products.products) {
       return (
@@ -26,7 +20,7 @@ export class ProductList extends Component {
         <hr className="my-4"/>
         <p className="lead">Everything here definitely exists and is always worth the money <FaThumbsUp/></p>
         <p>If there is anything you need, feel free to contact us and one of your representatives will be with you shortly</p>
-        <button className="btn-danger btn btn-lg" onClick={() => this.getHelp()}>Get help <FaQuestionCircle/></button>
+        <button className="btn-danger btn btn-lg" onClick={() => this.getHelp()}>Get help <FaQuestionCircle/></button>      
         </div>
 
       )
@@ -55,7 +49,6 @@ export class ProductList extends Component {
         </PaginationItem>
       </Pagination>)
     }
-
     return (
       buttons
     )

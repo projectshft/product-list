@@ -15,7 +15,7 @@ export const login = async (username,password) => {
     method: 'POST',
     body: bodyData
   }
-//make it a post request
+
   const initialRequest = await fetch(requestUrl, fetchOptions);
   const requestJSON = await initialRequest.json();
   return {

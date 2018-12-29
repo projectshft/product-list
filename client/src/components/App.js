@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ProductList from '../containers/product-list';
-import ProductDetail from '../containers/product-detail';
 
 const App = () => {
   return (
-    <div>
+    <Fragment>
       <ProductList />
-      <ProductDetail />
-    </div>
+    </Fragment>
   );
 };
 

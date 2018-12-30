@@ -95,7 +95,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-   return { params: state.params };
+   return { 
+      params: state.params    
+   };
  }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchAndSortBar);

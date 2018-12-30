@@ -16,16 +16,15 @@ h4 {
 p {
   margin-bottom: 0;
 }
-
-
 .row {
   margin-top: 20px;
 }
-
 img {
   margin-bottom: 10px;
 }
-
 .card {
   margin-bottom: 15px;
+}
+.current-page-number {
+  background-color: rgb(216, 216, 216);
 }

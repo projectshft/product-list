@@ -3,7 +3,8 @@ import { UPDATE_PARAMS } from "../actions";
 const initialState = {
   category: "",
   price: "",
-  search: ""
+  search: "",
+  page: 1
 };
 
 export default function(state = initialState, action) {

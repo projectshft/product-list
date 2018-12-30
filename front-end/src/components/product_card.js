@@ -2,10 +2,11 @@ import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
 
 class ProductCard extends Component {
+   
    renderProductCards() {
       return this.props.products.map(product => {
          return (
-            <div className="col-md-4 col-sm-6">
+            <div key={product._id} className="col-md-4 col-sm-6">
                <div className="card bg-light h-150">
                   <div className="card-body">
                      <h2 className="card-title">{product.name}</h2>

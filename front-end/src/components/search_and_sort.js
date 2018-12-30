@@ -34,20 +34,20 @@ class SearchAndSortBar extends Component {
 
    onFormSubmit(event) {
       event.preventDefault();
-      this.props.updateParams({ search: this.state.searchTerms });
+      this.props.updateParams({ search: this.state.searchTerms, page: 1 });
    }
 
    onPriceSortChange(event){
       let priceValue = event.target.value;
       this.setState({ priceFilter: priceValue }, () => {
-         this.props.updateParams({ price: this.state.priceFilter })
+         this.props.updateParams({ price: this.state.priceFilter, page: 1 })
       });
    }
 
    onCategorySortChange(event){
       let categoryValue = event.target.value;
       this.setState({ categoryFilter: categoryValue }, () => {
-         this.props.updateParams({ category: this.state.categoryFilter })
+         this.props.updateParams({ category: this.state.categoryFilter, page: 1 })
       });
      
    }

@@ -15,8 +15,14 @@ class Pagination extends Component {
    }
 
    componentWillReceiveProps(nextProps){
-      if(this.props.params !== nextProps.params){ 
-           this.props.fetchProducts(nextProps.params);
+      if(this.props.params.page !== nextProps.params.page) { 
+         this.props.fetchProducts(nextProps.params);
+      } 
+   }
+
+   componentDidUpdate(prevProps) {
+      if(this.props.params !== prevProps.params && this.props.params.page === prevProps.params.page){
+         this.setState({ pageSelected: 1 });
       }
    }
 
@@ -35,8 +41,9 @@ class Pagination extends Component {
 
       return numberArray.map(page => {
 
-         if (page == this.state.pageSelected) {
+         if (page === this.state.pageSelected) {
             return (
+               // eslint-disable-next-line
                <li key={page} className="page-item"><a 
                className="page-link current-page-number" 
                tabIndex='0'
@@ -44,6 +51,7 @@ class Pagination extends Component {
             )
          } else {
             return (
+               // eslint-disable-next-line 
                <li key={page} className="page-item"><a 
                className="page-link" 
                tabIndex='0'

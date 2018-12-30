@@ -16,13 +16,13 @@ const SearchInformation = (props) => {
       searchingForLine = <p>Searching for: <strong>All Products</strong> in <strong>All Categories</strong></p>;
    }
 
-      return (
-         <div className="container">
-            {searchingForLine}
-            <p>Total number of items: <strong>{ props.products.number_items }</strong></p>
-            <p>Viewing page: <strong>{ props.products.current_page }</strong> of <strong>{ props.products.number_pages }</strong></p>
-         </div>
-      );
+   return (
+      <div className="container">
+         {searchingForLine}
+         <p>Total number of items: <strong>{ props.products.number_items }</strong></p>
+         <p>Viewing page: <strong>{ props.products.current_page }</strong> of <strong>{ props.products.number_pages }</strong></p>
+      </div>
+   );
 }
 
 function mapStateToProps(state) {

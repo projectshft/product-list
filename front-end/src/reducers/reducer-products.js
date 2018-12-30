@@ -4,7 +4,7 @@ const initialState = {
   categories: [],
   current_page: 1,
   number_items: 0,
-  number_pages: 1,
+  number_pages: 0,
   products: []
 };
 

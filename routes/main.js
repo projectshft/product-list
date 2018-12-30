@@ -62,12 +62,12 @@ router.get('/products', (req,res,next) => {
       sortByPrice = { price: 'desc' };
    }
 
-   //builds the search selector
+   //builds the search selector. The user should be able to search multiple keywords, and find case-insensitive matches where ALL keywords are found in the name of the product.
    let searchSelector = {};
    if (req.query.search) {
       let searchTermsArray = req.query.search.split(' ');
       let searchTermsArrayRegEx = searchTermsArray.map(term => new RegExp(term, "ig"));
-      searchSelector = { name: {$in: searchTermsArrayRegEx}};
+      searchSelector = { name: {$all: searchTermsArrayRegEx}};
    }
 
    //combine selectors for category and search

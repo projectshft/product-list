@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { updateSearchAndSortParams } from "../actions/index";
+import { updateParams, fetchProducts } from "../actions/index";
 import SortByCategory from './sort_by_category';
 
 class SearchAndSortBar extends Component {
@@ -20,23 +20,36 @@ class SearchAndSortBar extends Component {
       this.onCategorySortChange = this.onCategorySortChange.bind(this);
    }
 
+   //Make sure the params are updated correctly before fetching Products from the API
+   componentWillReceiveProps(nextProps){
+      if(this.props.params !== nextProps.params){ 
+           this.props.fetchProducts(nextProps.params);
+      }
+   }
+
+
    onInputChange(event) {
       this.setState({ searchTerms: event.target.value });
    }
 
    onFormSubmit(event) {
       event.preventDefault();
-      this.props.updateSearchAndSortParams(this.state);
+      this.props.updateParams({ search: this.state.searchTerms });
    }
 
    onPriceSortChange(event){
-      this.setState({ priceFilter: event.target.value });
-      this.props.updateSearchAndSortParams(this.state);
+      let priceValue = event.target.value;
+      this.setState({ priceFilter: priceValue }, () => {
+         this.props.updateParams({ price: this.state.priceFilter })
+      });
    }
 
    onCategorySortChange(event){
-      this.setState({ categoryFilter: event.target.value });
-      this.props.updateSearchAndSortParams(this.state);
+      let categoryValue = event.target.value;
+      this.setState({ categoryFilter: categoryValue }, () => {
+         this.props.updateParams({ category: this.state.categoryFilter })
+      });
+     
    }
 
    render() {
@@ -56,15 +69,15 @@ class SearchAndSortBar extends Component {
                </button>
             </form>
             <div>
-            <label for='category'>Filter by Category: 
-               <select onChange={this.onCategorySortChange} id="category">
-                  <option value="">All Products</option>
-                  <SortByCategory />
-               </select>
-            </label>
+               <label>Filter by Category: 
+                  <select onChange={this.onCategorySortChange} id="category">
+                     <option value="">All Categories</option>
+                     <SortByCategory />
+                  </select>
+               </label>
             </div>
             <div>
-               <label for='price'>Filter by Price: 
+               <label>Filter by Price: 
                   <select onChange={this.onPriceSortChange} id="price">
                      <option value=''>No filter</option>
                      <option value="lowest">Low to High</option>
@@ -78,7 +91,11 @@ class SearchAndSortBar extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-   return bindActionCreators({ updateSearchAndSortParams }, dispatch);
+   return bindActionCreators({ updateParams, fetchProducts }, dispatch);
+}
+
+function mapStateToProps(state) {
+   return { params: state.params };
  }
 
-export default connect(null, mapDispatchToProps)(SearchAndSortBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchAndSortBar);

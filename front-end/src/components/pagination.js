@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { updatePageParam } from "../actions/index";
+// import { connect } from "react-redux";
+// import { bindActionCreators } from "redux";
+// import { updatePageParam } from "../actions/index";
 
 class Pagination extends Component {
    constructor(props) {
@@ -42,8 +42,10 @@ class Pagination extends Component {
    }
 }
 
-function mapDispatchToProps(dispatch) {
-   return bindActionCreators({ updatePageParam }, dispatch);
- }
+// function mapDispatchToProps(dispatch) {
+//    return bindActionCreators({ updatePageParam }, dispatch);
+//  }
 
-export default connect(null, mapDispatchToProps)(Pagination);
+// export default connect(null, mapDispatchToProps)(Pagination);
+
+export default Pagination;

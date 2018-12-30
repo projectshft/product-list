@@ -1,15 +1,26 @@
 import React, { Fragment, Component } from "react";
+import { connect } from "react-redux";
 
 class SortByCategory extends Component {
+   renderCategories() {
+      return this.props.categories.map((category,index) => {
+         return (
+            <option value={category} key={category}>{category}</option>
+         )
+      })
+   }
+
    render() {
       return (
          <Fragment>
-            <option value="Tools">Tools</option>
-            <option value="Home">Home</option>
-            <option value="Electronics">Electronics</option>
+            {this.renderCategories()}
          </Fragment>
       );
    }
 }
 
-export default SortByCategory;
+function mapStateToProps(state) {
+   return { categories: state.products.categories };
+ }
+
+export default connect(mapStateToProps, null)(SortByCategory);

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 class SortByCategory extends Component {
    renderCategories() {
-      return this.props.categories.map((category,index) => {
+      return this.props.categories.map(category => {
          return (
             <option value={category} key={category}>{category}</option>
          )

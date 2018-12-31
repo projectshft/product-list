@@ -79,7 +79,6 @@ class SearchAndSortBar extends Component {
             <div>
                <label>Filter by Price: 
                   <select onChange={this.onPriceSortChange} id="price">
-                     <option value=''>No filter</option>
                      <option value="lowest">Low to High</option>
                      <option value="highest">High to Low</option>
                   </select>

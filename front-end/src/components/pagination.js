@@ -22,7 +22,9 @@ class Pagination extends Component {
 
    componentDidUpdate(prevProps) {
       if(this.props.params !== prevProps.params && this.props.params.page === prevProps.params.page){
-         this.setState({ pageSelected: 1 });
+         this.setState({ pageSelected: 1 }, () => {
+            this.forceUpdate();
+         });
       }
    }
 

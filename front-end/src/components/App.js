@@ -9,7 +9,7 @@ import { fetchProducts } from '../actions';
 
 class App extends Component {
   componentDidMount() {
-    this.props.fetchProducts();
+    this.props.fetchProducts({price:'lowest'});
   }
 
   render() {

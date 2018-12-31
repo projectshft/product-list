@@ -2,7 +2,7 @@ import { UPDATE_PARAMS } from "../actions";
 
 const initialState = {
   category: "",
-  price: "",
+  price: "lowest",
   search: "",
   page: 1
 };

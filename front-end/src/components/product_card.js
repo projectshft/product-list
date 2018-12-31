@@ -7,14 +7,16 @@ class ProductCard extends Component {
       return this.props.products.map(product => {
          return (
             <div key={product._id} className="col-md-4 col-sm-6">
-               <div className="card bg-light h-150">
-                  <div className="card-body">
-                     <h2 className="card-title">{product.name}</h2>
-                     <h4>Category: {product.category}</h4>
-                     <h3>${product.price}</h3>
-                  </div>
-                  <div>
-                     <img className="card-img" src={product.image} alt="" />
+               <div className="card-outer">
+                  <div className="card bg-light h-100">
+                     <div className="card-body">
+                        <h2 className="card-title">{product.name}</h2>
+                        <h4>Category: {product.category}</h4>
+                        <h3>${product.price}</h3>
+                     </div>
+                     <div>
+                        <img className="card-img" src={product.image} alt="" />
+                     </div>
                   </div>
                </div>
             </div>

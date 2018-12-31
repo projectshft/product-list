@@ -2,8 +2,14 @@ import React, { Fragment, Component } from "react";
 import { connect } from "react-redux";
 
 class SortByCategory extends Component {
+
+
    renderCategories() {
-      return this.props.categories.map(category => {
+      let sortedCategoriesArray = this.props.categories.sort().map(category => {
+         return category.charAt(0).toUpperCase() + category.slice(1);
+      });
+      
+      return sortedCategoriesArray.map(category => {
          return (
             <option value={category} key={category}>{category}</option>
          )

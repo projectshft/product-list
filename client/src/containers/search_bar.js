@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import { bindActionCreators } from 'redux';
+import { SORT, FILTER_BY_CATEGORY } from '../actions/types'
+import { connect } from 'react-redux.1';
 
 //searching is ONLY required for extension 2;
 
@@ -34,4 +37,8 @@ import React, {Component} from 'react';
   }
 }
 
-export default SearchBar;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ SORT, FILTER_BY_CATEGORY}, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(SearchBar);

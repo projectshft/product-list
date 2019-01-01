@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import SearchBar from './search_bar';
 import ProductList from '../components/product-list'
 import Pagination from '../components/pagination'
-// import { Provider } from 'react-redux'
+
 import { connect } from 'react-redux.1'
+import {generateFakeData} from '../actions/types'
 
 class App extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class App extends Component {
 
   //generate fake data before mounting components
   componentDidMount() {
-    fetch('/api/generate-fake-data')
+    this.props.generateFakeData()
   }
 
   componentWillUnmount() {
@@ -48,7 +49,6 @@ class App extends Component {
 
   render() {
     return (
-      // <Provider store={store}>
       <div className="App container container-fluid">
           <h1 id="heading">
           PRODUCTS
@@ -59,9 +59,12 @@ class App extends Component {
             < Pagination products={this.state.totalProducts} changePage={this.changePage()}/>
         </div>
       </div>
-      // </Provider>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  totalProducts: state.totalProducts,
+  productsToDisplay: state.productsToDisplay
+})
+export default connect(mapStateToProps, {generateFakeData})(App);

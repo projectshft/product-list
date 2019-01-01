@@ -4,11 +4,14 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.2.1",
+    "jquery": "^3.3.1",
+    "popper": "^1.0.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.2"
+    "react-scripts": "2.1.2",
+    "redux-promise": "^0.6.0"
   },
   "scripts": {
     "start": "react-scripts start",

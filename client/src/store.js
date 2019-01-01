@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers/index'
 
-const createSore = (rootReducer) => {
+const createStore = (rootReducer) => {
   let state = {
   totalProducts: [],
   productsToDisplay: [],

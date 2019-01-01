@@ -8,6 +8,7 @@ class SearchAndSortBar extends Component {
    constructor(props) {
       super(props);
 
+      //Local state to hold the search and sort selections from the UI
       this.state = {
          categoryFilter: "",
          priceFilter: "",
@@ -26,7 +27,6 @@ class SearchAndSortBar extends Component {
            this.props.fetchProducts(nextProps.params);
       }
    }
-
 
    onInputChange(event) {
       this.setState({ searchTerms: event.target.value });

@@ -9,6 +9,6 @@ If you have any questions about this project or the program in general, visit pr
 
 The front-end React App assumes a database exists with product data. Start-up procedures are:
 
-1. Type "node server.js" into your terminal from inside the /product-list folder. 
-2. Type "http://localhost:8000/generate-fake-data" into your browser to build a database of fake data to be used by the front-end app.
-3. Type "npm start" into a second terminal window from inside the /product-list/front-end folder. This starts the UI.
+1. "node server.js" in your terminal from inside the /product-list/back-end folder. 
+2. Call endpoint "http://localhost:8000/generate-fake-data" from your browser to build a database of fake data to be used by the front-end app.
+3. "npm start" in a second terminal window from inside the /product-list/front-end folder. This starts the UI.

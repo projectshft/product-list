@@ -43,6 +43,7 @@ class Pagination extends Component {
 
       return numberArray.map(page => {
 
+         //if-else statement simply provides an extra class called "current-page-number" to the current page
          if (page === this.state.pageSelected) {
             return (
                // eslint-disable-next-line

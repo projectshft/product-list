@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 class SortByCategory extends Component {
 
-
+   //Should render a list of categories from the database, alphabetized and first letter capitalized
    renderCategories() {
       let sortedCategoriesArray = this.props.categories.sort().map(category => {
          return category.charAt(0).toUpperCase() + category.slice(1);

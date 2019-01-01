@@ -49,7 +49,7 @@ class SearchBar extends Component {
       )
     }
   }
-  //this function gets a user from the database so you don't have to dig
+  //this function gets a user from the database so you don't have to dig for more data
   getAUser = async () => {
     let user = await fetch("http://localhost:5000/get-user-data")
     let userJson = await user.json();

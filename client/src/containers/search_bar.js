@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 
-const SearchBar = () => {
+//searching is ONLY required for extension 2;
+
+  class SearchBar extends Component {
+    render() {
     return (
       <div className="container-fluid">
         <div className="row form-group">
@@ -9,7 +12,7 @@ const SearchBar = () => {
                 <input type = "text" placeholder="Search" />
               </div>
                 <div className="col-md-4">
-                  <label for="category-selection">Filter By Category:</label>
+                  <label htmlFor="category-selection">Filter By Category:</label>
                   <select>
                     <option value = "Default">Choose Category</option>
                     <option value = "Jewelry">Jewelry</option>
@@ -17,7 +20,7 @@ const SearchBar = () => {
                   </select>
                 </div>
                 <div className="col-md-4">
-                  <label for="price-sorting">Sort By:</label>  
+                  <label htmlFor="price-sorting">Sort By:</label>  
                   <select>
                     <option value = "Default">None</option>
                     <option value = "Lowest">Price: Low to High</option>
@@ -28,7 +31,7 @@ const SearchBar = () => {
         </div>
       </div>
     )
-
+  }
 }
 
 export default SearchBar;

@@ -23,3 +23,30 @@ code {
   display: inline-block;
   text-align: center;
 }
+
+.thumbnail {
+  height: 250px;
+  width: 250px;
+  border-radius: 5%;
+  display: block;
+  margin: auto;
+}
+
+.category-display {
+  text-align: left;
+  margin-left: 20px;
+}
+
+.price-display {
+  text-align: right;
+  margin-left: 65px
+}
+
+.product-name-display {
+  text-align: center;
+}
+
+#page-navigation {
+  text-align: center;
+  margin-left: 33.3%;
+}

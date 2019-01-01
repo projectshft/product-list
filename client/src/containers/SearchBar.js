@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import axios from 'axios';
-import { setNewProducts, selectSort, setNumberOfPages, goToSelectedPage } from "../actions/index";
+import { setNewProducts, setNumberOfPages, goToSelectedPage } from "../actions/index";
 import CategoryList from './CategoryList';
 import SortSelector from './SortSelector';
 

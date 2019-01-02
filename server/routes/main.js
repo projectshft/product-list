@@ -3,6 +3,9 @@ const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review');
 
+
+//Only do this 1 or 2 times, then comment out...else have extra data every time
+
 // router.get('/generate-fake-data', (req, res, next) => {
 //     for (let i = 0; i < 90; i++) {
 //         let product = new Product()

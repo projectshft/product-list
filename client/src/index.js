@@ -6,11 +6,19 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import './index.css';
 import { Provider } from 'react-redux.1'
 import { createStore, applyMiddleware} from 'redux';
-import ReduxPromise from 'redux-promise'
-
+import promise from 'redux-promise'
+import axios from 'axios'
 import rootReducer from './reducers/index'
+import rootUrl from './actions/types'
 
-const createStoreWithMiddleware= applyMiddleware(ReduxPromise)(createStore)
+//generate fake data at the onset of application start-up
+const generateFakeData = function() {
+  axios.get(`${rootUrl}/api/generate-fake-data`)
+}
+
+generateFakeData();
+
+const createStoreWithMiddleware= applyMiddleware(promise)(createStore)
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(rootReducer)} >

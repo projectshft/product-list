@@ -26,8 +26,8 @@ import { connect } from 'react-redux.1';
                   <label htmlFor="price-sorting">Sort By:</label>  
                   <select>
                     <option value = "Default">None</option>
-                    <option value = "Lowest">Price: Low to High</option>
-                    <option value = "Highest">Price: High to Low</option>
+                    <option value = "lowest">Price: Low to High</option>
+                    <option value = "highest">Price: High to Low</option>
                   </select>
                 </div>
               </div>

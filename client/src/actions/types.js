@@ -1,46 +1,39 @@
 import { request } from "http";
+import axios from 'axios'
 
-export const GENERATE_FAKE_DATA = 'FETCH_FAKE_DATA';
+const rootUrl = 'http://localhost:8000'
 
-export function generateFakeData() {
-  fetch('/api/generate-fake-data')
-  return function(dispatch) {
-  fetch('/api/allproducts')
-    .then(res =>res.json())
-    .then(totalProducts => dispatch ({
-      type: GENERATE_FAKE_DATA,
-      payload: totalProducts
-    }))
-  }
-}
+export default rootUrl;
 
-export const DISPLAY_CURRENT_PRODUCTS = 'DISPLAY_CURRENT_PRODUCTS';
+//action creator for page display
+export const GET_PRODUCTS = 'GET_PRODUCTS'
 
-export function displayCurrentProducts(page) {
-  let result =fetch(`/api/products?page=${page}`)
+export function getProducts() {
+  const request = axios.get(`${rootUrl}/api/products`)
   return {
-    type: DISPLAY_CURRENT_PRODUCTS,
-    payload: result
+    type: GET_PRODUCTS,
+    payload: request
   }
 }
 
+//action creator for sort
 export const SORT = 'SORT'
 
 export function sort(param) {
-  let result =fetch(`/api/products?sort=${param}`)
+  const request = axios.get(`${rootUrl}/api/products?sort=${param}`)
   return {
     type: SORT,
-    payload: result
+    payload: request
   }
 }
+
+//action create for filtering
 export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY'
 
 export function filter(category) {
-  let result = fetch(`/api/products?category=${category}`)
+  const request = axios.get(`${rootUrl}/api/products?category=${category}`)
   return {
     type: FILTER_BY_CATEGORY,
-    payload: result
+    payload: request
   }
 }
-// generateFakeData : function() {
-//   fetch('/api/generate-fake-data')

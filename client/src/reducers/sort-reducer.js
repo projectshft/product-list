@@ -1,4 +1,4 @@
-import { SORT } from '../actions/types'
+import { SORT } from '../actions'
 
 export default function sort(state=null, action) {
   switch(action.type) {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import SearchBar from './search_bar';
 import ProductList from './product-list'
-import Pagination from '../components/pagination'
+import Pagination from './pagination'
 
 import { connect } from 'react-redux.1'
-import {getProducts} from '../actions/types'
+import {getProducts} from '../actions'
 import { bindActionCreators } from 'redux';
 
 class App extends Component {

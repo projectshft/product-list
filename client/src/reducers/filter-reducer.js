@@ -1,4 +1,4 @@
-import {FILTER_BY_CATEGORY} from '../actions/types'
+import {FILTER_BY_CATEGORY} from '../actions'
 
 export default function(state=null, action) {
     switch (action.type) {

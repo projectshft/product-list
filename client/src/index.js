@@ -9,7 +9,7 @@ import { createStore, applyMiddleware} from 'redux';
 import promise from 'redux-promise'
 import axios from 'axios'
 import rootReducer from './reducers/index'
-import rootUrl from './actions/types'
+import rootUrl from './actions'
 
 //generate fake data at the onset of application start-up
 const generateFakeData = function() {

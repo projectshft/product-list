@@ -1,6 +1,5 @@
-import { request } from "http";
 import axios from 'axios'
-
+//decided to use axios for ease of use with fetch requests
 const rootUrl = 'http://localhost:8000'
 
 export default rootUrl;
@@ -8,11 +7,11 @@ export default rootUrl;
 //action creator for page display
 export const GET_PRODUCTS = 'GET_PRODUCTS'
 
-export function getProducts() {
-  const request = axios.get(`${rootUrl}/api/products`)
+export function getProducts(params) {
+  const request = axios.get(`${rootUrl}/api/products`, {params : params})
   return {
     type: GET_PRODUCTS,
-    payload: request
+    payload: request,
   }
 }
 

@@ -1,12 +1,12 @@
-import { GET_PRODUCTS } from '../actions/types'
-import { SORT } from '../actions/types'
-import { FILTER_BY_CATEGORY } from '../actions/types'
+import { GET_PRODUCTS } from '../actions'
+import { SORT } from '../actions'
+import { FILTER_BY_CATEGORY } from '../actions'
 
 const defaultState = {
   products: [],
   sort: null,
-  categories: [],
-
+  category: null, 
+  page: 1
 }
 
 //reducer takes in two things:
@@ -18,9 +18,9 @@ export default function(state=defaultState, action) {
     case GET_PRODUCTS:
       return {...state, products: action.payload.data}
     case SORT: 
-      return {...state, ...action.payload.data}
+      return {...state, products: action.payload.data}
     case FILTER_BY_CATEGORY:
-      return {...state, ...action.payload.data}
+      return {...state, products: action.payload.data}
     default:
       return state;
     }

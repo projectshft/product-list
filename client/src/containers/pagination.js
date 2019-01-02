@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {getProducts, updatePage} from '../actions'
-import { connect } from 'react-redux.1'
+import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 class Pagination extends Component {

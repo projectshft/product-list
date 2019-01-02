@@ -4,7 +4,7 @@ import './index.css';
 import App from './containers/App';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import './index.css';
-import { Provider } from 'react-redux.1'
+import { Provider } from 'react-redux'
 import { createStore, applyMiddleware} from 'redux';
 import promise from 'redux-promise'
 import axios from 'axios'

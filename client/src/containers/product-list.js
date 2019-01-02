@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux.1'
+import { connect } from 'react-redux'
 
 class ProductList extends Component {
   renderProducts() {

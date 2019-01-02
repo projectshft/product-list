@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { bindActionCreators } from 'redux';
 import { getProducts, updateCategory, updatePrice } from '../actions'
-import { connect } from 'react-redux.1';
+import { connect } from 'react-redux';
 
 
 //searching is ONLY required for extension 2;

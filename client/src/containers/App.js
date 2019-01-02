@@ -3,7 +3,7 @@ import SearchBar from './search_bar';
 import ProductList from './product-list'
 import Pagination from './pagination'
 
-import { connect } from 'react-redux.1'
+import { connect } from 'react-redux'
 import {getProducts} from '../actions'
 import { bindActionCreators } from 'redux';
 

@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux.1'
-import { bindActionCreators } from 'redux';
 
 class ProductList extends Component {
   renderProducts() {
+  if (this.props.products.length === 0) {
+    return (
+    <div className="container container-fluid">
+    <h1 id="ERROR">No products exist that meet your criteria</h1>
+    </div>
+    )
+  }
+  
   return this.props.products.map(product => {
     let category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
     return (

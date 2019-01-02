@@ -7,32 +7,43 @@ export default rootUrl;
 //action creator for page display
 export const GET_PRODUCTS = 'GET_PRODUCTS'
 
-export function getProducts(params) {
-  const request = axios.get(`${rootUrl}/api/products`, {params : params})
+export function getProducts(page, category, price) {
+  const request = axios.get(`${rootUrl}/api/products`, {params: {
+      page,
+      category,
+      price
+    }
+  })
   return {
     type: GET_PRODUCTS,
     payload: request,
   }
 }
 
-//action creator for sort
-export const SORT = 'SORT'
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
 
-export function sort(param) {
-  const request = axios.get(`${rootUrl}/api/products?sort=${param}`)
+export function updateCategory(category) {
   return {
-    type: SORT,
-    payload: request
+    type: UPDATE_CATEGORY,
+    payload: category
   }
 }
 
-//action create for filtering
-export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY'
+export const UPDATE_PRICE = 'UPDATE_PRICE'
 
-export function filter(category) {
-  const request = axios.get(`${rootUrl}/api/products?category=${category}`)
+export function updatePrice(price) {
   return {
-    type: FILTER_BY_CATEGORY,
-    payload: request
+    type: UPDATE_PRICE,
+    payload: price
   }
 }
+
+export const UPDATE_PAGE = 'UPDATE_PAGE'
+
+export function updatePage(page) {
+  return {
+    type: UPDATE_PAGE,
+    payload: page
+  }
+}
+

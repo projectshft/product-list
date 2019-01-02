@@ -42,11 +42,18 @@ code {
 }
 
 #page-navigation {
-  text-align: center;
-  margin-left: 30%;
+  margin: auto
 }
 
 .btn.btn-primary {
   border-radius: 50%;
   margin: 5px;
+}
+
+#pagination-header {
+  text-align: center;
+}
+
+#ERROR {
+  text-align: center;
 }

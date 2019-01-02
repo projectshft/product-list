@@ -7,11 +7,15 @@ class ProductList extends Component {
   return this.props.products.map(product => {
     let category = product.category.charAt(0).toUpperCase() + product.category.slice(1);
     return (
-        <div className="col-md-4" key={product._id}>
-          <span className="category-display">Category: {category}</span>
-          <span className='price-display'>${product.price}</span>
-          <img src={product.image} alt={product.name} className="thumbnail"></img>
-          <p className="product-name-display">{product.name}</p>
+        <div className="col-md-4 card" key={product._id}>
+         <img src={product.image} alt={product.name} className="card-img-top"></img>
+          <div className="card-body">
+            <div className="row">
+              <div className="col-6">Category: {category}</div>
+              <div className='col-6 price-display'>${product.price}</div>
+            </div>
+            <h5 className="product-name-display">{product.name}</h5>
+          </div>
         </div>
       )
   })

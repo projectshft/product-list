@@ -24,22 +24,17 @@ code {
   text-align: center;
 }
 
-.thumbnail {
+/* .thumbnail {
   height: 250px;
   width: 250px;
   border-radius: 5%;
   display: block;
   margin: auto;
-}
+} */
 
-.category-display {
-  text-align: left;
-  margin-left: 20px;
-}
 
 .price-display {
   text-align: right;
-  margin-left: 65px
 }
 
 .product-name-display {

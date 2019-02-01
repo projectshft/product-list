@@ -13,7 +13,7 @@ class ProductList extends React.Component {
     
           {          
             this.props.Products.map(p => (
-              <div key={p.name} className="product">
+              <div key={p._id} className="product">
                
                 <img src="https://elections.unc.edu/files/2016/02/20150927_172818702_iOS.jpg" alt="Img" height="100" width="100" />
                 <br />

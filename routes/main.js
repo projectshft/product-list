@@ -25,7 +25,9 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 router.get('/products', cors(), (req, res, next) => {
-    const perPage = 9
+    // const postCount = products.length;
+    const perPage = 9;
+    // const pageCount = Math.ceil(postCount / perPage);
     
     req.query
     // return the first page by default

@@ -21,7 +21,7 @@ componentDidMount = () => {
   
 }
 fetchData = () => {
-  fetch("/products", {
+  fetch("http://localhost:8000/products", {
     method: "GET",
     dataType: "JSON",
     headers: {

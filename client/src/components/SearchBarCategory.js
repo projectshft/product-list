@@ -6,7 +6,7 @@ class SearchBarCategory extends Component {
     render() {
       return (
         <div className="search-bar">
-        <label>search: </label>
+        <label>Category Search: </label>
         <select text="Search for a category" onChange={this.props.SearchCategory}>
          
          <option disabled selected value> -- select an option -- </option> 

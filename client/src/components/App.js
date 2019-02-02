@@ -2,7 +2,10 @@
 import React, { Component } from 'react';
 // import Routes from './Routes';
 import SearchBarProduct from './SearchBarProduct';
-import ProductList from './ProductList'
+import ProductList from './ProductList';
+import SearchBarCategory from './SearchBarCategory';
+import SearchPriceOrder from './SearchPriceOrder';
+
 
 
 
@@ -36,8 +39,8 @@ fetchData = () => {
  
 }
 
-searchProductByPage = (event) => {
-fetch('http://localhost:8000/products?page='+ event.target.value)
+searchProductByPage = (e) => {
+fetch('http://localhost:8000/products?page='+ e.target.value)
 .then(response => response.json())
 .then(response => {
   console.log(response);
@@ -61,15 +64,32 @@ searchProductByPageByCategory = (e) => {
   })  
   }
 
+  searchProductByPrice = (event) => {
+    fetch('http://localhost:8000/products?page=&price=' + event.target.value)
+    .then(response => response.json())
+    .then(response => {
+      //let searchResult = JSON.parse(responseBody).results;
+      console.log(response);
+      this.setState({ Products: response }, () => {
+        console.log(this.state.Products);
+      });
+      
+    })  
+    }
+
   render() {
     return (
       <div className="App">
          <h1>Products</h1>
         <div>
           <SearchBarProduct SearchProducts={this.searchProductByPage} />  
+          <SearchBarCategory SearchCategory={this.searchProductByPageByCategory} />
+          <SearchPriceOrder SearchPrice={this.searchProductByPrice} />
+
                   
           <ProductList Products={this.state.Products} />    
         </div>   
+  
       </div>
     );
   }

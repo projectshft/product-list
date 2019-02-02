@@ -7,10 +7,33 @@ class SearchBarCategory extends Component {
       return (
         <div className="search-bar">
         <label>search: </label>
-          <input type="text"
-              placeholder="search for a product"
-              onChange={this.props.SearchProducts}>
-            </input>               
+        <select text="Search for a category" onChange={this.props.SearchCategory}>
+         
+         <option disabled selected value> -- select an option -- </option> 
+         <option>All Categories</option> 
+        <option>Automative</option>   
+        <option>Beauty</option>
+        <option>Books</option> 
+        <option>Clothing</option>
+        <option>Computers</option>
+        <option>Electronics</option>   
+        <option>Games</option>        
+        <option>Garden</option> 
+        <option>Grocery</option>
+        <option>Health</option>     
+        <option>Home</option>       
+        <option>Industrial</option>
+        <option>Jewelry</option> 
+        <option>Kids</option>
+        <option>Movies</option> 
+        <option>Music</option> 
+        <option>Outdoors</option> 
+        <option>Shoes</option> 
+        <option>Sports</option>
+        <option>Tools</option>
+        <option>Toys</option>
+    
+        </select>           
         </div>    
          
         

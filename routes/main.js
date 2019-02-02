@@ -11,12 +11,13 @@ const Review = require('../models/review')
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
-    let product = new product()
+    let product = new Product()
 
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+    
     product.save((err) => {
       if (err) throw err
     })
@@ -25,17 +26,17 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 router.get('/products', cors(), (req, res, next) => {
-    // const postCount = products.length;
+
     const perPage = 9;
-    // const pageCount = Math.ceil(postCount / perPage);
+    const query = req.query.category;
     
     req.query
     // return the first page by default
-    const page = req.query.page || 1    
+ const page = req.query.page || 1    
     
     // let filterBycategory = {};
-    // if (req.query.category == "Tools" || "Health" || "Outdoors") {
-    //     filterBycategory.category = category;
+    // if (req.query.category == "Tools") {
+    //     filterBycategory.category = "Tools";
     // }
 
     let sortOrder = {};
@@ -48,7 +49,7 @@ router.get('/products', cors(), (req, res, next) => {
     console.log(sortOrder)
     
     Product
-      .find({})
+      .find({query})
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .sort(sortOrder)

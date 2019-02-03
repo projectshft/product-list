@@ -3,8 +3,10 @@ import React from "react";
 
 
 const ProductDetail = ({props, Products}) => {
-  const {name} = props.match.params;
-  const product = Products.find(p => p.name === name)
+  const {id} = props.match.params;
+  console.log(id)
+  const product = Products.find(product => Number(product.id) === Number(id))
+  console.log(product)
 
   if (!product) {
     return <div>Sorry But the product was not found<Link to='/'> Back</Link></div>;   

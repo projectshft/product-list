@@ -27,11 +27,9 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', cors(), (req, res, next) => {
 
-    const perPage = 9;
-    const query = req.query.category
-    
+    const perPage = 9;   
     req.query
-    // let query = req.query
+    
     // return the first page by default
     const page = req.query.page || 1 
     // query = Product.category  
@@ -49,18 +47,30 @@ router.get('/products', cors(), (req, res, next) => {
         sortOrder.price = -1
     }
     console.log(sortOrder)
+
+    let searchFilter = {};
+    if(req.query.category) {
+        searchFilter = {category: req.query.category};
+    }
     
     Product
-      .find({ title: query })
+      .find(searchFilter)
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .sort(sortOrder)
       .exec((err, products) => {
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-        Product.count().exec((err, count) => {
-          if (err) return next(err)
-  
-          res.send(products)
+        Product.count(searchFilter).exec((err, count) => {
+          if (err) {
+            return next(err)
+          } else {
+            var totalPages = Math.ceil(count / perPage);
+            res.json({
+                "Pages": totalPages,
+                "Products": products
+            })
+          }
+          //res.send(products)
         })
       })
 

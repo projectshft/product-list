@@ -1,4 +1,3 @@
-// import { Switch, Route} from 'react-router-dom';
 import React, { Component } from 'react';
 // import Routes from './Routes';
 import SearchBarProduct from './SearchBarProduct';
@@ -9,13 +8,13 @@ import SearchPriceOrder from './SearchPriceOrder';
 
 
 
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      
-        Products: [],
-      
+    this.state = {     
+        Products: [], 
+        totalPages: 0
     } 
 }
 
@@ -33,7 +32,7 @@ fetchData = () => {
   })
   .then(res => res.json())
   .then((res) => {     
-    this.setState({ Products: this.state.Products.concat(res) }, () => console.log('CURRENT TRAVEL LIST: ', this.state.Product))               
+    this.setState({ Products: this.state.Products.concat(res.Products),  totalPages: this.state.totalPages = res.Pages  }, () => console.log('CURRENT PRODUCT: ', this.state.Products) & console.log('CURRENT PAGE NUMBERS: ', this.state.totalPages))               
   })
 
  
@@ -41,10 +40,10 @@ fetchData = () => {
 
 searchProductByPage = (e) => {
 fetch('http://localhost:8000/products?page='+ e.target.value)
-.then(response => response.json())
-.then(response => {
-  console.log(response);
-  this.setState({ Products: response }, () => {
+.then(res => res.json())
+.then(res => {
+  console.log(res);
+  this.setState( {Products: this.state.Products.concat(res.Products), totalPages: this.state.totalPages = res.Pages }, () => {
     console.log(this.state.Products);
   });
   
@@ -53,12 +52,13 @@ fetch('http://localhost:8000/products?page='+ e.target.value)
 
 searchProductByPageByCategory = (e) => {
   fetch('http://localhost:8000/products?page=1&category=' + e.target.value)
-  .then(response => response.json())
-  .then(response => {
+  .then(res => res.json())
+  .then(res => {
     //let searchResult = JSON.parse(responseBody).results;
-    console.log(response);
-    this.setState({ Products: response }, () => {
+    console.log(res);
+    this.setState({Products: this.state.Products = res.Products, totalPages: this.state.totalPages = res.Pages }, () => {
       console.log(this.state.Products);
+      console.log(this.state.totalPages);
     });
     
   })  
@@ -66,32 +66,59 @@ searchProductByPageByCategory = (e) => {
 
   searchProductByPrice = (event) => {
     fetch('http://localhost:8000/products?page=&price=' + event.target.value)
-    .then(response => response.json())
-    .then(response => {
+    .then(res => res.json())
+    .then(res => {
       //let searchResult = JSON.parse(responseBody).results;
-      console.log(response);
-      this.setState({ Products: response }, () => {
+      console.log(res);
+      this.setState({Products: this.state.Products = res.Products, totalPages: this.state.totalPages = res.Pages }, () => {
         console.log(this.state.Products);
       });
       
     })  
     }
 
+    
+
   render() {
+   
+    var pageNumbers = Array.from({length: this.state.totalPages}, (v, i) => i + 1);
+    const renderPageNumbers = pageNumbers.map(number => {
+      return (
+        <span
+          key={number}
+          id={number}
+          onClick={this.handleClick}
+        >
+          {number}
+        </span>
+      );
+    });
+   
     return (
+      
       <div className="App">
+      
          <h1>Products</h1>
-        <div>
+         
+       
+          
           <SearchBarProduct SearchProducts={this.searchProductByPage} />  
           <SearchBarCategory SearchCategory={this.searchProductByPageByCategory} />
           <SearchPriceOrder SearchPrice={this.searchProductByPrice} />
 
                   
-          <ProductList Products={this.state.Products} />    
-        </div>   
-  
+          <ProductList Products={this.state.Products} />   
+            
+           <ul id="page-numbers" align="center">
+         
+          {renderPageNumbers}
+    
+        </ul>
+          
       </div>
+      
     );
+   
   }
 }
 

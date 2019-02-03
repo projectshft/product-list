@@ -8,9 +8,9 @@ class ProductList extends React.Component {
     
   render () { 
     return (
-      <div className="products"> 
+      <div className="product-list"> 
         <h1>Product List</h1>
-    
+        <div className="products"> 
           {          
             this.props.Products.map(p => (
               <div key={p._id} className="product">
@@ -32,26 +32,8 @@ class ProductList extends React.Component {
           }
           <br />
           <span>
-  
-        
-          <span><Link to="/products?page=1"> 1  </Link></span>
-         
-          <span><Link to="/products?page=2">  2  </Link></span>
-          <span><Link to="/products?page=3">  3  </Link></span>
-          <span><Link to="/products?page=4">  4  </Link></span>
-          <span><Link to="/products?page=5">  5  </Link></span>
-          <span><Link to="/products?page=6">  6  </Link></span>
-          <span><Link to="/products?page=7">  7  </Link></span>
-          <span><Link to="/products?page=8">  8  </Link></span>
-          <span><Link to="/products?page=9">  9  </Link></span>
-          <span><Link to="/products?page=10">  10  </Link></span>
-      
-          </span>
-       
-       
-        
-       
-           
+          </span>      
+         </div>  
       </div>
     );
   }

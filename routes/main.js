@@ -28,11 +28,13 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', cors(), (req, res, next) => {
 
     const perPage = 9;
-    const query = req.query.category;
+    const query = req.query.category
     
     req.query
+    // let query = req.query
     // return the first page by default
- const page = req.query.page || 1    
+    const page = req.query.page || 1 
+    // query = Product.category  
     
     // let filterBycategory = {};
     // if (req.query.category == "Tools") {
@@ -49,7 +51,7 @@ router.get('/products', cors(), (req, res, next) => {
     console.log(sortOrder)
     
     Product
-      .find({query})
+      .find({ title: query })
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .sort(sortOrder)

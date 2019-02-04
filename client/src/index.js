@@ -8,7 +8,7 @@ import './index.css';
 
 import App from "./components/app";
 // import rootReducer from "./reducers";
-// import Products from "./components/product";
+
 
 import './index.css';
 // import reducerProducts from './reducers/reducer-products';

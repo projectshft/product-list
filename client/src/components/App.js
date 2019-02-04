@@ -24,13 +24,16 @@ componentDidMount = () => {
 }
 
 handleClick(event) {
+  
   this.setState({
-    currentPage: Number(event.target.id)
+    currentPage: this.state.currentPage = Number(event.target.id)
+    
   });
+  this.searchProducts()
   console.log(this.state.currentPage);
 }
 
-fetchData = () => {
+fetchData = (event) => {
   fetch("http://localhost:8000/products", {
     method: "GET",
     dataType: "JSON",
@@ -46,7 +49,7 @@ fetchData = () => {
  
 }
 
-searchProducts = () => {
+searchProducts = (e) => {
 var searchString = this.state.currentPage
   
   if (this.state.category.length > 0 ){
@@ -60,7 +63,7 @@ var searchString = this.state.currentPage
   .then(res => {
     //let searchResult = JSON.parse(responseBody).results;
     console.log(res);
-    this.setState({Products: this.state.Products = res.Products, totalPages: this.state.totalPages = res.Pages, currentPage: this.state.currentPage = res.Page }, () => {
+    this.setState({Products: this.state.Products = res.Products, totalPages: this.state.totalPages = res.Pages, currentPage: this.state.currentPage = res.Page}, () => {
       console.log(this.state.Products);
       console.log(this.state.totalPages);
       console.log(this.state.currentPage);
@@ -68,6 +71,7 @@ var searchString = this.state.currentPage
     
   })  
 }
+
 
 searchProductByPageByCategory = (e) => {
   this.setState({category: this.state.category = e.target.value, currentPage: this.state.currentPage = 1});
@@ -84,8 +88,8 @@ searchProductByPageByCategory = (e) => {
  
   }
 
-  searchProductByPrice = ( e) => {
-    this.setState({priceOrder: this.state.priceOrder = e.target.value, currentPage: this.state.currentPage = 1});
+  searchProductByPrice = (e) => {
+    this.setState({priceOrder: this.state.priceOrder = e.target.value, currentPage: this.state.currentPage = e.target.id});
     this.searchProducts();
     // fetch('http://localhost:8000/products?page=' + this.state.currentPage + '&price=' + event.target.value)
     // .then(res => res.json())

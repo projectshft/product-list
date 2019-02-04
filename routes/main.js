@@ -31,7 +31,7 @@ router.get('/products', cors(), (req, res, next) => {
     req.query
     
     // return the first page by default
-    const page = req.query.page || 1 
+    const page = req.query.page || 1
     // query = Product.category  
     
     // let filterBycategory = {};
@@ -65,7 +65,10 @@ router.get('/products', cors(), (req, res, next) => {
             return next(err)
           } else {
             var totalPages = Math.ceil(count / perPage);
+            var currentPage = parseFloat(page);
+            
             res.json({
+                "Page": currentPage,
                 "Pages": totalPages,
                 "Products": products
             })

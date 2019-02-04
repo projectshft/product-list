@@ -9,7 +9,7 @@ class SearchBarCategory extends Component {
         <label>Category Search: </label>
         <select text="Search for a category" onChange={this.props.SearchCategory}>
          
-         <option disabled selected value> -- select an option -- </option> 
+          
          <option></option> 
         <option>Automative</option>   
         <option>Beauty</option>

@@ -9,7 +9,6 @@ class SearchPriceOrder extends Component {
         <label>Price Order: </label>
         <select text="Search for a category" onChange={this.props.SearchPrice}>
          
-         <option disabled selected value> -- select an option -- </option> 
          <option> </option> 
         <option>lowest</option>   
         <option>highest</option>

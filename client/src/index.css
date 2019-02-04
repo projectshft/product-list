@@ -53,3 +53,10 @@ code {
 #ul_top_hypers {
   display: inline;
 }
+
+#page-numbers > span {
+  margin-right: 0.3em;
+  color: blue;
+  user-select: none;
+  cursor: pointer;
+}

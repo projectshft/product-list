@@ -1,7 +1,5 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
 import PropTypes from 'prop-types';
-import ProductDetail from './ProductDetail';
 
 
 class ProductList extends React.Component {
@@ -22,8 +20,7 @@ class ProductList extends React.Component {
                 Category: {p.category}
                 <br />
                 Price: {p.price} 
-                <br />
-                <Link to={`/product/${p._id}`}>Details</Link>              
+                <br />          
               </div>
               
                           
@@ -31,8 +28,7 @@ class ProductList extends React.Component {
            
           }
           <br />
-          <span>
-          </span>      
+             
          </div>  
       </div>
     );
@@ -40,7 +36,7 @@ class ProductList extends React.Component {
 }
 
 ProductList.propTypes = {
-  Products: PropTypes.arrayOf(PropTypes.shape(ProductDetail.propTypes)).isRequired
+  Products: PropTypes.arrayOf(PropTypes.shape(ProductList.propTypes)).isRequired
 };
 
 

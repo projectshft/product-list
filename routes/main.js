@@ -8,16 +8,18 @@ const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
 
-
+//The Router below enables us to generate fake data that consists of 90 fake products.
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
 
+    //The details of the fake products include their category, name, price and image as seen below. 
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
     
+    //When there is an error, it will through back an error. 
     product.save((err) => {
       if (err) throw err
     })
@@ -25,20 +27,14 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end("Success")
 })
 
+//The Router below will allow us to view all Products in Postman. It uses cors to be able to connect to the front-end. 
 router.get('/products', cors(), (req, res, next) => {
-
+//The constant immediately below, sets each page to show only 9 products. With 90 products total, this will mean we will have ten pages when looking for the fake products. 
     const perPage = 9;   
-    req.query
-    
     // return the first page by default
     const page = req.query.page || 1
-    // query = Product.category  
-    
-    // let filterBycategory = {};
-    // if (req.query.category == "Tools") {
-    //     filterBycategory.category = "Tools";
-    // }
-
+   
+    //creates a sort order to sort the prices from either lowest as the first if statement says, or highest as the second if statement says. 
     let sortOrder = {};
     if(req.query.price == "lowest"){
        sortOrder.price = 1;
@@ -48,47 +44,47 @@ router.get('/products', cors(), (req, res, next) => {
     }
     console.log(sortOrder)
 
+    //This enables us to filter by categories. The term searchFilter is used in the find method of Product to bring back the category filters to be used when we want to use the category filters.
     let searchFilter = {};
     if(req.query.category) {
         searchFilter = {category: req.query.category};
     }
     
+    //This is where we not only find the category filter, but we filter the results to just one page
     Product
       .find(searchFilter)
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .sort(sortOrder)
       .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        //We are using the count method to count the total number of fake products exist, which in this case is 90.
         Product.count(searchFilter).exec((err, count) => {
           if (err) {
             return next(err)
           } else {
             var totalPages = Math.ceil(count / perPage);
-            var currentPage = parseFloat(page);
-            
+            var currentPage = parseFloat(page);         
+            //This enables us to view which page number we are on, how many pages exist and what the products are on the page number we are on. 
             res.json({
                 "Page": currentPage,
                 "Pages": totalPages,
                 "Products": products
             })
           }
-          //res.send(products)
         })
       })
-
   })
 
+  //The Router below allows us to identify by Id a specific product.
   router.get('/products/:product', (req, res, next) => {
     Product.findById(req.params.product, (err, product) =>{
         res.send(product)
     })
   })
+  //The Router below allows us to look at all the reviews that the Products have received.
   router.get('/reviews', (req, res, next) => {
       const perPage = 40
-
       const page = req.query.page || 1
-
       Review
         .find({}).populate('Review')
         .skip((perPage * page) - perPage)
@@ -100,10 +96,9 @@ router.get('/products', cors(), (req, res, next) => {
             })
         })
   })
+  //The Router below will add an item to the database
   router.post('/products', (req, res, next) => {
     let product = req.body
-    //This will add an item to the database
-
         let newProduct = new Product ({
             category: product.category,
             name: product.name,
@@ -116,11 +111,10 @@ router.get('/products', cors(), (req, res, next) => {
         res.send(product)
       
   })
+  //The Router below will add reviews to a product.
   router.post('/:product/reviews', (req, res, next) => {
       let review = req.body;
       const id = req.params.product;
-    //This will add a review to a product
-
         let newReview = new Review ({
             reviewText: review.reviewText,
             userName: review.userName,
@@ -135,12 +129,13 @@ router.get('/products', cors(), (req, res, next) => {
         })
   })
 
+  //The Router below will delete a specific product within our product list. 
   router.delete('/products/:product', (req, res, next) => {
     Product.findByIdAndDelete(req.params.product, (err, product) =>{
         res.send(product)
-    })
+       })
   })
-
+   //The Router below will delete a specific review within our review list. 
    router.delete('/reviews/:review', (req, res, next) => {
     Review.findByIdAndDelete(req.params.review, (err, review) => {
         res.send(review)

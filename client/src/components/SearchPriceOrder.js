@@ -5,19 +5,17 @@ import PropTypes from 'prop-types';
 class SearchPriceOrder extends Component {
     render() {
       return (
-        <div className="search-bar">
-        <label>Price Order: </label>
-        <select text="Search for a category" onChange={this.props.SearchPrice}>
-         
-         <option> </option> 
-        <option>lowest</option>   
-        <option>highest</option>
-
-    
+        //This is the search drop down menu that will enable you to sort by price order, either in ascending or descending order.
+        <div className="search-bar" align="right">
+        {/* //This is the label of the Price Order drop down menu */}
+        <label>Sort Price by: </label>
+        <select text="Search for a category" onChange={this.props.SearchPrice}>      
+        {/* //This enables you to choose between sort by lowest price (ascending order) or by highest price (descending order). The blank option meanwhile, enables you to go back to how the pages originally were set. */}
+            <option></option> 
+            <option>lowest</option>   
+            <option>highest</option>  
         </select>           
-        </div>    
-         
-        
+        </div>           
       );
     }
     onInputChange(term) {

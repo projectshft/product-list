@@ -1,3 +1,4 @@
+//To Connect to both the Server and Client sides simultaneously, you need to run node server.js for the whole folder(server) and npm start for the client folder, in two different terminals. 
 import React from 'react';
 import PropTypes from 'prop-types';
 

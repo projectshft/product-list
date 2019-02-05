@@ -1,4 +1,5 @@
-//const router = require('express').Router()
+
+//To Connect to both the Server and Client sides simultaneously, you need to run node server.js for the whole folder(server) and npm start for the client folder, in two different terminals. 
 var express = require('express');
 var cors = require('cors');
 var router = express.Router();

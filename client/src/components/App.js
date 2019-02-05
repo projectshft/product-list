@@ -1,5 +1,4 @@
-//To Connect to both the Back-End and Front-End simultaneously, you need to run node server.js for the whole folder and npm start for the client folder, in two different terminals. 
-
+//To Connect to both the Server and Client sides simultaneously, you need to run node server.js for the whole folder(server) and npm start for the client folder, in two different terminals. 
 import React, { Component } from 'react';
 //The import above brings in React while the imports below brings in all the components needed to connect to the database.
 import ProductList from './ProductList';

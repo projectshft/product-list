@@ -116,7 +116,7 @@ render() {
       <div className="App"> 
        {/* "Products" is the title */}
          <h1 align="center">Products</h1>
-        {/* This is the search bar on the left. It will not work because the main intent of this eval was to create page list results, which are displaying. But it does not impede with any other activities. */}
+        {/* This is the search bar on the left. It will not work because the main intent of this project was to create page list results, which are displaying. But it does not impede with any other activities. */}
          <div class="search-bar" align="left">
             <label> Search: </label>
               <input type="text">

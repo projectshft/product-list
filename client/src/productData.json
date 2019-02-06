@@ -1,601 +1,591 @@
-{"productData": [
+[
     {
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcb8"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcb9"
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcb8"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcb9"
+            }
+        ],
+        "category": "Home",
+        "name": "Awesome Wooden Towels",
+        "price": {
+            "$numberInt": "197"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Home",
-    "name": "Awesome Wooden Towels",
-    "price": {
-        "$numberInt": "197"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcbe"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcbf"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcbe"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcbf"
+            }
+        ],
+        "category": "Games",
+        "name": "Sleek Steel Shirt",
+        "price": {
+            "$numberInt": "636"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Games",
-    "name": "Sleek Steel Shirt",
-    "price": {
-        "$numberInt": "636"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcc4"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcc5"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcc4"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcc5"
+            }
+        ],
+        "category": "Electronics",
+        "name": "Gorgeous Steel Chicken",
+        "price": {
+            "$numberInt": "461"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Electronics",
-    "name": "Gorgeous Steel Chicken",
-    "price": {
-        "$numberInt": "461"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcc1"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcc2"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcc1"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcc2"
+            }
+        ],
+        "category": "Shoes",
+        "name": "Generic Cotton Bacon",
+        "price": {
+            "$numberInt": "91"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Shoes",
-    "name": "Generic Cotton Bacon",
-    "price": {
-        "$numberInt": "91"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcca"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dccb"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcca"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dccb"
+            }
+        ],
+        "category": "Music",
+        "name": "Small Soft Chips",
+        "price": {
+            "$numberInt": "219"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Music",
-    "name": "Small Soft Chips",
-    "price": {
-        "$numberInt": "219"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dccd"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcce"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dccd"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcce"
+            }
+        ],
+        "category": "Kids",
+        "name": "Handcrafted Frozen Sausages",
+        "price": {
+            "$numberInt": "266"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Kids",
-    "name": "Handcrafted Frozen Sausages",
-    "price": {
-        "$numberInt": "266"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcc7"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcc8"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcc7"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcc8"
+            }
+        ],
+        "category": "Beauty",
+        "name": "Gorgeous Wooden Cheese",
+        "price": {
+            "$numberInt": "100"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Beauty",
-    "name": "Gorgeous Wooden Cheese",
-    "price": {
-        "$numberInt": "100"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcd3"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcd4"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcd3"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcd4"
+            }
+        ],
+        "category": "Automotive",
+        "name": "Ergonomic Frozen Chicken",
+        "price": {
+            "$numberInt": "33"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Automotive",
-    "name": "Ergonomic Frozen Chicken",
-    "price": {
-        "$numberInt": "33"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcd0"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcd1"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcd0"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcd1"
+            }
+        ],
+        "category": "Baby",
+        "name": "Rustic Plastic Tuna",
+        "price": {
+            "$numberInt": "615"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Baby",
-    "name": "Rustic Plastic Tuna",
-    "price": {
-        "$numberInt": "615"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcd9"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcda"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcd9"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcda"
+            }
+        ],
+        "category": "Movies",
+        "name": "Handmade Rubber Gloves",
+        "price": {
+            "$numberInt": "628"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Movies",
-    "name": "Handmade Rubber Gloves",
-    "price": {
-        "$numberInt": "628"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcd6"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcd7"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcd6"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcd7"
+            }
+        ],
+        "category": "Home",
+        "name": "Gorgeous Steel Salad",
+        "price": {
+            "$numberInt": "210"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Home",
-    "name": "Gorgeous Steel Salad",
-    "price": {
-        "$numberInt": "210"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcdf"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dce0"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcdf"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dce0"
+            }
+        ],
+        "category": "Sports",
+        "name": "Licensed Frozen Shirt",
+        "price": {
+            "$numberInt": "665"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Sports",
-    "name": "Licensed Frozen Shirt",
-    "price": {
-        "$numberInt": "665"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcdc"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcdd"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcdc"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcdd"
+            }
+        ],
+        "category": "Electronics",
+        "name": "Awesome Soft Shirt",
+        "price": {
+            "$numberInt": "512"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Electronics",
-    "name": "Awesome Soft Shirt",
-    "price": {
-        "$numberInt": "512"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dce2"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dce3"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dce2"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dce3"
+            }
+        ],
+        "category": "Tools",
+        "name": "Rustic Frozen Cheese",
+        "price": {
+            "$numberInt": "758"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Tools",
-    "name": "Rustic Frozen Cheese",
-    "price": {
-        "$numberInt": "758"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dce5"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dce6"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dce5"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dce6"
+            }
+        ],
+        "category": "Garden",
+        "name": "Fantastic Concrete Hat",
+        "price": {
+            "$numberInt": "835"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Garden",
-    "name": "Fantastic Concrete Hat",
-    "price": {
-        "$numberInt": "835"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dce8"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dce9"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dce8"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dce9"
+            }
+        ],
+        "category": "Books",
+        "name": "Licensed Granite Cheese",
+        "price": {
+            "$numberInt": "326"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Books",
-    "name": "Licensed Granite Cheese",
-    "price": {
-        "$numberInt": "326"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dceb"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcec"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dceb"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcec"
+            }
+        ],
+        "category": "Shoes",
+        "name": "Ergonomic Metal Keyboard",
+        "price": {
+            "$numberInt": "413"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Shoes",
-    "name": "Ergonomic Metal Keyboard",
-    "price": {
-        "$numberInt": "413"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcee"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcef"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcee"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcef"
+            }
+        ],
+        "category": "Music",
+        "name": "Generic Steel Towels",
+        "price": {
+            "$numberInt": "138"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Music",
-    "name": "Generic Steel Towels",
-    "price": {
-        "$numberInt": "138"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcf1"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcf2"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcf1"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcf2"
+            }
+        ],
+        "category": "Outdoors",
+        "name": "Handmade Soft Sausages",
+        "price": {
+            "$numberInt": "452"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Outdoors",
-    "name": "Handmade Soft Sausages",
-    "price": {
-        "$numberInt": "452"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcf4"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcf5"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcf4"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcf5"
+            }
+        ],
+        "category": "Toys",
+        "name": "Handmade Wooden Salad",
+        "price": {
+            "$numberInt": "191"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Toys",
-    "name": "Handmade Wooden Salad",
-    "price": {
-        "$numberInt": "191"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcf7"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcf8"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcf7"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcf8"
+            }
+        ],
+        "category": "Books",
+        "name": "Gorgeous Cotton Pizza",
+        "price": {
+            "$numberInt": "76"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Books",
-    "name": "Gorgeous Cotton Pizza",
-    "price": {
-        "$numberInt": "76"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcfa"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcfb"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcfa"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcfb"
+            }
+        ],
+        "category": "Books",
+        "name": "Handcrafted Wooden Tuna",
+        "price": {
+            "$numberInt": "674"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Books",
-    "name": "Handcrafted Wooden Tuna",
-    "price": {
-        "$numberInt": "674"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dcfd"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dcfe"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dcfd"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dcfe"
+            }
+        ],
+        "category": "Shoes",
+        "name": "Refined Frozen Cheese",
+        "price": {
+            "$numberInt": "739"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Shoes",
-    "name": "Refined Frozen Cheese",
-    "price": {
-        "$numberInt": "739"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dd00"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dd01"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dd00"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dd01"
+            }
+        ],
+        "category": "Toys",
+        "name": "Incredible Steel Chicken",
+        "price": {
+            "$numberInt": "586"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Toys",
-    "name": "Incredible Steel Chicken",
-    "price": {
-        "$numberInt": "586"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1abfb2f1a12bec67dd03"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1abfb2f1a12bec67dd04"
+    {
+        "_id": {
+            "$oid": "5c1d1abfb2f1a12bec67dd03"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1abfb2f1a12bec67dd04"
+            }
+        ],
+        "category": "Music",
+        "name": "Fantastic Plastic Pants",
+        "price": {
+            "$numberInt": "13"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Music",
-    "name": "Fantastic Plastic Pants",
-    "price": {
-        "$numberInt": "13"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1ac6b2f1a12bec67de65"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1ac6b2f1a12bec67de66"
+    {
+        "_id": {
+            "$oid": "5c1d1ac6b2f1a12bec67de65"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1ac6b2f1a12bec67de66"
+            }
+        ],
+        "category": "Kids",
+        "name": "Licensed Concrete Cheese",
+        "price": {
+            "$numberInt": "994"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Kids",
-    "name": "Licensed Concrete Cheese",
-    "price": {
-        "$numberInt": "994"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1ac6b2f1a12bec67de68"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1ac6b2f1a12bec67de69"
+    {
+        "_id": {
+            "$oid": "5c1d1ac6b2f1a12bec67de68"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1ac6b2f1a12bec67de69"
+            }
+        ],
+        "category": "Clothing",
+        "name": "Ergonomic Plastic Keyboard",
+        "price": {
+            "$numberInt": "123"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Clothing",
-    "name": "Ergonomic Plastic Keyboard",
-    "price": {
-        "$numberInt": "123"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1ac6b2f1a12bec67de6b"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1ac6b2f1a12bec67de6c"
+    {
+        "_id": {
+            "$oid": "5c1d1ac6b2f1a12bec67de6b"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1ac6b2f1a12bec67de6c"
+            }
+        ],
+        "category": "Clothing",
+        "name": "Practical Wooden Computer",
+        "price": {
+            "$numberInt": "415"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Clothing",
-    "name": "Practical Wooden Computer",
-    "price": {
-        "$numberInt": "415"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1ac6b2f1a12bec67de6e"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1ac6b2f1a12bec67de6f"
+    {
+        "_id": {
+            "$oid": "5c1d1ac6b2f1a12bec67de6e"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1ac6b2f1a12bec67de6f"
+            }
+        ],
+        "category": "Books",
+        "name": "Fantastic Wooden Fish",
+        "price": {
+            "$numberInt": "765"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Books",
-    "name": "Fantastic Wooden Fish",
-    "price": {
-        "$numberInt": "765"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-
-{
-    "_id": {
-        "$oid": "5c1d1ac6b2f1a12bec67dece"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1ac6b2f1a12bec67decf"
+    {
+        "_id": {
+            "$oid": "5c1d1ac6b2f1a12bec67dece"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1ac6b2f1a12bec67decf"
+            }
+        ],
+        "category": "Books",
+        "name": "Incredible Soft Hat",
+        "price": {
+            "$numberInt": "962"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Books",
-    "name": "Incredible Soft Hat",
-    "price": {
-        "$numberInt": "962"
     },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
-    }
-},
-{
-    "_id": {
-        "$oid": "5c1d1ac6b2f1a12bec67ded1"
-    },
-    "reviews": [
-        {
-            "$oid": "5c1d1ac6b2f1a12bec67ded2"
+    {
+        "_id": {
+            "$oid": "5c1d1ac6b2f1a12bec67ded1"
+        },
+        "reviews": [
+            {
+                "$oid": "5c1d1ac6b2f1a12bec67ded2"
+            }
+        ],
+        "category": "Home",
+        "name": "Handcrafted Steel Soap",
+        "price": {
+            "$numberInt": "271"
+        },
+        "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
+        "__v": {
+            "$numberInt": "0"
         }
-    ],
-    "category": "Home",
-    "name": "Handcrafted Steel Soap",
-    "price": {
-        "$numberInt": "271"
-    },
-    "image": "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png",
-    "__v": {
-        "$numberInt": "0"
     }
-},
-{
-    "_id": {
-        "$oid": "5c1d333009f4bb25ac05e2e1"
-    },
-    "reviews": [],
-    "__v": {
-        "$numberInt": "0"
-    }
-}
-]}
+]

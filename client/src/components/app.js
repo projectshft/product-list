@@ -13,6 +13,7 @@ export default class App extends Component {
         super(props);
         this.state = {
             products: productData
+
         }
     }
 
@@ -22,7 +23,7 @@ export default class App extends Component {
                 <h1 >PRODUCTS</h1>
                 <p>Welcome to our store!</p>
 
-                <ProductGrid products={this.state.contacts}/>
+                <ProductGrid products={this.state.products} />
 
             </div>
         )

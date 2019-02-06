@@ -9,18 +9,16 @@ const ProductCard = ({product}) => {
         <div className="col-md-4">
             <div className="card" key={product['_id']["$oid"]}>
                 <div className="card mb-4 shadow-sm">
-                    <h6 className="card-header">
-                        Category: 
-                            <small>{`  product['category']         `}</small>
-                        Price:  
-                            <small>{`      $ product['price']['$numberInt'] `}</small>
-                    </h6>
+                    <div className="card-header d-flex justify-content-between">
+                        <p>Category: {`  ${product['category']}`}</p> 
+                        <h4>{`$${product['price']['$numberInt']}`}</h4>
+                    </div>
                 </div>
 
                 <img className="card-img-top" src={product['image']} alt="Product" />
 
                 <div className="card-body">
-                    <p className="card-text">{product['name']}</p>
+                    <h3 className="card-text">{product['name']}</h3>
                 </div>
             </div>
         </div>

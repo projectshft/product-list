@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-//Provider binds Redux to React & makes store available to all containers
+
+// Provider binds Redux to React & makes store available to all containers
 // import {Provider} from 'react-redux';
 // import {createStore} from 'redux';
 

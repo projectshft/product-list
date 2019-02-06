@@ -19,19 +19,6 @@ const ProductGrid = ({ products }) => {
             </div>
         </section >
 
-
-        // <div>
-        //     <h3>Product List</h3>
-        //     <ul>
-        //         {products.map((product) =>
-        //             <li key={product._id}>
-        //                 {product.name} {product.category} {product.price}
-        //             </li>
-        //         )
-        //         }
-        //     </ul>
-        // </div>
-
     )
 }
 

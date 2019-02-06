@@ -28,7 +28,7 @@ export default class App extends Component {
 
         axios.get(url)
             .then(response => this.setState({
-                products: response,
+                products: this.state.products.concat(response.data),
                 isLoading: false
             }))
             .catch(error => this.setState({
@@ -48,10 +48,10 @@ export default class App extends Component {
 
         axios.get(url, { params: params })
             .then(response => this.setState({
-                products: response,
+                products: response.data,
                 isLoading: false
             }))
-        console.log('response:', response)
+       
             .catch(error => this.setState({
                 error,
                 isLoading: false

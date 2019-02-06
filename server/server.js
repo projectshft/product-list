@@ -3,7 +3,10 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
 const cors = require('cors')
-app.use(cors())
+
+
+
+
 
 mongoose.connect('mongodb://localhost/products', { useNewUrlParser: true })
 
@@ -14,8 +17,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 
-const mainRoutes = require('./routes/main')
+app.use(cors())
 
+const mainRoutes = require('./routes/main')
 app.use(mainRoutes)
 
 app.listen(8000, () => {

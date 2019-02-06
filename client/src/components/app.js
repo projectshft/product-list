@@ -10,7 +10,7 @@ import ProductGrid from './productGrid';
 import PageNumber from './pageNumber';
 const axios = require('axios');
 
-const url = 'localhost:8000/products';
+const url = 'http://localhost:8000/products';
 
 export default class App extends Component {
     constructor(props) {

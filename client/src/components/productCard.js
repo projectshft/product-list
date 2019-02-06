@@ -3,15 +3,16 @@
 import React from 'react';
 
 const ProductCard = ({product}) => {
-    
+    console.log('product:', product);
+
     return (
 
         <div className="col-md-4">
-            <div className="card" key={product['_id']["$oid"]}>
+            <div className="card" key={product['_id']}>
                 <div className="card mb-4 shadow-sm">
                     <div className="card-header d-flex justify-content-between">
                         <p>Category: {`  ${product['category']}`}</p> 
-                        <h4>{`$${product['price']['$numberInt']}`}</h4>
+                        <h4>{`$ ${product['price']}`}</h4>
                     </div>
                 </div>
 

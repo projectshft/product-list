@@ -12,6 +12,7 @@ const ProductGrid = ({ products }) => {
         <section className="Grid album py-5 bg-light">
             <div className="container">
                 <div className="row">
+                
                     {products.map((product) =>
                         <ProductCard key={Math.random() * 2} product={product} />
                     )}

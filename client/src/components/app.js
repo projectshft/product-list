@@ -6,31 +6,14 @@
 import React from 'react';
 
 // import ProductData from '../productData.json';
-import ProductGrid from './productGrid';
-import PageNumber from './pageNumber';
+import ProductGrid from '../containers/productGrid';
+import PageNumber from '../containers/pageNumber';
 
-// const axios = require('axios');
-// const url = 'http://localhost:8000/products';
+
 
 const App = () => {
 
-
-    // componentDidMount() {
-    //     this.setState({ isLoading: true });
-
-    //     axios.get(url)
-    //         .then(response => this.setState({
-    //             products: this.props.products.concat(response.data),
-    //             isLoading: false
-    //         }))
-    //         .catch(error => this.setState({
-    //             error,
-    //             isLoading: false
-    //         }))
-    // }
-
-
-
+   
     // pageRequest(page) {
     //     this.setState({ isLoading: true });
 
@@ -56,8 +39,11 @@ const App = () => {
             <h1 >PRODUCTS</h1>
             <p>Welcome to our store!</p>
 
-            <ProductGrid products={this.props.products} />
-            <PageNumber onPageSelect={this.pageRequest} />
+            <ProductGrid />
+             {/* products={this.props.products}  */}
+            
+            {/* <PageNumber onPageSelect={this.pageRequest} /> */} 
+           
         </div>
     )
 }

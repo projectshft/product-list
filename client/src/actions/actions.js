@@ -5,19 +5,27 @@
 
 
 import axios from "axios";
-
-export const FETCH_PRODUCTS = "fetch_products";
-
 const ROOT_URL = "http://localhost:8000";
 
 
-export function fetchProducts() {
-    const request = axios.get(`${ROOT_URL}/products`);
 
-    console.log('Request fetchProducts: ', request);
+//get initial set of products
+export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+export const FETCH_PRODUCTS_FAIL = "FETCH_PRODUCTS_FAIL";
+export async function fetchProducts() {
+    try {
+        const request = await axios.get(`${ROOT_URL}/products`);
 
-    return {
-        type: FETCH_PRODUCTS,
-        payload: request
-    };
+        console.log('Request fetchProducts: ', request);
+
+        return {
+            type: FETCH_PRODUCTS,
+            payload: request
+        };
+    } catch (error) {
+        return {
+            type: FETCH_PRODUCTS_FAIL,
+            payload: error
+        }
+    }
 }

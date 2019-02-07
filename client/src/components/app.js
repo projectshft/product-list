@@ -13,27 +13,6 @@ import PageNumber from '../containers/pageNumber';
 
 const App = () => {
 
-   
-    // pageRequest(page) {
-    //     this.setState({ isLoading: true });
-
-    //     const params = {
-    //         page: page
-    //     };
-
-    //     axios.get(url, { params: params })
-    //         .then(response => this.setState({
-    //             products: response.data,
-    //             isLoading: false
-    //         }))
-
-    //         .catch(error => this.setState({
-    //             error,
-    //             isLoading: false
-    //         }))
-    // }
-
-
     return (
         <div>
             <h1 >PRODUCTS</h1>

@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import ProductReducer from './ProductReducer';
+import _ from 'lodash';
 
 const rootReducer = combineReducers({
     products: ProductReducer

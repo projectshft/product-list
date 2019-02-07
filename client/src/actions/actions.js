@@ -12,6 +12,7 @@ const ROOT_URL = "http://localhost:8000";
 //get initial set of products
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_PRODUCTS_FAIL = "FETCH_PRODUCTS_FAIL";
+
 export async function fetchProducts() {
     try {
         const request = await axios.get(`${ROOT_URL}/products`);

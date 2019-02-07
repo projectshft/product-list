@@ -3,8 +3,7 @@
 import React from 'react';
 
 const ProductCard = ({product}) => {
-    console.log('product:', product);
-
+    
     return (
 
         <div className="col-md-4">

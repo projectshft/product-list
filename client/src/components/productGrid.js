@@ -3,11 +3,16 @@
 import React from 'react';
 import ProductCard from './productCard';
 import PropTypes from 'prop-types';
-
+import {connect} from 'react-redux';
 
 const ProductGrid = ({ products }) => {
     console.log('products:' , products);
 
+    function mapStateToProps(state) {
+        return {
+            
+        }
+    }
     return (
         <section className="Grid album py-5 bg-light">
             <div className="container">

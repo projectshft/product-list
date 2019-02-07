@@ -4,8 +4,8 @@ import './index.css';
 
 
 // Provider binds Redux to React & makes store available to all containers
-// import {Provider} from 'react-redux';
-// import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
 
 import App from "./components/app";
 // import rootReducer from "./reducers";
@@ -14,10 +14,12 @@ import App from "./components/app";
 import './index.css';
 // import reducerProducts from './reducers/reducer-products';
 
-// const store = createStore(reducerProducts);
+const store = createStore(reducer);
 
 ReactDOM.render(
-    <App />
+    <Provider store={store}> 
+        <App />
+    </Provider>   
     , document.getElementById('root')
 );
 

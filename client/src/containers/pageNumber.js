@@ -7,10 +7,10 @@ import { setCurrentPage, increment, decrement } from '../actions/actions';
 class PageNumber extends Component {
     
     render() {
-        console.log('Page:', this.props.page);
+        
         return (
             <div className="btn-group btn-group-lg" role="group" aria-label="Basic example">
-                <button type="button" className="btn btn-secondary" value="previous" onClick={(e) => { this.props.decrement(e.target.value) }}>Previous</button>  
+                <button type="button" className="btn btn-secondary" value="previous" onClick={(e) => { this.props.decrement() }}>Previous</button>  
                 <button type="button" className="btn btn-secondary" value="1" onClick={(e) =>{this.props.setCurrentPage(e.target.value)}}>1</button>
                 <button type="button" className="btn btn-secondary" value="2"onClick={(e) => { this.props.setCurrentPage(e.target.value)}}>2</button>  
                 <button type="button" className="btn btn-secondary" value="3"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>3</button>  
@@ -23,11 +23,11 @@ class PageNumber extends Component {
                 <button type="button" className="btn btn-secondary" value="10"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>10</button> 
                 <button type="button" className="btn btn-secondary" value="11"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>11</button>  
                 <button type="button" className="btn btn-secondary" value="12" onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>12</button>   
-                <button type="button" className="btn btn-secondary" value="next"onClick={(e) => { this.props.increment(e.target.value) }}>Next</button>  
+                <button type="button" className="btn btn-secondary" value="next"onClick={(e) => { this.props.increment() }}>Next</button>  
             </div> 
         )
-    }
-}
+    } 
+} 
 
 function mapStateToProps(state) {
     return {

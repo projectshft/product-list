@@ -1,42 +1,44 @@
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setCurrentPage, increment, decrement } from '../actions/actions';
 
-export default class PageNumber extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            page: 1
-        }
-    }
-
-    Decrement = () => {
-        this.setState({
-            page: this.state.page + 1
-        })
-    }
-
-    Increment = () => {
-        this.setState({
-            page: this.state.page -1
-        })
-    }
+class PageNumber extends Component {
     
     render() {
+        console.log('Page:', this.props.page);
         return (
-            
-            //always add tabindex="-1" on disabled links and use custom JavaScript to fully disable
-            <nav aria-label="...">
-                <ul className="pagination justify-content-center">
-                    <li className="page-item">
-                        <a className="page-link previous" href="#" previous={this.Decrement()}>Previous</a>
-                    </li>
-                  
-                    <li className="page-item">
-                        <a className="page-link next" href="#" next={this.Increment()}>Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <div className="btn-group btn-group-lg" role="group" aria-label="Basic example">
+                <button type="button" className="btn btn-secondary" value="previous" onClick={(e) => { this.props.decrement(e.target.value) }}>Previous</button>  
+                <button type="button" className="btn btn-secondary" value="1" onClick={(e) =>{this.props.setCurrentPage(e.target.value)}}>1</button>
+                <button type="button" className="btn btn-secondary" value="2"onClick={(e) => { this.props.setCurrentPage(e.target.value)}}>2</button>  
+                <button type="button" className="btn btn-secondary" value="3"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>3</button>  
+                <button type="button" className="btn btn-secondary" value="4"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>4</button>  
+                <button type="button" className="btn btn-secondary" value="5"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>5</button>  
+                <button type="button" className="btn btn-secondary" value="6"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>6</button>  
+                <button type="button" className="btn btn-secondary" value="7" onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>7</button>  
+                <button type="button" className="btn btn-secondary" value="8" onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>8</button>  
+                <button type="button" className="btn btn-secondary" value="9"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>9</button>  
+                <button type="button" className="btn btn-secondary" value="10"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>10</button> 
+                <button type="button" className="btn btn-secondary" value="11"onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>11</button>  
+                <button type="button" className="btn btn-secondary" value="12" onClick={(e) => { this.props.setCurrentPage(e.target.value) }}>12</button>   
+                <button type="button" className="btn btn-secondary" value="next"onClick={(e) => { this.props.increment(e.target.value) }}>Next</button>  
+            </div> 
         )
     }
-
 }
+
+function mapStateToProps(state) {
+    return {
+        page: state.page
+       
+    };
+}
+
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({setCurrentPage, increment, decrement}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageNumber);

@@ -12,8 +12,9 @@ import App from "./components/app";
 import reducers from "./reducers/reducers";
 
 
+
 import './index.css';
-// import reducerProducts from './reducers/reducer-products';
+
 
 const store = applyMiddleware(promise,logger)(createStore);
 

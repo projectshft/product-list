@@ -19,9 +19,7 @@ const App = () => {
             <p>Welcome to our store!</p>
 
             <ProductGrid />
-             {/* products={this.props.products}  */}
-            
-            {/* <PageNumber onPageSelect={this.pageRequest} /> */} 
+            <PageNumber />
            
         </div>
     )

@@ -1,5 +1,5 @@
 import { FETCH_PRODUCTS, FETCH_PRODUCTS_FAIL } from '../actions/actions';
-import _ from 'lodash';
+
 
 export default function (state = [], action) {
     

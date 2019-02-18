@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS, FETCH_PRODUCTS_FAIL, FETCH_PRODUCTS_BY_PAGE } from '../actions/actions';
+import { FETCH_PRODUCTS, FETCH_PRODUCTS_FAIL, FETCH_PRODUCTS_BY_PAGE, FILTER_BY_CATEGORY } from '../actions/actions';
 
 export default function (state = [], action) {
     
@@ -7,6 +7,9 @@ export default function (state = [], action) {
             return action.payload.data;
 
         case FETCH_PRODUCTS_BY_PAGE:
+            return action.payload.data;
+
+        case FILTER_BY_CATEGORY:
             return action.payload.data;
 
         case FETCH_PRODUCTS_FAIL:

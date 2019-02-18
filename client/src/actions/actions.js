@@ -70,8 +70,20 @@ export async function fetchProductsByPage(page) {
 
 
 //when category selected, display the 1st set of 9 products that match
+export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY';
 export async function filterByCategory(category){
-    
+    try {
+        const request = await axios.get(`${ROOT_URL}?category=${category}`);
+        return {
+            type: FILTER_BY_CATEGORY,
+            payload: request,
+        };
+    } catch (error) {
+        return {
+            type: FAIL,
+            payload: error
+        }
+    }
 }
 
 

@@ -12,10 +12,10 @@ const PageNumber = ({dispatch}) => {
                 dispatch(decrement())
                 dispatch(fetchProductsByPage())}}>Previous</button> */}
             <button type="button" className="btn btn-secondary" value="1" onClick={(e) => {
-                dispatch(dispatch(setCurrentPage(e.target.value)))                     
+                dispatch(setCurrentPage(e.target.value))                    
                 dispatch(fetchProductsByPage(e.target.value))                 }}>1</button>
             <button type="button" className="btn btn-secondary" value="2" onClick={(e) => {
-                dispatch(dispatch(setCurrentPage(e.target.value)))                 
+                dispatch(setCurrentPage(e.target.value))                 
                 dispatch(fetchProductsByPage(e.target.value))      }}>2</button>
             <button type="button" className="btn btn-secondary" value="3" onClick={(e) => {                             dispatch(setCurrentPage(e.target.value))                     
                 dispatch(fetchProductsByPage(e.target.value))                 }}>3</button>

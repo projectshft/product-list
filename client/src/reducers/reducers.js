@@ -7,7 +7,7 @@ import CategoryReducer from './CategoryReducer';
 const rootReducer = combineReducers({
     products: ProductReducer,
     page: PageReducer,
-    CategoryReducer,
+    category:CategoryReducer,
 });
 
 export default rootReducer;

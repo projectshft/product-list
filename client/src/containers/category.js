@@ -1,31 +1,40 @@
 import React from 'react';
 import { connect } from "react-redux";
 import _ from 'lodash';
-import productGrid from './productGrid';
+import { filterByCategory } from '../actions/actions';
 
 const Category = ({ dispatch }) => {
 
     return (
 
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary">Filter by Category</button>
-            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="sr-only">Toggle Dropdown</span>
+        <div classNameName="btn-group">
+            <button type="button" className="btn btn-primary">Filter by Category</button>
+            <button type="button" className="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span className="sr-only">Toggle Dropdown</span>
             </button>
-            <div class="dropdown-menu">
+            <div className="dropdown-menu">
                 {/* {products.map((product) => 
-                    <a class="dropdown-item" href="#" key={product._id}>
+                    <a className="dropdown-item" href="#" key={product._id}>
                         {product.category}
                     </a>
                 )} */}
-                <a class="dropdown-item" href="#">Books</a>
-                <a class="dropdown-item" href="#">Beauty</a>
-                <a class="dropdown-item" href="#">Grocery</a>
-                <a class="dropdown-item" href="#">Jewelry</a>
-                <a class="dropdown-item" href="#">Outdoors</a>
-                <a class="dropdown-item" href="#">Health</a>
-                {/* <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a> */}
+                <a className="dropdown-item" href="#" onClick={(e) => {
+                    dispatch(filterByCategory(e.target.text))
+                }}>Books</a>
+                <a className="dropdown-item" href="#" onClick={(e) => {
+                    dispatch(filterByCategory(e.target.text))
+                }}>Beauty</a>
+                <a className="dropdown-item" href="#" onClick={(e) => {
+                    dispatch(filterByCategory(e.target.text))
+                }}>Grocery</a>
+                <a className="dropdown-item" href="#" onClick={(e) => {
+                    dispatch(filterByCategory(e.target.text))
+                }}>Outdoors</a>
+                <a className="dropdown-item" href="#" onClick={(e) => {
+                    dispatch(filterByCategory(e.target.text))
+                }}>Health</a>
+                {/* <div className="dropdown-divider"></div>
+                <a className="dropdown-item" href="#">Separated link</a> */}
             </div>
         </div>
 

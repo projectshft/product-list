@@ -24,9 +24,8 @@ export async function fetchProducts() {
 }
 
 
-
+//when page number clicked, set page
 export const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
-// export const page = page
 export const FAIL = "FAIL";
 export function setCurrentPage(page) {
     return {
@@ -35,18 +34,8 @@ export function setCurrentPage(page) {
     };
 }
 
-//////////////////////////////////////////TRYING TO SET PAGE THEN FETCH PRODUCTS////////////////////////////
-// page value becomes undefined at dispatch to actionCreator halfway through
-// export function setCurrentPage(page) {
-//     return (dispatch, getState) => {
-//         dispatch({ type: SET_CURRENT_PAGE, page});
-//         const page = getState();
-//         dispatch(fetchProductsByPage(page));
-//     }
-// }
 //when 'previous' clicked, decrease page by 1 and get those products
 export const DECREMENT = "DECREMENT";
-
 export async function decrement(page) {
     return {
         type: DECREMENT,
@@ -80,10 +69,11 @@ export async function fetchProductsByPage(page) {
 }
 
 
-
-
-
-
-
 //when category selected, display the 1st set of 9 products that match
+export async function filterByCategory(category){
+    
+}
+
+
+
 //when sort selected, re-order the store AND display the 1st set of 9

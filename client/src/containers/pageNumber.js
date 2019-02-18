@@ -8,9 +8,9 @@ const PageNumber = ({dispatch}) => {
 
     return (
         <div className="btn-group btn-group-lg" role="group" aria-label="Basic example">
-            <button type="button" className="btn btn-secondary" value="previous" onClick={() => {
+            {/* <button type="button" className="btn btn-secondary" value="previous" onClick={() => {
                 dispatch(decrement())
-                dispatch(fetchProductsByPage())}}>Previous</button>
+                dispatch(fetchProductsByPage())}}>Previous</button> */}
             <button type="button" className="btn btn-secondary" value="1" onClick={(e) => {
                 dispatch(dispatch(setCurrentPage(e.target.value)))                     
                 dispatch(fetchProductsByPage(e.target.value))                 }}>1</button>
@@ -38,9 +38,9 @@ const PageNumber = ({dispatch}) => {
             <button type="button" className="btn btn-secondary" value="12" onClick={(e) => {                            dispatch(setCurrentPage(e.target.value))                     
                 dispatch(fetchProductsByPage(e.target.value))                 }}>12</button>
 
-            <button type="button" className="btn btn-secondary" value="next" onClick={(e) => {
+            {/* <button type="button" className="btn btn-secondary" value="next" onClick={(e) => {
                 dispatch(increment())
-                dispatch(fetchProductsByPage()) }}>Next</button>
+                dispatch(fetchProductsByPage()) }}>Next</button> */}
         </div>
     )
 }

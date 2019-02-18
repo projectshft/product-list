@@ -8,7 +8,7 @@ import React from 'react';
 // import ProductData from '../productData.json';
 import ProductGrid from '../containers/productGrid';
 import PageNumber from '../containers/pageNumber';
-
+import Category from '../containers/category';
 
 
 const App = () => {
@@ -17,7 +17,7 @@ const App = () => {
         <div>
             <h1 >PRODUCTS</h1>
             <p>Welcome to our store!</p>
-
+            <Category />
             <ProductGrid />
             <PageNumber />
            

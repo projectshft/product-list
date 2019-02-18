@@ -5,7 +5,7 @@ import ProductCard from '../components/productCard';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {fetchProducts} from '../actions/actions';
+import { fetchProducts} from '../actions/actions';
 import _ from 'lodash';
 
 class ProductGrid extends Component {

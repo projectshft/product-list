@@ -29,17 +29,25 @@ export async function fetchProducts() {
 export const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 // export const page = page
 export const FAIL = "FAIL";
+// export function setCurrentPage(page) {
+//     return {
+//         type: SET_CURRENT_PAGE,
+//         page
+//     };
+// }
 
+//////////////////////////////////////////TRYING TO SET PAGE THEN FETCH PRODUCTS////////////////////////////
+// page value becomes undefined at dispatch to actionCreator halfway through
 export function setCurrentPage(page) {
-    console.log('action page:', page)
-    return {
-        type: SET_CURRENT_PAGE,
-        page
-    };
+    return (dispatch, getState) => {
+        dispatch({ type: SET_CURRENT_PAGE, page});
+        const page = getState();
+        dispatch(fetchProductsByPage(page));
+    }
 }
-
 //when 'previous' clicked, decrease page by 1 and get those products
 export const DECREMENT = "DECREMENT";
+
 export async function decrement(page) {
     return {
         type: DECREMENT,
@@ -56,32 +64,27 @@ export async function increment(page) {
     };
 }
 
+export const FETCH_PRODUCTS_BY_PAGE = "FETCH_PRODUCTS_BY_PAGE";
+export async function fetchProductsByPage(page) {
+    try {
+        const request = await axios.get(`${ROOT_URL}?page=${page}`);
+        return {
+            type: FETCH_PRODUCTS_BY_PAGE,
+            payload: request,
+        };
+    } catch (error) {
+        return {
+            type: FETCH_PRODUCTS_FAIL,
+            payload: error
+        }
+    }
+}
 
 
-// export async function fetchByPage(page) {
-//     console.log('action page:', page)
-//     try {
-//         const request = await axios.get(`${ROOT_URL}/products?page=${page}`);
-
-//         console.log('Request setCurrentPage: ', request);
-//         return {
-//             type: SET_CURRENT_PAGE,
-//             payload: request,
-//             page: page
-//     };
-//     } catch (error) {
-//         return {
-//             type: FAIL,
-//             payload: error
-//         }
-//     } 
-// }
 
 
-   
 
 
-   
 
 //when category selected, display the 1st set of 9 products that match
 //when sort selected, re-order the store AND display the 1st set of 9

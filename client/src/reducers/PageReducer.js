@@ -10,8 +10,7 @@ console.log("state:" , state)
             state = action.page
             console.log("state:", action.page)
             return state
-                // products: action.payload.data
-                        
+                                       
         case DECREMENT:
            state = state-1
             console.log("decrement:", action.page-1)

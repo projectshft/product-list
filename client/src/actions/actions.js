@@ -54,16 +54,26 @@ export async function increment(page) {
 
 export const FETCH_PRODUCTS_BY_PAGE = "FETCH_PRODUCTS_BY_PAGE";
 export async function fetchProductsByPage(page) {
-    try {
-        const request = await axios.get(`${ROOT_URL}?page=${page}`);
-        return {
-            type: FETCH_PRODUCTS_BY_PAGE,
-            payload: request,
-        };
-    } catch (error) {
-        return {
-            type: FETCH_PRODUCTS_FAIL,
-            payload: error
+    return () => {
+        
+        try {
+            //Note that when you paginate after filtering by category, your filter should persist.
+            // if (category === undefined) {
+                return {
+                    type: FETCH_PRODUCTS_BY_PAGE,
+                    payload:  axios.get(`${ROOT_URL}?page=${page}`),
+                }
+            // } else {
+            //     return {
+            //         type: FETCH_PRODUCTS_BY_PAGE,
+            //         payload:  axios.get(`${ROOT_URL}?category=${category}&page=${page}`),
+            //     };
+            // }
+        } catch (error) {
+            return {
+                type: FETCH_PRODUCTS_FAIL,
+                payload: error
+            }
         }
     }
 }
@@ -71,9 +81,9 @@ export async function fetchProductsByPage(page) {
 
 //when category selected, display the 1st set of 9 products that match
 export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY';
-export async function filterByCategory(category){
+export async function filterByCategory(category) {
     try {
-        const request = await axios.get(`${ROOT_URL}?category=${category}`);
+        const request = await axios.get(`${ROOT_URL}?page=1&category=${category}`);
         return {
             type: FILTER_BY_CATEGORY,
             payload: request,
@@ -84,8 +94,8 @@ export async function filterByCategory(category){
             payload: error
         }
     }
-}
+};
 
 
 
-//when sort selected, re-order the store AND display the 1st set of 9
+// when sort selected, re-order the store AND display the 1st set of 9

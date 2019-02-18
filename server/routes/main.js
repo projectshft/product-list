@@ -36,8 +36,8 @@ router.get('/products', (req, res, next) => {
     const perPage = 9
     // return the 1st page by default
     const page = req.query.page || 1
-    let category = req.query.category
-    let sortDirection = req.query.price
+    let category = req.query.category || undefined
+    let sortDirection = req.query.price || undefined
     
     let query = {};
 

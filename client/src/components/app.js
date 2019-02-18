@@ -9,6 +9,7 @@ import React from 'react';
 import ProductGrid from '../containers/productGrid';
 import PageNumber from '../containers/pageNumber';
 import Category from '../containers/category';
+import Price from '../containers/price';
 
 
 const App = () => {
@@ -17,7 +18,7 @@ const App = () => {
         <div>
             <h1 >PRODUCTS</h1>
             <p>Welcome to our store!</p>
-            <Category />
+            <Category /> <Price />
             <ProductGrid />
             <PageNumber />
            

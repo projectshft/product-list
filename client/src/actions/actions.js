@@ -23,7 +23,7 @@ export async function fetchProducts() {
     }
 }
 
-
+///////////////////////////////////////////////////SET PAGE////////////////////////////////////////////
 //when page number clicked, set page
 export const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 export const FAIL = "FAIL";
@@ -52,34 +52,26 @@ export async function increment(page) {
     };
 }
 
+///////////////////////////////////////////PAGE////////////////////////////////////////////////////////////////
 export const FETCH_PRODUCTS_BY_PAGE = "FETCH_PRODUCTS_BY_PAGE";
 export async function fetchProductsByPage(page) {
-    return () => {
-        
-        try {
-            //Note that when you paginate after filtering by category, your filter should persist.
-            // if (category === undefined) {
-                return {
-                    type: FETCH_PRODUCTS_BY_PAGE,
-                    payload:  axios.get(`${ROOT_URL}?page=${page}`),
-                }
-            // } else {
-            //     return {
-            //         type: FETCH_PRODUCTS_BY_PAGE,
-            //         payload:  axios.get(`${ROOT_URL}?category=${category}&page=${page}`),
-            //     };
-            // }
-        } catch (error) {
-            return {
-                type: FETCH_PRODUCTS_FAIL,
-                payload: error
-            }
+    try {
+        const request = await axios.get(`${ROOT_URL}?page=${page}`)
+        return {
+            type: FETCH_PRODUCTS_BY_PAGE,
+            payload: request,
+        }
+    } catch (error) {
+        return {
+            type: FETCH_PRODUCTS_FAIL,
+            payload: error
         }
     }
 }
 
-
+///////////////////////////////////////////////CATEGORY////////////////////////////////////////////////////////////
 //when category selected, display the 1st set of 9 products that match
+//Note that when you paginate after filtering by category, your filter should persist.
 export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY';
 export async function filterByCategory(category) {
     try {
@@ -97,5 +89,38 @@ export async function filterByCategory(category) {
 };
 
 
-
+//////////////////////////////////////////////PRICE//////////////////////////////////////////////////////////////////
 // when sort selected, re-order the store AND display the 1st set of 9
+//the sorting should persist regardless of whether the user has paginated or filtered.
+export const SORT_BY_PRICE_INCREASING = 'SORT_BY_PRICE_INCREASING';
+export async function sortByPriceIncreasing() {
+    try {
+        const request = await axios.get(`${ROOT_URL}?page=1&price=lowest`);
+        return {
+            type: SORT_BY_PRICE_INCREASING,
+            payload: request,
+        };
+    } catch (error) {
+        return {
+            type: FAIL,
+            payload: error
+        }
+    }
+}
+
+export const SORT_BY_PRICE_DECREASING = 'SORT_BY_PRICE_DECREASING';
+export async function sortByPriceDecreasing() {
+    try {
+        const request = await axios.get(`${ROOT_URL}?page=1&price=highest`);
+        return {
+            type: SORT_BY_PRICE_DECREASING,
+            payload: request,
+        };
+    } catch (error) {
+        return {
+            type: FAIL,
+            payload: error
+        }
+    }
+}
+

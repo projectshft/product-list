@@ -5,7 +5,6 @@ const ROOT_URL = "http://localhost:8000/products";
 //get initial set of products
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_PRODUCTS_FAIL = "FETCH_PRODUCTS_FAIL";
-
 export async function fetchProducts() {
     try {
         const request = await axios.get(`${ROOT_URL}`);
@@ -29,22 +28,22 @@ export async function fetchProducts() {
 export const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 // export const page = page
 export const FAIL = "FAIL";
-// export function setCurrentPage(page) {
-//     return {
-//         type: SET_CURRENT_PAGE,
-//         page
-//     };
-// }
+export function setCurrentPage(page) {
+    return {
+        type: SET_CURRENT_PAGE,
+        page
+    };
+}
 
 //////////////////////////////////////////TRYING TO SET PAGE THEN FETCH PRODUCTS////////////////////////////
 // page value becomes undefined at dispatch to actionCreator halfway through
-export function setCurrentPage(page) {
-    return (dispatch, getState) => {
-        dispatch({ type: SET_CURRENT_PAGE, page});
-        const page = getState();
-        dispatch(fetchProductsByPage(page));
-    }
-}
+// export function setCurrentPage(page) {
+//     return (dispatch, getState) => {
+//         dispatch({ type: SET_CURRENT_PAGE, page});
+//         const page = getState();
+//         dispatch(fetchProductsByPage(page));
+//     }
+// }
 //when 'previous' clicked, decrease page by 1 and get those products
 export const DECREMENT = "DECREMENT";
 

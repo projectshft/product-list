@@ -1,7 +1,5 @@
 import { SET_CURRENT_PAGE, INCREMENT, DECREMENT, FAIL } from '../actions/actions';
 
-
-
 export default function (state = "1", action) {
 console.log("state:" , state)
 

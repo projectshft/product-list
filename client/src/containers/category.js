@@ -19,23 +19,17 @@ const Category = ({ dispatch }) => {
                     </a>
                 )} */}
                 <a className="dropdown-item" href="#" onClick={(e) => {
-                    dispatch(setCurrentPage(1))
                     dispatch(filterByCategory(e.target.text))
                 }}>Books</a>
                 <a className="dropdown-item" href="#" onClick={(e) => {
-                    dispatch(setCurrentPage(1))
-                    dispatch(filterByCategory(e.target.text))
-                }}>Beauty</a>
+                     dispatch(filterByCategory(e.target.text))                }}>Beauty</a>
                 <a className="dropdown-item" href="#" onClick={(e) => {
-                    dispatch(setCurrentPage(1))
                     dispatch(filterByCategory(e.target.text))
                 }}>Grocery</a>
                 <a className="dropdown-item" href="#" onClick={(e) => {
-                    dispatch(setCurrentPage(1))
                     dispatch(filterByCategory(e.target.text))
                 }}>Outdoors</a>
                 <a className="dropdown-item" href="#" onClick={(e) => {
-                    dispatch(setCurrentPage(1))
                     dispatch(filterByCategory(e.target.text))
                 }}>Health</a>
                 {/* <div className="dropdown-divider"></div>
@@ -46,9 +40,9 @@ const Category = ({ dispatch }) => {
     )
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(category) {
     return {
-        category: state.category
+        category: category
     };
 }
 

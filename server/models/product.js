@@ -9,5 +9,5 @@ const ProductSchema = new Schema({
     image: String,
     reviews: [{type: String, ref: 'review'}]
 })
-
+//pagination code in routes - main.js
 module.exports = mongoose.model('Product', ProductSchema)

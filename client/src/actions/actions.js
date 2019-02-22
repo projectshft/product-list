@@ -35,22 +35,22 @@ export function setCurrentPage(page) {
 }
 
 //when 'previous' clicked, decrease page by 1 and get those products
-export const DECREMENT = "DECREMENT";
-export async function decrement(page) {
-    return {
-        type: DECREMENT,
-        page
-    };
-}
+// export const DECREMENT = "DECREMENT";
+// export async function decrement(page) {
+//     return {
+//         type: DECREMENT,
+//         page
+//     };
+// }
 
 //when 'next' clicked, decrease page by 1 and get those products
-export const INCREMENT = "INCREMENT";
-export async function increment(page) {
-    return {
-        type: INCREMENT,
-        page
-    };
-}
+// export const INCREMENT = "INCREMENT";
+// export async function increment(page) {
+//     return {
+//         type: INCREMENT,
+//         page
+//     };
+// }
 
 ///////////////////////////////////////////PAGE////////////////////////////////////////////////////////////////
 export const FETCH_PRODUCTS_BY_PAGE = "FETCH_PRODUCTS_BY_PAGE";
@@ -75,7 +75,7 @@ export async function fetchProductsByPage(page) {
 export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY';
 export async function filterByCategory(category) {
     try {
-        const request = await axios.get(`${ROOT_URL}?page=1&category=${category}`);
+        const request = await axios.get(`${ROOT_URL}?category=${category}`);
         return {
             type: FILTER_BY_CATEGORY,
             payload: request,
@@ -95,7 +95,7 @@ export async function filterByCategory(category) {
 export const SORT_BY_PRICE_INCREASING = 'SORT_BY_PRICE_INCREASING';
 export async function sortByPriceIncreasing() {
     try {
-        const request = await axios.get(`${ROOT_URL}?page=1&price=lowest`);
+        const request = await axios.get(`${ROOT_URL}?price=lowest`);
         return {
             type: SORT_BY_PRICE_INCREASING,
             payload: request,
@@ -111,7 +111,7 @@ export async function sortByPriceIncreasing() {
 export const SORT_BY_PRICE_DECREASING = 'SORT_BY_PRICE_DECREASING';
 export async function sortByPriceDecreasing() {
     try {
-        const request = await axios.get(`${ROOT_URL}?page=1&price=highest`);
+        const request = await axios.get(`${ROOT_URL}?price=highest`);
         return {
             type: SORT_BY_PRICE_DECREASING,
             payload: request,

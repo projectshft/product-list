@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
-const Review = require('../models/review');
+
 
 
 //Only do this 1 or 2 times, then comment out...else have extra data every time
@@ -82,25 +82,6 @@ router.get('/products/:ProductId', ((req, res, next) => {
     })
 }))
 
-//Returns ALL the reviews, but limited to 40 per page
-router.get('/reviews', ((req, res, next) => {
-    //paginate
-    const perPage = 40
-    const page = req.query.page || 1
-    Product.find({})
-        .populate({
-            path: 'reviews'
-            // options: {limit: 40}
-        })
-        //paginate
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
-        .exec((err, reviews) => {
-            if (err) return next(err)
-            res.send(reviews)
-        })
-})
-)
 
 //Creates a new product in the database
 router.post('/products', ((req, res, next) => {
@@ -117,20 +98,6 @@ router.post('/products', ((req, res, next) => {
     });
 }))
 
-//Creates a new review in the database by adding it to the correct product's reviews array
-router.post('/:productId/reviews', (req, res, next) => {
-    const newReview = new Review({
-        userName: req.body.userName,
-        reviewText: req.body.reviewText,
-        product: req.params.productId
-    });
-    newReview.save((err) => {
-        if (err) return err;
-        res.send(newReview);
-    });
-})
-
-
 //Deletes a product by id
 router.delete('/products/:productId', (req, res, next) => {
     Product
@@ -141,12 +108,5 @@ router.delete('/products/:productId', (req, res, next) => {
 }
 )
 
-//Deletes a review by its id
-router.delete('/reviews/:reviewId', (req, res, next) => {
-    Review.findByIdAndDelete(req.params.reviewId, (err) => {
-        if (err) throw err;
-        res.status(200).send("Delete was successful.");
-    })
-})
 
 module.exports = router

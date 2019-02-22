@@ -43,8 +43,7 @@ class ProductGrid extends Component {
 
 function mapStateToProps(state) {
     return {
-        products: state.products,
-        
+        products: state.products        
     }
 }
 

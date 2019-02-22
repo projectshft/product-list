@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
-import { setCurrentPage, increment, decrement, fetchProductsByPage } from '../actions/actions';
+import { setCurrentPage, fetchProductsByPage } from '../actions/actions';
 
 const PageNumber = ({ dispatch }) => {
     return (

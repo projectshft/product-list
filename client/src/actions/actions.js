@@ -54,12 +54,21 @@ export function setCurrentPage(page) {
 
 ///////////////////////////////////////////PAGE////////////////////////////////////////////////////////////////
 export const FETCH_PRODUCTS_BY_PAGE = "FETCH_PRODUCTS_BY_PAGE";
-export async function fetchProductsByPage(page) {
+export async function fetchProductsByPage(page, category) {
     try {
-        const request = await axios.get(`${ROOT_URL}?page=${page}`)
-        return {
-            type: FETCH_PRODUCTS_BY_PAGE,
-            payload: request,
+        // console.log("Category:", category)
+        // if (category !== undefined) {
+        //     const request = await axios.get(`${ROOT_URL}?category=${category}&page=${page}`)
+        //     return {
+        //         type: FETCH_PRODUCTS_BY_PAGE,
+        //         payload: request,
+        //     }
+        // } else {
+            const request = await axios.get(`${ROOT_URL}?page=${page}`)
+            return {
+                type: FETCH_PRODUCTS_BY_PAGE,
+                payload: request,
+            // }
         }
     } catch (error) {
         return {

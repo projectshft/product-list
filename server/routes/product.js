@@ -57,7 +57,7 @@ router.get('/products', (req, res, next) => {
          sortDirection = null
     }
 
-
+ //paginate
     Product
         .find(query)
         .skip((perPage * page) - perPage)

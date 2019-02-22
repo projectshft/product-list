@@ -70,6 +70,7 @@ const PageNumber = ({ dispatch }) => {
 function mapStateToProps(state) {
     return {
         page: state.page,
+        // category: state.category
     };
 }
 

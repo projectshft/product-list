@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
-const Product = require('../models/product')
+const Product = require('../models/product');
+const Review = require('../models/review');
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -31,19 +32,22 @@ router.get('/products', (req, res, next) => {
     .skip((perPage * page) - perPage)
     .limit(perPage) // limit number of documents
     .exec((err, products) => {
-      res.send(products)
+      res.status(200).send(products)
       // Note that we're not sending `count` back at the moment, 
       // but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-        res.send(products)
-      })
+      // Product.countDocuments().exec((err, count) => {
+      //   if (err) return next(err)
+      //   res.send(products)
+      // })
     })
 });
 
 // Return a specific product by ID
 router.get('/products/:productId', (req, res, next) => {
-
+  const productId = req.params.productId
+  Product.findById(productId).exec((err, product) => {
+    res.send(product);
+  })
 });
 
 // Return all reviews, but limited to 40 at a time. Pass in an options page query 
@@ -59,7 +63,17 @@ router.post('/products', (req, res, next) => {
 
 // Create a new review in the database by adding it the correct product's reviews array
 router.post('/:productId/reviews', (req, res, next) => {
+  const reviewToAdd = req.body;
+  const productId = req.params.productId;
 
+  Product.findById(productId).exec((err, product) => {
+    let review = new Review(reviewToAdd);
+    review.save();
+    product.reviews.push(review);
+    product.save();
+    console.log('pros is ', product)
+    res.status(200).send('successfully added review');
+  });
 });
 
 // Delete a product by Id

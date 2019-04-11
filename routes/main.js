@@ -51,8 +51,31 @@ router.get('/products', (req, res, next) => {
     })
 })
 
+router.get('/products/:product', (req, res) => {
+  Product
+    .find({ _id: req.params.product })
+    .exec((err, product) => {
+      if (err) {
+        return console.error(err)
+      }
+      res.send(product)
+    })
+});
 
+router.get('/reviews', (req, res) => {
+  const perPage = 40
+  const page = req.query.page || 1
 
-
+  Reviews
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, reviews) => {
+      if (err) {
+        return console.error(err)
+      }
+      res.send(reviews)
+    });
+});
 
 module.exports = router

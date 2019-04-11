@@ -35,7 +35,7 @@ router.get('/products', (req, res, next) => {
       res.status(200).send(products)
       // Note that we're not sending `count` back at the moment, 
       // but in the future we might want to know how many are coming back
-      // Product.countDocuments().exec((err, count) => {
+      // Product.estimatedDocumentCount().exec((err, count) => {
       //   if (err) return next(err)
       //   res.send(products)
       // })
@@ -53,12 +53,23 @@ router.get('/products/:productId', (req, res, next) => {
 // Return all reviews, but limited to 40 at a time. Pass in an options page query 
 // to paginate 
 router.get('/reviews', (req, res, next) => {
+  const perPage = 40;
+  const page = req.query.page || 1;
 
+  Review
+    .find({})
+    .skip((page * perPage) - perPage)
+    .exec((err, reviews) => {
+      res.status(200).send(reviews);
+    })
 });
 
 // Create a new product in the database
 router.post('/products', (req, res, next) => {
-
+  const productToAdd = req.body;
+  let product = new Product(productToAdd);
+  product.save();
+  res.status(200).send('successfully added post');
 });
 
 // Create a new review in the database by adding it the correct product's reviews array

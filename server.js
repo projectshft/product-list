@@ -2,10 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-mongoose.connect('mongodb://localhost/productsDB', { useNewUrlParser: true }, err => {
-  if (err) console.error(err);
-  console.log('Connected to database...');
-});
+mongoose.connect(
+  'mongodb://localhost/productsDB',
+  { useNewUrlParser: true, useCreateIndex: true },
+  err => {
+    if (err) console.error(err);
+    console.log('Connected to database...');
+  }
+);
 
 const app = express();
 

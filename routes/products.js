@@ -3,14 +3,39 @@ const { Product } = require('../models/product');
 
 const router = Router();
 
-// GET - all products, query params for page#
+// GET - all products, query params for page# & filter by category
 router.get('/', (req, res) => {
   const numberOfProductsPerPage = 10;
   // If there are query parameters, get page number specified
-
   const page = req.query.page || 1;
+  // ... and category
+  const { category } = req.query;
+  // ... and price
+  const { price } = req.query;
 
-  Product.find()
+  let productsQuery;
+
+  // Find all products if no query specified
+  if (!category) {
+    productsQuery = Product.find();
+  }
+
+  // Filter by category if the query is found
+  if (category) {
+    productsQuery = Product.find({ $text: { $search: `${category}` } });
+  }
+
+  // Sort by price if the query is found
+  if (price) {
+    if (price === 'highest') {
+      productsQuery.sort('-price');
+    }
+    if (price === 'lowest') {
+      productsQuery.sort('price');
+    }
+  }
+
+  productsQuery
     .skip(numberOfProductsPerPage * (page - 1))
     .limit(numberOfProductsPerPage)
     .exec((err, products) => {

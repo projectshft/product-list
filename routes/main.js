@@ -40,7 +40,7 @@ router.get('/products', (req, res, next) => {
     })
 })
 
-//helper method to abstract req.product
+//helper method to abstract req.product by id
 router.param('product', function(req, res, next, id) {
   Product.findById(id)
     .populate({ path: 'reviews' })
@@ -49,6 +49,19 @@ router.param('product', function(req, res, next, id) {
         console.error(err)
       } else {
         req.product = product
+      }
+      next()
+    })
+})
+//helper method to abstract req.review by id
+router.param('reviews', function(req, res, next, id) {
+  Review.findById(id)
+    .populate({ path: 'productId' })
+    .exec((err, review) => {
+      if (err) {
+        console.error(err)
+      } else {
+        req.review = review
       }
       next()
     })
@@ -123,8 +136,16 @@ router.delete('/products/:product', (req, res) => {
       res.send({ success: true })
     }
   })
-})
+}) //to test: debugger & postman, delete request with product id in url
 
 //deletes a review by id
-
+router.delete('/reviews/:review', (req, res) => {
+  req.review.remove(err => {
+    if (err) {
+      console.error(err)
+    } else {
+      res.send({ success: true })
+    }
+  })
+}) //to test: debugger & postman, delete request with review id in url
 module.exports = router

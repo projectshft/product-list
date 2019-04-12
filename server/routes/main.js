@@ -47,22 +47,27 @@ router.get('/products', (req, res, next) => {
             //       price: -1
             //     })
             //     .exec((err, products) => {
-            //       //if there is a category and a price query, send products within that category and price
-            //       res.send(products)
+            //       if (err) {
+            //         console.error(err)
+            //       } else {
+            //         //if there is a category and a price query, send products within that category and price
+            //         res.send(products)
+            //       }
             //     })
             // }
-            //if there is a category query, send products within that category
+
             if (err) {
               console.error(err)
             } else {
+              //if there is a category query, send products within that category
               res.send(products)
             }
           })
       } else {
-        //if no category, send all products
         if (err) {
           console(err)
         } else {
+          //if no category specified, send all products
           res.send(products)
         }
       }

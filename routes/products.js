@@ -21,31 +21,34 @@ router.get('/', (req, res, next) => {
 
   //if category query, return only products that meet the critera
   if (req.query.category) {
+    let query = req.query.category
+    const capitalizeQuery = (query[0].toUpperCase()) + query.slice(1)
     Product
-      .find({category: req.query.category})
+      .find({category: capitalizeQuery})
       .skip((perPage * page) - perPage)
       .limit(perPage)
-      .exec((err, products) => {
-        Product.count().exec((err, count) => {
-          if (err) return next(err)
-          res.send(products)
-        })
+      .exec((err, result) => {
+        if (err){
+          console.log(err)
+        } else {
+          console.log(capitalizeQuery)
+          res.send(result)
+        }
       })
   } else {
-    //if no category paramter, return 
-    Product
-      .find({})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        Product.count().exec((err, count) => {
-          if (err) return next(err)
+     //if no category or parameter, return all products
+  Product
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+      Product.count().exec((err, count) => {
+        if (err) return next(err)
 
-          res.send(products)
-        })
+        res.send(products)
       })
+    })
   }
-
 })
 
 //get a specific product

@@ -82,9 +82,15 @@ router.get('/reviews', (req, res) => {
 //creates a new product in the database
 router.post('/products', (req, res) => {
   let newProduct = new Product(req.body)
+  newProduct.category = req.body.category
+  newProduct.name = req.body.name
+  newProduct.price = req.body.price
+  newProduct.image = req.body.image
+  newProduct.reviews = req.body.reviews
+
   newProduct
     .save()
-    .then(item => {
+    .then(product => {
       res.send(`product saved to database`)
     })
     .catch(err => {

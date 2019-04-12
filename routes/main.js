@@ -89,12 +89,20 @@ router.post('/:productId/reviews', (req, res, next) => {
 
 // Delete a product by Id
 router.delete('/products/:productId', (req, res, next) => {
-
+  const productId = req.params.productId;
+  Product.findById(productId).exec((err, product) => {
+    product.remove()
+    res.status(200).send('Successfully deleted product');
+  })
 });
 
 // Delete review by Id
 router.delete('/reviews/:reviewId', (req, res, next) => {
-
+  const reviewId = req.params.reviewId;
+  Review.findById(reviewId).exec((err, review) => {
+    review.remove();
+    res.status(200).send('Successfully delted review');
+  })
 });
 
 module.exports = router

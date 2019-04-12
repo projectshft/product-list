@@ -8,43 +8,53 @@ router.param('product', function(req, res, next, id) {
     if (err) {
       res.status(404).send("Sorry, that product cannot be found")
     }
+    req.product = product[0]
     next();
   })
 });
 
 //get all products
-router.get('/products', (req, res, next) => {
-  const perPage = 10
+router.get('/', (req, res, next) => {
+  const perPage = 9
   // return the first page by default
   const page = req.query.page || 1
 
-  Product
-    .find({})
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-
-        res.send(products)
+  //if category query, return only products that meet the critera
+  if (req.query.category) {
+    Product
+      .find({category: req.query.category})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err)
+          res.send(products)
+        })
       })
-    })
+  } else {
+    //if no category paramter, return 
+    Product
+      .find({})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err)
+
+          res.send(products)
+        })
+      })
+  }
+
 })
 
 //get a specific product
-router.get('/products/:product', (req, res) => {
-  Product
-    .find({ _id: req.params.product })
-    .exec((err, product) => {
-      if (err) {
-        return console.error(err)
-      }
-      res.send(req.product)
-    })
+router.get('/:product', (req, res) => {
+  res.send(req.product)
 });
 
 //post a new product
-router.post('/products', (req, res) => {
+router.post('/', (req, res) => {
   let newProduct = new Product({
     category : req.body.category,
     name: req.body.name,
@@ -57,8 +67,23 @@ router.post('/products', (req, res) => {
   res.send(`The following product was successfully added: ${newProduct}`)
 })
 
+//post a new review to a product
+router.post('/:product/reviews', (req, res) => {
+  let newReview = new Review ({
+    userName: req.body.userName,
+    text: req.body.text,
+    product: req.params.product
+  })
+
+  newReview.save()
+  req.product.reviews.push(newReview)
+  req.product.save()
+
+  res.send(`The following review was successfully added: ${newReview}`)
+})
+
 //delete a product
-router.delete('/products/:product', (req, res) => {
+router.delete('/:product', (req, res) => {
   Product
     .deleteOne({ _id: req.params.product })
     .exec((err, product) => {

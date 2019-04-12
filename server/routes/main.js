@@ -3,8 +3,13 @@ const faker = require('faker');
 const Product = require('../models/product');
 const Review = require('../models/review');
 
+/* This endpoint allows you to generate random products and reviews to populate the database
+   for testing purposes */
+
 router.get('/generate-fake-data', (request, response, next) => {
-  for (let i = 0; i < 90; i++) {
+  
+  // Create 80 random products 
+  for (let i = 0; i < 80; i++) {
     let product = new Product();
 
     product.category = faker.commerce.department();
@@ -16,16 +21,16 @@ router.get('/generate-fake-data', (request, response, next) => {
   // Get random number of reviews for each product
   const randomReviewAmount = Math.floor(Math.random() * 5);
 
-  // Create review(s), save them, and push them into product reviews
+  // Create random number of reviews, save them, and push them into product reviews
   for (let j = 0; j < randomReviewAmount; j++) {
-    let review = new Review({
+    let review = new Review ({
       userName: faker.internet.userName(),
       text: faker.lorem.sentences(2),
       product: product
     });
 
-    review.save(err => {
-      if (err) throw err;
+    review.save(error => {
+      if (error) throw error;
     });
     
     product.reviews.push(review);
@@ -36,26 +41,6 @@ router.get('/generate-fake-data', (request, response, next) => {
     })
   }
   response.end();
-})
-
-router.get('/products', (request, response, next) => {
-  const perPage = 5;
-
-  // return the first page by default
-  const page = request.query.page || 1;
-
-  Product
-    .find({})
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((error, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((error, count) => {
-        if (error) return next(error)
-
-        response.send(products)
-      })
-    })
 })
 
 module.exports = router

@@ -115,9 +115,15 @@ router.post('/:product/reviews', (req, res) => {
 }) //to test: debugger & Postman send a new review in the body as JSON object
 
 //deletes a product by id
-// router.delete('/products/:product', (req, res) => {
-//   Product.findOneAndRemove(id, options, callback)
-// })
+router.delete('/products/:product', (req, res) => {
+  req.product.remove(err => {
+    if (err) {
+      console.error(err)
+    } else {
+      res.send({ success: true })
+    }
+  })
+})
 
 //deletes a review by id
 

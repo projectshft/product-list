@@ -20,13 +20,12 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
+// Get all products, queries are optional
 router.get('/products', (req, res, next) => {
   const category = req.query.category;
   const priceSort = req.query.price;
-
   let categoryQuery;
   let priceQuery;
-  // return the first page by default
   const perPage = 9;
   const page = req.query.page || 1;
 

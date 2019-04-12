@@ -3,7 +3,7 @@ const { Product } = require('../models/product');
 
 const router = Router();
 
-// GET - all products
+// GET - all products, query params for page#
 router.get('/', (req, res) => {
   const numberOfProductsPerPage = 10;
   // If there are query parameters, get page number specified
@@ -34,6 +34,20 @@ router.post('/', (req, res) => {
     if (err) throw err;
   });
   res.send('Item added');
+});
+
+// GET - get product by productId
+router.get('/:productId', (req, res) => {
+  // Obtain productId from params
+  // Query database for product matching the id
+});
+
+// DELETE - delete product by productId
+router.delete('/:productId', (req, res) => {
+  // Obtain productId from params
+  // Query database for matching id
+  // Delete Item
+  // Remove associated reviews?
 });
 
 module.exports = router;

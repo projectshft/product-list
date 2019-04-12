@@ -6,6 +6,7 @@ const { Review } = require('../models/review');
 
 const router = Router();
 
+// Generate dummy products and reviews for testing
 router.get('/generate-fake-data', (req, res) => {
   for (let i = 0; i < 100; i++) {
     const product = new Product({

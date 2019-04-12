@@ -81,29 +81,39 @@ router.get('/reviews', (req, res) => {
 })
 //creates a new product in the database
 router.post('/products', (req, res) => {
-  let newProduct = new Product(req.body)
-  newProduct.category = req.body.category
-  newProduct.name = req.body.name
-  newProduct.price = req.body.price
-  newProduct.image = req.body.image
-  newProduct.reviews = req.body.reviews
-
-  newProduct
-    .save()
-    .then(product => {
-      res.send(`product saved to database`)
-    })
-    .catch(err => {
-      res.status(400).send(`unable to save to database`)
-    })
-})
+  let newProduct = new Product({
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+    reviews: req.body.reviews
+  })
+  newProduct.save((err, product) => {
+    if (err) {
+      console.error(err)
+    } else {
+      res.send({ success: true, product: product })
+    }
+  })
+}) //to test: debugger & Postman send a new product in the body as JSON object
 
 //creates a new review in the database by adding it to the correct product's review array
-// router.post('/:product/reviews', (err, res) => {
-//   let newReview = new Review(req.body)
-//   newReview.save()
-//   req.product.reviews.push(newReview)
-// })
+router.post('/:product/reviews', (req, res) => {
+  let newReview = new Review(req.body)
+  newReview.userName = req.body.userName
+  newReview.text = req.body.text
+  newReview.productId = req.body.productId
+
+  req.product.reviews.push(newReview)
+  req.product.save((err, product) => {
+    if (err) {
+      console.error(err)
+    } else {
+      res.send({ success: true, product: product })
+    }
+  })
+}) //to test: debugger & Postman send a new review in the body as JSON object
+
 //deletes a product by id
 // router.delete('/products/:product', (req, res) => {
 //   Product.findOneAndRemove(id, options, callback)

@@ -24,25 +24,38 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {
   const perPage = 9
 
-  // return the first page by default
+  // return the first page by default, otherwise the page specified in the query
   const page = req.query.page || 1
 
   const category = req.query.category
+  const price = req.query.price
 
   Product.find({})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      if (category) {
-        Product.find({ category })
-          .skip(perPage * page - perPage)
-          .limit(perPage)
-          .exec((err, products) => {
-            //if there is a category query, send products within that category
-            res.send(products)
-          })
-      }
-      //if no category, send all products
+      // if (category) {
+      //   Product.find({ category })
+      //     .skip(perPage * page - perPage)
+      //     .limit(perPage)
+      //     .exec((err, products) => {
+      //       // if (price) {
+      //       //   Product.find({ price })
+      //       //     .skip(perPage * page - perPage)
+      //       //     .limit(perPage)
+      //       //     .sort({
+      //       //       price: -1
+      //       //     })
+      //       //     .exec((err, products) => {
+      //       //       //if there is a category and a price query, send products within that category and price
+      //       //       res.send(products)
+      //       //     })
+      //       // }
+      //       //if there is a category query, send products within that category
+      //       res.send(products)
+      //     })
+      // }
+      // if no category, send all products
       res.send(products)
     })
 })

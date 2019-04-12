@@ -1,11 +1,16 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const cors = require('cors');
 
 mongoose.connect('mongodb://localhost/products', { useNewUrlParser: true })
 const mainRoutes = require('./routes/main')
 
-const app = express()
+const app = express();
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({

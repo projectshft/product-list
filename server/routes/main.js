@@ -34,29 +34,38 @@ router.get('/products', (req, res, next) => {
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      // if (category) {
-      //   Product.find({ category })
-      //     .skip(perPage * page - perPage)
-      //     .limit(perPage)
-      //     .exec((err, products) => {
-      //       // if (price) {
-      //       //   Product.find({ price })
-      //       //     .skip(perPage * page - perPage)
-      //       //     .limit(perPage)
-      //       //     .sort({
-      //       //       price: -1
-      //       //     })
-      //       //     .exec((err, products) => {
-      //       //       //if there is a category and a price query, send products within that category and price
-      //       //       res.send(products)
-      //       //     })
-      //       // }
-      //       //if there is a category query, send products within that category
-      //       res.send(products)
-      //     })
-      // }
-      // if no category, send all products
-      res.send(products)
+      if (category) {
+        Product.find({ category })
+          .skip(perPage * page - perPage)
+          .limit(perPage)
+          .exec((err, products) => {
+            // if (price) {
+            //   Product.find({ price })
+            //     .skip(perPage * page - perPage)
+            //     .limit(perPage)
+            //     .sort({
+            //       price: -1
+            //     })
+            //     .exec((err, products) => {
+            //       //if there is a category and a price query, send products within that category and price
+            //       res.send(products)
+            //     })
+            // }
+            //if there is a category query, send products within that category
+            if (err) {
+              console.error(err)
+            } else {
+              res.send(products)
+            }
+          })
+      } else {
+        //if no category, send all products
+        if (err) {
+          console(err)
+        } else {
+          res.send(products)
+        }
+      }
     })
 })
 

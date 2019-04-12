@@ -80,10 +80,28 @@ router.get('/reviews', (req, res) => {
     })
 })
 //creates a new product in the database
+router.post('/products', (req, res) => {
+  let newProduct = new Product(req.body)
+  newProduct
+    .save()
+    .then(item => {
+      res.send(`product saved to database`)
+    })
+    .catch(err => {
+      res.status(400).send(`unable to save to database`)
+    })
+})
 
 //creates a new review in the database by adding it to the correct product's review array
-
+// router.post('/:product/reviews', (err, res) => {
+//   let newReview = new Review(req.body)
+//   newReview.save()
+//   req.product.reviews.push(newReview)
+// })
 //deletes a product by id
+// router.delete('/products/:product', (req, res) => {
+//   Product.findOneAndRemove(id, options, callback)
+// })
 
 //deletes a review by id
 

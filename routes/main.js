@@ -2,23 +2,28 @@ const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product');
 const Review = require('../models/review');
+const axios = require('axios');
 
-router.get('/generate-fake-data', (req, res, next) => {
+router.get('/generate-fake-data', async (req, res, next) => {
+
   for (let i = 0; i < 90; i++) {
     // Create a new product instace
     let product = new Product()
     // set data
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
+    // get random image from the unsplash API and set it our product
+    let res = await axios.get('https://source.unsplash.com/collection/1163637/500x300')
+    let url = await res.request.connection._httpMessage.res.responseUrl;
+    product.image = url;
     product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-
     product.save((err) => {
       if (err) throw err
     })
   }
   res.end()
 })
+
 
 // Get all products, queries are optional
 router.get('/products', (req, res, next) => {

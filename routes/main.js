@@ -21,25 +21,28 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 router.get('/products', (req, res, next) => {
-  const perPage = 9;
+  const category = req.query.category;
+  const priceSort = req.query.price;
+
+  let categoryQuery;
+  let priceQuery;
   // return the first page by default
+  const perPage = 9;
   const page = req.query.page || 1;
 
+  category ? categoryQuery = { category } : categoryQuery = {};
+  priceSort === 'lowest' ? priceQuery = { price: 1 } : priceQuery = {};
+  priceSort === 'highest' ? priceQuery = { price: -1 } : priceQuery = {};
+
   Product
-    .find({})
-    // skip documents based on the page number,
-    // only skips by 9
+    .find(categoryQuery)
     .skip((perPage * page) - perPage)
-    .limit(perPage) // limit number of documents
+    .limit(perPage)
+    .sort(priceQuery)
     .exec((err, products) => {
       res.status(200).send(products)
-      // Note that we're not sending `count` back at the moment, 
-      // but in the future we might want to know how many are coming back
-      // Product.estimatedDocumentCount().exec((err, count) => {
-      //   if (err) return next(err)
-      //   res.send(products)
-      // })
     })
+
 });
 
 // Return a specific product by ID
@@ -82,7 +85,6 @@ router.post('/:productId/reviews', (req, res, next) => {
     review.save();
     product.reviews.push(review);
     product.save();
-    console.log('pros is ', product)
     res.status(200).send('successfully added review');
   });
 });

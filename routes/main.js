@@ -101,11 +101,17 @@ router.post('/products', (req, res) => {
     image: req.body.image,
     reviews: req.body.reviews
   })
-  newProduct.save((err, product) => {
-    if (err) {
-      console.error(err)
-    } else {
-      res.send({ success: true, product: product })
+
+  //Only save if the product doesn't exist yet
+  Product.findOne({ name: newProduct.name }, function(err, foundProduct) {
+    if (!foundProduct) {
+      newProduct.save((err, product) => {
+        if (err) {
+          console.error(err)
+        } else {
+          res.send({ success: true, product: product })
+        }
+      })
     }
   })
 }) //to test: debugger & Postman send a new product in the body as JSON object

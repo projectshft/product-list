@@ -31,7 +31,7 @@ router.get('/products', (req, res, next) => {
     .limit(perPage)
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
+      Product.estimatedDocumentCount().exec((err, count) => {
         if (err) return next(err)
 
         res.send(products)
@@ -39,4 +39,20 @@ router.get('/products', (req, res, next) => {
     })
 })
 
+router.param('product', function(req, res, next, id) {
+  Product.findById(id)
+    .populate({ path: 'reviews' })
+    .exec((err, product) => {
+      if (err) {
+        console.error(err)
+      } else {
+        req.product = product
+      }
+      next()
+    })
+})
+
+router.get('/products/:product', (req, res) => {
+  res.send(req.product)
+})
 module.exports = router

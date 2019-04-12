@@ -47,24 +47,31 @@ router.get('/', (req, res) => {
 // POST - create and save a new product
 router.post('/', (req, res) => {
   // create new product using values in the request body
-  const product = new Product({
-    category: req.body.category,
-    name: req.body.name,
-    price: req.body.price,
-    image:
-      'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-  });
+  Product.create(
+    {
+      category: req.body.category,
+      name: req.body.name,
+      price: req.body.price,
+      image:
+        'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+    },
+    (err, product) => {
+      if (err) throw err;
 
-  product.save(err => {
-    if (err) throw err;
-  });
-  res.send('Item added');
+      res.send(product);
+    }
+  );
 });
 
 // GET - get product by productId
 router.get('/:productId', (req, res) => {
   // Obtain productId from params
+  const { productId } = req.params;
   // Query database for product matching the id
+  Product.findById(productId, (err, product) => {
+    if (err) throw err;
+    res.send(product);
+  });
 });
 
 // DELETE - delete product by productId

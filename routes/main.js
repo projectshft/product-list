@@ -3,6 +3,7 @@ const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
 
+//generate fake data to populate store and database
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
@@ -19,7 +20,7 @@ router.get('/generate-fake-data', (req, res, next) => {
   }
   res.end()
 })
-
+//returns all products with pagination
 router.get('/products', (req, res, next) => {
   const perPage = 9
 
@@ -39,6 +40,7 @@ router.get('/products', (req, res, next) => {
     })
 })
 
+//helper method to abstract req.product
 router.param('product', function(req, res, next, id) {
   Product.findById(id)
     .populate({ path: 'reviews' })
@@ -51,8 +53,19 @@ router.param('product', function(req, res, next, id) {
       next()
     })
 })
-
+//returns a specific product by it's id
 router.get('/products/:product', (req, res) => {
   res.send(req.product)
 })
+
+//returns ALL the reviews
+
+//creates a new product in the database
+
+//creates a new review in the database by adding it to the correct product's review array
+
+//deletes a product by id
+
+//deletes a review by id
+
 module.exports = router

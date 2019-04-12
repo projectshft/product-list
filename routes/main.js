@@ -56,10 +56,29 @@ router.param('product', function(req, res, next, id) {
 //returns a specific product by it's id
 router.get('/products/:product', (req, res) => {
   res.send(req.product)
-})
+}) //to test: http://localhost:8000/products/5cb09114355e8ea9024aeb1b
 
 //returns ALL the reviews
+router.get('/reviews', (req, res) => {
+  //limit to 40 reviews at a time
+  const perPage = 40
 
+  //return the first page by default
+  const page = req.query.page || 1
+
+  Product.find({})
+    .populate('reviews')
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+      if (err) {
+        console.error(err)
+      } else {
+        res.send(products.map(product => product.reviews))
+      }
+      // })
+    })
+})
 //creates a new product in the database
 
 //creates a new review in the database by adding it to the correct product's review array

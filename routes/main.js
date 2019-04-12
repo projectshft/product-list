@@ -27,16 +27,23 @@ router.get('/products', (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1
 
+  const category = req.query.category
+
   Product.find({})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.estimatedDocumentCount().exec((err, count) => {
-        if (err) return next(err)
-
-        res.send(products)
-      })
+      if (category) {
+        Product.find({ category })
+          .skip(perPage * page - perPage)
+          .limit(perPage)
+          .exec((err, products) => {
+            //if there is a category query, send products within that category
+            res.send(products)
+          })
+      }
+      //if no category, send all products
+      res.send(products)
     })
 })
 

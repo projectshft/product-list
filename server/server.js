@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mainRoutes = require('./routes/main');
 const productRoutes = require('./routes/products');
 const reviewRoutes = require('./routes/reviews');
+const cors = require('cors');
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }))
-
+app.use(cors());
 app.use(mainRoutes);
 app.use(productRoutes);
 app.use(reviewRoutes);

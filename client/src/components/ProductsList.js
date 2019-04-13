@@ -11,32 +11,42 @@ class ProductsList extends Component {
   }
 
   renderProducts() {
-    console.log('this.props', this.props)
-    console.log('this.props.products', this.props.products)
     return _.map(this.props.products, product => {
       return (
-        <li className="list-group-item" key={product._id}>
-          <div className="row w-100">
-            <div className="col-12 col-sm-6 col-md-3 px-0">
-              <img
-                src={product.image}
-                style={{
-                  objectFit: 'cover'
-                }}
-                alt="your friend"
-              />
-            </div>
-            <label className="name lead"> {product.name} </label>
-            <span className="text-muted"> Category: ${product.category} </span>
-            <span className="text-muted small"> {product.price} </span>
+        <div className="col-12">
+          <div className="row">
+            <li className="list-group-item col-3" key={product._id}>
+              <div className="row">
+                <span className="offset-md-1">
+                  {' '}
+                  Category: {product.category}{' '}
+                </span>
+                <span className="offset-md-3"> ${product.price} </span>
+              </div>
+
+              <div className="">
+                <img
+                  className=" img-responsive"
+                  src={product.image}
+                  alt="your friend"
+                />
+                <span className=""> {product.name} </span>
+              </div>
+            </li>
           </div>
-        </li>
+        </div>
       )
     })
   }
 
   render() {
-    return <div>{this.renderProducts()} </div>
+    return (
+      <section className="full-page padding-lg">
+        <div className="container" style={{ marginTop: '75px' }}>
+          <div>{this.renderProducts()} </div>
+        </div>
+      </section>
+    )
   }
 }
 //make all of our products from our Redux store available to the component's props

@@ -7,7 +7,8 @@ export default function Header() {
       <div className="header-bar">
         <h1 className="text-center">PRODUCTS</h1>
       </div>
-    
+
+          
     <div className="input-group">
       <form className="form-inline">
         <input type="text" className="form-control" placeholder="Search for products" />
@@ -16,23 +17,20 @@ export default function Header() {
               <i className="fa fa-search"></i>
             </button>
           </div>
-          <div class="col-auto my-1">
-            <label class="mr-sm-2" for="inlineFormCustomSelect">Filter by Category</label>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-              <option selected>Choose...</option>
+
+            <label className="mr-sm-2">Filter by Category</label>
+            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
               <option value="1">Jewelery</option>
               <option value="2">Tools</option>
               <option value="3">Industrial</option>
             </select>
-          </div>
-          <div class="col-auto my-1">
-            <label class="mr-sm-2" for="inlineFormCustomSelect">Sort By:</label>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-              <option selected>Choose...</option>
+
+            <label className="mr-sm-2">Sort By:</label>
+            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
               <option value="1">Price: Low to High</option>
               <option value="2">Price: High to Low</option>
             </select>
-          </div>
+
         
       
       </form>

@@ -11,7 +11,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
-    product.image = 'http://placekitten.com/250/250'
+    product.image = 'https://placem.at/things?w=250&random=1'
 
     product.save(err => {
       if (err) throw err

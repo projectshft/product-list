@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchProducts } from '../actions'
@@ -11,9 +12,10 @@ class ProductsList extends Component {
 
   renderProducts() {
     console.log('this.props', this.props)
-    return this.props.products.map(product => {
+    console.log('this.props.products', this.props.products)
+    return _.map(this.props.products, product => {
       return (
-        <li className="list-group-item" key={product.id}>
+        <li className="list-group-item" key={product._id}>
           <div className="row w-100">
             <div className="col-12 col-sm-6 col-md-3 px-0">
               <img
@@ -25,7 +27,7 @@ class ProductsList extends Component {
               />
             </div>
             <label className="name lead"> {product.name} </label>
-            <span className="text-muted"> {product.category} </span>
+            <span className="text-muted"> Category: ${product.category} </span>
             <span className="text-muted small"> {product.price} </span>
           </div>
         </li>

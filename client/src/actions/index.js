@@ -3,6 +3,7 @@ import axios from '../axios';
 const CORS_HEADERS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, X-Authentication" };
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const FETCH_PRODUCTS_PAGE = 'FETCH_PRODUCTS_PAGE';
+export const FETCH_FILTERED_PRODUCTS = 'FETCH_FILTERED_PRODUCTS';
 
 export function fetchProducts() {
   const request = axios.get('products', {
@@ -22,6 +23,17 @@ export function fetchProductsPage(pageNumber) {
 
   return {
     type: FETCH_PRODUCTS_PAGE,
+    payload: request
+  }
+}
+
+export function fetchFilteredProducts(category) {
+  const request = axios.get(`products?category=${category}`, {
+    headers: CORS_HEADERS
+  });
+
+  return {
+    type: FETCH_FILTERED_PRODUCTS,
     payload: request
   }
 }

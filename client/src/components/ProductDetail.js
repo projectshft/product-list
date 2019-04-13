@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 const ProductDetail = (props) => {
   let products;
   if (props.data) {
-    products = props.data.products.map((item) => {
+    console.log('data is', props.data);
+    products = props.data.productsFound.map((item) => {
       return (
         <div className="col-sm-4" key={item._id}>
           <p>Category: {item.category}</p>

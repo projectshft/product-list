@@ -4,6 +4,7 @@ const Product = require('../models/product');
 const Review = require('../models/review');
 const axios = require('axios');
 
+
 router.get('/generate-fake-data', async (req, res, next) => {
 
   for (let i = 0; i < 90; i++) {
@@ -43,9 +44,16 @@ router.get('/products', (req, res, next) => {
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .sort(priceQuery)
-    .exec((err, products) => {
+    .exec((err, productsFound) => {
       Product.countDocuments().then((count) => {
-        res.status(200).send({ products, count, perPage })
+        Product.find()
+          .exec((err, products) => {
+            categoryList = products.map((item) => {
+              return item.category
+            })
+            const uniqueCategoryList = Array.from(new Set(categoryList));
+            res.status(200).send({ productsFound, count, perPage, uniqueCategoryList })
+          })
       })
     })
 

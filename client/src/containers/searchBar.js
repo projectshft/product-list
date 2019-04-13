@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+import { Link } from 'react-router-dom';
 
-export default class searchBar extends Component {
+import { fetchFilteredProducts } from '../actions/index';
+
+class searchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +23,22 @@ export default class searchBar extends Component {
     this.setState({ term: e.target.value });
   }
 
+
   render() {
+
+    let categoryListArray;
+    if (this.props.data) {
+      categoryListArray = this.props.data.uniqueCategoryList.map((category) => {
+        let categoryLink = <Link
+          key={`category-name-${category}`}
+          to={`products?category=${category}`}
+          onClick={() => this.props.fetchFilteredProducts(category)}
+          className="dropdown-item">{category}</Link>
+        return categoryLink;
+      })
+
+    }
+
     return (
       <div className='header'>
         <h1 className='text-center'>Products</h1>
@@ -36,12 +56,7 @@ export default class searchBar extends Component {
                 Filter by category
             </button>
               <div className="dropdown-menu">
-                <a className="dropdown-item" href="#">Games</a>
-                <a className="dropdown-item" href="#">Health</a>
-                <a className="dropdown-item" href="#">Clothing</a>
-                <a className="dropdown-item" href="#">Home</a>
-                <a className="dropdown-item" href="#">Electronics</a>
-                <a className="dropdown-item" href="#">Outdoors</a>
+                {categoryListArray}
               </div>
             </div>
             <div className="btn-group">
@@ -59,3 +74,14 @@ export default class searchBar extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return { data: state.products.data }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ fetchFilteredProducts }, dispatch)
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(searchBar);
+

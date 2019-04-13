@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { fetchProducts } from './actions/index'
 import Products from './containers/Products';
 import SearchBar from './containers/searchBar';
+import Pagination from './components/Pagination';
 
 class App extends Component {
 
@@ -12,12 +13,12 @@ class App extends Component {
     this.props.fetchProducts()
   }
 
-
   render() {
     return (
       <div>
         <SearchBar />
         <Products />
+        <Pagination />
       </div>
     );
   }

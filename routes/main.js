@@ -32,7 +32,7 @@ router.get('/products', (req, res, next) => {
   let categoryQuery;
   let priceQuery;
   const perPage = 9;
-  const page = req.query.page || 1;
+  const page = +req.query.page || 1;
 
   category ? categoryQuery = { category } : categoryQuery = {};
   priceSort === 'lowest' ? priceQuery = { price: 1 } : priceQuery = {};
@@ -44,7 +44,9 @@ router.get('/products', (req, res, next) => {
     .limit(perPage)
     .sort(priceQuery)
     .exec((err, products) => {
-      res.status(200).send(products)
+      Product.countDocuments().then((count) => {
+        res.status(200).send({ products, count, perPage })
+      })
     })
 
 });
@@ -107,7 +109,7 @@ router.delete('/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
   Review.findById(reviewId).exec((err, review) => {
     review.remove();
-    res.status(200).send('Successfully delted review');
+    res.status(200).send('Successfully deleted review');
   })
 });
 

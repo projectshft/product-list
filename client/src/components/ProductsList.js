@@ -10,7 +10,7 @@ class ProductsList extends Component {
   }
 
   renderProducts() {
-    console.log('this.props.products', this.props.products)
+    console.log('this.props', this.props)
     return this.props.products.map(product => {
       return (
         <li className="list-group-item" key={product.id}>
@@ -22,31 +22,19 @@ class ProductsList extends Component {
                   objectFit: 'cover'
                 }}
                 alt="your friend"
-                className="rounded-circle mx-auto d-block img-fluid contactsImg"
               />
             </div>
-            <div className="col-12 col-sm-6 col-md-9 text-center text-sm-left">
-              <label className="name lead"> {product.name} </label> <br />
-              <span className="text-muted"> {product.category} </span> <br />
-              <span className="text-muted small"> {product.price} </span>{' '}
-            </div>{' '}
-          </div>{' '}
+            <label className="name lead"> {product.name} </label>
+            <span className="text-muted"> {product.category} </span>
+            <span className="text-muted small"> {product.price} </span>
+          </div>
         </li>
       )
     })
   }
 
   render() {
-    return (
-      <section className="full-page padding-lg">
-        <div className="container" style={{ marginTop: '75px' }}>
-          <div>
-            <h3 className="text-left">All Products</h3>
-          </div>
-          <div>{this.renderProducts()} </div>{' '}
-        </div>{' '}
-      </section>
-    )
+    return <div>{this.renderProducts()} </div>
   }
 }
 //make all of our products from our Redux store available to the component's props
@@ -57,6 +45,6 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchProducts }, dispatch)
 }
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ProductsList)

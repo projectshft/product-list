@@ -158,6 +158,8 @@ router.post('/products', (req, res) => {
           res.send({ success: true, product: product })
         }
       })
+    } else {
+      console.error('The product already exists in the database')
     }
   })
 }) //to test: debugger & Postman send a new product in the body as JSON object

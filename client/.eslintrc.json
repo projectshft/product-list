@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "plugin:react-app/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "singleQuote": true
+      }
+    ]
+  }
+}

@@ -16,10 +16,8 @@ const ProductDetail = (props) => {
   }
 
   return (
-    <div className="container">
-      <div className="row">
-        {products}
-      </div>
+    <div className="row">
+      {products}
     </div>
   )
 }

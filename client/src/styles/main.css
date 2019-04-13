@@ -1,4 +1,32 @@
 .product-img {
-  width: 220px;
-  height: 180px;
+  width: 200px;
+  height: 140px;
+}
+
+.text-center {
+  padding-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.header {
+  padding-bottom: 2rem;
+}
+
+.category-btn {
+  padding-right: 1rem;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+.link-item {
+  padding-right: 1rem;
+}
+
+.link-items {
+  padding-top: 3rem;
 }

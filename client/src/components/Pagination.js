@@ -14,6 +14,7 @@ const Pagination = (props) => {
     pageCount = props.data.count / props.data.perPage;
     for (let i = 0; i < pageCount; i++) {
       pageLink = <Link
+        className="link-item"
         to={`/products?page=${i + 1}`}
         key={i}
         onClick={() => props.fetchProductsPage(i + 1)}>
@@ -24,7 +25,7 @@ const Pagination = (props) => {
   }
 
   return (
-    <div className="container">
+    <div className="text-center link-items">
       {pageLinkArray}
     </div>
   )

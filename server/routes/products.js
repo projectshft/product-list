@@ -16,9 +16,10 @@ router.param('product', (request, response, next, id) => {
   });
 });
 
-// Returns all of the product at 9 per page
+// Returns all of the products at 9 per page
 
 router.get('/products', (request, response, next) => {
+
   const perPage = 9;
 
   // return the first page by default
@@ -56,6 +57,37 @@ router.post('/products', (request, response) => {
   });
   newProduct.save();
   response.send(newProduct);
+});
+
+// POST This endpoint allows a user to add a new review to a product
+
+router.post('/products/:product/reviews', (request, response) => {
+  const newReview = new Review({
+    userName: request.body.userName,
+    text: request.body.text,
+    product: request.product[0]
+  });
+  newReview.save();
+  request.product[0].reviews.push(newReview);
+  request.product[0].save();
+  response.send(newReview);
+});
+
+// DELETE This endpoint removes a specific product based on supplied ID
+
+router.delete('/products/:product', (request, response) => {
+  Product.findOneAndDelete({ _id: request.product[0]._id }, (error, product) => {
+    if (error) throw error;
+
+    // Also deletes the reviews associated with the product from the review collection
+    product.reviews.forEach(review => {
+      Review.findOneAndDelete({ _id: review._id }, error => {
+        if (error) throw error;
+      });
+    });
+
+    response.send('Product successfully deleted');
+  });
 });
 
 module.exports = router;

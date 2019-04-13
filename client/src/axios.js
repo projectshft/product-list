@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-/** base url to make requests to the the movie database */
+/** base url instance */
 const instance = axios.create({
   baseURL: "http://localhost:8000/"
 });

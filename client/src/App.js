@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 
 import { fetchProducts } from './actions/index'
-import Products from './containers/Products';
+import ProductDetail from './components/ProductDetail';
 import SearchBar from './containers/searchBar';
 import Pagination from './components/Pagination';
 
@@ -17,7 +17,7 @@ class App extends Component {
     return (
       <div>
         <SearchBar />
-        <Products />
+        <ProductDetail />
         <Pagination />
       </div>
     );

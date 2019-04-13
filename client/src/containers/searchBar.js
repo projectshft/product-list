@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom';
 
-import { fetchFilteredProducts, fetchByPrice } from '../actions/index';
+import { fetchFilteredProducts, fetchByPrice, fetchByProductName } from '../actions/index';
 
 class searchBar extends Component {
   constructor(props) {
@@ -20,6 +20,7 @@ class searchBar extends Component {
   onFormSubmit = (e) => {
     e.preventDefault();
     this.setState({ term: e.target.value });
+    this.props.fetchByProductName(this.state.term);
   }
 
 
@@ -87,7 +88,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ fetchFilteredProducts, fetchByPrice }, dispatch)
+  return bindActionCreators({ fetchFilteredProducts, fetchByPrice, fetchByProductName }, dispatch)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(searchBar);

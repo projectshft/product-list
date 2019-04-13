@@ -30,11 +30,14 @@ router.get('/generate-fake-data', async (req, res, next) => {
 router.get('/products', (req, res, next) => {
   const category = req.query.category;
   const priceSort = req.query.price;
+  const productName = req.query.productName;
+  let productNameQuery;
   let categoryQuery;
   let priceQuery;
   const perPage = 9;
   const page = +req.query.page || 1;
 
+  productName ? productNameQuery = { name: productName } : productNameQuery = { name: '' };
   category ? categoryQuery = { category } : categoryQuery = {};
   priceSort === 'lowest' ? priceQuery = { price: 1 } :
     priceSort === 'highest' ?
@@ -48,13 +51,24 @@ router.get('/products', (req, res, next) => {
     .sort(priceQuery)
     .exec((err, productsFound) => {
       Product.countDocuments().then((count) => {
+
         Product.find()
           .exec((err, products) => {
             categoryList = products.map((item) => {
               return item.category
             })
             const uniqueCategoryList = Array.from(new Set(categoryList));
-            res.status(200).send({ productsFound, count, perPage, uniqueCategoryList })
+
+            Product.find(productNameQuery)
+              .exec((err, productFoundByName) => {
+                res.status(200).send({
+                  productsFound,
+                  count,
+                  perPage,
+                  uniqueCategoryList,
+                  productFoundByName
+                })
+              })
           })
       })
     })

@@ -5,6 +5,7 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const FETCH_PRODUCTS_PAGE = 'FETCH_PRODUCTS_PAGE';
 export const FETCH_FILTERED_PRODUCTS = 'FETCH_FILTERED_PRODUCTS';
 export const FETCH_BY_PRICE = 'FETCH_BY_PRICE';
+export const FETCH_BY_PRODUCT_NAME = 'FETCH_BY_PRODUCT_NAME';
 
 export function fetchProducts() {
   const request = axios.get('products', {
@@ -46,6 +47,17 @@ export function fetchByPrice(priceCriteria) {
 
   return {
     type: FETCH_BY_PRICE,
+    payload: request
+  }
+}
+
+export function fetchByProductName(productName) {
+  const request = axios.get(`products?productName=${productName}`, {
+    headers: CORS_HEADERS
+  });
+
+  return {
+    type: FETCH_BY_PRODUCT_NAME,
     payload: request
   }
 }

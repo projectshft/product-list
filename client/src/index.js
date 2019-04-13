@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux'
 import promise from 'redux-promise'
 
 import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App'
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore)

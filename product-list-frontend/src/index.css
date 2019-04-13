@@ -1,0 +1,19 @@
+.container {
+  max-width: 540px;
+}
+::-webkit-input-placeholder {
+  color: rgb(185, 185, 185) !important;
+}
+.detailImg {
+  max-width: 250px;
+  max-height: 250px;
+}
+ul {
+  list-style-type: none;
+}
+
+.newContact {
+  margin-top: 5px;
+  margin-right: 150px;
+  float: right;
+}

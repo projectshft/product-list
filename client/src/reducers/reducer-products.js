@@ -1,11 +1,10 @@
 import _ from 'lodash'
 import { FETCH_PRODUCTS } from '../actions'
 
-export default function(state = {}, action) {
+export default function(state = [], action) {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      //normalize the products data
-      return _.mapKeys(action.payload.data, 'id')
+      return _.mapKeys(action.payload.data, '_id')
     default:
       return state
   }

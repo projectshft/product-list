@@ -8,7 +8,9 @@ class ProductsList extends Component {
   componentDidMount() {
     this.props.fetchProducts()
   }
+
   renderProducts() {
+    console.log('this.props.products', this.props.products)
     return this.props.products.map(product => {
       return (
         <li className="list-group-item" key={product.id}>

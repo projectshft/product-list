@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const ReviewSchema = new Schema({
   userName: String,
-  text: String,
+  text: { type: String, required: true },
   product: { type: Schema.Types.ObjectId, ref: 'Product' }
 });
 

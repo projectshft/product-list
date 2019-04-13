@@ -13,8 +13,7 @@ router.get('/generate-fake-data', (req, res) => {
       category: faker.commerce.department(),
       name: faker.commerce.productName(),
       price: faker.commerce.price(),
-      image:
-        'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png',
+      image: 'https://picsum.photos/200',
       reviews: []
     });
 

@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
-  category: String,
-  name: String,
-  price: Number,
+  category: { type: String, required: true },
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
   image: String,
   reviews: [
     {
@@ -15,6 +15,7 @@ const ProductSchema = new Schema({
   ]
 });
 
+// Add 'text' index for category to help prevent case sensitivity issues
 ProductSchema.index({ category: 'text' });
 
 const Product = mongoose.model('Product', ProductSchema);

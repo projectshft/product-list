@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 
 mongoose.connect(
   'mongodb://localhost/productsDB',
-  { useNewUrlParser: true, useCreateIndex: true },
+  { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false },
   err => {
     if (err) console.error(err);
     console.log('Connected to database...');

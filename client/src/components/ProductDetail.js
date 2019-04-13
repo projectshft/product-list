@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 const ProductDetail = (props) => {
   let products;
   if (props.data) {
-    console.log('data is', props.data);
     products = props.data.productsFound.map((item) => {
       return (
         <div className="col-sm-4" key={item._id}>
-          <p>Category: {item.category}</p>
+          <p>Category: {item.category} <strong className="price">${item.price}</strong></p>
           <img src={item.image} alt="" className="product-img" />
           <h3>{item.name}</h3>
         </div>

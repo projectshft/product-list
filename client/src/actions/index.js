@@ -4,6 +4,7 @@ const CORS_HEADERS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const FETCH_PRODUCTS_PAGE = 'FETCH_PRODUCTS_PAGE';
 export const FETCH_FILTERED_PRODUCTS = 'FETCH_FILTERED_PRODUCTS';
+export const FETCH_BY_PRICE = 'FETCH_BY_PRICE';
 
 export function fetchProducts() {
   const request = axios.get('products', {
@@ -34,6 +35,17 @@ export function fetchFilteredProducts(category) {
 
   return {
     type: FETCH_FILTERED_PRODUCTS,
+    payload: request
+  }
+}
+
+export function fetchByPrice(priceCriteria) {
+  const request = axios.get(`products?price=${priceCriteria}`, {
+    headers: CORS_HEADERS
+  });
+
+  return {
+    type: FETCH_BY_PRICE,
     payload: request
   }
 }

@@ -36,8 +36,10 @@ router.get('/products', (req, res, next) => {
   const page = +req.query.page || 1;
 
   category ? categoryQuery = { category } : categoryQuery = {};
-  priceSort === 'lowest' ? priceQuery = { price: 1 } : priceQuery = {};
-  priceSort === 'highest' ? priceQuery = { price: -1 } : priceQuery = {};
+  priceSort === 'lowest' ? priceQuery = { price: 1 } :
+    priceSort === 'highest' ?
+      priceQuery = { price: -1 } :
+      priceQuery = {}
 
   Product
     .find(categoryQuery)

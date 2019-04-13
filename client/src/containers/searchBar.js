@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom';
 
-import { fetchFilteredProducts } from '../actions/index';
+import { fetchFilteredProducts, fetchByPrice } from '../actions/index';
 
 class searchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      term: '',
-      view: false
+      term: ''
     }
   }
 
@@ -64,8 +63,16 @@ class searchBar extends Component {
                 Sort by price
             </button>
               <div className="dropdown-menu">
-                <a className="dropdown-item" href="#">High</a>
-                <a className="dropdown-item" href="#">Low</a>
+                <Link
+                  onClick={() => this.props.fetchByPrice('highest')}
+                  className="dropdown-item"
+                  to="products?price=highest">Highest
+                </Link>
+                <Link
+                  onClick={() => this.props.fetchByPrice('lowest')}
+                  className="dropdown-item"
+                  to="products?price=lowest">Lowest
+                </Link>
               </div>
             </div>
           </div>
@@ -80,7 +87,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ fetchFilteredProducts }, dispatch)
+  return bindActionCreators({ fetchFilteredProducts, fetchByPrice }, dispatch)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(searchBar);

@@ -56,3 +56,15 @@ margin-right: 25%;
 .form-control {
   min-width: 200px;
 }
+
+.pages {
+  padding-left: 0px;
+  text-align: center;
+}
+.pages li {
+  font-size: 20px;
+  margin-left: 3px;
+  margin-right: 3px;
+  list-style: none;
+  display: inline-block;
+}

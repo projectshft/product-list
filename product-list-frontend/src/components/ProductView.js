@@ -13,7 +13,8 @@ class ProductView extends Component {
     }
 
   makeProductsDiv() {
-    return this.props.products.map(product => {
+    if (this.props.products.products) {
+    return this.props.products.products.map(product => {
       return (
         <div className="flex-fill">
         <div className="prod-category-price-box">
@@ -27,6 +28,11 @@ class ProductView extends Component {
         </div>
       );
     })
+  } else {
+    return (
+      <div>Loading...</div>
+    )
+  }
   }
 
   render() {

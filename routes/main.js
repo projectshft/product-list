@@ -1,6 +1,9 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+const Review = require('../models/review')
+
+
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -56,6 +59,18 @@ router.get('/products/:productId', (req, res, next) => {
 
 
 // GET /reviews returns up to 40 reviews at a time
+
+router.get("/reviews", (req, res) => {
+  Review
+      .find({})
+      .limit(40)
+      .exec((err, reviews) => {
+          Review.count().exec((err, count) => {
+              if (err) return next(err)
+              res.send(reviews)
+          })
+      })
+  });
 
 // POST /products Creates a new product in the database
 

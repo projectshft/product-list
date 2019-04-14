@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getProducts } from '../actions';
 
 class ProductList extends Component {
-  componentDidMount() {
-    this.props.getProducts();
-  }
-
   renderProducts = products => {
     return products.map(product => {
       return (
@@ -41,7 +38,7 @@ class ProductList extends Component {
   render() {
     return (
       <div className="container">
-        <div className="row my-4">
+        <div className="row mt-4 mb-2">
           {this.renderProducts(this.props.products)}
         </div>
       </div>
@@ -49,8 +46,16 @@ class ProductList extends Component {
   }
 }
 
-const mapStateToProps = products => {
-  return products;
+const mapStateToProps = state => {
+  const { products } = state.products;
+  return {
+    products
+  };
+};
+
+ProductList.propTypes = {
+  products: PropTypes.array,
+  getProducts: PropTypes.func
 };
 
 export default connect(

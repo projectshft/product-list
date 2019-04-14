@@ -15,16 +15,28 @@ router.get('/', (req, res) => {
   const errors = {};
 
   let productsQuery;
+  let countQuery;
 
   // Find all products if no category specified
   if (!category) {
     productsQuery = Product.find();
+    countQuery = Product.find().countDocuments();
   }
 
   // Filter by category if the query is found
   if (category) {
     productsQuery = Product.find({ $text: { $search: `${category}` } });
+    countQuery = Product.find({ $text: { $search: `${category}` } }).countDocuments();
   }
+
+  // Get total count and add to response
+  const response = {};
+
+  countQuery
+    .then(results => (response.count = results))
+    .catch(err => {
+      if (err) throw err;
+    });
 
   if (price || price === '') {
     // validate query input is formatted correctly
@@ -51,12 +63,15 @@ router.get('/', (req, res) => {
     .skip(numberOfProductsPerPage * (page - 1))
     .limit(numberOfProductsPerPage)
     .populate('reviews')
-    .exec((err, products) => {
+    .then(products => {
+      response.products = products;
+      res.send(response);
+    })
+    .catch(err => {
       if (err) {
         errors.query = 'Unable to complete query, please check query parameters and try again.';
         return res.status(400).send(errors);
       }
-      res.send(products);
     });
 });
 

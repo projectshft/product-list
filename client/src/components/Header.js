@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   getProducts,
@@ -19,14 +20,12 @@ class Header extends Component {
   };
 
   handleCategoryClick = e => {
-    this.props.setCurrentCategory(e.target.textContent);
-
+    this.props.setCurrentCategory(e.target.name);
     e.preventDefault();
   };
 
   handlePriceSortClick = e => {
     this.props.setCurrentPriceSort(e.target.name);
-
     e.preventDefault();
   };
 
@@ -36,7 +35,7 @@ class Header extends Component {
         <a
           key={category}
           className="dropdown-item"
-          type="category"
+          name={category}
           onClick={this.handleCategoryClick}
           href="/"
         >
@@ -48,7 +47,7 @@ class Header extends Component {
 
   render() {
     return (
-      <div>
+      <div id="top">
         <nav className="navbar navbar-expand-lg navbar-dark bg-secondary">
           <a className="navbar-brand" href="/">
             HARRISON IS THE BEST
@@ -76,7 +75,7 @@ class Header extends Component {
                 <div className="dropdown-menu">
                   <a
                     className="dropdown-item"
-                    type="category"
+                    name="All"
                     onClick={this.handleCategoryClick}
                     href="/"
                   >
@@ -100,7 +99,6 @@ class Header extends Component {
                   <a
                     className="dropdown-item"
                     name="lowest"
-                    type="price"
                     onClick={this.handlePriceSortClick}
                     href="/"
                   >
@@ -110,7 +108,6 @@ class Header extends Component {
                   <a
                     className="dropdown-item"
                     name="highest"
-                    type="price"
                     onClick={this.handlePriceSortClick}
                     href="/"
                   >
@@ -140,11 +137,27 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => {
+  const { categories } = state.categories;
+  const { currentCategory } = state.currentCategory;
+  const { currentPriceSort } = state.currentPriceSort;
+  const { currentPage } = state.currentPage;
   return {
-    categories: state.categories,
-    currentCategory: state.currentCategory,
-    currentPriceSort: state.currentPriceSort
+    categories,
+    currentCategory,
+    currentPriceSort,
+    currentPage
   };
+};
+
+Header.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.string),
+  currentCategory: PropTypes.string,
+  currentPriceSort: PropTypes.string,
+  currentPage: PropTypes.number,
+  getProducts: PropTypes.func,
+  getCategories: PropTypes.func,
+  setCurrentCategory: PropTypes.func,
+  setCurrentPriceSort: PropTypes.func
 };
 
 export default connect(

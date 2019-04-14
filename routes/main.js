@@ -52,10 +52,10 @@ router.get("/products", (req, res, next) => {
     .limit(perPage)
     .sort(sortQuery)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.estimatedDocumentCount().exec((err, count) => {
+      //Counts the # of docs in the find then does the math for pagination and returns it with the product data.
+      Product.countDocuments(findQuery).exec((err, count) => {
         if (err) return next(err);
-        pagesCount = parseInt(count/perPage);
+        pagesCount = Math.ceil(count/perPage);
         res.status(200).send({products: products, pagesCount: pagesCount});
       });
     });

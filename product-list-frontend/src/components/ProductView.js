@@ -8,11 +8,8 @@ class ProductView extends Component {
   constructor(props) {
     super(props) 
     }
-    componentDidMount() {
-      this.props.loadProducts();
-    }
-
-  makeProductsDiv() {
+    
+    makeProductsDiv() {
     if (this.props.products.products) {
     return this.props.products.products.map(product => {
       return (
@@ -49,7 +46,7 @@ function mapStateToProps({ products }) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { loadProducts},
+    { loadProducts },
     dispatch
   );
 }

@@ -12,11 +12,12 @@ class Products extends Component {
     this.state = { 
       page: 1,
       category: "",
-      sort: false
+      sort: ""
     };
 
     this.onPageClick = this.onPageClick.bind(this);
     this.onCategoryClick = this.onCategoryClick.bind(this);
+    this.onSort = this.onSort.bind(this)
   }
 
   //on page load, fetch all products
@@ -26,19 +27,20 @@ class Products extends Component {
 
   //when page number is clicked, render to that page
   onPageClick(event) {
-    this.setState({ page: event.target.id})  
-    this.props.fetchProducts(event.target.id);
+    this.setState({ page: event.target.id })  
+    this.props.fetchProducts(event.target.id, this.state.category, this.state.sort);
   }
 
   //when category is selected, filter for that category
   onCategoryClick(event) {
-    this.setState({ category: event.target.value}) 
+    this.setState({ category: event.target.value }) 
     this.props.fetchProducts(1, event.target.value)
     console.log(this.state)
   }
 
   onSort(event) {
-    this.props.fetchProducts(1, this.state.category)
+    this.setState({ sort: event.target.value}) 
+    this.props.fetchProducts(this.state.page, this.state.category, event.target.value)
   }
 
   render() {
@@ -78,8 +80,8 @@ class Products extends Component {
 
                     <select className="custom-select mr-sm-2" onChange={this.onSort} id="sort" defaultValue="sort">
                       <option value="sort" hidden disabled>Sort by price</option>
-                      <option value="1">Price: Low to High</option>
-                      <option value="2">Price: High to Low</option>
+                      <option value="low">Price: Low to High</option>
+                      <option value="high">Price: High to Low</option>
                     </select>
                   </form>
                 </div>

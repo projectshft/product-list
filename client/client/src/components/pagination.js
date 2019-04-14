@@ -15,28 +15,80 @@ class Pagination extends Component {
     
         this.state = { pageNumber: '' };
     
-        this.onClick = this.pageNumberQuery.bind(this);
+        this.onClick = this.pageNumberClick.bind(this);
       }
     
-
-    pageNumberQuery(event) {
+    // Updates state with clicked page number
+    pageNumberClick(event) {
  
             console.log('Page number clicked!', event.target.value)
-            this.setState({ pageNumber: event.target.value})
-            console.log(this.state)
-            this.props.fetchProducts(event.target.value) //FIXED:First click doesn't register action
+            this.setState({ pageNumber: event.target.value }, () => {
+                this.props.fetchProducts(this.state.pageNumber)
+                console.log('Page number query: ', this.state.pageNumber)
+            });
     }         
+
       
     // Render link/buton 1-9, with onClick to bind an action to dispatch
     // this.bind.FUNCTION captures the value of number clicked
+    // IMPROVEMENT: Render a sequential button number ==> Document count returned / 9 per page 
   render() {
-    return (
+    return ( 
+
         <div>
+            <input
+                type="submit"
+                value="1"
+                className="btn-sm btn-primary"
+                onClick={this.pageNumberClick.bind(this)}
+            />
+            <input
+                type="submit"
+                value="2"
+                className="btn-sm btn-primary"
+                onClick={this.pageNumberClick.bind(this)}
+            />
+            <input
+                type="submit"
+                value="3"
+                className="btn-sm btn-primary"
+                onClick={this.pageNumberClick.bind(this)}
+            />
+            <input
+                type="submit"
+                value="4"
+                className="btn-sm btn-primary"
+                onClick={this.pageNumberClick.bind(this)}
+            />
             <input
                 type="submit"
                 value="5"
                 className="btn-sm btn-primary"
-                onClick={this.pageNumberQuery.bind(this)}
+                onClick={this.pageNumberClick.bind(this)}
+            />
+            <input
+                type="submit"
+                value="6"
+                className="btn-sm btn-primary"
+                onClick={this.pageNumberClick.bind(this)}
+            />
+            <input
+                type="submit"
+                value="7"
+                className="btn-sm btn-primary"
+                onClick={this.pageNumberClick.bind(this)}
+            />
+            <input
+                type="submit"
+                value="8"
+                className="btn-sm btn-primary"
+                onClick={this.pageNumberClick.bind(this)}
+            />
+            <input
+                type="submit"
+                value="9"
+                className="btn-sm btn-primary"
+                onClick={this.pageNumberClick.bind(this)}
             />
         </div>
         

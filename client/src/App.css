@@ -10,6 +10,10 @@ ul{
   display: inline
 }
 
+#category {
+  margin-left: 300px;
+}
+
 .price {
   float: right;
   font-size: 30px;

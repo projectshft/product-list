@@ -63,18 +63,21 @@ class Products extends Component {
                       </button>
                     </div>
 
-                    <label className="mr-sm-2">Filter by Category</label>
-                    <select className="custom-select mr-sm-2" onChange={this.onCategoryClick} id="inlineFormCustomSelect">
+                    <select className="custom-select mr-sm-2" onChange={this.onCategoryClick} defaultValue="category" id="category">
+                      <option value="category" hidden disabled>Filter by Category</option>
+                      <option value="baby">Baby</option>
+                      <option value="garden">Garden</option>
+                      <option value="grocery">Grocery</option>
+                      <option value="games">Games</option>
+                      <option value="home">Home</option>
+                      <option value="industrial">Industrial</option>
                       <option value="jewelery">Jewelery</option>
                       <option value="tools">Tools</option>
-                      <option value="industrial">Industrial</option>
-                      <option value="baby">Baby</option>
-                      <option value="home">Home</option>
-                      <option value="electronics">Electronics</option>
+
                     </select>
 
-                    <label className="mr-sm-2">Sort By:</label>
-                    <select className="custom-select mr-sm-2" onChange={this.onSort} id="inlineFormCustomSelect">
+                    <select className="custom-select mr-sm-2" onChange={this.onSort} id="sort" defaultValue="sort">
+                      <option value="sort" hidden disabled>Sort by price</option>
                       <option value="1">Price: Low to High</option>
                       <option value="2">Price: High to Low</option>
                     </select>
@@ -116,6 +119,7 @@ class Products extends Component {
                 <li className="page-item"><button className="page-link" id="7" onClick={this.onPageClick}>7</button></li>
                 <li className="page-item"><button className="page-link" id="8" onClick={this.onPageClick}>8</button></li>
                 <li className="page-item"><button className="page-link" id="9" onClick={this.onPageClick}>9</button></li>
+                <li className="page-item"><button className="page-link" id="10" onClick={this.onPageClick}>10</button></li>
               </ul>
             </div>
 

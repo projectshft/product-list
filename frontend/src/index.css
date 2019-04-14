@@ -12,3 +12,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+#heading {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 70px;
+}
+
+.form-group {
+  display: inline-block;
+  text-align: center;
+}

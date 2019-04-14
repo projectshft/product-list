@@ -4,9 +4,6 @@ const Product = require('../models/product')
 const Review = require('../models/review')
 
 
-const CORS_HEADERS = {"Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, X-Authentication"};
-
-
 // Endpoint to GET fake data to fill our databse
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) { //Change i < 90
@@ -61,7 +58,7 @@ router.get('/generate-fake-data', (req, res, next) => {
 // FILTER BY LOWEST TO HIGHEST <localhost:8000/products?page=1&price=lowest>
 // NO PAGE QUERY REQUIRED <localhost:8000/products?price=lowest>
 
-
+// Endpoint to GET products with query
 router.get('/products', (req, res, next) => {
 
   /* FILTER BY CATEGORY <localhost:8000/products?page=1&category=tools>
@@ -98,11 +95,7 @@ router.get('/products', (req, res, next) => {
           if (err) return next(err)
            console.log( "Number of products:", count );
 
-          response.writeHead(200, CORS_HEADERS);
           res.send(products) 
-
-          // Sends an array of project objects... to where? How to connect with CLIENT?
-          // {res.body}
           
         })
       })

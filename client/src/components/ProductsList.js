@@ -13,28 +13,28 @@ class ProductsList extends Component {
   renderProducts() {
     return _.map(this.props.products, product => {
       return (
-        <div className="col-12">
-          <div className="row">
-            <li className="list-group-item col-3" key={product._id}>
-              <div className="row">
-                <span className="offset-md-1">
-                  {' '}
-                  Category: {product.category}{' '}
-                </span>
-                <span className="offset-md-3"> ${product.price} </span>
-              </div>
+        // <div className="col-12">
+        // <div className="row">
 
-              <div className="">
-                <img
-                  className=" img-responsive"
-                  src={product.image}
-                  alt="your friend"
-                />
-                <span className=""> {product.name} </span>
-              </div>
-            </li>
+        <li className="list-group-item col-3" key={product._id}>
+          <div className="row">
+            <span className="offset-md-1"> Category: {product.category} </span>
+            <span className="offset-md-3"> ${product.price} </span>
           </div>
-        </div>
+
+          <div className="row">
+            <img
+              className=" img-responsive"
+              src={product.image}
+              alt="your friend"
+            />
+          </div>
+          <div className="row">
+            <span className=""> {product.name} </span>
+          </div>
+        </li>
+        // </div>
+        // </div>
       )
     })
   }
@@ -43,7 +43,10 @@ class ProductsList extends Component {
     return (
       <section className="full-page padding-lg">
         <div className="container" style={{ marginTop: '75px' }}>
-          <div>{this.renderProducts()} </div>
+          <div className="col-12">
+            <div className="row" />
+            <div>{this.renderProducts()} </div>
+          </div>
         </div>
       </section>
     )

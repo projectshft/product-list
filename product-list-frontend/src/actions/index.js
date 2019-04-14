@@ -9,7 +9,6 @@ export function loadProducts(cat, sort, page) {
   const catQuery = cat ? "&category=" + cat : "";
   const sortQuery = sort ? "&price=" + sort : "";
   const url = baseUrl + catQuery + sortQuery;
-  console.log(url)
   const products = axios.get(`${url}`);
   return {
     type: LOAD_PRODUCTS,

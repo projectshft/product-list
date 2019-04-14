@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { loadProducts, updateSort } from '../actions';
+import { updateSort } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Dropdown } from "react-bootstrap"
 
 class SortByDropdown extends Component {
-  constructor(props) {
-    super(props) 
-    }
 
   onClickSort(e) {
     const clickedSort = e.currentTarget.textContent === "Price: Low to High" ? "lowest" : "highest"

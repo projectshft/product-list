@@ -7,17 +7,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
+    //initial page load
     this.props.loadProducts(null,null, 1);
   }
 
   componentWillReceiveProps(nextProps) {
+    //checks to see if incoming category/page/sort props are different than current and dispatches an API call with new values.
     const {category, sort, page} = this.props;
-    if (category !== nextProps.category || sort !== nextProps.sort || page !== nextProps.page){
+    if (category !== nextProps.category || sort !== nextProps.sort || page !== nextProps.page) {
       this.props.loadProducts(nextProps.category, nextProps.sort, nextProps.page);
     }
   }
@@ -27,6 +26,7 @@ class App extends Component {
     this.props.updatePagination(clickedPage)
   }
 
+  //Pushes page numbers to array that we can then use to map our elements.
   pagination() {
     const pages = [];
     if (this.props.products.pagesCount) {
@@ -40,8 +40,12 @@ class App extends Component {
   }
 
   return pages.map(page => {
+    if(page == this.props.page) {
     return (
-      <li onClick={this.onClickPageNumber.bind(this)}>{page}</li>
+      <li key={page} onClick={this.onClickPageNumber.bind(this)}><strong>{page}</strong></li>
+    )
+    } else return (
+      <li key={page} onClick={this.onClickPageNumber.bind(this)}>{page}</li>
     )
   })
   }
@@ -55,7 +59,7 @@ class App extends Component {
       <form>
       <div className="input-group">
       <button type="button" className="btn btn-primary">Search</button>
-      <input type="text" className="form-control" id="searchVal"></input>
+      <input type="text" className="form-control" id="searchVal"defaultValue="<under construction>"></input>
       </div>
       </form>
       </div>

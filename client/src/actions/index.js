@@ -1,4 +1,5 @@
 import axios from '../axios';
+import { urlQueryObject } from '../urlQueries';
 
 const CORS_HEADERS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, X-Authentication" };
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
@@ -7,8 +8,8 @@ export const FETCH_FILTERED_PRODUCTS = 'FETCH_FILTERED_PRODUCTS';
 export const FETCH_BY_PRICE = 'FETCH_BY_PRICE';
 export const FETCH_BY_PRODUCT_NAME = 'FETCH_BY_PRODUCT_NAME';
 
-export function fetchProducts() {
-  const request = axios.get('products', {
+export function fetchProducts(query, price) {
+  const request = axios.get('', {
     headers: CORS_HEADERS
   });
 
@@ -19,9 +20,11 @@ export function fetchProducts() {
 }
 
 export function fetchProductsPage(pageNumber) {
-  const request = axios.get(`products?page=${pageNumber}`, {
-    headers: CORS_HEADERS
-  });
+  urlQueryObject.pageQuery = `page=${pageNumber}`
+  const request = axios.get(`?${
+    urlQueryObject.pageQuery}&${urlQueryObject.categoryQuery}&${urlQueryObject.priceQuery}`, {
+      headers: CORS_HEADERS
+    });
 
   return {
     type: FETCH_PRODUCTS_PAGE,
@@ -29,8 +32,8 @@ export function fetchProductsPage(pageNumber) {
   }
 }
 
-export function fetchFilteredProducts(category) {
-  const request = axios.get(`products?category=${category}`, {
+export function fetchFilteredProducts(urlObject) {
+  const request = axios.get(`?${urlObject.categoryQuery}&${urlObject.priceQuery}&${urlQueryObject.pageQuery}`, {
     headers: CORS_HEADERS
   });
 
@@ -40,8 +43,8 @@ export function fetchFilteredProducts(category) {
   }
 }
 
-export function fetchByPrice(priceCriteria) {
-  const request = axios.get(`products?price=${priceCriteria}`, {
+export function fetchByPrice(urlObject) {
+  const request = axios.get(`?${urlObject.priceQuery}&${urlObject.categoryQuery}&${urlObject.pageQuery}`, {
     headers: CORS_HEADERS
   });
 
@@ -52,7 +55,7 @@ export function fetchByPrice(priceCriteria) {
 }
 
 export function fetchByProductName(productName) {
-  const request = axios.get(`products?productName=${productName}`, {
+  const request = axios.get(`?productName=${productName}`, {
     headers: CORS_HEADERS
   });
 

@@ -51,19 +51,21 @@ router.get('/products', (req, res, next) => {
     .sort(priceQuery)
     .exec((err, productsFound) => {
       Product.countDocuments().then((count) => {
-
+        console.log("products length is ", productsFound.length)
+        // Query used to to find the categories
         Product.find()
           .exec((err, products) => {
             categoryList = products.map((item) => {
               return item.category
             })
             const uniqueCategoryList = Array.from(new Set(categoryList));
-
+            // Query used to to find a product by Name
             Product.find(productNameQuery)
               .exec((err, productFoundByName) => {
                 res.status(200).send({
                   productsFound,
                   count,
+                  filteredProductCount: productsFound.length,
                   perPage,
                   uniqueCategoryList,
                   productFoundByName

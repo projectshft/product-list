@@ -27,7 +27,6 @@ export default function (state = {}, action) {
 
     case FETCH_BY_PRODUCT_NAME:
       data = action.payload.data
-      console.log('data is ', action.payload.data.productFoundByName);
       return { ...state, data }
     default:
       return state;

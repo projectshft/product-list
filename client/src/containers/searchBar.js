@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom';
 
+import { urlQueryObject } from '../urlQueries';
 import { fetchFilteredProducts, fetchByPrice, fetchByProductName } from '../actions/index';
 
 class searchBar extends Component {
@@ -23,6 +24,16 @@ class searchBar extends Component {
     this.props.fetchByProductName(this.state.term);
   }
 
+  fetchProductsByPrice = (criteria) => {
+    urlQueryObject.priceQuery = criteria;
+    this.props.fetchByPrice(urlQueryObject)
+  }
+
+  fetchProductsByFiltering = (categoryCriteria) => {
+    urlQueryObject.categoryQuery = categoryCriteria;
+    this.props.fetchFilteredProducts(urlQueryObject)
+  }
+
 
   render() {
 
@@ -31,8 +42,8 @@ class searchBar extends Component {
       categoryListArray = this.props.data.uniqueCategoryList.map((category) => {
         let categoryLink = <Link
           key={`category-name-${category}`}
-          to={`products?category=${category}`}
-          onClick={() => this.props.fetchFilteredProducts(category)}
+          to={`category=${category}`}
+          onClick={() => this.fetchProductsByFiltering(`category=${category}`)}
           className="dropdown-item">{category}</Link>
         return categoryLink;
       })
@@ -65,14 +76,14 @@ class searchBar extends Component {
             </button>
               <div className="dropdown-menu">
                 <Link
-                  onClick={() => this.props.fetchByPrice('highest')}
+                  onClick={() => this.fetchProductsByPrice('price=highest')}
                   className="dropdown-item"
-                  to="products?price=highest">Highest
+                  to='price=highest'>Highest
                 </Link>
                 <Link
-                  onClick={() => this.props.fetchByPrice('lowest')}
+                  onClick={() => this.fetchProductsByPrice('price=lowest')}
                   className="dropdown-item"
-                  to="products?price=lowest">Lowest
+                  to="price=lowest">Lowest
                 </Link>
               </div>
             </div>
@@ -84,7 +95,9 @@ class searchBar extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { data: state.products.data }
+  return {
+    data: state.products.data,
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {

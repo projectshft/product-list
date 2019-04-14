@@ -75,6 +75,7 @@ class Products extends Component {
                       <option value="industrial">Industrial</option>
                       <option value="jewelery">Jewelery</option>
                       <option value="tools">Tools</option>
+                      <option value="">Show All</option>
 
                     </select>
 
@@ -82,6 +83,7 @@ class Products extends Component {
                       <option value="sort" hidden disabled>Sort by price</option>
                       <option value="low">Price: Low to High</option>
                       <option value="high">Price: High to Low</option>
+                      <option value="">Remove Sort</option>
                     </select>
                   </form>
                 </div>

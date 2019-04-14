@@ -13,28 +13,29 @@ class ProductsList extends Component {
   renderProducts() {
     return _.map(this.props.products, product => {
       return (
-        // <div className="col-12">
-        // <div className="row">
+        <div
+          className="card col-xs-12 col-sm-5 col-md-3"
+          style={{ display: 'inline-block', margin: '2%' }}
+          key={product._id}
+        >
+          <div className="card-body">
+            <div className="row">
+              <span className="card-text"> Category: {product.category} </span>
+              <h6 className="card-text pl-3"> ${product.price} </h6>
+            </div>
 
-        <li className="list-group-item col-3" key={product._id}>
-          <div className="row">
-            <span className="offset-md-1"> Category: {product.category} </span>
-            <span className="offset-md-3"> ${product.price} </span>
+            <div className="row">
+              <img
+                className="card-img img-responsive pt-2 pb-2"
+                src={product.image}
+                alt="your friend"
+              />
+            </div>
+            <div className="row">
+              <h5 className="card-title"> {product.name} </h5>
+            </div>
           </div>
-
-          <div className="row">
-            <img
-              className=" img-responsive"
-              src={product.image}
-              alt="your friend"
-            />
-          </div>
-          <div className="row">
-            <span className=""> {product.name} </span>
-          </div>
-        </li>
-        // </div>
-        // </div>
+        </div>
       )
     })
   }

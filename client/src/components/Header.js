@@ -7,7 +7,7 @@ export default function Header() {
       <nav className="navbar navbar-light navbar-expand-lg mt-5 mb-3 py-1">
         <div className="container-fluid">
           <form>
-            <div class="form-group form-group-sm">
+            <div className="form-group form-group-sm">
               <input
                 type="text"
                 id="search-query"

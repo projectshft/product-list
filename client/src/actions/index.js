@@ -13,16 +13,15 @@ export async function fetchProducts(query = {}) {
   // Sets first query to be after a ? and all the rest to be after an &
 
   for (let key in query) {
-        if (previousQuery) {
-          url += `&${key}=${query[key]}`;
-        } else {
-          url += `?${key}=${query[key]}`; 
-          previousQuery = true;
-        }
-      }
+    if (previousQuery) {
+      url += `&${key}=${query[key]}`;
+    } else {
+      url += `?${key}=${query[key]}`; 
+      previousQuery = true;
+    }
+  }
 
   const request = await axios.get(url);
-
   const { docs: products, total, pages, page, limit } = request.data;  
 
   return {

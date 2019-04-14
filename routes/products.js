@@ -19,38 +19,38 @@ router.get('/', (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1
 
-  //if category query, return only products that meet the critera
-  if (req.query.category) {
-    let query = req.query.category
-    const capitalizeQuery = (query[0].toUpperCase()) + query.slice(1)
-    Product
-      .find({category: capitalizeQuery})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec((err, result) => {
-        if (err){
-          console.log(err)
-        } else {
-          console.log(capitalizeQuery)
-          res.send(result)
-        }
-      })
-  } else {
-     //if no category or parameter, return all products
+  const catQuery = req.query.category;
+  const sort = req.query.sort;
+  console.log(sort)
+
+  let categoryQuery = {}
+  if (catQuery) {
+    const category = (catQuery[0].toUpperCase()) + catQuery.slice(1)
+    categoryQuery = {category: category}
+  }
+
+  let sortQuery = {}
+  if (sort === 'low') {
+    sortQuery = { price: 'asc'}
+  } if (sort === 'high') {
+    sortQuery = { price: 'desc'}
+  }
+
   Product
-    .find({})
+    .find(categoryQuery)
     .skip((perPage * page) - perPage)
     .limit(perPage)
+    .sort(sortQuery)
     .exec((err, products) => {
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-
-        res.send(products)
+      Product.countDocuments().then((count) => {
+        if (err) {
+          return next (err)
+        } else {
+          res.send(products)
+        }
       })
     })
-  }
-})
-
+});
 //get a specific product
 router.get('/:product', (req, res) => {
   res.send(req.product)

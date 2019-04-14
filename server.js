@@ -17,6 +17,19 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Cors middleware
+const HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers':
+    'Origin, X-Requested-With, Content-Type, Accept, X-Authentication',
+  'Content-Type': 'application/json'
+};
+
+app.use((req, res, next) => {
+  res.set(HEADERS);
+  next();
+});
+
 // Set up routes
 app.use('/', require('./routes/main'));
 app.use('/products', require('./routes/products'));

@@ -50,6 +50,7 @@ router.get('/', (req, res) => {
   productsQuery
     .skip(numberOfProductsPerPage * (page - 1))
     .limit(numberOfProductsPerPage)
+    .populate('reviews')
     .exec((err, products) => {
       if (err) {
         errors.query = 'Unable to complete query, please check query parameters and try again.';
@@ -71,7 +72,7 @@ router.post('/', (req, res) => {
       name,
       price,
       // placeholder image
-      image: 'https://https://picsum.photos/200'
+      image: 'https://picsum.photos/200'
     },
     (err, product) => {
       if (err) {
@@ -81,6 +82,20 @@ router.post('/', (req, res) => {
       res.send(product);
     }
   );
+});
+
+// GET - list of categories
+router.get('/categories/all', (req, res) => {
+  const errors = {};
+
+  Product.find().distinct('category', (err, categories) => {
+    if (err) {
+      errors.categories = 'Unable to get categories';
+      res.status(404).send(errors);
+    }
+    categories.sort();
+    res.send(categories);
+  });
 });
 
 // GET - get product by productId
@@ -99,7 +114,6 @@ router.get('/:productId', (req, res) => {
       errors.query = 'Unable to locate document with that ID';
       return res.status(404).send(errors);
     }
-
     res.send(product);
   });
 });

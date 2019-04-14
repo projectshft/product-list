@@ -43,7 +43,7 @@ router.get("/products", (req, res, next) => {
   // Capitalize is to cap first letter of cat name since query comes in as all lowercase. Categories are in db with first letter capitalized.
   const findQuery = category ? { category: category.capitalize() } : {};
   // Sort query string value to pass to .sort(). If string exists and is not highest or lowest, returns "Invalid" so we can identify the bad query and return 400.
-  const sortQuery = price === "highest" ? { price: "desc"} : price === "lowest" ? { price: "asc"} : price.length > 0 ? "Invalid" : null
+  const sortQuery = price === "highest" ? { price: "desc"} : price === "lowest" ? { price: "asc"} : price ? price.length > 0 ? "Invalid" : null : null
   if (sortQuery === "Invalid") {
      return res.status(400).send("Invalid sort query.");
     }
@@ -55,7 +55,7 @@ router.get("/products", (req, res, next) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Product.estimatedDocumentCount().exec((err, count) => {
         if (err) return next(err);
-        res.send(products);
+        res.status(200).send(products);
       });
     });
 });

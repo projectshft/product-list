@@ -16,28 +16,88 @@ router.param('product', (request, response, next, id) => {
   });
 });
 
-// Returns all of the products at 9 per page
+/* GET This endpoint gets all of the products based upon query parameters specified
+   by the user.  If there are no parameters it simply returns all of the products.
+   All returns are paginated to 9 products at a time. */
 
-router.get('/products', (request, response, next) => {
+router.get('/products', (request, response) => {
+  const parsedURL = url.parse(request.originalUrl);
+  let { page, category, price } = queryString.parse(parsedURL.query);
 
-  const perPage = 9;
+  // Determines the price sort order
+  let sortOrder = price === 'lowest' ? 1 : -1;
 
-  // return the first page by default
-  const page = request.query.page || 1;
+  // If user didn't specify a page defaults to 1
+  typeof page === 'undefined' ? (page = 1) : (page = Number(page)); 
 
-  Product
-    .find({})
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((error, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.countDocuments().exec((error, count) => {
-        if (error) return next(error)
+  Product.paginate({}, { page, limit: 9 }, (error, products) => {
+    if (error) throw error;
 
-        response.send(products)
-      })
-    })
-})
+    /* If both category and price filters are defined it returns all products
+       matching the specified category sorted in order defined by the price filter. */
+
+    if (category && category !== "" && price && price !== "") {
+      Product.paginate(
+        { category },
+        { page, limit: 9, sort: { price: sortOrder } },
+        (error, products) => {
+          if (error) throw error;
+
+          // Checks if the page number supplied is valid
+          if (!page || page < 1 || page > products.pages) {
+            response.status(404).send('Page not found');
+          } else {
+            products.total === 0
+              ? response.status(404).send('No products for that category found')
+              : response.send(products);
+          }
+        }
+      );
+    }
+
+    /* If only category filter is defined it returns all products
+       matching the specified category. */
+
+    else if (category && category !== "") {
+      Product.paginate({ category }, { page, limit: 9 }, (error, products) => {
+        if (error) throw error;
+
+        // Checks if the page number supplied is valid
+        if (!page || page < 1 || page > products.pages) {
+          response.status(404).send('Page not found');
+        } else {
+          products.total === 0
+            ? response.status(404).send('No products for that category found')
+            : response.send(products);
+        }
+      });
+    }
+
+    /* If only price filter is defined it returns all products
+       sorted in order defined by the price filter. */
+
+    else if (price && price !== "") {
+      Product.paginate(
+        {},
+        { page, limit: 9, sort: { price: sortOrder } },
+        (error, products) => {
+          if (error) throw error;
+
+          // Checks if the page number supplied is valid
+          if (!page || page < 1 || page > products.pages) {
+            response.status(404).send('Page not found');
+          } else {
+            products.total === 0
+              ? response.status(404).send('No products found')
+              : response.send(products);
+          }
+        }
+      );
+    } else {
+      response.send(products);
+    }
+  });
+});
 
 // GET This endpoint returns a single product based on supplied ID
 

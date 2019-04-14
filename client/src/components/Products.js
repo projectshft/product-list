@@ -9,17 +9,36 @@ class Products extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { page: "" };
+    this.state = { 
+      page: 1,
+      category: "",
+      sort: false
+    };
 
     this.onPageClick = this.onPageClick.bind(this);
+    this.onCategoryClick = this.onCategoryClick.bind(this);
   }
+
+  //on page load, fetch all products
   componentDidMount() {
     this.props.fetchProducts();
   }
 
-  onPageClick(event) {    
-
+  //when page number is clicked, render to that page
+  onPageClick(event) {
+    this.setState({ page: event.target.id})  
     this.props.fetchProducts(event.target.id);
+  }
+
+  //when category is selected, filter for that category
+  onCategoryClick(event) {
+    this.setState({ category: event.target.value}) 
+    this.props.fetchProducts(1, event.target.value)
+    console.log(this.state)
+  }
+
+  onSort(event) {
+    this.props.fetchProducts(1, this.state.category)
   }
 
   render() {
@@ -45,7 +64,7 @@ class Products extends Component {
                     </div>
 
                     <label className="mr-sm-2">Filter by Category</label>
-                    <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                    <select className="custom-select mr-sm-2" onChange={this.onCategoryClick} id="inlineFormCustomSelect">
                       <option value="jewelery">Jewelery</option>
                       <option value="tools">Tools</option>
                       <option value="industrial">Industrial</option>
@@ -55,7 +74,7 @@ class Products extends Component {
                     </select>
 
                     <label className="mr-sm-2">Sort By:</label>
-                    <select className="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                    <select className="custom-select mr-sm-2" onChange={this.onSort} id="inlineFormCustomSelect">
                       <option value="1">Price: Low to High</option>
                       <option value="2">Price: High to Low</option>
                     </select>

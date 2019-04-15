@@ -13,7 +13,7 @@ router.get('/generate-fake-data', (req, res) => {
       category: faker.commerce.department(),
       name: faker.commerce.productName(),
       price: faker.commerce.price(),
-      image: 'https://www.fillmurray.com/320/240',
+      image: 'http://via.placeholder.com/400',
       reviews: []
     });
 

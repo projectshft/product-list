@@ -77,11 +77,19 @@ router.get("/reviews", (req, res) => {
 // POST /products Creates a new product in the database
 
 router.post('/products', (req, res, next) => {
-
+  
 })
 
 
 // POST /:product/reviews Creates a new review in the database by adding it to the respective product's reviews array
+
+router.post('products/:product/reviews'), (req, res, next) => {
+  const productId = req.params.productId
+  Review
+    .findById(productId)
+    // then some pushing into an array
+})
+
 
 // DELETE /products/:product Deletes a product by id
 

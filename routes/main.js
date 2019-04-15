@@ -51,10 +51,12 @@ router.get('/products', (req, res, next) => {
 
 router.get('/products/:productId', (req, res, next) => {
   const productId = req.params.productId
-  Product.findById(productId).exec((err, product) => {
-    res.send(product);
-    console.log(product);
-  })
+  Product
+    .findById(productId)
+    .exec((err, product) => {
+      res.send(product);
+      console.log(product);
+      })
 });
 
 
@@ -73,6 +75,11 @@ router.get("/reviews", (req, res) => {
   });
 
 // POST /products Creates a new product in the database
+
+router.post('/products', (req, res, next) => {
+  
+})
+
 
 // POST /:product/reviews Creates a new review in the database by adding it to the respective product's reviews array
 

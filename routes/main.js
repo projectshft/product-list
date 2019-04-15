@@ -5,7 +5,7 @@ const Review = require('../models/review');
 const axios = require('axios');
 
 
-router.get('/generate-fake-data', async (req, res, next) => {
+router.get('/generate-fake-data', (req, res, next) => {
 
   for (let i = 0; i < 90; i++) {
     // Create a new product instace
@@ -13,10 +13,7 @@ router.get('/generate-fake-data', async (req, res, next) => {
     // set data
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
-    // get random image from the unsplash API and set it our product
-    let res = await axios.get('https://source.unsplash.com/collection/1163637/500x300')
-    let url = await res.request.connection._httpMessage.res.responseUrl;
-    product.image = url;
+    product.image = 'https://images.unsplash.com/photo-1510074630444-b83d96ed9677?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=500&h=300&fit=crop&ixid=eyJhcHBfaWQiOjF9';
     product.price = faker.commerce.price()
     product.save((err) => {
       if (err) throw err
@@ -61,7 +58,6 @@ router.get('/products', (req, res, next) => {
             // Query used to to find a product by Name
             Product.find(productNameQuery)
               .exec((err, productFoundByName) => {
-                // Query used to find the number of products after filtering
                 Product
                   .find(categoryQuery)
                   .countDocuments()

@@ -5,7 +5,6 @@ const ProductDetail = (props) => {
   let products;
   if (props.data) {
     !(props.data.productFoundByName.length > 0) ?
-
       products = props.data.productsFound.map((item) => {
         return (
           <div className="col-sm-4" key={item._id}>

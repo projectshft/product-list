@@ -58,25 +58,6 @@ router.get('/generate-fake-data', (req, res, next) => {
 // FILTER BY LOWEST TO HIGHEST <localhost:8000/products?page=1&price=lowest>
 // NO PAGE QUERY REQUIRED <localhost:8000/products?price=lowest>
 
-// Endpoint to GET products with query
-router.get('/products', (req, res, next) => {
-
-  
-   // If category --> .find {category}
-   // If price L-to-H --> .sort {L-to-H}
-   // If price H-to-L --> .sort {H-to-L}
-   // Else .find({})
-
-
-    const perPage = 9
-
-    console.log('QUERY OBJECT: ', req.query)
-
-       // return the first page by default
-       let page = req.query.page || 1
-       console.log('PAGE PARAM IS: ', page)
-  
-    
    /************************************
     * LOGIC FOR OPTIONAL QUERIES
     * **********************************
@@ -88,12 +69,8 @@ router.get('/products', (req, res, next) => {
     *   .find({ page: page })
     * }
     * 
-    * If (req.query.highest) {
-    *   .find({ ... })
-    * }
-    * 
-    * If (req.query.lowest) {
-    *   .find({ ... })
+    * If (req.query.price) {
+    *   .find({ price: price })
     * }
     * 
     * 
@@ -104,66 +81,82 @@ router.get('/products', (req, res, next) => {
     * 
     */
 
-    // If a page query is passed in in URL
-    // if (req.query.page) {
 
-      // let page = req.query.page
-      // console.log('PAGE PARAM IS: ', page)
+// Endpoint to GET products with query
+router.get('/products', (req, res, next) => {
 
-    //   Product
-    //   .find({page:page})
-    //   .skip((perPage * page) - perPage)
-    //   .limit(perPage)
-    //   .exec((err, products) => {
-    //     Product.countDocuments().exec((err, count) => {
-    //       if (err) return next(err)
-    //        console.log( "Number of products:", count );
+    const perPage = 9
 
-    //       res.send(products) 
-          
-    //     })
-    //   })
-    // }
+      console.log('QUERY OBJECT: ', req.query)
 
-    // If a category query is passed in in URL
-    // if (req.query.category) {
-
-      let category = req.query.category
-      console.log('CATEGORY PARAM IS: ', category)
-
-      // Product
-      // .find({category:category})
-      // .skip((perPage * page) - perPage)
-      // .limit(perPage)
-      // .exec((err, products) => {
-      //   Product.countDocuments().exec((err, count) => {
-      //     if (err) return next(err)
-      //      console.log( "Number of products:", count );
-
-      //     res.send(products) 
-          
-      //   })
-      // })
-
-    // }
-
-    // Return all products
-    // else {
+       // return the first page by default
+       const page = req.query.page || 1
+       console.log('PAGE PARAM IS: ', page)
+  
 
       Product
-        .find({})
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
-        .exec((err, products) => {
-          // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-          Product.countDocuments().exec((err, count) => {
-            if (err) return next(err)
-            console.log( "Number of products:", count );
+      .find({})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.countDocuments().exec((err, count) => {
+          if (err) return next(err)
+           console.log( "Number of products:", count );
 
-            res.send(products)      
-          })
+          res.send(products) 
+          
         })
-    // }
+      })
+
+/********************************************************
+ *  LOGIC FOR OPTIONAL QUERIES (STILL WORKING ON IT...)
+ ********************************************************
+    // If a category query is passed in in URL
+    if (req.query.category) {
+
+      let category = req.query.category
+      console.log('CATEGORY QUERY IS: ', category)
+
+      Product
+      .find({category:category})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.countDocuments().exec((err, count) => {
+          if (err) return next(err)
+           console.log( "Number of products:", count );
+          res.send(products)      
+        })
+      })
+    }
+
+    // If a price sort query is passed in in URL
+    // sort by "price" ascending or descending
+    if (req.query.price) {
+
+        let price = req.query.price
+        console.log('PRICE QUERY IS: ', price)
+
+        Product
+           .find({})
+           // .sort({ price: 'asc'})
+           .sort({ price: price})
+           .skip((perPage * page) - perPage)
+           .limit(perPage)
+           .exec((err, products) => {
+             Product.countDocuments().exec((err, count) => {
+               if (err) return next(err)
+                console.log( "Number of products:", count );
+               res.send(products)      
+             })
+        })   
+    }
+
+    // Return all products
+    else {
+ 
+    }
+*/ 
 
   })
 
@@ -176,13 +169,15 @@ router.get('/products', (req, res, next) => {
 
 // GET /products/:product: Returns a specific product by its id
 
-// GET /reviews: Returns ALL the reviews, but limited to 40 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options page query to paginate.
-
 // POST /products: Creates a new product in the database
 
 // POST /:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
 
 // DELETE /products/:product: Deletes a product by id
+
+
+
+// GET /reviews: Returns ALL the reviews, but limited to 40 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options page query to paginate.
 
 // DELETE /reviews/:review: Deletes a review by id
 

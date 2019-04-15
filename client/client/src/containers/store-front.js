@@ -15,7 +15,7 @@ class StoreFront extends Component {
     return (
         <div>
             <h1>UGLY-STORE.COM</h1>
-            Pick a category and save!
+            Shop ugly products and save!
             <br></br>
             <hr></hr>
         </div>

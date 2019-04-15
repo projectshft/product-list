@@ -4,8 +4,8 @@ import { Component } from 'react';
 import StoreFront from '../containers/store-front';
 import ProductList from '../containers/product-list';
 import Pagination from './pagination';
-// import CategoryFilter from './category-filter';
 import CategoryMenu from './category-menu';
+import PriceSort from './price-sort';
 
 
 
@@ -15,6 +15,7 @@ export default class App extends Component {
       <div>
         <StoreFront />
         <CategoryMenu />
+        <PriceSort />
         <ProductList />
         <Pagination />
       </div>

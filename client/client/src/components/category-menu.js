@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions/index";
-
 // import Dropdown from 'react-bootstrap/Dropdown'
 
 class CategoryMenu extends Component {
@@ -29,7 +28,7 @@ class CategoryMenu extends Component {
   
     render() {
       return (
-      
+              // Use react-bootstrap for dropdown menu (not working)
               <div className="dropdown">
                   <button onClick={this.categoryClick.bind(this)} value="Jewelery"> Jewelery </button>
                   <button onClick={this.categoryClick.bind(this)} value="Garden"> Garden </button>

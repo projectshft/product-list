@@ -34,7 +34,6 @@ class searchBar extends Component {
     this.props.fetchFilteredProducts(urlQueryObject)
   }
 
-
   render() {
 
     let categoryListArray;
@@ -62,6 +61,14 @@ class searchBar extends Component {
               type="text" />
           </form>
           <div className="buttons">
+            <div className="btn-group product-btn">
+              <button onClick={() => window.location.reload()} type="button" className="btn btn-primary">
+                See All Products
+              </button>
+              <div className="dropdown-menu">
+                {categoryListArray}
+              </div>
+            </div>
             <div className="btn-group category-btn">
               <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Filter by category

@@ -51,7 +51,6 @@ router.get('/products', (req, res, next) => {
     .sort(priceQuery)
     .exec((err, productsFound) => {
       Product.countDocuments().then((count) => {
-        console.log("products length is ", productsFound.length)
         // Query used to to find the categories
         Product.find()
           .exec((err, products) => {
@@ -62,14 +61,20 @@ router.get('/products', (req, res, next) => {
             // Query used to to find a product by Name
             Product.find(productNameQuery)
               .exec((err, productFoundByName) => {
-                res.status(200).send({
-                  productsFound,
-                  count,
-                  filteredProductCount: productsFound.length,
-                  perPage,
-                  uniqueCategoryList,
-                  productFoundByName
-                })
+                // Query used to find the number of products after filtering
+                Product
+                  .find(categoryQuery)
+                  .countDocuments()
+                  .exec((err, countCategory) => {
+                    res.status(200).send({
+                      productsFound,
+                      count,
+                      perPage,
+                      uniqueCategoryList,
+                      productFoundByName,
+                      countCategory
+                    });
+                  })
               })
           })
       })

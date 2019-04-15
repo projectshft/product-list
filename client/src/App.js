@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { fetchProducts } from './actions/index'
 import ProductDetail from './components/ProductDetail';
-import SearchBar from './containers/searchBar';
+import Header from './containers/Header';
 import Pagination from './components/Pagination';
 
 class App extends Component {
@@ -16,7 +16,7 @@ class App extends Component {
   render() {
     return (
       <div className="container">
-        <SearchBar />
+        <Header />
         <ProductDetail />
         <Pagination />
       </div>

@@ -9,17 +9,15 @@ const Pagination = (props) => {
   let pageCount;
   let pageLink;
   let pageLinkArray = [];
-  let pageCountFiltered;
 
   if (props.data) {
-    pageCountFiltered = props.data.filteredProductCount;
-    pageCount = props.data.count / props.data.perPage;
+    pageCount = props.data.countCategory / props.data.perPage;
     for (let i = 0; i < pageCount; i++) {
       pageLink = <Link
-        className="link-item"
+        className='link-item'
         to={`products?page=${i + 1}`}
         key={i}
-        onClick={() => props.fetchProductsPage(i + 1)}>
+        onClick={(e) => props.fetchProductsPage(i + 1)}>
         {i + 1}
       </Link>
       pageLinkArray.push(pageLink)
@@ -34,7 +32,9 @@ const Pagination = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  return { data: state.products.data }
+  return {
+    data: state.products.data
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {

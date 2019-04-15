@@ -14,6 +14,7 @@ export default function (state = {}, action) {
       return { ...state, data }
 
     case FETCH_FILTERED_PRODUCTS:
+
       data = action.payload.data;
       return { ...state, data }
 

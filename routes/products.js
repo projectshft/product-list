@@ -33,7 +33,13 @@ router.get('/', (req, res) => {
   const response = {};
 
   countQuery
-    .then(results => (response.count = results))
+    .then(results => {
+      if (results === 0) {
+        errors.notfound = 'No products found.';
+        return res.status(404).send(errors);
+      }
+      response.count = results;
+    })
     .catch(err => {
       if (err) throw err;
     });

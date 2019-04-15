@@ -4,9 +4,9 @@ const Product = require('../models/product')
 const Review = require('../models/review')
 
 
-// Endpoint to GET fake data to fill our databse
+// Endpoint to GET fake data to fill our database
 router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 90; i++) { //Change i < 90
+  for (let i = 0; i < 90; i++) { 
     let product = new Product()
 
     product.category = faker.commerce.department()
@@ -17,14 +17,14 @@ router.get('/generate-fake-data', (req, res, next) => {
 
     // console.log('PRODUCT IS: ',product)
 
-
+      // Generate a random number of reviews between 0 - 4
       function getRandomInt(x){
         return Math.floor(Math.random() * Math.floor(x));
       }
       let randomNum = getRandomInt(4);
       // console.log('RANDOM NUMBER IS: ',randomNum)
 
-
+      // For each random number, generate a review
       for (let i = 0; i < randomNum; i++) {
 
         let review = new Review()
@@ -49,7 +49,7 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
-// ***PAGINATION LIMIT FORMULA ?query=page# --> page# <= count/perPage
+// ***PAGINATION LIMIT FORMULA ?query=page# --> page# <= count % perPage
 
 // GET pagination route </products?page=3>
 // FILTER BY CATEGORY <localhost:8000/products?page=1&category=tools>
@@ -61,12 +61,6 @@ router.get('/generate-fake-data', (req, res, next) => {
 // Endpoint to GET products with query
 router.get('/products', (req, res, next) => {
 
-  /* FILTER BY CATEGORY <localhost:8000/products?page=1&category=tools>
-   ********************************************************************
-   *  1. Get category from Client (req.query.category) 
-   *  2. Mongoose querying--> .find({ category: "req.body.category" })
-   *  3. Results number of pages--> page# <= count/perPage
-   */
   
    // If category --> .find {category}
    // If price L-to-H --> .sort {L-to-H}
@@ -75,31 +69,108 @@ router.get('/products', (req, res, next) => {
 
 
     const perPage = 9
-  
-    // return the first page by default
-    const page = req.query.page || 1
-      console.log('PAGE PARAM IS: ', page)
 
-    // category query param
-    const category = req.query.category
-      console.log('CATEGORY PARAM IS: ', category)
-  
-    Product
-      .find({})
-      //.find({category:category})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-        Product.countDocuments().exec((err, count) => {
-          if (err) return next(err)
-           console.log( "Number of products:", count );
+    console.log('QUERY OBJECT: ', req.query)
 
-          res.send(products) 
+       // return the first page by default
+       let page = req.query.page || 1
+       console.log('PAGE PARAM IS: ', page)
+  
+    
+   /************************************
+    * LOGIC FOR OPTIONAL QUERIES
+    * **********************************
+    * If (req.query.category) {
+    *   .find({ category: category })
+    * }
+    * 
+    * If (req.query.page) {
+    *   .find({ page: page })
+    * }
+    * 
+    * If (req.query.highest) {
+    *   .find({ ... })
+    * }
+    * 
+    * If (req.query.lowest) {
+    *   .find({ ... })
+    * }
+    * 
+    * 
+    * At the end...
+    *   .exec() => {
+    *     res.send(products) 
+    * }
+    * 
+    */
+
+    // If a page query is passed in in URL
+    // if (req.query.page) {
+
+      // let page = req.query.page
+      // console.log('PAGE PARAM IS: ', page)
+
+    //   Product
+    //   .find({page:page})
+    //   .skip((perPage * page) - perPage)
+    //   .limit(perPage)
+    //   .exec((err, products) => {
+    //     Product.countDocuments().exec((err, count) => {
+    //       if (err) return next(err)
+    //        console.log( "Number of products:", count );
+
+    //       res.send(products) 
           
+    //     })
+    //   })
+    // }
+
+    // If a category query is passed in in URL
+    // if (req.query.category) {
+
+      let category = req.query.category
+      console.log('CATEGORY PARAM IS: ', category)
+
+      // Product
+      // .find({category:category})
+      // .skip((perPage * page) - perPage)
+      // .limit(perPage)
+      // .exec((err, products) => {
+      //   Product.countDocuments().exec((err, count) => {
+      //     if (err) return next(err)
+      //      console.log( "Number of products:", count );
+
+      //     res.send(products) 
+          
+      //   })
+      // })
+
+    // }
+
+    // Return all products
+    // else {
+
+      Product
+        .find({})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec((err, products) => {
+          // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+          Product.countDocuments().exec((err, count) => {
+            if (err) return next(err)
+            console.log( "Number of products:", count );
+
+            res.send(products)      
+          })
         })
-      })
+    // }
+
   })
+
+  module.exports = router
+
+
+
 
   // routes folder > products.js, reviews.js [beers.js]
 
@@ -117,4 +188,4 @@ router.get('/products', (req, res, next) => {
 
 
 
-module.exports = router
+

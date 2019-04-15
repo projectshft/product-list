@@ -24,7 +24,7 @@ class Pagination extends Component {
             console.log('Page number clicked!', event.target.value)
             this.setState({ pageNumber: event.target.value }, () => {
                 this.props.fetchProducts(this.state.pageNumber)
-                console.log('Page number query: ', this.state.pageNumber)
+                console.log('pageQuery: ', this.state.pageNumber)
             });
     }         
 
@@ -36,6 +36,7 @@ class Pagination extends Component {
     return ( 
 
         <div>
+            <hr></hr>
             <input
                 type="submit"
                 value="1"

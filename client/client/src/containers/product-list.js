@@ -12,17 +12,30 @@ class ProductList extends Component {
             productData.map(product => {
 
                 return (
-                       
-                    <div className="col-2 card player-card border-35"
-                              style={{ backgroundColor: "red" }}
-                              > 
-                        <ul>{product.name}</ul>
-                        <ul>${product.price}</ul>
-                        <ul>{product.category}</ul>
-                        <img src={product.image} alt="ugly pic"/>
-                        <br></br>
-                        <hr></hr>
-                    </div>      
+                    // 3 rows
+                    <div className="row">
+                        <div className="col-3">
+                            <div className="card">
+                                <ul>{product.name}</ul>
+                                <ul>${product.price}</ul>
+                                <ul>{product.category}</ul>
+                                <img src={product.image} alt="ugly pic"/>
+                            </div>
+                        </div>
+                    </div>
+                    // 3 columns flex-evenly
+                    // 1 card per column
+
+                    // <div className="col-3 card border-35"
+                    //           style={{ backgroundColor: "red" }}
+                    //           > 
+                    //     <ul>{product.name}</ul>
+                    //     <ul>${product.price}</ul>
+                    //     <ul>{product.category}</ul>
+                    //     <img src={product.image} alt="ugly pic"/>
+                    //     <br></br>
+                    //     <hr></hr>
+                    // </div>      
 
                 )               
             })
@@ -33,9 +46,6 @@ class ProductList extends Component {
   render() {
     return (
         <div>
-            Shop ugly products and save!
-            <br></br>
-            <hr></hr>
              {this.props.products.map(this.renderProducts)} 
         </div>
         

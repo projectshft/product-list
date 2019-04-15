@@ -7,7 +7,7 @@ import { fetchProducts } from "../actions/index";
 
 class StoreFront extends Component {
   componentDidMount() {
-      this.props.fetchProducts();
+      this.props.fetchProducts(1);
   }
 
 
@@ -15,6 +15,9 @@ class StoreFront extends Component {
     return (
         <div>
             <h1>UGLY-STORE.COM</h1>
+            Pick a category and save!
+            <br></br>
+            <hr></hr>
         </div>
     );
   }

@@ -60,7 +60,6 @@ class ProductList extends Component {
               <option value="Grocery">Grocery</option>
               <option value="Health">Health</option>
               <option value="Home">Home</option>
-              <option value="Jewelry">Jewelry</option>
               <option value="Kids">Kids</option>
               <option value="Movies">Movies</option>
               <option value="Music">Music</option>

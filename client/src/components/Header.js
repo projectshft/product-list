@@ -43,17 +43,17 @@ class Header extends Component {
 
   filterByCategory = e => {
     e.preventDefault()
-    console.log('e.target.id:', e.target.id)
+
     this.setState({ category: e.target.id })
-    console.log('this.state:', this.state)
+
     //fetch the correct products basd on category
     this.props.filterCategory(e.target.id)
   }
   sortByPrice = e => {
     e.preventDefault()
-    console.log('e.target.id:', e.target.id)
+
     this.setState({ price: e.target.id })
-    console.log('this.state:', this.state)
+
     //fetch the correct products basd on sorting price low to high or high to low
     this.props.sortPrice(e.target.id)
   }
@@ -63,7 +63,7 @@ class Header extends Component {
 
     return (
       <div
-        className="container-fluid fixed-top"
+        className="container-fluid fixed-top shadow-sm"
         style={{ backgroundColor: 'white' }}
       >
         <div className="h1 mt-4 mb-5"> PRODUCTS </div>
@@ -75,7 +75,7 @@ class Header extends Component {
                   type="text"
                   id="search-query"
                   className="form-control input-sm"
-                  placeholder="Search"
+                  placeholder="Search by Product ID"
                 />
               </div>
             </form>
@@ -90,7 +90,8 @@ class Header extends Component {
                 aria-expanded="false"
                 onClick={this.toggleCategoryMenu}
               >
-                Select
+                Select {}
+                <i class="fas fa-caret-down" />
               </button>
               {showCategoryMenu ? (
                 <div className="shadow-sm">
@@ -114,6 +115,20 @@ class Header extends Component {
                     id="Movies"
                   >
                     Movies
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.filterByCategory}
+                    id="Toys"
+                  >
+                    Toys
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.filterByCategory}
+                    id="Grocery"
+                  >
+                    Grocery
                   </button>
                   <button
                     className="dropdown-item"
@@ -143,7 +158,8 @@ class Header extends Component {
                 aria-expanded="false"
                 onClick={this.togglePriceSortMenu}
               >
-                Select
+                Select {}
+                <i class="fas fa-caret-down" />
               </button>
               {showPriceSortMenu ? (
                 <div className="shadow-sm">

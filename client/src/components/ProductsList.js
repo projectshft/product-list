@@ -43,7 +43,7 @@ class ProductsList extends Component {
   render() {
     return (
       <section className="full-page padding-lg">
-        <div className="container" style={{ marginTop: '200px' }}>
+        <div className="container" style={{ marginTop: '220px' }}>
           <div className="col-12">
             <div className="row" />
             <div>{this.renderProducts()} </div>

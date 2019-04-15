@@ -14,9 +14,9 @@ class Footer extends Component {
 
   onClick = e => {
     e.preventDefault()
-    console.log('e.target.id:', e.target.id)
+
     this.setState({ page: e.target.id })
-    console.log('this.state:', this.state)
+
     //fetch the correct products based on page number
     this.props.paginateProducts(e.target.id)
   }

@@ -17,9 +17,10 @@ class Footer extends Component {
     console.log('e.target.id:', e.target.id)
     this.setState({ page: e.target.id })
     console.log('this.state:', this.state)
-    //fetch the correct products basd on page number
+    //fetch the correct products based on page number
     this.props.paginateProducts(e.target.id)
   }
+
   render() {
     return (
       <div className="mt-3">

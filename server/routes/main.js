@@ -45,22 +45,7 @@ router.get('/products', (req, res, next) => {
               res.send(products)
             }
           })
-      } else if (category && price === 'lowest') {
-        Product.find({})
-          .skip(perPage * page - perPage)
-          .limit(perPage)
-          .sort({
-            price: -1
-          })
-          .exec((err, products) => {
-            if (err) {
-              console.error(err)
-            } else {
-              //if there is a category and a price=lowest query, send products within that category and price
-              res.send(products)
-            }
-          })
-      } else if (category && price == 'highest') {
+      } else if ((category, price == 'lowest')) {
         Product.find({})
           .skip(perPage * page - perPage)
           .limit(perPage)
@@ -71,7 +56,53 @@ router.get('/products', (req, res, next) => {
             if (err) {
               console.error(err)
             } else {
+              //if there is a category and a price=lowest query, send products within that category and lowest prices first
+              res.send(products)
+            }
+          })
+      } else if (price == 'lowest') {
+        Product.find({})
+          .skip(perPage * page - perPage)
+          .limit(perPage)
+          .sort({
+            price: -1
+          })
+          .exec((err, products) => {
+            if (err) {
+              console.error(err)
+            } else {
+              //if there is only a price=lowest query, send products lowest in price to highest in price
+              res.send(products)
+            }
+          })
+      } else if ((category, price == 'highest')) {
+        Product.find({})
+          .skip(perPage * page - perPage)
+          .limit(perPage)
+          .sort({
+            price: -1
+          })
+          .exec((err, products) => {
+            if (err) {
+              console.error(err)
+            } else {
               //if there is a category and a price=highest query, send products within that category and price
+
+              res.send(products)
+            }
+          })
+      } else if (price == 'highest') {
+        Product.find({})
+          .skip(perPage * page - perPage)
+          .limit(perPage)
+          .sort({
+            price: -1
+          })
+          .exec((err, products) => {
+            if (err) {
+              console.error(err)
+            } else {
+              //if there is only a price=highest query, send products highest in price to lowest in price
               res.send(products)
             }
           })
@@ -79,7 +110,7 @@ router.get('/products', (req, res, next) => {
         if (err) {
           console.error(err)
         } else {
-          //if no category specified, send all products
+          //if no category or price specified, send all products
           res.send(products)
         }
       }

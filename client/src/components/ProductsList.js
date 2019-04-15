@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { fetchProducts } from '../actions'
+import { fetchProducts, paginateProducts } from '../actions'
 
 class ProductsList extends Component {
   //use lifecycle method to fetchProducts from our API at the start
@@ -14,7 +14,7 @@ class ProductsList extends Component {
     return _.map(this.props.products, product => {
       return (
         <div
-          className="card col-xs-12 col-sm-5 col-md-3"
+          className="card col-xs-12 col-sm-5 col-md-3 shadow-sm"
           style={{ display: 'inline-block', margin: '2%' }}
           key={product._id}
         >
@@ -43,7 +43,7 @@ class ProductsList extends Component {
   render() {
     return (
       <section className="full-page padding-lg">
-        <div className="container" style={{ marginTop: '75px' }}>
+        <div className="container" style={{ marginTop: '200px' }}>
           <div className="col-12">
             <div className="row" />
             <div>{this.renderProducts()} </div>

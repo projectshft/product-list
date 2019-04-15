@@ -23,7 +23,7 @@ export class Header extends Component {
     })
   }
 
-  //show category menu when the active link is clicked or hide when it is clicked again
+  //show price sort menu when the active link is clicked or hide when it is clicked again
   togglePriceSortMenu = e => {
     e.preventDefault()
 
@@ -33,12 +33,16 @@ export class Header extends Component {
   }
 
   render() {
-    //const { showCategoryMenu, showPriceSortMenu } = this.state
+    //destructure state
+    const { showCategoryMenu, showPriceSortMenu } = this.state
 
     return (
-      <div className="container-fluid">
+      <div
+        className="container-fluid fixed-top"
+        style={{ backgroundColor: 'white' }}
+      >
         <div className="h1 mt-4 mb-5"> PRODUCTS </div>
-        <nav className="navbar navbar-light navbar-expand-lg mt-5 mb-3 py-1">
+        <nav className="navbar navbar-light navbar-expand-lg mt-5 mb-4 py-1">
           <div className="container-fluid">
             <form>
               <div className="form-group form-group-sm">
@@ -63,23 +67,13 @@ export class Header extends Component {
               >
                 Select
               </button>
-              {this.state.showCategoryMenu ? (
-                <div>
-                  <a className="dropdown-item" href="#">
-                    Electronics
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Garden
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Movies
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Beauty
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Automotive
-                  </a>
+              {showCategoryMenu ? (
+                <div className="shadow-sm">
+                  <button className="dropdown-item">Electronics</button>
+                  <button className="dropdown-item">Garden</button>
+                  <button className="dropdown-item">Movies</button>
+                  <button className="dropdown-item">Beauty</button>
+                  <button className="dropdown-item">Automotive</button>
                 </div>
               ) : null}
             </div>
@@ -96,14 +90,10 @@ export class Header extends Component {
               >
                 Select
               </button>
-              {this.state.showPriceSortMenu ? (
-                <div>
-                  <a className="dropdown-item" href="#">
-                    price: Low to High
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    price: High to Low
-                  </a>
+              {showPriceSortMenu ? (
+                <div className="shadow-sm">
+                  <button className="dropdown-item">price: Low to High</button>
+                  <button className="dropdown-item">price: High to Low</button>
                 </div>
               ) : null}
             </div>
@@ -113,5 +103,5 @@ export class Header extends Component {
     )
   }
 }
-
+//as of right now, this component doesn't need to connect to the redux store because presently no other component needs to know about what state it has
 export default Header

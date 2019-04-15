@@ -45,36 +45,36 @@ router.get('/products', (req, res, next) => {
               res.send(products)
             }
           })
-        // } else if (category && price === 'lowest') {
-        //   Product.find({})
-        //     .skip(perPage * page - perPage)
-        //     .limit(perPage)
-        //     .sort({
-        //       price: -1
-        //     })
-        //     .exec((err, products) => {
-        //       if (err) {
-        //         console.error(err)
-        //       } else {
-        //         //if there is a category and a price=lowest query, send products within that category and price
-        //         res.send(products)
-        //       }
-        //     })
-        // } else if (category && price == 'highest') {
-        //   Product.find({})
-        //     .skip(perPage * page - perPage)
-        //     .limit(perPage)
-        //     .sort({
-        //       price: 1
-        //     })
-        //     .exec((err, products) => {
-        //       if (err) {
-        //         console.error(err)
-        //       } else {
-        //         //if there is a category and a price=highest query, send products within that category and price
-        //         res.send(products)
-        //       }
-        //     })
+      } else if (category && price === 'lowest') {
+        Product.find({})
+          .skip(perPage * page - perPage)
+          .limit(perPage)
+          .sort({
+            price: -1
+          })
+          .exec((err, products) => {
+            if (err) {
+              console.error(err)
+            } else {
+              //if there is a category and a price=lowest query, send products within that category and price
+              res.send(products)
+            }
+          })
+      } else if (category && price == 'highest') {
+        Product.find({})
+          .skip(perPage * page - perPage)
+          .limit(perPage)
+          .sort({
+            price: 1
+          })
+          .exec((err, products) => {
+            if (err) {
+              console.error(err)
+            } else {
+              //if there is a category and a price=highest query, send products within that category and price
+              res.send(products)
+            }
+          })
       } else {
         if (err) {
           console.error(err)

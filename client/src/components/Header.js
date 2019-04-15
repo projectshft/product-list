@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { filterCategory } from '../actions'
 
-export class Header extends Component {
+class Header extends Component {
   constructor() {
     super()
 
     this.state = {
       showCategoryMenu: false,
-      showPriceSortMenu: false
+      showPriceSortMenu: false,
+      category: ''
     }
 
     this.showCategoryMenu = this.toggleCategoryMenu.bind(this)
 
     this.showPriceSortMenu = this.togglePriceSortMenu.bind(this)
+
+    this.category = this.onClick.bind(this)
   }
 
   //show category menu when the active link is clicked or hide when it is clicked again
@@ -32,6 +38,14 @@ export class Header extends Component {
     })
   }
 
+  onClick = e => {
+    e.preventDefault()
+    console.log('e.target.id:', e.target.id)
+    this.setState({ category: e.target.id })
+    console.log('this.state:', this.state)
+    //fetch the correct products basd on page number
+    this.props.filterCategory(e.target.id)
+  }
   render() {
     //destructure state
     const { showCategoryMenu, showPriceSortMenu } = this.state
@@ -69,11 +83,41 @@ export class Header extends Component {
               </button>
               {showCategoryMenu ? (
                 <div className="shadow-sm">
-                  <button className="dropdown-item">Electronics</button>
-                  <button className="dropdown-item">Garden</button>
-                  <button className="dropdown-item">Movies</button>
-                  <button className="dropdown-item">Beauty</button>
-                  <button className="dropdown-item">Automotive</button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.onClick}
+                    id="Electronics"
+                  >
+                    Electronics
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.onClick}
+                    id="Garden"
+                  >
+                    Garden
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.onClick}
+                    id="Movies"
+                  >
+                    Movies
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.onClick}
+                    id="Beauty"
+                  >
+                    Beauty
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.onClick}
+                    id="Automotive"
+                  >
+                    Automotive
+                  </button>
                 </div>
               ) : null}
             </div>
@@ -103,5 +147,18 @@ export class Header extends Component {
     )
   }
 }
-//as of right now, this component doesn't need to connect to the redux store because presently no other component needs to know about what state it has
-export default Header
+
+function mapStateToProps(state, ownProps) {
+  //make props available to Header component
+  return { products: state.products }
+}
+
+function mapDispatchToProps(dispatch) {
+  //whenever filterCategory is called, the result should be passed to the reducer
+  return bindActionCreators({ filterCategory }, dispatch)
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header)

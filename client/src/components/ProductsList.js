@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { fetchProducts, paginateProducts } from '../actions'
+import { fetchProducts } from '../actions'
 
 class ProductsList extends Component {
   //use lifecycle method to fetchProducts from our API at the start

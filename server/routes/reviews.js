@@ -8,8 +8,7 @@ router.param('review', (request, response, next, id) => {
   Review.find({ _id: id }, (error, review) => {
     if (error) {
       response.status(404).send('Review was not found');
-    }
-    
+    }    
     request.review = review;
     next();
   });

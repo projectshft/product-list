@@ -77,7 +77,7 @@ router.get("/reviews", (req, res) => {
 // POST /products Creates a new product in the database
 
 router.post('/products', (req, res, next) => {
-  
+
 })
 
 
@@ -85,8 +85,22 @@ router.post('/products', (req, res, next) => {
 
 // DELETE /products/:product Deletes a product by id
 
-// /reviews/:review Deletes a review by id
+router.delete('/products/:product', (req,res, next) => {
+  const productId = req.params.product
+  Review.findByIdAndDelete(productId, (err, product) => {
+      if (err) throw err;
+      res.status(200).send("Product successfully deleted ");
+  })
+});
 
+// DELETE /reviews/:review Deletes a review by id
+router.delete("/reviews/:review", (req, res) => {
+  const productId = req.params.review
+  Review.findByIdAndDelete(productId, (err, review) => {
+      if (err) throw err;
+      res.status(200).send("Review successfully deleted ");
+  })
+});
 
 
 

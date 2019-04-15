@@ -21,7 +21,6 @@ router.get('/', (req, res, next) => {
 
   const catQuery = req.query.category;
   const sort = req.query.sort;
-  console.log(sort)
 
   //empty category query, if there is a category sent, set to new query
   let categoryQuery = {}

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { filterCategory } from '../actions'
+import { sortPrice } from '../actions'
 
 class Header extends Component {
   constructor() {
@@ -10,14 +11,16 @@ class Header extends Component {
     this.state = {
       showCategoryMenu: false,
       showPriceSortMenu: false,
-      category: ''
+      category: '',
+      price: ''
     }
 
     this.showCategoryMenu = this.toggleCategoryMenu.bind(this)
 
     this.showPriceSortMenu = this.togglePriceSortMenu.bind(this)
 
-    this.category = this.onClick.bind(this)
+    this.category = this.filterByCategory.bind(this)
+    this.price = this.sortByPrice.bind(this)
   }
 
   //show category menu when the active link is clicked or hide when it is clicked again
@@ -38,13 +41,21 @@ class Header extends Component {
     })
   }
 
-  onClick = e => {
+  filterByCategory = e => {
     e.preventDefault()
     console.log('e.target.id:', e.target.id)
     this.setState({ category: e.target.id })
     console.log('this.state:', this.state)
-    //fetch the correct products basd on page number
+    //fetch the correct products basd on category
     this.props.filterCategory(e.target.id)
+  }
+  sortByPrice = e => {
+    e.preventDefault()
+    console.log('e.target.id:', e.target.id)
+    this.setState({ price: e.target.id })
+    console.log('this.state:', this.state)
+    //fetch the correct products basd on sorting price low to high or high to low
+    this.props.sortPrice(e.target.id)
   }
   render() {
     //destructure state
@@ -85,35 +96,35 @@ class Header extends Component {
                 <div className="shadow-sm">
                   <button
                     className="dropdown-item"
-                    onClick={this.onClick}
+                    onClick={this.filterByCategory}
                     id="Electronics"
                   >
                     Electronics
                   </button>
                   <button
                     className="dropdown-item"
-                    onClick={this.onClick}
+                    onClick={this.filterByCategory}
                     id="Garden"
                   >
                     Garden
                   </button>
                   <button
                     className="dropdown-item"
-                    onClick={this.onClick}
+                    onClick={this.filterByCategory}
                     id="Movies"
                   >
                     Movies
                   </button>
                   <button
                     className="dropdown-item"
-                    onClick={this.onClick}
+                    onClick={this.filterByCategory}
                     id="Beauty"
                   >
                     Beauty
                   </button>
                   <button
                     className="dropdown-item"
-                    onClick={this.onClick}
+                    onClick={this.filterByCategory}
                     id="Automotive"
                   >
                     Automotive
@@ -136,8 +147,20 @@ class Header extends Component {
               </button>
               {showPriceSortMenu ? (
                 <div className="shadow-sm">
-                  <button className="dropdown-item">price: Low to High</button>
-                  <button className="dropdown-item">price: High to Low</button>
+                  <button
+                    className="dropdown-item"
+                    id="lowest"
+                    onClick={this.sortByPrice}
+                  >
+                    price: Low to High
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    id="highest"
+                    onClick={this.sortByPrice}
+                  >
+                    price: High to Low
+                  </button>
                 </div>
               ) : null}
             </div>
@@ -155,7 +178,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   //whenever filterCategory is called, the result should be passed to the reducer
-  return bindActionCreators({ filterCategory }, dispatch)
+  return bindActionCreators({ filterCategory, sortPrice }, dispatch)
 }
 
 export default connect(

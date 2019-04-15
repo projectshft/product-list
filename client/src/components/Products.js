@@ -33,11 +33,11 @@ class Products extends Component {
 
   //when category is selected, filter for that category
   onCategoryClick(event) {
-    this.setState({ category: event.target.value }) 
-    this.props.fetchProducts(1, event.target.value)
-    console.log(this.state)
+    this.setState({ category: event.target.value, page: 1 }) 
+    this.props.fetchProducts(1, event.target.value, this.state.sort)
   }
 
+  //when sort is selected, add sort query and rerender
   onSort(event) {
     this.setState({ sort: event.target.value}) 
     this.props.fetchProducts(this.state.page, this.state.category, event.target.value)
@@ -45,7 +45,7 @@ class Products extends Component {
 
   render() {
     return (
-      <section className="full-page padding-lg">
+      <section className="full-page padding-lg pg">
         <div className="container">
           <div className="row">
             <div className="col-md-12">

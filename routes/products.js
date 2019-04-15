@@ -23,12 +23,14 @@ router.get('/', (req, res, next) => {
   const sort = req.query.sort;
   console.log(sort)
 
+  //empty category query, if there is a category sent, set to new query
   let categoryQuery = {}
   if (catQuery) {
     const category = (catQuery[0].toUpperCase()) + catQuery.slice(1)
     categoryQuery = {category: category}
   }
 
+  //empty sort query, if query sent, set to new sort
   let sortQuery = {}
   if (sort === 'low') {
     sortQuery = { price: 'asc'}

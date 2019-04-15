@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
 
   countQuery
     .then(results => {
-      if (results === 0) {
+      if (!results) {
         errors.notfound = 'No products found.';
         return res.status(404).send(errors);
       }

@@ -3,17 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   getProducts,
-  getCategories,
   setCurrentCategory,
-  setCurrentPriceSort
+  setCurrentPriceSort,
+  setCurrentPage
 } from '../actions';
 
 class Header extends Component {
-  componentDidMount = () => {
-    this.props.getCategories();
-  };
-
-  // This part took a fair amount of trial and error, including the below code in either the category or price click handlers caused an update to state but no re-render until it was clicked a second time. Even if they were inside a callback function, the state would update, but the new state would not render until the next change of state; i.e. I had to click a category, and then click the same (or a different) category before the first one rendered.
   componentDidUpdate = () => {
     const { currentCategory, currentPriceSort, currentPage } = this.props;
     this.props.getProducts(currentCategory, currentPriceSort, currentPage);
@@ -21,6 +16,8 @@ class Header extends Component {
 
   handleCategoryClick = e => {
     this.props.setCurrentCategory(e.target.name);
+    // Reset page when new category selected
+    this.props.setCurrentPage(1);
     e.preventDefault();
   };
 
@@ -120,7 +117,7 @@ class Header extends Component {
               <input
                 className="form-control mr-sm-2"
                 type="search"
-                placeholder="Search"
+                placeholder="I don't work yet"
               />
               <button
                 className="btn btn-outline-light my-2 my-sm-0"
@@ -155,12 +152,17 @@ Header.propTypes = {
   currentPriceSort: PropTypes.string,
   currentPage: PropTypes.number,
   getProducts: PropTypes.func,
-  getCategories: PropTypes.func,
   setCurrentCategory: PropTypes.func,
-  setCurrentPriceSort: PropTypes.func
+  setCurrentPriceSort: PropTypes.func,
+  setCurrentPage: PropTypes.func
 };
 
 export default connect(
   mapStateToProps,
-  { getProducts, getCategories, setCurrentCategory, setCurrentPriceSort }
+  {
+    getProducts,
+    setCurrentCategory,
+    setCurrentPriceSort,
+    setCurrentPage
+  }
 )(Header);

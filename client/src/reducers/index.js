@@ -7,18 +7,7 @@ import {
   SET_PAGE
 } from '../actions/index';
 
-// const initialState = {
-//   products: {
-//     products: [],
-//     count: null
-//   },
-//   categories: [],
-//   currentCategory: '',
-//   currentPriceSort: '',
-//   currentPage: 1
-// };
-
-const productsReducer = (state = { products: [], count: null }, action) => {
+const productsReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case GET_PRODUCTS:
       return Object.assign({}, state, {
@@ -29,8 +18,15 @@ const productsReducer = (state = { products: [], count: null }, action) => {
   }
 };
 
-const countReducer = (state, action) => {
-  //Stuff and things
+const countReducer = (state = { count: null }, action) => {
+  switch (action.type) {
+    case GET_PRODUCTS:
+      return Object.assign({}, state, {
+        count: action.payload.data.count
+      });
+    default:
+      return state;
+  }
 };
 
 const categoriesReducer = (state = { categories: [] }, action) => {
@@ -42,7 +38,7 @@ const categoriesReducer = (state = { categories: [] }, action) => {
   }
 };
 
-const categoryReducer = (state = { currentCategory: '' }, action) => {
+const categoryReducer = (state = { currentCategory: 'All' }, action) => {
   switch (action.type) {
     case SET_CATEGORY:
       return Object.assign({}, state, { currentCategory: action.payload });
@@ -71,6 +67,7 @@ const pageReducer = (state = { currentPage: 1 }, action) => {
 
 const rootReducer = combineReducers({
   products: productsReducer,
+  count: countReducer,
   categories: categoriesReducer,
   currentCategory: categoryReducer,
   currentPriceSort: priceSortReducer,

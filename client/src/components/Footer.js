@@ -1,53 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getProducts, setCurrentPage } from '../actions';
+import { setCurrentPage } from '../actions';
 
 class Footer extends Component {
-  // componentDidUpdate = () => {
-  //   const { currentCategory, currentPriceSort, currentPage } = this.props;
-  //   this.props.getProducts(currentCategory, currentPriceSort, currentPage);
-  // };
-
   handlePageClick = e => {
     this.props.setCurrentPage(parseInt(e.target.name));
 
     e.preventDefault();
   };
 
-  renderPages = () => {};
+  renderPageNums = count => {
+    const pageNums = [];
+    const itemsPerPage = 9;
+    const numOfPages = Math.ceil(count / itemsPerPage);
+
+    for (let i = 1; i <= numOfPages; i++) {
+      pageNums.push(
+        <a
+          className="mx-2 page-num"
+          name={i}
+          key={i}
+          onClick={this.handlePageClick}
+          href="/"
+        >
+          {i}
+        </a>
+      );
+    }
+    return pageNums;
+  };
 
   render() {
     return (
       <footer>
         <div className="container my-4">
           <div className="text-center mb-3">
-            <a
-              className="mx-2"
-              name="1"
-              onClick={this.handlePageClick}
-              href="/"
-            >
-              1
-            </a>
-            <a
-              className="mx-2"
-              name="2"
-              onClick={this.handlePageClick}
-              href="/"
-            >
-              2
-            </a>
-            <a
-              className="mx-2"
-              name="3"
-              onClick={this.handlePageClick}
-              href="/"
-            >
-              3
-            </a>
+            {this.renderPageNums(this.props.count)}
           </div>
-
           <p className="text-right">
             <a href="#top">Back to top</a>
           </p>
@@ -58,28 +48,18 @@ class Footer extends Component {
 }
 
 const mapStateToProps = state => {
-  const { count } = state.products;
-  const { currentCategory } = state.currentCategory;
-  const { currentPriceSort } = state.currentPriceSort;
-  const { currentPage } = state.currentPage;
+  const { count } = state.count;
   return {
-    count,
-    currentCategory,
-    currentPriceSort,
-    currentPage
+    count
   };
 };
 
 Footer.propTypes = {
   count: PropTypes.number,
-  currentCategory: PropTypes.string,
-  currentPriceSort: PropTypes.string,
-  currentPage: PropTypes.number,
-  getProducts: PropTypes.func,
   setCurrentPage: PropTypes.func
 };
 
 export default connect(
   mapStateToProps,
-  { getProducts, setCurrentPage }
+  { setCurrentPage }
 )(Footer);

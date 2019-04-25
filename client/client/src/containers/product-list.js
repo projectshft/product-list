@@ -1,15 +1,27 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { fetchProducts } from "../actions/index";
 
 
 class ProductList extends Component {
 
-    renderProducts(productData) {
-        console.log('ProductDATA: ', productData)
+    componentDidMount() {
+        this.fetchProducts();
+    }
 
-        return (
+    // componentDidUpdate() {
+    //     this.fetchProducts()
+    // }
 
-            productData.map(product => {
+    fetchProducts() {
+        this.props.fetchProducts(this.props.query.pageNumber, this.props.query.category)
+    }
+
+    renderProducts(product) {
+        console.log('ProductDATA: ', product)
+
+       
 
                 return (
                     // 3 rows
@@ -38,8 +50,7 @@ class ProductList extends Component {
                     // </div>      
 
                 )               
-            })
-        )   
+            
     }         
       
 
@@ -54,8 +65,12 @@ class ProductList extends Component {
 }
 
 
-function mapStateToProps({ products }) { // { state }
-  return { products }; // { products: this.state.products } from rootReducer
+function mapStateToProps({ products, query }) { // { state }
+  return { products: products.products, count: products.count, query }; // { products: this.state.products } from rootReducer
 }
 
-export default connect(mapStateToProps)(ProductList);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchProducts }, dispatch);
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

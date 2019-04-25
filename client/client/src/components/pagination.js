@@ -15,11 +15,11 @@ class Pagination extends Component {
     
         this.state = { pageNumber: '' };
     
-        this.onClick = this.pageNumberClick.bind(this);
+        // this.onClick = this.pageNumberClick.bind(this); //
       }
     
     // Updates state with clicked page number
-    pageNumberClick(event) {
+    pageNumberClick = (event) => {
  
             console.log('Page number clicked!', event.target.value)
             this.setState({ pageNumber: event.target.value }, () => {
@@ -41,7 +41,7 @@ class Pagination extends Component {
                 type="submit"
                 value="1"
                 className="btn-sm btn-primary"
-                onClick={this.pageNumberClick.bind(this)}
+                onClick={this.pageNumberClick} //Function reference
             />
             <input
                 type="submit"

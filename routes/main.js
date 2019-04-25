@@ -92,18 +92,26 @@ router.get('/products', (req, res, next) => {
        // return the first page by default
        const page = req.query.page || 1
        console.log('PAGE PARAM IS: ', page)
-  
 
+       const category = req.query.category
+        console.log('CATEGORY QUERY IS: ', category)
+
+      const filter = {} //How does it speak to state from Redux?
+      if (category) {
+        filter.category = category;
+      }
+  
+      // instances of the Product model from ProductSchema
       Product
-      .find({})
+      .find(filter)
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((err, products) => {
-        Product.countDocuments().exec((err, count) => {
+        Product.countDocuments().exec((err, count) => { //Docs to see how to pass in filter to countDocuments
           if (err) return next(err)
            console.log( "Number of products:", count );
 
-          res.send(products) 
+          res.send({products, count })
           
         })
       })
@@ -163,9 +171,9 @@ router.get('/products', (req, res, next) => {
   module.exports = router
 
 
+// Additional Endpoints to complete per assignment requirements
 
-
-  // routes folder > products.js, reviews.js [beers.js]
+    // Note: routes folder > products.js, reviews.js [beers.js]
 
 // GET /products/:product: Returns a specific product by its id
 
@@ -174,7 +182,6 @@ router.get('/products', (req, res, next) => {
 // POST /:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
 
 // DELETE /products/:product: Deletes a product by id
-
 
 
 // GET /reviews: Returns ALL the reviews, but limited to 40 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an options page query to paginate.

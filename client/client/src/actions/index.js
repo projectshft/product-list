@@ -6,9 +6,9 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const FILTER_CATEGORIES = 'FILTER_CATEGORIES';
 
 // Only used for initial page load to return all products
-export function fetchProducts(page) {
+export function fetchProducts(page, category = '') {
 
-  const url = `${ROOT_URL}?page=${page}`;
+  const url = `${ROOT_URL}?page=${page}&category=${category}`;
   const request = axios.get(url);
 
   return {
@@ -18,7 +18,7 @@ export function fetchProducts(page) {
 }
 
 //Can ACTION function have multiple parameters passed in?
-// How to make parameters optional?
+// How to make queries optional?
 
 // Use location.search to create QueryData Object(?)
 /*
@@ -36,16 +36,10 @@ export function queryData() {
 */
 
 // Action to filter by a category, dispatched by {CategoryMenu} component
-export function filterCategories(categoryQuery) {
-
-  const url = `${ROOT_URL}?category=${categoryQuery}`;
-
-  const request = axios.get(url);
-
-  console.log('Request', request);
+export function filterCategories(category) {
 
   return {
     type: FILTER_CATEGORIES,
-    payload: request
+    payload: category
   };
 }

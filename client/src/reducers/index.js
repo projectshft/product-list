@@ -5,7 +5,7 @@ import productReducer from './reducer-product';
 /* Combine category and product reducers into one reducer */
 
 const rootReducer = combineReducers({
-  productMetadata: productReducer,
+  productInfo: productReducer,
   categories: categoryReducer
 });
 

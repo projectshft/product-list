@@ -82,7 +82,7 @@ router.get('/products/:product', (request, response, next) => {
         response
           .status(404)
           .send(
-            'Product not found. Please make sure the formatting is correct and the product id is valid.'
+            'Product not found. Make sure format is correct and product id is valid.'
           );
       } else if (error) throw error;
       else response.send(product);
@@ -96,7 +96,7 @@ router.get('/products/:product', (request, response, next) => {
 router.get('/reviews', (request, response) => {
   const perPage = 40;
   // Return the first page by default (mimics GET /products)
-  const page = request.query.page || 1;
+  let page = request.query.page || 1;
   Review.find({})
     .skip(perPage * page - perPage)
     .limit(perPage)
@@ -116,14 +116,14 @@ router.get('/reviews', (request, response) => {
 ___________________________________
   Example:
     localhost:8000/products?page=1&category=tools
-***********************************/
-router.get('/categories', (request, response) => {
-  const query = Product.find({}).select('category -_id');
-  query.exec((error, categories) => {
-    if (error) throw error;
-    response.send(categories);
-  });
-});
+// ***********************************/
+// router.get('/categories', (request, response) => {
+//   const query = Product.find({}).select('category -_id');
+//   query.exec((error, categories) => {
+//     if (error) throw error;
+//     response.send(categories);
+//   });
+// });
 
 // /**************************************
 //  *  Sorting

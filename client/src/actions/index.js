@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const rootURL = 'http://localhost:8000/products';
 
 /*******************

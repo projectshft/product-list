@@ -25,31 +25,39 @@ class ProductList extends Component {
         this.props.fetchProducts(this.props.query.pageNumber, this.props.query.category)
     }
 
-    renderProducts(product) {
-        console.log('ProductDATA: ', product)
+    renderProducts(product, index) {
 
                 return (
-                    // 3 rows
-                    <div className="row">
-                        <div className="col-3">
-                            <div className="card">
-                                <ul>{product.name}</ul>
-                                <ul>${product.price}</ul>
-                                <ul>{product.category}</ul>
-                                <img src={product.image} alt="ugly pic"/>
-                            </div>
-                        </div>
+           
+                    <div className="card col-md-3" key={index}
+                         style={{ display: 'inline-block', margin: '2%' }}
+                    >
+                    <div className="card-body">
+                      <div className="row">
+                      <h3 className="card-text"> ${product.price}</h3>
+                        <img
+                          className="card-img img-responsive"
+                          src={product.image}
+                          alt="ugly duckling"
+                        />
+                      </div>
+                      <div className="row">
+                        <h5 className="card-title"> {product.name}</h5>
+                      </div>
+                      <div className="row">
+                        <h6 className="card-text"> {product.category}</h6>
+                      </div>
                     </div>
-                )                   
-    }         
-      
+                  </div>
+                )  
+    }
+
 
 render() {
     return (
         <div>
              {this.props.products.map(this.renderProducts)} 
-        </div>
-        
+        </div>       
     );
   }
 }

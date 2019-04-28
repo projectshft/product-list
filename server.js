@@ -23,6 +23,8 @@ const mainRoutes = require('./routes/main')
 app.use(mainRoutes)
 // add additional routes for product & reviews
 
+app.use(express.static('public'))
+
 app.listen(8000, () => {
   console.log('Node.js listening on port ' + 8000)
 })

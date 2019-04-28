@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ReviewSchema = new Schema({
   userName: String,
   text: String,
-  product: { type: Schema.Types.ObjectId, ref: 'product' }
+  product: { type: Schema.Types.ObjectId, ref: 'product' } // Utilizing refs & population rather than subdocs
 });
 
 module.exports = mongoose.model('review', ReviewSchema);

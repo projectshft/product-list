@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { filterCategories } from "../actions/index";
-// import Dropdown from 'react-bootstrap/Dropdown'
+
 
 class CategoryMenu extends Component {
 
    
 
     categoryClick = (event) => {
+      console.log('Category Selected: ', event.target.value)
       this.props.filterCategories(event.target.value)
 
     }   
@@ -25,28 +26,6 @@ class CategoryMenu extends Component {
                   <br></br>
                   <hr></hr>
               </div>    
-        
-        // Jewelery
-        // Garden
-        // Industrial
-        // Music
-        // Toys
-        // Health
-        // Beauty
-        // Home
-
-        // Shoes
-        // Baby
-        // Tools
-        // Shoes
-        // Automotive
-        // Kids
-        // Sports
-        // Clothing
-        // Movies
-        // Computers
-        // Grocery
-
 
       );
     }

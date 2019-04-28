@@ -30,7 +30,6 @@ class Pagination extends Component {
 
       
     // Render link/buton 1-9, with onClick to bind an action to dispatch
-    // this.bind.FUNCTION captures the value of number clicked
     // IMPROVEMENT: Render a sequential button number ==> Document count returned / 9 per page 
   render() {
     return ( 

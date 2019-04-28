@@ -49,39 +49,6 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
-// ***PAGINATION LIMIT FORMULA ?query=page# --> page# <= count % perPage
-
-// GET pagination route </products?page=3>
-// FILTER BY CATEGORY <localhost:8000/products?page=1&category=tools>
-// FILTER BY CATEGORY & HIGHEST TO LOWEST <localhost:8000/products?page=1&category=tools&price=highest>
-// FILTER BY CATEGORY & LOWEST TO HIGHEST <localhost:8000/products?page=1&category=tools&price=lowest>
-// FILTER BY LOWEST TO HIGHEST <localhost:8000/products?page=1&price=lowest>
-// NO PAGE QUERY REQUIRED <localhost:8000/products?price=lowest>
-
-   /************************************
-    * LOGIC FOR OPTIONAL QUERIES
-    * **********************************
-    * If (req.query.category) {
-    *   .find({ category: category })
-    * }
-    * 
-    * If (req.query.page) {
-    *   .find({ page: page })
-    * }
-    * 
-    * If (req.query.price) {
-    *   .find({ price: price })
-    * }
-    * 
-    * 
-    * At the end...
-    *   .exec() => {
-    *     res.send(products) 
-    * }
-    * 
-    */
-
-
 // Endpoint to GET products with query
 router.get('/products', (req, res, next) => {
 
@@ -90,16 +57,21 @@ router.get('/products', (req, res, next) => {
       console.log('QUERY OBJECT: ', req.query)
 
        // return the first page by default
-       const page = req.query.page || 1
+      const page = req.query.page 
        console.log('PAGE PARAM IS: ', page)
 
-       const category = req.query.category
+      const category = req.query.category
         console.log('CATEGORY QUERY IS: ', category)
+
+      const price = req.query.price
+        console.log('PRICE PARAM IS: ', price)
 
       const filter = {} //How does it speak to state from Redux?
       if (category) {
         filter.category = category;
+        // filter.price = price;
       }
+
   
       // instances of the Product model from ProductSchema
       Product

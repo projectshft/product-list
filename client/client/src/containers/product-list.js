@@ -10,9 +10,16 @@ class ProductList extends Component {
         this.fetchProducts();
     }
 
-    // componentDidUpdate() {
-    //     this.fetchProducts()
-    // }
+    // Called after render Method()
+    componentDidUpdate(prevProps, prevState) {
+        // Typical usage (don't forget to compare props):
+        console.log('prevProps is: ', prevProps.query) 
+        console.log('this.props.query is: ', this.props.query) 
+       
+        if (this.props.query !== prevProps.query) {
+          this.fetchProducts(this.props.query);
+      }
+    }
 
     fetchProducts() {
         this.props.fetchProducts(this.props.query.pageNumber, this.props.query.category)
@@ -20,8 +27,6 @@ class ProductList extends Component {
 
     renderProducts(product) {
         console.log('ProductDATA: ', product)
-
-       
 
                 return (
                     // 3 rows
@@ -35,26 +40,11 @@ class ProductList extends Component {
                             </div>
                         </div>
                     </div>
-                    // 3 columns flex-evenly
-                    // 1 card per column
-
-                    // <div className="col-3 card border-35"
-                    //           style={{ backgroundColor: "red" }}
-                    //           > 
-                    //     <ul>{product.name}</ul>
-                    //     <ul>${product.price}</ul>
-                    //     <ul>{product.category}</ul>
-                    //     <img src={product.image} alt="ugly pic"/>
-                    //     <br></br>
-                    //     <hr></hr>
-                    // </div>      
-
-                )               
-            
+                )                   
     }         
       
 
-  render() {
+render() {
     return (
         <div>
              {this.props.products.map(this.renderProducts)} 

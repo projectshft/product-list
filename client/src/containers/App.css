@@ -1,0 +1,95 @@
+.App {
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: #389fb1;
+  background-color: #272c3a;
+  font-family: 'Muli', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Spectral', sans-serif;
+  font-size: 3.3rem;
+  color: #389fb1;
+}
+
+hr {
+  height: 2px;
+  color: #cd7b6f;
+  background-color: #cd7b6f;
+  border: none;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  width: 95%;
+}
+
+.search-filter-sort-row {
+  display: inline-block;
+  width: 30%;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.searchbar-input-field {
+  margin-left: 0.3rem;
+}
+
+.product-card {
+  margin: 1.5rem;
+}
+
+.product-category {
+  font-size: 12pt;
+  text-align: left;
+  color: #a0a09a;
+}
+
+.product-price {
+  color: #9abf4d;
+  text-align: right;
+}
+
+.product-card-container {
+  display: inline-block;
+  width: 30%;
+  margin: 1rem;
+}
+
+.product-showcase-container {
+  margin: 1rem;
+  /* margin: 20px; */
+}
+
+.bottom-rule {
+  /* color: #389fb1;
+  background-color: #389fb1; */
+  color: #a0a09a;
+  background-color: #a0a09a;
+  width: 95%;
+}
+
+.pagenation-text {
+  color: #399a45;
+}
+
+span.page {
+  color: #399a45;
+  margin: 0.4rem;
+}
+
+span.page:not(.selectedPage) {
+  cursor: pointer;
+  color: #cd7b6f;
+}
+
+.footer-margin {
+  margin: 3rem;
+}
+
+/* .mern-icon {
+  margin-bottom: 1rem;
+} */

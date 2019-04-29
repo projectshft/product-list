@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import ProductCard from './ProductCard';
 
 class ProductShowcase extends Component {
@@ -17,9 +16,9 @@ class ProductShowcase extends Component {
   }
 }
 
-function mapStateToProps({ productMetadata }) {
+function mapStateToProps({ productInfo }) {
   return {
-    products: productMetadata.products || []
+    products: productInfo.products || []
   };
 }
 

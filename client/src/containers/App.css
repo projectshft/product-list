@@ -13,8 +13,10 @@ body {
 h1 {
   text-align: center;
   font-family: 'Spectral', sans-serif;
+   /* font-family: 'Muli', sans-serif;  */
   font-size: 3.3rem;
   color: #389fb1;
+  margin-bottom: 2.5rem;
 }
 
 hr {
@@ -22,12 +24,13 @@ hr {
   color: #cd7b6f;
   background-color: #cd7b6f;
   border: none;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   width: 95%;
 }
 
 .search-filter-sort-row {
+   font-family: 'Muli', sans-serif;
   display: inline-block;
   width: 30%;
   margin-left: 1rem;
@@ -39,18 +42,25 @@ hr {
 }
 
 .product-card {
+  font-family: 'Muli', sans-serif;
   margin: 1.5rem;
 }
 
 .product-category {
-  font-size: 12pt;
+  font-size: 11pt;
   text-align: left;
   color: #a0a09a;
 }
 
 .product-price {
-  color: #9abf4d;
+  font-size: 11pt;
   text-align: right;
+  color: #9abf4d;
+}
+
+.product-name {
+  font-size: 13pt;
+  font-weight: bold;
 }
 
 .product-card-container {
@@ -61,35 +71,25 @@ hr {
 
 .product-showcase-container {
   margin: 1rem;
-  /* margin: 20px; */
 }
 
-.bottom-rule {
-  /* color: #389fb1;
-  background-color: #389fb1; */
+.page-rule {
   color: #a0a09a;
   background-color: #a0a09a;
   width: 95%;
 }
 
 .pagination-text {
+  font-family: 'Muli', sans-serif;
   color: #399a45;
 }
 
-span.page {
+ .page {
   color: #399a45;
   margin: 0.4rem;
 }
 
-span.page:not(.selectedPage) {
+.page:not(.selectedPage) {
   cursor: pointer;
   color: #cd7b6f;
 }
-
-.footer-margin {
-  margin: 3rem;
-}
-
-/* .mern-icon {
-  margin-bottom: 1rem;
-} */

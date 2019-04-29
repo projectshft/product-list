@@ -5,8 +5,9 @@ import productReducer from './reducer-product';
 /* Combine category and product reducers into one reducer */
 
 const rootReducer = combineReducers({
-  productInfo: productReducer,
-  categories: categoryReducer
+  categories: categoryReducer,
+  productInfo: productReducer
+  
 });
 
 export default rootReducer;

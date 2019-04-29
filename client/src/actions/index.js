@@ -1,5 +1,6 @@
 import axios from 'axios';
-const rootURL = 'http://localhost:8000/products';
+const rootURL = 'http://localhost:8000';
+export default rootURL;
 
 /*******************
  * GET CATEGORIES
@@ -21,7 +22,7 @@ export const getCategories = () => {
  * ********************************************************/
 const filter = query => {
   let queryParams = [];
-  for (var key in query)
+  for (let key in query)
     if (query.hasOwnProperty(key)) queryParams.push(key + '=' + query[key]);
   if (queryParams.length > 0) return '?' + queryParams.join('&');
   else return '';
@@ -37,7 +38,6 @@ export const getProducts = (query = {}) => {
   const request = axios.get(url, {
     headers: { 'Content-Type': 'application/json' }
   });
-
   return {
     type: GET_PRODUCTS,
     payload: request

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Dropdown from 'react-dropdown';
@@ -105,16 +105,15 @@ class FilterSortPaginate extends Component {
             />
           </div>
         </div>
-        <hr />
-        {/* Populate page number links at bottom of page */}
+        {/* Populate page number links */}
         <div>{this.props.children}</div>
-        <hr className="bottom-rule" />
-        <div className="footer-margin">
+        <hr className="page-rule" />
+     
           <div className="pagination-text">
             Page:
             {pages}
           </div>
-        </div>
+           <hr className="page-rule" />
       </div>
     );
   }

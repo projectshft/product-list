@@ -15,7 +15,7 @@ class ProductCard extends Component {
         <img alt={this.props.product.name} src={this.props.product.image} />
         <div className="product-card product-name">
           {/* Product name emphasized below the image */}
-          <strong>{this.props.product.name}</strong>
+          {this.props.product.name}
         </div>
       </div>
     );

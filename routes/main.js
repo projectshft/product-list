@@ -44,9 +44,26 @@ router.get('/products', (req, res, next) => {
           res.send(products);
         })
     })
-
-    //add a review for testing
-    
 })
 
 module.exports = router
+
+
+  //can be deleted, kept for reference to know what is working 
+  // //add a review for testing
+  // Product.findOne()
+  //   .exec((err, product) => {
+  //     const review = new Review({
+  //       userName: 'test',
+  //       text: 'test',
+  //       product: product._id
+  //     });
+
+  //     review.save();
+
+  //     product.reviews.push(review);
+
+  //     product.save((err, result) => {
+  //       console.log(result);
+  //     });
+  //   })

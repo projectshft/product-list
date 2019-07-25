@@ -93,6 +93,33 @@ router.post('/products', (req, res, next) => {
   })
 });
 
+router.post('/:product/reviews', (req, res, next) => {
+  let id = req.params.product;
+  if (!ObjectId.isValid(id) || !req.body.userName || ! req.body.text){
+    return res.status(400).send('Invalid request.')
+  }
+  Product.findById(id)
+  .exec((err, product) =>{
+    if(!product){
+      return res.status(404).send('Product not found.')
+    } else{
+      let review = new Review()
+      review.userName = req.body.userName
+      review.text = req.body.text
+      review.product = product
+      review.save()
+      product.reviews.push(review)
+      product.save((err, result) => {
+        if (err) throw err
+        res.send(product);
+      })
+    }
+  })
+});
+
+
+
+
 
 
 module.exports = router

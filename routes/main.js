@@ -63,6 +63,28 @@ router.get('/product/:product', (req, res, next) => {
         })
 })
 
+router.post('/products', (req, res, next) => {
+    //NOTE: add check to see if each thing is the correct type i.e. string
+    //NOTE: Check to see if it has all the necessary parts(and what ones are necessary)
+    //NOTE: 
+    const productToAdd = req.body;
+    //add checks to make sure the 
+    let newProduct = new Product();
+    newProduct.category =  productToAdd.category;
+    newProduct.name = productToAdd.name;
+    newProduct.price =  productToAdd.price;
+    newProduct.image =  product;
+    newProduct.reviews = [];
+
+
+    newProduct.save((err) => {
+        if (err) throw err
+      })
+
+    res.end();
+
+})
+
 
 
 module.exports = router

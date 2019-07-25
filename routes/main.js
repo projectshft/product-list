@@ -48,6 +48,20 @@ router.get('/products', (req, res, next) => {
         })
       })
   })
+  
+router.get('/product/:product', (req, res, next) => {
+    // set requestedProduct to equal the parameter request
+    const requestedProductId = req.params.product;
+    //NOTE: maybe add check to see if requestedProduct is a number(id)
+
+    //Find and send the product with the id which matches the requestedProductId
+    Product
+        .find({_id : requestedProductId})
+        .exec((err,product) => {
+            if (err) throw err;
+            res.send(product);
+        })
+})
 
 
 

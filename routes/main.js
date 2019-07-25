@@ -6,6 +6,16 @@ const Review = require('../models/review')
 const PRODUCTS_PER_PAGE = 9;
 const REVIEWS_PER_PAGE = 40;
 
+//helper functions
+
+//helper function to isolate product id from params and check if valid
+
+//helper function to generate product
+
+//helper function to generate review
+
+
+
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
@@ -117,7 +127,23 @@ router.post('/:product/reviews', (req, res, next) => {
   })
 });
 
-
+router.delete('/products/:product', (req, res, next) => {
+  let id = req.params.product;
+  if (!ObjectId.isValid(id)){
+    return res.status(400).send('Invalid request.')
+  }
+  Product.findById(id)
+  .exec((err, product) => {
+    if (!product){
+      return res.status(404).send('Product not found.')
+    }else{
+      product.remove(err => {
+        if (err) throw err;
+        res.status(200).send(`Product ${product._id} deleted!`)
+      })
+    }
+  })
+})
 
 
 

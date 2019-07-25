@@ -76,15 +76,28 @@ router.get('/reviews', (req, res, next) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Review.count().exec((err, count) => {
         if (err) return next(err)
-
         res.send(reviews)
       })
     })
 })
 
 // POST /products --- creates a new product in the database
-// router.post('/products', (req, res, next) => {
+router.post('/products', (req, res, next) => {
+  console.log(req.body)
 
-// })
+  let product = new Product()
+  product.category = req.body.category
+  product.name = req.body.name
+  product.price = req.body.price
+  product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+
+  product.save((err) => {
+    if (err) throw err
+  })
+  res.send(product) 
+})
+
+// POST /:product/reviews: Creates a new review in the database 
+// by adding it to the correct product's reviews array.
 
 module.exports = router

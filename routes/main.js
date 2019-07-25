@@ -16,6 +16,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
     product.reviews = []
+    product.enabled = true
 
     const numReviews = Math.floor(Math.random() * Math.floor(3));
 
@@ -24,6 +25,7 @@ router.get('/generate-fake-data', (req, res, next) => {
       review.username = faker.internet.userName();
       review.text = faker.lorem.sentence();
       review.product = product._id;
+      review.enabled = true;
       review.save((err) => {
         if (err) throw err
       })

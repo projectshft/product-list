@@ -113,6 +113,16 @@ router.post('/:product/reviews', (req, res, next) => {
     })
 })
 
+router.delete('/products/:product', (req, res ,next) => {
+    let productId = req.params.product;
+    //find product to delete
+    
+    Product.deleteOne({_id: productId }, err => {
+        if (err) throw err;
+        console.log(`Product ${productId} succesfully deleted`)
+    })
+})
+
 
 module.exports = router
 

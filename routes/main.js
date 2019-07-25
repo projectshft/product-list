@@ -2,6 +2,7 @@ const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
+const mongoose = require('mongoose')
 
 const PRODUCTS_PER_PAGE = 9;
 const REVIEWS_PER_PAGE = 40;
@@ -68,6 +69,10 @@ router.get('/products/:product', (req, res, next) => {
 
   //validate - not sure if this would ever happen?
   if (!productId) {
+    return res.status(400).send('Invalid id');
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
     return res.status(400).send('Invalid id');
   }
 

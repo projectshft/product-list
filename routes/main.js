@@ -63,12 +63,17 @@ router.get('/product/:product', (req, res, next) => {
         })
 })
 
+//CREATE GET REVIEWS THAT ONLY SHOWS 40
+
 router.post('/products', (req, res, next) => {
     //NOTE: add check to see if each thing is the correct type i.e. string
     //NOTE: Check to see if it has all the necessary parts(and what ones are necessary)
     //NOTE: 
     const productToAdd = req.body;
-    //add checks to make sure the 
+    //add checks to make sure the categories exist
+
+    //creating a new product model using information given by the user
+    //NOTE: LOOK UP VALIDATORS YOU CAN USE THEM
     let newProduct = new Product();
     newProduct.category =  productToAdd.category;
     newProduct.name = productToAdd.name;
@@ -80,11 +85,36 @@ router.post('/products', (req, res, next) => {
     newProduct.save((err) => {
         if (err) throw err
       })
-
     res.end();
 
 })
 
+router.post('/:product/reviews', (req, res, next) => {
+    //check to see if produc
+    const productId = req.params.product
+    //NOTE: maybe see if the product exists in the database?
+    const reviewToAdd = req.body
+
+    let newReview = new Review();
+    newReview.userName =  reviewToAdd.userName;
+    newReview.text= reviewToAdd.text;
+    //save newReview to reviews collection
+    newReview.save();
+
+    Product.findById(productId, (err, product) => {
+        if (err) throw err;
+        //add the review to the reviews array
+        product.reviews.push(newReview);
+        //save the product
+        product.save(err => {
+            if (err) throw err
+            else console.log(`Product ${productId} reviews succesfully updated`)
+        })
+    })
+})
 
 
 module.exports = router
+
+
+//5d3a095d1395a939404afc49

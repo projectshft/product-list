@@ -104,7 +104,7 @@ router.get('/reviews', (req, res, next) => {
 
   const numItemsToSkip = (pageNum - 1) * REVIEWS_PER_PAGE;
   
-  Review.find()
+  Review.find({ enabled: true })
     .skip(numItemsToSkip)
     .limit(REVIEWS_PER_PAGE)
     .exec((err, reviews) => {
@@ -127,10 +127,10 @@ router.post('/products', (req, res, next) => {
     return res.status(400).send('Invalid post body');
   }
 
-  if (  !req.body.name ||
-        !req.body.category ||
-        !req.body.price ||
-        !req.body.image ) {
+  if (!req.body.name ||
+      !req.body.category ||
+      !req.body.price ||
+      !req.body.image ) {
     return res.status(400).send('Invalid post body');
   }
 
@@ -151,6 +151,54 @@ router.post('/products', (req, res, next) => {
   });
 
   //do we error here?
+});
+
+router.post('/:product/reviews', (req, res, next) => {
+  //validate product param
+  const productId = req.params.product;
+
+  //validate - not sure if this would ever happen?
+  if (!productId) {
+    return res.status(400).send('Invalid id');
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    return res.status(400).send('Invalid id');
+  }
+
+  //validate review
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).send('Invalid post body');
+  }
+
+  if (!req.body.userName ||
+      !req.body.text) {
+    return res.status(400).send('Invalid post body');
+  }
+
+  //create new review
+  const newReview = new Review({
+    userName: req.body.userName,
+    text: req.body.text,
+    product: mongoose.Types.ObjectId(productId),
+    enabled: true
+  });
+
+  //make sure product is found/ not disabled
+  Product.findByIdAndUpdate(productId, {$push: {reviews: newReview._id}}, (err, product) => {
+    if (err) throw err;
+    if (!product || product.enabled === false) {
+      return res.status(404).send('Product not found.');
+    }
+
+    //save after validation; don't want a review to save if product does not exist or is not enabled
+    newReview.save((err, result) => {
+      if (err) throw err;
+    });
+
+    //this currently sends back product before it is updated
+    return res.status(200).send(product);
+  });
 });
 
 module.exports = router

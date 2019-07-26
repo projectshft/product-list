@@ -7,4 +7,5 @@ If you have any questions about this project or the program in general, visit pr
 ####TODO
 - [ ] make sure all gets check enabled
 - [X] add pre save for date created and date updated
+- [X] product is null if not found
 - [ ] delete also deletes reviews

@@ -38,23 +38,40 @@ router.get('/generate-fake-data', (req, res, next) => {
 // GET /products --- returns all products (paginated)
 router.get('/products', (req, res, next) => {
   const perPage = 9
-  // return the first page by default
-  let page = Math.max(req.query.page, 1)
+  // return the first page if no page is specified, and 
+  // return the max value of 1 and a given page (if it's specified)
+  let page = Math.max(req.query.page || 1, 1)
   let productCount = 0
+  let maxPages = 1 
   // get category (for filter) and price (for sorting)  
   const category = req.query.category || ''
   const price = req.query.price || ''
   console.log(category, price)
-  const findCategory = (category.length > 0)? {category: category} : {} 
+  const filterCategory = (category.length > 0)? {category: category} : {} 
 
-  Product.countDocuments(findCategory).exec((err, count) => {
+  const getSort = function(sortParam) {
+    if (sortParam.toLowerCase() === 'lowest') {
+      return { price : 'asc'}
+    } else if (sortParam.toLowerCase() === 'highest') {
+      return { price : 'desc'}
+    } else {
+      return {} 
+    }
+  }
+  const sortPrice = getSort(price)
+  console.log(sortPrice)
+
+  Product.countDocuments(filterCategory).exec((err, count) => {
     if (err) return next(err)
     console.log(count)
-    page = Math.min(page, Math.max(Math.ceil(count/perPage), 1))
+    // returns the max number of pages possible for given group of query results 
+    maxPages = Math.max(Math.ceil(count/perPage), 1)
+    page = Math.min(page, maxPages)
     productCount = count
     console.log(page)
 
-    Product.find(findCategory)
+    Product.find(filterCategory)
+      .sort(sortPrice)
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((err, products) => {
@@ -62,6 +79,7 @@ router.get('/products', (req, res, next) => {
         res.send({ 
           count: productCount, 
           page: page,
+          maxPages: maxPages, 
           products: products
         })
       })
@@ -73,12 +91,12 @@ router.get('/products', (req, res, next) => {
   })
 
   // Product
-  //   .find(findCategory) // findCategory
+  //   .find(filterCategory) // filterCategory
   //   .skip((perPage * page) - perPage)
   //   .limit(perPage)
   //   .exec((err, products) => {
   //     // use `count` to know how many are coming back
-  //     Product.countDocuments(findCategory).exec((err, count) => { // findCategory
+  //     Product.countDocuments(filterCategory).exec((err, count) => { // filterCategory
   //       if (err) return next(err)
   //       console.log(count)
   //       res.send({

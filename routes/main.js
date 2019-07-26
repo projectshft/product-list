@@ -117,15 +117,14 @@ router.post('/products', (req, res, next) => {
         res.writeHead(400, 'In order to add a product, it must have a category, name, price, and image');
         res.end();
     }
+    //check to see if the price is set to be a number
     if (typeof productToAdd.price !== 'number') {
         res.writeHead(400, 'Price must be of type number')
         res.end();
     }
-    
+    //TODO: Go through rest of object and make sure they are strings
 
     //creating a new product model using information given by the user
-    //NOTE: LOOK UP VALIDATORS YOU CAN USE THEM
-    //MAKE SURE PRICE IS A NUMBER
     let newProduct = new Product();
     newProduct.category =  productToAdd.category;
     newProduct.name = productToAdd.name;
@@ -143,10 +142,14 @@ router.post('/products', (req, res, next) => {
 })
 
 router.post('/:product/reviews', (req, res, next) => {
-    //check to see if produc
     const productId = req.params.product
-    //NOTE: maybe see if the product exists in the database?
+    
     const reviewToAdd = req.body
+        //check to see if the reviewToAdd has a usernmae and text property
+    if (!reviewToAdd.userName || !reviewToAdd.text) {
+        res.writeHead(400, 'Reviews must contain a username and text');
+        res.end()
+    }
 
     let newReview = new Review();
     newReview.userName =  reviewToAdd.userName;

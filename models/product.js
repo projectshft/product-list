@@ -5,10 +5,10 @@ const Review = require('./review')
 
 
 const ProductSchema = new Schema({
-  category: String,
-  name: String,
-  price: Number,
-  image: String,
+  category: {type: String, required: true},
+  name: {type: String, required: true},
+  price: {type: Number, required: true},
+  image: {type: String, required: true},
   reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}]
 })
 

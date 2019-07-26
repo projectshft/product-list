@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
+import Product from "./product";
+
 
 class App extends Component {
   //   state = {
@@ -37,16 +39,40 @@ class App extends Component {
 
   componentDidMount() {
     this.props.fetchProducts()
+    // this.callBackendAPI()
+    //   .then(() => this.renderList())
+    //   .catch(err => console.log(err));
   }
 
+  // callBackendAPI = async () => {
+  //   const response = await this.props.fetchProducts()
+  //   const body = await response.json();
+
+  //   if (response.status !== 200) {
+  //     throw Error(body.message) 
+  //   }
+  //   return body;
+  // };
+
   renderList() {
-    return this.props.products.map(product => {
-      return (
-        <li key={product._id} className="list-group-item">
-          {products.name}
-        </li>
-      );
-    });
+  //   if (!this.props.products) {
+  //     return (<li>nothing yet</li>)
+  //   } else {
+  //   return this.props.products.map(product => {
+  //     return (
+  //       <li key={product._id} className="list-group-item">
+  //         {products.name}
+  //       </li>
+  //     );
+  //   });
+  // }
+
+  return this.props.products.map((product) => {
+    return (
+      <Product product={product} key={product._id}/>
+    );
+  });
+
   }
 
   render() {

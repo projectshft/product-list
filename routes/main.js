@@ -185,7 +185,7 @@ router.post('/:product/reviews', (req, res, next) => {
   });
 
   //make sure product is found/ not disabled
-  Product.findByIdAndUpdate(productId, {$push: {reviews: newReview._id}}, (err, product) => {
+  Product.findByIdAndUpdate(productId, {$push: {reviews: newReview._id}}, {new: true}, (err, product) => {
     if (err) throw err;
     if (!product || product.enabled === false) {
       return res.status(404).send('Product not found.');
@@ -199,6 +199,38 @@ router.post('/:product/reviews', (req, res, next) => {
     //this currently sends back product before it is updated
     return res.status(200).send(product);
   });
+});
+
+router.delete('/products/:product', (req, res, next) => {
+  //validate param
+  const productId = req.params.product;
+
+  if (!productId) {
+    return res.status(400).send('Invalid id');
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    return res.status(400).send('Invalid id');
+  }
+
+  //find by id, update enabled to false
+  Product.findByIdAndUpdate(productId, {enabled: false}, (err, product) => {
+    if (err) throw err;
+    if (!product || product.enabled === false) {
+      return res.status(404).send('Product not found.');
+    }
+
+    product.reviews.forEach(review => {
+      //find by id and update to enabled: false
+      Review.findByIdAndUpdate(review, {enabled: false}, (err) => {
+        if (err) throw err;
+      });
+    });
+
+    return res.status(200).send(product);
+  })
+
+  
 });
 
 module.exports = router

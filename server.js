@@ -9,7 +9,7 @@ const app = express();
 
 //only want to allow cors to react dev server
 //make sure to set postman header- Origin: localhost:8000
-const whitelist = ['localhost:8000'];
+const whitelist = ['localhost:5000'];
 const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {

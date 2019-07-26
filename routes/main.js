@@ -43,19 +43,28 @@ router.get('/products', (req, res, next) => {
     }
 
     const category = req.query.category
+    let categoryToFind = {};
+    //if a category is defined set categoryToFind to be equal to the category query
+    if (category) {
+        categoryToFind = {category: category}
+    }
     // return the first page by default
     const page = req.query.page || 1
   
     Product
-      .find({category: category})
+      .find(categoryToFind)
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .populate('reviews', '-_id')
       .sort({price: sortVariable})
       .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+          if (products == '') {
+              res.writeHead(400, 'Product category not found');
+              return res.end();
+          }
+          if (err) throw err;
         Product.countDocuments().exec((err, count) => {
-            if (err) return next(err)
+            if (err) return (err)
   
           res.send(products)
         })

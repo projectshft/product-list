@@ -73,16 +73,18 @@ router.get('/products', (req, res, next) => {
       })
   })
   
-router.get('/product/:product', (req, res, next) => {
+router.get('/products/:product', (req, res, next) => {
     // set requestedProduct to equal the parameter request
     const requestedProductId = req.params.product;
-    //NOTE: maybe add check to see if requestedProduct is a number(id)
 
     //Find and send the product with the id which matches the requestedProductId
     Product
         .find({_id : requestedProductId})
         .exec((err,product) => {
-            if (err) throw err;
+            if (err) {
+                res.writeHead(400, 'Product not found. Enter a valid product Id')
+                res.end()
+            }
             res.send(product);
         })
 })
@@ -90,14 +92,16 @@ router.get('/product/:product', (req, res, next) => {
 router.get('/reviews', (req,res,next) => {
     const perPage = 40;
     //allow optional query to allow pagination
-    const page = req.query.page;
+    const page = req.query.page || 1;
 
     Review
         .find({})
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec((err, reviews) => {
-            if (err) throw err;
+            if (err) {
+                res.writeHead(400, 'Error: Unable to get reviews')
+            };
 
             res.send(reviews);
         })
@@ -106,24 +110,29 @@ router.get('/reviews', (req,res,next) => {
 })
 
 router.post('/products', (req, res, next) => {
-    //NOTE: add check to see if each thing is the correct type i.e. string
-    //NOTE: Check to see if it has all the necessary parts(and what ones are necessary)
-    //NOTE: 
+    
     const productToAdd = req.body;
-    //add checks to make sure the categories exist
+    //check to see if the productToAdd has all the properties that are needed to be a 'Product'
+    if (!productToAdd.category || !productToAdd.name || !productToAdd.price || !productToAdd.image) {
+        res.writeHead(400, 'In order to add a product, it must have a category, name, price, and image');
+        res.end();
+    }
+    
 
     //creating a new product model using information given by the user
     //NOTE: LOOK UP VALIDATORS YOU CAN USE THEM
+    //MAKE SURE PRICE IS A NUMBER
     let newProduct = new Product();
     newProduct.category =  productToAdd.category;
     newProduct.name = productToAdd.name;
     newProduct.price =  productToAdd.price;
-    newProduct.image =  product;
+    newProduct.image =  productToAdd.image;
     newProduct.reviews = [];
 
 
     newProduct.save((err) => {
         if (err) throw err
+        console.log('Product succesfully saved to database')
       })
     res.end();
 

@@ -220,17 +220,36 @@ router.delete('/products/:product', (req, res, next) => {
       return res.status(404).send('Product not found.');
     }
 
-    // product.updated_at = new Date();
-
     product.reviews.forEach(review => {
       //find by id and update to enabled: false
       Review.findByIdAndUpdate(review, {enabled: false, updated_at: new Date()}, (err, r) => {
         if (err) throw err;
-        // r.updated_at = new Date();
       });
     });
 
     return res.status(200).send(product);
+  });
+});
+router.delete('/reviews/:review', (req, res, next) => {
+  //validate review
+  const reviewId = req.params.review;
+
+  if (!reviewId || !mongoose.Types.ObjectId.isValid(reviewId)) {
+    return res.status(400).send('Invalid id');
+  }
+
+  //find by id, update enabled to false
+  Review.findByIdAndUpdate(reviewId, {enabled: false, updated_at: new Date()}, (err, review) => {
+    if (err) throw err;
+    if (!review || review.enabled === false) {
+      return res.status(404).send('Product not found.');
+    }
+
+    //below not working, leaving in case there is time to get it working
+    // right now when getting reviews from [], dont display those with enabled: false
+    // Product.update({_id: review.product}, {$pullAll: {reviews: [reviewId]}});
+
+    return res.status(200).send(review);
   });
 });
 

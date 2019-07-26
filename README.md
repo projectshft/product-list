@@ -10,3 +10,5 @@ If you have any questions about this project or the program in general, visit pr
 - [X] product is null if not found
 - [X] delete also deletes reviews
 - [ ] add pre for findbyidandupdate to change updated_at
+      doesnt work :( updated in find manually
+- [ ] currently remove review

@@ -113,18 +113,30 @@ router.post('/:product/reviews', (req, res, next) => {
     })
 })
 
-router.delete('/products/:product', (req, res ,next) => {
+router.delete('/products/:product', (req, res , next) => {
     let productId = req.params.product;
-    //find product to delete
     
+    //delete the product that has an id which matches the productId variable
     Product.deleteOne({_id: productId }, err => {
         if (err) throw err;
         console.log(`Product ${productId} succesfully deleted`)
     })
 })
 
+router.delete('/reviews/:review', (req, res, next) => {
+    let reviewId = req.params.review;
+
+      //delete the product that has an id which matches the productId variable
+      Review.deleteOne({_id: reviewId }, err => {
+
+        if (err) console.log(err);
+        console.log(`Review ${reviewId} succesfully deleted`)
+    })
+})
+    
 
 module.exports = router
-
+//review
+//5d3a093c64328810fcdd65ab
 
 //5d3a095d1395a939404afc49

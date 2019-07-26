@@ -63,7 +63,23 @@ router.get('/product/:product', (req, res, next) => {
         })
 })
 
-//CREATE GET REVIEWS THAT ONLY SHOWS 40
+router.get('/reviews', (req,res,next) => {
+    const perPage = 40;
+    //allow optional query to allow pagination
+    const page = req.query.page;
+
+    Review
+        .find({})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec((err, reviews) => {
+            if (err) throw err;
+
+            res.send(reviews);
+        })
+
+
+})
 
 router.post('/products', (req, res, next) => {
     //NOTE: add check to see if each thing is the correct type i.e. string

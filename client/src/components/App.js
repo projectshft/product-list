@@ -78,6 +78,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <h1>Products</h1>
+        <select className="form-control" id="category-selection">
+          <option value="" selected>Select Category (optional)</option>
+          <option value="Beauty">Beauty</option>
+        </select>
         <ul className="list-group">
           {this.renderList()}
         </ul>

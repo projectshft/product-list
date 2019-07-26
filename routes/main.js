@@ -37,14 +37,52 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {
   const perPage = 9
   const page = req.query.page || 1;
-  Product.find()
+
+  //Check for and assign price and category if they are in
+  //the query
+  const categoryQuery = req.query.category;
+  const priceSort = req.query.price;
+  let priceArg;
+
+  //Value for the sort if the price is lowest or highest, doing it outside
+  //of the mongoose query to reduce clutter
+  if (priceSort) {
+    if (priceSort == 'lowest') priceArg = 1;
+    if (priceSort == 'highest') priceArg = -1;
+  }
+  //Checks if there is a value for category in the request query
+  if (categoryQuery) {
+    let query = Product.find({category: categoryQuery})
     .skip((page-1) * perPage)
-    .limit(perPage)
+    .sort({price: priceArg});
+    //If a price sort is sent in the query, sort the price by the value
+    //provided in the query
+    if (priceArg) {
+      query.sort({price: priceArg});
+    }
+    query.limit(perPage)
     .exec((err, products) => {
       Product.countDocuments((err, count) => {
         res.send(products);
       })
     })
+  } else
+    //If there is no category provided it will grab all of the products
+  {
+    let query = Product.find()
+      .skip((page-1) * perPage);
+      //If a price sort is sent in the query, sort the price by the value
+      //provided in the query
+      if (priceArg) {
+        query.sort({price: priceArg});
+      }
+      query.limit(perPage)
+      .exec((err, products) => {
+        Product.countDocuments((err, count) => {
+          res.send(products);
+        })
+      })
+  }
 })
 
 //This route should find the product provided in the request parameters 
@@ -92,17 +130,15 @@ router.post('/products', (req, res) => {
   })
 })
 
-//This should create a new review in the database by adding the review
+//This route should create a new review in the database by adding the review
 //to the correct product that will be found by productId passed in the
 //request params, it will return a new object containing the normal product
 //instance that has a review added along with an added key value pair
 //newReview to show the client the new review that had been added
 router.post('/:product/reviews', (req, res) => {
   const currentProductId = req.params.product;
-  console.log(currentProductId);
   Product.findById(currentProductId)
     .exec((error, productData) => {
-      console.log(productData);
       if (error) throw error;
       let review = new Review({
         userName: req.body.userName,
@@ -115,6 +151,30 @@ router.post('/:product/reviews', (req, res) => {
         if (err) throw err;
         res.send({...savedProduct._doc, newReview: review})
       })
+    })
+})
+
+//This route should find and remove a product by the id provided
+//in the parameters of the route.
+router.delete('/products/:product', (req, res) => {
+  const currentProductId = req.params.product;
+  Product.findByIdAndDelete(currentProductId)
+    .exec((error, response) => {
+      if (error) throw error;
+      console.log(response);
+      res.send(response);
+    })
+})
+
+//This route should find and remove a review by the id provided
+//in the parameters of the route.
+router.delete('/reviews/:review', (req, res) => {
+  const currentReviewId = req.params.review;
+  Review.findByIdAndDelete(currentReviewId)
+    .exec((error, response) => {
+      if (error) throw error;
+      console.log(response);
+      res.send(response);
     })
 })
 module.exports = router

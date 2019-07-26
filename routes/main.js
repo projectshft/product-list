@@ -50,6 +50,7 @@ router.get('/products', (req, res, next) => {
       .find({category: category})
       .skip((perPage * page) - perPage)
       .limit(perPage)
+      .populate('reviews', '-_id')
       .sort({price: sortVariable})
       .exec((err, products) => {
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back

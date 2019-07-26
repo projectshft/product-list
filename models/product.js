@@ -10,4 +10,10 @@ const ProductSchema = new Schema({
   reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}]
 })
 
+//pre-product delete middleware action
+ProductSchema.pre('remove', function (next){
+  this.model('Review').deleteMany({ product: this._id}, next);
+ })
+ 
+
 module.exports = mongoose.model('Product', ProductSchema)

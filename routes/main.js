@@ -6,6 +6,8 @@ const Review = require('../models/review')
 const PRODUCTS_PER_PAGE = 9;
 const REVIEWS_PER_PAGE = 40;
 
+
+
 //helper functions
 
 //helper function to isolate product id from params and check if valid
@@ -40,11 +42,25 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
   let pageNum = req.query.page || 1;
-  if (pageNum < 1){
+  let filter = req.query.category || {};
+  let sort = req.query.price;
+
+  if (pageNum < 1) {
     return res.status(400).send('Invalid page number.');
   } 
-  Product.find()
+
+  //handle sort values if present
+  if(sort){
+    if (sort === 'highest'){
+     sort = 'descending';
+    } else if (req.query.price === 'lowest'){
+      sort = 'ascending';
+    } else {
+       return res.status(400).send('Invalid sort value.');
+    }
+    Product.find({category: { $regex: new RegExp(filter, 'i')}})
     .skip((pageNum -1) * PRODUCTS_PER_PAGE)
+    .sort({price: sort})
     .limit(PRODUCTS_PER_PAGE)
     .exec((err, result) => {
       //access to total count for future use
@@ -54,7 +70,21 @@ router.get('/products', (req, res, next) => {
         res.send(result)
       })
     })
-  })
+  } else{
+    Product.find({category: { $regex: new RegExp(filter, 'i')}})
+      .skip((pageNum -1) * PRODUCTS_PER_PAGE)
+      .limit(PRODUCTS_PER_PAGE)
+      .exec((err, result) => {
+      //access to total count for future use
+        Product.countDocuments().exec((err, count) => {
+         if (err) return next(err)
+
+         res.send(result)
+      })
+    })
+  }
+})
+  
 
 router.get('/products/:product', (req, res, next) => {
   let id = req.params.product;
@@ -126,8 +156,6 @@ router.post('/:product/reviews', (req, res, next) => {
     }
   })
 });
-//pre-product delete action
-// ProductSchema.pre('deleteOne')
 
 //question - expect associated reviews to be deleted from reviews collection simultaneaously?
 router.delete('/products/:product', (req, res, next) => {

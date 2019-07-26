@@ -2,6 +2,8 @@ const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 
 // GET /generate-fake-data --- generates products and reviews  
 router.get('/generate-fake-data', (req, res, next) => {
@@ -44,7 +46,7 @@ router.get('/products', (req, res, next) => {
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+      // use `count` to know how many are coming back
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
@@ -73,7 +75,7 @@ router.get('/reviews', (req, res, next) => {
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, reviews) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+      // use `count` to know how many are coming back
       Review.count().exec((err, count) => {
         if (err) return next(err)
         res.send(reviews)
@@ -83,8 +85,6 @@ router.get('/reviews', (req, res, next) => {
 
 // POST /products --- creates a new product in the database
 router.post('/products', (req, res, next) => {
-  console.log(req.body)
-
   let product = new Product()
   product.category = req.body.category
   product.name = req.body.name
@@ -99,6 +99,27 @@ router.post('/products', (req, res, next) => {
 
 // POST /:product/reviews: Creates a new review in the database 
 // by adding it to the correct product's reviews array.
+router.post('/:productId/reviews', (req, res, next) => {
+  const { productId } = req.params 
 
+  Product.findById(productId, (err, product) => {
+    if (err) throw err 
+
+    let review = new Review() 
+    review.userName = req.body.userName
+    review.text = req.body.text
+    review.product = product._id
+    review.save((err) => {
+      if (err) throw err
+    })
+
+    product.reviews.push(review)
+
+    product.save((err) => {
+      if (err) throw err
+      res.send(review)
+    })
+  })
+})
 
 module.exports = router

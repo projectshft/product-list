@@ -55,7 +55,7 @@ router.get('/products', (req, res, next) => {
     })
 })
 
-// GET /products/:product --- returns a specific product by its id
+// GET /products/:productId --- returns a specific product by its id
 router.get('/products/:productId', (req, res, next) => {
   const { productId } = req.params 
   Product.find({ _id : productId}, (err, product) => {
@@ -97,8 +97,8 @@ router.post('/products', (req, res, next) => {
   res.send(product) 
 })
 
-// POST /:product/reviews: Creates a new review in the database 
-// by adding it to the correct product's reviews array.
+// POST /:productId/reviews --- creates a new review in the database 
+// by adding it to the correct product's reviews array 
 router.post('/:productId/reviews', (req, res, next) => {
   const { productId } = req.params 
 
@@ -119,6 +119,24 @@ router.post('/:productId/reviews', (req, res, next) => {
       if (err) throw err
       res.send(review)
     })
+  })
+})
+
+// DELETE /products/:productId --- deletes a product by id
+router.delete('/products/:productId', (req, res, next) => {
+  const { productId } = req.params 
+  Product.deleteOne({ _id : productId}, (err) => {
+    if (err) return next(err)
+    res.send()
+  })
+})
+
+// DELETE /reviews/:reviewId --- deletes a review by id
+router.delete('/reviews/:reviewId', (req, res, next) => {
+  const { reviewId } = req.params 
+  Review.deleteOne({ _id : reviewId}, (err) => {
+    if (err) return next(err)
+    res.send()
   })
 })
 

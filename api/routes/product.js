@@ -7,7 +7,25 @@ router.get('/', (req, res, next) => {
   let itemsPerPage = 9;
   let pageNumber = req.query.page || 1;
   let pageSkip = ((pageNumber * itemsPerPage) - itemsPerPage);
-  Product.find().skip(pageSkip).limit(itemsPerPage).exec((err, result) => {
+
+  //let's add some sorting based on our query!
+  const {category, price} = req.query;
+  //adding in category query object
+  let searchOptions = {};
+  if (category) {
+    searchOptions['category'] = category;
+  }
+  //we'll check our price sort as well
+  let sortValue = {};
+  if(price == 'highest'){
+    sortValue['price'] = -1;
+  } else if (price == 'lowest'){
+    sortValue['price'] = 1;
+  } else {
+    return err;
+  }
+  
+  Product.find(searchOptions).skip(pageSkip).limit(itemsPerPage).sort(sortValue).exec((err, result) => {
     Product.count().exec((err, count) => {
       if (err) throw err;
       res.send(result);
@@ -18,7 +36,9 @@ router.get('/', (req, res, next) => {
 //GET route for /products/:productId
 router.get('/:productId', (req, res, next) => {
   let { productId } = req.params;
-  Product.find({ _id: productId }).exec((err, result) => {
+  //check here for incorrect productId format
+
+  Product.find({_id: productId}).exec((err, result) => {
     if (err) throw err;
     res.send(result);
   })
@@ -26,8 +46,9 @@ router.get('/:productId', (req, res, next) => {
 
 //POST route for /products (adds product to DB)
 router.post('/', (req, res, next) => {
+  //checks below here for request body data validation
   let { category, name, price, image } = req.body;
-  console.log(category, name, price, image);
+  
   Product.create(req.body, function (err, result) {
     if (err) return handleError(err);
     // saved!
@@ -39,6 +60,9 @@ router.post('/', (req, res, next) => {
 router.post('/:productId/reviews', (req, res, next) => {
   let { productId } = req.params;
   let { author, reviewText } = req.body;
+  //checks below here for request body data validation
+
+
   let newReview = {
     author,
     reviewText,

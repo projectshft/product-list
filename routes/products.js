@@ -65,4 +65,14 @@ router.post('/products/:product/reviews', (request, response) => {
 	response.send(newReview);
   });
 
+/** DELETE route for /products/:product
+(Deletes a product in the database based on the client supplied product ID) */
+
+router.delete('/products/:product', (request, response) => {
+	Product.findOneAndDelete({ _id: request.product[0]._id }, (err, product) => {
+		if (err) throw err;
+		response.send('Successfully deleted product');
+	})
+})
+
   module.exports = router;

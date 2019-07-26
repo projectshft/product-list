@@ -13,17 +13,19 @@ router.get('/', (req, res, next) => {
   //adding in category query object
   let searchOptions = {};
   if (category) {
-    searchOptions['category'] = category;
+    let upperCaseCategory = category.slice(0,1).toUpperCase() + category.slice(1,(category.length)).toLowerCase();
+    searchOptions['category'] = upperCaseCategory;
   }
+  console.log(searchOptions);
   //we'll check our price sort as well
   let sortValue = {};
   if(price == 'highest'){
     sortValue['price'] = -1;
   } else if (price == 'lowest'){
     sortValue['price'] = 1;
-  } else {
-    return err;
   }
+
+  console.log(sortValue);
   
   Product.find(searchOptions).skip(pageSkip).limit(itemsPerPage).sort(sortValue).exec((err, result) => {
     Product.count().exec((err, count) => {

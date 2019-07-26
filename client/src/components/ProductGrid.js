@@ -11,10 +11,14 @@ class ProductGrid extends React.Component {
     this.renderProductCards = this.renderProductCards.bind(this);
   }
 
+  componentDidMount() {
+    this.props.searchProducts({});
+  }
+
   renderProductCards(productsArray){
     return(
       productsArray.map(product => {
-        return <ProductCard product={product} />;
+        return <ProductCard product={product} key={product._id}/>;
       })
     );
   }
@@ -24,14 +28,28 @@ class ProductGrid extends React.Component {
       return (
         <h1>Nothing to see here yet... hold please...</h1>
       );
-    }
+    } else if(this.props.products.length === 0){
+      return (
+        <div>
+          <h4>Hey! Looks like there are no products that match your search...</h4>
+          <h4>Please try again - I recommend our 'Tuna' items.</h4>
+        </div>
+        );
+    } else 
 
     return (
-      <div className="card-group">
+      <div className="card-columns mb-4">
         {this.renderProductCards(this.props.products)}
       </div>
     );
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    products: state.products,
+    // categories: state.categories
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -39,6 +57,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ProductGrid);

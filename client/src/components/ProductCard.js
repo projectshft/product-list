@@ -12,13 +12,13 @@ const ProductCard = ({ product }) => {
       }}
     >
       <div className="card-body">
-        <h1 className="card-title">
+        <h5 className="card-title">
           {product.name}
-        </h1>
-        <img src={product.image} class="card-img-top" alt="sweet product"></img>
+        </h5>
+        <img src={product.image} className="card-img-top" alt="sweet product"></img>
       </div>
       <div className='card-footer'>
-        ${product.price}
+        Category: {product.category} | <b>${product.price}</b>
       </div>
     </div>
   );

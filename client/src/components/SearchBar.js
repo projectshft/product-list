@@ -22,7 +22,7 @@ class SearchBar extends Component {
     event.preventDefault();
 
     // We need to go and fetch waypoint data by calling the action "searchProducts"
-    this.props.searchProducts(this.state.term);
+    this.props.searchProducts({query: this.state.term});
     // After fetchWaypoint data is called, then set searchBar field (term obj) to blank string. 
     this.setState({ term: '' });
   }
@@ -31,13 +31,13 @@ class SearchBar extends Component {
     return (
       <form onSubmit={this.onFormSubmit} className="input-group">
         <input
-          placeholder="Find a Waypoint Near You"
+          placeholder="Search for an awesome Product!"
           className="form-control"
           value={this.state.term}
           onChange={this.onInputChange}
         />
         <span className="input-group-btn">
-          <button type="submit" className="btn btn-secondary">
+          <button type="submit" className="btn btn-primary">
             Submit
           </button>
         </span>

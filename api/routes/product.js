@@ -31,7 +31,6 @@ router.get('/', (req, res, next) => {
   const {query, category, price} = req.query;
   //adding in category query object
   let searchOptions = {};
-  let whereFunction = ``;
   if (category) {
     let upperCaseCategory = category.slice(0,1).toUpperCase() + category.slice(1,(category.length)).toLowerCase();
     searchOptions['category'] = upperCaseCategory;
@@ -43,7 +42,9 @@ router.get('/', (req, res, next) => {
       return query.slice(0, 1).toUpperCase() + query.slice(1, (query.length)).toLowerCase()
     }).join(' ');
     searchOptions.$text = { $search: upperCaseQuery};
-    console.log(searchOptions);
+    
+  } else {
+    query = '';
   }
 
   //we'll check our price sort as well
@@ -52,12 +53,19 @@ router.get('/', (req, res, next) => {
     sortValue['price'] = -1;
   } else if (price == 'lowest'){
     sortValue['price'] = 1;
-  }
+  }  
 
   Product.find(searchOptions).skip(pageSkip).limit(itemsPerPage).sort(sortValue).exec((err, result) => {
-    Product.countDocuments().exec((err, count) => {
+    Product.countDocuments(searchOptions).exec((err, count) => {
       if (err) throw err;
-      res.status(200).send(result);
+      let pageSeed = count % itemsPerPage !== 0 ? Math.floor(count / itemsPerPage) + 1 : Math.floor(count / itemsPerPage);
+      res.status(200).send({
+        products: result,
+        count: count,
+        currentPage: pageNumber,
+        pages: [...Array(pageSeed).keys()].map(num => (num + 1)),
+        currentSearch: query
+      });
     })
   })
 });

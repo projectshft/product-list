@@ -5,12 +5,28 @@ export const INITIALIZE_CATEGORIES = 'INITIALIZE_CATEGORIES';
 export const SEARCH_PRODUCTS = 'SEARCH_PRODUCTS';
 export const NEXT_PAGE_PRODUCTS = 'NEXT_PAGE_PRODUCTS';
 
-const ROOT_URL = "http://localhost:8000/";
+const ROOT_URL = "http://localhost:8000";
 
 export function searchProducts(queryObject) {
-  // const {query, page, sort} = queryObject;
+  let queryUrl = `${ROOT_URL}/products?`;
+  let queryString = '';
+  const {query, page, sort} = queryObject;
+  
+  if(query){
+    queryString += `query=${query}&`
+  }
+
+  if (page) {
+    queryString += `page=${page}&`
+  }
+
+  if (sort) {
+    queryString += `sort=${sort}&`
+  }
+
+  if(queryString.length > 0){queryUrl += queryString };
   // const queryUrl = `${ROOT_URL}/products?page=${page}&query=${query}&price=${sort}`;
-  const queryUrl = `${ROOT_URL}/products`;
+  
   const request = axios.get(queryUrl);
 
   return {

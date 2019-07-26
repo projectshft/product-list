@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ProductGrid from './ProductGrid';
 import SearchBar from './SearchBar';
-// import FilterDropdown from './FilterDropdown';
+import DropdownMenu from './DropdownMenu';
+import Pagination from './Pagination';
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.searchProducts();
+    
   }
 
   render() {
@@ -28,22 +29,22 @@ class App extends Component {
 
     return (
       <div className='container main-app'>
-        <div className='jumbotron'>
-          <h3>PRODUCTS</h3>
+        <div className='jumbotron text-center mt-4'>
+          <h1>PRODUCTS</h1>
         </div>
-        <div className='row'>
-          <div className='col-md-5'>
+        <div className='row mb-4'>
+          <div className='col-md-5 mr-1'>
             <SearchBar />
           </div>
-          <div className='col-md-7'>
-            {/* <FilterDropdown type={this.props.categories}/> */}
-            
+          <div className='col-md-6'>
+            <DropdownMenu name={'Category'} type={'info'}/>
+            <DropdownMenu name={'Price'} type={'info'} />
           </div>
         </div>
         <div className='row'>
           <div className='col-md-10 offset-md-1'>
-            <ProductGrid products={this.props.products} />
-            
+            <ProductGrid />
+            <Pagination />
           </div>
         </div>
       </div>

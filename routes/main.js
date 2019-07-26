@@ -49,15 +49,27 @@ router.get('/products', (req, res, next) => {
 
   const numItemsToSkip = (pageNum - 1) * PRODUCTS_PER_PAGE;
   //build search query
-  const { category } = req.query;
+  const { category, price } = req.query;
   const searchQuery = { enabled: true };
   if (category) {
     searchQuery.category = category;
+  }
+  //build sort
+  const sortOptions = {};
+  if (price) {
+    if (price ==='highest') {
+      sortOptions.price = 'descending';
+    } else if (price ==='lowest') {
+      sortOptions.price = 'ascending';
+    } else {
+      return res.status(400).send('Invalid price sorting option.');
+    }
   }
   
   Product.find(searchQuery)
     .skip(numItemsToSkip)
     .limit(PRODUCTS_PER_PAGE)
+    .sort(sortOptions)
     .exec((err, products) => {
       if (err) throw err;
 

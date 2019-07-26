@@ -1,39 +1,53 @@
-import { binaryExpression } from "@babel/types";
+import React from 'react';
+// import SearchBar from "./search-bar";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+// import { ResultsList } from "results-list";
 
-var map = [{
-    id: 12,
-    name: 'Byron',
-    age: 33,
-    sex: 'm',
-    position: 'father'
-}, {
-    id: 31,
-    name: 'Briana',
-    age: 33,
-    sex: 'f',
-    position: 'mother'
-}, {
-    id: 56,
-    name: 'Amiah',
-    age: 8,
-    sex: 'f',
-    position: 'daughter'
-}, {
-    id: 78,
-    name: 'Dellah',
-    age: 7,
-    sex: 'f',
-    position: 'daughter'
-}, {
-    id: 90,
-    name: 'Simone',
-    age: 6,
-    sex: 'f',
-    position: 'daughter'
-}, {
-    id: 112,
-    name: 'Wesley',
-    age: 3,
-    sex: 'm',
-    position: 'son'
-}]
+class App extends React.Component {
+    constructor(props) {
+        super(props)
+    };
+
+    componentDidMount() {
+
+    };
+
+    render() {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <h1>PRODUCTS</h1>
+                    </div>
+                </div>
+                <div className="row">
+                   <SearchBar />
+                   <
+                </div>
+                <div className="row">
+                    
+                </div>
+                <div className="row">
+                    
+                </div>
+                <div className="row">
+                    
+                </div>
+            </div>
+
+        )
+    };
+};
+
+// function mapStateToProps( state {
+
+// })
+
+function mapDispatchToProps( dispatch ) {
+
+};
+
+export default App
+
+// connect( mapStateToProps, mapDispatchToProps )( App );

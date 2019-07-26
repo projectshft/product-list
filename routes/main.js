@@ -79,13 +79,13 @@ router.get('/products/:product', (req, res, next) => {
   }
 
   //search mongoose
-  Product.findOne({ _id: productId })
+  Product.findById(productId)
     .exec((err, product) => {
       if (err) {
         return res.status(404).send(err);
       }
-      //if no result, 404
-      if (!product) {
+      //if no result or not enabled, 404
+      if (!product || product.enabled === false) {
         return res.status(404).send('Product not found.');
       }
       //return result

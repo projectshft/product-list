@@ -5,5 +5,6 @@ This project has been created by a student at Project Shift, a software engineer
 If you have any questions about this project or the program in general, visit projectshift.io or email hello@projectshift.io.
 
 ####TODO
-- [ ] add pre save for date created and date updated
+- [ ] make sure all gets check enabled
+- [X] add pre save for date created and date updated
 - [ ] delete also deletes reviews

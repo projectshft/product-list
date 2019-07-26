@@ -29,14 +29,16 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
+//MAYBE ADD WAY TO SHOW REVIEWS WHEN THIS RUNS
 router.get('/products', (req, res, next) => {
     const perPage = 9
   
+    const category = req.query.category
     // return the first page by default
     const page = req.query.page || 1
   
     Product
-      .find({})
+      .find({category: category})
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((err, products) => {

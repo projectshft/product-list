@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../actions';
 import { bindActionCreators } from 'redux';
+import Product from './Product';
 
 class ProductList extends Component {
   //make sure it isn't empty
@@ -10,11 +11,19 @@ class ProductList extends Component {
     this.props.fetchProducts();
   }
 
-  render(){
+  renderProducts(){
+    console.log(this.props)
     return _.map(this.props.products, product => {
-      return product;
+      return(
+        <Product key={product._id} product={product}/>
+      )
     })
   }
+  render(){
+    return (
+      <div>{this.renderProducts()}</div>
+    )
+}
 }
 
   function mapStateToProps(state) {

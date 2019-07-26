@@ -8,8 +8,9 @@ mongoose.connect('mongodb://localhost/productsDB', {useNewUrlParser: true});
 const app = express();
 
 //only want to allow cors to react dev server
-//make sure to set postman header- Origin: localhost:8000
-const whitelist = ['localhost:5000'];
+//make sure to set postman header- Origin: localhost:5000
+//react on localhost:3000
+const whitelist = ['localhost:3000','localhost:5000'];
 const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {

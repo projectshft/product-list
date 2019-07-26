@@ -4,14 +4,26 @@ import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions'
 
 class AppIndex extends Component {
+    //once the components mounts to the DOM populate the store with data
     componentDidMount() {
         this.props.fetchProducts()
     }
 
     renderProducts() {
-        return this.props.products.map(product => {
+        console.log(this.props.product)
+         return this.props.products.map(product => {
             return (
-                //set up bootstrap stuff
+                //make 3 rows of 3 for the products return from the url
+                <div className = 'col-md-4'>
+                    <h1>{product.name}</h1>
+                    <div className="card">
+                        <img className="card-img-top" src={product.image}/>
+                        <div className="card-body">
+                            <h5 className="card-title">{product.price}</h5>
+                        </div>
+                    </div>
+                </div>
+
             )
         })
         
@@ -20,9 +32,9 @@ class AppIndex extends Component {
 
     render() {
         return (
-            <div>
-                {this.renderProducts()}
-            </div>
+                <div className = 'container'>
+                        {this.renderProducts()}
+                </div>
         )
     }
 

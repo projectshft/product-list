@@ -29,22 +29,24 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
-//MAYBE ADD WAY TO SHOW REVIEWS WHEN THIS RUNS
 router.get('/products', (req, res, next) => {
     const perPage = 9
-  //WHAT IF THEY DON"T PASS IN A CATEGORY
-  //GIVE AN ERROR IF THE CATEGORY DOESN"T EXIST
+ 
+    let price = req.query.price
     //test the price query to see whether the user wants ascending or descending prices
-    let sortVariable;
-    if(req.query.price == 'highest') {
-        sortVariable = -1;
-    } else if (req.query.price == 'lowest') {
-        sortVariable = 1
+    let howToSort ={};
+    if(price == 'highest' || price == 'high') {
+        howToSort = {price: -1}
+    } else if (price == 'lowest' || price == 'low'  ) {
+        howToSort = {price: 1}
+    } else {
+        res.writeHead(400, 'Invalid price sorting entry. Please enter "highest", "high", "low", or "lowest"');
+        res.end();
     }
 
     const category = req.query.category
-    let categoryToFind = {};
     //if a category is defined set categoryToFind to be equal to the category query
+    let categoryToFind = {};
     if (category) {
         categoryToFind = {category: category}
     }
@@ -56,7 +58,7 @@ router.get('/products', (req, res, next) => {
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .populate('reviews', '-_id')
-      .sort({price: sortVariable})
+      .sort(howToSort)
       .exec((err, products) => {
           if (products == '') {
               res.writeHead(400, 'Product category not found');

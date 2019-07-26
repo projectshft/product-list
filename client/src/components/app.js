@@ -15,11 +15,18 @@ class AppIndex extends Component {
             return (
                 //make 3 rows of 3 for the products return from the url
                 <div className = 'col-md-4'>
-                    <h1>{product.name}</h1>
+                   <div className = 'row'>
+                       <div className = 'col-sm-8'>
+                           Category: {product.category}
+                       </div>
+                       <div className = 'col-sm-4'> 
+                            $ {product.price}
+                       </div>
+                   </div>
                     <div className="card">
-                        <img className="card-img-top" src={product.image}/>
+                        <img className="card-img-top" src='https://i.ytimg.com/vi/cav9yTlLLVI/hqdefault.jpg'/>
                         <div className="card-body">
-                            <h5 className="card-title">{product.price}</h5>
+                            <h1> {product.name} </h1>
                         </div>
                     </div>
                 </div>
@@ -32,9 +39,14 @@ class AppIndex extends Component {
 
     render() {
         return (
+            <div>
+            <h1 className='title'> Products </h1>
                 <div className = 'container'>
+                    <div className = 'row'>
                         {this.renderProducts()}
+                    </div>
                 </div>
+            </div>
         )
     }
 

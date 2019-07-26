@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/productsDB', {useNewUrlParser: true});
 
 const app = express();
 

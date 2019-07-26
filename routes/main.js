@@ -126,7 +126,10 @@ router.post('/:product/reviews', (req, res, next) => {
     }
   })
 });
+//pre-product delete action
+// ProductSchema.pre('deleteOne')
 
+//question - expect associated reviews to be deleted from reviews collection simultaneaously?
 router.delete('/products/:product', (req, res, next) => {
   let id = req.params.product;
   if (!ObjectId.isValid(id)){
@@ -145,7 +148,23 @@ router.delete('/products/:product', (req, res, next) => {
   })
 })
 
-
+router.delete('/reviews/:review', (req, res, next) => {
+  let id = req.params.review;
+  if (!ObjectId.isValid(id)){
+    return res.status(400).send('Invalid request.')
+  }
+  Review.findById(id)
+    .exec((err, review) => {
+      if(!review){
+        return res.status(404).send('Product not found.')
+      }else{
+        review.remove(err => {
+          if (err) throw err;
+          res.status(200).send(`Review ${review._id} deleted!`)
+        })
+      }
+    })
+})
 
 
 module.exports = router

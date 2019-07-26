@@ -28,12 +28,22 @@ router.get('/', (req, res, next) => {
   let pageSkip = ((pageNumber * itemsPerPage) - itemsPerPage);
 
   //let's add some sorting based on our query!
-  const {category, price} = req.query;
+  const {query, category, price} = req.query;
   //adding in category query object
   let searchOptions = {};
+  let whereFunction = ``;
   if (category) {
     let upperCaseCategory = category.slice(0,1).toUpperCase() + category.slice(1,(category.length)).toLowerCase();
     searchOptions['category'] = upperCaseCategory;
+  }
+
+  if (query) {
+    let splitQuery = query.split(' ');
+    let upperCaseQuery = splitQuery.map(query => {
+      return query.slice(0, 1).toUpperCase() + query.slice(1, (query.length)).toLowerCase()
+    }).join(' ');
+    searchOptions.$text = { $search: upperCaseQuery};
+    console.log(searchOptions);
   }
 
   //we'll check our price sort as well
@@ -45,7 +55,7 @@ router.get('/', (req, res, next) => {
   }
 
   Product.find(searchOptions).skip(pageSkip).limit(itemsPerPage).sort(sortValue).exec((err, result) => {
-    Product.count().exec((err, count) => {
+    Product.countDocuments().exec((err, count) => {
       if (err) throw err;
       res.status(200).send(result);
     })
@@ -78,11 +88,11 @@ router.post('/:productId/reviews', (req, res, next) => {
   let { author, reviewText } = req.body;
   //checks below here for request body data validation
   let newReview = new Review();
-  newReview['author'] = author;
-  newReview['reviewText'] = reviewText;
-  newReview.product = req.product;
-  newReview.save();
-  req.product.reviews.push(newReview._id);
+    newReview['author'] = author;
+    newReview['reviewText'] = reviewText;
+    newReview.product = req.product;
+    newReview.save();
+    req.product.reviews.push(newReview._id);
 
   Product.update({ _id: req.product._id }, { reviews: req.product.reviews }, function (err, result) {
     if (err) throw err;

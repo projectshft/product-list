@@ -37,4 +37,6 @@ ProductSchema.pre('save', function (next) {
   next();
 });
 
+ProductSchema.index({ name: 'text', 'name': 'text' });
+
 module.exports = mongoose.model('Product', ProductSchema);

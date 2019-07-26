@@ -12,16 +12,21 @@ class ProductList extends Component {
   }
 
   renderProducts(){
-    console.log(this.props)
     return _.map(this.props.products, product => {
       return(
-        <Product key={product._id} product={product}/>
+        <div className='col-md-4'>
+          <Product key={product._id} product={product}/>
+        </div>
       )
     })
   }
   render(){
     return (
-      <div>{this.renderProducts()}</div>
+      <div className='container'>
+        <div className='row'>
+          {this.renderProducts()}
+        </div>
+      </div>
     )
 }
 }

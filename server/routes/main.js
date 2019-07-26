@@ -2,8 +2,6 @@ const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
-const mongoose = require('mongoose')
-const ObjectId = mongoose.Types.ObjectId
 
 // GET /generate-fake-data --- generates products and reviews  
 router.get('/generate-fake-data', (req, res, next) => {
@@ -41,15 +39,21 @@ router.get('/products', (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1
 
+  // get category (for filter) and price (for sorting)  
+  const category = req.query.category
+  const price = req.query.price
+  console.log(category, price)
+  // const findCategory = {category: category}; 
+
   Product
-    .find({})
+    .find() // findCategory
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
       // use `count` to know how many are coming back
-      Product.count().exec((err, count) => {
+      Product.countDocuments().exec((err, count) => { // findCategory
         if (err) return next(err)
-
+        console.log(count)
         res.send(products)
       })
     })

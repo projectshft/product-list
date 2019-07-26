@@ -12,7 +12,7 @@ router.param('product', (request, response, next, id) => {
 	  request.product = product;
 	  next();
 	});
-  });
+});
 
   /** Pagination GET route
   (Returns all products, limit to 9 products per page for pagination)
@@ -23,6 +23,7 @@ router.get('/products', (request, response, next) => {
 	const pageNumber = request.query.page || 1;
 	let pageSkip = ((pageNumber * itemsPerPage) - itemsPerPage);
 	Product.find().skip(pageSkip).limit(itemsPerPage).exec((err, products) => {
+		if (err) throw err;
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
 		Product.count().exec((err, count) => {
 			if (err) throw err;
@@ -66,13 +67,18 @@ router.post('/products/:product/reviews', (request, response) => {
   });
 
 /** DELETE route for /products/:product
-(Deletes a product in the database based on the client supplied product ID) */
-
+(Deletes a product and the reviews associated with that product
+	 from their respective collections based on the client supplied product ID) */
 router.delete('/products/:product', (request, response) => {
 	Product.findOneAndDelete({ _id: request.product[0]._id }, (err, product) => {
 		if (err) throw err;
-		response.send('Successfully deleted product');
-	})
-})
+		product.reviews.forEach((review) => {
+			Review.findOneAndDelete({ _id: review._id }, (err) => {
+				if (err) throw err;
+			});
+		});
+		response.send('Successfully deleted product and reviews associated with that product');
+	});
+});
 
   module.exports = router;

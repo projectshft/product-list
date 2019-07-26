@@ -32,7 +32,16 @@ router.get('/generate-fake-data', (req, res, next) => {
 //MAYBE ADD WAY TO SHOW REVIEWS WHEN THIS RUNS
 router.get('/products', (req, res, next) => {
     const perPage = 9
-  
+  //WHAT IF THEY DON"T PASS IN A CATEGORY
+  //GIVE AN ERROR IF THE CATEGORY DOESN"T EXIST
+    //test the price query to see whether the user wants ascending or descending prices
+    let sortVariable;
+    if(req.query.price == 'highest') {
+        sortVariable = -1;
+    } else if (req.query.price == 'lowest') {
+        sortVariable = 1
+    }
+
     const category = req.query.category
     // return the first page by default
     const page = req.query.page || 1
@@ -41,6 +50,7 @@ router.get('/products', (req, res, next) => {
       .find({category: category})
       .skip((perPage * page) - perPage)
       .limit(perPage)
+      .sort({price: sortVariable})
       .exec((err, products) => {
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.countDocuments().exec((err, count) => {

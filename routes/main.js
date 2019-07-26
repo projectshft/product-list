@@ -49,7 +49,7 @@ router.get('/products', (req, res, next) => {
 
   const numItemsToSkip = (pageNum - 1) * PRODUCTS_PER_PAGE;
   
-  Product.find()
+  Product.find({ enabled: true })
     .skip(numItemsToSkip)
     .limit(PRODUCTS_PER_PAGE)
     .exec((err, products) => {
@@ -118,6 +118,39 @@ router.get('/reviews', (req, res, next) => {
         });
       });
     });
+});
+
+router.post('/products', (req, res, next) => {
+  //validate request body
+  //if nothing sent, req.body is empty object
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).send('Invalid post body');
+  }
+
+  if (  !req.body.name ||
+        !req.body.category ||
+        !req.body.price ||
+        !req.body.image ) {
+    return res.status(400).send('Invalid post body');
+  }
+
+  //create new post with data, needs reviews [] and enabled
+  const newProduct = new Product({
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+    reviews: [],
+    enabled: true
+  });
+
+  //return copy of sent data on success
+  newProduct.save((err, result) => {
+    if (err) throw err;
+    return res.status(200).send(result);
+  });
+
+  //do we error here?
 });
 
 module.exports = router

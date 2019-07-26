@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const ReviewSchema = new Schema({
   reviewText: String,
   author: String,
-  product: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
+  product: { type: Schema.Types.ObjectId, ref: 'Product' }
 })
 
 module.exports = mongoose.model('Review', ReviewSchema)

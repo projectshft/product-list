@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../actions'
+import { fetchProducts } from '../actions';
+import Searchbar from './searchbar';
+import Filter from './filter';
+import Sort from './sort';
 
 class AppIndex extends Component {
     //once the components mounts to the DOM populate the store with data
@@ -39,12 +42,21 @@ class AppIndex extends Component {
 
     render() {
         return (
-            <div>
-            <h1 className='title'> Products </h1>
-                <div className = 'container'>
-                    <div className = 'row'>
-                        {this.renderProducts()}
+            <div className = 'container'>
+             <h1 className='title'> Products </h1>
+                <div className = 'row'>   
+                    <div className ='col-md-4'>
+                        <Searchbar />
                     </div>
+                    <div className ='col-md-4'>
+                        <Filter />
+                    </div>
+                    <div className ='col-md-4'>
+                         <Sort />
+                    </div>
+                </div>
+                <div className = 'row'>
+                    {this.renderProducts()}
                 </div>
             </div>
         )

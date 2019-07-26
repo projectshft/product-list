@@ -65,6 +65,7 @@ router.get( '/products', ( req, res, next ) => {
     let sortType = '';
     let exclude = null;
     let query =  { enabled: true };
+    let searchResultsCount = null
 
     if (req.query.category && typeof req.query.category === "string" ) {
         query.category = req.query.category
@@ -86,13 +87,13 @@ router.get( '/products', ( req, res, next ) => {
     Product
         .find( query, exclude , sort )
         .skip(( perPage * page ) - perPage )
-        .limit( perPage ) 
+        .limit( perPage )
         .exec(( err, products ) => {
 
-            Product.count().exec(( err, count ) => {
-                if ( err ) return next( err ); 
+            Product.countDocuments( query, (err, count) => {
+                searchResultsCount = count;
 
-                res.send( products );
+                res.send( {count:searchResultsCount, products:products} );
             })
         })
   });

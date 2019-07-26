@@ -30,9 +30,14 @@ class SearchRow extends React.Component {
         this.setState({ sort = event.target.value })
     }
 
+    componentDidUpdate() {
+        this.props.fetchProducts( this.state )
+    }
+
     render() {
         return (
             <div>
+                <SearchBar />
 
             </div>
         )

@@ -67,6 +67,7 @@ class App extends Component {
   //   });
   // }
 
+ // return '';
   return this.props.products.map((product) => {
     return (
       <Product product={product} key={product._id}/>
@@ -93,7 +94,11 @@ class App extends Component {
 }
 
 
-function mapStateToProps({ products }) {
+// function mapStateToProps(state) {
+//   return { products: state.products };
+// }
+
+function mapStateToProps({products}) {
   return { products };
 }
 

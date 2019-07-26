@@ -39,26 +39,54 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {
   const perPage = 9
   // return the first page by default
-  const page = req.query.page || 1
-
+  let page = Math.max(req.query.page, 1)
+  let productCount = 0
   // get category (for filter) and price (for sorting)  
-  const category = req.query.category
-  const price = req.query.price
+  const category = req.query.category || ''
+  const price = req.query.price || ''
   console.log(category, price)
-  // const findCategory = {category: category}; 
+  const findCategory = (category.length > 0)? {category: category} : {} 
 
-  Product
-    .find() // findCategory
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      // use `count` to know how many are coming back
-      Product.countDocuments().exec((err, count) => { // findCategory
+  Product.countDocuments(findCategory).exec((err, count) => {
+    if (err) return next(err)
+    console.log(count)
+    page = Math.min(page, Math.max(Math.ceil(count/perPage), 1))
+    productCount = count
+    console.log(page)
+
+    Product.find(findCategory)
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
         if (err) return next(err)
-        console.log(count)
-        res.send(products)
+        res.send({ 
+          count: productCount, 
+          page: page,
+          products: products
+        })
       })
-    })
+
+    // res.send({ 
+    //   count: productCount, 
+    //   page: page
+    // })
+  })
+
+  // Product
+  //   .find(findCategory) // findCategory
+  //   .skip((perPage * page) - perPage)
+  //   .limit(perPage)
+  //   .exec((err, products) => {
+  //     // use `count` to know how many are coming back
+  //     Product.countDocuments(findCategory).exec((err, count) => { // findCategory
+  //       if (err) return next(err)
+  //       console.log(count)
+  //       res.send({
+  //         products: products, 
+  //         count: count
+  //       })
+  //     })
+  //   })
 })
 
 // GET /products/:productId --- returns a specific product by its id

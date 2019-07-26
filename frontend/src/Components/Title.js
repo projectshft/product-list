@@ -1,4 +1,5 @@
 import React from 'react';
+import '../CSS/title.css';
 
 const Title = () => (
   <div className='container'>

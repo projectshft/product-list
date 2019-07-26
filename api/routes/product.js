@@ -2,6 +2,25 @@ const router = require('express').Router();
 const Product = require('../models/product');
 const Review = require('../models/review');
 
+//double-check our productId
+router.param('productId', function (req, res, next) {
+  let { productId } = req.params;
+  //check here for incorrect productId format
+  if (productId.length !== 24){
+    res.status(404).send('Incorrect Product ID, please update and try again.');
+  }
+  else {
+    Product.find({ _id: productId }).exec((err, result) => {
+      if(result === undefined){
+        res.status(404).send('Product not found, please check Product ID.');
+      } else {
+        req.product = result[0];
+        next();
+      }
+    })
+  }
+});
+
 //GET route with pagination
 router.get('/', (req, res, next) => {
   let itemsPerPage = 9;
@@ -16,7 +35,7 @@ router.get('/', (req, res, next) => {
     let upperCaseCategory = category.slice(0,1).toUpperCase() + category.slice(1,(category.length)).toLowerCase();
     searchOptions['category'] = upperCaseCategory;
   }
-  console.log(searchOptions);
+
   //we'll check our price sort as well
   let sortValue = {};
   if(price == 'highest'){
@@ -25,25 +44,17 @@ router.get('/', (req, res, next) => {
     sortValue['price'] = 1;
   }
 
-  console.log(sortValue);
-  
   Product.find(searchOptions).skip(pageSkip).limit(itemsPerPage).sort(sortValue).exec((err, result) => {
     Product.count().exec((err, count) => {
       if (err) throw err;
-      res.send(result);
+      res.status(200).send(result);
     })
   })
 });
 
 //GET route for /products/:productId
 router.get('/:productId', (req, res, next) => {
-  let { productId } = req.params;
-  //check here for incorrect productId format
-
-  Product.find({_id: productId}).exec((err, result) => {
-    if (err) throw err;
-    res.send(result);
-  })
+  req.product ? res.status(200).send(req.product) : res.status(404).send('Product not found.');
 });
 
 //POST route for /products (adds product to DB)
@@ -60,27 +71,32 @@ router.post('/', (req, res, next) => {
 
 //POST route for /products/:productId/reviews
 router.post('/:productId/reviews', (req, res, next) => {
-  let { productId } = req.params;
+  if (!req.product) {
+    res.status(404).send('Product not found.')
+  };
+
   let { author, reviewText } = req.body;
   //checks below here for request body data validation
+  let newReview = new Review();
+  newReview['author'] = author;
+  newReview['reviewText'] = reviewText;
+  newReview.product = req.product;
+  newReview.save();
+  req.product.reviews.push(newReview._id);
 
-
-  let newReview = {
-    author,
-    reviewText,
-    product: productId
-  };
-  Review.create(newReview, function (err, result) {
-    if (err) return handleError(err);
-    // saved!
+  Product.update({ _id: req.product._id }, { reviews: req.product.reviews }, function (err, result) {
+    if (err) throw err;
     res.send(result);
   });
 });
 
 //DELETE route for /products/:productId
 router.delete('/:productId', (req, res, next) => {
-  let { productId } = req.params;
-  Product.deleteOne({ _id: productId }).exec((err, result) => {
+  if(!req.product){
+    res.status(404).send('Product not found.')
+  };
+
+  Product.deleteOne({ _id: req.product._id  }).exec((err, result) => {
     if (err) throw err;
     res.send(result);
   })

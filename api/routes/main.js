@@ -26,12 +26,21 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png';
+    product.reviews = [];
+    for (let i = 0; i < 3; i++) {
+      const review = new Review();
+      review.author = faker.name.firstName() + ' ' + faker.name.lastName();
+      review.reviewText = faker.lorem.sentences();
+      review.product = product;
+      review.save()
+      product.reviews.push(review);
+    }
 
     product.save((err) => {
       if (err) throw err
     })
   }
-  res.end()
+  res.status(200).end()
 });
 
 //new funny fake data, less free but same
@@ -47,7 +56,7 @@ router.get('/generate-fake-reviews', (req, res, next) => {
       if (err) throw err
     })
   }
-  res.end()
+  res.status(200).end()
 });
 
 //new funny fake data, less free but same
@@ -61,7 +70,7 @@ router.get('/generate-fake-categories', (req, res, next) => {
       if (err) throw err
     })
   }
-  res.end()
+  res.status(200).end()
 });
 
 module.exports = router;

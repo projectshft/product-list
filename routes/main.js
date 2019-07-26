@@ -214,26 +214,24 @@ router.delete('/products/:product', (req, res, next) => {
   }
 
   //find by id, update enabled to false
-  Product.findByIdAndUpdate(productId, {enabled: false}, (err, product) => {
+  Product.findByIdAndUpdate(productId, {enabled: false, updated_at: new Date()}, (err, product) => {
     if (err) throw err;
     if (!product || product.enabled === false) {
       return res.status(404).send('Product not found.');
     }
 
-    product.updated_at = new Date();
+    // product.updated_at = new Date();
 
     product.reviews.forEach(review => {
       //find by id and update to enabled: false
-      Review.findByIdAndUpdate(review, {enabled: false}, (err, r) => {
+      Review.findByIdAndUpdate(review, {enabled: false, updated_at: new Date()}, (err, r) => {
         if (err) throw err;
-        r.updated_at = new Date();
+        // r.updated_at = new Date();
       });
     });
 
     return res.status(200).send(product);
-  })
-
-  
+  });
 });
 
 module.exports = router

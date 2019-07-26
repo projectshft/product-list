@@ -10,5 +10,6 @@ If you have any questions about this project or the program in general, visit pr
 - [X] product is null if not found
 - [X] delete also deletes reviews
 - [ ] add pre for findbyidandupdate to change updated_at
-      doesnt work :( updated in find manually
-- [ ] currently remove review
+      doesnt work, updated in find manually
+- [ ] currently remove review does not delete it from reviews [] in product
+- [ ] add mongo indexes - by category, search terms?

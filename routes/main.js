@@ -48,18 +48,27 @@ router.get('/products', (req, res, next) => {
   }
 
   const numItemsToSkip = (pageNum - 1) * PRODUCTS_PER_PAGE;
+  //build search query
+  const { category } = req.query;
+  const searchQuery = { enabled: true };
+  if (category) {
+    searchQuery.category = category;
+  }
   
-  Product.find({ enabled: true })
+  Product.find(searchQuery)
     .skip(numItemsToSkip)
     .limit(PRODUCTS_PER_PAGE)
     .exec((err, products) => {
       if (err) throw err;
 
-      Product.countDocuments()
+      Product.countDocuments(searchQuery)
         .exec((err, count) => {
           //now have access to total product count for future use
           if (err) return next(err);
-          res.send(products);
+          res.send({
+            count,
+            products
+          });
         })
     })
 })

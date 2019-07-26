@@ -35,6 +35,7 @@ router.get('/products', (req, res, next) => {
     let price = req.query.price
     //test the price query to see whether the user wants ascending or descending prices
     let howToSort ={};
+    if (price) {
     if(price == 'highest' || price == 'high') {
         howToSort = {price: -1}
     } else if (price == 'lowest' || price == 'low'  ) {
@@ -43,9 +44,8 @@ router.get('/products', (req, res, next) => {
         res.writeHead(400, 'Invalid price sorting entry. Please enter "highest", "high", "low", or "lowest"');
         console.log(err);
         res.end();
-        
-
     }
+}
 
     const category = req.query.category
     //if a category is defined set categoryToFind to be equal to the category query
@@ -210,7 +210,3 @@ router.delete('/reviews/:review', (req, res, next) => {
     
 
 module.exports = router
-//review
-//5d3a093c64328810fcdd65ab
-
-//5d3a095d1395a939404afc49

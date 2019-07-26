@@ -41,7 +41,10 @@ router.get('/products', (req, res, next) => {
         howToSort = {price: 1}
     } else {
         res.writeHead(400, 'Invalid price sorting entry. Please enter "highest", "high", "low", or "lowest"');
+        console.log(err);
         res.end();
+        
+
     }
 
     const category = req.query.category
@@ -62,6 +65,7 @@ router.get('/products', (req, res, next) => {
       .exec((err, products) => {
           if (products == '') {
               res.writeHead(400, 'Product category not found');
+              console.log(err);
               return res.end();
           }
           if (err) throw err;
@@ -83,6 +87,7 @@ router.get('/products/:product', (req, res, next) => {
         .exec((err,product) => {
             if (err) {
                 res.writeHead(400, 'Product not found. Enter a valid product Id')
+                console.log(err);
                 res.end()
             }
             res.send(product);
@@ -115,11 +120,13 @@ router.post('/products', (req, res, next) => {
     //check to see if the productToAdd has all the properties that are needed to be a 'Product'
     if (!productToAdd.category || !productToAdd.name || !productToAdd.price || !productToAdd.image) {
         res.writeHead(400, 'In order to add a product, it must have a category, name, price, and image');
+        console.log(err);
         res.end();
     }
     //check to see if the price is set to be a number
     if (typeof productToAdd.price !== 'number') {
         res.writeHead(400, 'Price must be of type number')
+        console.log(err);
         res.end();
     }
     //TODO: Go through rest of object and make sure they are strings
@@ -143,11 +150,12 @@ router.post('/products', (req, res, next) => {
 
 router.post('/:product/reviews', (req, res, next) => {
     const productId = req.params.product
-    
+
     const reviewToAdd = req.body
         //check to see if the reviewToAdd has a usernmae and text property
     if (!reviewToAdd.userName || !reviewToAdd.text) {
         res.writeHead(400, 'Reviews must contain a username and text');
+        console.log(err);
         res.end()
     }
 
@@ -165,6 +173,7 @@ router.post('/:product/reviews', (req, res, next) => {
         product.save(err => {
             if (err) throw err
             else console.log(`Product ${productId} reviews succesfully updated`)
+            res.end();
         })
     })
 })
@@ -174,9 +183,14 @@ router.delete('/products/:product', (req, res , next) => {
     
     //delete the product that has an id which matches the productId variable
     Product.deleteOne({_id: productId }, err => {
-        if (err) throw err;
+        if (err) {
+            res.writeHead(400, 'Error trying to delete make sure productId is correct');
+            console.log(err);
+            res.end()
+        };
         console.log(`Product ${productId} succesfully deleted`)
     })
+    res.end();
 })
 
 router.delete('/reviews/:review', (req, res, next) => {
@@ -185,7 +199,11 @@ router.delete('/reviews/:review', (req, res, next) => {
       //delete the product that has an id which matches the productId variable
       Review.deleteOne({_id: reviewId }, err => {
 
-        if (err) console.log(err);
+        if (err) {
+            res.writeHead(400, 'Error trying to delete make sure productId is correct');
+            res.end();
+            console.log(err);
+        };
         console.log(`Review ${reviewId} succesfully deleted`)
     })
 })

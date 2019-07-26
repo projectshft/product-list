@@ -9,7 +9,13 @@ class AppIndex extends Component {
     }
 
     renderProducts() {
-        return <li> hi </li>
+        return this.props.products.map(product => {
+            return (
+                //set up bootstrap stuff
+            )
+        })
+        
+        
     }
 
     render() {

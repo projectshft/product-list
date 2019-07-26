@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { initialSearch } from '../actions';
+import { searchProducts } from '../actions';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ProductGrid from './ProductGrid';
 import SearchBar from './SearchBar';
-import FilterDropdown from './FilterDropdown';
+// import FilterDropdown from './FilterDropdown';
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.initializeSearch();
+    this.props.searchProducts();
   }
 
   render() {
@@ -36,7 +36,7 @@ class App extends Component {
             <SearchBar />
           </div>
           <div className='col-md-7'>
-            <FilterDropdown type={this.props.categories}/>
+            {/* <FilterDropdown type={this.props.categories}/> */}
             
           </div>
         </div>
@@ -54,12 +54,12 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     products: state.products,
-    categories: state.categories
+    // categories: state.categories
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ initialSearch }, dispatch);
+  return bindActionCreators({ searchProducts }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

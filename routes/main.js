@@ -220,10 +220,13 @@ router.delete('/products/:product', (req, res, next) => {
       return res.status(404).send('Product not found.');
     }
 
+    product.updated_at = new Date();
+
     product.reviews.forEach(review => {
       //find by id and update to enabled: false
-      Review.findByIdAndUpdate(review, {enabled: false}, (err) => {
+      Review.findByIdAndUpdate(review, {enabled: false}, (err, r) => {
         if (err) throw err;
+        r.updated_at = new Date();
       });
     });
 

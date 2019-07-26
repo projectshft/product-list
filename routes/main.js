@@ -117,6 +117,10 @@ router.post('/products', (req, res, next) => {
         res.writeHead(400, 'In order to add a product, it must have a category, name, price, and image');
         res.end();
     }
+    if (typeof productToAdd.price !== 'number') {
+        res.writeHead(400, 'Price must be of type number')
+        res.end();
+    }
     
 
     //creating a new product model using information given by the user

@@ -8,8 +8,9 @@ import { getProducts, getMaxPages, getCategory, getPrice, getPage } from "../sel
 class App extends Component {
   constructor() {
     super()
-    this.handlePageClick = this.handlePageClick.bind(this);
+    this.handlePageSelect = this.handlePageSelect.bind(this);
     this.handleCategorySelect = this.handleCategorySelect.bind(this);
+    this.handlePriceSelect = this.handlePriceSelect.bind(this); 
   }
 
   componentDidMount() {
@@ -27,14 +28,19 @@ class App extends Component {
     })
   }
 
-  handlePageClick(event) {
-    event.preventDefault();
+  handlePageSelect(event) {
+    event.preventDefault()
     this.props.fetchProducts(event.target.value, this.props.category, this.props.price)
   }
 
   handleCategorySelect(event) {
-    event.preventDefault();
+    event.preventDefault()
     this.props.fetchProducts(this.props.page, event.target.value, this.props.price)
+  }
+
+  handlePriceSelect(event) {
+    event.preventDefault()
+    this.props.fetchProducts(this.props.page, this.props.category, event.target.value)
   }
 
   renderPagination() {
@@ -47,7 +53,7 @@ class App extends Component {
     }
     return indexList.map(index => {
       return (
-        <button href="#" onClick={this.handlePageClick} key={index} value={index}>{index}</button>
+        <button href="#" onClick={this.handlePageSelect} key={index} value={index}>{index}</button>
       )
     })
   }
@@ -67,6 +73,11 @@ class App extends Component {
         <select className="form-control" id="category-selection" onChange={this.handleCategorySelect} value={this.props.category || ''}>
           <option value="">All</option>
           {this.renderCategories()}
+        </select>
+        <select className="form-control" id="category-selection" onChange={this.handlePriceSelect} value={this.props.price || ''}>
+          <option value="">Select</option>
+          <option value="lowest">Price: Low to High</option>
+          <option value="highest">Price: High to Low</option>
         </select>
         <div className="list-group">
           {this.renderList()}

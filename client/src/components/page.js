@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchPages } from '../actions';
+import { fetchProducts, addPage } from '../actions';
 
 class Page extends Component {
 
     handleClick(e) {
-        let pageNumber = e.target.value
+        let page = e.target.value
+        this.props.addPage(page)
         let category = this.props.category
         let sort = this.props.sort
-        this.props.fetchPages(pageNumber)
+        this.props.fetchProducts(page, category, sort)
     }
 
     renderPages() {
@@ -35,7 +36,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators ({fetchPages}, dispatch)
+    return bindActionCreators ({fetchProducts, addPage}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Page)

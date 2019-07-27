@@ -1,52 +1,22 @@
 import axios from 'axios';
 
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
-export const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
-export const FETCH_SORT = 'FETCH_SORT'
-export const FETCH_CATEGORIES_AND_SORT = 'FETCH_CATEGORIES_AND_SORT'
-export const FETCH_PAGES = 'FETCH_PAGES'
 export const ADD_CATEGORIES = 'ADD_CATEGORIES';
 export const ADD_SORTER = 'ADD_SORTER';
 export const ADD_PAGE = 'ADD_PAGE'
 
 //set up function that loads all posts with no specifications
-export function fetchProducts() {
-    
-    const request = axios.get('http://localhost:8000/products')
+export function fetchProducts (pageNumber,category, sort) {
+    const request = axios.get(`http://localhost:8000/products/`, {
+        params: {
+            category: category,
+            price: sort,
+            page: pageNumber
+        }
+    })
+
     return {
         type: FETCH_PRODUCTS,
-        payload: request
-    }
-}
-export function fetchCategories (category) {
-    const request = axios.get(`http://localhost:8000/products/?category=${category}`)
-    return {
-        type: FETCH_CATEGORIES,
-        payload: request
-    }
-} 
-export function fetchSort (sort) {
-    const request = axios.get(`http://localhost:8000/products/?price=${sort}`)
-    return {
-        type: FETCH_SORT,
-        payload: request
-    }
-}
-
-export function fetchCategoriesAndSort (category, sort) {
-    const request = axios.get(`http://localhost:8000/products/?category=${category}&price=${sort}`)
-    return {
-        type: FETCH_CATEGORIES_AND_SORT,
-        payload: request
-    }
-}
-
-export function fetchPages (pageNumber) {
-    
-    const request = axios.get(`http://localhost:8000/products/?page=${pageNumber}`)
-
-    return {
-        type: FETCH_PAGES,
         payload: request
     }
 }
@@ -72,3 +42,4 @@ export function addPage (data) {
         payload: data
     }
 }
+

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProducts, fetchCategories, fetchSort, fetchCategoriesAndSort } from '../actions';
+import { fetchProducts} from '../actions';
 import Searchbar from './searchbar';
 import Filter from './filter';
 import Sort from './sort';
@@ -10,25 +10,17 @@ import Page from './page'
 class AppIndex extends Component {
     //once the components mounts to the DOM populate the store with data
     componentDidMount() {
-        this.props.fetchProducts()
+        let page = this.props.page
+        let category = this.props.category
+        let sort = this.props.sort
+        this.props.fetchProducts(page, category, sort)
     }
 
     handleClick () {
+        let page = this.props.page
         let category = this.props.category
         let sort = this.props.sort
-        //if sort and category are specified fetch products based on these queries
-        if (sort && category) {
-        this.props.fetchCategoriesAndSort(category, sort)
-        //if only sort is defined fetch products by search query
-        } else if (sort) {
-            this.props.fetchSort(sort)
-        } else if (category) {
-        //if only category is defined fetch products by category query
-            this.props.fetchCategories(category)
-        } else {
-        //if no queries are specifed fetch products with no specifications
-            this.props.fetchProducts()
-        }
+        this.props.fetchProducts(page, category, sort)
 
     }
 
@@ -85,11 +77,11 @@ class AppIndex extends Component {
 }
 
 function mapStateToProps(state) {
-    return {products: state.products, category: state.category, sort: state.sort}
+    return {products: state.products, category: state.category, sort: state.sort, page: state.page}
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators ({fetchProducts, fetchCategories,fetchSort, fetchCategoriesAndSort}, dispatch)
+    return bindActionCreators ({fetchProducts}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppIndex)

@@ -7,15 +7,20 @@ class Sort extends Component {
 
     handleClick(e) {
         e.preventDefault();
-        console.log(e.target.value);
         this.props.addSorter(e.target.value);
     }
 
     render() {
         return (
-        <button value= 'Hight' onClick={this.handleClick.bind(this)}>
-            Price High
-        </button>
+            <div>
+                <h1>Price:</h1>
+                    <button className='btn btn-primary' value= 'low' onClick={this.handleClick.bind(this)}>
+                        Low to High
+                    </button>
+                    <button className='btn btn-primary' value='high' onClick={this.handleClick.bind(this)}>
+                        Hight to Low
+                    </button>
+            </div>
         )
     }
 }

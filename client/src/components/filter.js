@@ -16,7 +16,6 @@ class Filter extends Component {
 
     handleClick(e) {
         e.preventDefault();
-        console.log(e.target.value);
         this.props.addCategory(e.target.value);
     }
 
@@ -24,20 +23,22 @@ class Filter extends Component {
 
     render() {
         return (
-            <button value= 'Home' onClick={this.handleClick.bind(this)}>
-                Home
-            </button>
-        // <div>
-        //     <form onSubmit={this.handleSubmit}>
-        //       <label>Favorite Color</label>
-        //       <Field
-        //         name="favoriteColor"
-        //         component={DropdownList}
-        //         data={colors}
-        //         valueField="value"
-        //         textField="category"/>
-        //     </form>
-        // </div>
+            <div>
+                <h1>Categories: </h1>
+                <button className='btn btn-primary' value= 'Home' onClick={this.handleClick.bind(this)}>
+                    Home
+                </button>
+                <button className='btn btn-primary' value= 'Industrial' onClick={this.handleClick.bind(this)}>
+                    Industrial
+                </button>            
+                <button className='btn btn-primary' value= 'Games' onClick={this.handleClick.bind(this)}>
+                    Games
+                </button>
+                <button className='btn btn-primary' value= 'Toys' onClick={this.handleClick.bind(this)}>
+                    Toys
+                </button>
+        </div>
+       
         )
     }
 }

@@ -68,9 +68,9 @@ class App extends Component {
           <option value="">All</option>
           {this.renderCategories()}
         </select>
-        <ul className="list-group">
+        <div className="list-group">
           {this.renderList()}
-        </ul>
+        </div>
         <div className="pagination">
           {this.renderPagination()}
         </div>

@@ -27,3 +27,8 @@ code {
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+img {
+  max-width:50px;
+  height:auto;
+}

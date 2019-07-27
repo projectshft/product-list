@@ -17,7 +17,7 @@ class AppIndex extends Component {
         let sort = this.props.sort
         //if sort and category are specified fetch products based on these queries
         if (sort && category) {
-        this.props.fetchCategoriesAndSort(sort, category)
+        this.props.fetchCategoriesAndSort(category, sort)
         //if only sort is defined fetch products by search query
         } else if (sort) {
             this.props.fetchSort(sort)

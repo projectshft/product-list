@@ -17,14 +17,26 @@ export function fetchProducts() {
     }
 }
 export function fetchCategories (category) {
-    console.log(category)
+    const request = axios.get(`http://localhost:8000/products/?category=${category}`)
+    return {
+        type: FETCH_CATEGORIES,
+        payload: request
+    }
 } 
 export function fetchSort (sort) {
-    console.log(sort)
+    const request = axios.get(`http://localhost:8000/products/?price=${sort}`)
+    return {
+        type: FETCH_SORT,
+        payload: request
+    }
 }
 
 export function fetchCategoriesAndSort (category, sort) {
-    console.log(category, sort)
+    const request = axios.get(`http://localhost:8000/products/?category=${category}&price=${sort}`)
+    return {
+        type: FETCH_CATEGORIES_AND_SORT,
+        payload: request
+    }
 }
 
 //set up function that allows the user to add a sorter value

@@ -92,7 +92,8 @@ router.get('/products', (req, res, next) => {
             pageNum,
             totalPages,
             products,
-            categories: CATEGORIES
+            categories: CATEGORIES,
+            sortedByPrice: (sortOptions.price) ? sortOptions.price : null
           });
         })
     })

@@ -5,11 +5,18 @@ import { addPage } from '../actions';
 
 class Page extends Component {
 
+    handleClick() {
+        console.log('clicked')
+    }
+
     renderPages() {
-        
-        for (let i = 0; i<5; i++) {
-            return (i)
+        let pages = []
+        for (let i = 1; i<=11; i++) {
+            pages.push(
+               <button className='page' onClick={this.handleClick.bind(this)}>{i}</button>
+                )
         }
+        return pages;
     }
 
     render () {

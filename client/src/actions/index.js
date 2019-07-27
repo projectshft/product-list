@@ -5,19 +5,21 @@ export const FETCH_PRODUCTS = 'fetch_products';
 export const FETCH_BY_CATEGORY = 'fetch_by_category';
 export const UPDATE_STORE_CATEGORY = 'update_store_category';
 export const FETCH_WITH_SORT = 'fetch_with_sort';
+export const UPDATE_SORT_ORDER = 'update_sort_order';
 
-const ROOT_URL = 'http://localhost:8000';
+const ROOT_URL = 'http://localhost:8000/products';
 
 export function fetchProducts(){
-  const request = axios.get(`${ROOT_URL}/products`);
+  const request = axios.get(`${ROOT_URL}`);
   return {
     type: FETCH_PRODUCTS,
     payload: request
   }
 }
 
-export function fetchProductsWithCategory(category){
-  const request = axios.get(`${ROOT_URL}/products?category=${category}`);
+export function fetchProductsWithCategory(sort, category){
+  const request = axios.get(`${ROOT_URL}?category=${category}&&price=${sort}`);
+  console.log(request);
   return{
     type: FETCH_BY_CATEGORY,
     payload: request
@@ -30,9 +32,15 @@ export function updateStoreCategory(category){
   }
 }
 export function fetchProductsWithSort(catQuery, sort){
-  const request = axios.get(`${ROOT_URL}/products?category=${catQuery}&&price=${sort}`);
+  const request = axios.get(`${ROOT_URL}?category=${catQuery}&&price=${sort}`);
   return{
     type: FETCH_WITH_SORT,
     payload: request
+  }
+}
+export function updateSortOrder(sort){
+  return{
+    type: UPDATE_SORT_ORDER,
+    payload: sort
   }
 }

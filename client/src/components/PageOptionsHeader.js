@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProductsWithCategory, updateStoreCategory, fetchProductsWithSort } from '../actions';
+import { fetchProductsWithCategory, updateStoreCategory, fetchProductsWithSort, updateSortOrder } from '../actions';
 
 
 class PageOptionsHeader extends Component {
 
 //two events to dispatch - one to make API call and one to update category property in store
   onCategoryChange = (event) => {
-    this.props.fetchProductsWithCategory(event.target.value);
+    //access sort order from store
+    let sort = this.props.sortOrder;
+    this.props.fetchProductsWithCategory(sort, event.target.value);
     this.props.updateStoreCategory(event.target.value);
   }
 
@@ -16,6 +18,7 @@ class PageOptionsHeader extends Component {
     //access category from redux store
     let catQuery = this.props.category;
     this.props.fetchProductsWithSort(catQuery, event.target.value)
+    this.props.updateSortOrder(event.target.value);
   }
 
 
@@ -52,12 +55,12 @@ class PageOptionsHeader extends Component {
 
 }
 
-function mapStateToProps({ products, category}){
-  return { products, category };
+function mapStateToProps({ products, category, sortOrder}){
+  return { products, category, sortOrder };
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({ fetchProductsWithCategory, updateStoreCategory, fetchProductsWithSort }, dispatch);
+  return bindActionCreators({ fetchProductsWithCategory, updateStoreCategory, fetchProductsWithSort, updateSortOrder }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageOptionsHeader);

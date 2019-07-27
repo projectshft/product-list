@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS, FETCH_CATEGORIES, FETCH_SORT, FETCH_CATEGORIES_AND_SORT } from '../actions'
+import { FETCH_PRODUCTS, FETCH_CATEGORIES, FETCH_SORT, FETCH_CATEGORIES_AND_SORT, FETCH_PAGES } from '../actions'
 
 //set product-reducer which returns the products data from the api 
 export default function(state = [], action) {
@@ -10,6 +10,8 @@ export default function(state = [], action) {
         case FETCH_SORT:
             return action.payload.data
         case FETCH_CATEGORIES_AND_SORT:
+            return action.payload.data
+        case FETCH_PAGES:
             return action.payload.data
         default:
             return state;

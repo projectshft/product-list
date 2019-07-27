@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addPage } from '../actions';
+import { fetchPages } from '../actions';
 
 class Page extends Component {
 
-    handleClick() {
-        console.log('clicked')
+    handleClick(e) {
+        let pageNumber = e.target.value
+        let category = this.props.category
+        let sort = this.props.sort
+        this.props.fetchPages(pageNumber)
     }
 
     renderPages() {
         let pages = []
         for (let i = 1; i<=11; i++) {
             pages.push(
-               <button className='page' onClick={this.handleClick.bind(this)}>{i}</button>
+               <button className='page' value = {i} onClick={this.handleClick.bind(this)}>{i}</button>
                 )
         }
         return pages;
@@ -26,8 +29,13 @@ class Page extends Component {
     } 
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators ({addPage})
+
+function mapStateToProps(state) {
+    return {products: state.products, category: state.category, sort: state.sort}
 }
 
-export default connect(null, mapDispatchToProps)(Page)
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators ({fetchPages}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page)

@@ -4,22 +4,12 @@ import { bindActionCreators } from 'redux';
 import { addCategory } from '../actions';
 
 
-
-// const colors = [ { category: 'Home', value: 'ff0000' },
-// { category: 'Baby', value: '00ff00' },
-// { category: '', value: '0000ff' }, 
-// { category: 'Games', value: '0000ff' }, { category: 'Games', value: '0000ff' }
-//  ]
-
 class Filter extends Component {
     
-
     handleClick(e) {
         e.preventDefault();
         this.props.addCategory(e.target.value);
     }
-
-
 
     render() {
         return (
@@ -37,7 +27,7 @@ class Filter extends Component {
                 <button className='btn btn-primary' value= 'Toys' onClick={this.handleClick.bind(this)}>
                     Toys
                 </button>
-        </div>
+            </div>
        
         )
     }

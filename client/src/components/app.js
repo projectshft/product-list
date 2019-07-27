@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../actions';
+import { fetchProducts, fetchCategories, fetchSort, fetchCategoriesAndSort } from '../actions';
 import Searchbar from './searchbar';
 import Filter from './filter';
 import Sort from './sort';
@@ -12,8 +12,26 @@ class AppIndex extends Component {
         this.props.fetchProducts()
     }
 
+    handleClick () {
+        let category = this.props.category
+        let sort = this.props.sort
+        //if sort and category are specified fetch products based on these queries
+        if (sort && category) {
+        this.props.fetchCategoriesAndSort(sort, category)
+        //if only sort is defined fetch products by search query
+        } else if (sort) {
+            this.props.fetchSort(sort)
+        } else if (category) {
+        //if only category is defined fetch products by category query
+            this.props.fetchCategories(category)
+        } else {
+        //if no queries are specifed fetch products with no specifications
+            this.props.fetchProducts()
+        }
+
+    }
+
     renderProducts() {
-        console.log(this.props.product)
          return this.props.products.map(product => {
             return (
                 //make 3 rows of 3 for the products return from the url
@@ -43,7 +61,7 @@ class AppIndex extends Component {
     render() {
         return (
             <div className = 'container'>
-             <h1 className='title'> Products </h1>
+             <h1 className='title'> Products<button onClick = {this.handleClick.bind(this)}>Get new products</button> </h1>
                 <div className = 'row'>   
                     <div className ='col-md-4'>
                         <Searchbar />
@@ -65,11 +83,11 @@ class AppIndex extends Component {
 }
 
 function mapStateToProps(state) {
-    return {products: state.products}
+    return {products: state.products, category: state.category, sort: state.sort}
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators ({fetchProducts}, dispatch)
+    return bindActionCreators ({fetchProducts, fetchCategories,fetchSort, fetchCategoriesAndSort}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppIndex)

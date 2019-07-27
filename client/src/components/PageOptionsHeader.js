@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProductsWithCategory, updateStoreCategory } from '../actions';
+import { fetchProductsWithCategory, updateStoreCategory, fetchProductsWithSort } from '../actions';
 
 
 class PageOptionsHeader extends Component {
@@ -12,16 +12,38 @@ class PageOptionsHeader extends Component {
     this.props.updateStoreCategory(event.target.value);
   }
 
+  onSortChange = (event) => {
+    this.props.fetchProductsWithSort(event.target.value)
+  }
+
+
+  //search bar has no functionality right now, not doing extension 2
   render(){
     return(
-    <div>
-    <label>Filter by Category: </label>
-    <select name='categoryFilter' onChange={this.onCategoryChange}>
-      <option />
-      <option value='Kids'>Kids</option>
-      <option value='Electronics'>Electronics</option>
-      <option value='Garden'>Garden</option>
-    </select>
+    <div className='container'>
+      <div className='row'>
+       <div className='col-md-4'>
+         <label for='search'>Search</label>
+         <input name='search' type='text'/>
+       </div>
+       <div className='col-md-4 text-right'>
+        <label>Filter by Category: </label>
+        <select name='categoryFilter' onChange={this.onCategoryChange}>
+         <option />
+         <option value='Kids'>Kids</option>
+         <option value='Electronics'>Electronics</option>
+         <option value='Garden'>Garden</option>
+        </select>
+       </div>
+       <div className='col-md-4 text-right'>
+        <label>Sort By: </label>
+        <select name='categoryFilter' onChange={this.onSortChange}>
+         <option />
+         <option value='lowest'>Price: Low to High</option>
+         <option value='highest'>Price: High to Low</option>
+        </select>
+       </div>
+      </div>
     </div>
     );
   }
@@ -29,7 +51,7 @@ class PageOptionsHeader extends Component {
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({ fetchProductsWithCategory, updateStoreCategory }, dispatch);
+  return bindActionCreators({ fetchProductsWithCategory, updateStoreCategory, fetchProductsWithSort }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(PageOptionsHeader);

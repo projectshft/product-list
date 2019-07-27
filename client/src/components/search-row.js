@@ -2,15 +2,17 @@ import React from "react";
 import SearchBar from "./search-bar";
 import { connect } from "net";
 import { bindActionCreators } from "redux";
+import { fetchProducts } from "../actions/index"
 
 class SearchRow extends React.Component {
     constructor() {
         super()
 
         this.state = {
-            query = '',
-            category = null,
-            sort = null
+            query:'',
+            category: null,
+            sort: null,
+            pageNumber: 1
         };
 
         this.onSearch = this.onSearch.bind( this );
@@ -23,11 +25,15 @@ class SearchRow extends React.Component {
     };
 
     onCategoryChange( event ) {
-        this.setState({ category = event.target.value })
+        this.setState({ category: event.target.value })
     };
 
     onSortChange( event ) {
-        this.setState({ sort = event.target.value })
+        this.setState({ sort: event.target.value })
+    }
+
+    componentDidMount() {
+        this.props.fetchProducts( this.state )
     }
 
     componentDidUpdate() {

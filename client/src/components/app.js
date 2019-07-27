@@ -1,8 +1,9 @@
 import React from 'react';
-import SearchRow from "./search-bar";
+import SearchRow from "./search-row";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ResultsList from "./results-list";
+import PageNumbers from "./page-numbers";
 
 class App extends React.Component {
     constructor(props) {
@@ -24,7 +25,13 @@ class App extends React.Component {
                 <div className="row">
                    <SearchRow />
                 </div>
-                <ResultsList />
+                <div className="row">
+                    <ResultsList />
+                </div>
+                <div className="row">
+                    <PageNumbers />
+                </div>
+                
             </div>
 
         )

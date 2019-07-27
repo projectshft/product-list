@@ -16,6 +16,8 @@ const REVIEWS_PER_PAGE = 40;
 
 //helper function to generate review
 
+//helper function to determine page numbers
+
 
 
 router.get('/generate-fake-data', (req, res, next) => {
@@ -64,10 +66,15 @@ router.get('/products', (req, res, next) => {
     .limit(PRODUCTS_PER_PAGE)
     .exec((err, result) => {
       //access to total count for future use
-      Product.countDocuments().exec((err, count) => {
-        if (err) return next(err)
-
-        res.send(result)
+      Product.countDocuments({category: { $regex: new RegExp(filter, 'i')}}).exec((err, count) => {
+        if (err) {
+          return next(err)
+        }else {
+         //calculate total pages for pagination on client-side
+         let totalPages = Math.ceil(count/PRODUCTS_PER_PAGE)
+         result.unshift({pageCount: totalPages});
+         res.send(result)
+        }
       })
     })
   } else{
@@ -75,11 +82,18 @@ router.get('/products', (req, res, next) => {
       .skip((pageNum -1) * PRODUCTS_PER_PAGE)
       .limit(PRODUCTS_PER_PAGE)
       .exec((err, result) => {
+        console.log(result);
       //access to total count for future use
-        Product.countDocuments().exec((err, count) => {
-         if (err) return next(err)
-
-         res.send(result)
+      //note countdocs will not count entire collection if the find parameters are passed in again
+        Product.countDocuments({category: { $regex: new RegExp(filter, 'i')}}).exec((err, count) => {
+         if (err) {
+           return next(err)
+         }else {
+          //calculate total pages for pagination on client-side
+          let totalPages = Math.ceil(count/PRODUCTS_PER_PAGE)
+          result.unshift({pageCount: totalPages});
+          res.send(result)
+         }
       })
     })
   }

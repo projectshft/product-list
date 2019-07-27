@@ -55,8 +55,9 @@ class PageOptionsHeader extends Component {
 
 }
 
-function mapStateToProps({ products, category, sortOrder}){
-  return { products, category, sortOrder };
+//header component will need access category, sortOrder from redux store
+function mapStateToProps({ category, sortOrder}){
+  return { category, sortOrder };
 }
 
 function mapDispatchToProps(dispatch){

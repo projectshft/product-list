@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../Actions';
 
-const ProductsList = () => (
-  <div className='container'>
-    products list placeholder
-  </div>
-);
+class ProductsList extends Component {
+  componentDidMount() {
+    this.props.fetchProducts({});
+  }
 
-export default ProductsList;
+  render() {
+    return (
+      <div className='container'>
+        products list placeholder
+      </div>
+    )
+  }
+}
+
+//MAPPING ALL STATE FOR TESTING, CHANGE
+function mapStateToProps(state) {
+  return {...state};
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchProducts }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsList);

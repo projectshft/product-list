@@ -1,18 +1,18 @@
 import { combineReducers } from "redux";
 import { FETCH_PRODUCTS } from "../actions";
 
-const productsReducer = function (state = [], action) {
+const productsReducer = function (state = {'products': []}, action) {
   switch (action.type) {
     case FETCH_PRODUCTS:
       console.log(action.payload.data)
-      return (!action.payload.data)? state: action.payload.data.products;
+      return (!action.payload.data)? state: Object.assign({}, state, action.payload.data);
     default:
       return state;
   }
 }
 
 const rootReducer = combineReducers({
-  products: productsReducer
+  data: productsReducer
 });
 
 export default rootReducer;

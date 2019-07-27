@@ -80,6 +80,8 @@ router.get('/products', (req, res, next) => {
           count: productCount, 
           page: page,
           maxPages: maxPages, 
+          category: category, 
+          price: price, 
           products: products
         })
       })

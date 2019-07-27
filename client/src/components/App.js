@@ -10,64 +10,15 @@ class App extends Component {
   //     data: []
   //   };
 
-  //   componentDidMount() {
-  //     // Call our fetch function below once the component mounts
-  //   this.callBackendAPI()
-  //     .then(res => this.setState({ data: res[0].name }))
-  //     .catch(err => console.log(err));
-  // }
-  //   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-  // callBackendAPI = async () => {
-  //   const response = await fetch('/products');
-  //   const body = await response.json();
-
-  //   if (response.status !== 200) {
-  //     throw Error(body.message) 
-  //   }
-  //   return body;
-  // };
-
-  //   render() {
-  //     return (
-  //       <div className="App">
-  //         <header className="App-header blah">
-  //           <h1 className="App-title">{this.state.data} hello</h1>
-  //         </header>
-  //       </div>
-  //     );
-  //   }
-
   componentDidMount() {
     this.props.fetchProducts()
-    // this.callBackendAPI()
-    //   .then(() => this.renderList())
-    //   .catch(err => console.log(err));
   }
 
-  // callBackendAPI = async () => {
-  //   const response = await this.props.fetchProducts()
-  //   const body = await response.json();
-
-  //   if (response.status !== 200) {
-  //     throw Error(body.message) 
-  //   }
-  //   return body;
-  // };
-
   renderList() {
-  //   if (!this.props.products) {
-  //     return (<li>nothing yet</li>)
-  //   } else {
-  //   return this.props.products.map(product => {
-  //     return (
-  //       <li key={product._id} className="list-group-item">
-  //         {products.name}
-  //       </li>
-  //     );
-  //   });
-  // }
+    if (!this.props.products) {
+      return <div>loading...</div>;
+    }
 
- // return '';
   return this.props.products.map((product) => {
     return (
       <Product product={product} key={product._id}/>
@@ -77,12 +28,15 @@ class App extends Component {
   }
 
   render() {
+    const categories = ["Computers", "Toys", "Games", "Movies", "Jewelery", "Sports", "Kids", "Industrial", "Beauty", "Music", "Clothing",  "Home", "Shoes", "Tools", "Baby", "Books",  "Garden", "Electronics", "Health", "Outdoors", "Automotive", "Grocery"]   
     return (
       <div className="App">
         <h1>Products</h1>
-        <select className="form-control" id="category-selection">
-          <option value="" selected>Select Category (optional)</option>
-          <option value="Beauty">Beauty</option>
+        <select className="form-control" id="category-selection" defaultValue="">
+          <option value="">select (optional)</option>
+          {categories.map((category,index) =>
+            <option key={index} value={category}>{category}</option>
+          )}
         </select>
         <ul className="list-group">
           {this.renderList()}
@@ -98,8 +52,9 @@ class App extends Component {
 //   return { products: state.products };
 // }
 
-function mapStateToProps({products}) {
-  return { products };
+function mapStateToProps(state) {
+  console.log(state.data)
+  return { products : state.data.products };
 }
 
 function mapDispatchToProps(dispatch) {

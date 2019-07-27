@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProductsWithCategory } from '../actions';
+import { fetchProductsWithCategory, updateStoreCategory } from '../actions';
 
 
 class PageOptionsHeader extends Component {
 
-
+//two events to dispatch - one to make API call and one to update category property in store
   onCategoryChange = (event) => {
     this.props.fetchProductsWithCategory(event.target.value);
+    this.props.updateStoreCategory(event.target.value);
   }
 
   render(){
@@ -28,7 +29,7 @@ class PageOptionsHeader extends Component {
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({ fetchProductsWithCategory }, dispatch);
+  return bindActionCreators({ fetchProductsWithCategory, updateStoreCategory }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(PageOptionsHeader);

@@ -41,7 +41,7 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 router.get('/products', (req, res, next) => {
-  const pageNum = req.query.page || 1;
+  const pageNum = +req.query.page || 1;
   //validate pageNum - must be >= 1
   if (pageNum < 1) {
     return res.status(400).send('Invalid page number.');
@@ -79,6 +79,7 @@ router.get('/products', (req, res, next) => {
           if (err) return next(err);
           res.send({
             count,
+            pageNum,
             products
           });
         })
@@ -170,8 +171,6 @@ router.post('/products', (req, res, next) => {
     if (err) throw err;
     return res.status(200).send(result);
   });
-
-  //do we error here?
 });
 
 router.post('/:product/reviews', (req, res, next) => {

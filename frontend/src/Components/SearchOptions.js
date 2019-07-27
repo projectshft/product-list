@@ -9,3 +9,5 @@ const SearchOptions = () => (
 );
 
 export default SearchOptions;
+
+//lifecycle methods?

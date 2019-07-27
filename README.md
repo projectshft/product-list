@@ -26,12 +26,12 @@ BACKEND IMPROVEMENTS
 - [ ] add middleware to only find documents with { enable: true }
 
 FRONTEND PLAN
-- [ ] initial action and reducer to call api
-  - [ ] redux promise middleware
+- [X] initial action and reducer to call api
+  - [X] redux promise middleware
 
 - [ ] ProductsList - container?
   - [ ] mapStateToProps
-    - [ ] products array
+    - [X] products array
     - [ ] number of items per page? or calculated?
     - [ ] number of pages
     - [ ] current page
@@ -70,3 +70,7 @@ EXTENSION - DO REST FIRST
     - [ ] last search term
   - [ ] mapDispatchToProps
     - [ ] on submit action - add/change search query i.e. 'search=laptop' in get request
+
+
+notes
+  shouldcomponentupdate

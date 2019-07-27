@@ -7,6 +7,15 @@ const mongoose = require('mongoose')
 const PRODUCTS_PER_PAGE = 9;
 const REVIEWS_PER_PAGE = 40;
 
+let CATEGORIES;
+
+//get categories from the database on load
+Product.distinct('category', (err, categories) => {
+  if (err) throw err;
+  console.log('Saving all possible categories from database collections', categories);
+  CATEGORIES = categories;
+});
+
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
@@ -75,12 +84,15 @@ router.get('/products', (req, res, next) => {
 
       Product.countDocuments(searchQuery)
         .exec((err, count) => {
-          //now have access to total product count for future use
           if (err) return next(err);
+          //calculate number of pages so client doesn't have to
+          const totalPages = Math.ceil(count/PRODUCTS_PER_PAGE);
           res.send({
             count,
             pageNum,
-            products
+            totalPages,
+            products,
+            categories: CATEGORIES
           });
         })
     })

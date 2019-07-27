@@ -11,7 +11,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
-//should I keep top level app or replace with the components in app?
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <App />

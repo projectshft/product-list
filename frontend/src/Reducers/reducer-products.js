@@ -7,7 +7,12 @@ export default function (state = {}, action) {
     case FETCH_PRODUCTS:
       console.log(action.payload);
       console.log(action.payload.data);
-      return _.mapKeys(action.payload.data.products, '_id');
+      return {
+        products: {..._.mapKeys(action.payload.data.products, '_id')},
+        pageNum: action.payload.data.pageNum,
+        totalProducts: action.payload.data.count,
+        categories: action.payload.data.categories
+      };
     default:
       return state;
   }

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const mainRoute = require('./Server-Side/routes/main')
 const productsRoute = require('./Server-Side/routes/products')
 const reviewsRoute = require('./Server-Side/routes/reviews')
+const cors = require('cors')
 
 mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true})
 
@@ -13,6 +14,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
 }))
+app.use(cors());
 app.use(mainRoute)
 app.use(productsRoute)
 app.use(reviewsRoute)

@@ -13,7 +13,9 @@ class PageOptionsHeader extends Component {
   }
 
   onSortChange = (event) => {
-    this.props.fetchProductsWithSort(event.target.value)
+    //access category from redux store
+    let catQuery = this.props.category;
+    this.props.fetchProductsWithSort(catQuery, event.target.value)
   }
 
 
@@ -50,9 +52,13 @@ class PageOptionsHeader extends Component {
 
 }
 
+function mapStateToProps({ products, category}){
+  return { products, category };
+}
+
 function mapDispatchToProps(dispatch){
   return bindActionCreators({ fetchProductsWithCategory, updateStoreCategory, fetchProductsWithSort }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(PageOptionsHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(PageOptionsHeader);
 

@@ -6,6 +6,7 @@ export const FETCH_SORT = 'FETCH_SORT'
 export const FETCH_CATEGORIES_AND_SORT = 'FETCH_CATEGORIES_AND_SORT'
 export const ADD_CATEGORIES = 'ADD_CATEGORIES';
 export const ADD_SORTER = 'ADD_SORTER';
+export const ADD_PAGE = 'ADD_PAGE'
 
 //set up function that loads all posts with no specifications
 export function fetchProducts() {
@@ -50,6 +51,13 @@ export function addSorter(data) {
 export function addCategory(data) {
     return {
         type: ADD_CATEGORIES,
+        payload: data
+    }
+}
+
+export function addPage (data) {
+    return {
+        type: ADD_PAGE,
         payload: data
     }
 }

@@ -5,6 +5,7 @@ import { fetchProducts, fetchCategories, fetchSort, fetchCategoriesAndSort } fro
 import Searchbar from './searchbar';
 import Filter from './filter';
 import Sort from './sort';
+import Page from './page'
 
 class AppIndex extends Component {
     //once the components mounts to the DOM populate the store with data
@@ -76,6 +77,7 @@ class AppIndex extends Component {
                 <div className = 'row'>
                     {this.renderProducts()}
                 </div>
+                <Page />
             </div>
         )
     }

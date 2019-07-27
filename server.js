@@ -1,9 +1,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const mainRoute = require('./routes/main')
-const productsRoute = require('./routes/products')
-const reviewsRoute = require('./routes/reviews')
+const mainRoute = require('./Server-Side/routes/main')
+const productsRoute = require('./Server-Side/routes/products')
+const reviewsRoute = require('./Server-Side/routes/reviews')
 
 mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true})
 
@@ -17,7 +17,7 @@ app.use(mainRoute)
 app.use(productsRoute)
 app.use(reviewsRoute)
 
-const mainRoutes = require('./routes/main')
+const mainRoutes = require('./Server-Side/routes/main')
 
 app.use(mainRoutes)
 

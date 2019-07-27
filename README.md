@@ -30,14 +30,13 @@ FRONTEND PLAN
   - [X] redux promise middleware
 
 - [ ] ProductsList - container?
-  - [ ] mapStateToProps
+  - [X] mapStateToProps
     - [X] products array
-    - [ ] number of items per page? or calculated?
-    - [ ] number of pages
-    - [ ] current page
+    - [X] number of pages
+    - [X] current page
   - [ ] mapDispatchToProps - WOULD IT GO HERE OR IN PRODUCT COMPONENT?
-  - [ ] map products array from store to Product components
-  - [ ] send product to Product component as prop
+  - [X] map products array from store to Product components
+  - [X] send product to Product component as prop
 
 - [ ] Product (component inside ProductsList)
   - [ ] product passed in through props (do not pass all products down!)
@@ -70,6 +69,8 @@ EXTENSION - DO REST FIRST
     - [ ] last search term
   - [ ] mapDispatchToProps
     - [ ] on submit action - add/change search query i.e. 'search=laptop' in get request
+
+- [ ] selectors for mapStateToProps
 
 
 notes

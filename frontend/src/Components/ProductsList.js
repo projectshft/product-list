@@ -7,6 +7,7 @@ import _ from 'lodash';
 
 class ProductsList extends Component {
   componentDidMount() {
+    //fetch products takes an options object as argument
     this.props.fetchProducts({});
   }
 
@@ -16,7 +17,7 @@ class ProductsList extends Component {
       return <div>Uh oh something went wrong!</div>
     }
 
-    return _.map(this.props.productData.products, product => (
+    return _.map(this.props.products, product => (
       <ProductCard key={product._id} product={product} />
     ));
   }
@@ -24,16 +25,18 @@ class ProductsList extends Component {
   render() {
     return (
       <div className='container'>
-        products list placeholder
-        {this.renderProducts()}
+        <div className='row'>
+          {this.renderProducts()}
+        </div>
       </div>
     )
   }
 }
 
-//MAPPING ALL STATE FOR TESTING, CHANGE
 function mapStateToProps(state) {
-  return {...state};
+  return {
+    products: state.productData.products
+  };
 }
 
 function mapDispatchToProps(dispatch) {

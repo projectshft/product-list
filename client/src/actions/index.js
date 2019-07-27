@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 export const FETCH_PRODUCTS = 'fetch_products';
 export const FETCH_BY_CATEGORY = 'fetch_by_category';
 export const UPDATE_STORE_CATEGORY = 'update_store_category';
@@ -28,8 +29,8 @@ export function updateStoreCategory(category){
     payload: category
   }
 }
-export function fetchProductsWithSort(sort){
-  const request = axios.get(`${ROOT_URL}/products?price=${sort}`);
+export function fetchProductsWithSort(catQuery, sort){
+  const request = axios.get(`${ROOT_URL}/products?category=${catQuery}&&price=${sort}`);
   return{
     type: FETCH_WITH_SORT,
     payload: request

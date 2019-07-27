@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { addSorter } from '../actions'
 import { bindActionCreators } from 'redux';
 
 class Sort extends Component {
+
+    handleClick(e) {
+        e.preventDefault();
+        console.log(e.target.value);
+        addSorter(e.target.value);
+    }
+
     render() {
         return (
-            <div>Sort</div>
+        <button value= 'Hight' onClick={this.handleClick}>
+            Price High
+        </button>
         )
     }
 }
 
 
-function mapStateToProps(state) {
-    return {products: state.products}
+
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addSorter }, dispatch);
 }
 
-export default connect (mapStateToProps)(Sort);
+export default connect (null, mapDispatchToProps)(Sort);

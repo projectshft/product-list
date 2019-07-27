@@ -14,6 +14,7 @@ export function fetchProducts() {
 }
 //set up function that allows the user to add a sorter value
 export function addSorter(data) {
+    console.log(data,'was passed to sorter action')
     return {
         type: ADD_SORTER,
         payload: data
@@ -21,6 +22,7 @@ export function addSorter(data) {
 }
 //set up function that allows the user to add a category
 export function addCategory(data) {
+    console.log(data, 'was passed to action')
     return {
         type: ADD_CATEGORIES,
         payload: data

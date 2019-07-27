@@ -15,25 +15,29 @@ const colors = [ { category: 'Home', value: 'ff0000' },
 class Filter extends Component {
     
 
-    handleSubmit() {
-        console.log('hi')
+    handleClick(e) {
+        e.preventDefault();
+        console.log(e);
     }
 
 
 
     render() {
         return (
-        <div>
-            <form onSubmit={this.handleSubmit}>
-              <label>Favorite Color</label>
-              <Field
-                name="favoriteColor"
-                component={DropdownList}
-                data={colors}
-                valueField="value"
-                textField="category"/>
-            </form>
-        </div>
+            <button onClick={this.handleClick}>
+                Home
+            </button>
+        // <div>
+        //     <form onSubmit={this.handleSubmit}>
+        //       <label>Favorite Color</label>
+        //       <Field
+        //         name="favoriteColor"
+        //         component={DropdownList}
+        //         data={colors}
+        //         valueField="value"
+        //         textField="category"/>
+        //     </form>
+        // </div>
         )
     }
 }

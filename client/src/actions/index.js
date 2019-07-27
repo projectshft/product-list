@@ -14,7 +14,6 @@ export function fetchProducts() {
 }
 //set up function that allows the user to add a sorter value
 export function addSorter(data) {
-    const data = data;
     return {
         type: ADD_SORTER,
         payload: data
@@ -22,7 +21,6 @@ export function addSorter(data) {
 }
 //set up function that allows the user to add a category
 export function addCategory(data) {
-    const data = data;
     return {
         type: ADD_CATEGORIES,
         payload: data

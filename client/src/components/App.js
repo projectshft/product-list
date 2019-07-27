@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Title from './Title';
 import ProductList from './ProductList'
 import { connect } from 'react-redux';
-import PageOptionsForm from './PageOptionsForm';
+import PageOptionsHeader from './PageOptionsHeader';
 
 //commented out to test if App can be dumb component
 // class App extends Component {
@@ -25,7 +25,7 @@ import PageOptionsForm from './PageOptionsForm';
 const App = () => (
   <div>
     <Title/>
-    <PageOptionsForm/>
+    <PageOptionsHeader/>
     <ProductList/>
   </div>
 )

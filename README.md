@@ -6,6 +6,13 @@ If you have any questions about this project or the program in general, visit pr
 
 ####TODO
 
+restart/sleep checklist
+- [X] start mongod in cmd
+- [X] start mongo in cmd
+- [X] start backend server nodemon
+- [X] start react app
+- [X] if time check installing mongo in wsl
+
 BACKEND IMPROVEMENTS
 - [ ] faker randomize images
 - [ ] make sure all gets check enabled

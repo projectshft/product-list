@@ -9,17 +9,18 @@ const SortOptions = ({ currentCategory, sortedByPrice, fetchProducts }) => {
   const Select = (props) => {
     return (
       <select {...props.input}>
-        <option value=''>Sort by:</option>
-        <option key='lowest' value='lowest'>Lowest Price</option>
-        <option key='highest' value='highest'>Highest Price</option>
+        <option value=''>None</option>
+        <option key='lowest' value='lowest'>Price: Low to High</option>
+        <option key='highest' value='highest'>Price: High to Low</option>
       </select>
     )
   }
 
   const handleSubmit = (e) => {
+    let categoryRequest = (currentCategory) ? currentCategory.categoryFilter : '';
     fetchProducts({
       page: 1,
-      category: currentCategory.categoryFilter,
+      category: categoryRequest,
       price: e.target.value
     });
   }
@@ -27,6 +28,7 @@ const SortOptions = ({ currentCategory, sortedByPrice, fetchProducts }) => {
   return (
     <div className='col-md-4 text-center'>
       <form onChange={e => handleSubmit(e)}>
+        Sort by: 
         <Field
           name='sortOptions'
           label='sortOptions'

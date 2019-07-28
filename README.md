@@ -58,11 +58,11 @@ FRONTEND PLAN
   - [X] mapDispatchToProps
     - [X] on change action - add/change category filter i.e. 'category=computers' in get request
 
-- [ ] SortPrice - same as above (component inside SearchOptions)
-  - [ ] mapStateToProps
-    - [ ] current sort, starts at null
-  - [ ] mapDispatchToProps
-    - [ ] on change action - add/change sort i.e. 'price=highest' in get request
+- [X] SortPrice - same as above (component inside SearchOptions)
+  - [X] mapStateToProps
+    - [X] current sort, starts at null
+  - [X] mapDispatchToProps
+    - [X] on change action - add/change sort i.e. 'price=highest' in get request
 
 EXTENSION - DO REST FIRST
 - [ ] SearchBar - redux form (component inside SearchOptions)

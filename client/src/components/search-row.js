@@ -15,43 +15,45 @@ class SearchRow extends React.Component {
             pageNumber: 1
         };
 
-        this.onSearch = this.onSearch.bind( this );
-        this.onCategoryChange = this.onCategoryChange.bind( this );
-        this.onSortChange = this.onSortChange.bind( this )
+        // this.onSearch = this.onSearch.bind( this );
+        // this.onCategoryChange = this.onCategoryChange.bind( this );
+        // this.onSortChange = this.onSortChange.bind( this )
     }
 
-    onSearch( event ) {
-        this.setState({ query: event.target.value })
-    };
+    // onSearch( event ) {
+    //     this.setState({ query: event.target.value })
+    // };
 
-    onCategoryChange( event ) {
-        this.setState({ category: event.target.value })
-    };
+    // onCategoryChange( event ) {
+    //     this.setState({ category: event.target.value })
+    // };
 
-    onSortChange( event ) {
-        this.setState({ sort: event.target.value })
-    }
+    // onSortChange( event ) {
+    //     this.setState({ sort: event.target.value })
+    // }
 
-    componentDidMount() {
-        this.props.fetchProducts( this.state )
-    }
+    // componentDidMount() {
+    //     this.props.fetchProducts( this.state )
+    // }
 
-    componentDidUpdate() {
-        this.props.fetchProducts( this.state )
-    }
+    // componentDidUpdate() {
+    //     this.props.fetchProducts( this.state )
+    // }
 
     render() {
         return (
             <div>
-                <SearchBar />
+                {/* <SearchBar /> */}
 
             </div>
         )
     }
 };
 
-function mapDispatchToProps( dispatch ) {
-    return bindActionCreators({ fetchProducts }, dispatch );
-}
+// function mapDispatchToProps( dispatch ) {
+//     return bindActionCreators({ fetchProducts }, dispatch );
+// }
 
-export default connect( null, mapDispatchToProps )( SearchRow );
+// export default connect( null, mapDispatchToProps )( SearchRow );
+
+export default SearchRow;

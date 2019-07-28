@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ResultsList from "./results-list";
 import PageNumbers from "./page-numbers";
+import { fetchProducts } from "../actions/index";
 
 class App extends React.Component {
     constructor(props) {
@@ -11,7 +12,11 @@ class App extends React.Component {
     };
 
     componentDidMount() {
-
+        let response = fetchProducts({
+            category: 'Grocery',
+            sort: null
+        })
+        console.log('this is my response:' + response)
     };
 
     render() {

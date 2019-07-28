@@ -8,11 +8,11 @@ import App from "./components/app";
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css'
 
-// const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+const createStoreWithMiddleware = applyMiddleware( promise )( createStore );
 
 ReactDOM.render(
-//   <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />,
-//   {/* </Provider>, */}
-  document.getElementById('root')
+    <Provider store={ createStoreWithMiddleware( reducers )}>
+        <App />
+    </Provider>,
+    document.getElementById( 'root' ) 
 );

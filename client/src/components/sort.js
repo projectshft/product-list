@@ -23,7 +23,7 @@ class Sort extends Component {
                         Low to High
                     </button>
                     <button className='sort-category-button btn btn-primary' value='high' onClick={this.handleClick.bind(this)}>
-                        Hight to Low
+                        High to Low
                     </button>
                 </div>
             </div>

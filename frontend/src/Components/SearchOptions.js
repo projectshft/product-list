@@ -15,8 +15,7 @@ const SearchOptions = ({ categories, sortedByPrice, fetchProducts }) => (
         sortedByPrice={sortedByPrice}
         fetchProducts={fetchProducts}
       />
-      <SortOptions 
-        categories={categories} 
+      <SortOptions
         sortedByPrice={sortedByPrice}
         fetchProducts={fetchProducts}
       />

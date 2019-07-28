@@ -52,11 +52,11 @@ FRONTEND PLAN
 
 - [ ] SearchOptions - mapStateToProps here or in individual components? same with dispatch
 
-- [ ] CategoryFilter - check if redux form does drop down (component inside SearchOptions)
-  - [ ] mapStateToProps
-    - [ ] current category, starts at all
-  - [ ] mapDispatchToProps
-    - [ ] on change action - add/change category filter i.e. 'category=computers' in get request
+- [X] CategoryFilter - check if redux form does drop down (component inside SearchOptions)
+  - [X] mapStateToProps
+    - [X] current category, starts at all
+  - [X] mapDispatchToProps
+    - [X] on change action - add/change category filter i.e. 'category=computers' in get request
 
 - [ ] SortPrice - same as above (component inside SearchOptions)
   - [ ] mapStateToProps

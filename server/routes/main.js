@@ -7,12 +7,12 @@ const ObjectId = require('mongoose').Types.ObjectId
 const categoryArray = ["Automotive", "Baby", "Beauty", "Books", "Clothing", "Computers", "Electronics", "Games", "Garden", "Grocery", "Health", "Home", "Industrial", "Jewelery", "Kids", "Movies", "Music", "Outdoors", "Shoes", "Sports", "Tools", "Toys"]
 
 // Helper function performs case-insensitive match between query and category in database
-const searchArray = function(element, array) {
-    const len = array.length, str = element.toLowerCase();
-    for ( var i = 0; i < len; i++ ) {
-        if ( array[i].toLowerCase() == str ) { return i; }
-    }
-    return -1;
+const searchArray = function (element, array) {
+  const len = array.length, str = element.toLowerCase();
+  for (var i = 0; i < len; i++) {
+    if (array[i].toLowerCase() == str) { return i; }
+  }
+  return -1;
 }
 
 // GET /generate-fake-data --- generates products and reviews  
@@ -71,7 +71,7 @@ router.get('/products', (req, res, next) => {
   // use searchArray to perform case-insensitive match, and update category sent 
   // back in the response (if there's a match). 
   const categoryIndex = searchArray(category, categoryArray);
-  category = (categoryIndex > -1)? categoryArray[categoryIndex]: category;
+  category = (categoryIndex > -1) ? categoryArray[categoryIndex] : category;
   const filterCategory = (category.length > 0) ? { category: category } : {}
 
   // check price query and set param for product sorting accordingly. 
@@ -177,25 +177,32 @@ router.post('/products', (req, res, next) => {
 // by adding it to the correct product's reviews array 
 router.post('/:productId/reviews', (req, res, next) => {
   const { productId } = req.params
-
-  Product.findById(productId, (err, product) => {
-    if (err) throw err
-
-    let review = new Review()
-    review.userName = req.body.userName || ''
-    review.text = req.body.text || ''
-    review.product = product._id
-    review.save((err) => {
+  if (!ObjectId.isValid(productId)) {
+    res.writeHead(400, "Invalid product ID")
+    return res.end()
+  } else {
+    Product.findById(productId, (err, product) => {
       if (err) throw err
-    })
+      if (!product) {
+        res.writeHead(404, "Product does not exist")
+        return res.end()
+      }
+      let review = new Review()
+      review.userName = req.body.userName || ''
+      review.text = req.body.text || ''
+      review.product = product._id
+      review.save((err) => {
+        if (err) throw err
+      })
 
-    product.reviews.push(review)
+      product.reviews.push(review)
 
-    product.save((err) => {
-      if (err) throw err
-      res.send(review)
+      product.save((err) => {
+        if (err) throw err
+        res.send(review)
+      })
     })
-  })
+  }
 })
 
 // DELETE /products/:productId --- deletes a product by id
@@ -210,8 +217,9 @@ router.delete('/products/:productId', (req, res, next) => {
 // DELETE /reviews/:reviewId --- deletes a review by id
 router.delete('/reviews/:reviewId', (req, res, next) => {
   const { reviewId } = req.params
-  Review.deleteOne({ _id: reviewId }, (err) => {
+  Review.deleteOne({ _id: reviewId }, (err, doc) => {
     if (err) return next(err)
+    console.log(doc.deletedCount)
     res.send()
   })
 })

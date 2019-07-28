@@ -23,8 +23,8 @@ class Filter extends Component {
         //map through array of categories and create a button for each
         return categories.map(category => {
             return (
-                <button className='sort-category-button btn btn-primary col-sm-3' value= {category} onClick={this.handleClick.bind(this)}>
-                    <div className='inside-button'>{category}</div>
+                <button className='sort-category-button btn btn-primary col-sm-3' value={category} onClick={this.handleClick.bind(this)}>
+                   {category}
                 </button>
             )
 

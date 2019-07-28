@@ -16,14 +16,6 @@ class AppIndex extends Component {
         this.props.fetchProducts(page, category, sort)
     }
 
-    // handleClick () {
-    //     let page = this.props.page
-    //     let category = this.props.category
-    //     let sort = this.props.sort
-    //     this.props.fetchProducts(page, category, sort)
-
-    // }
-
     renderProducts() {
         //filter out count that is stored in the products prop
         let productsWithoutCount =this.props.products.filter(product => {

@@ -4,7 +4,8 @@ import { ADD_CATEGORIES } from '../actions'
 export default function(state = '', action) {
     switch (action.type) {
         case ADD_CATEGORIES:
-            return action.payload
+            state = action.payload;
+            return state;
         default:
             return state;
     }

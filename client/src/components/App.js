@@ -18,8 +18,8 @@ class App extends Component {
   }
 
   renderList() {
-    if (!this.props.products) {
-      return <div>loading products...</div>
+    if (!this.props.products || this.props.products.length === 0) {
+      return <div className="col-md-12"><div className="products-placeholder">No products found.</div></div>
     }
     return this.props.products.map((product) => {
       return (
@@ -45,15 +45,20 @@ class App extends Component {
 
   renderPagination() {
     if (!this.props.maxPages) {
-      return <button href="#">1</button> 
+      return <div></div> 
     }
     let indexList = []
     for (var i = 1; i < this.props.maxPages+1; i++) {
       indexList.push(i)
     }
     return indexList.map(index => {
+      if (index === this.props.page) {
+        return (
+          <button type="button" className="btn btn-light active" onClick={this.handlePageSelect} key={index} value={index}>{index}</button>
+        )
+      }
       return (
-        <button href="#" onClick={this.handlePageSelect} key={index} value={index}>{index}</button>
+        <button type="button" className="btn btn-light" onClick={this.handlePageSelect} key={index} value={index}>{index}</button>
       )
     })
   }
@@ -69,21 +74,39 @@ class App extends Component {
     //const categories = ["Automotive", "Baby", "Beauty", "Books", "Clothing", "Computers", "Electronics", "Games", "Garden", "Grocery", "Health", "Home", "Industrial", "Jewelery", "Kids", "Movies", "Music", "Outdoors", "Shoes", "Sports", "Tools", "Toys"]
     return (
       <div className="App">
-        <h1>Products</h1>
+        <nav className="navbar justify-content-center">
+          <div className="navbar-brand"><h1>PRODUCTS</h1></div>
+        </nav>
+        <div className="row select-row">
+        <div className="col-md-4 select-div">
+          <span>search </span>
+          <input className="form-control" type="text" placeholder="..." readOnly></input>
+         </div>
+        <div className="col-md-4 select-div">
+        <span>filter by category </span>
         <select className="form-control" id="category-selection" onChange={this.handleCategorySelect} value={this.props.category || ''}>
           <option value="">All</option>
           {this.renderCategories()}
         </select>
+        </div>
+        <div className="col-md-4 select-div">
+          <span>sort by price </span>
         <select className="form-control" id="category-selection" onChange={this.handlePriceSelect} value={this.props.price || ''}>
           <option value="">Select</option>
-          <option value="lowest">Price: Low to High</option>
-          <option value="highest">Price: High to Low</option>
+          <option value="lowest">Low to High</option>
+          <option value="highest">High to Low</option>
         </select>
-        <div className="list-group">
+        </div>
+        </div>
+        <div className="row">
           {this.renderList()}
         </div>
+        <div className="row">
+        <div className="col-md-12">
         <div className="pagination">
           {this.renderPagination()}
+        </div>
+        </div>
         </div>
       </div>
     );
@@ -103,7 +126,7 @@ function mapStateToProps(state) {
     category: getCategory(state),
     price: getPrice(state),
     maxPages: getMaxPages(state),
-    getPage: getPage(state)
+    page: getPage(state)
   };
 }
 

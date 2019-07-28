@@ -4,10 +4,20 @@ class Product extends Component {
 
   render() {
     return (
-      <div key={this.props.product._id} className="list-group-item">
-          <img src={this.props.product.image}></img> 
-          {this.props.product.name}, {this.props.product.category}, ${this.props.product.price}
-      </div>
+      <div className="col-md-4" key={this.props.product._id}>
+        <div className="card">
+          <div className="card-header bg-transparent border-0">
+          <span>Category: {this.props.product.category}</span> 
+            <span className="price-span">${this.props.product.price}</span>
+          </div>
+          <div className="card-body ">
+          <img className="card-img img-fluid" src={this.props.product.image} alt=""></img>
+          </div>
+          <div className="card-footer bg-transparent border-0">
+          {this.props.product.name}
+          </div>
+        </div>
+        </div>
     )
   }
 }

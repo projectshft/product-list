@@ -58,7 +58,7 @@ class AppIndex extends Component {
     render() {
         return (
             <div className = 'container'>
-             <h1 className='title'> Products<button onClick = {this.handleClick.bind(this)}>Get new products</button> </h1>
+             <h1 className='title'> Products </h1>
                 <div className = 'row'>   
                     <div className ='col-md-4'>
                         <Searchbar />

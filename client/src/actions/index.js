@@ -21,21 +21,21 @@ export function fetchProducts (pageNumber,category, sort) {
     }
 }
 
-//set up function that allows the user to add a sorter value
+//set up function that allows the user to add a price sorter query
 export function addSorter(data) {
     return {
         type: ADD_SORTER,
         payload: data
     }
 }
-//set up function that allows the user to add a category
+//set up function that allows the user to add a price sorter query
 export function addCategory(data) {
     return {
         type: ADD_CATEGORIES,
         payload: data
     }
 }
-
+//set up function that allows the user to add a Page query
 export function addPage (data) {
     return {
         type: ADD_PAGE,

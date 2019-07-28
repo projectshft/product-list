@@ -14,8 +14,10 @@ class Page extends Component {
     }
 
     renderPages() {
+        //get the count variable off of the products array and store it in variable
         let count = this.props.products.pop()
         let pages = []
+        //create pages based on the number of products in the query
         for (let i = 1; i<=count; i+= 10) {
             pages.push(
                <button className='page' value = {Math.round(i/10-.1 +1)} onClick={this.handleClick.bind(this)}>{Math.round(i/10-.1 +1)}</button>

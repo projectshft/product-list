@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addCategory, fetchProducts} from '../actions';
 
-let categories = ['Games', 'Baby', 'Computers', 'Home', 'Industrial', 'Toys', 'Electronics',
+//create an array of categories in the database
+const categories = ['Games', 'Baby', 'Computers', 'Home', 'Industrial', 'Toys', 'Electronics',
                 'Health', 'Grocery', 'Tools', 'Music', 'Shoes', 'Jewelery']
 
 class Filter extends Component {
@@ -14,13 +15,15 @@ class Filter extends Component {
         this.props.addCategory(category);
         let sort = this.props.sort;
         let page = this.props.page
+        //fetchProudcts with a page of 1 as many categories don't have enough products to span across multiple pages
         this.props.fetchProducts(1, category, sort)
     }
 
     renderCategories () {
+        //map through array of categories and create a button for each
         return categories.map(category => {
             return (
-                <button className='btn btn-primary' value= {category} onClick={this.handleClick.bind(this)}>
+                <button className='category-button btn btn-primary' value= {category} onClick={this.handleClick.bind(this)}>
                     {category}
                 </button>
             )

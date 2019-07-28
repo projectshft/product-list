@@ -7,11 +7,11 @@ export default function (state = {}, action){
   }
   switch (action.type){
     case FETCH_PRODUCTS:
-      return _.mapKeys(action.payload.data, '_id');
+      return _.mapKeys(action.payload.data.products, '_id');
     case FETCH_BY_CATEGORY:
-      return _.mapKeys(action.payload.data, '_id');
+      return _.mapKeys(action.payload.data.products, '_id');
     case FETCH_WITH_SORT:
-      return _.mapKeys(action.payload.data, '_id');
+      return _.mapKeys(action.payload.data.products, '_id');
     default:
           return state;
       }

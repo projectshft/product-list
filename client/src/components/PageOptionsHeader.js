@@ -10,6 +10,7 @@ class PageOptionsHeader extends Component {
   onCategoryChange = (event) => {
     //access sort order from store
     let sort = this.props.sortOrder;
+    console.log('from event' + sort + event.target.value);
     this.props.fetchProductsWithCategory(sort, event.target.value);
     this.props.updateStoreCategory(event.target.value);
   }
@@ -17,6 +18,7 @@ class PageOptionsHeader extends Component {
   onSortChange = (event) => {
     //access category from redux store
     let catQuery = this.props.category;
+    console.log('from event' + catQuery + event.target.value);
     this.props.fetchProductsWithSort(catQuery, event.target.value)
     this.props.updateSortOrder(event.target.value);
   }

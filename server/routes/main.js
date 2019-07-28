@@ -8,6 +8,7 @@ const REVIEWS_PER_PAGE = 40;
 
 
 
+
 //helper functions
 
 //helper function to isolate product id from params and check if valid
@@ -51,52 +52,53 @@ router.get('/products', (req, res, next) => {
     return res.status(400).send('Invalid page number.');
   } 
 
-  //handle sort values if present
-  if(sort){
-    if (sort === 'highest'){
-     sort = 'descending';
-    } else if (req.query.price === 'lowest'){
-      sort = 'ascending';
-    } else {
-       return res.status(400).send('Invalid sort value.');
-    }
-    Product.find({category: { $regex: new RegExp(filter, 'i')}})
-    .skip((pageNum -1) * PRODUCTS_PER_PAGE)
-    .sort({price: sort})
-    .limit(PRODUCTS_PER_PAGE)
-    .exec((err, result) => {
-      //access to total count for future use
-      Product.countDocuments({category: { $regex: new RegExp(filter, 'i')}}).exec((err, count) => {
-        if (err) {
-          return next(err)
-        }else {
-         //calculate total pages for pagination on client-side
-         let totalPages = Math.ceil(count/PRODUCTS_PER_PAGE)
-         result.unshift({pageCount: totalPages});
-         res.send(result)
-        }
-      })
-    })
-  } else{
-    Product.find({category: { $regex: new RegExp(filter, 'i')}})
-      .skip((pageNum -1) * PRODUCTS_PER_PAGE)
-      .limit(PRODUCTS_PER_PAGE)
-      .exec((err, result) => {
-        console.log(result);
-      //access to total count for future use
-      //note countdocs will not count entire collection if the find parameters are passed in again
-        Product.countDocuments({category: { $regex: new RegExp(filter, 'i')}}).exec((err, count) => {
-         if (err) {
-           return next(err)
-         }else {
-          //calculate total pages for pagination on client-side
-          let totalPages = Math.ceil(count/PRODUCTS_PER_PAGE)
-          result.unshift({pageCount: totalPages});
-          res.send(result)
-         }
-      })
-    })
+ //refactored to ignore an 'object Object' string for sort..this is value if category is selected but sort is empty object in store
+
+ if (!sort || sort ==='[object Object]' || typeof sort !== 'string'){
+
+   console.log('empty' + typeof sort);
+  Product.find({category: { $regex: new RegExp(filter, 'i')}})
+  .skip((pageNum -1) * PRODUCTS_PER_PAGE)
+  .limit(PRODUCTS_PER_PAGE)
+  .exec((err, result) => {
+  //access to total count for future use
+  //note countdocs will not count entire collection if the find parameters are passed in again
+    Product.countDocuments({category: { $regex: new RegExp(filter, 'i')}}).exec((err, count) => {
+     if (err) {
+       return next(err)
+     }else {
+      //calculate total pages for pagination on client-side
+      let totalPages = Math.ceil(count/PRODUCTS_PER_PAGE)
+      res.send({products: result, pageCount: totalPages});
   }
+})
+})
+ } else {
+   console.log('here' + sort);
+  if (sort === 'highest'){
+    sort = 'descending';
+   } else if (req.query.price === 'lowest'){
+     sort = 'ascending';
+   } else {
+      return res.status(400).send('Invalid sort value.');
+   }
+   Product.find({category: { $regex: new RegExp(filter, 'i')}})
+   .skip((pageNum -1) * PRODUCTS_PER_PAGE)
+   .sort({price: sort})
+   .limit(PRODUCTS_PER_PAGE)
+   .exec((err, result) => {
+     //access to total count for future use
+     Product.countDocuments({category: { $regex: new RegExp(filter, 'i')}}).exec((err, count) => {
+       if (err) {
+         return next(err)
+       }else {
+        //calculate total pages for pagination on client-side
+        let totalPages = Math.ceil(count/PRODUCTS_PER_PAGE)
+        res.send({products: result, pageCount: totalPages});
+       }
+     })
+   })
+ }
 })
   
 

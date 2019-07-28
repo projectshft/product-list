@@ -18,8 +18,9 @@ export function fetchProducts(){
 }
 
 export function fetchProductsWithCategory(sort, category){
+  console.log('from cat action:' +sort);
   const request = axios.get(`${ROOT_URL}?category=${category}&&price=${sort}`);
-  console.log(request);
+  console.log('from cat action:' + request);
   return{
     type: FETCH_BY_CATEGORY,
     payload: request
@@ -32,7 +33,9 @@ export function updateStoreCategory(category){
   }
 }
 export function fetchProductsWithSort(catQuery, sort){
+  console.log('from sort action:'+ sort);
   const request = axios.get(`${ROOT_URL}?category=${catQuery}&&price=${sort}`);
+  console.log('from sort action:' + request);
   return{
     type: FETCH_WITH_SORT,
     payload: request

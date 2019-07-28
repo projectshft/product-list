@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 mongoose.connect('mongodb://localhost/productsDB', {useNewUrlParser: true});
+mongoose.set('debug', true);
 
 const app = express();
 

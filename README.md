@@ -50,7 +50,7 @@ FRONTEND PLAN
     - [X] reducer - same as regular get reducer? yes
   - [X] NEEDS TO KNOW SEARCH OPTIONS OR ELSE WILL GET ALL PRODUCTS ON PAGE CLICK
     - [X] get this in ProductsList to minimize calls to redux store, pass down as props
-  - [ ] highlight page currently on
+  - [X] highlight page currently on
   - [ ] get rid of border that shows after click
 
 - [X] SearchOptions - mapStateToProps here or in individual components? same with dispatch

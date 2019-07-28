@@ -1,4 +1,5 @@
 import React from 'react';
+import '../CSS/pagination.css';
 
 const Pagination = ({ numberOfPages, currentPage, fetchProducts, currentCategory, currentSort }) => {
   const handleClick = (event, goToPage) => {

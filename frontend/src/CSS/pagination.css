@@ -1,0 +1,4 @@
+/* below does nothing - trying to remove blue box that appears around page links after clicking them */
+nav ul li a.page-link:active, nav  ul li a.page-link:focus {
+  border: none !important;
+}

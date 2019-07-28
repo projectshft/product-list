@@ -14,10 +14,12 @@ class Page extends Component {
     }
 
     renderPages() {
+        let count = this.props.products.pop()
+        console.log(count)
         let pages = []
-        for (let i = 1; i<=1; i+= 10) {
+        for (let i = 1; i<=count; i+= 10) {
             pages.push(
-               <button className='page' value = {i} onClick={this.handleClick.bind(this)}>{i}</button>
+               <button className='page' value = {Math.round(i/10-.1 +1)} onClick={this.handleClick.bind(this)}>{Math.round(i/10-.1 +1)}</button>
                 )
         }
         return pages;

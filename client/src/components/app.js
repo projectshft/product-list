@@ -25,8 +25,11 @@ class AppIndex extends Component {
     }
 
     renderProducts() {
-        console.log(this.props.products)
-         return this.props.products.map(product => {
+        //filter out count that is stored in the products prop
+        let productsWithoutCount =this.props.products.filter(product => {
+            return product.name
+        }) 
+         return productsWithoutCount.map(product => {
             return (
                 //make 3 rows of 3 for the products return from the url
                 <div className = 'col-md-4'>

@@ -12,7 +12,7 @@ class Filter extends Component {
         this.props.addCategory(category);
         let sort = this.props.sort;
         let page = this.props.page
-        this.props.fetchProducts(page, category, sort)
+        this.props.fetchProducts(1, category, sort)
     }
 
     render() {

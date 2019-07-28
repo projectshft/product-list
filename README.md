@@ -50,7 +50,7 @@ FRONTEND PLAN
     - [X] reducer - same as regular get reducer? yes
   - [ ] NEEDS TO KNOW SEARCH OPTIONS OR ELSE WILL GET ALL PRODUCTS ON PAGE CLICK
 
-- [ ] SearchOptions - mapStateToProps here or in individual components? same with dispatch
+- [X] SearchOptions - mapStateToProps here or in individual components? same with dispatch
 
 - [X] CategoryFilter - check if redux form does drop down (component inside SearchOptions)
   - [X] mapStateToProps

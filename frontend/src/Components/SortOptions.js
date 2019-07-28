@@ -26,9 +26,9 @@ const SortOptions = ({ currentCategory, sortedByPrice, fetchProducts }) => {
   }
 
   return (
-    <div className='col-md-4 text-center'>
-      <form onChange={e => handleSubmit(e)}>
-        Sort by: 
+    <div className='col-md-4'>
+      <form className='float-right' onChange={e => handleSubmit(e)}>
+        <span className='mr-1'>sort by:</span> 
         <Field
           name='sortOptions'
           label='sortOptions'

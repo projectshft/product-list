@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SearchBar = () => (
-  <div>searchbar placeholder</div>
+  <div className='col-md-4'>searchbar placeholder</div>
 );
 
 export default SearchBar;

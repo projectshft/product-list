@@ -38,6 +38,7 @@ const CategoryFilter = ({ categories, sortedByPrice, fetchProducts }) => {
   return (
     <div className='col-md-4 text-center'>
       <form onChange={e => handleSubmit(e)}>
+        <span className='mr-1'>filter by category:</span>
         <Field 
           name='categoryFilter'
           label='Category Filter'

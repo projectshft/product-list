@@ -54,20 +54,24 @@ router.get('/generate-fake-data', (req, res, next) => {
 // GET /products --- returns all products (paginated)
 router.get('/products', (req, res, next) => {
   const perPage = 9
-  // return the first page if no page is specified, and 
-  // return the max value of 1 and a given page (if it's specified)
-  let page = Math.max(req.query.page || 1, 1)
+
+  // return the first page if no page is specified (with ||); floor handles non-integers;  
+  // return the max value of 1 and a given page if specified (max handles 0 and negative integers); 
+  let page = Math.max(Math.floor(req.query.page || 1), 1)
+
+  // set defaults for # of products and max # of pages (sent back in response)
   let productCount = 0
   let maxPages = 1
-  // get category (for filter) and price (for sorting)  
+
+  // get queries: category (for filter) and price (for sorting)  
   let category = req.query.category || ''
   let price = req.query.price || ''
 
-  console.log(category)
+  // check category query and set param for product filtering accordingly. 
+  // use searchArray to perform case-insensitive match, and update category sent 
+  // back in the response (if there's a match). 
   const categoryIndex = searchArray(category, categoryArray);
-  console.log('index', categoryIndex);
   category = (categoryIndex > -1)? categoryArray[categoryIndex]: category;
-  console.log(category);
   const filterCategory = (category.length > 0) ? { category: category } : {}
 
   // check price query and set param for product sorting accordingly. 
@@ -86,21 +90,18 @@ router.get('/products', (req, res, next) => {
         return { price: 'desc' };
       default:
         price = '';
-        return '';
+        return ''; // maybe to do: use this return value to handle error reporting?  
     }
   }
   const sortPrice = getSort(price)
-  console.log(sortPrice)
-  console.log(price)
 
+  // perform countDocuments first in order to calculate maxPages and reset page if necessary 
   Product.countDocuments(filterCategory).exec((err, count) => {
     if (err) return next(err)
-    console.log(count)
-    // returns the max number of pages possible for given group of query results 
+    // return the max number of pages possible for given group of query results 
     maxPages = Math.max(Math.ceil(count / perPage), 1)
     page = Math.min(page, maxPages)
     productCount = count
-    console.log(page)
 
     Product.find(filterCategory)
       .sort(sortPrice)

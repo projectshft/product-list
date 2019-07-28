@@ -5,7 +5,7 @@ import { addCategory, fetchProducts} from '../actions';
 
 //create an array of categories in the database
 const categories = ['Games', 'Baby', 'Computers', 'Home', 'Industrial', 'Toys', 'Electronics',
-                'Health', 'Grocery', 'Tools', 'Music', 'Shoes', 'Jewelery']
+                'Health', 'Grocery', 'Tools', 'Music', 'Shoes']
 
 class Filter extends Component {
     
@@ -23,8 +23,8 @@ class Filter extends Component {
         //map through array of categories and create a button for each
         return categories.map(category => {
             return (
-                <button className='category-button btn btn-primary' value= {category} onClick={this.handleClick.bind(this)}>
-                    {category}
+                <button className='sort-category-button btn btn-primary col-sm-3' value= {category} onClick={this.handleClick.bind(this)}>
+                    <div className='inside-button'>{category}</div>
                 </button>
             )
 
@@ -33,10 +33,11 @@ class Filter extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Categories: </h1>
+            <div className='container'>
+                <h1 className='header'>Categories: </h1>
+                <div className='row'>
                 {this.renderCategories()}
-              
+              </div>
             </div>
        
         )

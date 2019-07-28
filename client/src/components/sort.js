@@ -17,11 +17,11 @@ class Sort extends Component {
     render() {
         return (
             <div>
-                <h1>Price:</h1>
-                    <button className='btn btn-primary' value= 'low' onClick={this.handleClick.bind(this)}>
+                <h1 className='header'>Price:</h1>
+                    <button className='sort-category-button btn btn-primary' value= 'low' onClick={this.handleClick.bind(this)}>
                         Low to High
                     </button>
-                    <button className='btn btn-primary' value='high' onClick={this.handleClick.bind(this)}>
+                    <button className='sort-category-button btn btn-primary' value='high' onClick={this.handleClick.bind(this)}>
                         Hight to Low
                     </button>
             </div>

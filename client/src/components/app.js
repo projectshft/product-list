@@ -16,13 +16,13 @@ class AppIndex extends Component {
         this.props.fetchProducts(page, category, sort)
     }
 
-    handleClick () {
-        let page = this.props.page
-        let category = this.props.category
-        let sort = this.props.sort
-        this.props.fetchProducts(page, category, sort)
+    // handleClick () {
+    //     let page = this.props.page
+    //     let category = this.props.category
+    //     let sort = this.props.sort
+    //     this.props.fetchProducts(page, category, sort)
 
-    }
+    // }
 
     renderProducts() {
         //filter out count that is stored in the products prop
@@ -58,7 +58,7 @@ class AppIndex extends Component {
     render() {
         return (
             <div className = 'container'>
-             <h1 className='title'> Products </h1>
+             <h1 className='page-title'> Products </h1>
                 <div className = 'row'>   
                     <div className ='col-md-4'>
                         <Searchbar />

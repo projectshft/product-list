@@ -5,7 +5,10 @@ import { bindActionCreators } from 'redux';
 class Searchbar extends Component {
     render() {
         return (
-            <div>SearchBar</div>
+            <div>
+                <h1 className='header'>Search:</h1> 
+                <input placeholder='NOT FUNCTIONING'></input>
+            </div>
         )
     }
 }

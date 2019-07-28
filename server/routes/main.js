@@ -2,8 +2,8 @@ const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
+const ObjectId = require('mongoose').Types.ObjectId
 
-//
 
 // GET /generate-fake-data --- generates products and reviews  
 router.get('/generate-fake-data', (req, res, next) => {
@@ -85,37 +85,25 @@ router.get('/products', (req, res, next) => {
           products: products
         })
       })
-
-    // res.send({ 
-    //   count: productCount, 
-    //   page: page
-    // })
   })
-
-  // Product
-  //   .find(filterCategory) // filterCategory
-  //   .skip((perPage * page) - perPage)
-  //   .limit(perPage)
-  //   .exec((err, products) => {
-  //     // use `count` to know how many are coming back
-  //     Product.countDocuments(filterCategory).exec((err, count) => { // filterCategory
-  //       if (err) return next(err)
-  //       console.log(count)
-  //       res.send({
-  //         products: products, 
-  //         count: count
-  //       })
-  //     })
-  //   })
 })
 
 // GET /products/:productId --- returns a specific product by its id
 router.get('/products/:productId', (req, res, next) => {
   const { productId } = req.params
-  Product.find({ _id: productId }, (err, product) => {
-    if (err) return next(err)
-    res.send(product)
-  })
+  if (!ObjectId.isValid(productId)) {
+    res.writeHead(400, "Invalid product ID")
+    return res.end()
+  } else {
+    Product.find({ _id: productId }, (err, product) => {
+      if (err) return next(err)
+      if (product.length === 0) {
+        res.writeHead(404, "Product does not exist")
+        return res.end()
+      }
+      res.send(product)
+    })
+  }
 })
 
 //GET /reviews --- returns all reviews (paginated)

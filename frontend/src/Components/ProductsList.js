@@ -41,7 +41,9 @@ class ProductsList extends Component {
 
 function mapStateToProps(state) {
   return {
-    products: state.productData.products
+    products: state.productData.products,
+    pageNum: state.productData.pageNum,
+    totalPages: state.productData.totalPages
   };
 }
 

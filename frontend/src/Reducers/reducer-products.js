@@ -8,10 +8,12 @@ export default function (state = {}, action) {
       console.log(action.payload);
       console.log(action.payload.data);
       return {
-        products: {..._.mapKeys(action.payload.data.products, '_id')},
-        pageNum: action.payload.data.pageNum,
         totalProducts: action.payload.data.count,
-        categories: action.payload.data.categories
+        pageNum: action.payload.data.pageNum,
+        totalPages: action.payload.data.totalPages,
+        products: {..._.mapKeys(action.payload.data.products, '_id')},
+        categories: action.payload.data.categories,
+        sortedByPrice: action.payload.data.sortedByPrice
       };
     default:
       return state;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Pagination = ({ totalPages, pageNum, fetchPages }) => (
+const Pagination = () => (
   <div>
     placeholder
   </div>

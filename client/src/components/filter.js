@@ -39,7 +39,7 @@ class Filter extends Component {
 
 
 function mapStateToProps(state) {
-    return {products: state.products, sort: state.sort, page: state.page}
+    return {products: state.products, category: state.category, page: state.page}
 }
 
 function mapDispatchToProps(dispatch) {

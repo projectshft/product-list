@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addSorter } from '../actions'
+import { addSorter, fetchProducts } from '../actions'
 import { bindActionCreators } from 'redux';
 
 class Sort extends Component {
 
     handleClick(e) {
         e.preventDefault();
-        this.props.addSorter(e.target.value);
+        let sort = e.target.value
+        this.props.addSorter(sort);
+        let category = this.props.category;
+        let page = this.props.page
+        this.props.fetchProducts(page, category, sort)
     }
 
     render() {
@@ -29,7 +33,7 @@ class Sort extends Component {
 
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addSorter }, dispatch);
+  return bindActionCreators({ addSorter, fetchProducts }, dispatch);
 }
 
 export default connect (null, mapDispatchToProps)(Sort);

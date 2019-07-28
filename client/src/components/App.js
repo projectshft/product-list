@@ -114,7 +114,6 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state.data)
   return {
     products: getProducts(state),
     category: getCategory(state),

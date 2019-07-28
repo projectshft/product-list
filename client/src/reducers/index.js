@@ -4,7 +4,6 @@ import { FETCH_PRODUCTS } from "../actions";
 const productsReducer = function (state = { 'products': [] }, action) {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      console.log(action.payload.data)
       return (!action.payload.data) ? state : Object.assign({}, state, action.payload.data);
     default:
       return state;

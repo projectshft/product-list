@@ -6,17 +6,19 @@ const ObjectId = require('mongoose').Types.ObjectId
 
 
 // GET /generate-fake-data --- generates products and reviews  
+// note: products/reviews are related with refs 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
 
     let product = new Product()
 
+    // create three reviews per product for testing purposes 
     for (let i = 0; i < 3; i++) {
       let review = new Review()
       review.userName = faker.internet.userName()
       review.text = faker.commerce.productAdjective() + '!'
       review.product = product._id
-
+      // each review is given the product's _id, then added (by ref) to reviews array
       review.save((err) => {
         if (err) throw err
       })
@@ -26,6 +28,10 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
+    // faker imageUrl generates the link 'http://lorempixel.com/640/480', so when page 
+    // first loads, all images are the same. for products that persist through state 
+    // changes, the image stays the same, while new products get a different image... 
+    // nicely highlights react/redux efficiency! 
     product.image = faker.image.imageUrl()
 
     product.save((err) => {

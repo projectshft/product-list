@@ -15,7 +15,6 @@ class Page extends Component {
 
     renderPages() {
         let count = this.props.products.pop()
-        console.log(count)
         let pages = []
         for (let i = 1; i<=count; i+= 10) {
             pages.push(

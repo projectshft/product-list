@@ -11,7 +11,6 @@ class Filter extends Component {
         let category = e.target.value;
         this.props.addCategory(category);
         let sort = this.props.sort;
-        console.log(sort)
         let page = this.props.page
         this.props.fetchProducts(1, category, sort)
     }

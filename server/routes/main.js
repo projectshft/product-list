@@ -65,7 +65,6 @@ router.get('/products', (req, res, next) => {
       .exec((err, products) => {
           if (products == '') {
               res.writeHead(400, 'Product category not found');
-              console.log(err);
               return res.end();
           }
           if (err) throw err;

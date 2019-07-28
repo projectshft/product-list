@@ -9,9 +9,9 @@ export default function (state = {}, action){
     case FETCH_PRODUCTS:
       return action.payload.data.pageCount;
     case FETCH_BY_CATEGORY:
-      return action.payload.data.products;
+      return action.payload.data.pageCount;
     case FETCH_WITH_SORT:
-      return action.payload.data.products;
+      return action.payload.data.pageCount;
     default:
           return state;
       }

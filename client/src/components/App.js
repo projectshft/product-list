@@ -17,15 +17,7 @@ class App extends Component {
   }
 
   render() {
-    if (!this.props.products) {
-      return (
-        <div className='container'>
-          <div className='jumbotron'>
-            <h1>Nothing to see here yet... hold please...</h1>
-          </div>
-        </div>
-      );
-    }
+    
 
     return (
       <div className='container main-app'>
@@ -54,7 +46,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    products: state.products,
+    // products: state.products,
     // categories: state.categories
   };
 }

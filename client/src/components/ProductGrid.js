@@ -47,7 +47,7 @@ class ProductGrid extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    products: state.products,
+    products: state.products.products,
     // categories: state.categories
   };
 }

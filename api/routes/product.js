@@ -28,7 +28,7 @@ router.get('/', (req, res, next) => {
   let pageSkip = ((pageNumber * itemsPerPage) - itemsPerPage);
 
   //let's add some sorting based on our query!
-  const {query, category, price} = req.query;
+  let {query, category, price} = req.query;
   //adding in category query object
   let searchOptions = {};
   if (category) {

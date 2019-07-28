@@ -14,7 +14,7 @@ restart/sleep checklist
 - [X] if time check installing mongo in wsl
 
 BACKEND IMPROVEMENTS
-- [ ] faker randomize images
+- [X] faker randomize images
 - [ ] make sure all gets check enabled
 - [X] add pre save for date created and date updated
 - [X] product is null if not found
@@ -41,15 +41,17 @@ FRONTEND PLAN
 - [X] Product (component inside ProductsList)
   - [X] product passed in through props (do not pass all products down!)
 
-- [ ] Pagination (component inside ProductsList)
+- [X] Pagination (component inside ProductsList)
   - [X] props passed down from ProductsList  
   - [X] mapDispatchToProps - dont need
     - [X] clicking on page has an action - changes page query option and sends get request
   - [X] pagination redux
     - [X] action - changes page query to page clicked on i.e. 'page=5' in get request
     - [X] reducer - same as regular get reducer? yes
-  - [ ] NEEDS TO KNOW SEARCH OPTIONS OR ELSE WILL GET ALL PRODUCTS ON PAGE CLICK
-    - [ ] get this in ProductsList to minimize calls to redux store, pass down as props
+  - [X] NEEDS TO KNOW SEARCH OPTIONS OR ELSE WILL GET ALL PRODUCTS ON PAGE CLICK
+    - [X] get this in ProductsList to minimize calls to redux store, pass down as props
+  - [ ] highlight page currently on
+  - [ ] get rid of border that shows after click
 
 - [X] SearchOptions - mapStateToProps here or in individual components? same with dispatch
 

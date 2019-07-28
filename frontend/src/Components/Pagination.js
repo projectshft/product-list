@@ -1,9 +1,13 @@
 import React from 'react';
 
-const Pagination = ({ numberOfPages, currentPage, fetchProducts }) => {
+const Pagination = ({ numberOfPages, currentPage, fetchProducts, currentCategory, currentSort }) => {
   const handleClick = (event, goToPage) => {
     event.preventDefault();
-    fetchProducts({ page: goToPage });
+    fetchProducts({ 
+      page: goToPage,
+      category: (currentCategory) ? currentCategory.categoryFilter : '',
+      price: (currentSort) ? currentSort.sortOptions : ''
+    });
   }
 
   const previousButton = (currentPage == 1) ?

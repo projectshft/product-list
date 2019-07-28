@@ -49,6 +49,7 @@ FRONTEND PLAN
     - [X] action - changes page query to page clicked on i.e. 'page=5' in get request
     - [X] reducer - same as regular get reducer? yes
   - [ ] NEEDS TO KNOW SEARCH OPTIONS OR ELSE WILL GET ALL PRODUCTS ON PAGE CLICK
+    - [ ] get this in ProductsList to minimize calls to redux store, pass down as props
 
 - [X] SearchOptions - mapStateToProps here or in individual components? same with dispatch
 

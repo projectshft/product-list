@@ -24,6 +24,7 @@ export async function fetchProducts(query = {}) {
 	const {docs: products, total, pages, page, limit} = request.data;
 
 	return {
-		type: FETCH_PRODUCTS, payload: request, products, total, pages, page, limit
+		type: FETCH_PRODUCTS, 
+		payload: request, products, total, pages, page, limit
 	};	
 }

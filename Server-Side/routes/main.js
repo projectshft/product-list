@@ -12,7 +12,7 @@ router.get('/generate-fake-data', (request, response, next) => {
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
-    product.image = './defualt-store.jpg'
+    product.image = 'https://picsum.photos/id/506/640/480'
 		product.reviews = [];
 	// adding fake reviews here to work with later
 	for (let j = 0; j < 4; j++) {

@@ -5,10 +5,12 @@
  */
 
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import ProductReducer from './reducer-products';
 
 const rootReducer = combineReducers({
-  productData: ProductReducer
+  productData: ProductReducer,
+  form: formReducer
 });
 
 export default rootReducer;

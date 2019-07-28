@@ -34,7 +34,7 @@ const Pagination = ({ numberOfPages, currentPage, fetchProducts }) => {
   const pageButtons = [];
   for(let i=0; i<numberOfPages; i++) {
     pageButtons.push(
-      <li className='page-item'>
+      <li className='page-item' key={i+1}>
         <a className='page-link' href='#' onClick={e => handleClick(e, (i+1))}>
           {i+1}
         </a>

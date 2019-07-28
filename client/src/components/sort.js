@@ -30,10 +30,12 @@ class Sort extends Component {
 }
 
 
-
+function mapStateToProps(state) {
+    return {products: state.products, category: state.category, page: state.page}
+}
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ addSorter, fetchProducts }, dispatch);
 }
 
-export default connect (null, mapDispatchToProps)(Sort);
+export default connect (mapStateToProps, mapDispatchToProps)(Sort);

@@ -22,10 +22,14 @@ class PaginationFooter extends Component {
     //if statement to account for initialization of the store 
     if(pageArray.length != 0){
     return _.map(pageArray, num => {
+      if(num == this.props.currentPage){
+        return(
+          <li key={num} value={num} onClick={this.onClickPage} className='page-item page-link active'><b><font size='4'>{num}</font></b></li>
+        )
+      } else {
       return(
-        <li key={num} value={num} onClick={this.onClickPage} className='page-item page-link'>{num}</li>
-     
-      )
+        <li key={num} value={num} onClick={this.onClickPage} className='page-item page-link'>{num}</li>)
+      }
     })
   }
 }
@@ -43,8 +47,8 @@ class PaginationFooter extends Component {
   }
 }
 
-function mapStateToProps({ totalPages, sortOrder, category}){
-  return { totalPages, sortOrder, category };
+function mapStateToProps({ totalPages, sortOrder, category, currentPage}){
+  return { totalPages, sortOrder, category, currentPage };
 }
 
 function mapDispatchToProps(dispatch){

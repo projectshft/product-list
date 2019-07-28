@@ -59,7 +59,7 @@ router.get( '/generate-fake-data', ( req, res, next ) => {
 
 
 router.get( '/products', ( req, res, next ) => {
-    let perPage = 10;
+    let perPage = 9;
     let page = req.query.page || 1;
     let sort = null;
     let sortType = '';
@@ -94,7 +94,7 @@ router.get( '/products', ( req, res, next ) => {
             Product.countDocuments( query, (err, count) => {
                 searchResultsCount = count;
 
-                res.send( {count:searchResultsCount, products:products} );
+                res.send( {count:searchResultsCount, pages: searchResultsCount/perPage, products:products} );
             })
         })
   });

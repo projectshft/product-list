@@ -7,9 +7,18 @@ import PageNumbers from "./page-numbers";
 import { fetchProducts } from "../actions/index";
 
 class App extends React.Component {
-    // constructor(props) {
-    //     super(props)
-    // };
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            query: '',
+            category: null,
+            sort: null,
+            pageNumber: null
+        };
+
+        this.onSearchEnter = this.onSearchEnter.bind( this )
+    };
 
     componentDidMount() {
         this.props.fetchProducts({
@@ -17,6 +26,20 @@ class App extends React.Component {
             sort: null
         })
     };
+
+    componentDidUpdate() {
+        console.log(this.state)
+        // this.props.fetchProducts(this.state)
+
+    }
+
+    onSearchEnter(e) {
+        if ( e.charCode == 13 ) {
+            console.log('hello')
+            this.setState({query: e.target.value});
+            e.target.value = ''
+        }
+    }
 
     render() {
         return (
@@ -27,7 +50,9 @@ class App extends React.Component {
                     </div>
                 </div>
                 <div className="row">
-                   <SearchRow />
+                   <div className="col-md-4">
+                       <p className="text-center">search: <input onKeyPress={this.onSearchEnter}/></p>
+                   </div>
                 </div>
                 <div className="row">
                     <ResultsList />

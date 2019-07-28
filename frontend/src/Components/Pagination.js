@@ -10,7 +10,7 @@ const Pagination = ({ numberOfPages, currentPage, fetchProducts, currentCategory
     });
   }
 
-  const previousButton = (currentPage == 1) ?
+  const previousButton = (currentPage === 1) ?
     <li className='page-item disabled'>
       <a className='page-link' href='#'>
         Previous
@@ -22,7 +22,7 @@ const Pagination = ({ numberOfPages, currentPage, fetchProducts, currentCategory
       </a>
     </li>;
 
-  const nextButton = (currentPage == numberOfPages) ?
+  const nextButton = (currentPage === numberOfPages) ?
   <li className='page-item disabled'>
     <a className='page-link' href='#'>
       Next
@@ -37,13 +37,23 @@ const Pagination = ({ numberOfPages, currentPage, fetchProducts, currentCategory
   //put pageButtons into array for jsx
   const pageButtons = [];
   for(let i=0; i<numberOfPages; i++) {
-    pageButtons.push(
-      <li className='page-item' key={i+1}>
-        <a className='page-link' href='#' onClick={e => handleClick(e, (i+1))}>
-          {i+1}
-        </a>
-      </li>
-    );
+    if (currentPage === i+1) {
+      pageButtons.push(
+        <li className='page-item active' key={i+1}>
+          <a className='page-link' href='#' onClick={e => handleClick(e, (i+1))}>
+            {i+1}
+          </a>
+        </li>
+      );
+    } else {
+      pageButtons.push(
+        <li className='page-item' key={i+1}>
+          <a className='page-link' href='#' onClick={e => handleClick(e, (i+1))}>
+            {i+1}
+          </a>
+        </li>
+      );
+    }
   }
 
   return (

@@ -34,7 +34,7 @@ FRONTEND PLAN
     - [X] products array
     - [X] number of pages
     - [X] current page
-  - [ ] mapDispatchToProps - WOULD IT GO HERE OR IN PRODUCT COMPONENT?
+  - [X] mapDispatchToProps - WOULD IT GO HERE OR IN PRODUCT COMPONENT? here - passed down
   - [X] map products array from store to Product components
   - [X] send product to Product component as prop
 

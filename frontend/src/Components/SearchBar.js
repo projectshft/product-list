@@ -3,7 +3,7 @@ import React from 'react';
 const SearchBar = () => (
   <div className='col-md-4'>
     <div className='form-group row'>
-      <label for='inputSearch' className='col-sm-2 col-form-label'>
+      <label htmlFor='inputSearch' className='col-sm-2 col-form-label'>
         search
       </label>
       <div className='col-sm-10'>

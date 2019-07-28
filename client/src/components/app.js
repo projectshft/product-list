@@ -34,17 +34,17 @@ class AppIndex extends Component {
                 //make 3 rows of 3 for the products return from the url
                 <div className = 'col-md-4'>
                    <div className = 'row'>
-                       <div className = 'col-sm-8'>
+                       <div className = 'category col-sm-8'>
                            Category: {product.category}
                        </div>
-                       <div className = 'col-sm-4'> 
+                       <div className = 'price col-sm-4'> 
                             $ {product.price}
                        </div>
                    </div>
                     <div className="card">
                         <img className="card-img-top" src='https://i.ytimg.com/vi/cav9yTlLLVI/hqdefault.jpg'/>
                         <div className="card-body">
-                            <h1> {product.name} </h1>
+                            <h1 className = 'product-name'> {product.name} </h1>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ class AppIndex extends Component {
     render() {
         return (
             <div className = 'container'>
-             <h1 className='page-title'> Products </h1>
+             <h1 className='page-title'> PRODUCTS </h1>
                 <div className = 'row'>   
                     <div className ='col-md-4'>
                         <Searchbar />
@@ -70,7 +70,7 @@ class AppIndex extends Component {
                          <Sort />
                     </div>
                 </div>
-                <div className = 'row'>
+                <div className = 'products-container row'>
                     {this.renderProducts()}
                 </div>
                 <Page />

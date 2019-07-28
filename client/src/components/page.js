@@ -20,7 +20,7 @@ class Page extends Component {
         //create pages based on the number of products in the query
         for (let i = 1; i<=count; i+= 10) {
             pages.push(
-               <button className='page' value = {Math.round(i/10-.1 +1)} onClick={this.handleClick.bind(this)}>{Math.round(i/10-.1 +1)}</button>
+               <button className='page-button' value = {Math.round(i/10-.1 +1)} onClick={this.handleClick.bind(this)}>{Math.round(i/10-.1 +1)}</button>
                 )
         }
         return pages;
@@ -28,7 +28,7 @@ class Page extends Component {
 
     render () {
         return (
-            <div>{this.renderPages()}</div>
+            <div className='page-container'>{this.renderPages()}</div>
         )
     } 
 }

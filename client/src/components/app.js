@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchBar from "./search-bar";
+import Categories from "./categories"
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ResultsList from "./results-list";

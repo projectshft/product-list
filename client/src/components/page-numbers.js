@@ -1,9 +1,9 @@
 import React from 'react';
 
 class PageNumbers extends React.Component {
-    constructor () {
-        super()
-    }
+    // constructor () {
+    //     super()
+    // }
 
     render() {
         return (

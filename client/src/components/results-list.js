@@ -1,21 +1,43 @@
 import React from "react";
+import { connect } from "react-redux"
 
 class ResultsList extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
     }
 
-    componentDidMount() {
-
-    };
+   renderProducts() {
+    if (this.props.products.products !== undefined) { 
+        return this.props.products.products.map( product => {
+            return (
+                <div className="col-md-4 card">
+                    <div className="card-header">
+                        <p>Category: {product.category} <span><h4>${product.price}</h4></span></p>
+                    </div>
+                    <img className="card-image-top" src={product.image} alt=" Not Found"/>
+                    <div className="card-body">
+                        <p className="card-text text-center">{product.name}</p>
+                    </div>
+                </div>
+ 
+            )
+        })
+    }
+   }
 
     render () {
         return (
             <div className="row">
-                
+                {this.renderProducts()}
             </div>
         )
     }
 };
 
-export default ResultsList
+function mapStateToProps( state ) {
+    return {
+        products: state.products
+    }
+}
+
+export default connect( mapStateToProps )( ResultsList )

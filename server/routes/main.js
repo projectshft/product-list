@@ -10,7 +10,7 @@ router.get( '/generate-fake-data', ( req, res, next ) => {
             category: faker.commerce.department(),
             name: faker.commerce.productName(),
             price: faker.commerce.price(),
-            image: 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png',
+            image: faker.image.image(),
             enabled: true,
             dateAdded: new Date(),
             dateLastModified: new Date(),
@@ -89,6 +89,7 @@ router.get( '/products', ( req, res, next ) => {
         .skip(( perPage * page ) - perPage )
         .limit( perPage )
         .exec(( err, products ) => {
+           
 
             Product.countDocuments( query, (err, count) => {
                 searchResultsCount = count;

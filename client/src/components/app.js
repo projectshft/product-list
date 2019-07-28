@@ -7,16 +7,15 @@ import PageNumbers from "./page-numbers";
 import { fetchProducts } from "../actions/index";
 
 class App extends React.Component {
-    constructor(props) {
-        super(props)
-    };
+    // constructor(props) {
+    //     super(props)
+    // };
 
     componentDidMount() {
-        let response = fetchProducts({
-            category: 'Grocery',
+        this.props.fetchProducts({
+            category: null,
             sort: null
         })
-        console.log('this is my response:' + response)
     };
 
     render() {
@@ -48,9 +47,9 @@ class App extends React.Component {
 // })
 
 function mapDispatchToProps( dispatch ) {
-
+    return bindActionCreators( { fetchProducts }, dispatch )
 };
 
-export default App
+export default connect( null, mapDispatchToProps )( App );
 
-// connect( mapStateToProps, mapDispatchToProps )( App );
+

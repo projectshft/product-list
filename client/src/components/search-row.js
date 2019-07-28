@@ -1,8 +1,8 @@
 import React from "react";
-import SearchBar from "./search-bar";
-import { connect } from "net";
-import { bindActionCreators } from "redux";
-import { fetchProducts } from "../actions/index"
+// import SearchBar from "./search-bar";
+// import { connect } from "net";
+// import { bindActionCreators } from "redux";
+// import { fetchProducts } from "../actions/index"
 
 class SearchRow extends React.Component {
     constructor() {

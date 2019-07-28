@@ -6,7 +6,7 @@ const ROOT_URL = "http://localhost:8000"
 
 
 
-export function fetchProducts(query) {
+export async function fetchProducts(query) {
     let requestString = '/products';
     
     if ( query.category || query.sort ) {
@@ -21,7 +21,7 @@ export function fetchProducts(query) {
         }
     }
    
-    const response = axios.get(`${ROOT_URL}${requestString}`)
+    const response = await axios.get(`${ROOT_URL}${requestString}`)
 
       return {
           type: FETCH_PRODUCTS,

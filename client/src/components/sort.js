@@ -16,14 +16,16 @@ class Sort extends Component {
 
     render() {
         return (
-            <div>
+            <div className='dropdown'>
                 <h1 className='header'>Price:</h1>
+                <div className = 'dropdown-content'>
                     <button className='sort-category-button btn btn-primary' value= 'low' onClick={this.handleClick.bind(this)}>
                         Low to High
                     </button>
                     <button className='sort-category-button btn btn-primary' value='high' onClick={this.handleClick.bind(this)}>
                         Hight to Low
                     </button>
+                </div>
             </div>
         )
     }

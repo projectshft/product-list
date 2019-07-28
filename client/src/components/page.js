@@ -15,7 +15,7 @@ class Page extends Component {
 
     renderPages() {
         let pages = []
-        for (let i = 1; i<=11; i++) {
+        for (let i = 1; i<=1; i+= 10) {
             pages.push(
                <button className='page' value = {i} onClick={this.handleClick.bind(this)}>{i}</button>
                 )

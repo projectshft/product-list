@@ -69,7 +69,9 @@ router.get('/products', (req, res, next) => {
               return res.end();
           }
           if (err) throw err;
-        Product.countDocuments().exec((err, count) => {
+        Product
+            .find(categoryToFind)
+            .countDocuments().exec((err, count) => {
             if (err) return (err)
 
             products.push(count)

@@ -25,6 +25,7 @@ class AppIndex extends Component {
     }
 
     renderProducts() {
+        console.log(this.props.products)
          return this.props.products.map(product => {
             return (
                 //make 3 rows of 3 for the products return from the url

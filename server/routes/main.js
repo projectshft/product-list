@@ -4,6 +4,16 @@ const Product = require('../models/product')
 const Review = require('../models/review')
 const ObjectId = require('mongoose').Types.ObjectId
 
+const categoryArray = ["Automotive", "Baby", "Beauty", "Books", "Clothing", "Computers", "Electronics", "Games", "Garden", "Grocery", "Health", "Home", "Industrial", "Jewelery", "Kids", "Movies", "Music", "Outdoors", "Shoes", "Sports", "Tools", "Toys"]
+
+// Helper function performs case-insensitive match between query and category in database
+const searchArray = function(element, array) {
+    const len = array.length, str = element.toLowerCase();
+    for ( var i = 0; i < len; i++ ) {
+        if ( array[i].toLowerCase() == str ) { return i; }
+    }
+    return -1;
+}
 
 // GET /generate-fake-data --- generates products and reviews  
 // note: products/reviews are related with refs 
@@ -50,22 +60,38 @@ router.get('/products', (req, res, next) => {
   let productCount = 0
   let maxPages = 1
   // get category (for filter) and price (for sorting)  
-  const category = req.query.category || ''
-  const price = req.query.price || ''
-  console.log(category, price)
+  let category = req.query.category || ''
+  let price = req.query.price || ''
+
+  console.log(category)
+  const categoryIndex = searchArray(category, categoryArray);
+  console.log('index', categoryIndex);
+  category = (categoryIndex > -1)? categoryArray[categoryIndex]: category;
+  console.log(category);
   const filterCategory = (category.length > 0) ? { category: category } : {}
 
+  // check price query and set param for product sorting accordingly. 
+  // since 'price' is sent back in the response, manipulate it if it's valid (lower case) 
+  // or set it to an empty string if it isn't valid (thus no sorting happens)
   const getSort = function (sortParam) {
-    if (sortParam.toLowerCase() === 'lowest') {
-      return { price: 'asc' }
-    } else if (sortParam.toLowerCase() === 'highest') {
-      return { price: 'desc' }
-    } else {
-      return {}
+    const priceLC = sortParam.toLowerCase();
+    switch (priceLC) {
+      case '':
+        return {};
+      case 'lowest':
+        price = priceLC;
+        return { price: 'asc' };
+      case 'highest':
+        price = priceLC;
+        return { price: 'desc' };
+      default:
+        price = '';
+        return '';
     }
   }
   const sortPrice = getSort(price)
   console.log(sortPrice)
+  console.log(price)
 
   Product.countDocuments(filterCategory).exec((err, count) => {
     if (err) return next(err)

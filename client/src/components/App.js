@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
 import Product from "./Product";
-import { getProducts, getMaxPages, getCategory, getPrice, getPage } from "../selectors"
+import { getProducts, getMaxPages, getCategory, getPrice, getPage, getCount } from "../selectors"
 
 class App extends Component {
   constructor() {
@@ -70,6 +70,16 @@ class App extends Component {
     )
   }
 
+  renderCount() {
+    if (!this.props.count) {
+      return '0 products found'
+    } else if (this.props.count === 1) {
+      return '1 product found'
+    } else {
+      return this.props.count + ' products found'
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -78,8 +88,8 @@ class App extends Component {
         </nav>
         <div className="row select-row">
           <div className="col-md-4 select-div">
-            <span className="select-span">search products </span>
-            <input className="form-control" type="text" placeholder="&#xF002;" readOnly></input>
+            <span className="select-span" style={{fontSize: '12px'}}>{this.renderCount()} </span>
+            <input className="form-control" type="text" placeholder="&#xF002; search" readOnly></input>
           </div>
           <div className="col-md-4 select-div">
           <span className="select-span">filter by category </span>
@@ -119,7 +129,8 @@ function mapStateToProps(state) {
     category: getCategory(state),
     price: getPrice(state),
     maxPages: getMaxPages(state),
-    page: getPage(state)
+    page: getPage(state),
+    count: getCount(state)
   };
 }
 

@@ -143,15 +143,16 @@ router.get('/products/:productId', (req, res, next) => {
 router.get('/reviews', (req, res, next) => {
   const perPage = 40
   // return the first page by default
-  const page = req.query.page || 1
+  const page = Math.max(Math.floor(req.query.page || 1), 1)
 
   Review
     .find({})
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, reviews) => {
+      if (err) return next(err)
       // use `count` to know how many are coming back
-      Review.count().exec((err, count) => {
+      Review.countDocuments().exec((err, count) => {
         if (err) return next(err)
         res.send(reviews)
       })
@@ -161,10 +162,10 @@ router.get('/reviews', (req, res, next) => {
 // POST /products --- creates a new product in the database
 router.post('/products', (req, res, next) => {
   let product = new Product()
-  product.category = req.body.category
-  product.name = req.body.name
-  product.price = req.body.price
-  product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+  product.category = req.body.category || ''
+  product.name = req.body.name || ''
+  product.price = req.body.price || 0
+  product.image = req.body.image || 'http://lorempixel.com/640/480'
 
   product.save((err) => {
     if (err) throw err
@@ -181,8 +182,8 @@ router.post('/:productId/reviews', (req, res, next) => {
     if (err) throw err
 
     let review = new Review()
-    review.userName = req.body.userName
-    review.text = req.body.text
+    review.userName = req.body.userName || ''
+    review.text = req.body.text || ''
     review.product = product._id
     review.save((err) => {
       if (err) throw err

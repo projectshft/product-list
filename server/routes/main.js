@@ -6,9 +6,6 @@ const Review = require('../models/review')
 const PRODUCTS_PER_PAGE = 9;
 const REVIEWS_PER_PAGE = 40;
 
-
-
-
 //helper functions
 
 //helper function to isolate product id from params and check if valid
@@ -40,7 +37,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.reviews.push(review);
     review.product = product;
   }
-  res.end()
+   res.end()
 })
 
 router.get('/products', (req, res, next) => {
@@ -55,8 +52,6 @@ router.get('/products', (req, res, next) => {
  //refactored to ignore an 'object Object' string for sort..this is value if category is selected but sort is empty object in store
 
  if (!sort || sort ==='[object Object]' || typeof sort !== 'string'){
-
-   console.log('empty' + typeof sort);
   Product.find({category: { $regex: new RegExp(filter, 'i')}})
   .skip((pageNum -1) * PRODUCTS_PER_PAGE)
   .limit(PRODUCTS_PER_PAGE)
@@ -74,7 +69,6 @@ router.get('/products', (req, res, next) => {
 })
 })
  } else {
-   console.log('here' + sort);
   if (sort === 'highest'){
     sort = 'descending';
    } else if (req.query.price === 'lowest'){

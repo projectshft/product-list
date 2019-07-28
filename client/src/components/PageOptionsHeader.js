@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { fetchProducts, updateStoreCategory, updateSortOrder } from '../actions';
 
@@ -26,6 +27,15 @@ class PageOptionsHeader extends Component {
     this.props.fetchProducts(page, event.target.value, catQuery)
     this.props.updateSortOrder(event.target.value);
   }
+//hard coding category values
+  renderCategories(){
+    let categories = ['Sports', 'Beauty', 'Kids', 'Tools', 'Industrial', 'Grocery', 'Games', 'Health', 'Electronics', 'Movies', 'Toys', 'Books', 'Outdoors', 'Shoes', 'Baby', 'Home', 'Garden', 'Clothing']
+    return _.map(categories, category => {
+      return(
+        <option value={category}>{category}</option>
+      )
+    })
+  }
 
 
   //search bar has no functionality right now, not doing extension 2
@@ -41,9 +51,7 @@ class PageOptionsHeader extends Component {
         <label>Filter by Category: </label>
         <select name='categoryFilter' onChange={this.onCategoryChange}>
          <option />
-         <option value='Kids'>Kids</option>
-         <option value='Electronics'>Electronics</option>
-         <option value='Garden'>Garden</option>
+          {this.renderCategories()}
         </select>
        </div>
        <div className='col-md-4 text-right'>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
-import Product from "./product";
+import Product from "./Product";
 import { getProducts, getMaxPages, getCategory, getPrice, getPage } from "../selectors"
 
 class App extends Component {
@@ -78,18 +78,18 @@ class App extends Component {
         </nav>
         <div className="row select-row">
           <div className="col-md-4 select-div">
-            <span>search </span>
+            <span className="select-span">search products </span>
             <input className="form-control" type="text" placeholder="&#xF002;" readOnly></input>
           </div>
           <div className="col-md-4 select-div">
-            <span>filter by category </span>
+          <span className="select-span">filter by category </span>
             <select className="form-control" id="category-selection" onChange={this.handleCategorySelect} value={this.props.category || ''}>
               <option value="">All</option>
               {this.renderCategories()}
             </select>
           </div>
           <div className="col-md-4 select-div">
-            <span>sort by price </span>
+          <span className="select-span">sort by price </span>
             <select className="form-control" id="category-selection" onChange={this.handlePriceSelect} value={this.props.price || ''}>
               <option value="">Select</option>
               <option value="lowest">Low to High</option>

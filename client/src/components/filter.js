@@ -11,6 +11,7 @@ class Filter extends Component {
         let category = e.target.value;
         this.props.addCategory(category);
         let sort = this.props.sort;
+        console.log(sort)
         let page = this.props.page
         this.props.fetchProducts(1, category, sort)
     }
@@ -39,7 +40,7 @@ class Filter extends Component {
 
 
 function mapStateToProps(state) {
-    return {products: state.products, category: state.category, page: state.page}
+    return {products: state.products, category: state.category, sort: state.sort}
 }
 
 function mapDispatchToProps(dispatch) {

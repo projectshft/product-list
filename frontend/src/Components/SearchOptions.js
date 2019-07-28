@@ -2,11 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../Actions';
+import SearchBar from './SearchBar';
+import CategoryFilter from './CategoryFilter';
+import SortOptions from './SortOptions';
 
-const SearchOptions = () => (
+const SearchOptions = ({ categories, sortedByPrice, fetchProducts }) => (
   <div className='container'>
     <div className='row'>
-      needs search bar, category, sort
+      <SearchBar />
+      <CategoryFilter 
+        categories={categories} 
+        sortedByPrice={sortedByPrice}
+        fetchProducts={fetchProducts}
+      />
+      <SortOptions 
+        categories={categories} 
+        sortedByPrice={sortedByPrice}
+        fetchProducts={fetchProducts}
+      />
     </div>
   </div>
 );
@@ -16,7 +29,11 @@ function mapStateToProps(state) {
   return {
     categories: state.productData.categories,
     sortedByPrice: state.productData.sortedByPrice
-  } 
+  }
 }
 
-export default connect(mapStateToProps, null)(SearchOptions);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchProducts }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchOptions);

@@ -12,8 +12,8 @@ router.get('/generate-fake-data', (request, response, next) => {
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-	product.reviews = [];
+    product.image = './defualt-store.jpg'
+		product.reviews = [];
 	// adding fake reviews here to work with later
 	for (let j = 0; j < 4; j++) {
 		let review = new Review({

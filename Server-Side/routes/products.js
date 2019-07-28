@@ -25,7 +25,7 @@ router.get('/products', (request, response) => {
 	let sortOrder = price === 'lowest' ? 1 : -1;
 	// if page is not defined, default to page 1
 	if (typeof page === 'undefined') {
-		page = 1
+		page = 1;
 	} else {
 		page = Number(page);
 	}

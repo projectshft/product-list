@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addCategory } from '../actions';
+import { addCategory, fetchProducts} from '../actions';
 
 
 class Filter extends Component {
     
     handleClick(e) {
         e.preventDefault();
-        this.props.addCategory(e.target.value);
+        let category = e.target.value;
+        this.props.addCategory(category);
+        let sort = this.props.sort;
+        let page = this.props.page
+        this.props.fetchProducts(page, category, sort)
     }
 
     render() {
@@ -34,11 +38,13 @@ class Filter extends Component {
 }
 
 
-
+function mapStateToProps(state) {
+    return {products: state.products, sort: state.sort, page: state.page}
+}
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators ({addCategory}, dispatch)
+    return bindActionCreators ({addCategory, fetchProducts}, dispatch)
 }
 
 
-export default connect (null, mapDispatchToProps)(Filter);
+export default connect (mapStateToProps, mapDispatchToProps)(Filter);

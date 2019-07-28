@@ -4,7 +4,9 @@ import { FETCH_PRODUCTS } from '../actions'
 export default function(state = [], action) {
     switch (action.type) {
         case FETCH_PRODUCTS:
-            return action.payload.data
+            console.log(action.payload);
+            state = action.payload.data
+            return state
         default:
             return state;
     }

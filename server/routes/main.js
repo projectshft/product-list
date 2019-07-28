@@ -71,8 +71,9 @@ router.get('/products', (req, res, next) => {
           if (err) throw err;
         Product.countDocuments().exec((err, count) => {
             if (err) return (err)
-  
-          res.send(products)
+
+            products.push(count)
+            res.send(products)
         })
       })
   })
@@ -129,7 +130,6 @@ router.post('/products', (req, res, next) => {
         console.log(err);
         res.end();
     }
-    //TODO: Go through rest of object and make sure they are strings
 
     //creating a new product model using information given by the user
     let newProduct = new Product();

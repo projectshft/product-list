@@ -43,7 +43,7 @@ const Pagination = ({ numberOfPages, currentPage, fetchProducts }) => {
   }
 
   return (
-    <nav aria-label='Page navigation'>
+    <nav aria-label='Page navigation' className='mt-3'>
       <ul className='pagination justify-content-center'>
         {previousButton}
         {pageButtons}

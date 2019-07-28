@@ -43,11 +43,12 @@ FRONTEND PLAN
 
 - [ ] Pagination (component inside ProductsList)
   - [X] props passed down from ProductsList  
-  - [ ] mapDispatchToProps - dont need
+  - [X] mapDispatchToProps - dont need
     - [X] clicking on page has an action - changes page query option and sends get request
-  - [ ] pagination redux
-    - [ ] action - changes page query to page clicked on i.e. 'page=5' in get request
-    - [ ] reducer - same as regular get reducer?
+  - [X] pagination redux
+    - [X] action - changes page query to page clicked on i.e. 'page=5' in get request
+    - [X] reducer - same as regular get reducer? yes
+  - [ ] NEEDS TO KNOW SEARCH OPTIONS OR ELSE WILL GET ALL PRODUCTS ON PAGE CLICK
 
 - [ ] SearchOptions - mapStateToProps here or in individual components? same with dispatch
 

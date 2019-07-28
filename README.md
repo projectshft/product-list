@@ -42,9 +42,9 @@ FRONTEND PLAN
   - [X] product passed in through props (do not pass all products down!)
 
 - [ ] Pagination (component inside ProductsList)
-  - [ ] props passed down from ProductsList  
-  - [ ] mapDispatchToProps
-    - [ ] clicking on page has an action - changes page query option and sends get request
+  - [X] props passed down from ProductsList  
+  - [ ] mapDispatchToProps - dont need
+    - [X] clicking on page has an action - changes page query option and sends get request
   - [ ] pagination redux
     - [ ] action - changes page query to page clicked on i.e. 'page=5' in get request
     - [ ] reducer - same as regular get reducer?

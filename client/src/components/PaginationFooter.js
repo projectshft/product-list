@@ -2,8 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../actions'
 
 class PaginationFooter extends Component {
+  onClickPage = (event) =>{
+    
+    let catQuery = this.props.category;
+    let sort = this.props.sortOrder;
+    let pageQuery = event.target.value;
+    this.props.fetchProducts(pageQuery, sort, catQuery);
+  }
  
   renderPages(){
     let pageArray = [];
@@ -15,7 +23,7 @@ class PaginationFooter extends Component {
     if(pageArray.length != 0){
     return _.map(pageArray, num => {
       return(
-        <li key={num} className='page-item page-link'>{num}</li>
+        <li key={num} value={num} onClick={this.onClickPage} className='page-item page-link'>{num}</li>
      
       )
     })
@@ -35,12 +43,12 @@ class PaginationFooter extends Component {
   }
 }
 
-function mapStateToProps({ totalPages}){
-  return { totalPages };
+function mapStateToProps({ totalPages, sortOrder, category}){
+  return { totalPages, sortOrder, category };
 }
 
-// // function mapDispatchToProps(dispatch){
-// //   return bindActionCreators({ fetchProductsWithCategory, updateStoreCategory, fetchProductsWithSort, updateSortOrder }, dispatch);
-// // }
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({ fetchProducts }, dispatch);
+}
 
-export default connect(mapStateToProps, null)(PaginationFooter);
+export default connect(mapStateToProps, mapDispatchToProps)(PaginationFooter);

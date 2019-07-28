@@ -6,9 +6,12 @@ import { bindActionCreators } from 'redux';
 import Product from './Product';
 
 class ProductList extends Component {
-  //make sure it isn't empty
+  //first request on page load
   componentDidMount(){
-    this.props.fetchProducts();
+  let sort = '';
+  let category='';
+  let page = 1;
+    this.props.fetchProducts(page, sort, category);
   }
 
   renderProducts(){

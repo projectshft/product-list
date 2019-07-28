@@ -69,7 +69,7 @@ router.get('/products', (req, res, next) => {
      }else {
       //calculate total pages for pagination on client-side
       let totalPages = Math.ceil(count/PRODUCTS_PER_PAGE)
-      res.send({products: result, pageCount: totalPages});
+      res.send({products: result, pageCount: totalPages, currentPage: pageNum});
   }
 })
 })
@@ -94,7 +94,7 @@ router.get('/products', (req, res, next) => {
        }else {
         //calculate total pages for pagination on client-side
         let totalPages = Math.ceil(count/PRODUCTS_PER_PAGE)
-        res.send({products: result, pageCount: totalPages});
+        res.send({products: result, pageCount: totalPages, currentPage: pageNum});
        }
      })
    })

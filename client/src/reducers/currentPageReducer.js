@@ -1,16 +1,15 @@
 import _ from 'lodash';
-import { FETCH_PRODUCTS } from '../actions';
+import { FETCH_PRODUCTS} from '../actions';
 
-export default function (state = {}, action){
+export default function (state = {currentPage: 1}, action){
   if (action.error){
     return (action.error);
   }
   switch (action.type){
     case FETCH_PRODUCTS:
-      return _.mapKeys(action.payload.data.products, '_id');
+      return action.payload.data.currentPage;
     default:
           return state;
       }
     
   }
-

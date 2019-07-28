@@ -15,7 +15,7 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image =
-      "https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png";
+      "https://via.placeholder.com/250.png/"
     product.reviews = [];
 
     for (let i = 0; i < 3; i++) {
@@ -132,8 +132,8 @@ router.post("/products", (req, res) => {
 //request params, it will return a new object containing the normal product
 //instance that has a review added along with an added key value pair
 //newReview to show the client the new review that had been added
-router.post("/:product/reviews", (req, res) => {
-  const currentProductId = req.params.product;
+router.post("/:productId/reviews", (req, res) => {
+  const currentProductId = req.params.productId;
   Product.findById(currentProductId).exec((error, productData) => {
     if (error) throw error;
     let review = new Review({
@@ -141,11 +141,12 @@ router.post("/:product/reviews", (req, res) => {
       text: req.body.text,
       product: productData
     });
-    review.save();
-    productData.reviews.push(review);
-    productData.save((err, savedProduct) => {
-      if (err) throw err;
-      res.send({ ...savedProduct._doc, newReview: review });
+    review.save((error, savedReview) => {
+      productData.reviews.push(review);
+      productData.save((err, savedProduct) => {
+        if (err) throw err;
+        res.send(savedReview);
+      });
     });
   });
 });

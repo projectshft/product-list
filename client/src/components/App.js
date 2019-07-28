@@ -10,7 +10,7 @@ class App extends Component {
     super()
     this.handlePageSelect = this.handlePageSelect.bind(this);
     this.handleCategorySelect = this.handleCategorySelect.bind(this);
-    this.handlePriceSelect = this.handlePriceSelect.bind(this); 
+    this.handlePriceSelect = this.handlePriceSelect.bind(this);
   }
 
   componentDidMount() {
@@ -45,10 +45,10 @@ class App extends Component {
 
   renderPagination() {
     if (!this.props.maxPages) {
-      return <div></div> 
+      return <div></div>
     }
     let indexList = []
-    for (var i = 1; i < this.props.maxPages+1; i++) {
+    for (var i = 1; i < this.props.maxPages + 1; i++) {
       indexList.push(i)
     }
     return indexList.map(index => {
@@ -64,60 +64,54 @@ class App extends Component {
   }
 
   renderCategories() {
-    const categories = ["Automotive", "Baby", "Beauty", "Books", "Clothing", "Computers", "Electronics", "Games", "Garden", "Grocery", "Health", "Home", "Industrial", "Jewelery", "Kids", "Movies", "Music", "Outdoors", "Shoes", "Sports", "Tools", "Toys"] 
+    const categories = ["Automotive", "Baby", "Beauty", "Books", "Clothing", "Computers", "Electronics", "Games", "Garden", "Grocery", "Health", "Home", "Industrial", "Jewelery", "Kids", "Movies", "Music", "Outdoors", "Shoes", "Sports", "Tools", "Toys"]
     return categories.map((category, index) =>
       <option key={index} value={category}>{category}</option>
     )
   }
 
   render() {
-    //const categories = ["Automotive", "Baby", "Beauty", "Books", "Clothing", "Computers", "Electronics", "Games", "Garden", "Grocery", "Health", "Home", "Industrial", "Jewelery", "Kids", "Movies", "Music", "Outdoors", "Shoes", "Sports", "Tools", "Toys"]
     return (
       <div className="App">
         <nav className="navbar justify-content-center">
           <div className="navbar-brand"><h1>PRODUCTS</h1></div>
         </nav>
         <div className="row select-row">
-        <div className="col-md-4 select-div">
-          <span>search </span>
-          <input className="form-control" type="text" placeholder="..." readOnly></input>
-         </div>
-        <div className="col-md-4 select-div">
-        <span>filter by category </span>
-        <select className="form-control" id="category-selection" onChange={this.handleCategorySelect} value={this.props.category || ''}>
-          <option value="">All</option>
-          {this.renderCategories()}
-        </select>
-        </div>
-        <div className="col-md-4 select-div">
-          <span>sort by price </span>
-        <select className="form-control" id="category-selection" onChange={this.handlePriceSelect} value={this.props.price || ''}>
-          <option value="">Select</option>
-          <option value="lowest">Low to High</option>
-          <option value="highest">High to Low</option>
-        </select>
-        </div>
+          <div className="col-md-4 select-div">
+            <span>search </span>
+            <input className="form-control" type="text" placeholder="&#xF002;" readOnly></input>
+          </div>
+          <div className="col-md-4 select-div">
+            <span>filter by category </span>
+            <select className="form-control" id="category-selection" onChange={this.handleCategorySelect} value={this.props.category || ''}>
+              <option value="">All</option>
+              {this.renderCategories()}
+            </select>
+          </div>
+          <div className="col-md-4 select-div">
+            <span>sort by price </span>
+            <select className="form-control" id="category-selection" onChange={this.handlePriceSelect} value={this.props.price || ''}>
+              <option value="">Select</option>
+              <option value="lowest">Low to High</option>
+              <option value="highest">High to Low</option>
+            </select>
+          </div>
         </div>
         <div className="row">
           {this.renderList()}
         </div>
         <div className="row">
-        <div className="col-md-12">
-        <div className="pagination">
-          {this.renderPagination()}
-        </div>
-        </div>
+          <div className="col-md-12">
+            <div className="pagination">
+              {this.renderPagination()}
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
 }
-
-
-// function mapStateToProps(state) {
-//   return { products: state.products };
-// }
 
 function mapStateToProps(state) {
   console.log(state.data)

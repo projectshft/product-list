@@ -12,8 +12,8 @@ router.get('/generate-fake-data', (req, res, next) => {
     let product = new Product()
 
     for (let i = 0; i < 3; i++) {
-      let review = new Review() 
-      review.userName = faker.internet.userName() 
+      let review = new Review()
+      review.userName = faker.internet.userName()
       review.text = faker.commerce.productAdjective() + '!'
       review.product = product._id
 
@@ -27,7 +27,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = faker.image.imageUrl()
-    
+
     product.save((err) => {
       if (err) throw err
     })
@@ -42,20 +42,20 @@ router.get('/products', (req, res, next) => {
   // return the max value of 1 and a given page (if it's specified)
   let page = Math.max(req.query.page || 1, 1)
   let productCount = 0
-  let maxPages = 1 
+  let maxPages = 1
   // get category (for filter) and price (for sorting)  
   const category = req.query.category || ''
   const price = req.query.price || ''
   console.log(category, price)
-  const filterCategory = (category.length > 0)? {category: category} : {} 
+  const filterCategory = (category.length > 0) ? { category: category } : {}
 
-  const getSort = function(sortParam) {
+  const getSort = function (sortParam) {
     if (sortParam.toLowerCase() === 'lowest') {
-      return { price : 'asc'}
+      return { price: 'asc' }
     } else if (sortParam.toLowerCase() === 'highest') {
-      return { price : 'desc'}
+      return { price: 'desc' }
     } else {
-      return {} 
+      return {}
     }
   }
   const sortPrice = getSort(price)
@@ -65,7 +65,7 @@ router.get('/products', (req, res, next) => {
     if (err) return next(err)
     console.log(count)
     // returns the max number of pages possible for given group of query results 
-    maxPages = Math.max(Math.ceil(count/perPage), 1)
+    maxPages = Math.max(Math.ceil(count / perPage), 1)
     page = Math.min(page, maxPages)
     productCount = count
     console.log(page)
@@ -76,12 +76,12 @@ router.get('/products', (req, res, next) => {
       .limit(perPage)
       .exec((err, products) => {
         if (err) return next(err)
-        res.send({ 
-          count: productCount, 
+        res.send({
+          count: productCount,
           page: page,
-          maxPages: maxPages, 
-          category: category, 
-          price: price, 
+          maxPages: maxPages,
+          category: category,
+          price: price,
           products: products
         })
       })
@@ -111,8 +111,8 @@ router.get('/products', (req, res, next) => {
 
 // GET /products/:productId --- returns a specific product by its id
 router.get('/products/:productId', (req, res, next) => {
-  const { productId } = req.params 
-  Product.find({ _id : productId}, (err, product) => {
+  const { productId } = req.params
+  Product.find({ _id: productId }, (err, product) => {
     if (err) return next(err)
     res.send(product)
   })
@@ -148,18 +148,18 @@ router.post('/products', (req, res, next) => {
   product.save((err) => {
     if (err) throw err
   })
-  res.send(product) 
+  res.send(product)
 })
 
 // POST /:productId/reviews --- creates a new review in the database 
 // by adding it to the correct product's reviews array 
 router.post('/:productId/reviews', (req, res, next) => {
-  const { productId } = req.params 
+  const { productId } = req.params
 
   Product.findById(productId, (err, product) => {
-    if (err) throw err 
+    if (err) throw err
 
-    let review = new Review() 
+    let review = new Review()
     review.userName = req.body.userName
     review.text = req.body.text
     review.product = product._id
@@ -178,8 +178,8 @@ router.post('/:productId/reviews', (req, res, next) => {
 
 // DELETE /products/:productId --- deletes a product by id
 router.delete('/products/:productId', (req, res, next) => {
-  const { productId } = req.params 
-  Product.deleteOne({ _id : productId}, (err) => {
+  const { productId } = req.params
+  Product.deleteOne({ _id: productId }, (err) => {
     if (err) return next(err)
     res.send()
   })
@@ -187,8 +187,8 @@ router.delete('/products/:productId', (req, res, next) => {
 
 // DELETE /reviews/:reviewId --- deletes a review by id
 router.delete('/reviews/:reviewId', (req, res, next) => {
-  const { reviewId } = req.params 
-  Review.deleteOne({ _id : reviewId}, (err) => {
+  const { reviewId } = req.params
+  Review.deleteOne({ _id: reviewId }, (err) => {
     if (err) return next(err)
     res.send()
   })

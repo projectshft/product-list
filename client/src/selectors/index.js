@@ -1,5 +1,3 @@
-// import { createSelector } from 'reselect'
-
 export const getProducts = (state) => state.data.products 
 
 export const getMaxPages = (state) => state.data.maxPages 

@@ -66,6 +66,7 @@ router.get( '/products', ( req, res, next ) => {
     let exclude = null;
     let query =  { enabled: true };
     let searchResultsCount = null
+    let categoryList = [];
 
     if (req.query.category && typeof req.query.category === "string" ) {
         query.category = req.query.category
@@ -84,17 +85,25 @@ router.get( '/products', ( req, res, next ) => {
         exclude = excludedFields.split(' ').map(field => fieldNegator.concat(field)).join( ' ' )
     }
 
-    Product
-        .find( query, exclude , sort )
+    const search = Product .find( query, exclude , sort);
+
+    search.exec(( err, docs ) => {
+        docs.forEach( doc => {
+            if ( !categoryList.includes( doc.category ) ) {
+                categoryList.push( doc.category )
+            }
+        } )
+    });
+
+    search
         .skip(( perPage * page ) - perPage )
         .limit( perPage )
         .exec(( err, products ) => {
-           
 
             Product.countDocuments( query, (err, count) => {
                 searchResultsCount = count;
 
-                res.send( {count:searchResultsCount, pages: searchResultsCount/perPage, products:products} );
+                res.send( {count:searchResultsCount, pages: searchResultsCount/perPage, categoryList, products:products} );
             })
         })
   });

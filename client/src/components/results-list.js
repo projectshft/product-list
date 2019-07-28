@@ -10,7 +10,7 @@ class ResultsList extends React.Component {
     if (this.props.products.products !== undefined) { 
         return this.props.products.products.map( product => {
             return (
-                <div className="col-md-3 card m-4 height" >
+                <div className="col-md-3 card m-4 " >
                     <div className="card-header">
                         <p>Category: {product.category} <span className="float-right"><h4>${product.price}</h4></span></p>
                     </div>

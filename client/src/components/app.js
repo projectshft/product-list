@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchRow from "./search-row";
+import SearchBar from "./search-bar";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ResultsList from "./results-list";
@@ -50,9 +50,9 @@ class App extends React.Component {
                     </div>
                 </div>
                 <div className="row">
-                   <div className="col-md-4">
-                       <p className="text-center">search: <input onKeyPress={this.onSearchEnter}/></p>
-                   </div>
+                    <SearchBar onSearchEnter={this.onSearchEnter} />
+                    <Categories />
+                   
                 </div>
                 <div className="row">
                     <ResultsList />

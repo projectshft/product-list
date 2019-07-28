@@ -6,8 +6,8 @@ class Searchbar extends Component {
     render() {
         return (
             <div>
-                <h1 className='header'>Search:</h1> 
-                <input placeholder='NOT FUNCTIONING'></input>
+                <h1 className='header'>Search: <input placeholder='NOT FUNCTIONING'></input></h1> 
+                
             </div>
         )
     }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addCategory, fetchProducts} from '../actions';
 
+
 //create an array of categories in the database
 const categories = ['Games', 'Baby', 'Computers', 'Home', 'Industrial', 'Toys', 'Electronics',
                 'Health', 'Grocery', 'Tools', 'Music', 'Shoes']
@@ -36,7 +37,7 @@ class Filter extends Component {
             <div className='container'>
                 {/* <div className='row'> */}
                 <div className='dropdown'>
-                <h1 className='header'>Categories: </h1>
+                <h1 className='header'>Categories <i className="fas fa-caret-down"></i> </h1>
                     <div className='dropdown-content'>
                 {this.renderCategories()}
                 </div>

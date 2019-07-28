@@ -7,6 +7,8 @@ import AppIndex from './components/app';
 import rootReducers from './reducers/index';
 import 'bootstrap/dist/css/bootstrap.css'
 import './index.css';
+// import 'font-awesome/css/font-awesome.min.css';
+
 
 
 

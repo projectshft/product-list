@@ -17,7 +17,7 @@ class Sort extends Component {
     render() {
         return (
             <div className='dropdown'>
-                <h1 className='header'>Price:</h1>
+                <h1 className='header'>Price <i className="fas fa-caret-down"></i> </h1>
                 <div className = 'dropdown-content'>
                     <button className='sort-category-button btn btn-primary' value= 'low' onClick={this.handleClick.bind(this)}>
                         Low to High

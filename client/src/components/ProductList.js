@@ -15,6 +15,19 @@ class ProductList extends Component {
   }
 
   renderProducts(){
+  
+    // Error message in response to error status being set in state due to response from server
+    if(this.props.error.errorMessage){
+      return(
+          <div className='card-body text-center'>{this.props.error.errorMessage}</div>
+      )  
+    }  // Error message in case no products are returned
+    else if(Object.keys(this.props.products).length === 0){
+      return(
+        <div><h3>No products returned.</h3></div>
+      )
+    } 
+    else{
     return _.map(this.props.products, product => {
       return(
         <div className='col-md-4'>
@@ -23,6 +36,7 @@ class ProductList extends Component {
       )
     })
   }
+}
   render(){
     return (
       <div className='container'>
@@ -35,7 +49,7 @@ class ProductList extends Component {
 }
 
   function mapStateToProps(state) {
-    return { products: state.products }
+    return { products: state.products, error: state.error }
   }
 
   function mapDispatchToProps(dispatch) {

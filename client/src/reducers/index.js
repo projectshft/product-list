@@ -4,6 +4,7 @@ import categoryReducer from './categoryReducer';
 import sortReducer from './sortReducer';
 import totalPageReducer from './totalPageReducer';
 import currentPageReducer from './currentPageReducer';
+import errorReducer from './errorReducer'
 
 
 const rootReducer = combineReducers({
@@ -11,7 +12,8 @@ const rootReducer = combineReducers({
   category: categoryReducer, 
   sortOrder: sortReducer,
   totalPages: totalPageReducer,
-  currentPage: currentPageReducer
+  currentPage: currentPageReducer,
+  error: errorReducer
 });
 
 export default rootReducer;

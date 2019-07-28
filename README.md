@@ -29,7 +29,7 @@ FRONTEND PLAN
 - [X] initial action and reducer to call api
   - [X] redux promise middleware
 
-- [ ] ProductsList - container?
+- [X] ProductsList - container?
   - [X] mapStateToProps
     - [X] products array
     - [X] number of pages
@@ -38,8 +38,8 @@ FRONTEND PLAN
   - [X] map products array from store to Product components
   - [X] send product to Product component as prop
 
-- [ ] Product (component inside ProductsList)
-  - [ ] product passed in through props (do not pass all products down!)
+- [X] Product (component inside ProductsList)
+  - [X] product passed in through props (do not pass all products down!)
 
 - [ ] Pagination (component inside ProductsList)
   - [ ] props passed down from ProductsList  

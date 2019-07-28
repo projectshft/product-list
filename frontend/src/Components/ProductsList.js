@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../Actions';
 import ProductCard from './ProductCard';
+import Pagination from './Pagination';
 import _ from 'lodash';
 
 class ProductsList extends Component {
@@ -28,6 +29,11 @@ class ProductsList extends Component {
         <div className='row'>
           {this.renderProducts()}
         </div>
+        <Pagination 
+          numberOfPages={this.props.totalPages} 
+          currentPage={this.props.pageNum} 
+          fetchProducts={this.props.fetchProducts} 
+        />
       </div>
     )
   }

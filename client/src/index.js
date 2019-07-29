@@ -7,6 +7,10 @@ import reducers from "./reducers";
 import App from "./components/app";
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
+import $ from 'jquery';
+import Popper from 'popper.js';
 
 const createStoreWithMiddleware = applyMiddleware( promise )( createStore );
 

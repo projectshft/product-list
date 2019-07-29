@@ -19,6 +19,7 @@ class App extends React.Component {
         };
 
         this.onSearchEnter = this.onSearchEnter.bind( this )
+        this.selectCategory = this.selectCategory.bind( this )
     };
 
     componentDidMount() {
@@ -35,11 +36,14 @@ class App extends React.Component {
     }
 
     onSearchEnter(e) {
-        if ( e.charCode == 13 ) {
-            console.log('hello')
+        if ( e.charCode === 13 ) {
             this.setState({query: e.target.value});
             e.target.value = ''
         }
+    }
+
+    selectCategory(e) {
+        this.setState( { category: e.target.id })
     }
 
     render() {
@@ -52,7 +56,7 @@ class App extends React.Component {
                 </div>
                 <div className="row">
                     <SearchBar onSearchEnter={this.onSearchEnter} />
-                    <Categories />
+                    <Categories selectCategory={this.selectCategory}/>
                    
                 </div>
                 <div className="row">

@@ -206,22 +206,56 @@ router.post('/:productId/reviews', (req, res, next) => {
 })
 
 // DELETE /products/:productId --- deletes a product by id
+// also deletes any reviews associated with that product 
 router.delete('/products/:productId', (req, res, next) => {
   const { productId } = req.params
-  Product.deleteOne({ _id: productId }, (err) => {
-    if (err) return next(err)
-    res.send()
-  })
+  if (!ObjectId.isValid(productId)) {
+    res.writeHead(400, "Invalid product ID")
+    return res.end()
+  } else {
+    Review.deleteMany({ product: productId }, (err) => {
+      if (err) return next(err)
+      Product.deleteOne({ _id: productId }, (err, doc) => {
+        if (err) return next(err)
+        if (doc.deletedCount === 0) {
+          res.writeHead(404, "Product does not exist")
+          return res.end()
+        }
+        res.send()
+      })
+    })
+  }
 })
 
-// DELETE /reviews/:reviewId --- deletes a review by id
+// DELETE /reviews/:reviewId --- deletes a review by id 
+// also deletes review's ID from its associated product's reviews array 
 router.delete('/reviews/:reviewId', (req, res, next) => {
   const { reviewId } = req.params
-  Review.deleteOne({ _id: reviewId }, (err, doc) => {
-    if (err) return next(err)
-    console.log(doc.deletedCount)
-    res.send()
-  })
+  if (!ObjectId.isValid(reviewId)) {
+    res.writeHead(400, "Invalid review ID")
+    return res.end()
+  } else {
+    Review.deleteOne({ _id: reviewId }, (err, doc) => {
+      if (err) return next(err)
+      if (doc.deletedCount === 0) {
+        res.writeHead(404, "Review does not exist")
+        return res.end()
+      } else {
+        Product.findOne({ reviews: reviewId }).exec((err, product) => {
+          if (err) return next(err)
+          for (var i = 0; i < product.reviews.length; i++) {
+            if (product.reviews[i].toString() === reviewId) {
+              product.reviews.splice(i, 1);
+            }
+          }
+          product.save((err) => {
+            if (err) throw err
+            res.send()
+          })
+        })
+      }
+    })
+  }
 })
 
 module.exports = router

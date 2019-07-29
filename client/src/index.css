@@ -63,14 +63,6 @@ code {
   border-color: #e6e6e6; 
 }
 
-/* .dropdown-button-container {
- border-bottom: 5px solid gray;
- border-right: 5px solid gray;
- border-left: 5px solid gray;
- 
-} */
-
-
 input {
   margin-top: 2px;
 }
@@ -92,6 +84,7 @@ input {
   font-weight: 400;
   font-size: 30px;
 }
+
 
 .category {
   margin-top: 10px;

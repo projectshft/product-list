@@ -34,7 +34,7 @@ class AppIndex extends Component {
                        </div>
                    </div>
                     <div className="card">
-                        <img className="card-img-top" src='https://i.ytimg.com/vi/cav9yTlLLVI/hqdefault.jpg'/>
+                        <img className="card-img-top" src={product.image}/>
                         <div className="card-body">
                             <h1 className = 'product-name'> {product.name} </h1>
                         </div>

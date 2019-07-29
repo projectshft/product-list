@@ -23,7 +23,7 @@ router.get('/products', (request, response) => {
 	let { page, category, price } = queryString.parse(parsedURL.query);
 	// sets the sorting order for price parameter
 	let sortOrder = price === 'lowest' ? 1 : -1;
-	// if page is not defined, default to page 1
+	// if page is not undefined default to page 1, otherwise set data type to Number
 	if (typeof page === 'undefined') {
 		page = 1;
 	} else {

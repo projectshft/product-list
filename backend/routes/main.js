@@ -282,9 +282,15 @@ router.delete('/reviews/:review', (req, res, next) => {
       return res.status(404).send('Product not found.');
     }
 
-    //below not working, leaving in case there is time to get it working
-    // right now when getting reviews from [], dont display those with enabled: false
-    // Product.update({_id: review.product}, {$pullAll: {reviews: [reviewId]}});
+    Product.update(
+      { _id: review.product, reviews: review._id },
+      { $pull: { reviews: review._id } },
+      { multi: true },
+      (err, status) => {
+        if (err) throw err;
+        console.log('Success', status);
+      }
+    );
 
     return res.status(200).send(review);
   });

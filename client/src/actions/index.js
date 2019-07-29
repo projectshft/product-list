@@ -8,10 +8,11 @@ export const NEXT_PAGE_PRODUCTS = 'NEXT_PAGE_PRODUCTS';
 const ROOT_URL = "http://localhost:8000";
 
 export function searchProducts(queryObject) {
+  console.log('searching!');
   let queryUrl = `${ROOT_URL}/products?`;
   let queryString = '';
-  const {query, page, sort} = queryObject;
-  
+  const {query, page, price, category} = queryObject;
+
   if(query){
     queryString += `query=${query}&`
   }
@@ -20,8 +21,12 @@ export function searchProducts(queryObject) {
     queryString += `page=${page}&`
   }
 
-  if (sort) {
-    queryString += `sort=${sort}&`
+  if (price) {
+    queryString += `price=${price}&`
+  }
+
+  if (category) {
+    queryString += `category=${category}&`
   }
 
   if(queryString.length > 0){queryUrl += queryString };

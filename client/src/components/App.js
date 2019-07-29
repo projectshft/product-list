@@ -5,6 +5,8 @@ import { bindActionCreators } from "redux";
 import ProductGrid from './ProductGrid';
 import SearchBar from './SearchBar';
 import DropdownMenu from './DropdownMenu';
+import DropdownMenuReact from './DropdownMenuReact';
+import DropdownMenuPrice from './DropdownMenuPrice';
 import Pagination from './Pagination';
 
 class App extends Component {
@@ -29,12 +31,15 @@ class App extends Component {
             <SearchBar />
           </div>
           <div className='col-md-6'>
-            <DropdownMenu name={'Category'} type={'info'}/>
-            <DropdownMenu name={'Price'} type={'info'} />
+            <div className='dropdown-menu-wrap'>
+              <DropdownMenuReact />
+              <DropdownMenuPrice />
+            </div>
           </div>
         </div>
         <div className='row'>
           <div className='col-md-10 offset-md-1'>
+            
             <ProductGrid />
             <Pagination />
           </div>

@@ -14,5 +14,6 @@ code {
 
 .dropdown-menu-wrap{
   display: inline;
+  float: right;
 }
 

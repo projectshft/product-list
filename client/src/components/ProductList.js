@@ -23,7 +23,7 @@ class ProductList extends Component {
     }  // Error message in case no products are returned
     else if (Object.keys(this.props.products).length === 0) {
       return (
-        <div><h3>No products returned.</h3></div>
+        <div><h3>No products to display.</h3></div>
       )
     }
     else {

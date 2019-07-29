@@ -60,22 +60,24 @@ router.get( '/generate-fake-data', ( req, res, next ) => {
 
 router.get( '/products', ( req, res, next ) => {
     let perPage = 9;
-    let page = req.query.page || 1;
+    let pageNumber = req.query.pageNumber || 1;
     let sort = null;
     let sortType = '';
     let exclude = null;
     let query =  { enabled: true };
+    let newQuery = Object.assign({}, query)
     let searchResultsCount = null
     let categoryList = [];
+    let pages;
+    let pageArray = []
 
     if (req.query.category && typeof req.query.category === "string" ) {
-        query.category = req.query.category
+        newQuery.category = req.query.category
     }
 
-    if ( req.query.price === 'highest' || req.query.price === "lowest" ) {
-        req.query.price === "highest" ? sortType = 'desc' : sortType = 'asc' 
+    if ( req.query.sort === 'descending' || req.query.sort === "ascending" ) {
         
-        sort = { sort: { price: sortType } }
+        sort = { sort: { price: req.query.sort } }
     }
 
     if ( req.query.exclude && typeof req.query.exclude === "string" ) {
@@ -85,25 +87,32 @@ router.get( '/products', ( req, res, next ) => {
         exclude = excludedFields.split(' ').map(field => fieldNegator.concat(field)).join( ' ' )
     }
 
-    const search = Product .find( query, exclude , sort);
 
-    search.exec(( err, docs ) => {
-        docs.forEach( doc => {
+    Product 
+        .find( query )
+        .exec(( err, docs ) => {
+            docs.forEach( doc => {
             if ( !categoryList.includes( doc.category ) ) {
                 categoryList.push( doc.category )
             }
         } )
     });
 
-    search
-        .skip(( perPage * page ) - perPage )
+    Product 
+        .find( newQuery, exclude , sort)
+        .skip(( perPage * pageNumber ) - perPage )
         .limit( perPage )
         .exec(( err, products ) => {
 
             Product.countDocuments( query, (err, count) => {
-                searchResultsCount = count;
 
-                res.send( {count:searchResultsCount, pages: searchResultsCount/perPage, categoryList, products:products} );
+                pages = count/perPage
+
+                for (i = 1; i <= pages; i++) {
+                    pageArray.push(i)
+                }
+
+                res.send( {count:searchResultsCount, pages, categoryList, products:products, pageArray} );
             })
         })
   });

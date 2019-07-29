@@ -117,6 +117,7 @@ router.get('/products/:product', (req, res, next) => {
 
   //search mongoose
   Product.findById(productId)
+    .populate('reviews')
     .exec((err, product) => {
       if (err) {
         return res.status(404).send(err);
@@ -265,6 +266,7 @@ router.delete('/products/:product', (req, res, next) => {
     return res.status(200).send(product);
   });
 });
+
 router.delete('/reviews/:review', (req, res, next) => {
   //validate review
   const reviewId = req.params.review;

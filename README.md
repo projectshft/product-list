@@ -19,10 +19,12 @@ BACKEND IMPROVEMENTS
 - [X] add pre save for date created and date updated
 - [X] product is null if not found
 - [X] delete also deletes reviews
-- [ ] add pre for findbyidandupdate to change updated_at
+- [X] add pre for findbyidandupdate to change updated_at
       doesnt work, updated in find manually
 - [ ] currently remove review does not delete it from reviews [] in product
 - [ ] add mongo indexes - by category, search terms?
+  - [X] by category
+  - [ ] by search?
 - [ ] add middleware to only find documents with { enable: true }
 
 FRONTEND PLAN

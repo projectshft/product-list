@@ -27,7 +27,7 @@ class SettingsMenu extends React.Component {
           this.props.searchProducts({
             query: this.props.currentSearch,
             category: this.props.currentCategory,
-            price: 'lowest'
+            price: 'highest'
           })
         }} />
       </DropdownMenu>

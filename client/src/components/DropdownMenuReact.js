@@ -45,6 +45,12 @@ class SettingsMenu extends React.Component {
             category: "Industrial"
           })
         }} />
+        <MenuItem text="Clear Category" onClick={e => {
+          this.props.searchProducts({
+            query: this.props.currentSearch,
+            category: ""
+          })
+        }} />
       </DropdownMenu>
     );
   }

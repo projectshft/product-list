@@ -6,6 +6,7 @@ class ResultsList extends React.Component {
         super(props)
     }
 
+    //this function takes the products list from the store and renders them to the page using a map functoin to arrenge each individual product's data
    renderProducts() {
     if (this.props.products.products !== undefined) { 
         return this.props.products.products.map( product => {

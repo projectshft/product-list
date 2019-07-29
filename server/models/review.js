@@ -1,6 +1,7 @@
 const mongoose = require( 'mongoose' )
 const Schema = mongoose.Schema;
 
+//The ReviewSchema contains an enabled property which defaults to "true", but will be changed to "false" when its delete route is accessed and that review will no longer be sent back with get requests.
 const ReviewSchema = new Schema({
     userName: { type: String, required: true },
     text: { type: String, required: true },

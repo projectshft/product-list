@@ -6,6 +6,7 @@ class PageNumbers extends Component {
         super(props)
     }
 
+    //function creates page numbers at the bottom of the page based on the pageArray provided by the store from the get request
     renderPages () {
         if ( this.props.pageArray !== undefined ) {
             return this.props.pageArray.map(page => {

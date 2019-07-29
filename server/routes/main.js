@@ -3,6 +3,7 @@ const faker = require( 'faker' );
 const Product = require( '../models/product' );
 const Review = require(  '../models/review' );
 
+//The genereate-fake-data API creates all the data or products for our database.  Two reviews are created per product but created within their own review colleciton.  Just the id numbers are saved across collections.
 router.get( '/generate-fake-data', ( req, res, next ) => {
     for ( let i = 0; i < 90; i++ ) {
         let product = new Product({
@@ -58,6 +59,7 @@ router.get( '/generate-fake-data', ( req, res, next ) => {
 
 
 
+//The get('products') endpoint takes an object with 4 paramters: category, sort, and pageNumber.  These can be used to filter the total list of products and sort them by price.  The pageNumber can be used to navigate different pages, when the products list spans multiple pages.
 router.get( '/products', ( req, res, next ) => {
     let perPage = 9;
     let pageNumber = req.query.pageNumber || 1;
@@ -104,21 +106,23 @@ router.get( '/products', ( req, res, next ) => {
         .limit( perPage )
         .exec(( err, products ) => {
 
-            Product.countDocuments( query, (err, count) => {
+            Product.countDocuments( newQuery, (err, count) => {
 
-                pages = count/perPage
+                count/perPage > 1 ? pages = count/perPage : pages = 1
 
                 for (i = 1; i <= pages; i++) {
                     pageArray.push(i)
                 }
 
+
+                //Here is the object the client will be returned upon a successful request.
                 res.send( {count:searchResultsCount, pages, categoryList, products:products, pageArray} );
             })
         })
   });
 
 
-
+//this route accesses a specific product based on the product _id number.
 router.get( '/products/:product', ( req, res, next ) => {
     if ( req.params.product ) {
         let product;
@@ -145,7 +149,7 @@ router.get( '/products/:product', ( req, res, next ) => {
 });
 
 
-
+//this route returns the collection of reviews in thd dataabse
 router.get( '/reviews', ( req, res, next ) => {
     let perPage = 40;
     let page = req.query.page || 1;
@@ -164,7 +168,7 @@ router.get( '/reviews', ( req, res, next ) => {
 } )
 
 
-
+//this route posts new products to the database
 router.post( '/products', ( req, res, next ) => {
     if ( Object.keys(req.body).length > 0 ) {
         let newProduct = new Product ({
@@ -190,7 +194,7 @@ router.post( '/products', ( req, res, next ) => {
 });
 
 
-
+//this route retrieves the array of posts associated with a particular product.
 router.post( '/:product/reviews', ( req, res, next ) => {
     if ( req.params.product ) {
     
@@ -228,7 +232,7 @@ router.post( '/:product/reviews', ( req, res, next ) => {
     }
 })
 
-
+//this route chagnes the products enabled property from true to false, removing it from the list of products that the client will receive on a get request.  The disabled product remains in the database until it's enabled property is reset by the server.
 router.delete( '/products/:product', ( req, res, next ) => {
     if ( req.params.product ) {
 
@@ -250,7 +254,7 @@ router.delete( '/products/:product', ( req, res, next ) => {
     }
 })
 
-
+//this route chnages the reviews enabled property from true to false, removing it from the list of products that the client will receive on a get request.  The disabled product remains in the database until it's enabled property is reset by the server.
 router.delete( '/reviews/:review', ( req, res, next ) => {
     if ( req.params.review ) {
 

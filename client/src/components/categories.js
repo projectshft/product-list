@@ -7,6 +7,7 @@ class Categories extends Component {
         super(props)
     }
 
+    //this function takes the categories provided in a list by the store, and adds them to the drop down category button at the top of the page.
     renderCategories() {
         if ( this.props.categoryList !== undefined ) {
                 return this.props.categoryList.map(category => {

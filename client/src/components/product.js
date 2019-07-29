@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 class Product extends Component {
 
+  //Using bootstrap 4 cards to create a nice looking container for the results of the query
   render() {
     return(
       <div className={"card mx-1 mt-1 text-white bg-secondary " + (this.props.product.category)} key={this.props.product.id} >

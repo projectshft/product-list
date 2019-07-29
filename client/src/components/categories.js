@@ -34,6 +34,7 @@ class Categories extends Component {
                         { categoryHeader }
                     </button>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a className="dropdown-item" id="" href="#" onClick={this.props.selectCategory}>NONE</a>
                         {this.renderCategories()}
                     </div>
                 </div>

@@ -14,7 +14,7 @@ export async function fetchProducts(query) {
         requestString = requestString.concat( '?' );
 
         if ( query.category ) {
-            requestString = requestString.concat( 'category=', query.category );
+            requestString = requestString.concat( 'category=', query.category, "&" );
         }
         if ( query.sort ) {
             requestString = requestString.concat( 'sort=', query.sort );
@@ -24,6 +24,8 @@ export async function fetchProducts(query) {
             requestString = requestString.concat( 'sort=', query.pageNumber );
         }
     }
+
+    console.log(requestString)
    
     const response = await axios.get(`${ROOT_URL}${requestString}`)
 

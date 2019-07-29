@@ -16,6 +16,7 @@ class Sort extends Component {
                         {sortHeader}
                     </button>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a className="dropdown-item" id="" href="#" onClick={this.props.selectSort}>NONE</a>
                         <a className="dropdown-item" id="Price: Low to High" href="#" onClick={this.props.selectSort}>Price: Low to High</a>
                         <a className="dropdown-item" id="Price: High to Low" href="#" onClick={this.props.selectSort}>Price: High to Low</a>
                     </div>

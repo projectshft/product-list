@@ -8,8 +8,8 @@ import ResultsList from "./results-list";
 import PageNumbers from "./page-numbers";
 import { fetchProducts } from "../actions/index";
 
-export let categoryHeader = "CATEGORIES";
-export let sortHeader = "SORT"
+export let categoryHeader = "";
+export let sortHeader = ""
 
 class App extends Component {
     constructor(props) {
@@ -55,11 +55,9 @@ class App extends Component {
     }
 
     selectSort(e) {
-        if (e.target.id === "Price: High to Low") {
-            this.setState({ sort: "descending"})
-        } else {
-            this.setState({ sort: "ascending"})
-        }
+        e.target.id === "Price: High to Low" ? this.setState({ sort: "descending"}) :
+        e.target.id === "Price: Low to High" ? this.setState({ sort: "ascending"}) :
+        this.setState({ sort: "" })
     
         sortHeader = e.target.id
     }

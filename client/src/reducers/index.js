@@ -9,7 +9,7 @@ import errorReducer from './errorReducer'
 
 const rootReducer = combineReducers({
   products: productReducer,
-  category: categoryReducer, 
+  category: categoryReducer,
   sortOrder: sortReducer,
   totalPages: totalPageReducer,
   currentPage: currentPageReducer,

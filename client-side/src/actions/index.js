@@ -10,7 +10,8 @@ const ROOT_URL = 'http://localhost:8000/';
 export async function fetchProducts(query = {}) {
 	let url = `${ROOT_URL}products`;
 	let existingQueryParams = false;
-	
+	/** Using let in this for loop instead of var or const allows key to be 
+		assigned a different value for every query parameter in the query object */
 	for (let key in query) {
 		if (existingQueryParams) {
 			url += `&${key}=${query[key]}`;

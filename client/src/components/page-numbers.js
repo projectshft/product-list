@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-class PageNumbers extends React.Component {
-    // constructor () {
-    //     super()
-    // }
+class PageNumbers extends Component {
+    constructor (props) {
+        super(props)
+    }
+
+    renderPages () {
+        if ( this.props.pageArray !== undefined ) {
+            return this.props.pageArray.map(page => {
+                return (
+                    <a href="#" id={page} className="m-2 mb-5" onClick={this.props.selectPageNumber}>{page}</a>
+                )
+            })
+        }
+    }
 
     render() {
+        
         return (
-            <div>
-
+            <div className="text-center col-md-12">
+                {this.renderPages()}
             </div>
         )
     }
 }
 
-export default PageNumbers;
+function mapStateToProps( state ) {
+    return {
+        pageArray: state.products.pageArray
+    }
+}
+
+export default connect (mapStateToProps) (PageNumbers);

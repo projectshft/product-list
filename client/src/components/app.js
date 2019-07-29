@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import SearchBar from "./search-bar";
 import Categories from "./categories";
 import Sort from "./sort"
@@ -11,7 +11,7 @@ import { fetchProducts } from "../actions/index";
 export let categoryHeader = "CATEGORIES";
 export let sortHeader = "SORT"
 
-class App extends React.Component {
+class App extends Component {
     constructor(props) {
         super(props)
 
@@ -25,6 +25,7 @@ class App extends React.Component {
         this.onSearchEnter = this.onSearchEnter.bind( this );
         this.selectCategory = this.selectCategory.bind( this );
         this.selectSort = this.selectSort.bind( this );
+        this.selectPageNumber = this.selectPageNumber.bind( this );
     };
 
     componentDidMount() {
@@ -63,11 +64,15 @@ class App extends React.Component {
         sortHeader = e.target.id
     }
 
+    selectPageNumber(e) {
+        this.setState({ pageNumber: Number(e.target.id) })
+    }
+
     render() {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-12 text-center">
+                    <div className="col-12 text-center mt-4 mb-4">
                         <h1>PRODUCTS</h1>
                     </div>
                 </div>
@@ -81,7 +86,7 @@ class App extends React.Component {
                     <ResultsList />
                 </div>
                 <div className="row">
-                    <PageNumbers />
+                    <PageNumbers selectPageNumber={this.selectPageNumber}/>
                 </div>
                 
             </div>

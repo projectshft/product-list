@@ -31,7 +31,7 @@ class Categories extends Component {
                     <span className="pr-2">filter by category:</span>
                  
                     <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {categoryHeader}
+                        { categoryHeader }
                     </button>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {this.renderCategories()}

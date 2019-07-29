@@ -9,7 +9,7 @@ const ROOT_URL = "http://localhost:8000"
 export async function fetchProducts(query) {
     let requestString = '/products';
     
-    if ( query.category || query.sort ) {
+    if ( query.category || query.sort || query.pageNumber) {
 
         requestString = requestString.concat( '?' );
 
@@ -18,6 +18,10 @@ export async function fetchProducts(query) {
         }
         if ( query.sort ) {
             requestString = requestString.concat( 'sort=', query.sort );
+        }
+
+        if ( query.PageNumber ) {
+            requestString = requestString.concat( 'sort=', query.pageNumber );
         }
     }
    

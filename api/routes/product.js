@@ -64,7 +64,8 @@ router.get('/', (req, res, next) => {
         count: count,
         currentPage: pageNumber,
         pages: [...Array(pageSeed).keys()].map(num => (num + 1)),
-        currentSearch: query
+        currentSearch: query,
+        currentCategory: category
       });
     })
   })

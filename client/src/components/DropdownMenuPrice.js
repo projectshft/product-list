@@ -18,6 +18,7 @@ class SettingsMenu extends React.Component {
           onClick={e => {
           this.props.searchProducts({
             query: this.props.currentSearch,
+            category: this.props.currentCategory,
             price: 'lowest'
           })
       }} />
@@ -25,6 +26,7 @@ class SettingsMenu extends React.Component {
         <MenuItem text="Highest to Lowest" onClick={e => {
           this.props.searchProducts({
             query: this.props.currentSearch,
+            category: this.props.currentCategory,
             price: 'lowest'
           })
         }} />
@@ -37,7 +39,7 @@ function mapStateToProps(state) {
   return {
     
     currentSearch: state.products.currentSearch,
-    
+    currentCategory: state.products.currentCategory
   };
 }
 

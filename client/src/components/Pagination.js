@@ -26,6 +26,7 @@ class Pagination extends React.Component {
           onClick={e => {
             this.props.searchProducts({
               query: this.props.currentSearch,
+              category: this.props.currentCategory,
               page
             })
           }}
@@ -61,6 +62,7 @@ function mapStateToProps(state) {
   return {
     pages: state.products.pages,
     currentSearch: state.products.currentSearch,
+    currentCategory: state.products.currentCategory,
     currentPage: state.products.currentPage
   };
 }

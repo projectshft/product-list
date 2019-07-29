@@ -22,7 +22,10 @@ class SearchBar extends Component {
     event.preventDefault();
 
     // We need to go and fetch waypoint data by calling the action "searchProducts"
-    this.props.searchProducts({query: this.state.term});
+    this.props.searchProducts({
+      query: this.state.term,
+      category: this.props.currentCategory
+    });
     // After fetchWaypoint data is called, then set searchBar field (term obj) to blank string. 
     this.setState({ term: '' });
   }
@@ -46,11 +49,20 @@ class SearchBar extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    pages: state.products.pages,
+    currentSearch: state.products.currentSearch,
+    currentCategory: state.products.currentCategory,
+    currentPage: state.products.currentPage
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ searchProducts }, dispatch);
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SearchBar);

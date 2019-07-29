@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { categoryHeader } from './app';
 
 class Categories extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class Categories extends Component {
                     <span className="pr-2">filter by category:</span>
                  
                     <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Categories
+                        {categoryHeader}
                     </button>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {this.renderCategories()}

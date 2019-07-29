@@ -1,11 +1,15 @@
 import React from 'react';
 import SearchBar from "./search-bar";
-import Categories from "./categories"
+import Categories from "./categories";
+import Sort from "./sort"
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ResultsList from "./results-list";
 import PageNumbers from "./page-numbers";
 import { fetchProducts } from "../actions/index";
+
+export let categoryHeader = "CATEGORIES";
+export let sortHeader = "SORT"
 
 class App extends React.Component {
     constructor(props) {
@@ -18,8 +22,9 @@ class App extends React.Component {
             pageNumber: null
         };
 
-        this.onSearchEnter = this.onSearchEnter.bind( this )
-        this.selectCategory = this.selectCategory.bind( this )
+        this.onSearchEnter = this.onSearchEnter.bind( this );
+        this.selectCategory = this.selectCategory.bind( this );
+        this.selectSort = this.selectSort.bind( this );
     };
 
     componentDidMount() {
@@ -44,6 +49,18 @@ class App extends React.Component {
 
     selectCategory(e) {
         this.setState( { category: e.target.id })
+        categoryHeader = e.target.id
+        console.log(categoryHeader)
+    }
+
+    selectSort(e) {
+        if (e.target.id === "Price: High to Low") {
+            this.setState({ sort: "descending"})
+        } else {
+            this.setState({ sort: "ascending"})
+        }
+    
+        sortHeader = e.target.id
     }
 
     render() {
@@ -57,6 +74,7 @@ class App extends React.Component {
                 <div className="row">
                     <SearchBar onSearchEnter={this.onSearchEnter} />
                     <Categories selectCategory={this.selectCategory}/>
+                    <Sort selectSort={this.selectSort}/>
                    
                 </div>
                 <div className="row">

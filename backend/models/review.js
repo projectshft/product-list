@@ -8,4 +8,5 @@ const ReviewSchema = new Schema({
 	text: String,
 	product: { type: Schema.Types.ObjectId, ref: 'product'}
 });
+
 module.exports =  mongoose.model('review', ReviewSchema);

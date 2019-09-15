@@ -10,7 +10,7 @@ DELETE /products/:product: Deletes a product by id
 
 DELETE /reviews/:review: Deletes a review by id
 
-No PUT for now.
+No PUT.
 
 GET /products
 Able to pass in an optional query to return only the products of the passed-in category. The url will look like this:
@@ -31,6 +31,6 @@ Category, or any other query, may be excluded; they're all optional:
 
 localhost:8000/products?page=1&price=lowest
 
-This is another example.
+This is another example:
 
 localhost:8000/products?price=lowest

@@ -1,4 +1,6 @@
 const router = require('express').Router()
+const GoogleStrategy = require('passport-google-oauth20').Strategy
+const cookieSession = require('cookie-session')
 const ObjectId = require('mongoose').Types.ObjectId
 const faker = require('faker')
 const Product = require('../models/product')
@@ -13,11 +15,15 @@ let checkValidId = function (request, response) {
     let id = request.params.product
     if (!ObjectId.isValid(id)) {
       return response.status(400).send('Invalid product Id.')
+    }else{
+      return id;
     }
   } else {
     let id = request.params.review
     if (!ObjectId.isValid(id)) {
       return response.status(400).send('Invalid review Id.')
+    } else{
+      return id;
     }
   }
 }
@@ -43,6 +49,8 @@ router.get('/generate-fake-data', (req, res, next) => {
   }
   res.end()
 })
+
+
 
 router.get('/products', (req, res, next) => {
   let pageNum = req.query.page || 1;
@@ -99,7 +107,7 @@ router.get('/products', (req, res, next) => {
 })
 
 router.get('/products/:product', (req, res, next) => {
-  checkValidId(req, res);
+  let id = checkValidId(req, res);
   Product.findById(id)
     .exec((err, product) => {
       if (!product) {
@@ -131,11 +139,7 @@ router.post('/products', (req, res, next) => {
   if (typeof req.body.category !== 'string' || typeof req.body.name !== 'string' || typeof req.body.price !== 'number' || typeof req.body.image !== 'string') {
     return res.status(400).send('Invalid request.')
   }
-  let product = new Product()
-  product.category = req.body.category
-  product.name = req.body.name
-  product.price = req.body.price
-  product.image = req.body.image
+  let product = new Product(req.body)
   product.save((err) => {
     if (err) throw err
     res.send(product)
@@ -143,16 +147,14 @@ router.post('/products', (req, res, next) => {
 });
 
 router.post('/:product/reviews', (req, res, next) => {
-  checkValidId(req, res);
+  let id = checkValidId(req, res);
   Product.findById(id)
     .exec((err, product) => {
       if (!product) {
         return res.status(404).send('Product not found.')
       } else {
-        let review = new Review()
-        review.userName = req.body.userName
-        review.text = req.body.text
-        review.product = product
+        let review = new Review(req.body)
+        
         review.save()
         product.reviews.push(review)
         product.save((err, result) => {
@@ -165,7 +167,7 @@ router.post('/:product/reviews', (req, res, next) => {
 
 //when product is deleted associated reviews will be deleted as well with middleware in product.js file
 router.delete('/products/:product', (req, res, next) => {
-  checkValidId(req, res);
+  let id = checkValidId(req, res);
   Product.findById(id)
     .exec((err, product) => {
       if (!product) {
@@ -180,7 +182,7 @@ router.delete('/products/:product', (req, res, next) => {
 })
 
 router.delete('/reviews/:review', (req, res, next) => {
-  checkValidId(req, res);
+  let id = checkValidId(req, res);
   Review.findById(id)
     .exec((err, review) => {
       if (!review) {

@@ -23,6 +23,17 @@ router.get('/products', (req, res, next) => {
     })
 })
 
+router.post('/products', (req, res) => {
+  const {
+    category: prodCat,
+    name: prodName,
+    price: prodPrice,
+    image: prodImage
+  } = req.body
+
+  res.send("I'm the product POST route")
+})
+
 router.get('/products/:product', (req, res) => {
   const prodId = req.params.product
   Product.findById(prodId).exec((err, prodResult) => {

@@ -17,6 +17,6 @@ router.get('/generate-fake-data', (req, res, next) => {
     })
   }
   res.end()
-})
+});
 
 module.exports = router

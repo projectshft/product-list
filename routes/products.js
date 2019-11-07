@@ -3,9 +3,15 @@ const Product = require('../models/product')
 const Review = require('../models/review')
 
 // gets specific product by ID
-router.get('/products/:productId', (req, res, next) => {
-
-})
+router.get('products/:product', (req, res, next) => {
+  return Product.findById(req.params.id, (err, product) => {
+    if (!err) {
+      return res.send(product);
+    } else {
+      return console.log(err);
+    }
+  })
+});
 
 // get ALL products
 router.get('/products', (req, res, next) => {
@@ -26,14 +32,21 @@ router.get('/products', (req, res, next) => {
         res.send(products)
       })
     })
-})
+});
 
 // creates new product
 router.post('/products', (req, res, next) => {
 
-})
+});
+
+// creates new review for specific product
+router.post('/products/:products/reviews', (req, res, next) => {
+
+});
 
 // deletes product by ID
-router.delete('/products/:productId', (req, res, next) => {
+router.delete('/products/:products', (req, res, next) => {
 
-})
+});
+
+module.exports = router

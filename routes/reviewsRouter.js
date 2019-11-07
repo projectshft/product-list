@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Product = require("../models/product");
 const Review = require("../models/review");
 
 const RESULTS_PER_PAGE = 40;
@@ -39,6 +40,37 @@ router.get("/", (req, res) => {
         }
       });
   }
+});
+
+router.delete("/:review", function(req, res) {
+  //find review
+  Review.findById(req.params.review, function(error, review) {
+    if (error) {
+      res.status(500).send(error);
+    } else {
+      //remove the review
+      review.remove(function(error) {
+        if (error) {
+          res.status(500).send(error);
+        } else {
+          //remove references to this review from the product as well
+          Product.update(
+            { reviews: { $in: req.params.review } },
+            { $pull: { reviews: req.params.review } },
+            function(error, numberAffected) {
+              if (error) {
+                res.status(500).send(error);
+              } else {
+                console.log("Products with review: ", numberAffected);
+                res.status(204);
+                res.end();
+              }
+            }
+          );
+        }
+      });
+    }
+  });
 });
 
 module.exports = router;

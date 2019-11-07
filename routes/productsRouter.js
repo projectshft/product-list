@@ -109,4 +109,26 @@ router.post("/:product/reviews", function(req, res) {
   });
 });
 
+router.delete("/:product", function(req, res) {
+  //find product
+  Product.findById(req.params.product, function(error, product) {
+    if (error) {
+      res.status(500).send(err);
+    } else {
+      //remove the product
+      product.remove(function(err) {
+        if (error) {
+          res.status(500).send(err);
+        } else {
+          //remove any reviews from the product as well
+          Review.remove({ product: req.params.product }, function(err) {
+            res.status(204);
+            res.end();
+          });
+        }
+      });
+    }
+  });
+});
+
 module.exports = router;

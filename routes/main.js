@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+const Review = require('../models/review')
 
 router.get('/products', (req, res, next) => {
-  const perPage = 10
+  const perPage = 9
 
   // return the first page by default
   const page = req.query.page || 1
@@ -22,20 +23,42 @@ router.get('/products', (req, res, next) => {
     })
 })
 
-router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    let product = new Product()
-
-    product.category = faker.commerce.department()
-    product.name = faker.commerce.productName()
-    product.price = faker.commerce.price()
-    product.image = 'https://payload.cargocollective.com/1/16/530262/11823255/Itsthevibe---Image-not-found_3984.JPG'
-
-    product.save((err) => {
-      if (err) throw err
-    })
-  }
-  res.end()
+router.get('/products/:product', (req, res) => {
+  const prodId = req.params.product
+  res.send(Product.findById(prodId))
 })
+
+// Generates Fake Data in database on request
+
+// router.get('/generate-fake-data', (req, res, next) => {
+
+//   for (let i = 0; i < 90; i++) {
+//     let product = new Product()
+
+//     // Create 0-3 dummy reviews for each product
+//     let reviewCount = faker.random.number(3)
+//     for (let j = 0; j < reviewCount; j++) {
+//       let review = new Review()
+
+//       review.userName = faker.name.findName()
+//       review.text = faker.lorem.sentences()
+//       review.product = product._id
+//       review.save((err) => {
+//         if (err) throw err
+//       })
+//       product.reviews.push(review)
+//     }
+
+//     product.category = faker.commerce.department()
+//     product.name = faker.commerce.productName()
+//     product.price = faker.commerce.price()
+//     product.image = 'https://payload.cargocollective.com/1/16/530262/11823255/Itsthevibe---Image-not-found_3984.JPG'
+
+//     product.save((err) => {
+//       if (err) throw err
+//     })
+//   }
+//   res.end()
+// })
 
 module.exports = router

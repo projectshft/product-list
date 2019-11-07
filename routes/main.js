@@ -25,7 +25,24 @@ router.get('/products', (req, res, next) => {
 
 router.get('/products/:product', (req, res) => {
   const prodId = req.params.product
-  res.send(Product.findById(prodId))
+  Product.findById(prodId).exec((err, prodResult) => {
+    if (err) throw err
+    else res.send(prodResult)
+  })
+})
+
+router.get('/reviews', (req, res) => {
+  const perPage = 40
+  const page = req.query.page || 1
+
+  Review
+    .find()
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, revResults) => {
+      if (err) throw err
+      else res.send(revResults)
+    })
 })
 
 // Generates Fake Data in database on request

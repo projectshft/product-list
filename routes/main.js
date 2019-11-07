@@ -7,6 +7,9 @@ router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
 
+//populate reviews with same template as products
+    let review = new Review()
+
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()

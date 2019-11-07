@@ -2,8 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ReviewSchema = new Schema({
-  userName: String,
-  text: String,
+  userName: {
+    type: String,
+    required: true
+  },
+  text: {
+    type: String,
+    required: true
+  },
   product: { type: Schema.Types.ObjectId, ref: "Product" }
 });
 

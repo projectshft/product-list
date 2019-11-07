@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/product");
+const Review = require("../models/review");
 
 const RESULTS_PER_PAGE = 10;
-
-let ProductModel = require("../models/product");
 
 router.get("/", (req, res) => {
   // return the first page by default
@@ -57,7 +56,7 @@ router.get("/:product", (req, res) => {
 });
 
 router.post("/", function(req, res) {
-  var product = new ProductModel(req.body);
+  var product = new Product(req.body);
 
   product.save(function(err, product) {
     if (err) {
@@ -65,6 +64,48 @@ router.post("/", function(req, res) {
     }
 
     res.json(product.toJSON());
+  });
+});
+
+router.post("/:product/reviews", function(req, res) {
+  //find the product first
+  Product.findById(req.params.product, (err, product) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      //create the review with the found products id as a reference
+      var review = new Review(
+        Object.assign({ product: product._id }, req.body)
+      );
+
+      review.save(function(err, product) {
+        //update the product with the new review id
+        Product.updateOne(
+          { _id: product._id },
+          { $push: { reviews: review._id } },
+          function() {
+            product.save(function(err, product) {
+              if (err) {
+                res.status(500).send(err);
+              }
+
+              //populate the returned review with the product's data
+              Review.populate(
+                review,
+                { path: "product", select: "-reviews -__v" },
+                function(err, review) {
+                  if (err) {
+                    res.status(500).send(err);
+                  }
+
+                  res.json(review.toJSON());
+                }
+              );
+            });
+          }
+        );
+      });
+    }
   });
 });
 

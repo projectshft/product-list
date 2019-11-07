@@ -44,7 +44,6 @@ router.get('/reviews', (req, res) => {
       else res.send(revResults)
     })
 })
-
 // Generates Fake Data in database on request
 
 // router.get('/generate-fake-data', (req, res, next) => {

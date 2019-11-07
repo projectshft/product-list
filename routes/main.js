@@ -3,6 +3,7 @@ const faker = require("faker");
 const Product = require("../models/product");
 const Review = require("../models/review");
 var products = require("./productsRouter");
+var reviews = require("./reviewsRouter");
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -35,5 +36,6 @@ router.get("/generate-fake-data", (req, res, next) => {
 });
 
 router.use("/products", products);
+router.use("/reviews", reviews);
 
 module.exports = router;

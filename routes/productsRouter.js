@@ -4,7 +4,9 @@ const Product = require("../models/product");
 
 const RESULTS_PER_PAGE = 10;
 
-router.get("/", (req, res, next) => {
+let ProductModel = require("../models/product");
+
+router.get("/", (req, res) => {
   // return the first page by default
   const page = req.query.page || 1;
   let perPage = RESULTS_PER_PAGE;
@@ -14,7 +16,7 @@ router.get("/", (req, res, next) => {
   } else {
     Product.find({})
       .select("-__v")
-      .populate("reviews", "-__v")
+      .populate("reviews", "-product -__v")
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec((err, products) => {
@@ -26,7 +28,14 @@ router.get("/", (req, res, next) => {
             if (err) {
               res.status(500).send(err);
             } else {
-              res.send({ productCount: count, page, perPage, products });
+              res.send({
+                productCount: count,
+                page,
+                perPage,
+                products: products.map(product => {
+                  return product.toJSON();
+                })
+              });
             }
           });
         }
@@ -34,7 +43,7 @@ router.get("/", (req, res, next) => {
   }
 });
 
-router.get("/:product", (req, res, next) => {
+router.get("/:product", (req, res) => {
   Product.findById(req.params.product)
     .select("-__v")
     .populate("reviews", "-product -__v")
@@ -42,9 +51,21 @@ router.get("/:product", (req, res, next) => {
       if (err) {
         res.status(500).send(err);
       } else {
-        res.send(product);
+        res.send(product.toJSON());
       }
     });
+});
+
+router.post("/", function(req, res) {
+  var product = new ProductModel(req.body);
+
+  product.save(function(err, product) {
+    if (err) {
+      res.status(500).send(err);
+    }
+
+    res.json(product.toJSON());
+  });
 });
 
 module.exports = router;

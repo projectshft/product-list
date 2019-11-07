@@ -4,7 +4,7 @@ const Review = require("../models/review");
 
 const RESULTS_PER_PAGE = 40;
 
-router.get("/", (req, res, next) => {
+router.get("/", (req, res) => {
   // return the first page by default
   const page = req.query.page || 1;
   let perPage = RESULTS_PER_PAGE;
@@ -26,7 +26,14 @@ router.get("/", (req, res, next) => {
             if (err) {
               res.status(500).send(err);
             } else {
-              res.send({ reviewCount: count, page, perPage, reviews });
+              res.send({
+                reviewCount: count,
+                page,
+                perPage,
+                reviews: reviews.map(review => {
+                  return review.toJSON();
+                })
+              });
             }
           });
         }

@@ -7,4 +7,10 @@ const ReviewSchema = new Schema({
   product: { type: Schema.Types.ObjectId, ref: "Product" }
 });
 
+ReviewSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  delete obj.__v;
+  return obj;
+};
+
 module.exports = mongoose.model("Review", ReviewSchema);

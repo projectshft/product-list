@@ -21,8 +21,16 @@ router.get('/reviews', (req, res) => {
 });
 
 // delete review by ID
-router.delete('/reviews/:review', (req, res, next) => {
+router.delete('/reviews/:reviewId', (req, res, next) => {
 
+  const reviewId = req.params.reviewId
+
+  Review
+    .findById(reviewId)
+    .exec((err, review) => {
+      review.remove();
+      res.send(`Delete Complete ${req.params.reviewId}`);
+    })
 });
 
 module.exports = router

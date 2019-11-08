@@ -4,11 +4,12 @@ const Review = require('../models/review')
 
 // gets specific product by ID
 router.get('products/:product', (req, res, next) => {
-  return Product.findById(req.params.id, (err, product) => {
-    if (!err) {
-      return res.send(product);
+  Product
+    .findById(req.params.id, (err, product) => {
+      if (!err) {
+      res.send(product);
     } else {
-      return console.log(err);
+      console.log(err);
     }
   })
 });
@@ -35,13 +36,29 @@ router.get('/products', (req, res, next) => {
 });
 
 // creates new product
+
 router.post('/products', (req, res, next) => {
 
 });
 
 // creates new review for specific product
-router.post('/products/:products/reviews', (req, res, next) => {
-
+router.post('/products/:product/reviews', (req, res, next) => {
+  Product
+    .findById(req.params.id)
+    .exec((err, product) => {
+      // create new instance of the Review model
+      const newReview = new Review({
+        product: req.params.productId,
+        userName: req.body.userName,
+        text: req.body.text
+      })
+      newReview.save((err) => {
+        if (err) throw err
+      })
+      product.reviews.push(newReview)
+      product.save()
+      res.send(`New review added ${newReview}`)
+    })
 });
 
 // deletes product by ID

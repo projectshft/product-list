@@ -21,16 +21,6 @@ app.listen(8000, () => {
     console.log('Node.js listening on port ' + 8000)
 })
 
-// const fakeProduct = new Product({
-//     category: 'Books',
-//     name: 'Harry Potter',
-//     price: 200,
-//     image: '',
-//     reviews: []
-// });
 
-// fakeProduct.save();
-
-// fakeProduct.reviews.push({ userName: 'Dave', text: 'this thing smells like poop' })
 
 

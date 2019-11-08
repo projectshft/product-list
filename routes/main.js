@@ -76,7 +76,7 @@ router.post('/:product/reviews', (req, res, next) => {
 
             review.username = req.body.username
             review.text = req.body.text
-            review.product = product
+            review.product = product.__id
 
             product.reviews.push(review)
 
@@ -84,7 +84,16 @@ router.post('/:product/reviews', (req, res, next) => {
                 if (err) throw err
                 res.end('Your review was saved');
             })
+
+
         })
+
+    // Review
+    //     .findById("5dc5d0674c507e4c26944609")
+    //     .exec((error, review) => {
+
+    //         res.send(review)
+    //     })
 
 
 

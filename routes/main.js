@@ -12,15 +12,6 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
 
-    product.save((err) => {
-      if (err) throw err
-    })
-  }
-  res.end()
-});
-
-router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
     let review = new Review()
 
     review.userName = faker.internet.userName()
@@ -30,6 +21,10 @@ router.get('/generate-fake-data', (req, res, next) => {
     })
     product.reviews.push(review)
     review.product = product
+
+    product.save((err) => {
+      if (err) throw err
+    })
   }
   res.end()
 });

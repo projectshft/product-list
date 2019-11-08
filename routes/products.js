@@ -36,9 +36,21 @@ router.get('/products', (req, res, next) => {
 });
 
 // creates new product
-
 router.post('/products', (req, res, next) => {
+  // create new instance of the Product model
+  const newProduct = new Product({
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+    reviews: []
+  })
 
+  newProduct.save((err) => {
+    if (err) throw err
+  })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+  res.send(`New product has been added! ${newProduct}`)
 });
 
 // creates new review for specific product
@@ -57,7 +69,7 @@ router.post('/products/:product/reviews', (req, res, next) => {
       })
       product.reviews.push(newReview)
       product.save()
-      res.send(`New review added ${newReview}`)
+      res.send(`New review has been added! ${newReview}`)
     })
 });
 

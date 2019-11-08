@@ -67,12 +67,15 @@ router.post('/products', (req, res) => {
 
 router.post('/:product/reviews', (req, res) => {
   const prodId = req.params.product
+
+  // Destructure incoming product data from body
   const {
     userName: revUserName,
     text: revText,
     product: revProd
   } = req.body
 
+  // Create and save new review instance
   let review = new Review({
     userName: revUserName,
     text: revText,
@@ -80,6 +83,7 @@ router.post('/:product/reviews', (req, res) => {
   })
   review.save()
 
+  // Push/save review to corresponding product instance
   Product.findById(prodId).exec((err, prodResult) => {
     if (err) throw err
     else {
@@ -88,6 +92,16 @@ router.post('/:product/reviews', (req, res) => {
       res.send(prodResult)
     }
   })
+})
+
+router.delete('/products/:product', (req, res) => {
+  const prodId = req.params.product
+
+  Product.findByIdAndRemove(prodId).exec((err, prodDelete) => {
+    if (err) throw err
+    else res.send(prodDelete)
+  })
+
 })
 // Generates Fake Data in database on request
 

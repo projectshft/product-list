@@ -19,40 +19,10 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 });
 
-// // generate a new fake-data review to run once only!
-// const fakeReview = new Review({
-//   userName: 'gsl',
-//   text: 'excellent product!!!',
-//   product: "5dc464e40418d9db8d5d688a"
-// });
 
-// fakeReview.save();
-
-// Review
-//   .findOne({}, (err, res) => {
-//     if (err) console.log('Error:', err);
-//     else {
-//       Product.findById("5dc464e40418d9db8d5d688a", (err, book) => {
-//         if (err) console.log('Error finding book:', err);
-//         else {
-//           console.log('The book before:', book)
-//           book.reviews.push(res);
-//           book.save();
-//           console.log('The book after:', book)
-//         }
-//       });
-//     }
-//   });
-
-// Product.findById("5dc464e40418d9db8d5d688a", (err, book) => {
-//   if (err) console.log('Error:', err);
-//   else { console.log('Book:', book)}
-// });
-
-
-// WORKS Returns the products, 10 per page
+// Returns the products, 9 per page
 router.get('/products', (req, res, next) => {
-  const perPage = 10
+  const perPage = 9
 
   // return the first page by default
   const page = req.query.page || 1
@@ -96,7 +66,7 @@ router.get('/products', (req, res, next) => {
   }
 });
 
-// WORKS Returns a specific product by its id 
+// Returns a specific product by its id 
 router.get('/products/:product', (req, res, next) => {
   const productId = req.params.product;
 
@@ -110,20 +80,19 @@ router.get('/products/:product', (req, res, next) => {
     })
 });
 
-// WORKS Returns ALL the reviews, but limited to 40 at a time. Reviews collection exists as using references and population methodology
+// Returns ALL the reviews, but limited to 40 at a time. Reviews collection exists as this is using references and population methodology
 router.get('/reviews', (req, res, next) => {
   const perPage = 40;
 
   // return the first page by default
   const page = req.query.page || 1
 
-  // Find it
   Review
     .find()
     .skip(perPage * (page - 1))
     .limit(perPage)
     .exec((err, reviews) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+      
       Product.count().exec((err, count) => {
         if (err) throw err;
         else res.send(reviews);
@@ -132,7 +101,7 @@ router.get('/reviews', (req, res, next) => {
 
 });
 
-// WORKS Creates a new product in the database
+// Creates a new product in the database
 router.post('/products', (req, res, next) => {
   let newProduct = new Product();
 
@@ -148,7 +117,7 @@ router.post('/products', (req, res, next) => {
   })
 });
 
-// WORKS Creates a new review in the database by adding it to the correct product's reviews array
+// Creates a new review in the database by adding it to the correct product's reviews array
 router.post('/:product/reviews', (req, res, next) => {
   const productId = req.params.product;
 

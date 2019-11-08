@@ -61,7 +61,7 @@ router.post('/products', (req, res) => {
     price: prodPrice,
     image: prodImage
   })
-  product.save();
+  product.save()
   res.send(product)
 })
 
@@ -96,12 +96,36 @@ router.post('/:product/reviews', (req, res) => {
 
 router.delete('/products/:product', (req, res) => {
   const prodId = req.params.product
-
+  // Removes product in database
   Product.findByIdAndRemove(prodId).exec((err, prodDelete) => {
     if (err) throw err
     else res.send(prodDelete)
   })
+})
 
+router.delete('/reviews/:review', (req, res) => {
+  const reviewId = req.params.review
+
+  // Removes review in Reviews collection and
+  // its reference within Products collection
+  Review.findById(reviewId).exec((err, rev) => {
+    if (err) throw err
+    else {
+      // Removing from Reviews
+      rev.remove()
+      // Updating corresponding product to "pull" the deleted review out
+      Product.updateOne({
+        _id: rev.product
+      }, {
+        $pull: {
+          reviews: rev._id
+        }
+      }).exec((err, results) => {
+        if (err) throw err
+        else res.send(results)
+      })
+    }
+  })
 })
 // Generates Fake Data in database on request
 

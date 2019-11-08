@@ -9,11 +9,21 @@ router.get("/", (req, res) => {
   // return the first page by default
   const page = req.query.page || 1;
   let perPage = RESULTS_PER_PAGE;
+
+  let category = req.query.category;
+
+  let filter = {};
+
+  //case insensitive regex match for category
+  if (category) {
+    filter.category = { $regex: new RegExp(category, "i") };
+  }
+
   if (page <= 0) {
     res.status(400);
     res.send("Page Must Be Greater Than 0 or Excluded");
   } else {
-    Product.find({})
+    Product.find(filter)
       .select("-__v")
       .populate("reviews", "-product -__v")
       .skip(perPage * page - perPage)
@@ -23,7 +33,7 @@ router.get("/", (req, res) => {
           res.status(500);
           res.send(err);
         } else {
-          Product.count().exec((err, count) => {
+          Product.count(filter).exec((err, count) => {
             if (err) {
               res.status(500).send(err);
             } else {

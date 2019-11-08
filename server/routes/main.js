@@ -16,15 +16,15 @@ router.get('/generate-fake-data', (req, res, next) => {
 
     review.userName = faker.internet.userName()
     review.text = faker.lorem.sentence()
-    review.save((err) => {
-      if (err) throw err
-    })
+    // review.save((err) => {
+    //   if (err) throw err
+    // })
     product.reviews.push(review)
     review.product = product
 
-    product.save((err) => {
-      if (err) throw err
-    })
+    // product.save((err) => {
+    //   if (err) throw err
+    // })
   }
   res.end()
 });

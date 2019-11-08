@@ -23,17 +23,6 @@ router.get('/products', (req, res, next) => {
     })
 })
 
-router.post('/products', (req, res) => {
-  const {
-    category: prodCat,
-    name: prodName,
-    price: prodPrice,
-    image: prodImage
-  } = req.body
-
-  res.send("I'm the product POST route")
-})
-
 router.get('/products/:product', (req, res) => {
   const prodId = req.params.product
   Product.findById(prodId).exec((err, prodResult) => {
@@ -54,6 +43,51 @@ router.get('/reviews', (req, res) => {
       if (err) throw err
       else res.send(revResults)
     })
+})
+
+router.post('/products', (req, res) => {
+  // Destructure incoming product data from body
+  const {
+    category: prodCat,
+    name: prodName,
+    price: prodPrice,
+    image: prodImage
+  } = req.body
+
+  // Create and save new product instance
+  let product = new Product({
+    category: prodCat,
+    name: prodName,
+    price: prodPrice,
+    image: prodImage
+  })
+  product.save();
+  res.send(product)
+})
+
+router.post('/:product/reviews', (req, res) => {
+  const prodId = req.params.product
+  const {
+    userName: revUserName,
+    text: revText,
+    product: revProd
+  } = req.body
+
+  let review = new Review({
+    userName: revUserName,
+    text: revText,
+    product: prodId
+  })
+  review.save()
+
+  Product.findById(prodId).exec((err, prodResult) => {
+    if (err) throw err
+    else {
+      prodResult.reviews.push(review)
+      prodResult.save()
+      res.send(prodResult)
+    }
+  })
 })
 // Generates Fake Data in database on request
 

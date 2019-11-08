@@ -10,13 +10,29 @@ router.get("/", (req, res) => {
   const page = req.query.page || 1;
   let perPage = RESULTS_PER_PAGE;
 
-  let category = req.query.category;
+  let { category, price } = req.query;
 
   let filter = {};
+  let sort = {};
 
   //case insensitive regex match for category
   if (category) {
     filter.category = { $regex: new RegExp(category, "i") };
+  }
+
+  if (price) {
+    switch (price.toLowerCase()) {
+      case "highest":
+        sort.price = -1;
+        break;
+      case "lowest":
+        sort.price = 1;
+        break;
+      default:
+        res.status(400);
+        res.send("Invalid Price Query: " + price);
+        break;
+    }
   }
 
   if (page <= 0) {
@@ -25,6 +41,7 @@ router.get("/", (req, res) => {
   } else {
     Product.find(filter)
       .select("-__v")
+      .sort(sort)
       .populate("reviews", "-product -__v")
       .skip(perPage * page - perPage)
       .limit(perPage)

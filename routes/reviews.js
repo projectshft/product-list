@@ -4,12 +4,24 @@ const Review = require('../models/review')
 
 
 // returns ALL reviews, 40 at a time, paginate.
-router.get('/reviews', (req, res, next) => {
+router.get('/reviews', (req, res) => {
+  const perPage = 40
+  const page = req.query.page || 1
 
+  Review
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, reviews) => {
+      if (err) {
+        return console.error(err)
+      }
+      res.send(reviews)
+    });
 });
 
 // delete review by ID
-router.delete('/reviews/:reviewId', (req, res, next) => {
+router.delete('/reviews/:review', (req, res, next) => {
 
 });
 

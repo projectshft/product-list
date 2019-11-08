@@ -19,4 +19,19 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 });
 
+router.get('/generate-fake-data', (req, res, next) => {
+  for (let i = 0; i < 90; i++) {
+    let review = new Review()
+
+    review.userName = faker.internet.userName()
+    review.text = faker.lorem.sentence()
+    review.save((err) => {
+      if (err) throw err
+    })
+    product.reviews.push(review)
+    review.product = product
+  }
+  res.end()
+});
+
 module.exports = router

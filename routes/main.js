@@ -18,7 +18,7 @@ router.get('/products', (req, res, next) => {
             // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
             Product.count().exec((err, count) => {
                 if (err) return next(err)
-                res.send(products)
+                res.send({ products: products, count: count })
             })
         })
 });
@@ -33,12 +33,60 @@ router.get('/products/:product', (req, res, next) => {
 
 });
 router.get('/reviews', (req, res, next) => {
+    const perPage = 40;
+
+    // return the first page by default
+    let page = req.query.page || 1;
+
+    //this returns an error message if the page number is less than 1 
+    if (page < 1) {
+        res.status(400).send('Invalid query')
+    }
+    Review
+        .find({})
+        .limit(perPage)
+        .skip((perPage * page) - perPage)
+        .exec((error, reviews) => {
+            res.send(reviews)
+        })
+
+});
+
+router.post('/products', (req, res, next) => {
+    let product = new Product()
+
+    product.category = req.body.category
+    product.name = req.body.name
+    product.price = req.body.price
+    product.image = req.body.imageURL
+    product.reviews = []
+
+    product.save((err) => {
+        if (err) throw err
+        res.end('Your product was saved');
+    })
+});
+
+router.post('/:product/reviews', (req, res, next) => {
 
     Product
         .findById(req.params.product)
         .exec((error, product) => {
-            res.send(product)
+            let review = new Review()
+
+            review.username = req.body.username
+            review.text = req.body.text
+            review.product = product
+
+            product.reviews.push(review)
+
+            product.save((err) => {
+                if (err) throw err
+                res.end('Your review was saved');
+            })
         })
+
+
 
 });
 

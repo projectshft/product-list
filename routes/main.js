@@ -70,8 +70,15 @@ router.get('/reviews', (req, res, next) => {
 })
 
 // product id endpoint
-router.get('products/:productId', function (req, res, next) {
-res.send(req.params._id);
+router.get('/products/:product', (req, res, next) => {
+  Product
+    .findById(req.params.product)
+    .limit(1)
+    .exec((err, product) => {
+      if (err) return next(err)
+
+      res.send(product)
+    });
 });
 
 

@@ -5,6 +5,7 @@ const Review = require('../models/reviews')
 
 
 router.get('/products', (req, res, next) => {
+    //Limits the page to have 9 products at a time 
     const perPage = 9;
 
     // return the first page by default
@@ -23,8 +24,8 @@ router.get('/products', (req, res, next) => {
         })
 });
 
+//This route gives the specfic product by ID 
 router.get('/products/:product', (req, res, next) => {
-
     Product
         .findById(req.params.product)
         .exec((error, product) => {
@@ -32,6 +33,7 @@ router.get('/products/:product', (req, res, next) => {
         })
 
 });
+
 router.get('/reviews', (req, res, next) => {
     const perPage = 40;
 
@@ -48,6 +50,23 @@ router.get('/reviews', (req, res, next) => {
         .skip((perPage * page) - perPage)
         .exec((error, reviews) => {
             res.send(reviews)
+        })
+
+});
+
+router.delete('/products/:product', (req, res, next) => {
+    Product
+        .findByIdAndDelete(req.params.product)
+        .exec((error, product) => {
+            res.end("Deleted")
+        })
+});
+
+router.delete('/reviews/:review', (req, res, next) => {
+    Review
+        .findByIdAndDelete(req.params.review)
+        .exec((error, product) => {
+            res.end("Deleted")
         })
 
 });
@@ -76,26 +95,20 @@ router.post('/:product/reviews', (req, res, next) => {
 
             review.username = req.body.username
             review.text = req.body.text
-            review.product = product.__id
-
-            product.reviews.push(review)
+            review.product = product._id
 
             product.save((err) => {
                 if (err) throw err
-                res.end('Your review was saved');
+                res.end();
+            })
+            review.save((err) => {
+                if (err) throw err
+                res.send(product);
             })
 
+            product.reviews.push(review)
 
         })
-
-    // Review
-    //     .findById("5dc5d0674c507e4c26944609")
-    //     .exec((error, review) => {
-
-    //         res.send(review)
-    //     })
-
-
 
 });
 

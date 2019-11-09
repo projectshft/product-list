@@ -7,21 +7,36 @@ const Review = require('../models/reviews')
 router.get('/products', (req, res, next) => {
     //Limits the page to have 9 products at a time 
     const perPage = 9;
+    let queryCategory = req.query.category;
+
+    //This function is used to change the first letter of the query to a caoital letter in order to work with the database 
+    const capitalize = (s) => {
+        if (typeof s !== 'string') return ''
+        return s.charAt(0).toUpperCase() + s.slice(1)
+    }
 
     // return the first page by default
     const page = req.query.page || 1
 
+    if (req.query.category == "" || req.query.category == null || req.query.category.length == 0 || !req.query.category) {
+        queryCategory = {};
+    } else {
+        queryCategory = { category: capitalize(queryCategory) }
+
+    }
     Product
-        .find({})
+        .find(queryCategory)
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec((err, products) => {
             // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+
             Product.count().exec((err, count) => {
                 if (err) return next(err)
                 res.send({ products: products, count: count })
             })
         })
+
 });
 
 //This route gives the specfic product by ID 
@@ -34,6 +49,7 @@ router.get('/products/:product', (req, res, next) => {
 
 });
 
+//This route brings back 40 reviews per page 
 router.get('/reviews', (req, res, next) => {
     const perPage = 40;
 
@@ -54,23 +70,26 @@ router.get('/reviews', (req, res, next) => {
 
 });
 
+//This route allows you to delete a product by particular ID 
 router.delete('/products/:product', (req, res, next) => {
     Product
         .findByIdAndDelete(req.params.product)
         .exec((error, product) => {
-            res.end("Deleted")
+            res.end("Product Deleted")
         })
 });
 
+//This route allows you to delete a review by particular ID 
 router.delete('/reviews/:review', (req, res, next) => {
     Review
         .findByIdAndDelete(req.params.review)
         .exec((error, product) => {
-            res.end("Deleted")
+            res.end("Review deleted")
         })
 
 });
 
+//This route allows the client to add a new product to the database
 router.post('/products', (req, res, next) => {
     let product = new Product()
 
@@ -86,6 +105,7 @@ router.post('/products', (req, res, next) => {
     })
 });
 
+//This route allows the client to add a new review to a product by ID 
 router.post('/:product/reviews', (req, res, next) => {
 
     Product
@@ -112,6 +132,7 @@ router.post('/:product/reviews', (req, res, next) => {
 
 });
 
+//This route passes in new fake products and reviews into our databases
 router.get('/generate-fake-data', (req, res, next) => {
     for (let i = 0; i < 90; i++) {
         let product = new Product()

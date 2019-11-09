@@ -9,7 +9,12 @@ router.get('/products', (req, res, next) => {
     const perPage = 9;
     let queryCategory = req.query.category;
 
-    //This function is used to change the first letter of the query to a caoital letter in order to work with the database 
+    const highestPrice = { price: 'desc', highest: -1 };
+    const lowestPrice = { price: 'asc', lowest: 1 };
+    let price;
+
+
+    //This function is used to change the first letter of the query to a capital letter in order to work with our database 
     const capitalize = (s) => {
         if (typeof s !== 'string') return ''
         return s.charAt(0).toUpperCase() + s.slice(1)
@@ -22,10 +27,19 @@ router.get('/products', (req, res, next) => {
         queryCategory = {};
     } else {
         queryCategory = { category: capitalize(queryCategory) }
-
     }
+
+    if (req.query.price == "highest") {
+        price = highestPrice
+    }
+    if (req.query.price == "lowest") {
+        price = lowestPrice
+    }
+
+
     Product
         .find(queryCategory)
+        .sort(price)
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec((err, products) => {

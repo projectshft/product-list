@@ -5,19 +5,35 @@ const Review = require('../models/review')
 
 router.get('/products', (req, res, next) => {
   const perPage = 9
-
   // return the first page by default
   const page = req.query.page || 1
+  const prodCat = req.query.category
+  const priceSort = req.query.price
 
-  Product
-    .find({})
-    .skip((perPage * page) - perPage)
+  // Setting initial product query based on URL
+  let prodQuery = Product.find({})
+
+  // If specified, edit product query to find by category
+  // SELF NOTE category must be in correct case for this to function correctly
+  if (prodCat) {
+    prodQuery = Product.find({
+      category: prodCat
+    })
+  }
+
+  // If specified, edit product query to sort by price
+  if (priceSort == 'highest') {
+    prodQuery = prodQuery.sort('-price')
+  } else if (priceSort == 'lowest') {
+    prodQuery = prodQuery.sort('price')
+  }
+
+  prodQuery.skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Product.count().exec((err, count) => {
         if (err) return next(err)
-
         res.send(products)
       })
     })
@@ -127,6 +143,8 @@ router.delete('/reviews/:review', (req, res) => {
     }
   })
 })
+
+
 // Generates Fake Data in database on request
 
 // router.get('/generate-fake-data', (req, res, next) => {

@@ -11,3 +11,49 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.title-text {
+  text-align: center;
+  font-size: xxx-large;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4caf50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+.pages {
+  text-align: center;
+}
+
+.pagination {
+  display: inline-block;
+}
+
+body {
+  padding-bottom: 50px;
+}
+.input-wrapper {
+  margin-right: 100px;
+}
+input {
+  float: left;
+  width: 100%;
+  -ms-box-sizing: border-box; /* ie8 */
+  -khtml-box-sizing: border-box; /* konqueror */
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
+  box-sizing: border-box; /* css3 rec */
+}

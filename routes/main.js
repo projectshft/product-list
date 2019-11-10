@@ -152,12 +152,12 @@ router.delete('/reviews/:review', (req, res) => {
 //   for (let i = 0; i < 90; i++) {
 //     let product = new Product()
 
-//     // Create 0-3 dummy reviews for each product
-//     let reviewCount = faker.random.number(3)
+//     // Create 0-2 dummy reviews for each product
+//     let reviewCount = faker.random.number(2)
 //     for (let j = 0; j < reviewCount; j++) {
 //       let review = new Review()
 
-//       review.userName = faker.name.findName()
+//       review.userName = faker.internet.userName()
 //       review.text = faker.lorem.sentences()
 //       review.product = product._id
 //       review.save((err) => {

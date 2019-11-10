@@ -17,23 +17,38 @@ router.get('products/:product', (req, res, next) => {
 // get ALL products
 router.get('/products', (req, res, next) => {
   const perPage = 9
-  const category = req.query.category
-  const priceSort = req.query.price
-
-
   // return the first page by default
   const page = req.query.page || 1
+  const queryCategory = req.query.category;
+  const sort = req.query.sort;
+
+  // empty category query
+  let categoryQuery = {}
+  if (queryCategory) {
+    const category = (queryCategory[0].toUpperCase()) + queryCategory.slice(1)
+    categoryQuery = { category: category }
+  }
+
+  // empty sort query
+  let sortQuery = {}
+  if (sort === 'low') {
+    sortQuery = { price: 'asc' }
+  } if (sort === 'high') {
+    sortQuery = { price: 'desc' }
+  }
 
   Product
-    .find({})
+    .find(categoryQuery)
     .skip((perPage * page) - perPage)
     .limit(perPage)
+    .sort(sortQuery)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-
-        res.send(products)
+      Product.countDocuments().then((count) => {
+        if (err) {
+          return next(err)
+        } else {
+          res.send(products)
+        }
       })
     })
 });
@@ -77,8 +92,18 @@ router.post('/products/:product/reviews', (req, res, next) => {
 });
 
 // deletes product by ID
-router.delete('/products/:products', (req, res, next) => {
+router.delete('/products/:product', (req, res, next) => {
+  Review
+    .findById(req.params.id)
+    .exec((err, product) => {
+      if (!err) {
+        product.remove();
+        res.send(`Delete Complete ${req.params.id}`);
+      } else {
+        console.log(err);
+      }
+    })
+})
 
-});
 
 module.exports = router

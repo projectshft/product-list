@@ -30,39 +30,62 @@ router.get('/products', (req, res, next) => {
   // Look for price and category
   let category = req.query.category;
   const sortByPrice = (req.query.price); // vals are 'lowest' and 'highest'
-  
+  debugger
   if (category) {
     category = (req.query.category).charAt(0).toUpperCase() + (req.query.category).substring(1); // ensure query works when first letter not capitalized   
-    const products = Product.find( {category: category})
+    const products = Product.find({ category: category })
       .skip(perPage * (page - 1))
 
-      // if sort is in query
-      if (sortByPrice) {
-        if (sortByPrice === 'highest') products.sort({price: -1});
-        else products.sort({price: 1});
-      }
+    // if sort is in query
+    if (sortByPrice) {
+      if (sortByPrice === 'highest') products.sort({ price: -1 });
+      else products.sort({ price: 1 });
+    }
 
-      products.limit(perPage).exec((err, prods) => {
-        Product.countDocuments({category: category}, (err, count) => {
-          res.send({totalProducts: count, products: [...prods]});
+    products.limit(perPage).exec((err, prods) => {
+      // get distinct categories
+      const categoryObj = Product.find().distinct('category', function (err, categories) {
+        debugger;
+        if (err) throw err;
+        return categories;
+      });
+
+      categoryObj.exec((err, categories) => {
+        if (err) throw err;
+        Product.countDocuments({ category: category }, (err, count) => {
+          res.send({ totalProducts: count, categories: categories, products: [...prods] });
         });
       });
+    });
   } else { // no category in query
+
     const products = Product.find({})
       .skip(perPage * (page - 1))
 
     // if sort is in query
     if (sortByPrice) {
-      if (sortByPrice === 'highest') products.sort({price: -1});
-      else products.sort({price: 1});
+      if (sortByPrice === 'highest') products.sort({ price: -1 });
+      else products.sort({ price: 1 });
     }
 
     products.limit(perPage).exec((err, prods) => {
-      Product.countDocuments({}, (err, count) => {
-        res.send({totalProducts: count, products: [...prods]});
+      // get distinct categories
+      const categoryObj = Product.find().distinct('category', function (err, categories) {
+        debugger;
+        if (err) throw err;
+        return categories;
       });
-    });
 
+      categoryObj.exec((err, categories) => {
+        if (err) throw err;
+
+        Product.countDocuments({}, (err, count) => {
+
+          res.send({ totalProducts: count, categories: categories, products: [...prods] });
+        });
+
+      })
+    });
   }
 });
 
@@ -92,7 +115,7 @@ router.get('/reviews', (req, res, next) => {
     .skip(perPage * (page - 1))
     .limit(perPage)
     .exec((err, reviews) => {
-      
+
       Product.count().exec((err, count) => {
         if (err) throw err;
         else res.send(reviews);
@@ -137,7 +160,7 @@ router.post('/:product/reviews', (req, res, next) => {
     });
 
     // save it
-    newReview.save(function(err, review){
+    newReview.save(function (err, review) {
       if (err) throw err;
       console.log('Review added:', JSON.stringify(review));
     });

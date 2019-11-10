@@ -13,7 +13,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
 
     product.save((err) => {
-      if (err) throw err;
+      if (err) console.log(err);
     })
   }
   res.end()
@@ -46,12 +46,12 @@ router.get('/products', (req, res, next) => {
       // get distinct categories
       const categoryObj = Product.find().distinct('category', function (err, categories) {
         debugger;
-        if (err) throw err;
+        if (err) console.log(err);
         return categories;
       });
 
       categoryObj.exec((err, categories) => {
-        if (err) throw err;
+        if (err) console.log(err);
         Product.countDocuments({ category: category }, (err, count) => {
           res.send({ totalProducts: count, categories: categories, products: [...prods] });
         });
@@ -72,12 +72,12 @@ router.get('/products', (req, res, next) => {
       // get distinct categories
       const categoryObj = Product.find().distinct('category', function (err, categories) {
         debugger;
-        if (err) throw err;
+        if (err) console.log(err);
         return categories;
       });
 
       categoryObj.exec((err, categories) => {
-        if (err) throw err;
+        if (err) console.log(err);
 
         Product.countDocuments({}, (err, count) => {
 
@@ -96,7 +96,7 @@ router.get('/products/:product', (req, res, next) => {
   // find product in db
   Product
     .findById(productId, (err, prod) => {
-      if (err) throw err;
+      if (err) console.log(err);
       else {
         res.send(prod);
       }
@@ -117,7 +117,7 @@ router.get('/reviews', (req, res, next) => {
     .exec((err, reviews) => {
 
       Product.count().exec((err, count) => {
-        if (err) throw err;
+        if (err) console.log(err);
         else res.send(reviews);
       })
     })
@@ -135,7 +135,7 @@ router.post('/products', (req, res, next) => {
   newProduct.reviews = [];
 
   newProduct.save((err, prod) => {
-    if (err) throw err;
+    if (err) console.log(err);
     res.send(prod);
   })
 });
@@ -147,7 +147,7 @@ router.post('/:product/reviews', (req, res, next) => {
   // check to see if product is in db
   Product.findById(productId, (err, product) => {
     console.log('Product is:', product);
-    if (err) throw err;
+    if (err) console.log(err);
 
     // else create the new review
     const userName = req.body.userName;
@@ -161,14 +161,14 @@ router.post('/:product/reviews', (req, res, next) => {
 
     // save it
     newReview.save(function (err, review) {
-      if (err) throw err;
+      if (err) console.log(err);
       console.log('Review added:', JSON.stringify(review));
     });
 
     // add to product reviews, save the product and return it to client
     product.reviews.push(newReview);
     product.save((err, prod) => {
-      if (err) throw err;
+      if (err) console.log(err);
       res.send(prod);
     });
   });
@@ -179,7 +179,7 @@ router.delete('/products/:product', (req, res, next) => {
   const productId = req.params.product;
 
   Product.findByIdAndDelete(productId, (err, result) => {
-    if (err) throw err;
+    if (err) console.log(err);
     res.send(result);
   });
 });
@@ -189,7 +189,7 @@ router.delete('/reviews/:review', (req, res, next) => {
   const reviewId = req.params.review;
 
   Review.findByIdAndDelete(reviewId, (err, result) => {
-    if (err) throw err;
+    if (err) console.log(err);
     res.send(result);
   });
 });

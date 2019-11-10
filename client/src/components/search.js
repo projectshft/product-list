@@ -8,7 +8,6 @@ class Search extends Component {
 
   // Allow for a placeholder in dropdowns
   onSubmit(query) {
-    debugger;
     if (query.category || query.price) {
       if (query.category !== 'Filter' && query.price !== 'Price') {
         this.props.getProducts({...query});

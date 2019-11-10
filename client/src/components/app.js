@@ -19,7 +19,6 @@ class App extends Component {
 
   // pagination 
   renderPages() {
-    debugger
     if (this.props.products.products) {
       // get # of pages
       const numPages = Math.ceil(this.props.products.totalProducts / 9);
@@ -44,7 +43,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('APP.JS:', this.props.products)
     if (this.props.products) {
       return (
         <div>

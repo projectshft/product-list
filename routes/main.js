@@ -68,7 +68,6 @@ router.get('/reviews', (req, res, next) => {
       })
     })
 })
-
 // product id endpoint
 router.get('/products/:product', (req, res, next) => {
   Product
@@ -79,6 +78,19 @@ router.get('/products/:product', (req, res, next) => {
 
       res.send(product)
     });
+});
+//post - create a new product
+router.post('/products', (req, res) => {
+    let newProduct = new Product()
+
+      newProduct.category = req.body.category
+      newProduct.name = req.body.name
+      newProduct.price = req.body.price
+      newProduct.save((err) => {
+      if (err) throw err
+    })
+  
+  res.end();
 });
 
 

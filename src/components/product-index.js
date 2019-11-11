@@ -12,9 +12,11 @@ class ProductIndex extends Component {
   renderProducts() {
     return _.map(this.props.products, product => {
       return (
-        <div className='product-item' key={product._id}>
+        <div className='product-item col-md-3' key={product._id}>
+          <span className="text-left"> Category: {product.category}</span>
+          <span className="text-right"> Price:{product.price} </span>
+          <img src={product.image} className="image-fluid" />
           {product.name}
-          {product.price}
         </div>
       )
     })
@@ -22,10 +24,20 @@ class ProductIndex extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Hello from Product Index!</h1>
-        {this.renderProducts()}
+      <div className="container">
+        <div className="row">
+          <div className="col-md-9 offset-md-2">
+            <div className='page-header text-center'>
+              <h1>Hello from Product Index!</h1>
+            </div>
+            <div className='products-display'>
+              {this.renderProducts()}
+            </div>
+            
+          </div>
+        </div>
       </div>
+      
     );
   }
 }

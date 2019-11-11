@@ -6,7 +6,7 @@ import { fetchProducts } from '../actions'
 
 class ProductIndex extends Component {
   componentDidMount() {
-    this.props.fetchProducts();
+    this.props.fetchProducts(1);
   }
 
   renderProducts() {

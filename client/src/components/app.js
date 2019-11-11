@@ -34,12 +34,14 @@ class App extends Component {
   renderProducts() {
     const products = this.props.products.products;
 
-    if (products) return (
-      products.map((product) => {
-        return <Product product={product} key={product._id} />
-      })
-    )
-    else return (<div>Loading</div>)
+    if (products) {
+      if (!products.length) return (<div style={{textAlign: 'center', color: 'blue'}}><em>We're sorry, but that item is not currently available. We'll let you know when it's back in stock!</em></div>)
+      return (
+        products.map((product) => {
+          return <Product product={product} key={product._id} />
+        })
+      )
+    } else return (<div>Loading</div>)
   }
 
   render() {

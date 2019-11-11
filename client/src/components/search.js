@@ -1,40 +1,67 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {Field, reduxForm} from 'redux-form';
-import {getProducts} from '../actions/index'; 
+import { Field, reduxForm } from 'redux-form';
+import { getProducts } from '../actions/index';
 
 class Search extends Component {
 
   // Allow for a placeholder in dropdowns
   onSubmit(query) {
-    if (query.category || query.price) {
-      if (query.category !== 'Filter' && query.price !== 'Price') {
-        this.props.getProducts({...query});
-        search.values = query;
-      } else if (query.category === 'Filter' && query.price !== 'Price') {
+    if (query.search) {
+      if (query.category || query.price) {
+        if (query.category !== 'Filter' && query.price !== 'Price') {
+          this.props.getProducts({ ...query });
+          search.values = query;
+        } else if (query.category === 'Filter' && query.price !== 'Price') {
           if (query.price) {
-            this.props.getProducts({price: query.price});
-            search.values = {price: query.price};           
+            this.props.getProducts({ price: query.price, search: query.search });
+            search.values = { price: query.price, search: query.search };
           } else {
-              this.props.getProducts();
-              search.values = {};
-            }
-        
-      } else if (query.category !== 'Filter' && query.price === 'Price') {
-          this.props.getProducts({category: query.category});
-          search.values = {category: query.category};
+            this.props.getProducts({ search: query.search });
+            search.values = { search: query.search };
+          }
+        } else if (query.category !== 'Filter' && query.price === 'Price') {
+          this.props.getProducts({ category: query.category, search: query.search });
+          search.values = { category: query.category, search: query.search };
+        } else {
+          this.props.getProducts({ search: query.search });
+          search.values = { search: query.search };
+        }
       } else {
+        this.props.getProducts({ search: query.search });
+        search.values = { search: query.search };
+      }
+    } else {
+      if (query.category || query.price) {
+        if (query.category !== 'Filter' && query.price !== 'Price') {
+          this.props.getProducts({ ...query });
+          search.values = query;
+        } else if (query.category === 'Filter' && query.price !== 'Price') {
+          if (query.price) {
+            this.props.getProducts({ price: query.price });
+            search.values = { price: query.price };
+          } else {
+            this.props.getProducts();
+            search.values = {};
+          }
+        } else if (query.category !== 'Filter' && query.price === 'Price') {
+          this.props.getProducts({ category: query.category });
+          search.values = { category: query.category };
+        } else {
           this.props.getProducts();
-          search.values = {};     
+          search.values = {};
+        }
+      } else {
+        this.props.getProducts();
+        search.values = {};
       }
     }
-    else {this.props.getProducts(); search.values = {}}; 
   }
 
   // To dynamically render the categories dropdown search
-  renderCategories(category) {
-    return (<option value={category}>{category}</option>)
+  renderCategories(category, idx) {
+    return (<option key={idx} value={category}>{category}</option>)
   }
 
   render() {
@@ -43,7 +70,7 @@ class Search extends Component {
     let categories = this.props.products.categories;
     if (!categories) categories = [];
 
-    const {handleSubmit} = this.props;
+    const { handleSubmit } = this.props;
 
     return (
       <div>
@@ -61,18 +88,18 @@ class Search extends Component {
               name='category'
               component='select'
             >
-            <option value='Filter'>Filter by Category</option>
-            {categories.map(this.renderCategories)}
+              <option value='Filter'>Filter by Category</option>
+              {categories.map((category, idx) => this.renderCategories(category, idx))}
             </Field>
           </div>
-            <Field
-              className='custom-select'
-              name='price'
-              component='select'>
-                <option value='Price'>Sort by Price</option>  
-                <option value="lowest">Price: Low to High</option>  
-                <option value="highest">Price: High to Low</option>  
-            </Field>
+          <Field
+            className='custom-select'
+            name='price'
+            component='select'>
+            <option value='Price'>Sort by Price</option>
+            <option value="lowest">Price: Low to High</option>
+            <option value="highest">Price: High to Low</option>
+          </Field>
           <button type="submit" className="btn btn-primary">
             <i className="fa fa-search"></i>
             Submit
@@ -83,11 +110,11 @@ class Search extends Component {
   }
 }
 
-function mapStateToProps({products, values}) {
-  return {products, values};
-} 
+function mapStateToProps({ products, values }) {
+  return { products, values };
+}
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({getProducts}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ getProducts }, dispatch);
 
 const search = reduxForm({
   form: 'searchNew'

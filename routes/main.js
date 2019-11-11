@@ -30,11 +30,22 @@ router.get('/products', (req, res, next) => {
   // Look for price and category
   let category = req.query.category;
   const sortByPrice = (req.query.price); // vals are 'lowest' and 'highest'
-  debugger
+  let search = req.query.search;
+
   if (category) {
     category = (req.query.category).charAt(0).toUpperCase() + (req.query.category).substring(1); // ensure query works when first letter not capitalized   
-    const products = Product.find({ category: category })
-      .skip(perPage * (page - 1))
+    if (search && search !== 'search') {
+      const searchVal = search + '.*';
+
+      var products = Product.find({name: new RegExp(searchVal, 'gi')}, (err, res) => {
+        if (err) console.log(err);
+
+      });
+    } else {
+      var products = Product.find({ category: category })
+    }
+    
+    products.skip(perPage * (page - 1))
 
     // if sort is in query
     if (sortByPrice) {
@@ -59,8 +70,18 @@ router.get('/products', (req, res, next) => {
     });
   } else { // no category in query
 
-    const products = Product.find({})
-      .skip(perPage * (page - 1))
+    if (search !== 'search' && search) {
+      const searchVal = search + '.*';
+
+      var products = Product.find({name: new RegExp(searchVal, 'gi')}, (err, res) => {
+        if (err) console.log(err);
+
+      });
+    } else {
+      var products = Product.find({})
+    }
+
+    products.skip(perPage * (page - 1))
 
     // if sort is in query
     if (sortByPrice) {
@@ -78,15 +99,24 @@ router.get('/products', (req, res, next) => {
 
       categoryObj.exec((err, categories) => {
         if (err) console.log(err);
-
-        Product.countDocuments({}, (err, count) => {
-
-          res.send({ totalProducts: count, categories: categories, products: [...prods] });
-        });
-
-      })
+        
+        if (search !== 'search' && search) {
+          search = search + '.*';
+          Product.countDocuments({name: new RegExp(search, 'gi')}, (err, count) => {
+            if (err) console.log(err);
+            res.send({ totalProducts: count, categories: categories, products: [...prods] });
+          });
+        } else {
+          Product.countDocuments({}, (err, count) => {
+            if (err) console.log(err);
+            else res.send({totalProducts: count, categories: categories, products: [...prods]});
+          });
+        }
+      });
     });
-  }
+  } 
+
+  
 });
 
 // Returns a specific product by its id 

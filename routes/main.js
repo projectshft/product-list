@@ -2,8 +2,9 @@ const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
+const cors = require('cors')
 
-router.get('/products', (req, res, next) => {
+router.get('/products',(req, res, next) => {
   const perPage = 9
   // return the first page by default
   const page = req.query.page || 1

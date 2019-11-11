@@ -6,7 +6,7 @@ mongoose.connect('mongodb://localhost/products', {
   useNewUrlParser: true
 })
 
-const cors= require('cors')
+const cors = require('cors')
 const app = express()
 
 // ENABLE all CORS requests

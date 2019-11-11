@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from "react";
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -9,20 +10,21 @@ class ProductIndex extends Component {
   }
 
   renderProducts() {
-    return (this.props.products, product => {
+    return _.map(this.props.products, product => {
       return (
-        <div className='product-item'>
-          {product.title}
+        <div className='product-item' key={product._id}>
+          {product.name}
           {product.price}
         </div>
       )
     })
   }
-  
+
   render() {
     return (
       <div>
         <h1>Hello from Product Index!</h1>
+        {this.renderProducts()}
       </div>
     );
   }

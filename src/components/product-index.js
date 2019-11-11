@@ -34,6 +34,7 @@ class ProductIndex extends Component {
           <div className="col-md-9 offset-md-2">
             <div className='page-header text-center'>
               <h1>Hello from Product Index!</h1>
+              <h3>Product Count: {this.props.products.productCount}</h3>
             </div>
             <div className='products-display'>
               {this.renderProducts()}

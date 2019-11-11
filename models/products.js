@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const Review = require('./reviews')
 
 //The Schema that our new products use 
 const ProductSchema = new Schema({

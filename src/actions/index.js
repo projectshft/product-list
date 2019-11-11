@@ -6,7 +6,7 @@ const ROOT_URL = "http://localhost:8000/products";
 
 export function fetchProducts() {
     const request = axios.get(ROOT_URL);
-
+    console.log('action')
     return {
         type: FETCH_PRODUCTS,
         payload: request

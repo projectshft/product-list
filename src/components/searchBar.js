@@ -7,7 +7,7 @@ class SearchBar extends Component {
         return (
             <div>
                 <div className="input-group mb-3">
-                    <input type="text" className="form-control" placeholder="Pruduct Search" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                    <input type="text" className="form-control" placeholder="Product Search" aria-label="Recipient's username" aria-describedby="button-addon2" />
                     <div className="input-group-append">
                         <Button className="btn btn-primary" type="button" id="button-addon2">Search</Button>
                     </div>

@@ -2,7 +2,6 @@ import _ from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Link } from "react-router-dom";
 import { fetchProducts } from "../actions";
 
 class Products extends Component {
@@ -11,12 +10,14 @@ class Products extends Component {
     }
     renderProducts() {
         return _.map(this.props.products, product => {
+            console.log('this', this.props)
             return (
-                <div className="list-group-item" key={product.id}>
-                    <Link to={`/products/${product.id}`}>
-                        {product.title}
-                    </Link>
+                <div className="list-group-item" key={product._id}><b>{product.name}</b>
+                    <img src={product.image} alt=""></img>
+                    <span className="list-group-item">${product.price}</span>
+                    <span className="list-group-item">{product.category}</span>
                 </div>
+
             );
         });
     }
@@ -25,9 +26,6 @@ class Products extends Component {
         return (
             <div>
                 <div className="text-xs-right">
-                    {/* <Link className="btn btn-primary" to="/posts/new">
-                        Add a Post
-                     </Link> */}
                 </div>
                 <div className="list-group">
                     {this.renderProducts()}

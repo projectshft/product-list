@@ -3,7 +3,7 @@ const Product = require('../models/product')
 const Review = require('../models/review')
 
 // gets specific product by ID
-router.get('/products/:product', (req, res, next) => {
+router.get('/:product', (req, res, next) => {
   Product
     .findById(req.params.id, (err, product) => {
       if (!err) {
@@ -15,7 +15,7 @@ router.get('/products/:product', (req, res, next) => {
 });
 
 // get ALL products
-router.get('/products', (req, res, next) => {
+router.get('/', (req, res, next) => {
   const perPage = 9
   // return the first page by default
   const page = req.query.page || 1
@@ -54,7 +54,7 @@ router.get('/products', (req, res, next) => {
 });
 
 // creates new product
-router.post('/products', (req, res, next) => {
+router.post('/', (req, res, next) => {
   // create new instance of the Product model
   const newProduct = new Product({
     category: req.body.category,
@@ -72,7 +72,7 @@ router.post('/products', (req, res, next) => {
 });
 
 // creates new review for specific product
-router.post('/products/:product/reviews', (req, res, next) => {
+router.post('/:product/reviews', (req, res, next) => {
   Product
     .findById(req.params.id)
     .exec((err, product) => {
@@ -92,7 +92,7 @@ router.post('/products/:product/reviews', (req, res, next) => {
 });
 
 // deletes product by ID
-router.delete('/products/:product', (req, res, next) => {
+router.delete('/:product', (req, res, next) => {
   Review
     .findById(req.params.id)
     .exec((err, product) => {

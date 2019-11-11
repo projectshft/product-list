@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const displayRoutes = require('express-routemap');
 
 mongoose.connect('mongodb://localhost/products', { useNewUrlParser: true })
 
@@ -22,11 +23,15 @@ app.use(bodyParser.urlencoded({
 const mainRoutes = require('./routes/main')
 const productRoutes = require('./routes/products')
 const reviewRoutes = require('./routes/reviews')
+const adminRouter = require('./routes/admin');
 
 app.use('/', mainRoutes)
 app.use('/products', productRoutes)
 app.use('/reviews', reviewRoutes)
+app.use('/admin', adminRouter);
+
 
 app.listen(8000, () => {
   console.log('Node.js listening on port ' + 8000)
+  displayRoutes(app);
 })

@@ -21,6 +21,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "faker": "^4.1.0",
-    "mongoose": "^5.7.8"
+    "mongoose": "^5.7.8",
+    "redux": "^4.0.4",
+    "redux-promise": "^0.6.0"
   }
 }

@@ -3,7 +3,7 @@ const Product = require('../models/product')
 const Review = require('../models/review')
 
 // gets specific product by ID
-router.get('products/:product', (req, res, next) => {
+router.get('/products/:product', (req, res, next) => {
   Product
     .findById(req.params.id, (err, product) => {
       if (!err) {

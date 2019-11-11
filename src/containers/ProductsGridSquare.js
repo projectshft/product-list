@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 
 class ProductsGridSquare extends Component {
+  imgError(e) {
+    e.target.onError = "";
+    e.target.src = "https://via.placeholder.com/200";
+    return true;
+  }
+
   render() {
     const { product } = this.props;
     return (
@@ -11,7 +17,8 @@ class ProductsGridSquare extends Component {
         </div>
         <div>
           <img
-            src="https://via.placeholder.com/200"
+            src={product.image + "?random=" + product._id}
+            onError={e => this.imgError(e)}
             className="img-fluid"
             alt="Product"
             style={{ width: "100%" }}

@@ -12,7 +12,7 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
-    product.image = faker.image.imageUrl();
+    product.image = "http://lorempixel.com/200/200/";
 
     product.save(err => {
       if (err) throw err;

@@ -4,7 +4,8 @@ import { FETCH_PRODUCTS } from "../actions"
 const ProductsReducer = (state = {}, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      return _.mapKeys(action.payload.data.products, "_id");
+      const productItems = _.mapKeys(action.payload.data.products, "_id")
+      return ({productItems, productCount: action.payload.data.prodCount})
     default:
       return state;
   }

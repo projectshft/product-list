@@ -7,7 +7,6 @@ import { fetchProducts } from '../actions'
 class ProductIndex extends Component {
   componentDidMount() {
     this.props.fetchProducts(1);
-    debugger
   }
 
   onPageClick = () => {
@@ -16,7 +15,7 @@ class ProductIndex extends Component {
   }
 
   renderProducts() {
-    return _.map(this.props.products, product => {
+    return _.map(this.props.products.productItems, product => {
       return (
         <div className='product-item col-md-3' key={product._id}>
           <span className="text-left"> Category: {product.category}</span>
@@ -30,7 +29,7 @@ class ProductIndex extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
         <div className="row">
           <div className="col-md-9 offset-md-2">
             <div className='page-header text-center'>

@@ -1,6 +1,6 @@
 import { FETCH_PRODUCTS } from "../actions"
 
-ProductsReducer = (state = {}, action) => {
+const ProductsReducer = (state = {}, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
       return (action.payload.data, "id")

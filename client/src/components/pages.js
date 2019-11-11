@@ -8,15 +8,12 @@ class Pages extends Component {
   constructor() {
     super()
     this.state = { page: '' }
-
     this.page = this.onClick.bind(this)
   }
 
   onClick = e => {
     e.preventDefault()
-
     this.setState({ page: e.target.id })
-
     //fetch the correct products based on page number
     this.props.paginateProducts(e.target.id)
   }

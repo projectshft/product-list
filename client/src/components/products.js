@@ -28,7 +28,7 @@ class Products extends Component {
               <img
                 className="card-img img-responsive pt-2 pb-2"
                 src={product.image}
-                alt="your friend"
+                alt="img"
               />
             </div>
             <div className="row">

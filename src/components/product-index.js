@@ -49,7 +49,6 @@ class ProductIndex extends Component {
           </ul>
         </nav>
       </div>
-      
     );
   }
 }

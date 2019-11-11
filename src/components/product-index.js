@@ -9,6 +9,11 @@ class ProductIndex extends Component {
     this.props.fetchProducts(1);
   }
 
+  onPageClick = () => {
+    alert('page 2 clicked!')
+    this.props.fetchProducts(2);
+  }
+
   renderProducts() {
     return _.map(this.props.products, product => {
       return (
@@ -36,6 +41,13 @@ class ProductIndex extends Component {
             
           </div>
         </div>
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            <li className="page-item"><a className="page-link" href="#">1</a></li>
+            <li className="page-item"><a className="page-link" onClick={this.onPageClick} href="#">2</a></li>
+            <li className="page-item"><a className="page-link" href="#">3</a></li>
+          </ul>
+        </nav>
       </div>
       
     );

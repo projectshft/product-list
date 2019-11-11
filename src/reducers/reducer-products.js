@@ -3,7 +3,7 @@ import { FETCH_PRODUCTS } from "../actions"
 const ProductsReducer = (state = {}, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      return (action.payload.data, "id")
+      return (action.payload.data)
     default:
       return state;
   }

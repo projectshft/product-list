@@ -7,6 +7,7 @@ import { fetchProducts } from '../actions'
 class ProductIndex extends Component {
   componentDidMount() {
     this.props.fetchProducts(1);
+    debugger
   }
 
   onPageClick = () => {

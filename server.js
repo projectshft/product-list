@@ -6,8 +6,11 @@ mongoose.connect('mongodb://localhost/products', {
   useNewUrlParser: true
 })
 
+const cors= require('cors')
 const app = express()
 
+// ENABLE all CORS requests
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true

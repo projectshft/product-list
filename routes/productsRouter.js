@@ -3,7 +3,7 @@ const router = express.Router();
 const Product = require("../models/product");
 const Review = require("../models/review");
 
-const RESULTS_PER_PAGE = 10;
+const RESULTS_PER_PAGE = 9;
 
 router.get("/", (req, res) => {
   // return the first page by default

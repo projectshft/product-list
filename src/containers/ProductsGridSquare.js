@@ -2,11 +2,12 @@ import React, { Component } from "react";
 
 class ProductsGridSquare extends Component {
   render() {
+    const { product } = this.props;
     return (
       <div className="col-3" style={{ clear: "both" }}>
         <div>
-          <span style={{ float: "left" }}>Category: Games</span>
-          <span style={{ float: "right" }}>$50</span>
+          <span style={{ float: "left" }}>Category: {product.category}</span>
+          <span style={{ float: "right" }}>${product.price}</span>
         </div>
         <div>
           <img
@@ -17,7 +18,7 @@ class ProductsGridSquare extends Component {
           ></img>
         </div>
         <div className="text-center">
-          <span>PRODUCT NAME HERE</span>
+          <span>{product.name}</span>
         </div>
       </div>
     );

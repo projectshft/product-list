@@ -9,27 +9,42 @@ class Products extends Component {
     componentDidMount() {
         this.props.fetchProducts();
     }
-    renderList() {
-        return this.props.products.map(product => {
+    renderProducts() {
+        return _.map(this.props.products, product => {
             return (
-                <li
-                    key={product.title}
-                    className="list-group-item"
-                >
-                    {product.title}
-                </li>
+                <div className="list-group-item" key={product.id}>
+                    <Link to={`/products/${product.id}`}>
+                        {product.title}
+                    </Link>
+                </div>
             );
         });
     }
 
     render() {
         return (
-            <ul className="list-group col-sm-4">
-                {this.renderList()}
-            </ul>
+            <div>
+                <div className="text-xs-right">
+                    {/* <Link className="btn btn-primary" to="/posts/new">
+                        Add a Post
+                     </Link> */}
+                </div>
+                <div className="list-group">
+                    {this.renderProducts()}
+                </div>
+            </div>
         );
     }
 }
 
+function mapStateToProps(state) {
+    return { products: state.products };
+}
 
-export default Products;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchProducts }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);
+
+

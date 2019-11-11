@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from 'react-bootstrap';
 
 class SearchBar extends Component {
     render() {
@@ -8,7 +9,7 @@ class SearchBar extends Component {
                 <div className="input-group mb-3">
                     <input type="text" className="form-control" placeholder="Pruduct Search" aria-label="Recipient's username" aria-describedby="button-addon2" />
                     <div className="input-group-append">
-                        <button className="btn btn-primary" type="button" id="button-addon2">Search</button>
+                        <Button className="btn btn-primary" type="button" id="button-addon2">Search</Button>
                     </div>
                 </div>
             </div>

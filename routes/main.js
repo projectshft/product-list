@@ -9,6 +9,7 @@ router.get('/products', (req, res, next) => {
     const perPage = 9;
     let queryCategory = req.query.category;
 
+
     const highestPrice = { price: 'desc', highest: -1 };
     const lowestPrice = { price: 'asc', lowest: 1 };
     let price;

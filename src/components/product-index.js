@@ -25,6 +25,19 @@ class ProductIndex extends Component {
     this.props.fetchProducts(1, category.target.innerHTML)
   }
 
+  // Sorts products by price(currently functioning only for first page)
+  onPriceSortClick = (sortBy) => {
+    debugger
+    if (sortBy.target.innerHTML == 'Price: Highest to Lowest') {
+      // empty 2nd argument is placeholder for category
+      this.props.fetchProducts(1, '', 'highest')
+    }
+    if (sortBy.target.innerHTML == 'Price: Lowest to Highest') {
+      // empty 2nd argument is placeholder for category
+      this.props.fetchProducts(1, '', 'lowest')
+    }
+  }
+
   renderProducts() {
     return _.map(this.props.products.productItems, product => {
       return (
@@ -74,19 +87,31 @@ class ProductIndex extends Component {
             <div className='page-header text-center'>
               <h1>BILLY'S PRODUCT EMPORIUM</h1>
             </div>
-            <div className="dropdown">
-              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div className="dropdown categories-filter">
+              <button className="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 CATEGORY
               </button>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {/* {this.renderCategoryDropdowns()} */}
+                {/* {this.renderCategoryDropdowns()} Hardcoded some below due to non-working code*/}
                  <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Games</a>
-                 <a className="dropdown-item" href="#">Health</a>
+                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Health</a>
+                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Kids</a>
+                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Movies</a>
+                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Home</a>
+              </div>
+            </div>
+            <div className="dropdown price-filter text-right">
+              <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Price sort
+              </button>
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                 <a className="dropdown-item" href="#" onClick={this.onPriceSortClick}>Price: Highest to Lowest</a>
+                 <a className="dropdown-item" href="#" onClick={this.onPriceSortClick}>Price: Lowest to Highest</a>
               </div>
             </div>
 
             <div className='products-display'>
-              {this.renderProducts(10)}
+              {this.renderProducts()}
             </div>
           </div>
         </div>

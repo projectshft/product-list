@@ -48,6 +48,7 @@ export function fetchProducts(searchOptions) {
     queries.push("category=" + searchOptions.category);
   }
 
+  //append queries if any
   if (queries.length > 0) {
     requestUrl += "?" + queries.join("&");
   }

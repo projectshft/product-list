@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { fetchProducts, setCategory } from "../actions";
 
 class CategoriesDrop extends Component {
-  change(event) {
+  changeCategory(event) {
     this.props.setCategory(event.target.value);
     this.props.fetchProducts({
       query: this.props.products.query,
@@ -18,7 +18,7 @@ class CategoriesDrop extends Component {
     return (
       <div className="inner-section">
         <select
-          onChange={event => this.change(event)}
+          onChange={event => this.changeCategory(event)}
           value={this.props.products.category}
           className="search-drop"
         >

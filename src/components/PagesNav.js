@@ -14,12 +14,6 @@ class PagesNav extends Component {
   }
 
   navigateToNextPage() {
-    console.log(
-      "Curr: ",
-      this.props.products.pageNum,
-      " Next: ",
-      this.props.products.pageNum + 1
-    );
     this.navigateToPage(this.props.products.pageNum + 1);
   }
 
@@ -52,6 +46,7 @@ class PagesNav extends Component {
       <div className="pages">
         {/* have to keep this style here because I cannot for the life of me find where diplay: flex is coming from */}
         <div className="pagination" style={{ display: "inline-block" }}>
+          {/* Page Left Visible Check*/}
           {this.props.products.pageNum > 1 ? (
             <a href="#" onClick={() => this.navigateToPreviousPage()}>
               &laquo;
@@ -60,6 +55,7 @@ class PagesNav extends Component {
             ""
           )}
           {this.renderPageNums()}
+          {/* Page Right Visible Check*/}
           {this.props.products.pageNum < this.props.products.numPages ? (
             <a href="#" onClick={() => this.navigateToNextPage()}>
               &raquo;

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 class ProductsGridSquare extends Component {
+  //replacement for bad images from the random image provider
   imgError(e) {
     e.target.onError = "";
     e.target.src = "https://via.placeholder.com/200";

@@ -10,9 +10,9 @@ class ProductIndex extends Component {
     this.props.fetchProducts(1);
   }
 
-  onPageClick = () => {
-    alert('page 2 clicked!')
-    this.props.fetchProducts(2);
+  // Fetches products for page number clicked
+  onPageClick = (page) => {
+    this.props.fetchProducts(page.target.innerHTML);
   }
 
   renderProducts() {
@@ -42,7 +42,7 @@ class ProductIndex extends Component {
     let pagesNeeded = Math.ceil(90/9)
     let pageArr = []
     for (let i = 1; i <= pagesNeeded; i++) {
-      pageArr.push(<li className="page-item"><a className="page-link" href="#">{i}</a></li>)
+      pageArr.push(<li className="page-item"><a className="page-link" href="#" key={i} onClick={this.onPageClick}>{i}</a></li>)
       }
       return pageArr
     }

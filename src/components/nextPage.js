@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Pagination } from 'react-bootstrap';
 
+//This component will give the user the option to see other pages of products 
 class NextPage extends Component {
     render() {
 
@@ -14,7 +15,7 @@ class NextPage extends Component {
                          <span className="sr-only">(current)</span>
                             </span>
                         </li>
-                        <Pagination className="page-item"><a className="page-link" href="#">2</a></Pagination>
+                        <li className="page-item"><a className="page-link" href="#">2</a></li>
                         <li className="page-item"><a className="page-link" href="#">3</a></li>
                         <li className="page-item"><a className="page-link" href="#">4</a></li>
                         <li className="page-item"><a className="page-link" href="#">5</a></li>

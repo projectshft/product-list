@@ -11,10 +11,9 @@ class Products extends Component {
     }
     renderProducts() {
         return _.map(this.props.products, product => {
-            // console.log('this', this.props)
             return (
                 <div className="list-group-item" key={product._id}><b>{product.name}</b>
-                    <img src={product.image} alt=""></img>
+                    <img src={product.image} height="150" width="300" alt=""></img>
                     <span className="list-group-item">${product.price}</span>
                     <span className="list-group-item">Category: {product.category}</span>
                 </div>

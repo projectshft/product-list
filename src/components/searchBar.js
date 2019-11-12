@@ -4,6 +4,8 @@ import { Field, reduxForm } from "redux-form";
 import { bindActionCreators } from "redux";
 import { searchProducts } from "../actions";
 
+
+// This component renders a search bar for the user to query from 
 class SearchBar extends Component {
     renderField(field) {
         const { meta: { touched, error } } = field;
@@ -12,7 +14,7 @@ class SearchBar extends Component {
         return (
             <div className={className}>
                 <label>{field.label}</label>
-                <input className="form-control" type="text" {...field.input} />
+                <input className="form-control" type="text" placeholder="Search for other categories"{...field.input} />
                 <div className="text-help">
                     {touched ? error : ""}
                 </div>

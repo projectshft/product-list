@@ -5,18 +5,20 @@ export const SEARCH_PRODUCTS = "search_products";
 
 const ROOT_URL = "http://localhost:8000/products";
 
+//This api call fetches all the products through the "/products" route 
 export function fetchProducts() {
     const request = axios.get(ROOT_URL);
-    console.log('action')
+
     return {
         type: FETCH_PRODUCTS,
         payload: request
     }
 }
 
+//This api call fetches all categories based on the query the user searches for in search bar 
 export function searchProducts(values) {
     const request = axios.get(`${ROOT_URL}?page=1&category=${values}`)
-    console.log(request)
+
     return {
         type: FETCH_PRODUCTS,
         payload: request

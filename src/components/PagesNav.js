@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 class PagesNav extends Component {
   renderPageNums() {
     console.log(this.props);
-    const { pageNum, numPages } = this.props;
+    const { pageNum, numPages } = this.props.products;
     const elements = [];
     for (let i = 1; i <= numPages; i++) {
       elements.push(
@@ -30,8 +30,8 @@ class PagesNav extends Component {
   }
 }
 
-function mapStateToProps({ pageNum, numPages }, ownProps) {
-  return { pageNum, numPages };
+function mapStateToProps({ products }, ownProps) {
+  return { products };
 }
 
 export default connect(

@@ -21,7 +21,7 @@ class ProductIndex extends Component {
 
   // Fetches products for selected category
   onCategoryClick = (category) => {
-    saveCurrentCategory(category.target.innerHTML)
+    this.props.saveCurrentCategory(category.target.innerHTML)
     this.props.fetchProducts(1, category.target.innerHTML)
   }
 
@@ -50,23 +50,20 @@ class ProductIndex extends Component {
     })
   }
 
-  // NOTE THIS DOESN'T WORK
-  // After hours of debugging and googling I've no idea why I can't pull this from Redux store/state
-  // totalProducts is empty... but using redux devtools I'm pointing at the right spot. WHY tho
-  // I can pull from state/store but only in return statements. Need to use loop logic in return somehow
-  renderPagination() {
-    // Determine number of pages needed based on num of products in database
-    // Why is this empty? shrug
-    let totalProducts = this.props.products.productCount
-    // Rounds up for last page of products doesn't cut off
 
-    // Hardcode number of products(instead of 90 should use 'totalProducts')
-    let pagesNeeded = Math.ceil(90/9)
-    let pageArr = []
-    for (let i = 1; i <= pagesNeeded; i++) {
-      pageArr.push(<li className="page-item"><a className="page-link" href="#" key={i} onClick={this.onPageClick}>{i}</a></li>)
+  renderPagination() {
+    // Redux freaks out if I'm not returning anything on load, hence conditional. Will look later
+    if (this.props.products.productCount) {
+      let totalProducts = this.props.products.productCount
+      // Rounds up for last page of products doesn't cut off
+      let pagesNeeded = Math.ceil(totalProducts/9)
+      let pageArr = []
+      for (let i = 1; i <= pagesNeeded; i++) {
+        pageArr.push(<li className="page-item"><a className="page-link" href="#" key={i} onClick={this.onPageClick}>{i}</a></li>)
+        }
+        return pageArr
       }
-      return pageArr
+      else return;
     }
 
   // Should render categories based on Redux state/store. Same problem as above with not recognizing anything in state/store.
@@ -131,7 +128,7 @@ class ProductIndex extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {products: state.products}
+  return {products: state.products, query: state.query}
 }
 
 const mapDispatchToProps = (dispatch) => {

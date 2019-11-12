@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import { FETCH_PRODUCTS } from "../actions"
-import { SAVE_CATEGORY } from "../actions"
 
 const ProductsReducer = (state = {}, action) => {
   switch (action.type) {

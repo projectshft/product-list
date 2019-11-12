@@ -4,18 +4,19 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
 
+
 class Products extends Component {
     componentDidMount() {
         this.props.fetchProducts();
     }
     renderProducts() {
         return _.map(this.props.products, product => {
-            console.log('this', this.props)
+            // console.log('this', this.props)
             return (
                 <div className="list-group-item" key={product._id}><b>{product.name}</b>
                     <img src={product.image} alt=""></img>
                     <span className="list-group-item">${product.price}</span>
-                    <span className="list-group-item">{product.category}</span>
+                    <span className="list-group-item">Category: {product.category}</span>
                 </div>
 
             );

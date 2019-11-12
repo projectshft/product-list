@@ -2,6 +2,8 @@ import React from 'react';
 import Products from "./components/products"
 import SearchBar from "./components/searchBar"
 import Categories from "./components/categories"
+import NextPage from "./components/nextPage"
+
 // import SortBy from "./components/SortBy"
 
 function App() {
@@ -12,6 +14,7 @@ function App() {
       <SearchBar />
       <Categories />
       {/* <SortBy /> */}
+      <NextPage />
     </div>
   );
 }

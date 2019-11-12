@@ -1,9 +1,15 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { fetchProducts } from "../actions";
 
 class Categories extends Component {
+    componentDidMount() {
+        this.props.fetchProducts();
+    }
     render() {
         return (
-            <div className="btn-group">
+            < div className="btn-group" >
                 <button type="button" className="btn btn-danger">Categories</button>
                 <button type="button" className="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span className="sr-only">Toggle Dropdown</span>
@@ -17,8 +23,15 @@ class Categories extends Component {
                     <a className="dropdown-item" href="localhost:8000/products?page=1&category=Electronics">Electronics</a>
                     <a className="dropdown-item" href="localhost:8000/products?page=1&category=Outdoors">Outdoors</a>
                 </div>
-            </div>
+            </div >
         );
     }
 }
-export default Categories;
+function mapStateToProps(state) {
+    return { products: state.products };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchProducts }, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);

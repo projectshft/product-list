@@ -50,6 +50,7 @@ class PagesNav extends Component {
   render() {
     return (
       <div className="pages">
+        {/* have to keep this style here because I cannot for the life of me find where diplay: flex is coming from */}
         <div className="pagination" style={{ display: "inline-block" }}>
           {this.props.products.pageNum > 1 ? (
             <a href="#" onClick={() => this.navigateToPreviousPage()}>

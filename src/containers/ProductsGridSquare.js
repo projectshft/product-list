@@ -10,18 +10,17 @@ class ProductsGridSquare extends Component {
   render() {
     const { product } = this.props;
     return (
-      <div className="col-3" style={{ clear: "both" }}>
+      <div className="col-3 grid-item">
         <div>
-          <span style={{ float: "left" }}>Category: {product.category}</span>
-          <span style={{ float: "right" }}>${product.price}</span>
+          <span className="category">Category: {product.category}</span>
+          <span className="price">${product.price}</span>
         </div>
         <div>
           <img
             src={product.image + "?random=" + product._id}
             onError={e => this.imgError(e)}
-            className="img-fluid"
+            className="img-fluid product-image"
             alt="Product"
-            style={{ width: "100%" }}
           ></img>
         </div>
         <div className="text-center">

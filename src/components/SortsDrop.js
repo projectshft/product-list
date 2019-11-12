@@ -20,7 +20,7 @@ class SortsDrop extends Component {
         <select
           onChange={event => this.change(event)}
           value={this.props.products.sort}
-          style={{ width: "100%" }}
+          className="search-drop"
         >
           <option value="price:low">Price: Low to High</option>
           <option value="price:high">Price: High to Low</option>

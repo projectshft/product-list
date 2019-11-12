@@ -21,17 +21,14 @@ ReactDOM.render(
     <div>
       <div className="title-text">Products</div>
       <div className="container">
-        <div
-          className="row justify-content-center"
-          style={{ paddingBottom: "30px" }}
-        >
-          <div className="col-5" style={{ clear: "both" }}>
+        <div className="row justify-content-center product-row">
+          <div className="col-5 grid-item">
             <SearchBar />
           </div>
-          <div className="col-2" style={{ clear: "both" }}>
+          <div className="col-2 grid-item">
             <CategoriesDrop />
           </div>
-          <div className="col-2" style={{ clear: "both" }}>
+          <div className="col-2 grid-item">
             <SortsDrop />
           </div>
         </div>

@@ -30,8 +30,8 @@ class SearchBar extends Component {
     return (
       <div className="search-container">
         <form
+          class="search-bar"
           onSubmit={handleSubmit(this.onSubmit.bind(this))}
-          style={{ width: "100%" }}
         >
           <Field name="query" component={this.renderField} />
         </form>

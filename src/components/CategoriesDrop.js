@@ -20,7 +20,7 @@ class CategoriesDrop extends Component {
         <select
           onChange={event => this.change(event)}
           value={this.props.products.category}
-          style={{ width: "100%" }}
+          className="search-drop"
         >
           <option value="">Category...</option>
           <option value="Music">Music</option>

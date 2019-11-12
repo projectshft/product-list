@@ -9,9 +9,7 @@ class ProductsRow extends Component {
       if (i < products.length) {
         elements.push(<ProductsGridSquare product={products[i]} key={i} />);
       } else {
-        elements.push(
-          <div className="col-3" key={i} style={{ clear: "both" }} />
-        );
+        elements.push(<div className="col-3 grid-item" key={i} />);
       }
     }
 
@@ -20,10 +18,7 @@ class ProductsRow extends Component {
 
   render() {
     return (
-      <div
-        className="row justify-content-center"
-        style={{ paddingBottom: "30px" }}
-      >
+      <div className="row justify-content-center product-row">
         {this.renderRow()}
       </div>
     );

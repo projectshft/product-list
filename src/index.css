@@ -57,3 +57,30 @@ input {
   box-sizing: border-box; /* Opera/IE 8+ */
   box-sizing: border-box; /* css3 rec */
 }
+
+.search-drop {
+  width: 100%;
+}
+
+.search-bar {
+  width: 100%;
+}
+.product-image {
+  width: 100%;
+}
+
+.grid-item {
+  clear: both;
+}
+
+.category {
+  float: left;
+}
+
+.price {
+  float: right;
+}
+
+.product-row {
+  padding-bottom: 30px;
+}

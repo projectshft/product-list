@@ -31,6 +31,7 @@ class ProductIndex extends Component {
   // NOTE THIS DOESN'T WORK
   // After hours of debugging and googling I've no idea why I can't pull this from Redux store/state
   // totalProducts is empty... but using redux devtools I'm pointing at the right spot. WHY tho
+  // I can pull from state/store but only in return statements. Need to use loop logic in return somehow
   renderPagination() {
     // Determine number of pages needed based on num of products in database
     let totalProducts = this.props.products.productCount
@@ -50,7 +51,7 @@ class ProductIndex extends Component {
           <div className="col-md-9 offset-md-2">
             <div className='page-header text-center'>
               <h1>Hello from Product Index!</h1>
-              <h3>Products: placeholder</h3>
+              <h3>Product Count from database/Redux store: {this.props.products.productCount}</h3>
             </div>
             <div className='products-display'>
               {this.renderProducts()}

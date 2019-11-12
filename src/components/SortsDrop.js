@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { fetchProducts, setSort } from "../actions";
 
 class SortsDrop extends Component {
-  change(event) {
+  changeSort(event) {
     this.props.setSort(event.target.value);
     this.props.fetchProducts({
       query: this.props.products.query,
@@ -18,7 +18,7 @@ class SortsDrop extends Component {
     return (
       <div className="inner-section">
         <select
-          onChange={event => this.change(event)}
+          onChange={event => this.changeSort(event)}
           value={this.props.products.sort}
           className="search-drop"
         >

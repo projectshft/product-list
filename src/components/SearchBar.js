@@ -17,7 +17,12 @@ class SearchBar extends Component {
   }
 
   onSubmit(values) {
-    this.props.fetchProducts(values.query);
+    this.props.fetchProducts({
+      query: values.query,
+      category: this.props.products.category,
+      sort: this.props.products.sort,
+      page: 1
+    });
   }
 
   render() {
@@ -37,6 +42,9 @@ class SearchBar extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchProducts }, dispatch);
+}
+function mapStateToProps({ products }, ownProps) {
+  return { products };
 }
 
 function validate(values) {
@@ -59,6 +67,6 @@ const postNewPost = reduxForm({
 })(SearchBar);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(postNewPost);

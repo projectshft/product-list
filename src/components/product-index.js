@@ -15,13 +15,12 @@ class ProductIndex extends Component {
     if(this.props.products.category) {
       alert(this.props.products.category)
     }
-
     this.props.fetchProducts(page.target.innerHTML);
   }
-
   // Fetches products for selected category
   onCategoryClick = (category) => {
-    this.props.saveCurrentCategory(category.target.innerHTML)
+    // When functioning properly, saves current category selected to store
+    // this.props.saveCurrentCategory(category.target.innerHTML)
     this.props.fetchProducts(1, category.target.innerHTML)
   }
 
@@ -81,7 +80,6 @@ class ProductIndex extends Component {
         
 
   render() {
-    console.log(this.props)
     return (
       <div>
         <div className="row">
@@ -121,7 +119,7 @@ class ProductIndex extends Component {
           </ul>
         </nav>
         {/* I can retrieve product count here but not in my renderPagination */}
-        <h6>Product Count from database/Redux store(dynamic): {this.props.products.productCount}</h6>
+        <h6>Products in database: {this.props.products.productCount}</h6>
       </div>
     );
   }

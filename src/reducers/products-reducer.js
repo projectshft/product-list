@@ -17,7 +17,7 @@ export default function(state = DEFAULT_STATE, action) {
 
         //calculate number of pages
         let { productCount, perPage } = action.payload.data;
-        let pages = productCount / perPage;
+        let pages = Math.floor(productCount / perPage);
         if (productCount % perPage > 0) {
           pages++;
         }

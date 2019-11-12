@@ -14,13 +14,11 @@ export function fetchProducts() {
     }
 }
 
-export function searchProducts(values, callback) {
+export function searchProducts(values) {
     const request = axios.get(`${ROOT_URL}?page=1&category=${values}`)
-
-    request.then(() => callback());
-
+    console.log(request)
     return {
-        type: SEARCH_PRODUCTS,
+        type: FETCH_PRODUCTS,
         payload: request
     };
 }

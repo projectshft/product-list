@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Button } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { bindActionCreators } from "redux";
-import { Link } from "react-router-dom";
 import { searchProducts } from "../actions";
 
 class SearchBar extends Component {
@@ -22,7 +20,7 @@ class SearchBar extends Component {
         );
     }
     onSubmit(values) {
-        this.props.searchProducts(values)
+        this.props.searchProducts(values.categories)
     }
 
     render() {
@@ -57,8 +55,7 @@ function validate(values) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ searchProducts }, dispatch);
 }
-
-reduxForm({
+const newSearch = reduxForm({
     validate,
     form: 'SearchBar',
 })(SearchBar);

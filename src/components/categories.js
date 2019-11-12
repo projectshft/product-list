@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
 
+
+
+
+
 class Categories extends Component {
     componentDidMount() {
         this.props.fetchProducts();

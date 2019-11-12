@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
-const Review = require ('../models/reviews')
+const Review = require('../models/reviews')
 
 
 router.get('/generate-fake-data', (req, res, next) => {
@@ -61,7 +61,7 @@ router.get('/reviews', (req, res, next) => {
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, reviews) => {
-    Review.count().exec((err, count) => {
+      Review.count().exec((err, count) => {
         if (err) return next(err)
 
         res.send(reviews)
@@ -81,15 +81,30 @@ router.get('/products/:product', (req, res, next) => {
 });
 //post - create a new product
 router.post('/products', (req, res) => {
-    let newProduct = new Product()
+  let newProduct = new Product()
 
-      newProduct.category = req.body.category
-      newProduct.name = req.body.name
-      newProduct.price = req.body.price
-      newProduct.save((err) => {
-      if (err) throw err
-    })
-  
+  newProduct.category = req.body.category
+  newProduct.name = req.body.name
+  newProduct.price = req.body.price
+  newProduct.save((err) => {
+    if (err) throw err
+  })
+
+  res.end();
+});
+
+//post - create a new product
+router.post('/products', (req, res) => {
+  let newProduct = new Product()
+
+  review.username = req.body.use
+  review.text = faker.lorem.sentence()
+  review.product = product._id
+  product.reviews = review
+  review.save((err) => {
+    if (err) throw err
+  })
+
   res.end();
 });
 

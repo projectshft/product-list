@@ -34,14 +34,17 @@ class ProductIndex extends Component {
   // I can pull from state/store but only in return statements. Need to use loop logic in return somehow
   renderPagination() {
     // Determine number of pages needed based on num of products in database
+    // Why is this empty? shrug
     let totalProducts = this.props.products.productCount
     // Rounds up for last page of products doesn't cut off
-    let pagesNeeded = Math.ceil(totalProducts/9)
+
+    // Hardcode number of products
+    let pagesNeeded = Math.ceil(90/9)
+    let pageArr = []
     for (let i = 1; i <= pagesNeeded; i++) {
-      return (
-        <li className="page-item"><a className="page-link" href="#">{i}</a></li>
-        )
+      pageArr.push(<li className="page-item"><a className="page-link" href="#">{i}</a></li>)
       }
+      return pageArr
     }
 
   render() {
@@ -51,10 +54,11 @@ class ProductIndex extends Component {
           <div className="col-md-9 offset-md-2">
             <div className='page-header text-center'>
               <h1>Hello from Product Index!</h1>
+              {/* I can retrieve product count here but not in my renderPagination */}
               <h3>Product Count from database/Redux store: {this.props.products.productCount}</h3>
             </div>
             <div className='products-display'>
-              {this.renderProducts()}
+              {this.renderProducts(10)}
             </div>
           </div>
         </div>

@@ -18,10 +18,9 @@ const fetchProducts = (pageNum = 1, category) => {
 
 // Saves category in state to persist for different pages
 const saveCurrentCategory = (categoryItem) => {
-  debugger
   return {
     type: SAVE_CATEGORY,
-    category: categoryItem
+    payload: categoryItem
   }
 }
 

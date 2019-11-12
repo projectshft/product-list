@@ -12,6 +12,10 @@ class ProductIndex extends Component {
 
   // Fetches products for page number clicked
   onPageClick = (page) => {
+    if(this.props.products.category) {
+      alert(this.props.products.category)
+    }
+
     this.props.fetchProducts(page.target.innerHTML);
   }
 
@@ -26,7 +30,7 @@ class ProductIndex extends Component {
       return (
         <div className='product-item col-md-3' key={product._id}>
           <span className="text-left"> Category: {product.category}</span>
-          <span className="text-right"> Price:{product.price} </span>
+          <span className="text-right"> Price: ${product.price} </span>
           <img src={product.image} className="image-fluid" />
           {product.name}
         </div>
@@ -53,6 +57,15 @@ class ProductIndex extends Component {
       return pageArr
     }
 
+  // Should render categories based on Redux state/store. Same problem as above with not recognizing anything in state/store.
+  renderCategoryDropdowns() {
+    return this.props.products.categories.map(category => {
+      return (
+        <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>{category}</a>
+      )
+    })
+  }
+
   render() {
     return (
       <div>
@@ -66,8 +79,9 @@ class ProductIndex extends Component {
                 CATEGORY
               </button>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Games</a>
-                <a className="dropdown-item" href="#">Health</a>
+                {/* {this.renderCategoryDropdowns()} */}
+                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Games</a>
+                 <a className="dropdown-item" href="#">Health</a>
               </div>
             </div>
 

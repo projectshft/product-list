@@ -33,10 +33,13 @@ router.get('/products',(req, res, next) => {
     .limit(perPage)
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-        res.send({products:products, prodCount: count})
+      Product.distinct("category").exec((err, categories) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err)
+          res.send({products:products, prodCount: count, categories:categories})
+        })
       })
+      
     })
 })
 

@@ -71,14 +71,21 @@ class ProductIndex extends Component {
 
   // Should render categories based on Redux state/store. Same problem as above with not recognizing anything in state/store.
   renderCategoryDropdowns() {
-        return this.props.products.categories.map(category => {
-          return (
-            <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>{category}</a>
-          )
-        })
-      }
+        debugger
+        if(this.props.products.categories) {
+            return this.props.products.categories.map(category => {
+              return (
+                <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>{category}</a>
+              )
+            })
+        } else {
+          return;
+        }
+        }
+        
 
   render() {
+    console.log(this.props)
     return (
       <div>
         <div className="row">
@@ -91,11 +98,7 @@ class ProductIndex extends Component {
                 CATEGORY
               </button>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Games</a>
-                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Health</a>
-                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Kids</a>
-                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Movies</a>
-                 <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Home</a>
+                {this.renderCategoryDropdowns()}
               </div>
             </div>
             <div className="dropdown price-filter text-right">

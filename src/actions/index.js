@@ -1,8 +1,25 @@
 import axios from "axios";
 
 export const FETCH_PRODUCTS = "fetch_products";
+export const SET_CATEGORY = "set_category";
+export const SET_SORT = "set_sort";
 
 const API_URL = "http://localhost:8000";
+
+export function setCategory(category) {
+  return {
+    type: SET_CATEGORY,
+    payload: category
+  };
+}
+
+export function setSort(sort) {
+  return {
+    type: SET_SORT,
+    payload: sort
+  };
+}
+
 export function fetchProducts(searchOptions) {
   let requestUrl = `${API_URL}/products`;
 

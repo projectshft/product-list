@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import SearchBar from "./components/SearchBar";
 import ProductsList from "./components/ProductsList";
 import PagesNav from "./components/PagesNav";
+import CategoriesDrop from "./components/CategoriesDrop";
 import reducers from "./reducers";
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
@@ -27,13 +28,7 @@ ReactDOM.render(
             <SearchBar />
           </div>
           <div className="col-2" style={{ clear: "both" }}>
-            <div className="inner-section">
-              <select style={{ width: "100%" }}>
-                <option>Category...</option>
-                <option>Red</option>
-                <option>Green</option>
-              </select>
-            </div>
+            <CategoriesDrop />
           </div>
           <div className="col-2" style={{ clear: "both" }}>
             <div className="inner-section">

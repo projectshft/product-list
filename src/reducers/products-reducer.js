@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS } from "../actions";
+import { FETCH_PRODUCTS, SET_CATEGORY, SET_SORT } from "../actions";
 
 const DEFAULT_STATE = {
   productsList: [],
@@ -29,6 +29,10 @@ export default function(state = DEFAULT_STATE, action) {
         return newState;
       }
       return state;
+    case SET_CATEGORY:
+      return Object.assign(state, { category: action.payload });
+    case SET_SORT:
+      return Object.assign(state, { sort: action.sort });
     default:
       return state;
   }

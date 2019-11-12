@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const ROOT_URL = 'http://localhost:8000'
 const FETCH_PRODUCTS = "fetch_products"
+const SAVE_CATEGORY = 'save_category'
 
 const fetchProducts = (pageNum = 1, category) => {
   let catQuery = ''
@@ -15,4 +16,13 @@ const fetchProducts = (pageNum = 1, category) => {
   };
 }
 
-export {FETCH_PRODUCTS, fetchProducts}
+// Saves category in state to persist for different pages
+const saveCurrentCategory = (categoryItem) => {
+  debugger
+  return {
+    type: SAVE_CATEGORY,
+    category: categoryItem
+  }
+}
+
+export {FETCH_PRODUCTS, SAVE_CATEGORY, fetchProducts, saveCurrentCategory}

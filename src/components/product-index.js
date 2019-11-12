@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component } from "react";
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { fetchProducts } from '../actions'
+import { fetchProducts, saveCurrentCategory } from '../actions'
 
 class ProductIndex extends Component {
 
@@ -17,7 +17,7 @@ class ProductIndex extends Component {
 
   // Fetches products for selected category
   onCategoryClick = (category) => {
-    debugger;
+    saveCurrentCategory(category.target.innerHTML)
     this.props.fetchProducts(1, category.target.innerHTML)
   }
 
@@ -44,7 +44,7 @@ class ProductIndex extends Component {
     let totalProducts = this.props.products.productCount
     // Rounds up for last page of products doesn't cut off
 
-    // Hardcode number of products
+    // Hardcode number of products(instead of 90 should use 'totalProducts')
     let pagesNeeded = Math.ceil(90/9)
     let pageArr = []
     for (let i = 1; i <= pagesNeeded; i++) {

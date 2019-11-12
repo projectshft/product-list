@@ -22,16 +22,15 @@ class PagesNav extends Component {
   }
 
   renderPageNums() {
-    console.log(this.props);
     const { pageNum, numPages } = this.props.products;
     const elements = [];
     for (let i = 1; i <= numPages; i++) {
       elements.push(
         <a
-          href="#"
+          href="/#"
           key={i}
           onClick={() => this.navigateToPage(i)}
-          className={i == pageNum ? "active" : ""}
+          className={i === pageNum ? "active" : ""}
         >
           {i}
         </a>
@@ -48,7 +47,7 @@ class PagesNav extends Component {
         <div className="pagination" style={{ display: "inline-block" }}>
           {/* Page Left Visible Check*/}
           {this.props.products.pageNum > 1 ? (
-            <a href="#" onClick={() => this.navigateToPreviousPage()}>
+            <a href="/#" onClick={() => this.navigateToPreviousPage()}>
               &laquo;
             </a>
           ) : (
@@ -57,7 +56,7 @@ class PagesNav extends Component {
           {this.renderPageNums()}
           {/* Page Right Visible Check*/}
           {this.props.products.pageNum < this.props.products.numPages ? (
-            <a href="#" onClick={() => this.navigateToNextPage()}>
+            <a href="/#" onClick={() => this.navigateToNextPage()}>
               &raquo;
             </a>
           ) : (

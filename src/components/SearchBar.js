@@ -8,7 +8,6 @@ class SearchBar extends Component {
   componentDidMount() {
     //default load the page
     this.onSubmit({ query: "" });
-    console.log("searchbar component mounted");
   }
 
   renderField(field) {

@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchProducts, setCategory } from "../actions";
+import { fetchProducts, fetchCategories, setCategory } from "../actions";
 
 class CategoriesDrop extends Component {
+  componentDidMount() {
+    //load the categores
+    this.props.fetchCategories();
+  }
   changeCategory(event) {
     this.props.setCategory(event.target.value);
     this.props.fetchProducts({
@@ -14,6 +18,20 @@ class CategoriesDrop extends Component {
     });
   }
 
+  renderCategories() {
+    const elements = [];
+    const { categories } = this.props;
+    for (let i = 0; i < categories.length; i++) {
+      elements.push(
+        <option key={i + 1} value={categories[i]}>
+          {categories[i]}
+        </option>
+      );
+    }
+
+    return elements;
+  }
+
   render() {
     return (
       <div className="inner-section">
@@ -22,22 +40,25 @@ class CategoriesDrop extends Component {
           value={this.props.products.category}
           className="search-drop"
         >
-          <option value="">Category...</option>
-          <option value="Music">Music</option>
-          <option value="Books">Books</option>
-          <option value="Garden">Garden</option>
+          <option key="0" value="">
+            Category...
+          </option>
+          {this.renderCategories()};
         </select>
       </div>
     );
   }
 }
 
-function mapStateToProps({ products }, ownProps) {
-  return { products };
+function mapStateToProps({ products, categories }, ownProps) {
+  return { products, categories };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchProducts, setCategory }, dispatch);
+  return bindActionCreators(
+    { fetchProducts, fetchCategories, setCategory },
+    dispatch
+  );
 }
 export default connect(
   mapStateToProps,

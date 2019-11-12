@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const FETCH_PRODUCTS = "fetch_products";
+export const FETCH_CATEGORIES = "fetch_categories";
 export const SET_CATEGORY = "set_category";
 export const SET_SORT = "set_sort";
 
@@ -60,6 +61,19 @@ export function fetchProducts(searchOptions) {
 
   return {
     type: FETCH_PRODUCTS,
+    payload: request
+  };
+}
+
+export function fetchCategories() {
+  let requestUrl = `${API_URL}/categories`;
+
+  const request = axios.get(requestUrl).catch(function(error) {
+    console.log("ERROR: ", error);
+  });
+
+  return {
+    type: FETCH_CATEGORIES,
     payload: request
   };
 }

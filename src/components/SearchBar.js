@@ -5,6 +5,12 @@ import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
 
 class SearchBar extends Component {
+  componentDidMount() {
+    //default load the page
+    this.onSubmit({ query: "" });
+    console.log("searchbar component mounted");
+  }
+
   renderField(field) {
     return (
       <div>
@@ -30,7 +36,7 @@ class SearchBar extends Component {
     return (
       <div className="search-container">
         <form
-          class="search-bar"
+          className="search-bar"
           onSubmit={handleSubmit(this.onSubmit.bind(this))}
         >
           <Field name="query" component={this.renderField} />
@@ -52,9 +58,9 @@ function validate(values) {
   const errors = {};
 
   // Validate the inputs from 'values'
-  // if (!values.query) {
-  //   errors.query = "Enter a location";
-  // }
+  if (!values.query) {
+    errors.query = "Search Can't Be Blank";
+  }
 
   // If errors is empty, the form is fine to submit
   // If errors has *any* properties, redux form assumes form is invalid

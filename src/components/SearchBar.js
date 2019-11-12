@@ -58,9 +58,9 @@ function validate(values) {
   const errors = {};
 
   // Validate the inputs from 'values'
-  if (!values.query) {
-    errors.query = "Search Can't Be Blank";
-  }
+  // if (!values.query) {
+  //   errors.query = "Search Can't Be Blank";
+  // }
 
   // If errors is empty, the form is fine to submit
   // If errors has *any* properties, redux form assumes form is invalid

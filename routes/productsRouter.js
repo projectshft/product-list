@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
   const page = req.query.page || 1;
   let perPage = RESULTS_PER_PAGE;
 
-  let { category, price } = req.query;
+  let { category, price, query } = req.query;
 
   let filter = {};
   let sort = {};
@@ -18,6 +18,10 @@ router.get("/", (req, res) => {
   //case insensitive regex match for category
   if (category) {
     filter.category = { $regex: new RegExp(category, "i") };
+  }
+
+  if (query) {
+    filter.name = { $regex: new RegExp(query, "i") };
   }
 
   if (price) {

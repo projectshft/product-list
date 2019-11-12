@@ -27,7 +27,6 @@ class ProductIndex extends Component {
 
   // Sorts products by price(currently functioning only for first page)
   onPriceSortClick = (sortBy) => {
-    debugger
     if (sortBy.target.innerHTML == 'Price: Highest to Lowest') {
       // empty 2nd argument is placeholder for category
       this.props.fetchProducts(1, '', 'highest')
@@ -72,12 +71,12 @@ class ProductIndex extends Component {
 
   // Should render categories based on Redux state/store. Same problem as above with not recognizing anything in state/store.
   renderCategoryDropdowns() {
-    return this.props.products.categories.map(category => {
-      return (
-        <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>{category}</a>
-      )
-    })
-  }
+        return this.props.products.categories.map(category => {
+          return (
+            <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>{category}</a>
+          )
+        })
+      }
 
   render() {
     return (
@@ -92,7 +91,6 @@ class ProductIndex extends Component {
                 CATEGORY
               </button>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {/* {this.renderCategoryDropdowns()} Hardcoded some below due to non-working code*/}
                  <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Games</a>
                  <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Health</a>
                  <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Kids</a>

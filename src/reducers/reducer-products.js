@@ -7,8 +7,6 @@ const ProductsReducer = (state = {}, action) => {
     case FETCH_PRODUCTS:
       const productItems = _.mapKeys(action.payload.data.products, "_id")
       return ({productItems, productCount: action.payload.data.prodCount, categories: action.payload.data.categories})
-    case SAVE_CATEGORY:
-      return {category: action.payload}
     default:
       return state;
   }

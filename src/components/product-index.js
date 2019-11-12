@@ -71,7 +71,6 @@ class ProductIndex extends Component {
 
   // Should render categories based on Redux state/store. Same problem as above with not recognizing anything in state/store.
   renderCategoryDropdowns() {
-        debugger
         if(this.props.products.categories) {
             return this.props.products.categories.map(category => {
               return (

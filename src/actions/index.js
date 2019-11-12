@@ -29,18 +29,18 @@ export function fetchProducts(searchOptions) {
     queries.push("query=" + searchOptions.query);
   }
 
-  if (searchOptions.sort) {
-    switch (searchOptions) {
-      case "Price: Low to High":
-        queries.push("price=lowest");
-        break;
-      case "Price: High to Low":
-        queries.push("price=highest");
-        break;
-    }
+  switch (searchOptions.sort) {
+    case "price:low":
+      queries.push("price=lowest");
+      break;
+    case "price:high":
+      queries.push("price=highest");
+      break;
+    default:
+      break;
   }
 
-  if (searchOptions.page) {
+  if (searchOptions.page && searchOptions.page > 1) {
     queries.push("page=" + searchOptions.page);
   }
 
@@ -52,6 +52,7 @@ export function fetchProducts(searchOptions) {
     requestUrl += "?" + queries.join("&");
   }
 
+  console.log(requestUrl);
   const request = axios.get(requestUrl).catch(function(error) {
     console.log("ERROR: ", error);
   });

@@ -11,6 +11,7 @@ import SearchBar from "./components/SearchBar";
 import ProductsList from "./components/ProductsList";
 import PagesNav from "./components/PagesNav";
 import CategoriesDrop from "./components/CategoriesDrop";
+import SortsDrop from "./components/SortsDrop";
 import reducers from "./reducers";
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
@@ -31,12 +32,7 @@ ReactDOM.render(
             <CategoriesDrop />
           </div>
           <div className="col-2" style={{ clear: "both" }}>
-            <div className="inner-section">
-              <select style={{ width: "100%" }}>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-              </select>
-            </div>
+            <SortsDrop />
           </div>
         </div>
         <ProductsList />

@@ -5,7 +5,7 @@ const DEFAULT_STATE = {
   numPages: 0,
   pageNum: 0,
   query: "",
-  sort: "Price: Low to High",
+  sort: "price:low",
   category: ""
 };
 
@@ -30,9 +30,9 @@ export default function(state = DEFAULT_STATE, action) {
       }
       return state;
     case SET_CATEGORY:
-      return Object.assign(state, { category: action.payload });
+      return Object.assign({}, state, { category: action.payload });
     case SET_SORT:
-      return Object.assign(state, { sort: action.sort });
+      return Object.assign({}, state, { sort: action.payload });
     default:
       return state;
   }

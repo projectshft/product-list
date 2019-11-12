@@ -9,6 +9,7 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import SearchBar from "./components/SearchBar";
 import ProductsList from "./components/ProductsList";
+import PagesNav from "./components/PagesNav";
 import reducers from "./reducers";
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
@@ -45,20 +46,7 @@ ReactDOM.render(
         </div>
         <ProductsList />
       </div>
-      <div className="pages">
-        <div className="pagination" style={{ display: "inline-block" }}>
-          <a href="#">&laquo;</a>
-          <a href="#">1</a>
-          <a className="active" href="#">
-            2
-          </a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#">6</a>
-          <a href="#">&raquo;</a>
-        </div>
-      </div>
+      <PagesNav />
     </div>
   </Provider>,
 

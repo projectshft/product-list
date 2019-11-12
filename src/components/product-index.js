@@ -15,6 +15,12 @@ class ProductIndex extends Component {
     this.props.fetchProducts(page.target.innerHTML);
   }
 
+  // Fetches products for selected category
+  onCategoryClick = (category) => {
+    debugger;
+    this.props.fetchProducts(1, category.target.innerHTML)
+  }
+
   renderProducts() {
     return _.map(this.props.products.productItems, product => {
       return (
@@ -53,18 +59,15 @@ class ProductIndex extends Component {
         <div className="row">
           <div className="col-md-9 offset-md-2">
             <div className='page-header text-center'>
-              <h1>Hello from Product Index!</h1>
-              {/* I can retrieve product count here but not in my renderPagination */}
-              <h3>Product Count from database/Redux store: {this.props.products.productCount}</h3>
+              <h1>BILLY'S PRODUCT EMPORIUM</h1>
             </div>
             <div className="dropdown">
               <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
+                CATEGORY
               </button>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a className="dropdown-item" href="#">Action</a>
-                <a className="dropdown-item" href="#">Another action</a>
-                <a className="dropdown-item" href="#">Something else here</a>
+                <a className="dropdown-item" href="#" onClick={this.onCategoryClick}>Games</a>
+                <a className="dropdown-item" href="#">Health</a>
               </div>
             </div>
 
@@ -81,6 +84,8 @@ class ProductIndex extends Component {
             <li className="page-item"><a className="page-link" href="#">3</a></li> */}
           </ul>
         </nav>
+        {/* I can retrieve product count here but not in my renderPagination */}
+        <h6>Product Count from database/Redux store(dynamic): {this.props.products.productCount}</h6>
       </div>
     );
   }

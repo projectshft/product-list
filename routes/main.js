@@ -38,6 +38,13 @@ router.get('/products', (req, res, next) => {
     if (category) {
       searchedCategory = {category: category}
     }
+    var query  = category.where({ category: searchedCategory });
+  query.findOne(function (err, category) {
+  if (err) return handleError(err);
+  if (category) {
+    // doc may be null if no document matched
+  }
+});
     // return the first page by default
     const page = req.query.page || 1
   
@@ -50,7 +57,7 @@ router.get('/products', (req, res, next) => {
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.count().exec((err, count) => {
           if (err) return next(err)
-  
+          
           res.send(products)
         })
       })
@@ -141,6 +148,18 @@ router.post('/products/reviews', (req, res, next) => {
         res.end();
     })
 })
+})
+
+router.delete('/products', (req, res, next) => {
+    
+  newProduct.save((err) => {
+      if (err) throw err
+    })
+      else {
+        Product.remove;
+      }
+      
+
 })
 
 

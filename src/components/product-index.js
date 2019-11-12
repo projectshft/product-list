@@ -57,6 +57,17 @@ class ProductIndex extends Component {
               {/* I can retrieve product count here but not in my renderPagination */}
               <h3>Product Count from database/Redux store: {this.props.products.productCount}</h3>
             </div>
+            <div className="dropdown">
+              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown button
+              </button>
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a className="dropdown-item" href="#">Action</a>
+                <a className="dropdown-item" href="#">Another action</a>
+                <a className="dropdown-item" href="#">Something else here</a>
+              </div>
+            </div>
+
             <div className='products-display'>
               {this.renderProducts(10)}
             </div>

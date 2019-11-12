@@ -7,7 +7,10 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import reducers from './reducers';
 import ProductIndex from './components/product-index';
+
+import jquery from 'jquery'
 import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.bundle'
 import './index.css'
 
 

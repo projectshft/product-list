@@ -2,7 +2,7 @@
   "name": "product-list",
   "version": "1.0.0",
   "description": "This project has been created by a student at Project Shift, a software engineering fellowship located in Downtown Durham.  The work in this repository is wholly of the student based on a sample starter project that can be accessed by looking at the repository that this project forks.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/pjcrawford/product-list.git"
   },
-  "keywords": [],
+  "keywords": [
+    "test"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -19,8 +21,10 @@
   "homepage": "https://github.com/pjcrawford/product-list#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "faker": "^4.1.0",
+    "jquery": "^3.4.1",
     "mongoose": "^5.7.10"
   }
 }

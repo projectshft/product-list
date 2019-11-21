@@ -11,15 +11,17 @@ import { fetchProducts } from "../actions";
 
 class ProductList extends Component {
     componentDidMount() {
-        this.props.fetchProducts();
+        let page = this.props.page
+        let category = this.props.category
+        let price = this.props.price
+        this.props.fetchProducts(page, category, price);
         console.log('it worked')
     }
+    
 
     renderProducts() {
         console.log(this.props.products);
         return _.map(this.props.products.products, product => {
-            console.log(this.props.products);
-            console.log(product);
             return (
                 <Col xs={4} md={4}>
                     <Card key={product._id}>

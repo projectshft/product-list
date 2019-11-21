@@ -13,14 +13,16 @@ selectFilterCategory(category) {
     console.log(category);
     this.props.changeCategory(category);
     console.log('clicked category')
-    this.props.fetchProducts(category);
+    console.log(this.props.category)
+    this.props.fetchProducts(1, this.props.category, '');
 }
 
 selectFilterSort(sort) {
     console.log(sort);
     this.props.changeSort(sort);
     console.log('clicked sort')
-    this.props.fetchProducts(sort);
+    console.log(this.props.price);
+    this.props.fetchProducts(1, '', sort);
 }
 
 render() {
@@ -45,6 +47,21 @@ render() {
                     <Dropdown.Divider />
                     <Dropdown.Item
                     onClick= {e=> {e.preventDefault(this.selectFilterCategory('Outdoors'));}} value='Outdoors'>Outdoors</Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item
+                    onClick= {e=> {e.preventDefault(this.selectFilterCategory('Industrial'));}} value='Industrial'>Industrial</Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item
+                    onClick= {e=> {e.preventDefault(this.selectFilterCategory('Garden'));}} value='Garden'>Garden</Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item
+                    onClick= {e=> {e.preventDefault(this.selectFilterCategory('Sports'));}} value='Sports'>Sports</Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item
+                    onClick= {e=> {e.preventDefault(this.selectFilterCategory('Toys'));}} value='Toys'>Toys</Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item
+                    onClick= {e=> {e.preventDefault(this.selectFilterCategory('Jewelery'));}} value='Jewelery'>Jewelery</Dropdown.Item>
                 </DropdownButton>
                 <DropdownButton id="dropdown-basic-button" title="Sort by Price">
                 <Dropdown.Item
@@ -59,8 +76,8 @@ render() {
     }
 };
 
-function mapStateToProps({ products, categories, sort}) {
-    return { products, categories, sort };
+function mapStateToProps({ products, category, sort}) {
+    return { products, category, sort };
 }
 
 function mapDispatchToProps(dispatch) {

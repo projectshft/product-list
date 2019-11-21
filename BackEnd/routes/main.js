@@ -44,7 +44,7 @@ router.get('/products', (req, res, next) => {
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
-        res.send(products)
+        res.send({products: products, count: count})
       });
     }); 
   } else if (req.query.price == 'lowest') {
@@ -58,7 +58,7 @@ router.get('/products', (req, res, next) => {
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
-        res.send(products)
+        else res.send({products: products, count: count})
       });
     });
   } else {
@@ -71,7 +71,7 @@ router.get('/products', (req, res, next) => {
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
-        res.send(products)
+        res.send({products: products, count: count})
         });
       });
     }
@@ -87,7 +87,7 @@ router.get('/products', (req, res, next) => {
         Product.count().exec((err, count) => {
           if (err) return next(err)
   
-          res.send(products)
+          res.send({products: products, count: count})
         });
       }); 
     } else if (req.query.price == 'lowest') {
@@ -100,8 +100,8 @@ router.get('/products', (req, res, next) => {
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.count().exec((err, count) => {
           if (err) return next(err)
-  
-          res.send(products)
+          
+          res.send({products: products, count: count})
         });
       });
     } else {
@@ -114,7 +114,7 @@ router.get('/products', (req, res, next) => {
         Product.count().exec((err, count) => {
           if (err) return next(err)
   
-          res.send(products)
+          res.send({products: products, count: count})
           });
         });
       }

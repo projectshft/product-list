@@ -37,7 +37,7 @@ class AppFinal extends Component {
     render() {
         return (
             <div className = 'container'>
-             <h1 className='page-title' class='justify-center'> Product List </h1>
+             <h1 className='page-title'> Product List </h1>
                 <div className = 'row'>   
                     <div className ='col-md-4'>
                     <CategoryFilter />

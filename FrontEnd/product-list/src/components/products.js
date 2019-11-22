@@ -7,14 +7,19 @@ import Row from "react-bootstrap/Row";
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import Image from 'react-bootstrap/Image';
-import { fetchProducts } from "../actions";
+import { fetchProducts, changeCategory, changeSort } from "../actions/actions";
 
 class ProductList extends Component {
     componentDidMount() {
-        let page = this.props.page
-        let category = this.props.category
-        let price = this.props.price
-        this.props.fetchProducts(page, category, price);
+        console.log(this.props.products);
+        let page = this.props.products.page
+        let category = this.props.products.category
+        let price = this.props.products.sort
+        console.log(page);
+        console.log(category);
+        console.log(price);
+
+        this.props.fetchProducts(price, page, category);
         console.log('it worked')
     }
     
@@ -50,11 +55,11 @@ class ProductList extends Component {
 };
 
 function mapStateToProps(state) {
-    return { products: state.products};
+    return { products: state.products, category: state.category, price: state.price};
 };
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchProducts }, dispatch)
+    return bindActionCreators({ fetchProducts, changeCategory, changeSort }, dispatch)
 }
 
 

@@ -6,11 +6,11 @@ export const CHANGE_SORT = 'change_sort';
 
 const ROOT_URL = 'http://localhost:8000/products';
 
-export function fetchProducts(page, category, price) {
+export function fetchProducts(sort, page, category) {
     console.log('an action')
-    console.log(page)
-    console.log(category)
-    console.log(price)
+    console.log(sort);
+    console.log(page);
+    console.log(category);
     // if (!page) {
     //     page = 1
     // }
@@ -22,12 +22,15 @@ export function fetchProducts(page, category, price) {
     // if (!category) {
     //     category =''
     // }
-
+    
     const request = axios
-        .get(`${ROOT_URL}?price=${price}&page=${page}&category${category}`)
+        .get(`${ROOT_URL}?price=${sort}&page=${page}&category=${category}`)
         .catch(function(error){
             console.log('error: ', error);
         });
+        console.log(sort);
+        console.log(page);
+        console.log(category);
         console.log(request);
     return {
         type: FETCH_PRODUCTS,

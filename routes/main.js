@@ -3,14 +3,6 @@ const faker = require('faker')
 const Product = require('../models/product')
  
 
-//reviews is an array of objects
-
-// var reviews =[{
-//   userName:"",
-//   text:"",
-//   product:""
-// }]
-
 router.get('/generate-fake-data', (req, res, next) => {
     for (let i = 0; i < 90; i++) {
         let product = new Product()
@@ -27,8 +19,8 @@ router.get('/generate-fake-data', (req, res, next) => {
     res.end()
 })
 
-
-router.get('/products', (req, res, next) => {
+//?=optional
+router.get('/products/:page?/:category?/:price?', (req, res, next) => {
     const perPage = 9
   
     // return the first page by default
@@ -46,6 +38,11 @@ router.get('/products', (req, res, next) => {
           res.send(products)
         })
       })
+      var page = req.params.page;
+      var category = req.params.category;//hmmm maybe these are in wrong spot
+      var price = req.params.price
+
+
   })
 
 // //returns a specific product by its id
@@ -63,7 +60,27 @@ else {
 
 //  //returns all the reviews limited to 40 at a time, ability to pass in options
 //  //page query to paginate
-// router.get('/reviews')
+router.get('/reviews', (req, res, next) => {
+  const perPage = 40
+  
+  // return the first page by default
+  const page = req.query.page || 1
+
+  Review
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, reviews) => {
+      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+      Review.count().exec((err, count) => {
+        if (err) return next(err)
+
+        res.send(reviews)
+      })
+    })
+});
+
+
 
 // //creates new product in database
 router.post('/products', (req, res, next) => {
@@ -108,5 +125,6 @@ router.delete('/reviews/:review', (req, res) => {
     response.send(reviews)//return new reviews array minus deleted review
    }
 });
+
 
 module.exports = router

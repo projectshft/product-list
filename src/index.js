@@ -9,7 +9,6 @@ import reducers from "./reducers/index";
 import promise from "redux-promise";
 import { composeWithDevTools } from "redux-devtools-extension";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import jquery from "jquery"
 import "bootstrap/dist/css/bootstrap.css"
 import 'bootstrap/dist/js/bootstrap.bundle'
 

@@ -1,33 +1,62 @@
+import _ from "lodash";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { Pagination } from 'react-bootstrap';
+import { fetchProducts } from "../actions";
+
 
 //This component will give the user the option to see other pages of products 
 class NextPage extends Component {
-    render() {
+    componentDidMount() {
+        this.props.fetchProducts();
 
+    }
+
+
+    fetchNewPage(page) {
+
+        let category = this.props.category;
+        let sort = this.props.sort;
+        // alert('click', page)
+
+        this.props.fetchProducts(category, sort, page);
+    }
+
+    renderLinks() {
+        let pageLinks = [];
+
+        for (var i = 1; i < this.props.pages + 1; i++) {
+            pageLinks.push(
+                <li onClick={this.fetchNewPage.bind(this, i)} className="page-item"><a className="page-link" href="#">{i}</a></li>
+            )
+        }
+        return pageLinks;
+    }
+
+    render() {
         return (
             <div className="nextPage">
                 <nav aria-label="...">
                     <ul className="pagination pagination-sm">
-                        <li className="page-item active" aria-current="page">
-                            <span className="page-link">
-                                1
-                         <span className="sr-only">(current)</span>
-                            </span>
-                        </li>
-                        <li className="page-item"><a className="page-link" href="#">2</a></li>
-                        <li className="page-item"><a className="page-link" href="#">3</a></li>
-                        <li className="page-item"><a className="page-link" href="#">4</a></li>
-                        <li className="page-item"><a className="page-link" href="#">5</a></li>
-                        <li className="page-item"><a className="page-link" href="#">6</a></li>
-                        <li className="page-item"><a className="page-link" href="#">7</a></li>
-                        <li className="page-item"><a className="page-link" href="#">8</a></li>
-                        <li className="page-item"><a className="page-link" href="#">9</a></li>
-                    </ul>
+                        {this.renderLinks()}
+                    </ul >
                 </nav>
             </div>
-        );
+        )
     }
+
 }
 
-export default NextPage;
+function mapStateToProps(state) {
+    console.log(state)
+    return { pages: state.pagination, category: state.category };
+
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchProducts }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NextPage);
+

@@ -31,7 +31,7 @@ class SearchBar extends Component {
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field
-                    label="Categories"
+                    label=""
                     name="categories"
                     component={this.renderField}
                 />

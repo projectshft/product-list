@@ -5,6 +5,8 @@ const Review = require('../models/reviews')
 
 
 router.get('/products', (req, res, next) => {
+    console.log('boom', req.query);
+
     //Limits the page to have 9 products at a time 
     const perPage = 9;
     let queryCategory = req.query.category;
@@ -38,6 +40,7 @@ router.get('/products', (req, res, next) => {
     }
 
 
+
     Product
         .find(queryCategory)
         .sort(price)
@@ -46,10 +49,13 @@ router.get('/products', (req, res, next) => {
         .exec((err, products) => {
             // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
 
-            Product.count().exec((err, count) => {
-                if (err) return next(err)
-                res.send({ products: products, count: count })
-            })
+            Product
+                .count()
+                .exec((err, count) => {
+                    var pages = count / perPage;
+                    if (err) return next(err)
+                    res.send({ products: products, count: count, pages: Math.ceil(pages) })
+                })
         })
 
 });

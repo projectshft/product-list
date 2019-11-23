@@ -1,13 +1,12 @@
-import _ from "lodash";
 import { FETCH_PRODUCTS } from "../actions";
 
 
 
 //This reducer takes state maps through all the key values 
-export default function (state = {}, action) {
+export default function (state = 0, action) {
     switch (action.type) {
         case FETCH_PRODUCTS:
-            return _.mapKeys(action.payload.data.products, "_id");
+            return action.payload.data.pages
         default:
             return state;
     }

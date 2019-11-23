@@ -11,17 +11,6 @@ export function fetchProducts(sort, page, category) {
     console.log(sort);
     console.log(page);
     console.log(category);
-    // if (!page) {
-    //     page = 1
-    // }
-    
-    // if (!price) {
-    //     price =''
-    // }
-    
-    // if (!category) {
-    //     category =''
-    // }
     
     const request = axios
         .get(`${ROOT_URL}?price=${sort}&page=${page}&category=${category}`)

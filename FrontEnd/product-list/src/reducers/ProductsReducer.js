@@ -6,7 +6,8 @@ const DEFAULT_STATE = {
     sort: '',
     category:'',
     count: 0,
-    page: 1
+    page: 1,
+    numberOfPages: 1
 };
 
 export default function(state = DEFAULT_STATE, action) {
@@ -19,6 +20,8 @@ export default function(state = DEFAULT_STATE, action) {
         console.log(updatedState);
         updatedState.products= action.payload.data.products
         updatedState.count= action.payload.data.count
+        updatedState.page= action.payload.data.page
+        updatedState.numberOfPages= action.payload.data.numberOfPages
         console.log(updatedState)
         return updatedState;
         }

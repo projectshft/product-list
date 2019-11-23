@@ -29,6 +29,7 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
   const perPage = 9
+  let numberOfPages
 
   // return the first page by default
   const page = req.query.page || 1
@@ -41,10 +42,10 @@ router.get('/products', (req, res, next) => {
     .limit(perPage)
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
+      Product.count({category: req.query.category}).exec((err, count) => {
         if (err) return next(err)
-
-        res.send({products: products, count: count})
+        else numberOfPages= Math.ceil(count/perPage)
+        res.send({products: products, count: count, numberOfPages, page: parseInt(page) })
       });
     }); 
   } else if (req.query.price == 'lowest') {
@@ -55,10 +56,11 @@ router.get('/products', (req, res, next) => {
     .limit(perPage)
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
+      Product.count({category: req.query.category}).exec((err, count) => {
         if (err) return next(err)
 
-        else res.send({products: products, count: count})
+        else numberOfPages= Math.ceil(count/perPage)
+        res.send({products: products, count: count, numberOfPages, page: parseInt(page) })
       });
     });
   } else {
@@ -68,10 +70,11 @@ router.get('/products', (req, res, next) => {
     .limit(perPage)
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
+      Product.count({category: req.query.category}).exec((err, count) => {
         if (err) return next(err)
-
-        res.send({products: products, count: count})
+        
+        else numberOfPages= Math.ceil(count/perPage)
+        res.send({products: products, count: count, numberOfPages, page: parseInt(page) })
         });
       });
     }
@@ -86,8 +89,9 @@ router.get('/products', (req, res, next) => {
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.count().exec((err, count) => {
           if (err) return next(err)
-  
-          res.send({products: products, count: count})
+          
+          else numberOfPages= Math.ceil(count/perPage)
+          res.send({products: products, count: count, numberOfPages, page: parseInt(page) })
         });
       }); 
     } else if (req.query.price == 'lowest') {
@@ -101,7 +105,8 @@ router.get('/products', (req, res, next) => {
         Product.count().exec((err, count) => {
           if (err) return next(err)
           
-          res.send({products: products, count: count})
+          else numberOfPages= Math.ceil(count/perPage)
+          res.send({products: products, count: count, numberOfPages, page: parseInt(page) })
         });
       });
     } else {
@@ -114,7 +119,8 @@ router.get('/products', (req, res, next) => {
         Product.count().exec((err, count) => {
           if (err) return next(err)
   
-          res.send({products: products, count: count})
+          else numberOfPages= Math.ceil(count/perPage)
+          res.send({products: products, count: count, numberOfPages, page: parseInt(page) })
           });
         });
       }

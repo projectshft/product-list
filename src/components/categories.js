@@ -11,6 +11,7 @@ class Categories extends Component {
 
 
     render() {
+        console.log('categories', this.props)
         return (
             < div className="btn-group" >
                 <button type="button" className="btn btn-success" >Categories</button>
@@ -18,7 +19,7 @@ class Categories extends Component {
                     <span className="sr-only">Toggle Dropdown</span>
                 </button>
                 <div className="dropdown-menu">
-                    <a className="dropdown-item" href="http://localhost:8000/products?page=1&category=Games">Games</a>
+                    <a className="dropdown-item" href="x">Games</a>
                     <a className="dropdown-item" href="http://localhost:8000/products?page=1&category=Health">Health</a>
                     <a className="dropdown-item" href="http://localhost:8000/products?page=1&category=Clothing">Clothing</a>
                     <div className="dropdown-divider"></div>
@@ -31,7 +32,7 @@ class Categories extends Component {
     }
 }
 function mapStateToProps(state) {
-    return { products: state.products };
+    return { pages: state.pagination, category: state.category, products: state.products };
 }
 
 function mapDispatchToProps(dispatch) {

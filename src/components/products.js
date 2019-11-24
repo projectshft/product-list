@@ -38,7 +38,7 @@ class Products extends Component {
 
 }
 function mapStateToProps(state) {
-    return { products: state.products };
+    return { pages: state.pagination, category: state.category, products: state.products };
 }
 
 function mapDispatchToProps(dispatch) {

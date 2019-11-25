@@ -11,9 +11,8 @@ class NextPage extends Component {
 
     }
 
-
     fetchNewPage(page) {
-
+        page = page.target.innerHTML
         let category = this.props.category;
         let sort = this.props.sort;
 
@@ -25,7 +24,10 @@ class NextPage extends Component {
 
         for (var i = 1; i < this.props.pages + 1; i++) {
             pageLinks.push(
-                <li onClick={this.fetchNewPage.bind(this, i)} className="page-item"><a className="page-link" href=".">{i}</a></li>
+                <li onClick={e => {
+                    e.preventDefault();
+                    this.fetchNewPage(e)
+                }} value={i} type={"button"} className="page-item"><a className="page-link" href=".">{i}</a></li>
             )
         }
         return pageLinks;
@@ -46,7 +48,7 @@ class NextPage extends Component {
 }
 
 function mapStateToProps(state) {
-    return { pages: state.pagination, category: state.category, products: state.products };
+    return { pages: state.pagination, products: state.products };
 
 }
 

@@ -50,7 +50,7 @@ router.get('/products', (req, res, next) => {
             // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
 
             Product
-                .count()
+                .count(queryCategory)
                 .exec((err, count) => {
                     var pages = count / perPage;
                     if (err) return next(err)

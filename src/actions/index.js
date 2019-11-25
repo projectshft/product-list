@@ -14,6 +14,7 @@ export function fetchProducts(category, sort, page) {
             page: page
         }
     });
+    console.log('request', request)
 
     return {
         type: FETCH_PRODUCTS,

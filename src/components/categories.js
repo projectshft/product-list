@@ -9,7 +9,7 @@ class Categories extends Component {
         this.props.fetchProducts();
     }
 
-
+    // This function takes in the category in order to filter 
     fetchCategory(category) {
 
         let page = this.props.page;

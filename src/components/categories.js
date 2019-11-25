@@ -10,8 +10,18 @@ class Categories extends Component {
     }
 
 
+    fetchCategory(category) {
+
+        let page = this.props.page;
+        let sort = this.props.sort;
+
+        this.props.fetchProducts(category, sort, page);
+
+    }
+
+
+
     render() {
-        console.log('categories', this.props)
         return (
             < div className="btn-group" >
                 <button type="button" className="btn btn-success" >Categories</button>
@@ -19,13 +29,13 @@ class Categories extends Component {
                     <span className="sr-only">Toggle Dropdown</span>
                 </button>
                 <div className="dropdown-menu">
-                    <a className="dropdown-item" href="x">Games</a>
-                    <a className="dropdown-item" href="http://localhost:8000/products?page=1&category=Health">Health</a>
-                    <a className="dropdown-item" href="http://localhost:8000/products?page=1&category=Clothing">Clothing</a>
+                    <a className="dropdown-item" onClick={e => { e.preventDefault(this.fetchCategory('Games')) }} href=".">Games</a>
+                    <a className="dropdown-item" onClick={e => { e.preventDefault(this.fetchCategory('Health')) }} href=".">Health</a>
+                    <a className="dropdown-item" onClick={e => { e.preventDefault(this.fetchCategory('Clothing')) }} href=".">Clothing</a>
                     <div className="dropdown-divider"></div>
-                    <a className="dropdown-item" href="http://localhost:8000/products?page=1&category=Home">Home</a>
-                    <a className="dropdown-item" href="http://localhost:8000/products?page=1&category=Electronics">Electronics</a>
-                    <a className="dropdown-item" href="http://localhost:8000/products?page=1&category=Outdoors">Outdoors</a>
+                    <a className="dropdown-item" onClick={e => { e.preventDefault(this.fetchCategory('Home')) }} href=".">Home</a>
+                    <a className="dropdown-item" onClick={e => { e.preventDefault(this.fetchCategory('Electronics')) }} href=".">Electronics</a>
+                    <a className="dropdown-item" onClick={e => { e.preventDefault(this.fetchCategory('Outdoors')) }} href=".">Outdoors</a>
                 </div>
             </div >
         );

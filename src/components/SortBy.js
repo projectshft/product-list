@@ -3,50 +3,47 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
 
-
-//This component will give the user the option to see other pages of products 
+// This component gives the ability for the 
+// user to sort by highest or lowest price
 class SortBy extends Component {
     componentDidMount() {
         this.props.fetchProducts();
+    }
+
+    // This function takes in the sort query  
+    sortPrice(sort) {
+
+        let page = this.props.page;
+        let category = this.props.category;
+
+        this.props.fetchProducts(category, sort, page);
 
     }
 
 
-    renderLinks() {
-        let pageLinks = [];
-
-        for (var i = 1; i < this.props.pages + 1; i++) {
-            pageLinks.push(
-                <li onClick={this.fetchNewPage.bind(this, i)} className="page-item"><a className="page-link" href=".">{i}</a></li>
-            )
-        }
-        return pageLinks;
-    }
 
     render() {
         return (
-            <div className="nextPage">
-                <nav aria-label="...">
-                    <ul className="pagination pagination-sm">
-                        {this.renderLinks()}
-                    </ul >
-                </nav>
+
+            <div className="dropdown">
+                <a className="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort-By
+                 </a>
+
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a className="dropdown-item" onClick={e => { e.preventDefault(this.sortPrice("highest")) }} href=".">Highest-Price</a>
+                    <a className="dropdown-item" onClick={e => { e.preventDefault(this.sortPrice("lowest")) }} href=".">Lowest-Price</a>
+                </div>
             </div>
-        )
+
+        );
     }
-
 }
-
 function mapStateToProps(state) {
     return { pages: state.pagination, category: state.category, products: state.products };
-
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchProducts }, dispatch);
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(SortBy);
-
-
-

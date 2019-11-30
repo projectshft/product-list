@@ -15,7 +15,6 @@ class NextPage extends Component {
         page = page.target.innerHTML
         let category = this.props.category;
         let sort = this.props.sort;
-
         this.props.fetchProducts(category, sort, page);
     }
 
@@ -27,7 +26,7 @@ class NextPage extends Component {
                 <li onClick={e => {
                     e.preventDefault();
                     this.fetchNewPage(e)
-                }} value={i} type={"button"} className="page-item"><a className="page-link" href=".">{i}</a></li>
+                }} type={"button"} className="page-item"><a className="page-link" href=".">{i}</a></li>
             )
         }
         return pageLinks;

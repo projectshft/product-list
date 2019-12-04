@@ -5,7 +5,6 @@ const Review = require('../models/reviews')
 
 
 router.get('/products', (req, res, next) => {
-    console.log('boom', req.query);
 
     //Limits the page to have 9 products at a time 
     const perPage = 9;

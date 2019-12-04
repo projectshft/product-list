@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const FETCH_PRODUCTS = "fetch_products";
+export const SEARCH_PRODUCTS = "search_products";
 
 const ROOT_URL = "http://localhost:8000/products";
 
@@ -22,3 +23,12 @@ export function fetchProducts(category, sort, page) {
 
 }
 
+//This api call fetches all categories based on the query the user searches for in search bar 
+export function searchProducts(values) {
+    const request = axios.get(`${ROOT_URL}?page=1&category=${values}`)
+
+    return {
+        type: FETCH_PRODUCTS,
+        payload: request
+    };
+}

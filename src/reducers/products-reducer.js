@@ -10,6 +10,8 @@ const DEFAULT_STATE = {
     numberOfPages: 1
 };
 
+// Not sure if I'm using default state correctly 
+
 //This reducer takes state maps through all the key values 
 export default function (state = DEFAULT_STATE, action) {
     switch (action.type) {

@@ -1,23 +1,27 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+const Review = require('../models/review')    // ReviewSchema
 
 router.get('/generate-fake-data', (req, res, next) => {
     for (let i = 0; i < 90; i++) {
         let product = new Product()
+        let review = new Review()
 
         product.category = faker.commerce.department()
         product.name = faker.commerce.productName()
         product.price = faker.commerce.price()
         product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-
+        product.reviews = [review]
         product.save((err) => {
             if (err) throw err
         })
     }
     res.end()
 })
-
+//******************************************************************************************************/
+// GET product/ get ALL products 9 at the time
+//******************************************************************************************************/
 router.get('/products', (req, res, next) => {
     const perPage = 9
 
@@ -37,5 +41,18 @@ router.get('/products', (req, res, next) => {
             })
         })
 })
+//******************************************************************************************************/
+// GET product/ byt its ID parameter
+//******************************************************************************************************/
+router.get('/products/:product', (req, res, next) => {
+    Product
+        .findById(req.params.product)
+        .exec((err, products) => {
+            res.send(products)
+        })
+  });
+//******************************************************************************************************/
+// GET product/ byt its ID parameter
+//******************************************************************************************************/
 
 module.exports = router

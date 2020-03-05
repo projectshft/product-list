@@ -5,7 +5,9 @@ const ProductSchema = new Schema({
   category: String,
   name: String,
   price: Number,
-  image: String
+  image: String,
+  reviews: []
 })
+
 
 module.exports = mongoose.model('Product', ProductSchema)

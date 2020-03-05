@@ -1,27 +1,24 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+const Review = require('../models/review')
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
+    let review = { text: "This product is awesome!", userName: "Karen Ryan"}
 
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+    product.reviews = [review]
 
-    // product.save((err) => {
-    //   if (err) throw err
-    // })
+    product.save((err) => {
+      if (err) throw err
+    })
   }
   res.end()
-})
-
-router.get('/products', (req, res, next) => {
-  Product.find((error, products) => {
-    res.send(products)
-  })
 })
 
 router.get('/products', (req, res, next) => {
@@ -42,6 +39,10 @@ router.get('/products', (req, res, next) => {
         res.send(products)
       })
     })
+})
+
+router.get('/products/:product', (req, res, next) => {
+
 })
 
 module.exports = router

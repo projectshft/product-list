@@ -107,7 +107,7 @@ router.post('/products', (request, response) => {
 //******************************************************************************************************/
 // POST PRODUCT/  create new product in database
 //******************************************************************************************************
-router.post('/:product/review', (request, response) => {
+router.post('/:product/reviews', (request, response) => {
     //find product by id
     let productId = request.params.product;
     Product.findById(productId)
@@ -129,6 +129,15 @@ router.post('/:product/review', (request, response) => {
         })
     response.send(`Review has been added `);
 })
+//******************************************************************************************************/
+// DELETE  PRODUCT/:product   delete product by the ID
+//******************************************************************************************************
+router.delete('/products/:product', (request, response) => {
+    Product.findByIdAndDelete(request.params.product, error => {
+      if (error) throw error;
+      response.status(200).send('Product deleted');
+    });
+  });
 
 
 module.exports = router

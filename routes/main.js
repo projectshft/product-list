@@ -7,28 +7,34 @@ const Review = require('../models/review')
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 5; i++) {
     let product = new Product()
-    let review = new Review()
-    let ObjectId = mongoose.Types.ObjectId;
-    let reviewId = {}
 
-    review.userName = 'Tatiana'
-    review.text = 'Great product'
-
-    review.save((err , result) => {
-        if (err) throw err
-        console.log(`Review posted: ${result._id}`);
-        reviewId = { '_id': new ObjectId(result._id)};
-        console.log(reviewId._id)
-    }) 
-
+    product._id = new mongoose.Types.ObjectId(),
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-    product.reviews.push(reviewId._id)
-
+    
     product.save((err) => {
-      if (err) throw err
+        if (err) throw err
+        let review = new Review()
+        let ObjectId = mongoose.Types.ObjectId;
+        let reviewId = {}
+    
+        review._id = new mongoose.Types.ObjectId(),
+        review.userName = 'Tatiana'
+        review.text = 'Great product'
+        review.product = product._id
+        
+        review.save((err , result) => {
+            if (err) throw err
+            //console.log(`Review posted: ${result._id}`);
+            reviewId = { '_id': new ObjectId(result._id)};
+            //console.log(reviewId._id)
+        }) 
+
+        product.reviews.push(review._id)
+        //console.log(product);
+        product.save()
     })
   }
   res.end()
@@ -50,13 +56,10 @@ router.get('/products', (req, res, next) => {
         })
     })
 })
-
 // GET /products/:product: Returns a specific product by its id
 //5e6156ee75691e650650d2cb
 //5e6156ee75691e650650d2d3
 router.get('/products/:product', (req, res, next) => {
-    const productId = req.params.product
-    //console.log(productId)
     Product.findById(req.params.product)
         .exec((err, product) => {
             res.send(product)
@@ -76,7 +79,7 @@ router.get('/reviews', (req, res, next) => {
         .exec((err, products) => {
             //Product.count().exec((err, count) => {
                 if (err) return next(err)
-
+                //need to change to be limit to 40
                 let reviews = []
                 products.forEach( item => 
                     reviews.push(item.reviews)
@@ -86,7 +89,6 @@ router.get('/reviews', (req, res, next) => {
             //})
         })
 })
-
 // POST /products: Creates a new product in the database
 router.post('/products', (req, res, next) => {
     let product = new Product()
@@ -103,31 +105,29 @@ router.post('/products', (req, res, next) => {
 
 });
 // POST /:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
-router.post('/products/reviews', (req, res, next) => {
-    //  Product.find(err, products) => {
-    //     Product.populate(products, { path: 'reviews' }, (err, data) => {
-    //         if (err) throw err
-    //         console.log(data);
-    //       });
-    // //     for (let i = 0; i < products.length; i++) {
-    // //         let review = new Review()
-    // //         review.userName = 'Tatiana'
-    // //         review.text = 'Great product: Incredible Frozen Shirt'
-    // //         review.product = products[i]._id
-        
-    // //         review.save((err , result) => {
-    // //             if (err) throw err
-    // //             console.log(`Review posted: ${result}`);
-    // //         }) 
-    // //     }     
-    // });
-    //  res.end()     
+router.post('/products/reviews', (req, res, next) => {    
      Product.find((err, products) => {
-        //now we have an array of critics
-        Product.populate(products, { path: 'reviews' }, (err, data) => {
-          //now data is an array of populated critics
-          console.log(data);
-        });
+        let review = new Review()
+        let ObjectId = mongoose.Types.ObjectId;
+        let reviewId = {}
+
+        review._id = new mongoose.Types.ObjectId(),
+        review.userName = 'Tatiana'
+        review.text = 'Do not purchase the product! Bad quality.'
+        review.product = products._id
+
+        console.log(products._id)
+
+        review.save((err , result) => {
+            if (err) throw err
+            console.log(`Review posted: ${result}`);
+            reviewId = { '_id': new ObjectId(result._id)};
+        })
+        console.log(products.reviews);
+        products.reviews.push(review._id)
+        console.log(product);
+        products.save()
+        res.end()
       }); 
 });
 // DELETE /products/:product: Deletes a product by id

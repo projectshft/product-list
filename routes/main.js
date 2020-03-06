@@ -8,15 +8,19 @@ router.get('/generate-fake-data', (req, res, next) => {
     let product = new Product()
     let review = new Review({ text: "This product is awesome!", userName: "Karen Ryan"})
 
-    review.save()
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+    product.image = 'https://lallahoriye.com.tirzee.com/wp-content/uploads/2019/04/Product_Lg_Type.jpg'
     product.reviews.push(review)
 
     product.save((err) => {
-      if (err) throw err
+      if (err) {
+        res.send(err)
+      } else {
+        review.product = product._id
+        review.save()
+      }
     })
   }
   res.end()
@@ -24,12 +28,17 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
   const perPage = 9
-
   // return the first page by default
   const page = req.query.page || 1
 
+  query = {}
+  
+  if (req.query.category) { 
+    query.category = req.query.category.charAt(0).toUpperCase() + req.query.category.substring(1);
+  }
+
   Product
-    .find({})
+    .find(query)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
@@ -125,5 +134,37 @@ router.post('/:product/reviews', (req, res, next) => {
       }
     })
   })
+
+  router.delete('/reviews/:review', (req, res, next) => {
+    Review.findById(req.params.review)
+        .populate('product')
+        .exec((err, review) => {
+          if (err) {
+            res.send(err)
+          } else {
+            Product.findById(review.product.id, function (err, product) {
+              if(err) {
+                res.send(err)
+              } else {
+                 product.reviews = product.reviews.filter((review) => {
+                  return review._id != req.params.review
+                })
+                  product.save()
+                  Review.findByIdAndRemove(req.params.review, function (err) {
+                    if(err) {
+                      res.send(err)
+                    } else {
+                      res.send("Review was successfully removed.")
+                    }
+               })
+             }
+          })
+        }
+     })    
+  })
+
+ 
+
+
 
 module.exports = router

@@ -92,7 +92,28 @@ router.post('/products', (req, res, next) => {
 })
 
 router.post('/:product/reviews', (req, res, next) => {
-  
-})
+
+  let review = new Review({
+    userName: req.body.userName,
+    text: req.body.text,
+    product: req.params.product
+  })
+
+  Product.findById(req.params.product, function (err, product) { 
+      if(err) {
+        res.send(err) 
+      } else {
+        review.save((err, review) => {
+          if(err) {
+            review.send(err) 
+          } else {
+            product.reviews.push(review)
+            product.save()
+            res.send("Review was successfully added.")
+          }
+        })
+      }
+    })
+  })
 
 module.exports = router

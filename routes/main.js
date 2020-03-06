@@ -6,7 +6,14 @@ const Reviews = require('../models/review');
 // router.get('/generate-fake-data', (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
 //     let product = new Product()
+//     let reviews = new Reviews({
+//         username: faker.internet.userName(),
+//         text: faker.company.catchPhrase(),
+//         product: product._id
+//     })
+    
 
+//     reviews.save();
 //     product.category = faker.commerce.department()
 //     product.name = faker.commerce.productName()
 //     product.price = faker.commerce.price()
@@ -15,6 +22,8 @@ const Reviews = require('../models/review');
 //     product.save((err) => {
 //       if (err) throw err
 //     })
+  
+//     product.reviews.push(reviews)
 //   }
 //   res.end()
 // })

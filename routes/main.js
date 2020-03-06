@@ -105,29 +105,30 @@ router.post('/products', (req, res, next) => {
 
 });
 // POST /:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
-router.post('/products/reviews', (req, res, next) => {    
-     Product.find((err, products) => {
-        let review = new Review()
-        let ObjectId = mongoose.Types.ObjectId;
-        let reviewId = {}
+router.post('/products/:product/reviews', (req, res, next) => {    
+    Product.findById(req.params.product)
+        .exec((err, product) => {
+            let review = new Review()
+            let ObjectId = mongoose.Types.ObjectId;
+            let reviewId = {}
 
-        review._id = new mongoose.Types.ObjectId(),
-        review.userName = 'Tatiana'
-        review.text = 'Do not purchase the product! Bad quality.'
-        review.product = products._id
+            review._id = new mongoose.Types.ObjectId(),
+            review.userName = 'Tatiana'
+            review.text = 'Do not purchase the product! Bad quality.'
+            review.product = product._id
 
-        console.log(products._id)
+            console.log(product._id)
 
-        review.save((err , result) => {
-            if (err) throw err
-            console.log(`Review posted: ${result}`);
-            reviewId = { '_id': new ObjectId(result._id)};
-        })
-        console.log(products.reviews);
-        products.reviews.push(review._id)
-        console.log(product);
-        products.save()
-        res.end()
+            review.save((err , result) => {
+                if (err) throw err
+                console.log(`Review posted: ${result}`);
+                reviewId = { '_id': new ObjectId(result._id)};
+            })
+            console.log(product.reviews);
+            product.reviews.push(review._id)
+            console.log(product);
+            product.save()
+            res.end()
       }); 
 });
 // DELETE /products/:product: Deletes a product by id

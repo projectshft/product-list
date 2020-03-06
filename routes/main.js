@@ -38,12 +38,21 @@ router.get('/products', (req, res, next) => {req.query.q
     search.category = category
   }
 
-  
+  priceOrder = {}
 
-  Product.find(search).skip(queryVal).limit(9).exec((err, products) => {
+  if (req.query.price) {
+    if (req.query.price == "highest") {
+      priceOrder.price = "desc"
+    } else if (req.query.price == "lowest") {
+      priceOrder.price = "asc"
+    }
+  }
+
+  Product.find(search).sort(priceOrder).skip(queryVal).limit(9).exec((err, products) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.send(err)}
+      res.send(err)
+    }
     else res.json(products)
   })
 })

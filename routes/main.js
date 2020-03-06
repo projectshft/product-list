@@ -42,23 +42,43 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
     const perPage = 9;
-    const page = req.query.page || 1
-
-    Product.find({})
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
-        .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-        Product.count().exec((err, count) => {
-            if (err) return next(err)
-
-            res.send(products)
-        })
-    })
+    const page = req.query.page
+    const category =  req.query.category 
+    const price = req.query.price
+    //We'll want the user (or client) to be able to pass in the following endpoint: /products?page=3
+    if(page) {
+        Product.find({})
+            .skip((perPage * page) - perPage)
+            .limit(perPage)
+            .exec((err, products) => {
+                // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+                Product.count().exec((err, count) => {
+                    if (err) return next(err)
+                    console.log('From page: ' + products)
+                    //res.send(products)
+                })
+            })
+    }
+    //We'll want to be able to pass in an optional query to return only the products of the passed in category. 
+    if(category ) {
+        Product.find({category: category})
+            .exec((err, products) => {
+                Product.count().exec((err, count) => {
+                    if (err) return next(err)
+                    console.log('From category: ' + products)
+                    //res.send(products)
+                })
+            })
+    }
+    //localhost:8000/products?page=1&category=tools&price=highest
+    //localhost:8000/products?page=1&category=tools&price=lowest
+    if(price) {
+        //sort product by price //.sort({ price: 1 })
+    }
+    //res.send(products)
 })
+
 // GET /products/:product: Returns a specific product by its id
-//5e6156ee75691e650650d2cb
-//5e6156ee75691e650650d2d3
 router.get('/products/:product', (req, res, next) => {
     Product.findById(req.params.product)
         .exec((err, product) => {
@@ -66,6 +86,7 @@ router.get('/products/:product', (req, res, next) => {
             //console.log(product);
     });
 })
+
 // GET /reviews: Returns ALL the reviews, but limited to 40 at a time. 
 //This one will be a little tricky as you'll have to retrieve them out of the products. 
 //You should be able to pass in an options page query to paginate.
@@ -89,6 +110,7 @@ router.get('/reviews', (req, res, next) => {
             //})
         })
 })
+
 // POST /products: Creates a new product in the database
 router.post('/products', (req, res, next) => {
     let product = new Product()
@@ -104,6 +126,7 @@ router.post('/products', (req, res, next) => {
     })
 
 });
+
 // POST /:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
 router.post('/products/:product/reviews', (req, res, next) => {    
     Product.findById(req.params.product)
@@ -117,22 +140,60 @@ router.post('/products/:product/reviews', (req, res, next) => {
             review.text = 'Do not purchase the product! Bad quality.'
             review.product = product._id
 
-            console.log(product._id)
+            //console.log(product._id)
 
             review.save((err , result) => {
                 if (err) throw err
-                console.log(`Review posted: ${result}`);
+                //console.log(`Review posted: ${result}`);
                 reviewId = { '_id': new ObjectId(result._id)};
             })
-            console.log(product.reviews);
+            //console.log(product.reviews);
             product.reviews.push(review._id)
-            console.log(product);
+            //console.log(product);
             product.save()
             res.end()
       }); 
 });
+
 // DELETE /products/:product: Deletes a product by id
+router.delete('/products/:product', (req, res, next) => { 
+    let productId = req.params.product 
+
+    Product.findByIdAndRemove(productId, (err, product) => {
+        if (err) return next(err);
+        res.send('Product deleted successfully!');
+    }) 
+    //delete all reviews for deleted product
+    Review.deleteMany({product: productId}, (err) => {
+        if (err) return next(err);
+        console.log('Reviews deleted successfully!');
+    })
+});
 
 // DELETE /reviews/:review: Deletes a review by id
+router.delete('/reviews/:review', (req, res, next) => {    
+    Review.findById(req.params.review, (err, review) => {
+        if (err) return next(err);
+
+        // Product.findOne({_id: review.product}, (err, product) => {
+        //     if (err) return next(err);
+        //     product.reviews.splice(review._id)
+        //     console.log('Review id removed from product successfully!');
+        // })
+        Product.update(
+            { _id: review.product},
+            {'$pull': { 'reviews': review._id } }
+          ).exec((err , result) => {
+            if (err) throw err
+            console.log('Review id removed from product successfully!');
+        });
+
+
+        review.remove()
+
+        res.send('Review deleted successfully!');
+    }) 
+});
+
 
 module.exports = router

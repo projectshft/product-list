@@ -105,13 +105,23 @@ router.post('/:product/reviews', (req, res, next) => {
       } else {
         review.save((err, review) => {
           if(err) {
-            review.send(err) 
+            res.send(err) 
           } else {
             product.reviews.push(review)
             product.save()
             res.send("Review was successfully added.")
           }
         })
+      }
+    })
+  })
+
+  router.delete('/products/:product', (req, res, next) => {
+    Product.findByIdAndRemove(req.params.product, function (err) {
+      if(err) {
+        res.send(err)
+      } else {
+        res.send("Product was successfully removed.")
       }
     })
   })

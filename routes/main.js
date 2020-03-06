@@ -99,6 +99,17 @@ router.post("/:productId/reviews", (req, res, next) => {
   })
 })
 
+router.delete("/products/:productId", (req, res, next) => {
+  Product.findByIdAndRemove(req.params.productId, (err) => {
+    if (err) {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.send(err)
+    } else {
+      res.send("Item deleted!")
+    }
+  })
+})
+
 router.post("/")
 
 module.exports = router

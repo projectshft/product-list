@@ -1,8 +1,8 @@
-const router = require('express').Router()
-const faker = require('faker')
-const Product = require('../models/product')
-
-//******************** Route below was used to initally populate the Porducts DB **********************//
+const router = require('express').Router();
+const faker = require('faker');
+const Product = require('../models/product');
+const Reviews = require('../models/review');
+// ******************** Route below was used to initally populate the Products DB **********************//
 // router.get('/generate-fake-data', (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
 //     let product = new Product()
@@ -63,7 +63,27 @@ router.get('/products/:product', (req, res, next) => {
 // Returns ALL the reviews, but limited to 40 at a time. 
 // This one will be a little tricky as you'll have to retrieve them out of the products.
 //  You should be able to pass in an options page query to paginate.
-router.get('/reviews', (req, res, next) => {});
+router.get('/reviews', (req, res, next) => {
+    const perPage = 9
+
+    // return the first page by default
+    const page = req.query.page || 1
+
+    Reviews
+        .find({})
+        .populate("reviews")
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec((err, reviews) => {
+            // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+            Product.count().exec((err, count) => {
+                if (err) return next(err)
+
+                res.send(reviews)
+            })
+        })
+
+});
 
 // Creates a new product in the database
 router.post('/products', (req, res, next) => {});

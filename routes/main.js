@@ -113,7 +113,7 @@ router.post("/products", (request, response) => {
 
 });
 
-//create new product
+// //create new product
 router.post("/:product/reviews", (request, response) => {
   let productId = request.params.product
   Product
@@ -127,23 +127,63 @@ router.post("/:product/reviews", (request, response) => {
         response.writeHead(400);	
         return response.end("Incorrectly formatted response. Must have username and text.");
       }
-      let reviewToAdd = new Review ()
+      let reviewToAdd = new Review()
       reviewToAdd.userName = review.userName
       reviewToAdd.text = review.text
       reviewToAdd.product = product
 
       reviewToAdd.save((err, review) =>{
         if (err) return err
-        response.send(review)
+        product.reviews.push(reviewToAdd);
+        product.save((err, product) => {
+          //populate and send
+          response.send(review)
+        })
+        
       })
-      product.reviews.push(reviewToAdd);
+
     }
   })  
 })
 
+//delete a product by id
+router.delete("/products/:product", (request, response) => {
+  let id = request.params.product
+ 
+  Product
+  .findByIdAndRemove(id).exec((error, product) => {
+    if (error){
+      response.writeHead(404);	
+      return response.end("Could not find product with that id.");
+    } else{
+      response.send(product)
+    }
+  })
+});
 
 
+router.delete('/reviews/:review', (request, response, next) => {
+  let reviewId = request.params.review
+  Review.findById(reviewId, (error, review) => {
+    if (error){
+      response.writeHead(404);	
+      return response.end("Could not find a review with that id.");
+    } else{
+      Product.update(
+          { _id: review.product},
+          {'$pull': { 'reviews': review._id } }
+        ).exec((error, result) => {
+          if (error){
+            response.writeHead(404);	
+            return response.end("No product had that review id.");
+          }
+      });
+      review.remove()
+      response.send(`Review with id:${reviewId} was removed.`);
+    }
+  })
+});
 
 
-
+// middleware cors
 module.exports = router

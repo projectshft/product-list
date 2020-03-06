@@ -33,35 +33,37 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 
 router.get('/products', (req, res, next) => {
-    const perPage = 9
 
-    // return the first page by default
-    const page = req.query.page || 1
-
-    Product
-        .find({})
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
-        .exec((err, products) => {
+        const perPage = 9
+        // return the first page by default
+        const page = req.query.page || 1
+        let category
+        //if category is specified it puts it in the find query
+        if (req.query.category){
+            category = {category:req.query.category}
+        }
+        //if pice highest or lowest is defined. it adds to sort function
+        let price
+        if (req.query.price=='highest'){
+            price = {price: -1}
+        }else if(req.query.price=='lowest'){
+            price = {price: 1}
+        }
+        Product
+          .find(category)
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .sort(price)
+          .populate('reviews')
+          .exec((err, products) => {
             // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
             Product.count().exec((err, count) => {
-                if (err) return next(err)
-
-                res.send(products)
+              if (err) return next(err)
+              res.send(products)
             })
-        })
+          })
+      })
 
-
-// Individual Exercise 2 - Filter Category
-// Next, we'll want to update the following route:
-
-// GET /products
-// We'll want to be able to pass in an optional query to return only the products of the passed in category. 
-//The url will look like this:
-
-// localhost:8000/products?page=1&category=tools
-
-})
 
 
 // GET /products/:product: Returns a specific product by its id
@@ -160,39 +162,40 @@ router.post('/:product/reviews', (req, res, next) => {
         "_id": req.params.product
     }).exec((err, product) => {
         if (err)
-        res.send(err)
+            res.send(err)
         //create new product 
-            let productReview = new Review()
-                productReview.text = req.body.text
-                productReview.userName =req.body.userName
-                productReview.product = req.params.product
-            //save the new product
-            productReview.save()
-            //push the new review into the products 
-            product.reviews.push(productReview)
-            product.save()
-            res.send(product)
-        
+        let productReview = new Review()
+        productReview.text = req.body.text
+        productReview.userName = req.body.userName
+        productReview.product = req.params.product
+        //save the new product
+        productReview.save()
+        //push the new review into the products 
+        product.reviews.push(productReview)
+        product.save()
+        res.send(product)
+
     })
 })
 // DELETE /products/:product: Deletes a product by id
 router.delete('/products/:product', (req, res, next) => {
-       Product
-       .findByIdAndRemove(req.params.product)
-       .exec((err, product) => {
-           if (err) return next(err)
-           res.end()
-       })
-   })
+    Product
+        .findByIdAndRemove(req.params.product)
+        .exec((err, product) => {
+            if (err) return next(err)
+            res.end()
+        })
+})
 
 // DELETE /reviews/:review: Deletes a review by id
 router.delete('/reviews/:review', (req, res, next) => {
     Review
-    .findByIdAndRemove(req.params.review)
-    .exec((err, product) => {
-        if (err) return next(err)
-        res.end()
-    })
+        .findByIdAndRemove(req.params.review)
+        .exec((err, product) => {
+            if (err) return next(err)
+            res.end()
+        })
+    // product.reviews.slice ()
 })
 
 module.exports = router

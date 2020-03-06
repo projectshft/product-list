@@ -32,13 +32,21 @@ router.get('/products', (req, res, next) => {
   const page = req.query.page || 1
 
   query = {}
-  
+  order = {}
+
+  if(req.query.price == 'highest') {
+    order.price = 'desc'
+  } else if(req.query.price == 'lowest') {
+    order.price = 'asc'
+  }
+
   if (req.query.category) { 
     query.category = req.query.category.charAt(0).toUpperCase() + req.query.category.substring(1);
   }
 
   Product
     .find(query)
+    .sort(order)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {

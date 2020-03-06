@@ -8,8 +8,6 @@ router.get('/generate-fake-data', (req, res, next) => {
     let product = new Product()
     let review = new Review({text: "Beautifully machine-crafted", userName: "Black-Knight"})
 
-    review.save()
-
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
@@ -18,7 +16,14 @@ router.get('/generate-fake-data', (req, res, next) => {
 
     product.save((err) => {
       if (err) throw err
+      else {
+        review.product = product._id
+        review.save((err) => {
+          if (err) throw err
+        })
+      }
     })
+
   }
   res.end()
 })
@@ -26,7 +31,16 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {req.query.q
   const queryVal = parseInt(req.query.q) || 0
 
-  Product.find({}).skip(queryVal).limit(9).exec((err, products) => {
+  search = {}
+
+  if (req.query.category) {
+    let category = req.query.category.charAt(0).toUpperCase() + req.query.category.substring(1)
+    search.category = category
+  }
+
+  
+
+  Product.find(search).skip(queryVal).limit(9).exec((err, products) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.send(err)}
@@ -108,6 +122,41 @@ router.delete("/products/:productId", (req, res, next) => {
       res.send("Item deleted!")
     }
   })
+})
+
+router.delete("/reviews/:review", (req, res, next) => {
+  const reviewId = req.params.review
+  Review.findById(reviewId)
+    .populate("product")
+    .exec((err, review) => {
+      if (err) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.send(err)
+      } else {
+        Product.findById(review.product.id, (err, product) => {
+          if (err) {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.send(err)
+          } else {
+            product.reviews = product.reviews.filter((review) => {
+              return review._id != req.params.review
+              })
+
+            product.save()
+
+            Review.findByIdAndRemove(req.params.review, (err) => {
+              if (err) {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.send(err)
+              } else {
+                res.send("Review deleted!")
+              }
+            })
+          }
+        })
+      }
+    })
+
 })
 
 router.post("/")

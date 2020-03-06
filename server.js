@@ -4,6 +4,7 @@ const express = require('express')
 
 mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true})
 
+
 const app = express()
 
 app.use(bodyParser.json())

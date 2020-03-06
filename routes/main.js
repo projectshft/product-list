@@ -56,10 +56,10 @@ router.post("/products", (req, res, next) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.send(err)
+    } else {
+      res.send("Item succesfully added!")
     }
   })
-
-  res.send("Item succesfully added!")
 })
 
 router.get('/reviews', (req, res, next) => {req.query.q
@@ -73,17 +73,32 @@ router.get('/reviews', (req, res, next) => {req.query.q
   })
 })
 
-// router.get("/reviews", (req, res, next) => {
-//   Product.find({ reviews: req.params.reviews})
-//     .populate('reviews')
-//     .exec((err, book) => {
-//       if (err) {
-//         res.writeHead(404, { 'Content-Type': 'text/plain' });
-//         res.send(err)
-//       } else {
-//         res.send(book)
-//       }
-//     })
-// })
+router.post("/:productId/reviews", (req, res, next) => {
+  let review = new Review()
+
+  review.text = req.body.text
+  review.userName = req.body.userName
+  review.product = req.params.productId
+
+  Product.findById(req.params.productId).exec((err, product) => {
+    if (err) {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.send(err)
+    } else {
+      review.save((err) => {
+        if (err) {
+          res.writeHead(404, { 'Content-Type': 'text/plain' });
+          res.send(err)
+        } else {
+          product.reviews.push(review)
+          product.save()
+          res.send("Review successfully added!")
+        }
+      })
+    }
+  })
+})
+
+router.post("/")
 
 module.exports = router

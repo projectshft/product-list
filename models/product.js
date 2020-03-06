@@ -7,7 +7,7 @@ const ProductSchema = new Schema({
   name: String,
   price: Number,
   image: String,
-  reviews: [reviewSchema]
+  reviews: [{type: Schema.Types.ObjectId, ref:"Review"}]
 })
 
 module.exports = mongoose.model('Product', ProductSchema)

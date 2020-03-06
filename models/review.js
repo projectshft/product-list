@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const reviewSchema = new Schema({
     text: String,
-    userName: String
+    userName: String,
+    product: {type: Schema.Types.ObjectId, ref:"Product"}
 })
 
-module.exports = reviewSchema
+module.exports = mongoose.model('Review', reviewSchema)

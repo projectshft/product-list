@@ -41,15 +41,19 @@ router.get('/products', (req, res, next) => {
 
 // Returns a specific product by its id
 router.get('/products/:product', (req, res, next) => {
-    const productId = req.params.product || "5e614f54b9181728080d301f"
+    const productId = req.params.product
 
     Product
         .findById(productId)
-        .exec((err, products) => {
+        .exec((err, product) => {
           if (err) {
-              return console.error(err);
+            res.writeHead(401, ("Error"), {
+                "Content-Type": "html/text"
+            });
+            res.end("Error: There was no product in our record matching that productId")
+            return console.error(err);
           } else {
-              res.send(products)
+              res.send(product)
           }
 
         })

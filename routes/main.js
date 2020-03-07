@@ -29,7 +29,7 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 router.get('/products', (req, res, next) => {req.query.q
-  const queryVal = parseInt(req.query.q) || 0
+  const queryVal = parseInt(req.query.page) || 0
 
   search = {}
 
@@ -49,11 +49,12 @@ router.get('/products', (req, res, next) => {req.query.q
   }
 
   Product.find(search).sort(priceOrder).skip(queryVal).limit(9).exec((err, products) => {
-    if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.send(err)
-    }
-    else res.json(products)
+      Product.find(search).count().exec((err, count) => {
+        if (err) throw err
+        else {
+          res.send({products: products, count: count})
+        }
+      })
   })
 })
 
@@ -89,10 +90,12 @@ router.get('/reviews', (req, res, next) => {req.query.q
   const queryVal = parseInt(req.query.q) || 0
 
   Review.find({}).skip(queryVal).limit(40).exec((err, reviews) => {
-    if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.send(err)}
-    else res.json(reviews)
+    Review.count().exec((err, count) => {
+      if (err) throw err
+      else {
+        res.send({reviews: reviews, count: count})
+      }
+    })
   })
 })
 

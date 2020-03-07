@@ -173,17 +173,30 @@ router.delete('/products/:product', (req, res, next) => {
         .findByIdAndDelete(req.params.product)
         .exec((err, product) => {
             if (err) return next(err)
-            
+
             res.writeHead(200, ("Success"), {
-                    "Content-Type": "html/text"
+                "Content-Type": "html/text"
             });
             res.end(`Success: The product was deleted from the DB.`)
-            
+
         })
 });
 
 // Deletes a review by id
-router.delete('/products/:reviews', (req, res, next) => {})
+router.delete('/reviews/:review', (req, res, next) => {
+    //Changed the path because the review is actually stored in the reviews collection
+    Reviews
+        .findByIdAndDelete(req.params.review)
+        .exec((err, review) => {
+            if (err) return next(err)
+
+            res.writeHead(200, ("Success"), {
+                "Content-Type": "html/text"
+            });
+            res.end(`Success: The review was deleted from the DB.`)
+
+        })
+})
 
 
 module.exports = router

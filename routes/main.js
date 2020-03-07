@@ -48,40 +48,45 @@ router.get('/products', (request, response, next) => {
   const page = request.query.page || 1
 
   if(queryCategory !== undefined){
-    Product.find({category: queryCategory})
-    // .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((error, products) => {
-      if (products.length == 0){
-        response.writeHead(404);	
-        return response.end("Could not find products in that category.");
-      } else{
-        // if(queryPrice !== undefined){
-        //   if(queryPrice == 'lowest'){
-        //     Product.find({category: queryCategory})
-        //     .populate('price')
-        //     .exec((error, products)=>{
-        //       products.price.sort((a, b) => a[sort] - b[sort])
-        //       response.send(products.price)
-        //     })
-        //   } else if (queryPrice == 'higest'){
-        //     Product
-        //     .find({category: queryCategory})
-        //     .sort({price: 'descending'})
-        //     .exec((error, products) => {
-        //       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-        //       Product.count().exec((error, count) => {
-        //         if(error){
-        //           if (err) throw err
-        //         }
-        //         response.send(products)
-        //       })
-        //     })
-        //   }
-        // }
-        response.send(products)
-      }
-    })
+    if(queryPrice == 'lowest'){
+      Product.find({category: queryCategory})
+      // .skip((perPage * page) - perPage)
+      // .limit(perPage)
+      .sort({price: 'ascending'})
+      .exec((error, products) => {
+        if (products.length == 0){
+          response.writeHead(404);	
+          return response.end("Could not find products in that category.");
+        } else{
+          response.send(products)
+        }
+      })
+    } else if (queryPrice == 'highest'){
+      Product.find({category: queryCategory})
+      // .skip((perPage * page) - perPage)
+      // .limit(perPage)
+      .sort({price: 'descending'})
+      .exec((error, products) => {
+        if (products.length == 0){
+          response.writeHead(404);	
+          return response.end("Could not find products in that category.");
+        } else{
+          response.send(products)
+        }
+      })
+    }else {
+      Product.find({category: queryCategory})
+      // .skip((perPage * page) - perPage)
+      // .limit(perPage)
+      .exec((error, products) => {
+        if (products.length == 0){
+          response.writeHead(404);	
+          return response.end("Could not find products in that category.");
+        } else{
+          response.send(products)
+        }
+      })
+    }
   } else if (queryPrice !== undefined){
     if(queryPrice == 'lowest'){
       Product

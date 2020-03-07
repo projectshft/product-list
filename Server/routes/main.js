@@ -189,13 +189,18 @@ router.delete('/products/:product', (req, res, next) => {
 
 // DELETE /reviews/:review: Deletes a review by id
 router.delete('/reviews/:review', (req, res, next) => {
+    //1) remove the review from the product 
+    //filtering an array 
+    //2 )save the product 
+   
+    //3)
     Review
         .findByIdAndRemove(req.params.review)
         .exec((err, product) => {
             if (err) return next(err)
             res.end()
         })
-    // product.reviews.slice ()
+ 
 })
 
 module.exports = router

@@ -6,6 +6,7 @@ const bodyParser   = require('body-parser');
 const url = require("url");
 const querystring = require('querystring');
 
+
 router.use(bodyParser.json());
 
 // router.get('/generate-fake-data', (req, res, next) => {
@@ -41,10 +42,9 @@ router.use(bodyParser.json());
 router.get('/products', (request, response, next) => {
   const parsedUrl = url.parse(request.originalUrl);
   const { query, sort } = querystring.parse(parsedUrl.query);
-  const queryCategorySearch = request.query.category
-  const queryCategory = queryCategorySearch.charAt(0).toUpperCase() + queryCategorySearch.substring(1)
+  const queryCategory = request.query.category
   const perPage = 9
-  const queryPrice = request.query.price.toLowerCase()
+  const queryPrice = request.query.price
   // return the first page by default
   const page = request.query.page || 1
 
@@ -59,6 +59,7 @@ router.get('/products', (request, response, next) => {
           response.writeHead(404);	
           return response.end("Could not find products in that category.");
         } else{
+          response.writeHead(200);
           response.send(products)
         }
       })
@@ -72,6 +73,7 @@ router.get('/products', (request, response, next) => {
           response.writeHead(404);	
           return response.end("Could not find products in that category.");
         } else{
+          response.writeHead(200);
           response.send(products)
         }
       })
@@ -87,6 +89,7 @@ router.get('/products', (request, response, next) => {
           response.writeHead(404);	
           return response.end("Could not find products in that category.");
         } else{
+          response.writeHead(200);
           response.send(products)
         }
       })
@@ -104,6 +107,7 @@ router.get('/products', (request, response, next) => {
           if(error){
             if (err) throw err
           }
+          response.writeHead(200);
           response.send(products)
         })
       })
@@ -119,6 +123,7 @@ router.get('/products', (request, response, next) => {
           if(error){
             if (err) throw err
           }
+          response.writeHead(200);
           response.send(products)
         })
       })
@@ -138,6 +143,7 @@ router.get('/products', (request, response, next) => {
           if(error){
              return next(error)
           }
+          response.writeHead(200);
           response.send(products)
         })
       })
@@ -276,6 +282,4 @@ router.delete('/reviews/:review', (request, response, next) => {
   })
 });
 
-
-// middleware cors
 module.exports = router

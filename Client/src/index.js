@@ -19,11 +19,15 @@ const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
       <div>
+        <h1 className="text-center">Products</h1>
+        <div className="row" >
           <SearchBar/>
           <FilterCategories/>
           <SortPrice/>
-          <Pagination/>
+          </div>
+          <br/>
           <Products/>
+          <Pagination/>
       </div>
   </Provider>,
   document.getElementById('root')

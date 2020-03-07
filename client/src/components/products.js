@@ -4,8 +4,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Pagination from "./pagination";
+import Pagination from './pagination';
+import PropTypes from 'prop-types'
 import ProductItem from './product-item';
+import '../App.css';
 import './styles.scss';
 
 class HomePage extends Component {
@@ -13,8 +15,8 @@ class HomePage extends Component {
       super(props);
   
       this.state = { 
-        currentPage: null,
-        totalPages: null
+        currentPage: 1,
+        itemsOnPage: 2
       };  
     }
 
@@ -32,13 +34,52 @@ class HomePage extends Component {
       this.setState({ currentPage, currentProducts, totalPages });
     };
 
+    dataView = () => {
+      const { products } = this.props
+      const { currentPage, itemsOnPage } = this.state;
+      const indexOfLastItem = currentPage * itemsOnPage;
+      const indexOfFirstItem = indexOfLastItem - itemsOnPage;
+      const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
+      console.log('from render', products.length)
+
+      const renderItems = currentItems.map(({ _id, ...otherItemProps }) => (
+            <ProductItem key={_id} {...otherItemProps} />
+          ))
+
+        return renderItems;
+      }
+
+    paginationNumbers = () =>{
+      const { products } = this.props;
+      const { itemsOnPage } = this.state;
+  
+      const pagesToNumbers = [];
+      for (let i = 1; i <= Math.ceil(products.length / itemsOnPage); i++) {
+        pagesToNumbers.push(i);
+      } 
+  
+      const numbers = pagesToNumbers.map(number => {
+        return (
+            <li className="waves-effect"
+              key={number} 
+              id={number} 
+              onClick={this.handleClick}>
+              {number}
+              </li>
+        );
+      });
+  
+      return numbers;
+    }
+
+    handleClick = (e) => {
+      this.setState({
+          currentPage: Number(e.target.id)
+        });
+    }
+
     render() {
-        const { products } = this.props
-        const { currentPage, totalPages } = this.state;
-        const totalProducts = products.length;
-        if (totalProducts === 0) return null;
-        
-        console.log('from render', products)
+
       return (
           <div className='shop-page'>
             {/*products.map(({ _id, ...otherProductProps }) => (
@@ -46,25 +87,25 @@ class HomePage extends Component {
             ))*/}
             <div className='collection-preview'>
                 <div className='preview'>
-                  {products
+                  {/*products
                     .filter((item, idx) => idx < 4)
                     .map(({ _id, ...otherItemProps }) => (
                       <ProductItem key={_id} {...otherItemProps} />
-                    ))}
+                    ))*/}
+                    {  this.dataView() }
                 </div>
             </div>
+
             <div className="container mb-5">
             <div className="row d-flex flex-row py-5">
-            <div className="w-100 px-4 py-5 d-flex flex-row flex-wrap align-items-center justify-content-between">
-            <div className="d-flex flex-row py-4 align-items-center">
-              <Pagination
-                totalRecords={totalProducts}
-                pageLimit={18}
-                pageNeighbours={1}
-                onPageChanged={this.onPageChanged}
-              />
+    
+              <div className="w-100 px-4 py-5 d-flex flex-row flex-wrap align-items-center justify-content-between">
+                <div className="d-flex flex-row py-4 align-items-center">testing 
+                  { this.paginationNumbers() }
+                </div>
+              </div>
             </div>
-            </div></div></div>
+          </div>
           </div>
       );
     }

@@ -2,21 +2,6 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import './styles.scss';
 
-const LEFT_PAGE = "LEFT";
-const RIGHT_PAGE = "RIGHT";
-
-const range = (from, to, step = 1) => {
-  let i = from;
-  const range = [];
-
-  while (i <= to) {
-    range.push(i);
-    i += step;
-  }
-
-  return range;
-};
-
 class Pagination extends Component {
   constructor(props) {
     super(props);
@@ -115,6 +100,7 @@ class Pagination extends Component {
   };
 
   render() {
+    console.log('from pagination')
     if (!this.totalRecords) return null;
 
     if (this.totalPages === 1) return null;
@@ -189,3 +175,18 @@ Pagination.propTypes = {
 };
 
 export default Pagination;
+
+const LEFT_PAGE = "LEFT";
+const RIGHT_PAGE = "RIGHT";
+
+const range = (from, to, step = 1) => {
+  let i = from;
+  const range = [];
+
+  while (i <= to) {
+    range.push(i);
+    i += step;
+  }
+
+  return range;
+};

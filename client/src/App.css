@@ -1,11 +1,11 @@
 /* Declare some variables */
-/* Define Styles */
+.current-page {
+  font-size: 1.5rem;
+  vertical-align: middle; }
 
-
-.current-page{
+.current-page {
   line-height: 1; }
 
-/* Override some Bootstrap pagination styles */
 ul.pagination {
   margin-top: 0;
   margin-bottom: 0;

@@ -1,0 +1,86 @@
+#side-bar {
+  padding-top: 30px;
+  height: 50%;
+  margin-left: 30px;
+  position: fixed;
+  display: absolute;
+  width: 160px;
+  height: 350px;
+  padding-top: 20px;
+  padding-bottom: 380px;
+  border-color: #FF69B4;
+}
+
+#header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  color: black;
+  font-weight: 800;
+
+}
+
+#main-view {
+  padding-top: 10px;
+  padding-left: 50px;
+  margin-left: 60px;
+  margin-right: 50px;
+  height: 50%;
+  /* position: -webkit-sticky;
+  position: sticky; */
+  top: 0;
+}
+
+#second-main-view {
+  padding-top: 50px;
+  height: 50%;
+  padding-left: 50px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  margin-left: 60px;
+  margin-right: 50px;
+}
+
+
+h1 {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.lobster {
+  font-family: 'Lobster'
+}
+
+.krona-one {
+  font-family: 'Krona-One';
+}
+
+.price {
+   visibility: visible;
+}
+
+h3 {
+  padding-bottom: 20px;
+}
+
+#influencer-view {
+  padding-top: 50px;
+  padding-right: 20px;
+  margin-left: 60px;
+
+}
+
+#natural {
+  margin-right: -150px;
+}
+
+.bottom {
+  margin-top: 12px;
+}
+
+.banner {
+  margin-top: 20px;
+}

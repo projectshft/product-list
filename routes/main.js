@@ -29,7 +29,8 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 router.get('/products', (req, res, next) => {req.query.q
-  const queryVal = parseInt(req.query.page) || 0
+  let queryVal = parseInt(req.query.page) || 0
+  queryVal = queryVal * 9
 
   search = {}
 

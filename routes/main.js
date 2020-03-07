@@ -11,7 +11,7 @@ const Reviews = require('../models/review');
 //         text: faker.company.catchPhrase(),
 //         product: product._id
 //     })
-    
+
 
 //     reviews.save();
 //     product.category = faker.commerce.department()
@@ -22,7 +22,7 @@ const Reviews = require('../models/review');
 //     product.save((err) => {
 //       if (err) throw err
 //     })
-  
+
 //     product.reviews.push(reviews)
 //   }
 //   res.end()
@@ -55,15 +55,15 @@ router.get('/products/:product', (req, res, next) => {
     Product
         .findById(productId)
         .exec((err, product) => {
-          if (err) {
-            res.writeHead(401, ("Error"), {
-                "Content-Type": "html/text"
-            });
-            res.end("Error: There was no product in our record matching that productId")
-            return console.error(err);
-          } else {
-              res.send(product)
-          }
+            if (err) {
+                res.writeHead(401, ("Error"), {
+                    "Content-Type": "html/text"
+                });
+                res.end("Error: There was no product in our record matching that productId")
+                return console.error(err);
+            } else {
+                res.send(product)
+            }
 
         })
 
@@ -95,7 +95,44 @@ router.get('/reviews', (req, res, next) => {
 });
 
 // Creates a new product in the database
-router.post('/products', (req, res, next) => {});
+router.post('/products', (req, res, next) => {
+    //Make an instance of the product model
+    let newProduct = new Product({
+        category: faker.commerce.department(),
+        name: faker.commerce.productName(),
+        price: faker.commerce.price(),
+        image: 'https://images.unsplash.com/photo-1542395765-761de4ee9696?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+        reviews: []
+    });
+
+    //Save the new product in the db and added edge cases
+    newProduct
+        .save()
+        .then(result => {
+            console.log(result);
+            res.status(201).json({
+              message: "Created product successfully",
+              createdProduct: {
+                category: result.category,
+                name: result.name,
+                price: result.price,
+                image: result.image,
+                reviews: result.reviews,
+                  request: {
+                      type: 'GET',
+                      url: "http://localhost:3000/products" + result._id
+                  }
+              }
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
+          });
+    
+});
 
 // Creates a new review in the database by adding it to the correct product's reviews array.
 router.post('/products/:reviews', (req, res, next) => {});

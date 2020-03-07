@@ -3,9 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
-import Pagination from "react-js-pagination";
-import 'bootstrap/dist/css/bootstrap.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Pagination from "./pagination";
 import ProductItem from './product-item';
 import './styles.scss';
 
@@ -14,7 +13,8 @@ class HomePage extends Component {
       super(props);
   
       this.state = { 
-        activePage: 15
+        currentPage: null,
+        totalPages: null
       };  
     }
 
@@ -22,13 +22,22 @@ class HomePage extends Component {
       this.props.fetchProducts();
     }
 
-    handlePageChange(pageNumber) {
-      console.log(`active page is ${pageNumber}`);
-      this.setState({activePage: pageNumber});
-    }
+    onPageChanged = data => {
+      const { products } = this.props;
+      const { currentPage, totalPages, pageLimit } = data;
+  
+      const offset = (currentPage - 1) * pageLimit;
+      const currentProducts = products.slice(offset, offset + pageLimit);
+  
+      this.setState({ currentPage, currentProducts, totalPages });
+    };
 
     render() {
         const { products } = this.props
+        const { currentPage, totalPages } = this.state;
+        const totalProducts = products.length;
+        if (totalProducts === 0) return null;
+        
         console.log('from render', products)
       return (
           <div className='shop-page'>
@@ -44,13 +53,18 @@ class HomePage extends Component {
                     ))}
                 </div>
             </div>
-            <Pagination
-              activePage={this.state.activePage}
-              itemsCountPerPage={9}
-              totalItemsCount={20}
-              pageRangeDisplayed={5}
-              onChange={this.handlePageChange.bind(this)}
-            />
+            <div className="container mb-5">
+            <div className="row d-flex flex-row py-5">
+            <div className="w-100 px-4 py-5 d-flex flex-row flex-wrap align-items-center justify-content-between">
+            <div className="d-flex flex-row py-4 align-items-center">
+              <Pagination
+                totalRecords={totalProducts}
+                pageLimit={18}
+                pageNeighbours={1}
+                onPageChanged={this.onPageChanged}
+              />
+            </div>
+            </div></div></div>
           </div>
       );
     }

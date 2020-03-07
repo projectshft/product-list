@@ -111,31 +111,61 @@ router.post('/products', (req, res, next) => {
         .then(result => {
             console.log(result);
             res.status(201).json({
-              message: "Created product successfully",
-              createdProduct: {
-                category: result.category,
-                name: result.name,
-                price: result.price,
-                image: result.image,
-                reviews: result.reviews,
-                  request: {
-                      type: 'GET',
-                      url: "http://localhost:3000/products" + result._id
-                  }
-              }
+                message: "Created product successfully",
+                createdProduct: {
+                    category: result.category,
+                    name: result.name,
+                    price: result.price,
+                    image: result.image,
+                    reviews: result.reviews,
+                    request: {
+                        type: 'GET',
+                        url: "http://localhost:3000/products" + result._id
+                    }
+                }
             });
-          })
-          .catch(err => {
+        })
+        .catch(err => {
             console.log(err);
             res.status(500).json({
-              error: err
+                error: err
             });
-          });
-    
+        });
+
 });
 
 // Creates a new review in the database by adding it to the correct product's reviews array.
-router.post('/products/:reviews', (req, res, next) => {});
+router.post('/:product/reviews', (req, res, next) => {
+    const productId = req.params.product
+
+    Product
+        .findById(productId)
+        .exec((err, product) => {
+            if (err) {
+                res.writeHead(401, ("Error"), {
+                    "Content-Type": "html/text"
+                });
+                res.end("Error: There was no product in our record matching that productId")
+                return console.error(err);
+            } else {
+                //Make an instance of the Reviews model
+                let newReview = new Reviews({
+                    username: faker.internet.userName(),
+                    text: faker.company.catchPhrase(),
+                    product: product._id
+                });
+                //Save the newly created review
+                newReview.save();
+                //Addd the new review to the associated product then save  it 
+                product.reviews.push(newReview);
+                product.save()
+
+                res.send(product)
+            }
+
+        })
+
+});
 
 // Deletes a product by id
 router.delete('/products/:product', (req, res, next) => {});

@@ -2,6 +2,11 @@ const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
+const bodyParser   = require('body-parser');
+const url = require("url");
+const querystring = require('querystring');
+
+router.use(bodyParser.json());
 
 // router.get('/generate-fake-data', (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
@@ -31,25 +36,103 @@ const Review = require('../models/review')
 //   next();
 // });
 
-router.get('/products', (request, response, next) => {
-  const perPage = 9
 
+
+router.get('/products', (request, response, next) => {
+  const parsedUrl = url.parse(request.originalUrl);
+  const { query, sort } = querystring.parse(parsedUrl.query);
+  const queryCategory = request.query.category
+  const perPage = 9
+  const queryPrice = request.query.price
   // return the first page by default
   const page = request.query.page || 1
 
-  //For pagination use bootstrap
-  Product
-    .find({})
-    .skip((perPage * page) - perPage)
+  if(queryCategory !== undefined){
+    Product.find({category: queryCategory})
+    // .skip((perPage * page) - perPage)
     .limit(perPage)
-    .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-
+    .exec((error, products) => {
+      if (products.length == 0){
+        response.writeHead(404);	
+        return response.end("Could not find products in that category.");
+      } else{
+        // if(queryPrice !== undefined){
+        //   if(queryPrice == 'lowest'){
+        //     Product.find({category: queryCategory})
+        //     .populate('price')
+        //     .exec((error, products)=>{
+        //       products.price.sort((a, b) => a[sort] - b[sort])
+        //       response.send(products.price)
+        //     })
+        //   } else if (queryPrice == 'higest'){
+        //     Product
+        //     .find({category: queryCategory})
+        //     .sort({price: 'descending'})
+        //     .exec((error, products) => {
+        //       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        //       Product.count().exec((error, count) => {
+        //         if(error){
+        //           if (err) throw err
+        //         }
+        //         response.send(products)
+        //       })
+        //     })
+        //   }
+        // }
         response.send(products)
-      })
+      }
     })
+  } else if (queryPrice !== undefined){
+    if(queryPrice == 'lowest'){
+      Product
+      .find({})
+      .sort({price: 'ascending'})
+      // .skip((perPage * page) - perPage)
+      // .limit(perPage)
+      .exec((error, products) => {
+        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        Product.count().exec((error, count) => {
+          if(error){
+            if (err) throw err
+          }
+          response.send(products)
+        })
+      })
+    }else if (queryPrice == 'highest'){
+      Product
+      .find({})
+      .sort({price: 'descending'})
+      // .skip((perPage * page) - perPage)
+      // .limit(perPage)
+      .exec((error, products) => {
+        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        Product.count().exec((error, count) => {
+          if(error){
+            if (err) throw err
+          }
+          response.send(products)
+        })
+      })
+    } else{
+      response.writeHead(400);	
+      return response.end("Could not read query search. Must enter lowest or highest.")
+    }
+  }else{
+  //For pagination use bootstrap
+    Product
+      .find({})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec((error, products) => {
+        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        Product.count().exec((error, count) => {
+          if(error){
+             return next(error)
+          }
+          response.send(products)
+        })
+      })
+  }
 })
 
 router.get("/products/:product", (request, response) => {

@@ -45,6 +45,19 @@ router.get('/products', (req, res, next) => {
     const page = req.query.page
     const category =  req.query.category 
     const price = req.query.price
+
+    Product.find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        Product.count().exec((err, count) => {
+            if (err) return next(err)
+            console.log('From page: ' + products)
+            res.send(products)
+        })
+    })
+
     //We'll want the user (or client) to be able to pass in the following endpoint: /products?page=3
     if(page) {
         Product.find({})
@@ -55,7 +68,7 @@ router.get('/products', (req, res, next) => {
                 Product.count().exec((err, count) => {
                     if (err) return next(err)
                     console.log('From page: ' + products)
-                    //res.send(products)
+                    res.send(products)
                 })
             })
     }
@@ -66,16 +79,22 @@ router.get('/products', (req, res, next) => {
                 Product.count().exec((err, count) => {
                     if (err) return next(err)
                     console.log('From category: ' + products)
-                    //res.send(products)
+                    res.send(products)
                 })
             })
     }
     //localhost:8000/products?page=1&category=tools&price=highest
     //localhost:8000/products?page=1&category=tools&price=lowest
     if(price) {
+        let mysort = price == 'highest' ? {price: 1} : ( price == 'lowest' ? {price: -1} : '');
         //sort product by price //.sort({ price: 1 })
+
+        Product.find({}, (err, products) => {
+            if (err) return next(err)
+            console.log('Sorted products')
+            res.send(products)
+        }).sort(mysort);
     }
-    //res.send(products)
 })
 
 // GET /products/:product: Returns a specific product by its id
@@ -124,7 +143,7 @@ router.post('/products', (req, res, next) => {
         if (err) throw err
         console.log(`Product posted: ${result}`);
     })
-
+    res.send(product)
 });
 
 // POST /:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
@@ -174,12 +193,6 @@ router.delete('/products/:product', (req, res, next) => {
 router.delete('/reviews/:review', (req, res, next) => {    
     Review.findById(req.params.review, (err, review) => {
         if (err) return next(err);
-
-        // Product.findOne({_id: review.product}, (err, product) => {
-        //     if (err) return next(err);
-        //     product.reviews.splice(review._id)
-        //     console.log('Review id removed from product successfully!');
-        // })
         Product.update(
             { _id: review.product},
             {'$pull': { 'reviews': review._id } }
@@ -187,7 +200,6 @@ router.delete('/reviews/:review', (req, res, next) => {
             if (err) throw err
             console.log('Review id removed from product successfully!');
         });
-
 
         review.remove()
 

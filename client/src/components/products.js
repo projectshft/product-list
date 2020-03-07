@@ -3,6 +3,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchProducts } from "../actions";
+import Pagination from "react-js-pagination";
+import 'bootstrap/dist/css/bootstrap.css';
+
 import ProductItem from './product-item';
 import './styles.scss';
 
@@ -11,14 +14,17 @@ class HomePage extends Component {
       super(props);
   
       this.state = { 
-            search: '',
-            filter: '',
-            sort: ''
+        activePage: 15
       };  
     }
 
     componentDidMount() {
       this.props.fetchProducts();
+    }
+
+    handlePageChange(pageNumber) {
+      console.log(`active page is ${pageNumber}`);
+      this.setState({activePage: pageNumber});
     }
 
     render() {
@@ -38,6 +44,13 @@ class HomePage extends Component {
                     ))}
                 </div>
             </div>
+            <Pagination
+              activePage={this.state.activePage}
+              itemsCountPerPage={9}
+              totalItemsCount={20}
+              pageRangeDisplayed={5}
+              onChange={this.handlePageChange.bind(this)}
+            />
           </div>
       );
     }

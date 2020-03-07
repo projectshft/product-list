@@ -7,9 +7,9 @@ const ROOT_URL = "http://localhost:8000/products";
 export function fetchProducts() {
 
     const request = axios.get(`${ROOT_URL}`)
-        // .then((response) => {
-        //     return response.data
-        // })
+        .then((response) => {
+            return response.data
+        })
         .catch( (error) => {
             console.log(error)
         });

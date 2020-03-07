@@ -168,7 +168,19 @@ router.post('/:product/reviews', (req, res, next) => {
 });
 
 // Deletes a product by id
-router.delete('/products/:product', (req, res, next) => {});
+router.delete('/products/:product', (req, res, next) => {
+    Product
+        .findByIdAndDelete(req.params.product)
+        .exec((err, product) => {
+            if (err) return next(err)
+            
+            res.writeHead(200, ("Success"), {
+                    "Content-Type": "html/text"
+            });
+            res.end(`Success: The product was deleted from the DB.`)
+            
+        })
+});
 
 // Deletes a review by id
 router.delete('/products/:reviews', (req, res, next) => {})

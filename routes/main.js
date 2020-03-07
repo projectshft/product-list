@@ -59,7 +59,7 @@ router.get('/products', (req, res, next) => {
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.count().exec((err, count) => {
           if (err) return next(err)
-          res.send(products)
+          res.send({products:products, count:count})
         })
       })
   })
@@ -132,20 +132,35 @@ router.post('/:product/review', (req, res, next) => {
  //=============================================================
 router.delete('/products/:product', (req, res, next) => {
         Product
-        .findByIdAndRemove(req.params.product)
+        .findById(req.params.product)
         .exec((err, product) => {
-        if (err) return next(err)
+            if (err) return next(err)
+            req.params.product.reviews.forEach(function(review){
+                Review
+                .findById(review._id) 
+                .exec((err, product) => {
+                    if (err) return next(err)
+
+            })
         res.end()
         });
     });
+
+})
 
 //=============================================================
 //Deletes the review
 //=============================================================
 router.delete('/reviews/:review', (req, res, next) => {
+    //remove the review from product
+    
+    //filter the array
+    //save the product
+    
+    
     Review
-    .findById(req.params.product)
-    .exec((err, products) => {
+    .findByIdAndRemove(req.params.review)
+    .exec((err, review) => {
         if (err) return next(err)
         res.end()
         })

@@ -1,1 +1,28 @@
+h1 { 
+    padding-top:30px;
+}
+
+.row-cols-3{
+    padding-top:10px;
+}
+
+input{
+    width: 80%;
+}
+
+.search-btn{
+    width:20%;
+}
+
+.query{
+    padding: 50px;
+}
+
+.pages{
+    margin-top:30px;
+}
+
+
+
+
 

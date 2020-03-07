@@ -33,28 +33,47 @@ router.get('/products', (req, res, next) => {
 
     // return the first page by default
     const page = req.query.page || 1
-    // variable for category entered on the query
+    // variable for category if entered on the query
     const searchedCategory = req.query.category
+    //variable for price if entered on the query 
+    const priceRange = req.query.price
+
 
     let initialQuery = Product.find({})
 
-    if(searchedCategory) {
+    if (searchedCategory) {
         initialQuery = Product.find({
             category: searchedCategory
         })
     }
-    
+
+    //Sorting by price if query was entered
+    if (priceRange == 'highest') {
+        initialQuery = initialQuery.sort('-price')
+    } else if (priceRange == 'lowest') {
+        initialQuery = initialQuery.sort('price')
+    }
+
 
     initialQuery
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec((err, products) => {
-            // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-            Product.count().exec((err, count) => {
-                if (err) return next(err)
+            Product.distinct("category").exec((err, categories) => {
+                   // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+                   Product.countDocuments().exec((err, count) => {
+                    if (err) return next(err)
 
-                res.send(products)
+                    res.send({
+                        product: products,
+                        productCount: count,
+                        category: categories
+                    })
+                })
+
+
             })
+
         })
 });
 

@@ -4,13 +4,13 @@ import { bindActionCreators } from 'redux';
 import { fetchCategory } from '../actions/index';
 
 
-class Category extends Component {
+class Search extends Component {
   constructor(props) {
     super(props);
 
     this.state = { 
-      category: '',
-      // price: ''
+      category: 'Baby',
+  
     };
 
     // this.onCategoryChange = this.onCategoryChange.bind(this);
@@ -42,17 +42,6 @@ class Category extends Component {
     // this.setState({ category: ''});
   }
 
-  // onPriceChange(event) {
-  //   console.log(event.target.value)
-  //   this.setState({ price: event.target.value });
-  // }
-
-  // onPriceClick(event) {
-  //   event.preventDefault();
-
-  //   this.props.fetchPrice(this.state.price);
-  //   this.setState({ price: ''});
-  // }
 
   render() {
     return (
@@ -85,7 +74,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   null,
   mapDispatchToProps
-)(Category);
-
-// onClick={this.onPriceClick}
-// onChange={this.onPriceChange} value={this.state.price}
+)(Search);

@@ -42,11 +42,29 @@ router.use(bodyParser.json());
 router.get('/products', (request, response, next) => {
   const parsedUrl = url.parse(request.originalUrl);
   const { query, sort } = querystring.parse(parsedUrl.query);
+
+  
   const queryCategory = request.query.category
-  const perPage = 9
   const queryPrice = request.query.price
   // return the first page by default
   const page = request.query.page || 1
+  const perPage = 9
+
+  if(queryCategory == undefined && queryPrice == undefined){
+      Product
+      .find({})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec((error, products) => {
+        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+        Product.count().exec((error, count) => {
+          if(error){
+             return next(error)
+          }
+          response.send({products: products, count: count})
+        })
+      })
+  }
 
   if(queryCategory !== undefined){
     if(queryPrice == 'lowest'){
@@ -126,21 +144,6 @@ router.get('/products', (request, response, next) => {
       response.writeHead(400);	
       return response.end("Could not read query search. Must enter lowest or highest.")
     }
-  }else{
-  //For pagination use bootstrap
-    Product
-      .find({})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec((error, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-        Product.count().exec((error, count) => {
-          if(error){
-             return next(error)
-          }
-          response.send(products)
-        })
-      })
   }
 })
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import {Component} from 'react';
+import { fetchProducts } from '../actions/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../actions/index';
 
- class SearchBar extends Component {
+class SearchBar extends Component {
     constructor(props) {
         super(props);
     
@@ -21,7 +21,6 @@ import { fetchProducts } from '../actions/index';
       onFormSubmit(event) {
         event.preventDefault();
     
-        // We need to go and fetch weather data
         this.props.fetchProducts(this.state.term);
         this.setState({ term: '' });
       }
@@ -47,12 +46,13 @@ import { fetchProducts } from '../actions/index';
     }
 }
 
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchProducts }, dispatch);
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SearchBar);
+function mapStateToProps({products}) {
+return { products};
+}
 
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

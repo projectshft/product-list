@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = 'http://localhost8000'
+const ROOT_URL = 'http://localhost:8000'
 
 // export const GET_DATA_REQUEST = 'GET_DATA_REQUEST';
 // export const GET_DATA_FAILURE = 'GET_DATA_FAILURE';

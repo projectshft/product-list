@@ -1,9 +1,18 @@
-import {
-  GET_DATA_REQUEST,
-  GET_DATA_FAILURE,
-  GET_DATA_SUCCESS,
-  FETCH_PRODUCTS
-} from '../actions/index'
+import { FETCH_PRODUCTS } from '../actions/index'
+
+
+
+export default function(state = [], action) {
+  switch (action.type) {
+    case FETCH_PRODUCTS:
+      return action.payload.data;
+    default:
+      return state;
+  }
+}
+
+//PROP TYPES //
+
 
 
     // case GET_DATA_REQUEST: {
@@ -23,14 +32,3 @@ import {
     //     ...state,
     //     status: 'failure'
     //   }
-
-export default function(state = {}, action) {
-  switch (action.type) {
-    case FETCH_PRODUCTS:
-      return action.payload.data;
-    default:
-      return state;
-  }
-}
-
-//PROP TYPES //

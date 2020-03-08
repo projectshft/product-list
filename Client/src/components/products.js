@@ -1,76 +1,51 @@
 import React from 'react';
 import {Component} from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../actions/index';
+import _ from 'lodash'
+import PropTypes from 'prop-types';
+
+ class Products extends Component {
+    
+async componentDidMount() {
+   await this.props.fetchProducts ([])
+   console.log(this.props.products)
+    }
 
 
-
-class Products extends Component {
-
-    render () {
+    renderProducts() {
+  
         return (
-            <div className="row row-cols-3">
-                <div className = "container">
-                <p className = "xs-cols-4">Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                <div className = "container">
-                <p>Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                <div className = "container">
-                <p>Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                <div className = "container">
-                <p className = "xs-cols-4">Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                <div className = "container">
-                <p>Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                <div className = "container">
-                <p>Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                <div className = "container">
-                <p className = "xs-cols-4">Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                <div className = "container">
-                <p>Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                <div className = "container">
-                <p>Category: Product.Category</p> 
-                <h4>$65</h4>
-                <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg"/>
-                <h4>Product.Name</h4>
-                </div>
-                </div>
+          
+            this.props.products.map(p=>
+         <div className="col-4 text-center" key={p._id}>
+            <div className="item-name">{p.name}</div>
+            <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg" alt="" width="240" height="auto" className="mx-auto d-block"></img>
+            <div className="category">Category: {p.category}</div>
+            <div className="price">${p.price}</div>
+            <br/>
+            <br/>
+        </div>
+      ))
+    
+    }
+
+    render() {
+        return(
+        <div className="row row-row-cols3">
+            {this.renderProducts()}
+             </div>
         )
     }
 }
 
-
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchProducts }, dispatch);
+  }
+  
 function mapStateToProps({products}) {
   return { products};
 }
 
-export default connect(mapStateToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

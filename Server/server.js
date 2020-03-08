@@ -19,12 +19,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-// app.use(express.static(path.join(__dirname, 'build')))
-
-// app.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'))
-// })
-
 const mainRoutes = require('./routes/main')
 
 app.use(mainRoutes)

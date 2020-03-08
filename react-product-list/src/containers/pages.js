@@ -1,51 +1,59 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {editPage, fetchProducts} from '../actions/index';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { editPage, fetchProducts } from '../actions/index';
 import '../index.css';
 
 
 
-function Pages (props){
+class Pages extends Component {
 
-  
-
-  const onFormSubmit =function(event) {
-    const queryPage = `page=${event.target.value}`
-    props.editPage(queryPage)
-    props.fetchProducts(props.QueryRequests)
+  //initial fetch when page
+  componentDidMount() {
+    this.props.fetchProducts(this.props)
+  }
+  //refetches everytime the query state updates
+  componentDidUpdate() {
+    this.props.fetchProducts(this.props)
   }
 
-  const renderOneButton= function(){
-    console.log('count', props.pages)
+  //handles event when user hits a page button
+  onFormSubmit(event) {
+    //updates the query state
+    this.props.editPage(`page=${event.target.value}`)
+  }
+
+  renderOneButton(pages) {
+    //creates an empty arrray to push the JSX into
     let buttonsHTML = []
-    for (let i=1; i<=props.pages; i++){
-    buttonsHTML.push(<button className='button' type='onSubmit' onClick={onFormSubmit} key={i} value={i}>{i}</button>)
+    //loops through how many pages there are and creates a button for each page
+    for (let i = 1; i <= pages; i++) {
+      buttonsHTML.push(<button className='button' type='onSubmit' onClick={this.onFormSubmit} key={i} value={i}>{i}</button>)
     }
-    return(
+    //returns JSX to be rendered in render()
+    return (
       <div>{buttonsHTML}</div>
     )
   }
-
-    return(
-        <div className='pages'>
-          {renderOneButton()}
-        </div>
+  render() {
+    return (
+      <div className='pages'>
+        {this.renderOneButton(this.props.pages)}
+      </div>
     )
   }
+}
 
-
+//Only recieves the query state so that its not in a continually rerendering loop!!!
 function mapStateToProps(state) {
   console.log('this is data from products', state)
-  return state;
+  return state.QueryRequests;
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-      editPage, fetchProducts
+    editPage, fetchProducts
   }, dispatch);
 }
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pages);

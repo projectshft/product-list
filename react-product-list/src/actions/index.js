@@ -8,11 +8,9 @@ export const EDIT_PAGE = 'EDIT_PAGE';
 export const EDIT_PRICE = 'EDIT_PRICE';
 
 export function fetchProducts(query) {
-    console.log('query', query)
-    
-    const url = `${ROOT_URL}`+ query.page + query.category + query.price
-    console.log(url)
-    const request = axios.get(url)
+  //sets url with and breaks down the query state
+  const url = `${ROOT_URL}` + query.page + query.category + query.price
+  const request = axios.get(url)
     .catch(function (error) {
       if (error.response) {
         return console.log(error)
@@ -24,26 +22,27 @@ export function fetchProducts(query) {
   };
 }
 
-
+//edits the category state
 export function editCategory(category) {
-    console.log('category searched', category)
+  console.log('category searched', category)
   return {
     type: EDIT_CATEGORY,
     category: category
   };
 }
 
-
+//edits the price state
 export function editPrice(sort) {
-    console.log('Price searched', sort)
+  console.log('Price searched', sort)
   return {
     type: EDIT_PRICE,
     price: sort
   };
 }
 
+//edits the page state
 export function editPage(page) {
-    console.log('Page searched', page)
+  console.log('Page searched', page)
   return {
     type: EDIT_PAGE,
     page: page

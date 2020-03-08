@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { editCategory, fetchProducts } from '../actions/index';
+import { editCategory } from '../actions/index';
 
 //controlls the Categories drop down
 function CategoryFilters(props) {
@@ -9,7 +9,6 @@ function CategoryFilters(props) {
   const onFormSubmit = function (event) {
     //sends the new category to actions
     props.editCategory(`&category=${event.target.value}`)
-    props.fetchProducts(props.QueryRequests)
   }
 
   return (
@@ -36,17 +35,10 @@ function CategoryFilters(props) {
   )
 }
 
-function mapStateToProps(state) {
-  console.log('this is data from products', state)
-  return state;
-}
-
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    editCategory, fetchProducts
+    editCategory
   }, dispatch);
 }
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryFilters);
+export default connect(null, mapDispatchToProps)(CategoryFilters);

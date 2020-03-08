@@ -17,8 +17,8 @@ function PriceSort(props) {
     <div className='col'>
       <select onChange={onFormSubmit} className="custom-select custom-select-sm">
         <option value="" selected>Price</option>
-        <option value="Highest">Highest to Lowest</option>
-        <option value="Lowest">Lowest to Highest</option>
+        <option value="highest">Highest to Lowest</option>
+        <option value="lowest">Lowest to Highest</option>
       </select>
     </div>
   )

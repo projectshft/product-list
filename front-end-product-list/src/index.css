@@ -119,3 +119,14 @@ body {
 #product-category {
   margin-right: 15px;
 }
+
+/* #search-button {
+  margin-right: 10px;
+} */
+
+#category-text {
+ padding-top: 7px;
+ padding-left: 10px;
+ padding-right: 10px;
+ font-family: Calibri;
+}

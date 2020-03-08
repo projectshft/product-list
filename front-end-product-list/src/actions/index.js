@@ -8,12 +8,16 @@ export function fetchProducts(query) {
 
   let search = ""
 
-  if (query.category && query.price) {
-    search = `${search}category=${query.category}&price=${query.price}`
-  } else if (query.category) {
-    search = `${search}category=${query.category}`
-  } else if (query.price) {
-    search = `${search}price=${query.price}`
+  if (query.category) {
+    search = `${search}&category=${query.category}`
+  } 
+
+  if (query.price) {
+    search = `${search}&price=${query.price}`
+  } 
+  
+  if (query.page) {
+    search = `${search}&page=${query.page}`
   }
 
   let url = `${ROOT_URL}products?${search}`

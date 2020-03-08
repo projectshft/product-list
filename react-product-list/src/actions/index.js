@@ -6,10 +6,12 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const EDIT_CATEGORY = 'EDIT_CATEGORY';
 export const EDIT_PAGE = 'EDIT_PAGE';
 export const EDIT_PRICE = 'EDIT_PRICE';
+export const EDIT_SEARCH = 'EDIT_SEARCH';
 
 export function fetchProducts(query) {
   //sets url with and breaks down the query state
-  const url = `${ROOT_URL}` + query.page + query.category + query.price
+  const url = `${ROOT_URL}` + query.page + query.category + query.price + query.search
+  console.log(url)
   const request = axios.get(url)
     .catch(function (error) {
       if (error.response) {
@@ -46,5 +48,14 @@ export function editPage(page) {
   return {
     type: EDIT_PAGE,
     page: page
+  };
+}
+
+//edits the page state
+export function editSearch(term) {
+  console.log('searched', term)
+  return {
+    type: EDIT_SEARCH,
+    search: term
   };
 }

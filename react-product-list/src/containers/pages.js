@@ -28,7 +28,7 @@ class Pages extends Component {
     let buttonsHTML = []
     //loops through how many pages there are and creates a button for each page
     for (let i = 1; i <= pages; i++) {
-      buttonsHTML.push(<button className='button' type='onSubmit' onClick={this.onFormSubmit} key={i} value={i}>{i}</button>)
+      buttonsHTML.push(<button className='button' type='onSubmit' onClick={this.onFormSubmit.bind(this)} key={i} value={i}>{i}</button>)
     }
     //returns JSX to be rendered in render()
     return (

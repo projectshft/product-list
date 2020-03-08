@@ -1,8 +1,6 @@
-import { EDIT_CATEGORY } from '../actions/index';
-import { EDIT_PAGE } from '../actions/index';
-import { EDIT_PRICE } from '../actions/index';
+import { EDIT_CATEGORY, EDIT_SEARCH, EDIT_PAGE, EDIT_PRICE } from '../actions/index';
 
-export default function (state = { page: 'page=1', category: '', price: '' }, action) {
+export default function (state = { page: 'page=1', category: '', price: '', search:'' }, action) {
     switch (action.type) {
         case EDIT_PAGE:
             return Object.assign({}, state, {
@@ -11,11 +9,17 @@ export default function (state = { page: 'page=1', category: '', price: '' }, ac
         case EDIT_CATEGORY:
             return Object.assign({}, state, {
                 page: 'page=1',
-                category: action.category
+                category: action.category,
             })
         case EDIT_PRICE:
             return Object.assign({}, state, {
+                page: 'page=1',
                 price: action.price
+            })
+        case EDIT_SEARCH:
+            return Object.assign({}, state, {
+                page: 'page=1',
+                search: action.search
             })
         default:
             return state;

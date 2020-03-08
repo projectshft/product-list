@@ -1,8 +1,8 @@
-import { FETCH_CATEGORY } from "../actions";
+import { FETCH_PRODUCTS } from "../actions";
 
 export default function(state = [], action) {
   switch (action.type) {
-    case FETCH_CATEGORY:
+    case FETCH_PRODUCTS:
       return action.payload.data;
     default:
       return state;

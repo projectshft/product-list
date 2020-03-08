@@ -28,6 +28,7 @@ class Products extends Component {
 }
 
 function mapStateToProps( { products } ) {
+    console.log('products', products)
   return{
 	products
   } 

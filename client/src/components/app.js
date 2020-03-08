@@ -2,6 +2,7 @@
 import { Component } from 'react';
 
 import Search from '../containers/search';
+import CategorySearch from '../containers/category-search';
 import PriceSearch from '../containers/price-search';
 import Products from '../containers/products';
 
@@ -12,6 +13,7 @@ export default class App extends Component {
         <h1 style={{textAlign: "center" }}>PRODUCTS</h1>
         <div className="row">
         <Search />
+        <CategorySearch />
         <PriceSearch />
         </div>
         <div className="row">

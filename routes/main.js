@@ -172,6 +172,22 @@ router.delete("/reviews/:review", (req, res, next) => {
 
 })
 
+router.get("/search", (req, res, next) => {
+  let query = req.query.query.charAt(0).toUpperCase() + req.query.query.substring(1)
+
+  Product.find({"name" : {$regex : `.*${query}.*`}}).limit(9).exec((err, products) => {
+    if (err) throw err
+    else {
+      Product.find({"name" : {$regex : `.*${query}.*`}}).count().exec((err, count) => {
+        if (err) throw err
+        else {
+          res.send({products: products, count: count})
+        }
+      })
+    }
+  })
+})
+
 router.post("/")
 
 module.exports = router

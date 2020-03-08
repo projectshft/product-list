@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchProducts, searchCategory, searchPrice, productSearch } from "../actions";
+import { fetchProducts, searchCategory, searchPrice, productSearch } from "../actions/index";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PropTypes from 'prop-types'
 import ProductItem from './product-item';
@@ -19,7 +19,7 @@ class Products extends Component {
       };  
     }
     componentDidMount() {
-      this.props.fetchProducts();
+      this.props.fetchProducts(this.props.searchRequests)
     }
 
     onPageChanged = data => {
@@ -75,52 +75,37 @@ class Products extends Component {
           currentPage: Number(e.target.id)
         });
     }
-
-    getCategory = (e) => {
-      this.props.searchCategory(`&category=${ e.target.value }`)
-      this.props.fetchProducts(this.props.searchRequests)
-    }
+    
     render() {
-
       return (
           <div className='container mb-5'>
-          <div className='col'>
-          <select onChange={this.getCategory} className="custom-select custom-select-sm">
-            <option value="Categories">Categories</option>
-            <option value="Grocery">Grocery</option>
-            <option value="Electronics">Electronics</option>
-            {/*props.map((item) => (
-              <option value={`${item.category}`}>{`${item.category}`}</option>
-            ))*/}
-          </select>
-        </div>
             {/*products.map(({ _id, ...otherProductProps }) => (
               <ProductsPreview key={_id} {...otherProductProps} />
             ))*/}
-
-                  {/*products
-                    .filter((item, idx) => idx < 4)
-                    .map(({ _id, ...otherItemProps }) => (
-                      <ProductItem key={_id} {...otherItemProps} />
-                    ))*/}
-            <div class="row">
+            {/*products
+              .filter((item, idx) => idx < 4)
+              .map(({ _id, ...otherItemProps }) => (
+                <ProductItem key={_id} {...otherItemProps} />
+              ))*/}
+            <div className="row">
               {  this.dataView() }
-            </div>
-                    
+            </div>                   
             <div className="container mb-5">
+                <div className="row justify-content-center">
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
                       { this.paginationNumbers() }
                     </ul>
                   </nav>
+                </div>
             </div>
           </div>
       );
     }
   }
   
-  function mapStateToProps(  { products } ) {
-    return  { products };
+  function mapStateToProps(  products ) {
+    return  products 
   }
 
   function mapDispatchToProps(dispatch) {

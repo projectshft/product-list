@@ -8,7 +8,6 @@ function CategorySearch(props){
       //const { products } = this.props
       const getCategory = (e) => {
         props.searchCategory(`&category=${ e.target.value }`)
-        props.fetchProducts(props.searchRequests)
       }
       return (
         <div className='col'>
@@ -24,8 +23,12 @@ function CategorySearch(props){
       )
 }
 
+function mapStateToProps(  products ) {
+  return  products 
+}
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ searchCategory, fetchProducts }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(CategorySearch);
+export default connect(mapStateToProps, mapDispatchToProps)(CategorySearch);

@@ -22,12 +22,12 @@
       font-size: 18px;
   
       .name {
-        width: 90%;
+        width:60%;
         margin-bottom: 15px;
       }
   
       .price {
-        width: 10%;
+        width: 40%;
       }
     }
   }
@@ -84,4 +84,7 @@
   }
   ul.pagination a.page-link:hover {
     background-color: #f4f4f4;
+  }
+  .page-link {
+    display: inline-block;
   }

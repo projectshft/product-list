@@ -45,8 +45,9 @@ router.get('/products', (req, res, next) => {
     const page = req.query.page
     const category =  req.query.category 
     const price = req.query.price
+    const productName = req.query.name
 
-    if(!page && !category && !price) {
+    if(!page && !category && !price && !productName) {
         Product.find({})
         .skip((perPage * page) - perPage)
         .limit(perPage)
@@ -54,10 +55,25 @@ router.get('/products', (req, res, next) => {
             // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
             Product.count().exec((err, count) => {
                 if (err) return next(err)
-                console.log('All products: ' + products)
+                //console.log('All products: ' + products)
                 res.send(products)
             })
         })
+    }
+    //console.log(string.includes(substring));
+    if( productName ) {
+        Product.find({})
+            .exec((err, products) => {               
+                Product.count().exec((err, count) => {
+                    if (err) return next(err)
+                    let result = products.filter((item) => {
+                        //console.log(item.name)
+                        return item.name.toUpperCase().includes(productName.toUpperCase())
+                    })
+                    //console.log('From name: ' + result)
+                    res.send(result)
+                })
+            })
     }
 
     //We'll want the user (or client) to be able to pass in the following endpoint: /products?page=3
@@ -69,7 +85,7 @@ router.get('/products', (req, res, next) => {
                 // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
                 Product.count().exec((err, count) => {
                     if (err) return next(err)
-                    console.log('From page: ' + products)
+                    //console.log('From page: ' + products)
                     res.send({products: products, count: count})
                 })
             })
@@ -80,7 +96,7 @@ router.get('/products', (req, res, next) => {
             .exec((err, products) => {
                 Product.count().exec((err, count) => {
                     if (err) return next(err)
-                    console.log('From category: ' + products)
+                    //console.log('From category: ' + products)
                     res.send(products)
                 })
             })
@@ -93,7 +109,7 @@ router.get('/products', (req, res, next) => {
 
         Product.find({}, (err, products) => {
             if (err) return next(err)
-            console.log('Sorted products')
+            //console.log('Sorted products')
             res.send(products)
         }).sort(mysort);
     }

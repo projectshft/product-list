@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const ReviewSchema = new Schema({
-  _id: Schema.Types.ObjectId,
+  //_id: Schema.Types.ObjectId,
   userName: String,
   text: String,
   product: { type: Schema.Types.ObjectId, ref: 'product' }

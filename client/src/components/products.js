@@ -2,24 +2,22 @@ import _ from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchProducts } from "../actions";
+import { fetchProducts, searchCategory, searchPrice, productSearch } from "../actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Pagination from './pagination';
 import PropTypes from 'prop-types'
 import ProductItem from './product-item';
 import '../App.css';
 import './styles.scss';
 
-class HomePage extends Component {
+class Products extends Component {
     constructor(props) {
       super(props);
   
       this.state = { 
         currentPage: 1,
-        itemsOnPage: 2
+        itemsOnPage: 3
       };  
     }
-
     componentDidMount() {
       this.props.fetchProducts();
     }
@@ -46,8 +44,8 @@ class HomePage extends Component {
             <ProductItem key={_id} {...otherItemProps} />
           ))
 
-        return renderItems;
-      }
+      return renderItems;
+    }
 
     paginationNumbers = () =>{
       const { products } = this.props;
@@ -60,7 +58,7 @@ class HomePage extends Component {
   
       const numbers = pagesToNumbers.map(number => {
         return (
-            <li className="waves-effect"
+            <li className="page-link"
               key={number} 
               id={number} 
               onClick={this.handleClick}>
@@ -78,34 +76,44 @@ class HomePage extends Component {
         });
     }
 
+    getCategory = (e) => {
+      this.props.searchCategory(`&category=${ e.target.value }`)
+      this.props.fetchProducts(this.props.searchRequests)
+    }
     render() {
 
       return (
-          <div className='shop-page'>
+          <div className='container mb-5'>
+          <div className='col'>
+          <select onChange={this.getCategory} className="custom-select custom-select-sm">
+            <option value="Categories">Categories</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Electronics">Electronics</option>
+            {/*props.map((item) => (
+              <option value={`${item.category}`}>{`${item.category}`}</option>
+            ))*/}
+          </select>
+        </div>
             {/*products.map(({ _id, ...otherProductProps }) => (
               <ProductsPreview key={_id} {...otherProductProps} />
             ))*/}
-            <div className='collection-preview'>
-                <div className='preview'>
+
                   {/*products
                     .filter((item, idx) => idx < 4)
                     .map(({ _id, ...otherItemProps }) => (
                       <ProductItem key={_id} {...otherItemProps} />
                     ))*/}
-                    {  this.dataView() }
-                </div>
+            <div class="row">
+              {  this.dataView() }
             </div>
-
+                    
             <div className="container mb-5">
-            <div className="row d-flex flex-row py-5">
-    
-              <div className="w-100 px-4 py-5 d-flex flex-row flex-wrap align-items-center justify-content-between">
-                <div className="d-flex flex-row py-4 align-items-center">testing 
-                  { this.paginationNumbers() }
-                </div>
-              </div>
+                  <nav aria-label="Page navigation example">
+                    <ul className="pagination">
+                      { this.paginationNumbers() }
+                    </ul>
+                  </nav>
             </div>
-          </div>
           </div>
       );
     }
@@ -116,7 +124,7 @@ class HomePage extends Component {
   }
 
   function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchProducts }, dispatch);
+    return bindActionCreators({ fetchProducts, searchCategory, searchPrice, productSearch }, dispatch);
   }
   
-  export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+  export default connect(mapStateToProps, mapDispatchToProps)(Products);

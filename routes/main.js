@@ -46,17 +46,19 @@ router.get('/products', (req, res, next) => {
     const category =  req.query.category 
     const price = req.query.price
 
-    Product.find({})
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-        Product.count().exec((err, count) => {
-            if (err) return next(err)
-            console.log('From page: ' + products)
-            res.send(products)
+    if(!page && !category && !price) {
+        Product.find({})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec((err, products) => {
+            // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+            Product.count().exec((err, count) => {
+                if (err) return next(err)
+                console.log('All products: ' + products)
+                res.send(products)
+            })
         })
-    })
+    }
 
     //We'll want the user (or client) to be able to pass in the following endpoint: /products?page=3
     if(page) {
@@ -68,7 +70,7 @@ router.get('/products', (req, res, next) => {
                 Product.count().exec((err, count) => {
                     if (err) return next(err)
                     console.log('From page: ' + products)
-                    res.send(products)
+                    res.send({products: products, count: count})
                 })
             })
     }
@@ -86,7 +88,7 @@ router.get('/products', (req, res, next) => {
     //localhost:8000/products?page=1&category=tools&price=highest
     //localhost:8000/products?page=1&category=tools&price=lowest
     if(price) {
-        let mysort = price == 'highest' ? {price: 1} : ( price == 'lowest' ? {price: -1} : '');
+        let mysort = price == 'highest' ? {price: -1} : ( price == 'lowest' ? {price: 1} : '');
         //sort product by price //.sort({ price: 1 })
 
         Product.find({}, (err, products) => {
@@ -140,7 +142,7 @@ router.post('/products', (req, res, next) => {
     product.reviews = []
 
     product.save((err , result) => {
-        if (err) throw err
+        if (err) return next(err);
         console.log(`Product posted: ${result}`);
     })
     res.send(product)
@@ -162,7 +164,7 @@ router.post('/products/:product/reviews', (req, res, next) => {
             //console.log(product._id)
 
             review.save((err , result) => {
-                if (err) throw err
+                if (err) return next(err);
                 //console.log(`Review posted: ${result}`);
                 reviewId = { '_id': new ObjectId(result._id)};
             })
@@ -197,7 +199,7 @@ router.delete('/reviews/:review', (req, res, next) => {
             { _id: review.product},
             {'$pull': { 'reviews': review._id } }
           ).exec((err , result) => {
-            if (err) throw err
+            if (err) return next(err);
             console.log('Review id removed from product successfully!');
         });
 

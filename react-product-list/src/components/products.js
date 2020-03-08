@@ -2,17 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Pages from '../containers/pages';
 import {bindActionCreators} from 'redux';
-import {fetchProducts, editCategory, editPrice, editPage} from '../actions/index';
+import {fetchProducts} from '../actions/index';
 
 
 
 class Products extends Component {
 
-  renderProduct(productData) {
-    console.log(productData)
+  componentDidMount() {
+    this.props.fetchProducts(this.props.QueryRequests)
+  }
 
+  renderProduct(productData) {
     return (
-      <div className='col product'>
+      <div className='col product' key={productData._id}>
         <div className='row justify-content-center'>
           <h6 className='category'>Category:{productData.category}</h6>
           <h5 className='price'>${productData.price}</h5>
@@ -45,13 +47,14 @@ class Products extends Component {
           <div className="products">
           </div>
           <div className='row'>
-            <Pages count={this.props.ProductInfo[0]} />
+            <Pages pages={this.props.ProductInfo[0]} />
           </div>
         </div>
       )
     }
   }
 }
+
 
 function mapStateToProps(state) {
   console.log('this is data from products', state)
@@ -61,7 +64,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-      fetchProducts, editCategory, editPrice, editPage
+    fetchProducts
   }, dispatch);
 }
 

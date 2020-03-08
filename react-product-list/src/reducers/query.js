@@ -10,6 +10,7 @@ export default function(state = {page:'page=1', category:'', price:''}, action) 
             })
     case EDIT_CATEGORY:
         return Object.assign({}, state, {
+        page:'page=1',
         category: action.category
         })
     case EDIT_PRICE:

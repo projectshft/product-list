@@ -1,59 +1,51 @@
 import React from 'react';
-import { Component } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {fetchProducts} from '../actions/index';
+import {editPage, fetchProducts} from '../actions/index';
 import '../index.css';
 
 
 
-class Pages extends Component {
+function Pages (props){
 
-  constructor(props) {
-    super(props);
-    console.log(this.props.count)
-    this.state = {
-      pages:0
-    }
+  
 
-    //this.onInputChange = this.onInputChange.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.fetchProducts()
-  }
-
-  onFormSubmit(event) {
+  const onFormSubmit =function(event) {
     const queryPage = `page=${event.target.value}`
-    this.props.fetchProducts(queryPage)
+    props.editPage(queryPage)
+    props.fetchProducts(props.QueryRequests)
   }
 
-  renderOneButton(){
+  const renderOneButton= function(){
+    console.log('count', props.pages)
     let buttonsHTML = []
-    for (let i=1; i<=this.props.pages; i++){
-    buttonsHTML.push(<button className='button' type='onSubmit' onClick={this.onFormSubmit} value={i}>{i}</button>)
+    for (let i=1; i<=props.pages; i++){
+    buttonsHTML.push(<button className='button' type='onSubmit' onClick={onFormSubmit} key={i} value={i}>{i}</button>)
     }
     return(
       <div>{buttonsHTML}</div>
     )
   }
 
-  render() {
     return(
         <div className='pages'>
-          {this.renderOneButton()}
+          {renderOneButton()}
         </div>
     )
   }
+
+
+function mapStateToProps(state) {
+  console.log('this is data from products', state)
+  return state;
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-      fetchProducts
+      editPage, fetchProducts
   }, dispatch);
 }
 
 
 
-export default connect(null, mapDispatchToProps)(Pages);
+export default connect(mapStateToProps, mapDispatchToProps)(Pages);

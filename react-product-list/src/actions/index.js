@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = 'http://localhost:8000/products'
+const ROOT_URL = 'http://localhost:8000/products?'
 
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const EDIT_CATEGORY = 'EDIT_CATEGORY';
@@ -9,11 +9,13 @@ export const EDIT_PRICE = 'EDIT_PRICE';
 
 export function fetchProducts(query) {
     console.log('query', query)
-  const url = `${ROOT_URL}`
-  const request = axios.get(url)
+    
+    const url = `${ROOT_URL}`+ query.page + query.category + query.price
+    console.log(url)
+    const request = axios.get(url)
     .catch(function (error) {
       if (error.response) {
-        console.log(error)
+        return console.log(error)
       }
     });
   return {

@@ -5,13 +5,13 @@ import ProductList from '../containers/productList';
 import Navbar from '../containers/navbar';
 import '../index.css';
 
-
+//  <Navbar />
 export default class App extends Component {
   render() {
     return (
-      <div className="row d-flex" >
+      <div className="row d-flex justify-content-center" >
         <div>
-        <Navbar />
+        
         </div>
         <div id="main-view" className="container">
         <ProductList  />

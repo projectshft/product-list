@@ -2,17 +2,25 @@ import axios from "axios";
 
 export const FETCH_PRODUCTS = "fetch_products";
 
-/* This builds up the url used to fetch the correct products,
-   fetches those products, then passes along the requested data
-   to the reducer */
-
 export async function fetchProducts(query = {}) {
   let url = 'http://localhost:8000/products';
-  
+  let previousQuery = false;
+
+  // query filter and request
+  console.log(' query params inside action call ', query) 
+  for (let key in query) {
+    if (previousQuery) {
+      url += `&${key}=${query[key]}`;
+    } else {
+      url += `?${key}=${query[key]}`; 
+      previousQuery = true;
+    }
+  }
 
   const request = await axios.get(url);
-  const {  products, total, pages, page, limit } = request.data;  
+  const {  products, total, pages, page, category, limit } = request.data;  
   console.log('inside action-index ',request.data) 
+  console.log('inside action-index ',request.data.products[0].category) 
   return {
     type: FETCH_PRODUCTS,
     payload: request,
@@ -20,9 +28,24 @@ export async function fetchProducts(query = {}) {
     total,
     pages,
     page,
+    category,
     limit
   };
 }
+
+
+// export const GET_CATEGORIES = 'GET_CATEGORIES';
+// export const getCategories = () => {
+//   let url = rootURL + '/products/categories';
+//   const request = axios.get(url, {
+//     headers: { 'Content-Type': 'application/json' }
+//   });
+//   return {
+//     type: GET_CATEGORIES,
+//     payload: request
+//   };
+// };
+
 
 
 // import axios from 'axios';

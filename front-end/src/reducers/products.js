@@ -10,6 +10,7 @@ export default function(state = {}, action) {
         products: action.products,
         total: action.total,
         limit: action.limit,
+        categories: action.categories,
         page: action.page,
         pages: action.pages
       };

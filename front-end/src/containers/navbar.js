@@ -1,17 +1,48 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {fetchMakeUp, resetMakeUp} from '../actions/index';
+import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../actions';
 import '../index.css';
 
+export default function CategoryList(props) {
+    const {
+        categoryOptions,
+        selectedCategory,
+        onChangeCategory,
+        
+    } = props
+    return (
+        <div>
+              <select value={selectedCategory} onChange={onChangeCategory}>
+                  {categoryOptions.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                  ))}
+              </select>
 
-const navigationBar = () => (
-    <h1 className="text-danger">navigation bar</h1>
-  )
+        </div>
+    )
+}
 
 
 
-export default navigationBar
+
+
+
+
+
+
+
+
+// const navigationBar = () => (
+//     <h1 className="text-danger">navigation bar</h1>
+//   )
+
+// //   useEffect(() => {
+// //    // fetchProducts()
+// //     .then(data => console.log( 'inside nav-bar  ', data))
+// // }, [])
+
+// export default navigationBar
 
 // class Filters extends Component {
 

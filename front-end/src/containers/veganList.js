@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component, useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../actions';
+import '../index.css';
 
 
-class VeganMakeUpList extends Component {
+class NavigationBar extends Component {
 
- renderVeganMakeUp (makeUpData) {
-   let newMakeUpData = Object.values(makeUpData);
+ renderCategoryList (data) {
+   let categoryList = Object.values(data);
    // Filter the data to check for products that are vegan and not natural
-   let vegan = makeUpData.filter(m => m.tag_list.includes("Vegan")&& !m.tag_list.includes("Natural"))
+   let vegan = data.filter(m => m.tag_list.includes("Vegan")&& !m.tag_list.includes("Natural"))
      return (
 
                 vegan.map(m => (
@@ -44,4 +47,4 @@ function mapStateToProps({ makeUp }) {
   return { makeUp };
 }
 
-export default connect(mapStateToProps)(VeganMakeUpList);
+export default connect(mapStateToProps)(NavigationBar);

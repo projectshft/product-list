@@ -59,7 +59,6 @@ router.get('/products', (request, response, next) => {
           response.writeHead(404);	
           return response.end("Could not find products in that category.");
         } else{
-          response.writeHead(200);
           response.send(products)
         }
       })
@@ -73,7 +72,6 @@ router.get('/products', (request, response, next) => {
           response.writeHead(404);	
           return response.end("Could not find products in that category.");
         } else{
-          response.writeHead(200);
           response.send(products)
         }
       })
@@ -89,7 +87,6 @@ router.get('/products', (request, response, next) => {
           response.writeHead(404);	
           return response.end("Could not find products in that category.");
         } else{
-          response.writeHead(200);
           response.send(products)
         }
       })
@@ -107,7 +104,6 @@ router.get('/products', (request, response, next) => {
           if(error){
             if (err) throw err
           }
-          response.writeHead(200);
           response.send(products)
         })
       })
@@ -123,7 +119,6 @@ router.get('/products', (request, response, next) => {
           if(error){
             if (err) throw err
           }
-          response.writeHead(200);
           response.send(products)
         })
       })
@@ -143,7 +138,6 @@ router.get('/products', (request, response, next) => {
           if(error){
              return next(error)
           }
-          response.writeHead(200);
           response.send(products)
         })
       })

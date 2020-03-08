@@ -13,23 +13,33 @@ class Category extends Component {
       // price: ''
     };
 
-    this.onCategoryChange = this.onCategoryChange.bind(this);
+    // this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onCategoryClick = this.onCategoryClick.bind(this);
 
     // this.onPriceChange = this.onPriceChange.bind(this);
     // this.onPriceClick = this.onPriceClick.bind(this);
   }
 
-  onCategoryChange(event) {
-    console.log(event.target.value)
-    this.setState({ category: event.target.value });
-  }
+  // onCategoryChange(event) {
+  //   console.log(event.target.value)
+  //   this.setState({ category: event.target.value });
+  //   event.preventDefault();
+  //   console.log(event)
+  //   this.props.fetchCategory(this.state.category);
+  //   this.setState({ category: ''});
+  // }
 
   onCategoryClick(event) {
+    console.log(event.target.value)
+    this.setState({ category: event.target.value });
     event.preventDefault();
-
+    console.log(event)
     this.props.fetchCategory(this.state.category);
     this.setState({ category: ''});
+    // event.preventDefault();
+    // console.log(event)
+    // this.props.fetchCategory(this.state.category);
+    // this.setState({ category: ''});
   }
 
   // onPriceChange(event) {
@@ -51,9 +61,9 @@ class Category extends Component {
           <label className="col-form-label" style={{paddingRight: "5px", paddingLeft: "30px"}}>Search</label>
           <input className="form-control form-control-sm" id="inputSearch"/>
         </form>
-        <form onClick={this.onCategoryClick} className="input-group" style={{margin: "10px"}}>
-        <select className="form-control form-control-sm" onChange={this.onCategoryChange} value={this.state.category}>
-            <option value="Baby">Baby</option>
+        <form className="input-group" style={{margin: "10px"}}>
+        <select onClick={this.onCategoryClick} value={this.state.category} className="form-control form-control-sm">
+            <option onChange={this.onCategoryChange} value={this.state.category} value="Baby">Baby</option>
             <option value="Garden">Garden</option>
         </select>
         </form>
@@ -69,7 +79,7 @@ class Category extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchCategory}, dispatch);
+  return bindActionCreators({ fetchCategory }, dispatch);
 }
 
 export default connect(

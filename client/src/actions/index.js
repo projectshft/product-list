@@ -10,7 +10,7 @@ export function fetchCategory(category) {
   const url = `${ROOT_URL}?page=1&category=${category}`
   const request = axios.get(url)
 
-
+  console.log(FETCH_CATEGORY)
   return {
     type: FETCH_CATEGORY,
     payload: request

@@ -14,11 +14,24 @@ class ProductList extends Component {
     await
     this.props.fetchProducts({})
   }
+  renderNavigation() {
+    return (
+      <div>
+      <form class="search-form col-md-6">
+        <div class="form-group">
+        <div class="input-group">
+          <input type="text" id="search-input" class="form-control" placeholder="Search Products"></input>
+          <button type="button" class="btn btn-danger search">Search</button>
+        </div>
+      </div>
+    </form>
+    </div>
+    )
+  }
 
   renderProducts(productList) {
     console.log(productList)
     return (
-
       productList.products.map(p => (
           <div className="col-md-4">
             <div className="card-container">
@@ -45,8 +58,9 @@ class ProductList extends Component {
     return(
       <div id="main-view" className="container">
         <hr></hr>
+        <div>{this.props.products.map(this.renderNavigation)}</div>
          <div className="row">
-        <span><h1>{this.props.products.map(this.renderProducts)}</h1></span>
+         <div>{this.props.products.map(this.renderProducts)}</div>
         </div>
       </div>
     )

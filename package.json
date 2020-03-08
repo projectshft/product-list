@@ -18,9 +18,17 @@
   },
   "homepage": "https://github.com/katygrahamm/product-list#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
+    "bootstrap": "^4.4.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "faker": "^4.1.0",
-    "mongoose": "^5.9.3"
+    "mongoose": "^5.9.3",
+    "react-bootstrap": "^1.0.0-beta.17",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5",
+    "redux-promise": "^0.6.0"
   }
 }

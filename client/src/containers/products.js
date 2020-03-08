@@ -21,9 +21,7 @@ class Products extends Component {
   render() {
     return (
         <div className="container">
-    	<div className="row-col-4">
             {this.renderList()}
-    	</div>
         </div>
     );
   }

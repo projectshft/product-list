@@ -1,9 +1,9 @@
-import { FETCH_CATEGORY } from "../actions";
+import { PRICE_SEARCH } from "../actions";
 
-export default function(state = [], action) {
+export default function(state = {price:''}, action) {
   switch (action.type) {
-    case FETCH_CATEGORY:
-      return action.payload.data;
+    case PRICE_SEARCH:
+      return Object.assign({}, state, {price: action.price});
     default:
       return state;
   }

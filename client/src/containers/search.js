@@ -56,12 +56,6 @@ class Search extends Component {
             <option value="Garden">Garden</option>
         </select>
         </form>
-        <form  className="input-group" style={{margin: "10px"}}>
-        <select className="form-control form-control-sm">
-            <option value="Highest">Highest to Lowest</option>
-            <option value="Lowest">Lowest to Highest</option>
-        </select>
-        </form>
       </div>
     );
   }

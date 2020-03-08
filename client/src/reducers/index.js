@@ -3,7 +3,7 @@ import SearchReducer from "./reducer-search";
 import ProductsReducer from "./reducer-products";
 
 const rootReducer = combineReducers({
-  category: SearchReducer,
+  searchRequests: SearchReducer,
   products: ProductsReducer
 });
 

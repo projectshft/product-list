@@ -27,14 +27,12 @@ class ProductList extends Component {
   }
 
   handleFilterClickEvent() {
-    console.log(this.state.category)
     let query = { category: this.state.category, price: this.state.price}
     this.props.fetchProducts(query)
   }
 
   handlePageClick() {
     let query = { page: this.state.page.number }
-    console.log(query)
     this.props.fetchProducts(query)
   }
 
@@ -94,7 +92,6 @@ class ProductList extends Component {
 
     let pageNumbers = [];
     let count = this.props.productList[0].count
-console.log(count)
 
     for (let i = 1; i <= Math.ceil(count / 9); i++) {
       pageNumbers.push(i);
@@ -151,21 +148,21 @@ console.log(count)
   render() {
     return(
       <div id="main-view" className="container">
-        <hr></hr>
-         <div>{this.renderSearch()}</div>
-          <div className="row">
-            <div className="col-12">
-              {this.renderProducts()}
-            </div>
-          </div>
-          <br></br>
-         <div className="col-md-6 offset-md-3">
-         <nav aria-label="Page navigation example">
-         <ul class="pagination justify-content-center pagination-lg">
-           {this.renderPageNumbers()}
-         </ul>
-         </nav>
+       <hr></hr>
+      <div>{this.renderSearch()}</div>
+      <div className="row">
+        <div className="col-12">
+           {this.renderProducts()}
         </div>
+      </div>
+      <br></br>
+      <div className="col-md-6 offset-md-3">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center pagination-lg">
+           {this.renderPageNumbers()}
+          </ul>
+        </nav>
+       </div>
       </div>
     )
   }

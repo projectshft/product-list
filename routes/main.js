@@ -26,6 +26,8 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
+
+// Get the products and find them by category and sort them by price
 router.get('/products', (req, res, next) => {
   const perPage = 9
   // return the first page by default
@@ -53,12 +55,14 @@ router.get('/products', (req, res, next) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Product.find(query).count().exec((err, count) => {
         if (err) return next(err)
-  
+        
+        // Send back the products and the count
         res.send({products: products, count: count})
       })
     })
 })
 
+// Get products by product id by finding the id and matching it to the params id
 router.get('/products/:product', (req, res, next) => {
   Product.find({ _id: req.params.product}).exec(( err, product) => {
     if(err) {
@@ -69,6 +73,7 @@ router.get('/products/:product', (req, res, next) => {
   })
 })
 
+// Get all the reviews 
 router.get('/reviews', (req, res, next) => {
   const perPage = 40
 
@@ -84,11 +89,13 @@ router.get('/reviews', (req, res, next) => {
       Review.count().exec((err, count) => {
         if (err) return next(err)
 
+        // Send back the reviews and the count
         res.send({reviews: reviews, count: count})
       })
    })
 })
 
+// Post a new product to the database 
 router.post('/products', (req, res, next) => {
 
     let product = new Product({
@@ -107,6 +114,7 @@ router.post('/products', (req, res, next) => {
   })
 })
 
+// Post a new review to the database
 router.post('/:product/reviews', (req, res, next) => {
 
   let review = new Review({
@@ -132,6 +140,7 @@ router.post('/:product/reviews', (req, res, next) => {
     })
   })
 
+  // Delete a product from the database
   router.delete('/products/:product', (req, res, next) => {
     Product.findByIdAndRemove(req.params.product, function (err) {
       if(err) {
@@ -142,21 +151,28 @@ router.post('/:product/reviews', (req, res, next) => {
     })
   })
 
+  // Delete a review from the database
   router.delete('/reviews/:review', (req, res, next) => {
+    // Find review by id
     Review.findById(req.params.review)
+        // Populate product
         .populate('product')
         .exec((err, review) => {
           if (err) {
             res.send(err)
           } else {
+            // If review found then find product by review product id
             Product.findById(review.product.id, function (err, product) {
               if(err) {
                 res.send(err)
               } else {
+                 // Filter the reviews on the product, return reviews that do not match the review id
                  product.reviews = product.reviews.filter((review) => {
                   return review._id != req.params.review
                 })
+                  // Save the product
                   product.save()
+                  // Find the review by id and remove from the database collection
                   Review.findByIdAndRemove(req.params.review, function (err) {
                     if(err) {
                       res.send(err)
@@ -170,15 +186,19 @@ router.post('/:product/reviews', (req, res, next) => {
      })    
   })
 
+  // Get products by search
   router.get('/search', (req, res, next) => {
+    // Capitalize the first letter in the query 
     let search = req.query.query.charAt(0).toUpperCase() + req.query.query.substring(1);
+    // Find the product using a regular expression match
     Product.find({ "name" : { $regex : `.*${search}*.` }}).limit(9).exec(( err, products) => {
       if(err) {
         res.send(err)}
        else {
+        // Find the product count using a regular expression 
         Product.find({ "name" : { $regex : `.*${search}*.` }}).count().exec((err, count) => {
           if (err) return next(err)
-    
+          // Send back the matching products and count
           res.send({products: products, count: count})
         })
        }

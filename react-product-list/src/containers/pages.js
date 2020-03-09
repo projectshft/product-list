@@ -46,7 +46,6 @@ class Pages extends Component {
 
 //Only recieves the query state so that its not in a continually rerendering loop!!!
 function mapStateToProps(state) {
-  console.log('this is data from products', state)
   return state.QueryRequests;
 }
 

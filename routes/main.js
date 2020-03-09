@@ -1,7 +1,8 @@
 const router = require('express').Router()
-const faker = require('faker')
+//const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
+const ObjectId = require('mongoose').Types.ObjectId
 
 
 // router.get('/generate-fake-data', (req, res, next) => {
@@ -34,23 +35,24 @@ const Review = require('../models/review')
 //=============================================================
 
 router.get('/products', (req, res, next) => {
-    const perPage = 9
     // return the first page by default
+    const perPage = 9
     const page = req.query.page || 1
-    let toFind
+
     //if category and search is specified it looks for products with both
+    let toFind
     if (req.query.category && req.query.search) {
-        toFind = { $and: [ { category: req.query.category }, { $text: { $search: req.query.search } } ] }
+        toFind = { $and: [{ category: req.query.category }, { $text: { $search: req.query.search } }] }
     //if just category is specified looks for just that
-    }else if (req.query.category && !req.query.search){
+    } else if (req.query.category && !req.query.search) {
         toFind = { category: req.query.category }
     }
     //if search is specified it puts it in the find query
-    else if(!req.query.category && req.query.search) {
+    else if (!req.query.category && req.query.search) {
         console.log('just search')
         toFind = { $text: { $search: req.query.search } }
     }
-    //if pice highest or lowest is defined. it adds to sort function
+    //if price highest or lowest is defined. it adds to sort function
     let price
     if (req.query.price == 'highest') {
         price = { price: -1 }
@@ -58,6 +60,7 @@ router.get('/products', (req, res, next) => {
         price = { price: 1 }
     }
 
+    //finding products with the search and category parameters, specific page, and sorted if requested
     Product
         .find(toFind)
         .skip((perPage * page) - perPage)
@@ -77,11 +80,23 @@ router.get('/products', (req, res, next) => {
 //returns one product by id number
 //=============================================================
 router.get('/products/:product', (req, res, next) => {
+    //if product id number does not exist
+    if (!req.params.product || !ObjectId.isValid(req.params.product)) {
+        res.status(400);
+        res.send("Missing or invalid id parameter in URL");
+        return res.end();
+    }
+    //searches for product based on id # requested
     Product
         .findById(req.params.product)
         .exec((err, product) => {
             if (err) return next(err)
-            res.send(product)
+            if (product) {
+                res.send(product)
+            } else {
+                res.status(404);
+                return res.end(`product with id ${req.params.product} not found`);
+            }
         })
 })
 
@@ -92,6 +107,7 @@ router.get('/reviews', (req, res, next) => {
     const perPage = 40
     // return the first page by default
     const page = req.query.page || 1
+    //searches for all review but limits to 40
     Review
         .find({})
         .skip((perPage * page) - perPage)
@@ -107,6 +123,19 @@ router.get('/reviews', (req, res, next) => {
 //Post new product to the database
 //=============================================================
 router.post('/products', (req, res, next) => {
+    //check if body  is valid
+    if (!req.body.name ||!req.body.category ||!req.body.price ||!req.body.image||typeof req.body !== 'object' ) {
+        res.status(401);
+        res.send("Products must contain name, category, price, and image URL");
+        return res.end();
+    }
+    //check price is a number above 0
+    if (isNaN(req.body.price) || req.body.price <= 0){
+        res.status(401);
+        res.send("Price must be a number above 0");
+        return res.end(); 
+    }
+    //creating a new product 
     let product = new Product()
     product.category = req.body.category
     product.name = req.body.name
@@ -121,18 +150,35 @@ router.post('/products', (req, res, next) => {
 //Adds a review to a product
 //=============================================================
 router.post('/:product/review', (req, res, next) => {
+    //if product id number does not exist
+    if (!req.params.product || !ObjectId.isValid(req.params.product)) {
+        res.status(400);
+        res.send("Missing or invalid id parameter in URL");
+        return res.end();
+    }
+    //check if body  is valid
+    if (!req.body.userName ||!req.body.text || typeof req.body !== 'object' ) {
+        res.status(401);
+        res.send("Reviews must contain userName and text");
+        return res.end();
+    }
     Product
         .findById(req.params.product)
         .exec((err, product) => {
             if (err) return next(err)
-            let review = new Review()
-            review.userName = req.body.userName
-            review.text = req.body.text
-            review.product = req.params.product
-            review.save()
-            product.reviews.push(review)
-            product.save()
-            res.end()
+            if (product) {
+                let review = new Review()
+                review.userName = req.body.userName
+                review.text = req.body.text
+                review.product = req.params.product
+                review.save()
+                product.reviews.push(review)
+                product.save()
+                res.end()
+            } else {
+                res.status(404);
+                return res.end(`product with id ${req.params.product} not found`);
+            }
         })
 })
 
@@ -140,52 +186,58 @@ router.post('/:product/review', (req, res, next) => {
 //deletes a product
 //=============================================================
 router.delete('/products/:product', (req, res, next) => {
+    //if product id number does not exist
+    if (!req.params.product || !ObjectId.isValid(req.params.product)) {
+        res.status(400);
+        res.send("Missing or invalid id parameter in URL");
+        return res.end();
+    }
     Product
-        .findById(req.params.product)
+        .findByIdAndRemove(req.params.product)
         .exec((err, product) => {
             if (err) return next(err)
-            product.remove()
-                // Review
-                // .update(
-                //     { },
-                //     { $pull: { product: ''} },
-                //     { multi: true }
-                //   )
-                // .exec((err, product) => {
-                //     if (err) return next(err)
-
-                // })
-                res.end()
-            });
+            if (product) {
+                Review.deleteMany({ product: req.params.product })
+                    .exec((err, product) => {
+                        if (err) return next(err);
+                        res.end()
+                    })
+            } else {
+                res.status(404);
+                return res.end(`product with id ${req.params.product} not found`);
+            }
         });
+});
 
 
 //=============================================================
 //Deletes the review
 //=============================================================
 router.delete('/reviews/:review', (req, res, next) => {
-    //remove the review from product
-
-    //filter the array
-    //save the product
-
-
+    //if review id number does not exist
+    if (!req.params.review || !ObjectId.isValid(req.params.review)) {
+        res.status(400);
+        res.send("Missing or invalid id parameter in URL");
+        return res.end();
+    }
+    //find review by id and delete
     Review
-        .findByIdAndRemove(req.params.review)
+        .findById(req.params.review)
         .exec((err, review) => {
             if (err) return next(err)
-            review.remove()
-            Product
-            .findById(review.product)
-            .exec((err, product) => {
-                if (err) return next(err)
-                const reviewThatWasDeleted = product.reviews.filter(function(review){
-                    return review === review._id
-                })
-                reviewThatWasDeleted.remove()
-                product.save()
-                res.end()
-            })
+            if (review) {
+                review.remove()
+                 //update the product without that review
+                Product
+                    .update({ _id: review.product },{ '$pull': { 'reviews': review._id } })
+                    .exec((err, product) => {
+                        if (err) return next(err)
+                        res.end()
+                    })
+            } else {
+                res.status(404);
+                return res.end(`product with id ${req.params.review} not found`);
+            }
         })
 })
 

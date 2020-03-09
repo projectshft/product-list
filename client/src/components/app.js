@@ -10,7 +10,7 @@ export default class App extends Component {
     return (
       <div>
         <h1 style={{textAlign: "center" }}>PRODUCTS</h1>
-        <div className="row">
+        <div className="row" style={{justifyContent: "center"}}>
         <Search />
         <CategorySearch />
         <PriceSearch />

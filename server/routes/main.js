@@ -45,10 +45,12 @@ router.get('/products', (request, response, next) => {
   
   const queryCategory = request.query.category
   const queryPrice = request.query.price
+  const queryProductName = request.query.name
   // return the first page by default
   const page = request.query.page || 1
   const perPage = 9
 
+  //return all products by page count
   if(queryCategory == undefined && queryPrice == undefined){
       Product
       .find({})
@@ -60,16 +62,30 @@ router.get('/products', (request, response, next) => {
           if(error){
              return next(error)
           }
-          response.send({products: products, count: count})
+          response.send(products)
         })
       })
   }
 
+  //return product by search name
+  if( queryProductName !== undefined ) {  
+    Product.find({name: {'$regex': queryProductName}})
+    .limit(perPage)
+    .exec((error, products) => {
+      if (products.length == 0){
+        response.writeHead(404);	
+        return response.end("Could not find products in that category.");
+      } else{
+        response.send(products)
+      }
+    })        
+  }
+
+  //find product by category and sorting by price
   if(queryCategory !== undefined){
     if(queryPrice == 'lowest'){
       Product.find({category: queryCategory})
-      // .skip((perPage * page) - perPage)
-      // .limit(perPage)
+      .limit(perPage)
       .sort({price: 'ascending'})
       .exec((error, products) => {
         if (products.length == 0){
@@ -81,8 +97,7 @@ router.get('/products', (request, response, next) => {
       })
     } else if (queryPrice == 'highest'){
       Product.find({category: queryCategory})
-      // .skip((perPage * page) - perPage)
-      // .limit(perPage)
+      .limit(perPage)
       .sort({price: 'descending'})
       .exec((error, products) => {
         if (products.length == 0){
@@ -97,8 +112,7 @@ router.get('/products', (request, response, next) => {
       return response.end("Could not read query search. Must enter lowest or highest.")
     }else {
       Product.find({category: queryCategory})
-      // .skip((perPage * page) - perPage)
-      // .limit(perPage)
+      .limit(perPage)
       .exec((error, products) => {
         if (products.length == 0){
           response.writeHead(404);	
@@ -113,10 +127,8 @@ router.get('/products', (request, response, next) => {
       Product
       .find({})
       .sort({price: 'ascending'})
-      // .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((error, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.count().exec((error, count) => {
           if(error){
             if (err) throw err
@@ -128,10 +140,8 @@ router.get('/products', (request, response, next) => {
       Product
       .find({})
       .sort({price: 'descending'})
-      // .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((error, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.count().exec((error, count) => {
           if(error){
             if (err) throw err
@@ -146,12 +156,13 @@ router.get('/products', (request, response, next) => {
   }
 })
 
+
+
+
+//get product by id
 router.get("/products/:product", (request, response) => {
   let id = request.params.product
-  // if(id == undefined){
-  // response.writeHead(404);
-  // return response.end("Must search an id.");
-  // }
+
   Product
   .findById(id).exec((error, product) => {
     if (error){

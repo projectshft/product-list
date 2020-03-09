@@ -62,7 +62,6 @@ router.get('/products', (req, res, next) => {
 router.get('/products/:product', (req, res, next) => {
   Product.find({ _id: req.params.product}).exec(( err, product) => {
     if(err) {
-      res.writeHead(500, {'Content-Type': 'text/plain'});
       res.send(err)}
      else {
        res.send(product)
@@ -171,8 +170,20 @@ router.post('/:product/reviews', (req, res, next) => {
      })    
   })
 
- 
-
+  router.get('/search', (req, res, next) => {
+    let search = req.query.query.charAt(0).toUpperCase() + req.query.query.substring(1);
+    Product.find({ "name" : { $regex : `.*${search}*.` }}).limit(9).exec(( err, products) => {
+      if(err) {
+        res.send(err)}
+       else {
+        Product.find({ "name" : { $regex : `.*${search}*.` }}).count().exec((err, count) => {
+          if (err) return next(err)
+    
+          res.send({products: products, count: count})
+        })
+       }
+     })
+  })
 
 
 module.exports = router

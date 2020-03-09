@@ -130,3 +130,7 @@ body {
  padding-right: 10px;
  font-family: Calibri;
 }
+
+.product {
+ float: left;
+}

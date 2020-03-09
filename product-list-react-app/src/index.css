@@ -1,0 +1,54 @@
+body {
+    background-color: #EAEBE7;
+}  
+
+form {
+    display: inline-block
+}
+
+img {
+    width: 23%;
+    height: 23%;
+    margin-left: 33%;
+    margin-top: 5%;
+}
+
+.product {
+    float: left;
+    border: solid;
+    margin: 10px;
+    width: 30%;
+    background-color: white;
+}
+
+.pagination {
+    clear: both; 
+    text-align: center;
+}
+
+.page-title {
+    text-align: center;
+}
+
+.product-name {
+    display: block;
+    margin-left: 15px;
+}
+
+.product-category {
+    margin: 15px;
+}
+
+.product-price {
+    float: right;
+}
+
+.search-bar,
+.category-dropdown,
+.price-sort-dropdown {
+    margin: 10px;
+}
+
+.no-products {
+    text-align: center;
+}

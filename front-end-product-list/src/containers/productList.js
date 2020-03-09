@@ -131,10 +131,8 @@ console.log(count)
                 <div className="pricebox">
                   <p className="price">${p.price}</p>
                 </div>
-                <div className="buybox">
-                  <p className="add-to-cart"> ADD TO CART </p>
-                </div>
                 <div className="card-inner">
+                <br></br>
                 <br></br>
                 <br></br>
                 <h5 id="product-category" className="text-right">Category: {p.category}</h5>

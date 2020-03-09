@@ -3,6 +3,6 @@ import productsReducer from './products';
 import categoryReducer from './category';
 
 const rootReducer = combineReducers({ productsReducer, 
-  categories: categoryReducer, });
+  categoryReducer });
 
 export default rootReducer;

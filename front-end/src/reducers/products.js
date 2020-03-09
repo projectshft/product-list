@@ -20,6 +20,7 @@ export default function(state = {}, action) {
 }
 
 
+
 // import { FETCH_MAKEUP, RESET_MAKEUP } from '../actions/index';
 
 // export default function(state = [], action) {

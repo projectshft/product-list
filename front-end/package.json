@@ -9,7 +9,6 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "cors": "^2.8.5",
-    "lodash": "^4.17.15",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-instagram-embed": "^1.5.0",

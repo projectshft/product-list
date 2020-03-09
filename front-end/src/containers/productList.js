@@ -6,95 +6,85 @@ import ReactPaginate from 'react-paginate';
 
 
 class ProductList extends Component {
+
   componentDidMount() {
     this.props.fetchProducts();
-    
   }
-
-  
 
   // handleClick for pagination change
 
   handlePageClick = (data) => {
-    console.log('clicked')
+    console.log('clicked ', data)
     let pageSelect = { page: data.selected + 1 };
     this.props.fetchProducts(pageSelect);
   };
 
   // query call for price and category selected 
 
-    handleFilters = (e) => {
+  handleFilters = (e) => {
     e.preventDefault();
     let category =
-      document.querySelector('#category').value === 'category'
-        ? ""
-        : document.querySelector('#category').value;
+      document.querySelector('#category').value === 'category'  ? ""  : document.querySelector('#category').value;
     let price =
-      document.querySelector('#price').value === 'price'
-        ? ""
-        : document.querySelector('#price').value;
+      document.querySelector('#price').value === 'price'  ? "" : document.querySelector('#price').value;
     let filterQuery = { category, price };
-    console.log('inside container/productList ',filterQuery)
+    console.log('inside container/productList ', filterQuery)
     this.props.fetchProducts(filterQuery);
   };
+  
 
   render() {
-    const { products, pages } = this.props;
-    console.log('inside container/products.js - render() ' ,this.props) 
+    const { products, pages, category } = this.props;
+    
+    console.log('inside container/products.js - render() ', products)
     return (
 
-      // This section creates the two filter boxes and the submit button
-
-      <div className="container justify-content-center">
+      <div className="container">
         <div className="row filters justify-content-center">
-          <form onSubmit={this.handleFilters, console.log(products)}>
-            <select id="category" defaultValue="category" style={{marginRight: 10}}>
+          <form onSubmit={this.handleFilters} className="">
+            <input id="searchBar" className="form-control search-field shadow" type="search" name="search" placeholder="enter your search"/>
+            <br></br>
+            <a className="font-weight-bold">Sort by: </a><select id="category" defaultValue="category" style={{ marginRight: 10, marginLeft: 10 }}>
               <option value="category" hidden disabled>
-                Select category
+                Category Filter
               </option>
+              <option value="">All products</option>
               <option value="Automotive">Automotive</option>
-              <option value="Baby">Baby</option>
-              <option value="Beauty">Beauty</option>
-              <option value="Books">Books</option>
+              <option value="Movies">Movies</option>
+              <option value="Music">Music</option>            
+              <option value="Sports">Sports</option>             
               <option value="Clothing">Clothing</option>
               <option value="Electronics">Electronics</option>
               <option value="Games">Games</option>
-              <option value="Garden">Garden</option>
-              <option value="Grocery">Grocery</option>
               <option value="Health">Health</option>
               <option value="Home">Home</option>
               <option value="Kids">Kids</option>
-              <option value="Movies">Movies</option>
-              <option value="Music">Music</option>
-              <option value="Outdoors">Outdoors</option>  
-              <option value="Shoes">Shoes</option>
-              <option value="Sports">Sports</option>
               <option value="Tools">Tools</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Books">Books</option>
               <option value="Toys">Toys</option>
             </select>
-            <select id="price" defaultValue="price">
+            <select id="price" defaultValue="price" style={{ marginRight: 10 }}>
               <option value="price" hidden disabled>
                 Sort by Price
               </option>
               <option value="lowest">Lowest to Highest</option>
-              <option value="highest">Highest to Lowest</option>              
+              <option value="highest">Highest to Lowest</option>
             </select>
-            <button className="btn btn-primary btn-sm" type="submit" onClick={console.log('click') }>
+            <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.handleFilters}>
               Filter
             </button>
           </form>
         </div>
 
-        {/* This section creates all of the products listed on the page {product.image}  */ }  
-       
         <div className="row products justify-content-center">
           {products &&
             products.map(product => (
-              <div key={product._id} className="col-md-4">
-                <div className="card my-3 shadow justify-content-center">
+              <div key={product._id} className="col-md-4 ">
+                <div className="card rounded my-3 shadow mb-5 bg-white rounded justify-content-center">
                   <img src="https://images.unsplash.com/photo-1530914547840-346c183410de?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" style={{ width: '100%', height: '60%' }} alt="product" />
-                  <div className="card-body" style={{background: '#eee'}}>
-                    <h4 className="card-title">{product.name}</h4>
+                  <div className="card-body" style={{ background: '#eee' }}>
+                    <h4 className="card-title font-italic">{product.name}</h4>
                     <p className="card-text">
                       <strong>Category: </strong>
                       {product.category}
@@ -108,17 +98,14 @@ class ProductList extends Component {
             ))}
         </div>
 
-        {/* This section handles the pagination of the page */}
-
-        { <div className="row pages">
+        {<div className="row pages ">
           <ReactPaginate
             previousLabel={'Prev'}
             nextLabel={'Next'}
-            breakLabel={'...'}
             breakClassName={'page-link'}
             pageCount={pages}
             marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
+            pageRangeDisplayed={10}
             onPageChange={this.handlePageClick}
             containerClassName={'pagination mx-auto'}
             pageClassName={'page-item'}
@@ -129,7 +116,7 @@ class ProductList extends Component {
             nextClassName={'page-item'}
             nextLinkClassName={'page-link'}
           />
-        </div> }
+        </div>}
       </div>
     );
   }
@@ -149,67 +136,3 @@ const mapDispatchToProps = (dispatch) =>
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
 
-/*
-https://images.unsplash.com/photo-1514218953589-2d7d37efd2dc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2000&q=80
-https://images.unsplash.com/photo-1526887520775-4b14b8aed897?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80
-https://images.unsplash.com/photo-1519669011783-4eaa95fa1b7d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=627&q=80
-https://images.unsplash.com/photo-1520256862855-398228c41684?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80
-https://images.unsplash.com/photo-1513116476489-7635e79feb27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1284&q=80
-https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80
-https://images.unsplash.com/photo-1530914547840-346c183410de?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80
-*/
-
-// import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-
-
-// class NaturalMakeUpList extends Component {
-
-//  renderNaturalMakeUp (makeUpData) {
-//    let newMakeUpData = Object.values(makeUpData);
-//    // Filter the data to check for products that are natural and not vegan
-//    let natural = makeUpData.filter(m => m.tag_list.includes("Natural")&& !m.tag_list.includes("Vegan"))
-//  console.log("natural", natural)
-//      return (
-
-//                 natural.map(m => ( 
-//                     <div className="col-3 makeup-item text-center" key={m.id}>
-//                       <img src={m.image_link} alt="" width="140" height="auto" className="rounded mx-auto d-block"></img>
-//                       <div className="item-name">{m.name}</div>
-//                       <div className="item-brand">{m.brand}</div>
-//                       <div className="price">${parseFloat(m.price).toFixed(2)}</div>
-//                       <button type="button" class="btn btn-outline-info"><a href={m.product_link} className="text-info">Buy it Now</a></button>
-//                       </div>
-
-//                 ))
-
-
-
-//         )
-//       }
-
-// render() {
-//     return (
-//       <div id="main-view" className="container">
-//       <h1 id="natural" className="text-left">Natural Products</h1>
-//         <hr></hr>
-//         <div className="row d-flex ">
-
-
-
-//           {this.props.makeUp.map(this.renderNaturalMakeUp)}
-
-
-//         </div>
-//         </div>
-
-//     );
-//   }
-// }
-
-// function mapStateToProps({ makeUp }) {
-//   console.log('makeup', {makeUp})
-//   return { makeUp };
-// }
-
-// export default connect(mapStateToProps)(NaturalMakeUpList);

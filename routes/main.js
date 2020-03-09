@@ -3,6 +3,7 @@ const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
 
+//GET route from generating fake product data
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
@@ -28,6 +29,9 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
+//GET route for returning products from the server
+//Returns all products or returns products by category
+//Ordered either by order on the server or by price
 router.get('/products', (req, res, next) => {req.query.q
   let queryVal = (parseInt(req.query.page) - 1) || 0
   queryVal = (queryVal * 9)
@@ -59,40 +63,64 @@ router.get('/products', (req, res, next) => {req.query.q
   })
 })
 
+//GET route for returning a single product by product id
 router.get("/products/:productId", (req, res, next) => {
   Product.findOne({_id: req.params.productId}).exec((err, product) => {
     if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.send(err)}
-    else res.json(product)
-  })
-})
-
-router.post("/products", (req, res, next) => {
-  let product = new Product()
-
-  product.category = req.body.category
-  product.name = req.body.productName
-  product.price = req.body.price
-  product.image = req.body.imageUrl
-  product.reviews = []
-
-  product.save((err) => {
-    if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.send(err)
-    } else {
-      res.send("Item succesfully added!")
+    else {
+      Product.findOne({_id: req.params.productId}).count().exec((err, count) => {
+        if (err) {
+          res.send(err)
+        } else if (count == 0) {
+          res.send("No matching products found")
+        } else {
+          res.json(product)
+        }
+      })
     }
   })
 })
 
+//POST route for adding a new product to the products database
+router.post("/products", (req, res, next) => {
+  let product = new Product()
+
+  if (req.body.category == undefined || req.body.category.length == 0) {
+    res.send("Please add a category for this product")
+  } else if (req.body.productName == undefined || req.body.productName.length == 0)  {
+    res.send("Please add a product name for this product!")
+  } else if (req.body.price == undefined || req.body.price.length == 0)  {
+    res.send("Please add a price for this product!")
+  } else if (req.body.image == undefined || req.body.image.length == 0)  {
+    res.send("Please add an image for this product!")
+  } else {
+
+    product.category = req.body.category
+    product.name = req.body.productName
+    product.price = req.body.price
+    product.image = req.body.imageUrl
+    product.reviews = []
+
+    product.save((err) => {
+      if (err) {
+        res.send(err)
+      } else {
+        res.send("Item succesfully added!")
+      }
+    })
+  }
+})
+
+//GET route for getting all reviews from the database
 router.get('/reviews', (req, res, next) => {req.query.q
   const queryVal = parseInt(req.query.q) || 0
 
   Review.find({}).skip(queryVal).limit(40).exec((err, reviews) => {
     Review.count().exec((err, count) => {
-      if (err) throw err
+      if (err) {
+        res.send(err)
+      }
       else {
         res.send({reviews: reviews, count: count})
       }
@@ -100,36 +128,45 @@ router.get('/reviews', (req, res, next) => {req.query.q
   })
 })
 
+//POST route for posting a new review
+//Reviewed posted to the product matching the product id in the URL
 router.post("/:productId/reviews", (req, res, next) => {
   let review = new Review()
 
-  review.text = req.body.text
-  review.userName = req.body.userName
-  review.product = req.params.productId
+  if (req.body.text == undefined) {
+    res.send("Cannot post an empty review!")
+  } else if (req.body.userName == undefined) {
+    res.send("Please add a user name to your review!")
+  } else if (req.body.productId == undefined){
+    res.send("Please add a product id for this review!!")
+  } else {
 
-  Product.findById(req.params.productId).exec((err, product) => {
-    if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.send(err)
-    } else {
-      review.save((err) => {
-        if (err) {
-          res.writeHead(404, { 'Content-Type': 'text/plain' });
-          res.send(err)
-        } else {
-          product.reviews.push(review)
-          product.save()
-          res.send("Review successfully added!")
-        }
-      })
-    }
-  })
+    review.text = req.body.text
+    review.userName = req.body.userName
+    review.product = req.params.productId
+
+    Product.findById(req.params.productId).exec((err, product) => {
+      if (err) {
+        res.send(err)
+      } else {
+        review.save((err) => {
+          if (err) {
+            res.send(err)
+          } else {
+            product.reviews.push(review)
+            product.save()
+            res.send("Review successfully added!")
+          }
+        })
+      }
+    })
+  }
 })
 
+//DELETE route for deleting a product from the server
 router.delete("/products/:productId", (req, res, next) => {
   Product.findByIdAndRemove(req.params.productId, (err) => {
     if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.send(err)
     } else {
       res.send("Item deleted!")
@@ -137,18 +174,19 @@ router.delete("/products/:productId", (req, res, next) => {
   })
 })
 
+//DELETE route for deleting a single product review 
+//Deletes review from reviews collection
+//And deletes review references on the linked product item
 router.delete("/reviews/:review", (req, res, next) => {
   const reviewId = req.params.review
   Review.findById(reviewId)
     .populate("product")
     .exec((err, review) => {
       if (err) {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.send(err)
       } else {
         Product.findById(review.product.id, (err, product) => {
           if (err) {
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
             res.send(err)
           } else {
             product.reviews = product.reviews.filter((review) => {
@@ -159,7 +197,6 @@ router.delete("/reviews/:review", (req, res, next) => {
 
             Review.findByIdAndRemove(req.params.review, (err) => {
               if (err) {
-                res.writeHead(404, { 'Content-Type': 'text/plain' });
                 res.send(err)
               } else {
                 res.send("Review deleted!")
@@ -172,6 +209,9 @@ router.delete("/reviews/:review", (req, res, next) => {
 
 })
 
+//GET route for searching the product
+//Search method finds any product on the server
+//that contain the search query
 router.get("/search", (req, res, next) => {
   let query = req.query.query.charAt(0).toUpperCase() + req.query.query.substring(1)
 

@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import Pages from '../containers/pages';
 
 
-
-
 class Products extends Component {
 
   //renders each individual product
@@ -26,6 +24,7 @@ class Products extends Component {
   }
 
   render() {
+    //if it returns with 0 products error message
     if (this.props.products.length===0){
       return(
       <div className="row">
@@ -36,7 +35,7 @@ class Products extends Component {
     }
     //loops through products, and sends the current count to the pages
     return (
-      <div>
+      <div className='products'>
         <div className="row row-cols-3">
           {this.props.products.map(this.renderProduct)}
         </div>

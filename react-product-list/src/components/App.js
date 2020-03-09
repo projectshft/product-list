@@ -3,9 +3,9 @@ import { Component } from 'react';
 import SearchBar from '../containers/searchbar';
 import CategoryFilter from '../containers/category';
 import PriceSort from '../containers/price';
-
 import Products from './products';
 import '../index.css';
+
 
 export default class App extends Component {
   render() {

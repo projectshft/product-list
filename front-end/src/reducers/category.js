@@ -1,3 +1,5 @@
+
+// this is not working at this moment. 
 import { GET_CATEGORIES } from '../actions/index';
 
  export default function(state = null, action) {

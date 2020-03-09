@@ -12,7 +12,6 @@ class ProductList extends Component {
   }
 
   // handleClick for pagination change
-
   handlePageClick = (data) => {
     console.log('clicked ', data)
     let pageSelect = { page: data.selected + 1 };
@@ -20,7 +19,7 @@ class ProductList extends Component {
   };
 
   // query call for price and category selected 
-
+  // look for category and filter by it
   handleFilters = (e) => {
     e.preventDefault();
     let category =

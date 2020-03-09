@@ -2,25 +2,33 @@ import axios from 'axios'
 
 export const FETCH_PRODUCTS = "fetch_products";
 export const SAVE_CATEGORY = "fetch_category";
+export const SORT_PRICE = "sort_price"
 
 const baseURL = "http://localhost:8000";
 
 
-export const fetchProducts = (page = 1, category, sort) => {
-    let categoryQuery = ''
-    if (category) {
-        categoryQuery = `&category=${category}`
-    }
-    const req = axios.get(`${baseURL}/products?page=${page}${categoryQuery}&price=${sort}`)
+export const fetchProducts = (page, category = "", sort = "") => {
+
+    const url = `${baseURL}/products?page=${page}${category}&price=${sort}`;
+    const request = axios.get(url)
     return {
         type: FETCH_PRODUCTS,
-        payload: req
+        payload: request
     };
 }
 
 export const selectedCategory = (category) => {
     return {
-        tpe: SAVE_CATEGORY,
+        type: SAVE_CATEGORY,
         payload: category
     }
+}
+
+
+export function sortPrice(price) {
+
+    return {
+        type: SORT_PRICE,
+        payload: price
+    };
 }

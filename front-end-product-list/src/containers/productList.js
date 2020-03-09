@@ -18,19 +18,23 @@ class ProductList extends Component {
 
   }
 
+  // Fetch all of the products when the page loads
   componentDidMount() { 
     this.props.fetchProducts({})
   }
 
+  // Fetch the products being searched
   handleClickEvent() {
     this.props.fetchSearch(this.state.search)
   }
-
+ 
+  // Fetch the products based on query (category & price)
   handleFilterClickEvent() {
     let query = { category: this.state.category, price: this.state.price}
     this.props.fetchProducts(query)
   }
 
+  // Fetch the products based on page number
   handlePageClick() {
     let query = { page: this.state.page.number }
     this.props.fetchProducts(query)
@@ -68,7 +72,7 @@ class ProductList extends Component {
                <option>Industrial</option>
                <option>Health</option>
                <option>Books</option>
-               <option>All</option>
+               <option value="">All</option>
              </select>
              <div><h4 id="category-text">sort by:  </h4></div>
              <select onChange= {event=> this.setState({ price: event.target.value }, () => {this.handleFilterClickEvent()})}>
@@ -83,16 +87,17 @@ class ProductList extends Component {
    }
 
   renderPageNumbers() {
-
+    // If product list is undefined return loading
     if (this.props.productList[0] == undefined) {
       return (
         <div>Loading ... </div>
       )
     } else {
-
+    // When the product count comes back set the page numbers to an empty string
     let pageNumbers = [];
+    // Set count to the product count returned
     let count = this.props.productList[0].count
-
+    
     for (let i = 1; i <= Math.ceil(count / 9); i++) {
       pageNumbers.push(i);
     }
@@ -108,11 +113,12 @@ class ProductList extends Component {
 }
 
   renderProducts() {
-    console.log(this.props.productList)
+    // If product list is undefined return a loading div
     if (this.props.productList[0] == undefined) {
       return (
         <div>Loading ... </div>
       )
+    // If no products match the search return a message
     } else if (this.props.productList[0].count === 0){
       return (
         <div>
@@ -120,6 +126,7 @@ class ProductList extends Component {
         </div>
       )
     } else {
+    // When products get returned render each one using map
     return (
        this.props.productList[0].products.map(p => (
           <span className="product col-md-4">

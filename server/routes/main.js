@@ -38,7 +38,6 @@ router.use(bodyParser.json());
 // });
 
 
-
 router.get('/products', (request, response, next) => {
   const parsedUrl = url.parse(request.originalUrl);
   const { query, sort } = querystring.parse(parsedUrl.query);

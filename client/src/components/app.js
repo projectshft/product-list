@@ -1,6 +1,5 @@
-  import React from 'react';
+import React from 'react';
 import { Component } from 'react';
-
 import Search from '../containers/search';
 import CategorySearch from '../containers/category-search';
 import PriceSearch from '../containers/price-search';

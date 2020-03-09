@@ -12,7 +12,7 @@ class Products extends Component {
     
         this.state = { 
           currentPage: 1,
-          itemsOnPage: 2
+          itemsOnPage: 9
         };  
     }
   

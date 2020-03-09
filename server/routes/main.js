@@ -69,12 +69,12 @@ router.get('/products', (request, response, next) => {
 
   //return product by search name
   if( queryProductName !== undefined ) {  
-    Product.find({name: {'$regex': queryProductName}})
+    Product.find({name: /queryProductName/i})
     .limit(perPage)
     .exec((error, products) => {
-      if (products.length == 0){
+      if (error){
         response.writeHead(404);	
-        return response.end("Could not find products in that category.");
+        return response.send("Could not find products with that.");
       } else{
         response.send(products)
       }

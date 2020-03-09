@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component } from "react";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -8,7 +7,7 @@ import PropTypes from 'prop-types';
 
 class Products extends Component {
     async componentDidMount() {
-        await this.props.fetchProducts([]);
+        await this.props.fetchProducts();
     }
 
 
@@ -16,12 +15,11 @@ class Products extends Component {
 
         return (
             this.props.products.map(product =>
-                <div className="card col-md-3" key={product._id}
-                    style={{ display: 'inline-block', margin: '2%' }}
-                >
-                    <div className="card-body">
-                        <div className="row">
-                            <h3 className="card-text"> ${product.price}</h3>
+                <div className="col-md-3" key={product._id}
+                    style={{ display: 'inline-block', margin: '2%' }}>
+                    <div>
+                        <div>
+                            <h3> ${product.price}</h3>
                             <img
                                 className="card-img img-responsive"
                                 src={product.image}
@@ -29,10 +27,10 @@ class Products extends Component {
                             />
                         </div>
                         <div className="row">
-                            <h5 className="card-title"> {product.name}</h5>
+                            <h5> {product.name}</h5>
                         </div>
                         <div className="row">
-                            <h6 className="card-text"> {product.category}</h6>
+                            <h6> {product.category}</h6>
                         </div>
                     </div>
                 </div>
@@ -49,7 +47,9 @@ class Products extends Component {
     render() {
         return (
             <div>
-                {this.renderProducts()}
+                <div>
+                    {this.renderProducts()}
+                </div>
             </div>
         );
     }

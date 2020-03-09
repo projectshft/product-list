@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { searchCategory, fetchProducts } from '../actions/index';
+import { searchCategory } from '../actions/index';
 
 function CategorySearch(props){
-  console.log('from category props: ', props)
-      //const { products } = this.props
+      console.log('from category props: ', props)
       const getCategory = (e) => {
         props.searchCategory(`&category=${ e.target.value }`)
       }
@@ -15,20 +14,13 @@ function CategorySearch(props){
             <option value="Categories">Categories</option>
             <option value="Grocery">Grocery</option>
             <option value="Electronics">Electronics</option>
-            {/*props.map((item) => (
-              <option value={`${item.category}`}>{`${item.category}`}</option>
-            ))*/}
           </select>
         </div>
       )
 }
 
-function mapStateToProps(  products ) {
-  return  products 
-}
-
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchCategory, fetchProducts }, dispatch);
+  return bindActionCreators({ searchCategory }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategorySearch);
+export default connect(null, mapDispatchToProps)(CategorySearch);

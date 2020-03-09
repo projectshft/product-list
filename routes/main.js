@@ -56,6 +56,7 @@ router.get('/products', (req, res, next) => {
             Product.count().exec((err, count) => {
                 if (err) return next(err)
                 //console.log('All products: ' + products)
+                //res.send({products: products, count: count})
                 res.send(products)
             })
         })
@@ -71,6 +72,7 @@ router.get('/products', (req, res, next) => {
                         return item.name.toUpperCase().includes(productName.toUpperCase())
                     })
                     //console.log('From name: ' + result)
+                    //res.send({products: products, count: count})
                     res.send(result)
                 })
             })
@@ -86,7 +88,7 @@ router.get('/products', (req, res, next) => {
                 Product.count().exec((err, count) => {
                     if (err) return next(err)
                     //console.log('From page: ' + products)
-                    res.send({products: products, count: count})
+                    res.send({products})
                 })
             })
     }
@@ -107,11 +109,16 @@ router.get('/products', (req, res, next) => {
         let mysort = price == 'highest' ? {price: -1} : ( price == 'lowest' ? {price: 1} : '');
         //sort product by price //.sort({ price: 1 })
 
-        Product.find({}, (err, products) => {
-            if (err) return next(err)
-            //console.log('Sorted products')
-            res.send(products)
-        }).sort(mysort);
+        Product.find({}) 
+            .sort(mysort)           
+            .exec((err, products) => {
+                Product.count().exec((err, count) => {
+                    if (err) return next(err)
+                    //console.log('From category: ' + products)
+                    //res.send({products: products, count: products.length})
+                    res.send(products)
+                })
+        });
     }
 })
 

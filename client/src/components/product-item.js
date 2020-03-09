@@ -5,14 +5,14 @@ import './styles.scss';
 const ProductItem = ({ _id, category, name, price, image}) => (
     <div className='col collection-item' key={_id}>
         <div className='row '>
-            <h4 className='title'>{category.toUpperCase()}</h4>
+            <div className='title'>Category: {category.toUpperCase()}</div>
             <div className='image'>
-                <img src="https://via.placeholder.com/250"></img>
+                <img src="https://via.placeholder.com/300x250"></img>
             </div>
         </div>
         <div className='row collection-footer'>
             <span className='name'>{name}</span>
-            <span className='price'>{price}</span>
+            <span className='price'>${price}</span>
         </div>
     </div>
 )

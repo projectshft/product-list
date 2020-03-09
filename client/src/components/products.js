@@ -79,14 +79,6 @@ class Products extends Component {
     render() {
       return (
           <div className='container mb-5'>
-            {/*products.map(({ _id, ...otherProductProps }) => (
-              <ProductsPreview key={_id} {...otherProductProps} />
-            ))*/}
-            {/*products
-              .filter((item, idx) => idx < 4)
-              .map(({ _id, ...otherItemProps }) => (
-                <ProductItem key={_id} {...otherItemProps} />
-              ))*/}
             <div className="row">
               {  this.dataView() }
             </div>                   

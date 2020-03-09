@@ -17,10 +17,10 @@
     justify-content: space-between;
     font-size: 18px; }
     .collection-item .collection-footer .name {
-      width: 60%;
+      width: 65%;
       margin-bottom: 15px; }
     .collection-item .collection-footer .price {
-      width: 40%; }
+      width: 35%; }
 
 .collection-preview {
   display: flex;
@@ -47,7 +47,7 @@
   text-align: center; }
 
 ul.pagination {
-  margin-top: 0;
+  margin-top: 30px;
   margin-bottom: 0;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); }
 
@@ -70,4 +70,5 @@ ul.pagination a.page-link:hover {
   background-color: #f4f4f4; }
 
 .page-link {
-  display: inline-block; }
+  display: inline-block;
+  cursor: pointer; }

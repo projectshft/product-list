@@ -49,7 +49,6 @@ router.get('/products', (req, res, next) => {
     }
     //if search is specified it puts it in the find query
     else if (!req.query.category && req.query.search) {
-        console.log('just search')
         toFind = { $text: { $search: req.query.search } }
     }
     //if price highest or lowest is defined. it adds to sort function

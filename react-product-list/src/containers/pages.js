@@ -10,6 +10,7 @@ class Pages extends Component {
 
   //initial fetch when page
   componentDidMount() {
+    console.log('mounted')
     this.props.fetchProducts(this.props)
   }
   //refetches everytime the query state updates
@@ -35,6 +36,7 @@ class Pages extends Component {
       <div>{buttonsHTML}</div>
     )
   }
+  //for loop to make the page buttons
   render() {
     return (
       <div className='pages'>

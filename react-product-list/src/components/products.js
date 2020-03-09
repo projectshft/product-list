@@ -26,9 +26,17 @@ class Products extends Component {
   }
 
   render() {
+    if (this.props.products.length===0){
+      return(
+      <div className="row">
+        <p>Sorry, We could not find any products that matched that search.</p>
+      <Pages />
+      </div>
+      )
+    }
     //loops through products, and sends the current count to the pages
     return (
-      <div className='products'>
+      <div>
         <div className="row row-cols-3">
           {this.props.products.map(this.renderProduct)}
         </div>
@@ -39,6 +47,7 @@ class Products extends Component {
     )
   }
 }
+
 
 function mapStateToProps(state) {
   return state.ProductInfo[0];

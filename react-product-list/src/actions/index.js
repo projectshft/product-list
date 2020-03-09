@@ -9,13 +9,14 @@ export const EDIT_PRICE = 'EDIT_PRICE';
 export const EDIT_SEARCH = 'EDIT_SEARCH';
 
 export function fetchProducts(query) {
-  //sets url with and breaks down the query state
+  //sets url and breaks down the query state
   const url = `${ROOT_URL}` + query.page + query.category + query.price + query.search
-  console.log(url)
+
+  //makes request to the server
   const request = axios.get(url)
     .catch(function (error) {
-      if (error.response) {
-        return console.log(error)
+      if (error) {
+        console.log(error)
       }
     });
   return {

@@ -1,7 +1,8 @@
-const router = require('express').Router();
+const router = require('../node_modules/express').Router();
 const faker = require('faker');
 const Product = require('../models/product');
 const Reviews = require('../models/review');
+const cors = require('./node_modules/cors')
 // ******************** Route below was used to initally populate the Products DB **********************//
 // router.get('/generate-fake-data', (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {

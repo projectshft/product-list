@@ -26,16 +26,9 @@ class Products extends Component {
   }
 
   render() {
-    if (this.props.products.length===0){
-      return(
-      <div className="row">
-        <p>Sorry, We could not find any products that matched that search.</p>
-      </div>
-      )
-    }
     //loops through products, and sends the current count to the pages
     return (
-      <div>
+      <div className='products'>
         <div className="row row-cols-3">
           {this.props.products.map(this.renderProduct)}
         </div>

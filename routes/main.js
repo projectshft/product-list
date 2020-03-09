@@ -72,7 +72,8 @@ router.get('/products', (request, response, next) => {
 router.get('/products/:product', (request, response, next) => {
     Product
         .findById(request.params.product)
-        .exec((err, products) => {
+        .exec((error, products) => {
+            if (error) return next(error)
             response.send(products)
         })
 });
@@ -88,7 +89,7 @@ router.get('/reviews', (request, response) => {
         .limit(perPage)
         .exec((error, reviews) => {
             Review.estimatedDocumentCount().exec((err, count) => {
-                if (err) return next(err);
+                if (error) return next(error);
 
                 response.send(reviews);
             });
@@ -135,6 +136,8 @@ router.post('/:product/reviews', (request, response) => {
     Product.findById(productId)
         // .populate('reviews')
         .exec((error, product) => {
+            if (error) throw error;
+        
             let newReview = new Review({
                 userName: request.body.userName,
                 text: request.body.text,
@@ -148,6 +151,7 @@ router.post('/:product/reviews', (request, response) => {
             });
             product.reviews.push(newReview);
             product.save();
+            
         })
     response.send(`Review has been added `);
 })
@@ -168,8 +172,11 @@ router.delete('/reviews/:review', (request, response) => {
     Review.findOneAndDelete({
         _id: request.params.review
     }, (error, review) => {
-        if (error) throw error;
-
+        if (error) {
+            response.status(404).send('Review was not found');
+            request.review = review;
+            next();
+          } 
         // Find the related product and remove [ref to] the review from the product's reviews array
         Product.findOne({
             _id: review.product._id

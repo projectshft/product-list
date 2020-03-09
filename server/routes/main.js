@@ -17,7 +17,7 @@ const prodIds = [
   "5d3a08492a420740584cad58"
 ];
 
-//new funny fake data, fo free
+//Faker Product Data, attempt to override images
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
@@ -25,7 +25,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
-    product.image = 'http://www.salonidangarwala.com/images/about-black-1240x600.jpg';
+    product.image= 'https://cdn.shopify.com/s/files/1/1430/0320/products/ridf-mrsau_1024x1024.png?v=1476045480';
     product.reviews = [];
     for (let i = 0; i < 3; i++) {
       const review = new Review();
@@ -43,7 +43,7 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.status(200).end()
 });
 
-//new funny fake data, less free but same
+//fake reviews
 router.get('/generate-fake-reviews', (req, res, next) => {
   for (let i = 0; i < 5; i++) {
     let review = new Review();
@@ -59,7 +59,7 @@ router.get('/generate-fake-reviews', (req, res, next) => {
   res.status(200).end()
 });
 
-//new funny fake data, less free but same
+//fake categories
 router.get('/generate-fake-categories', (req, res, next) => {
   for (let i = 0; i < 5; i++) {
     let category = new Category();

@@ -43,83 +43,35 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {
     const perPage = 9;
     const page = req.query.page
-    const category =  req.query.category 
+    const category = req.query.category != '' ? {category: req.query.category} : {}
     const price = req.query.price
     const productName = req.query.name
 
-    if(!page && !category && !price && !productName) {
-        Product.find({})
+    let mysort = price == 'highest' ? {price: -1} : ( price == 'lowest' ? {price: 1} : '');
+
+    Product.find(category) 
         .skip((perPage * page) - perPage)
         .limit(perPage)
+        .sort(mysort)           
         .exec((err, products) => {
-            // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
             Product.count().exec((err, count) => {
                 if (err) return next(err)
-                //console.log('All products: ' + products)
-                //res.send({products: products, count: count})
-                res.send(products)
+                // let result = products.filter((item) => {
+                //     //console.log(item.name)
+                //     return item.name.toUpperCase().includes(productName.toUpperCase())
+                // })
+                // if(result) {
+                //     //add result and products together
+                //     let newArray =  products.concat(result)
+                //     res.send({products: newArray, count: newArray.length})
+                // }
+                //else 
+                console.log('from main products: ', products)
+                console.log('from main count: ', count)
+                res.send({products: products, count: count})
             })
-        })
-    }
-    //console.log(string.includes(substring));
-    if( productName ) {
-        Product.find({})
-            .exec((err, products) => {               
-                Product.count().exec((err, count) => {
-                    if (err) return next(err)
-                    let result = products.filter((item) => {
-                        //console.log(item.name)
-                        return item.name.toUpperCase().includes(productName.toUpperCase())
-                    })
-                    //console.log('From name: ' + result)
-                    //res.send({products: products, count: count})
-                    res.send(result)
-                })
-            })
-    }
+    });
 
-    //We'll want the user (or client) to be able to pass in the following endpoint: /products?page=3
-    if(page) {
-        Product.find({})
-            .skip((perPage * page) - perPage)
-            .limit(perPage)
-            .exec((err, products) => {
-                // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-                Product.count().exec((err, count) => {
-                    if (err) return next(err)
-                    //console.log('From page: ' + products)
-                    res.send({products})
-                })
-            })
-    }
-    //We'll want to be able to pass in an optional query to return only the products of the passed in category. 
-    if(category ) {
-        Product.find({category: category})
-            .exec((err, products) => {
-                Product.count().exec((err, count) => {
-                    if (err) return next(err)
-                    //console.log('From category: ' + products)
-                    res.send(products)
-                })
-            })
-    }
-    //localhost:8000/products?page=1&category=tools&price=highest
-    //localhost:8000/products?page=1&category=tools&price=lowest
-    if(price) {
-        let mysort = price == 'highest' ? {price: -1} : ( price == 'lowest' ? {price: 1} : '');
-        //sort product by price //.sort({ price: 1 })
-
-        Product.find({}) 
-            .sort(mysort)           
-            .exec((err, products) => {
-                Product.count().exec((err, count) => {
-                    if (err) return next(err)
-                    //console.log('From category: ' + products)
-                    //res.send({products: products, count: products.length})
-                    res.send(products)
-                })
-        });
-    }
 })
 
 // GET /products/:product: Returns a specific product by its id

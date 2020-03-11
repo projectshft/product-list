@@ -11,7 +11,7 @@ const ROOT_URL = "http://localhost:8000/products?";
 
 export function fetchProducts(query) {
   console.log('actions query: ', query)
-  const request = axios.get(`${ROOT_URL}${query.category}${query.price}${query.name}`)
+  const request = axios.get(`${ROOT_URL}${query.page}&${query.category}&${query.price}&${query.name}`)
       .then((response) => {
           return response.data
       })

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { searchCategory } from '../actions/index';
 
 function CategorySearch(props){
       console.log('from category props: ', props)
@@ -20,7 +19,7 @@ function CategorySearch(props){
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchCategory }, dispatch);
+  return bindActionCreators({}, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(CategorySearch);

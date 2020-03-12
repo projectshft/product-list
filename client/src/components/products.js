@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchProducts, searchCategory, searchPrice, productSearch } from "../actions/index";
+import { fetchProducts } from "../actions/index";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PropTypes from 'prop-types'
 import ProductItem from './product-item';
@@ -101,7 +101,7 @@ class Products extends Component {
   }
 
   function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchProducts, searchCategory, searchPrice, productSearch }, dispatch);
+    return bindActionCreators({ fetchProducts }, dispatch);
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(Products);

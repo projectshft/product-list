@@ -42,33 +42,39 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
     const perPage = 9;
-    const page = req.query.page
-    const category = req.query.category != '' ? {category: req.query.category} : {}
-    const price = req.query.price
-    const productName = req.query.name
+    const page = req.query.page;
+    
+    let productName = req.query.name ? req.query.name : {};
+    console.log(productName)
 
-    let mysort = price == 'highest' ? {price: -1} : ( price == 'lowest' ? {price: 1} : '');
+    let searchQuery = {};
+    if(req.query.category && req.query.name)
+    {
+        searchQuery = { $and: [{ category: req.query.category }, { $text: {$search: req.query.name }} ] }
+        console.log(searchQuery)
+    }
+    if(!req.query.category && req.query.name)
+    {
+        searchQuery =  { name: req.query.name }
+    }
+    if(req.query.category && !req.query.name)
+    {
+        searchQuery =  { category: req.query.category }
+    }
+    const price = req.query.price;
+    //const productName = req.query.name ? {name: req.query.name} : {};
+    let mysort = price == 'highest' ? {price: -1} : ( price == 'lowest' ? {price: 1} : {});
 
-    Product.find(category) 
+    Product.find(searchQuery) 
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .sort(mysort)           
         .exec((err, products) => {
-            Product.count().exec((err, count) => {
+            Product.count(searchQuery).exec((err, count) => {
                 if (err) return next(err)
-                // let result = products.filter((item) => {
-                //     //console.log(item.name)
-                //     return item.name.toUpperCase().includes(productName.toUpperCase())
-                // })
-                // if(result) {
-                //     //add result and products together
-                //     let newArray =  products.concat(result)
-                //     res.send({products: newArray, count: newArray.length})
-                // }
-                //else 
-                console.log('from main products: ', products)
-                console.log('from main count: ', count)
-                res.send({products: products, count: count})
+                //send back products and the count
+                res.send({ products: products, count: count })
+                //res.send(products)
             })
     });
 

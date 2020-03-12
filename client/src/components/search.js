@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { productSearch} from '../actions/index';
+//import { productSearch} from '../actions/index';
 
 function Search(props){
     console.log('from search props: ', props)
@@ -21,7 +21,7 @@ function Search(props){
   }
   
   function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ productSearch }, dispatch);
+    return bindActionCreators({ }, dispatch);
   }
   
   export default connect(null, mapDispatchToProps)(Search);

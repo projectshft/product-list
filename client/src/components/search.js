@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-//import { productSearch} from '../actions/index';
+import { fetchProducts, productSearch } from "../actions/index";
 
 function Search(props){
-    console.log('from search props: ', props)
+    //console.log('from search props: ', props)
     const [searchVal, setSearch] = useState('')
 
     let getProductsByName = () => {    
-        console.log('from search searchValue: ', searchVal)      
+        //console.log('from search searchValue: ', searchVal)      
         props.productSearch(`&name=${ searchVal }`)
     }
     
@@ -21,7 +21,7 @@ function Search(props){
   }
   
   function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ }, dispatch);
+    return bindActionCreators({ fetchProducts, productSearch }, dispatch);
   }
   
   export default connect(null, mapDispatchToProps)(Search);

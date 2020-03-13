@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchProducts } from "../actions/index";
+import { fetchProducts, setCurrentPage, searchCategory, searchPrice, productSearch } from "../actions/index";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PropTypes from 'prop-types'
 import ProductItem from './product-item';
@@ -12,35 +12,27 @@ import './styles.scss';
 class Products extends Component {
     constructor(props) {
       super(props);
-  
-      this.state = { 
-        currentPage: 1,
-        itemsOnPage: 3
-      };  
+ 
     }
     componentDidMount() {
       this.props.fetchProducts(this.props.searchRequests)
+      console.log('props from componentDidMount: ', this.props)
     }
 
-    onPageChanged = data => {
-      const { products } = this.props;
-      const { currentPage, totalPages, pageLimit } = data;
-  
-      const offset = (currentPage - 1) * pageLimit;
-      const currentProducts = products.slice(offset, offset + pageLimit);
-  
-      this.setState({ currentPage, currentProducts, totalPages });
-    };
+    componentDidUpdate(prevProps) {
+      console.log('from componentDidUpdate: ', prevProps)
+      if (prevProps.searchRequests !== this.props.searchRequests){
+        this.props.fetchProducts(this.props.searchRequests)
+        console.log('props from componentWillUpdate: ', this.props)
+      }
+    }
 
-    dataView = () => {
+    renderProductData = () => {
       const { products } = this.props
-      const { currentPage, itemsOnPage } = this.state;
-      const indexOfLastItem = currentPage * itemsOnPage;
-      const indexOfFirstItem = indexOfLastItem - itemsOnPage;
-      const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
-      console.log('from render', products.length)
 
-      const renderItems = currentItems.map(({ _id, ...otherItemProps }) => (
+      console.log('from dataView products', products.products)
+
+      const renderItems = products.products.map(({ _id, ...otherItemProps }) => (
             <ProductItem key={_id} {...otherItemProps} />
           ))
 
@@ -49,10 +41,10 @@ class Products extends Component {
 
     paginationNumbers = () =>{
       const { products } = this.props;
-      const { itemsOnPage } = this.state;
+      console.log('from pagination count: ', products.count)
   
       const pagesToNumbers = [];
-      for (let i = 1; i <= Math.ceil(products.length / itemsOnPage); i++) {
+      for (let i = 1; i <= Math.ceil(products.count / 9); i++) {
         pagesToNumbers.push(i);
       } 
   
@@ -71,16 +63,15 @@ class Products extends Component {
     }
 
     handleClick = (e) => {
-      this.setState({
-          currentPage: Number(e.target.id)
-        });
+      this.props.setCurrentPage(Number(e.target.id))
+      this.props.fetchProducts(this.props.searchRequests)
     }
     
     render() {
       return (
           <div className='container mb-5'>
             <div className="row">
-              {  this.dataView() }
+              {  this.renderProductData() }
             </div>                   
             <div className="container mb-5">
                 <div className="row justify-content-center">
@@ -101,7 +92,7 @@ class Products extends Component {
   }
 
   function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchProducts }, dispatch);
+    return bindActionCreators({ fetchProducts, setCurrentPage, searchCategory, searchPrice, productSearch }, dispatch);
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(Products);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { fetchProducts, searchPrice  } from "../actions/index";
 
 function PriceSearch(props) {
   const sortByPrice = (e) => {
@@ -18,7 +19,7 @@ function PriceSearch(props) {
   )
 }
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ }, dispatch);
+  return bindActionCreators({ fetchProducts, searchPrice }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(PriceSearch);

@@ -43,27 +43,24 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {
     const perPage = 9;
     const page = req.query.page;
-    
-    let productName = req.query.name ? req.query.name : {};
-    console.log(productName)
-
     let searchQuery = {};
-    if(req.query.category && req.query.name)
-    {
-        searchQuery = { $and: [{ category: req.query.category }, { $text: {$search: req.query.name }} ] }
-        console.log(searchQuery)
-    }
-    if(!req.query.category && req.query.name)
+    // if(req.query.category && req.query.name)
+    // {
+    //     //{ name: { $regex: '(?i)a(?-i)cme' } }
+    //     searchQuery = { $and: [{ category: req.query.category }, { $text: {$search: req.query.name }} ] }
+    //     console.log(searchQuery)
+    // }
+    if( req.query.name )
     {
         searchQuery =  { name: req.query.name }
     }
-    if(req.query.category && !req.query.name)
+    if( req.query.category )
     {
         searchQuery =  { category: req.query.category }
     }
     const price = req.query.price;
     //const productName = req.query.name ? {name: req.query.name} : {};
-    let mysort = price == 'highest' ? {price: -1} : ( price == 'lowest' ? {price: 1} : {});
+    let mysort = price == 'Highest' ? {price: -1} : ( price == 'Lowest' ? {price: 1} : {});
 
     Product.find(searchQuery) 
         .skip((perPage * page) - perPage)
@@ -74,7 +71,6 @@ router.get('/products', (req, res, next) => {
                 if (err) return next(err)
                 //send back products and the count
                 res.send({ products: products, count: count })
-                //res.send(products)
             })
     });
 

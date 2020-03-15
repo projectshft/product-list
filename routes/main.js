@@ -44,15 +44,14 @@ router.get('/products', (req, res, next) => {
     const perPage = 9;
     const page = req.query.page;
     let searchQuery = {};
-    // if(req.query.category && req.query.name)
-    // {
-    //     //{ name: { $regex: '(?i)a(?-i)cme' } }
-    //     searchQuery = { $and: [{ category: req.query.category }, { $text: {$search: req.query.name }} ] }
-    //     console.log(searchQuery)
-    // }
+    if(req.query.category && req.query.name)
+    {
+        searchQuery = { $and: [{ category: req.query.category }, { name: { $regex: req.query.name, $options: 'i' } } ] }
+        console.log(searchQuery)
+    }
     if( req.query.name )
     {
-        searchQuery =  { name: req.query.name }
+        searchQuery =  { name: { $regex: req.query.name, $options: 'i' } }
     }
     if( req.query.category )
     {
@@ -73,7 +72,6 @@ router.get('/products', (req, res, next) => {
                 res.send({ products: products, count: count })
             })
     });
-
 })
 
 // GET /products/:product: Returns a specific product by its id

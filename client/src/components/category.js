@@ -4,9 +4,13 @@ import { bindActionCreators } from 'redux';
 import { fetchProducts, searchCategory } from "../actions/index";
 
 function CategorySearch(props){
-      //console.log('from category props: ', props)
+  //console.log('from products category: ', props.products.category)
+  //let uniqueCategories = Array.from(new Set(props.products.products.category))
+  //console.log('unique categories: ', uniqueCategories)
+      //<select>{props.data.map((x,y) => <option key={y}>{x}</option>)}</select>;
       const getCategory = (e) => {
         props.searchCategory(`&category=${ e.target.value }`)
+        if(e.target.value == 'Categories')  props.searchCategory(`&category=`);
       }
       return (
         <div className='col'>
@@ -19,8 +23,12 @@ function CategorySearch(props){
       )
 }
 
+function mapStateToProps(  products ) {
+  return  products 
+}
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchProducts, searchCategory }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(CategorySearch);
+export default connect(mapStateToProps, mapDispatchToProps)(CategorySearch);

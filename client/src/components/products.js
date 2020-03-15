@@ -13,6 +13,10 @@ class Products extends Component {
     constructor(props) {
       super(props);
  
+      this.state = { 
+        currentPage: 1,
+        itemsOnPage: 9
+      };
     }
     componentDidMount() {
       this.props.fetchProducts(this.props.searchRequests)
@@ -29,10 +33,13 @@ class Products extends Component {
 
     renderProductData = () => {
       const { products } = this.props
+      const { currentPage, itemsOnPage } = this.state;
+      const indexOfLastItem = currentPage * itemsOnPage;
+      const indexOfFirstItem = indexOfLastItem - itemsOnPage;
+      const currentItems = products.products.slice(indexOfFirstItem, indexOfLastItem);
+      //console.log('from dataView products', products.products)
 
-      console.log('from dataView products', products.products)
-
-      const renderItems = products.products.map(({ _id, ...otherItemProps }) => (
+      const renderItems = currentItems.map(({ _id, ...otherItemProps }) => (
             <ProductItem key={_id} {...otherItemProps} />
           ))
 
@@ -41,10 +48,11 @@ class Products extends Component {
 
     paginationNumbers = () =>{
       const { products } = this.props;
-      console.log('from pagination count: ', products.count)
+      const { itemsOnPage } = this.state;
+      //console.log('from pagination count: ', products.count)
   
       const pagesToNumbers = [];
-      for (let i = 1; i <= Math.ceil(products.count / 9); i++) {
+      for (let i = 1; i <= Math.ceil(products.count / itemsOnPage); i++) {
         pagesToNumbers.push(i);
       } 
   
@@ -63,8 +71,12 @@ class Products extends Component {
     }
 
     handleClick = (e) => {
-      this.props.setCurrentPage(Number(e.target.id))
-      this.props.fetchProducts(this.props.searchRequests)
+      let cPage = Number(e.target.id);
+      console.log('var currentPage: ', cPage)
+      this.setState({ currentPage: cPage });
+      this.props.setCurrentPage(`page=${cPage}`)
+      console.log('after setState currentPage: ', this.state.currentPage)
+      //this.props.fetchProducts(this.props.searchRequests)
     }
     
     render() {

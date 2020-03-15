@@ -1,5 +1,4 @@
 .collection-item {
-  width: 22%;
   display: flex;
   flex-direction: column;
   height: 350px;
@@ -9,7 +8,8 @@
     height: 95%;
     background-size: cover;
     background-position: center;
-    margin-bottom: 5px; }
+    margin-bottom: 5px;
+    padding: 10px; }
   .collection-item .collection-footer {
     width: 100%;
     height: 5%;
@@ -72,3 +72,12 @@ ul.pagination a.page-link:hover {
 .page-link {
   display: inline-block;
   cursor: pointer; }
+
+#catTitle {
+  margin-left: 15px; }
+
+/* Extra small devices (phones, 600px and down) */
+/* Small devices (portrait tablets and large phones, 600px and up) */
+/* Medium devices (landscape tablets, 768px and up) */
+/* Large devices (laptops/desktops, 992px and up) */
+/* Extra large devices (large laptops and desktops, 1200px and up) */

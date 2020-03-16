@@ -46,6 +46,18 @@ class Products extends Component {
       return renderItems;
     }
 
+    handleClick = (e) => {
+      let cPage = Number(e.target.id);
+      console.log('var currentPage: ', cPage)
+      
+      this.props.setCurrentPage(`page=${cPage}`)
+      //setState is not setting state...
+      this.setState({ currentPage: cPage });
+      
+      console.log('after setState currentPage: ', this.state.currentPage)
+      //this.props.fetchProducts(this.props.searchRequests)
+    }
+
     paginationNumbers = () =>{
       const { products } = this.props;
       const { itemsOnPage } = this.state;
@@ -68,15 +80,6 @@ class Products extends Component {
       });
   
       return numbers;
-    }
-
-    handleClick = (e) => {
-      let cPage = Number(e.target.id);
-      console.log('var currentPage: ', cPage)
-      this.setState({ currentPage: cPage });
-      this.props.setCurrentPage(`page=${cPage}`)
-      console.log('after setState currentPage: ', this.state.currentPage)
-      //this.props.fetchProducts(this.props.searchRequests)
     }
     
     render() {

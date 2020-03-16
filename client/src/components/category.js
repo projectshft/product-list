@@ -4,6 +4,9 @@ import { bindActionCreators } from 'redux';
 import { fetchProducts, searchCategory } from "../actions/index";
 
 function CategorySearch(props){
+  //want to get all categories to the array in order to use it in a dropdown
+  //can't figure out how to get products from here...
+  
   //console.log('from products category: ', props.products.category)
   //let uniqueCategories = Array.from(new Set(props.products.products.category))
   //console.log('unique categories: ', uniqueCategories)
@@ -23,12 +26,9 @@ function CategorySearch(props){
       )
 }
 
-function mapStateToProps(  products ) {
-  return  products 
-}
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchProducts, searchCategory }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategorySearch);
+export default connect(null, mapDispatchToProps)(CategorySearch);

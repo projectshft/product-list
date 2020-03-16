@@ -5,8 +5,8 @@ import { fetchProducts, searchPrice  } from "../actions/index";
 
 function PriceSearch(props) {
   const sortByPrice = (e) => {
-    props.searchPrice(`&price=${e.target.value}`)
-    if(e.target.value == 'Price')  props.searchPrice(`&price=`);
+    props.searchPrice(e.target.value)
+    if(e.target.value == 'Price')  props.searchPrice('');
   }
 
   return (

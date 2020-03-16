@@ -14,8 +14,8 @@ class Search extends Component {
     }
 
     handleTextChange(e) {
-      console.log('from search searchValue: ', this.state.searchVal)    
-      this.props.productSearch(`&name=${ this.state.searchVal }`)
+      //console.log('from search searchValue: ', this.state.searchVal)    
+      this.props.productSearch(this.state.searchVal)
       this.setState({ searchVal: '' })
     }
 

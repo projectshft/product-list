@@ -14,9 +14,10 @@ class Products extends Component {
       super(props);
  
       this.state = { 
-        currentPage: 1,
         itemsOnPage: 9
       };
+
+      this.handleClick= this.handleClick.bind(this);
     }
     componentDidMount() {
       this.props.fetchProducts(this.props.searchRequests)
@@ -32,14 +33,8 @@ class Products extends Component {
     }
 
     renderProductData = () => {
-      const { products } = this.props
-      const { currentPage, itemsOnPage } = this.state;
-      const indexOfLastItem = currentPage * itemsOnPage;
-      const indexOfFirstItem = indexOfLastItem - itemsOnPage;
-      const currentItems = products.products.slice(indexOfFirstItem, indexOfLastItem);
-      //console.log('from dataView products', products.products)
-
-      const renderItems = currentItems.map(({ _id, ...otherItemProps }) => (
+      const { products } = this.props.products
+      const renderItems = products.map(({ _id, ...otherItemProps }) => (
             <ProductItem key={_id} {...otherItemProps} />
           ))
 
@@ -48,20 +43,14 @@ class Products extends Component {
 
     handleClick = (e) => {
       let cPage = Number(e.target.id);
-      console.log('var currentPage: ', cPage)
+      //console.log('var currentPage: ', cPage)
       
-      this.props.setCurrentPage(`page=${cPage}`)
-      //setState is not setting state...
-      this.setState({ currentPage: cPage });
-      
-      console.log('after setState currentPage: ', this.state.currentPage)
-      //this.props.fetchProducts(this.props.searchRequests)
+      this.props.setCurrentPage(cPage) 
     }
 
     paginationNumbers = () =>{
       const { products } = this.props;
       const { itemsOnPage } = this.state;
-      //console.log('from pagination count: ', products.count)
   
       const pagesToNumbers = [];
       for (let i = 1; i <= Math.ceil(products.count / itemsOnPage); i++) {
@@ -102,8 +91,9 @@ class Products extends Component {
     }
   }
   
-  function mapStateToProps(  products ) {
-    return  products 
+  function mapStateToProps( state ) {
+    console.log('from mapState: ', state)
+    return  state 
   }
 
   function mapDispatchToProps(dispatch) {

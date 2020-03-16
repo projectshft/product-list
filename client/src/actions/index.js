@@ -7,11 +7,12 @@ export const PRODUCT_SEARCH = 'product_search';
 export const SET_PAGE = 'set_page';
 
 
-const ROOT_URL = "http://localhost:8000/products?";
+const ROOT_URL = "http://localhost:8000/products";
 
 export function fetchProducts(query) {
   console.log('actions query: ', query)
-  const request = axios.get(`${ROOT_URL}${query.page}&${query.category}&${query.price}&${query.name}`)
+  //${ROOT_URL}?page=${query.page}&category=${query.category}...
+  const request = axios.get(`${ROOT_URL}?page=${query.page}&category=${query.category}&price=${query.price}&name=${query.name}`)
       .then((response) => {
           return response.data
       })
@@ -56,7 +57,7 @@ export function searchCategory(category) {
     console.log('from page action: ', page)
       return {
         type: SET_PAGE,
-        name: page
+        page: page
       };
   }
   

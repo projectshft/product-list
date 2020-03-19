@@ -4,30 +4,43 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
 import _ from 'lodash'
-import PropTypes from 'prop-types';
 
- class Products extends Component {
-    
+
+class Products extends Component {
+  constructor() {
+    super();
+    this.state = {
+      currentPage: 1,
+      currentSort: '',
+      currentCategory: ''
+    }
+ 
+  }
+ 
 async componentDidMount() {
-   await this.props.fetchProducts ([])
+   await this.props.fetchProducts (1)
    console.log(this.props.products)
+
     }
 
+componentDidUpdate () {
+
+}
 
     renderProducts() {
   
         return (
-          
-            this.props.products.map(p=>
-         <div className="col-4 text-center" key={p._id}>
+          _.map(this.props.products, p => {
+         return (<div className="col-4 text-center" key={p._id}>
             <div className="item-name">{p.name}</div>
             <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg" alt="" width="240" height="auto" className="mx-auto d-block"></img>
             <div className="category">Category: {p.category}</div>
             <div className="price">${p.price}</div>
             <br/>
             <br/>
-        </div>
-      ))
+        </div>)
+          })
+          )
     
     }
 

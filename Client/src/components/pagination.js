@@ -3,7 +3,11 @@ import {Component} from 'react';
 
 
 export default class Pagination extends Component {
- 
+    constructor(props) {
+        super(props);
+    
+        this.state = { currentPage: 'page 1' };
+    }
 
     render () {
         return (

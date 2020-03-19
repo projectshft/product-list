@@ -3,6 +3,13 @@ import {Component} from 'react';
 
 
 export default class SortPrice extends Component {
+    
+    componentDidUpdate(){
+        this.props.products.price.sort();
+    }
+
+    
+    
     render () {
         return (
             <div className="input-group col-sm-4">

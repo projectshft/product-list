@@ -1,34 +1,16 @@
 import { FETCH_PRODUCTS } from '../actions/index'
 
+const INITIAL_STATE = {
+  currentPage:1, currentSort:'', currentCategory:'', currentSearch:''
+}
 
-
-export default function(state = [], action) {
+export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
+ 
     case FETCH_PRODUCTS:
+    
       return action.payload.data;
     default:
       return state;
   }
 }
-
-//PROP TYPES //
-
-
-
-    // case GET_DATA_REQUEST: {
-    //   return {
-    //     ...state,
-    //     status: 'fetching'
-    //   }
-    // }
-    // case GET_DATA_SUCCESS: {
-    //   return {
-    //     ...state,
-    //     status: 'success'
-    //   }
-    // }
-    // case GET_DATA_FAILURE: {
-    //   return {
-    //     ...state,
-    //     status: 'failure'
-    //   }

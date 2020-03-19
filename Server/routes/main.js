@@ -132,17 +132,10 @@ router.post('/products', (req, res, next) => {
         userName: faker.name.findName(),
         product: newProduct._id
     })
-    // newProduct.category = req.body.category
-    // newProduct.name = req.body.name
-    // newProduct.price = req.body.price 
-    // newProduct.image = req.body.image
-
-    newReview.save();
-    newProduct.category = faker.commerce.department()
-    newProduct.name = faker.commerce.productName()
-    newProduct.price = faker.commerce.price()
-    newProduct.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-
+    newProduct.category = req.body.category
+    newProduct.name = req.body.name
+    newProduct.price = req.body.price 
+    newProduct.image = req.body.image
 
     newProduct.save(function (err) {
         if (err) {

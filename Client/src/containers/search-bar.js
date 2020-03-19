@@ -21,7 +21,7 @@ class SearchBar extends Component {
       onFormSubmit(event) {
         event.preventDefault();
     
-        this.props.fetchProducts(this.state.term);
+        this.props.fetchProducts(1, null, null, this.state.term);
         this.setState({ term: '' });
       }
     render () {

@@ -6,10 +6,9 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
- 
+
     case FETCH_PRODUCTS:
-    
-      return action.payload.data;
+      return {...state, products: action.payload.data}
     default:
       return state;
   }

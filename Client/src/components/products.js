@@ -12,7 +12,8 @@ class Products extends Component {
     this.state = {
       currentPage: 1,
       currentSort: '',
-      currentCategory: ''
+      currentCategory: '',
+      currentSearch: ''
     }
  
   }

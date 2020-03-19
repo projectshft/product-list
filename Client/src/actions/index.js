@@ -20,8 +20,6 @@ export function fetchProducts(currentPage, currentSort, currentCategory, current
   //     console.log(error)
   //   });
 
- 
-
   return {
     type: FETCH_PRODUCTS,
     payload: request

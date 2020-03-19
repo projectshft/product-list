@@ -34,35 +34,64 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
 
-        const perPage = 9
-        // return the first page by default
-        const page = req.query.page || 1
-        let category
-        //if category is specified it puts it in the find query
-        if (req.query.category){
-            category = {category:req.query.category}
+
+
+    const perPage = 9
+    // return the first page by default
+    const page = req.query.page || 1
+    let category
+    //if category is specified it puts it in the find query
+    if (req.query.category) {
+        category = {
+            category: req.query.category
         }
-        //if pice highest or lowest is defined. it adds to sort function
-        let price
-        if (req.query.price=='highest'){
-            price = {price: -1}
-        }else if(req.query.price=='lowest'){
-            price = {price: 1}
+    }
+    //search by string by string + filter 
+    let search
+    if (req.query.search) {
+        search = {
+            $text: {
+                $search: req.query.search
+            }
         }
-        Product
-          .find(category)
-          .skip((perPage * page) - perPage)
-          .limit(perPage)
-          .sort(price)
-          .populate('reviews')
-          .exec((err, products) => {
-            // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-            Product.count().exec((err, count) => {
-              if (err) return next(err)
-              res.send(products)
+    }
+
+    //if pice highest or lowest is defined. it adds to sort function
+    let price
+    if (req.query.price == 'highest') {
+        price = {
+            price: -1
+        }
+    } else if (req.query.price == 'lowest') {
+        price = {
+            price: 1
+        }
+    }
+    //variable query = reusable for actual search for the products and the total number of count
+
+ const query = Product
+        .find(search)
+        .sort(price)
+    //   .skip((perPage * page) - perPage)
+    //   .limit(perPage)
+    //   .sort(price)
+    //async/await or nested queries 
+    //limit, skip, sort 
+    query.exec((err, products) => {
+        if (err) return next(err)
+            .skip((perPage * page) - perPage)
+            .limit(perPage)
+           
+        query.count().exec((err, count) => {
+            if (err) return next(err)
+            res.send({
+                products: products,
+                count: count
             })
-          })
-      })
+        })
+    })
+
+})
 
 
 
@@ -134,7 +163,7 @@ router.post('/products', (req, res, next) => {
     })
     newProduct.category = req.body.category
     newProduct.name = req.body.name
-    newProduct.price = req.body.price 
+    newProduct.price = req.body.price
     newProduct.image = req.body.image
 
     newProduct.save(function (err) {
@@ -185,7 +214,7 @@ router.delete('/reviews/:review', (req, res, next) => {
     //1) remove the review from the product 
     //filtering an array 
     //2 )save the product 
-   
+
     //3)
     Review
         .findByIdAndRemove(req.params.review)
@@ -193,7 +222,7 @@ router.delete('/reviews/:review', (req, res, next) => {
             if (err) return next(err)
             res.end()
         })
- 
+
 })
 
 module.exports = router

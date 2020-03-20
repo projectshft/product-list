@@ -32,16 +32,15 @@ router.use(bodyParser.json());
 //   res.end()
 // })
 
-// router.param('product', function(req, res, next, id) {
-//   req.product = Product.find(product => product.id === id);
-//   next();
-// });
+router.param('product', function(req, res, next, id) {
+  req.product = Product.find(product => product.id === id);
+  next();
+});
 
 
 router.get('/products', (request, response, next) => {
   const parsedUrl = url.parse(request.originalUrl);
   const { query, sort } = querystring.parse(parsedUrl.query);
-
   
   const queryCategory = request.query.category
   const queryPrice = request.query.price
@@ -51,113 +50,118 @@ router.get('/products', (request, response, next) => {
   const perPage = 9
 
   //return all products by page count
-  if(queryCategory == undefined && queryPrice == undefined){
+  if(queryCategory == undefined && queryPrice == undefined && queryProductName == undefined){
       Product
       .find({})
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .exec((error, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
         Product.count().exec((error, count) => {
           if(error){
              return next(error)
           }
-          response.send(products)
+          response.send({products, count})
         })
       })
   }
 
-  //return product by search name
-  if( queryProductName !== undefined ) {  
-    Product.find({name: /queryProductName/i})
+  if(queryPrice == 'lowest' && !queryCategory){
+    Product
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .sort({price: 'ascending'})
+    .exec((error, products) => {
+      Product.count().exec((error, count) => {
+        if(error){
+           return next(error)
+        }
+         return response.send({products, count})
+      })
+    })
+  }
+
+  if(queryPrice == 'highest' && !queryCategory){
+    Product
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .sort({price: 'descending'})
+    .exec((error, products) => {
+      Product.count().exec((error, count) => {
+        if(error){
+           return next(error)
+        }
+        return response.send({products, count})
+      })
+    })
+  }
+
+  //filtering category
+  if(queryCategory && !queryPrice){
+    Product
+    .find({category: queryCategory})
+    .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((error, products) => {
-      if (error){
-        response.writeHead(404);	
-        return response.send("Could not find products with that.");
-      } else{
-        response.send(products)
+      const count = products.length
+      if (count == 0){
+        response.write(404);	
+        return response.send("Could not find products in that category.");
       }
-    })        
+      return response.send({products, count})
+    })
+  }
+ 
+  //filtering category & sorting by lowest price 
+  if(queryCategory && queryPrice === 'lowest'){
+    Product
+    .find({category: queryCategory})
+    .sort({price: 'ascending'})
+    .limit(perPage)
+    .exec((error, products) => {
+      const count = products.length
+      if (count == 0){
+        response.writeHead(404);	
+        return response.send("Could not find products in that category.");
+      }
+      return response.send({products, count})
+    })
   }
 
-  //find product by category and sorting by price
-  if(queryCategory !== undefined){
-    if(queryPrice == 'lowest'){
-      Product.find({category: queryCategory})
-      .limit(perPage)
-      .sort({price: 'ascending'})
-      .exec((error, products) => {
-        if (products.length == 0){
-          response.writeHead(404);	
-          return response.end("Could not find products in that category.");
-        } else{
-          response.send(products)
-        }
-      })
-    } else if (queryPrice == 'highest'){
-      Product.find({category: queryCategory})
-      .limit(perPage)
-      .sort({price: 'descending'})
-      .exec((error, products) => {
-        if (products.length == 0){
-          response.writeHead(404);	
-          return response.end("Could not find products in that category.");
-        } else{
-          response.send(products)
-        }
-      })
-    }else if (queryPrice !== undefined){
-      response.writeHead(400);	
-      return response.end("Could not read query search. Must enter lowest or highest.")
-    }else {
-      Product.find({category: queryCategory})
-      .limit(perPage)
-      .exec((error, products) => {
-        if (products.length == 0){
-          response.writeHead(404);	
-          return response.end("Could not find products in that category.");
-        } else{
-          response.send(products)
-        }
-      })
-    }
-  } else if (queryPrice !== undefined){
-    if(queryPrice == 'lowest'){
-      Product
-      .find({})
-      .sort({price: 'ascending'})
-      .limit(perPage)
-      .exec((error, products) => {
-        Product.count().exec((error, count) => {
-          if(error){
-            if (err) throw err
-          }
-          response.send(products)
-        })
-      })
-    }else if (queryPrice == 'highest'){
-      Product
-      .find({})
-      .sort({price: 'descending'})
-      .limit(perPage)
-      .exec((error, products) => {
-        Product.count().exec((error, count) => {
-          if(error){
-            if (err) throw err
-          }
-          response.send(products)
-        })
-      })
-    } else{
-      response.writeHead(400);	
-      return response.end("Could not read query search. Must enter lowest or highest.")
-    }
+  //filtering category & sorting by highest price
+  if(queryCategory && queryPrice === 'highest'){
+    Product
+    .find({category: queryCategory})
+    .sort({price: 'descending'})
+    .limit(perPage)
+    .exec((error, products) => {
+      const count = products.length
+      if (count == 0){
+        response.writeHead(404);	
+        return response.send("Could not find products in that category.");
+      } 
+      return response.send({products, count})
+    })
+   }
+
+  //return product by search name
+  if(queryProductName){
+    Product
+    .find({'name': {'$regex': queryProductName}})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .exec((error, products) => {
+      const count = products.length
+      if (count == 0){
+        response.write(404);	
+        return response.send("Could not find products with that name.");
+      }
+      return response.send({products, count})
+    })
   }
+
 })
-
-
-
 
 //get product by id
 router.get("/products/:product", (request, response) => {

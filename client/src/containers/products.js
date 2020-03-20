@@ -14,24 +14,27 @@ class Products extends Component {
           currentPage: 1,
           itemsOnPage: 9
         };  
+
+        this.onChangePageClick = this.onChangePageClick.bind(this);
     }
   
 
-    componentDidMount() {
-        this.props.fetchProducts()
-    }
+  componentDidMount() {
+    this.props.fetchProducts()
+  }
 
 	renderList() {
-        if(this.props.products === undefined){
+    if(this.props.products === undefined){
             return <div>Loading...</div>; 
-        }
+    }
+
 		return _.map(this.props.products, currentProduct => {
 			return (
                 <Col key={currentProduct._id} className="col-md-4" style={{margin: "0px", padding: "15px"}}>
-                    <Row className="collection-header">
-                      <span>
+                    <Row className="collection-header" style={{position: "relative", verticalAlign: "top", alignItems: "baseline"}}>
+                      <div style={{align: "left"}}>
                         <h6>Category: {currentProduct.category}</h6>
-                      </span>
+                      </div>
                         <h4>${currentProduct.price}</h4>
                     </Row>
                     <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg" style={{width: "75%", height: "75%"}} />
@@ -41,12 +44,17 @@ class Products extends Component {
 	    }); 
     }
 
+    async onChangePageClick(event) {
+      await this.setState({ currentPage: event.target.value });
+      this.props.fetchProducts(`?page=${this.state.currentPage}`)
+    }
+
     paginationNumbers = () =>{
-        const { products } = this.props;
+        const { count } = this.props;
         const { itemsOnPage } = this.state;
     
         const pagesToNumbers = [];
-        for (let i = 1; i <= Math.ceil(products.length / itemsOnPage); i++) {
+        for (let i = 1; i <= Math.ceil(count / itemsOnPage); i++) {
           pagesToNumbers.push(i);
         } 
     
@@ -55,18 +63,19 @@ class Products extends Component {
               <li className="page-link"
                 key={number} 
                 id={number} 
-                onClick={this.handleClick}>
+                value={number}
+                onClick={this.onChangePageClick}>
                 {number}
                 </li>
           );
         });
     
         return numbers;
-      }
+    }
 
     render() {
         return (
-            <Container>
+          <Container>
             <Row>
                 {this.renderList()}
             </Row>
@@ -77,15 +86,15 @@ class Products extends Component {
                     </ul>
                 </nav>
             </Row>
-            </Container>
+          </Container>
         );
     }
 }
 
-function mapStateToProps( products  ) {
-    console.log('products', products)
+function mapStateToProps( products ) {
   return{
-    products: products.products
+    products: products.products.products,
+    count: products.products.count
   } 
 }
 

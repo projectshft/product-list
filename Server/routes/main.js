@@ -35,53 +35,51 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {
 
 
-
     const perPage = 9
     // return the first page by default
     const page = req.query.page || 1
-    let category
-    //if category is specified it puts it in the find query
-    if (req.query.category) {
-        category = {
-            category: req.query.category
-        }
+
+    let queryFilter = {};
+    //if category is specified it puts it in the query
+    if (req.query.category ) {
+        queryFilter.category = req.query.category
     }
-    //search by string by string + filter 
-    let search
+    //if search is specificied it puts it in the query 
     if (req.query.search) {
-        search = {
-            $text: {
-                $search: req.query.search
-            }
-        }
+        queryFilter = { $text: { $search: req.query.search } }
+    }
+    //if category and search
+    if (req.query.search && req.query.category) {
+        queryFilter =  {$text: { $search: req.query.search } }
+        queryFilter.category = req.query.category
+        
     }
 
     //if pice highest or lowest is defined. it adds to sort function
-    let price
+    let sort
     if (req.query.price == 'highest') {
-        price = {
-            price: -1
-        }
+        sort = {price: -1}
     } else if (req.query.price == 'lowest') {
-        price = {
+        sort = {
             price: 1
         }
     }
     //variable query = reusable for actual search for the products and the total number of count
-
- const query = Product
-        .find(search)
-        .sort(price)
-    //   .skip((perPage * page) - perPage)
-    //   .limit(perPage)
-    //   .sort(price)
+    //here's what the object looks like and see the object as the parameter 
+    //if you add new key to the object 
+    const query = Product
+        .find(queryFilter)
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .sort(sort)
     //async/await or nested queries 
     //limit, skip, sort 
     query.exec((err, products) => {
         if (err) return next(err)
-            .skip((perPage * page) - perPage)
-            .limit(perPage)
-           
+
+        //if products.length === 0 || count ===0 
+        //return an error 
+
         query.count().exec((err, count) => {
             if (err) return next(err)
             res.send({
@@ -92,7 +90,6 @@ router.get('/products', (req, res, next) => {
     })
 
 })
-
 
 
 // GET /products/:product: Returns a specific product by its id

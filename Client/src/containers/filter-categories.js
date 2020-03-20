@@ -1,30 +1,64 @@
 import React from 'react';
 import {Component} from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../actions/index';
 
 
-export default class FilterCategories extends Component {
+class FilterCategories extends Component {
+    
+
+    constructor() {
+        super();
+        this.state = {
+            currentCategory: ''
+        }
+        this.handleFilter = this.handleFilter.bind(this);
+      }
+
+    // componentDidUpdate (event) {
+    //     this.props.fetchProducts(event.target.value)
+    // }
+    handleFilter() {
+        
+        let currentCategory = this.state.currentCategory
+        this.props.fetchProducts(currentCategory)
+        console.log(currentCategory)
+
+    }
     render () {
         return (
            
-<div className="input-group col-sm-4">
-  <div className="input-group-prepend">
-        <label className="input-group-text" htmlFor="inputGroupSelect01">Filter by Categories</label>
-    </div>
-        <select className="custom-select" id="inputGroupSelect01">
-            <option defaultValue>Choose...</option>
-            <option value="1">Games</option>
-            <option value="2">Toys</option>
-            <option value="3">Home</option>
-            <option value="4">Jewelery</option>
-            <option value="5">Garden</option>
-            <option value="6">Grocery</option>
-            <option value="7">Kids</option>
-            <option value="8">Movies</option>
-            <option value="9">Sports</option>
-        </select>
+            <div className="input-group col-sm-4">
+            <div className="input-group-prepend">
+                    <label className="input-group-text" htmlFor="inputGroupSelect01">Filter by Categories</label>
+                </div>
+                    <select className="custom-select" id="inputGroupSelect01"  onChange={event=> this.setState({ currentCategory: 'category=' + event.target.value }, () => {this.handleFilter()})} >
+                        <option defaultValue>Choose...</option>
+                        <option value="Games">Games</option>
+                        <option value="Toys">Toys</option>
+                        <option value="Home">Home</option>
+                        <option value="Jewlery">Jewelery</option>
+                        <option value="Garden">Garden</option>
+                        <option value="Grocery">Grocery</option>
+                        <option value="Kids">Kids</option>
+                        <option value="Movies">Movies</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Tools">Tools</option>
+                    </select>
 
-        </div>
-            
-        )
-    }
+                    </div>
+                        
+                    )
+                }
 }
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ fetchProducts }, dispatch);
+  }
+  
+function mapStateToProps({products}) {
+ return {products}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterCategories);

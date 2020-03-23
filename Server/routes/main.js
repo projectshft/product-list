@@ -67,30 +67,27 @@ router.get('/products', (req, res, next) => {
     //variable query = reusable for actual search for the products and the total number of count
     //here's what the object looks like and see the object as the parameter 
     //if you add new key to the object 
-    const query = Product
+    Product
         .find(queryFilter)
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .sort(sort)
-    //async/await or nested queries 
-    //limit, skip, sort 
-    query.exec((err, products) => {
-        if (err) return next(err)
+        .exec((err, products) => {
+         if (err) return next(err)
+            Product.count(queryFilter).exec((err, count) => {
+                 if (err) return next(err) 
+                    res.send({
+                       products: products, 
+                       count: count
+                                })
+                            })
+                        })
+    
+                    })
+    
 
         //if products.length === 0 || count ===0 
         //return an error 
-
-        query.count().exec((err, count) => {
-            if (err) return next(err)
-            res.send({
-                products: products,
-                count: count
-            })
-        })
-    })
-
-})
-
 
 // GET /products/:product: Returns a specific product by its id
 router.get('/products/:productId', (req, res, next) => {

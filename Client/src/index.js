@@ -27,7 +27,7 @@ ReactDOM.render(
           </div>
           <br/>
           <Products/>
-          <Pagination/>
+          {/* <Pagination/> */}
       </div>
   </Provider>,
   document.getElementById('root')

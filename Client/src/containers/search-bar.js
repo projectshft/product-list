@@ -8,21 +8,24 @@ class SearchBar extends Component {
     constructor(props) {
         super(props);
     
-        this.state = { term: '' };
+        this.state = { currentSearch: '' };
     
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
       }
     
       onInputChange(event) {
-        this.setState({ term: event.target.value });
+        this.setState({ currentSearch: "search=" + event.target.value });
       }
     
       onFormSubmit(event) {
         event.preventDefault();
-    
-        this.props.fetchProducts(1, null, null, this.state.term);
-        this.setState({ term: '' });
+        
+        let currentSearch = this.state.currentSearch
+
+        this.props.fetchProducts(currentSearch);
+        this.setState({ currentSearch: '' });
+
       }
     render () {
         return (

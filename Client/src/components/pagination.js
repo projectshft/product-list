@@ -1,38 +1,80 @@
-import React from 'react';
-import {Component} from 'react';
+// import React from 'react';
+// import {Component} from 'react';
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import { fetchProducts } from '../actions/index';
 
-
-export default class Pagination extends Component {
-    constructor(props) {
-        super(props);
+// class Pagination extends Component {
     
-        this.state = { currentPage: 'page 1' };
-    }
+//   constructor(props) {
+//         super(props);
+    
+//         this.state = { currentPage: 'page=1'}
 
-    render () {
-        return (
-            <div>
-                    <nav aria-label="Page navigation example">
-                    <ul className="pagination justify-content-center">
-                        <li className="page-item disabled">
-                        <a className="page-link" href="#" tabIndex="-1">Previous</a>
-                        </li>
-                        <li className="page-item"><a className="page-link" href="#">1</a></li>
-                        <li className="page-item"><a className="page-link" href="#">2</a></li>
-                        <li className="page-item"><a className="page-link" href="#">3</a></li>
-                        <li className="page-item"><a className="page-link" href="#">4</a></li>
-                        <li className="page-item"><a className="page-link" href="#">5</a></li>
-                        <li className="page-item"><a className="page-link" href="#">6</a></li>
-                        <li className="page-item"><a className="page-link" href="#">7</a></li>
-                        <li className="page-item"><a className="page-link" href="#">8</a></li>
-                        <li className="page-item"><a className="page-link" href="#">9</a></li>
-                        <li className="page-item"><a className="page-link" href="#">10</a></li>
-                        <li className="page-item">
-                        <a className="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                    </nav>
-                </div>
-        )
-    }
-}
+//         this.handleClick = this.handleClick.bind(this)
+//     }
+
+//     // componentDidMount () {
+//     //   this.props.fetchProducts (this.state.currentPage)
+//     // }
+
+
+  
+//     handleClick(event) {
+    
+  
+//       this.setState({ currentPage:  "page=" + event.target.value})
+//       let currentPage = this.state.currentPage
+//       this.props.fetchProducts(currentPage);
+      
+//       console.log(event.target.value);
+      
+//       console.log(currentPage)
+//     }
+
+
+
+//     renderPages() {
+
+        
+//         let pageNumbers = [];
+//         let count = this.props.products.count 
+//         console.log(count)
+        
+//         for (let i = 1; i <= Math.ceil((count/9)) ; i++) {
+//           pageNumbers.push(i)
+//            }
+
+//            const numbersList = pageNumbers.map(number => {
+//             return (
+//                 <li className="page-link"
+//                   key={number} 
+//                   value={number} 
+//                   onClick={this.handleClick}>
+//                   {number}
+//                   </li>
+//             );
+//           });
+      
+//           return numbersList;
+//         }
+    
+//         render() {
+//             return (
+//               <div className='pages'>
+//                 {this.renderPages()}
+//               </div>
+//             )
+//           }
+    
+// }
+    
+// function mapDispatchToProps(dispatch) {
+//     return bindActionCreators({ fetchProducts }, dispatch);
+//   }
+  
+//   function mapStateToProps({products}) {
+//   return { products};
+//   }
+  
+//   export default connect(mapStateToProps, mapDispatchToProps)(Pagination);

@@ -6,26 +6,20 @@ import { fetchProducts } from '../actions/index';
 
 
 class FilterCategories extends Component {
-    
 
     constructor() {
         super();
         this.state = {
             currentCategory: ''
         }
-        this.handleFilter = this.handleFilter.bind(this);
+        this.handleFilterCategories = this.handleFilterCategories.bind(this);
       }
 
-    // componentDidUpdate (event) {
-    //     this.props.fetchProducts(event.target.value)
-    // }
-    handleFilter() {
-        
-        let currentCategory = this.state.currentCategory
-        this.props.fetchProducts(currentCategory)
-        console.log(currentCategory)
+    handleFilterCategories() {    
+        this.props.fetchProducts(this.state.currentCategory)
 
     }
+
     render () {
         return (
            
@@ -33,7 +27,7 @@ class FilterCategories extends Component {
             <div className="input-group-prepend">
                     <label className="input-group-text" htmlFor="inputGroupSelect01">Filter by Categories</label>
                 </div>
-                    <select className="custom-select" id="inputGroupSelect01"  onChange={event=> this.setState({ currentCategory: 'category=' + event.target.value }, () => {this.handleFilter()})} >
+                    <select className="custom-select" id="inputGroupSelect01"  onChange={event=> this.setState({ currentCategory:  'category=' + event.target.value }, () => {this.handleFilterCategories()})}>
                         <option defaultValue>Choose...</option>
                         <option value="Games">Games</option>
                         <option value="Toys">Toys</option>
@@ -57,8 +51,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchProducts }, dispatch);
   }
   
-function mapStateToProps({products}) {
- return {products}
+function mapStateToProps(state) {
+ return state
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterCategories);

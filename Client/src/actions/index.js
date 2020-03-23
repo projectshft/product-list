@@ -6,12 +6,9 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
 export function fetchProducts(currentPage, currentSort, currentCategory, currentSearch) {
 
-  const url = `${ROOT_URL}`+ '&' +`${currentPage}`+ '&' +`${currentSort}`+ '&' +`${currentCategory}`+`${currentSearch}` 
+  const url = `${ROOT_URL}` + `${currentPage}` + '&'+ `${currentSort}`+'&'+`${currentCategory}`+ '&'+ `${currentSearch}` 
 
-  const request = axios.get(url);
-  console.log(request)
-
-
+  const request = axios.get(url)
   // .then((response) => {
   //     return response.data
   //   })

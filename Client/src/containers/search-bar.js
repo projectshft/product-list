@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class SearchBar extends Component {
+
     constructor(props) {
         super(props);
     
@@ -54,8 +55,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchProducts }, dispatch);
 }
 
-function mapStateToProps({products}) {
-return { products};
+function mapStateToProps(state) {
+return state;
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

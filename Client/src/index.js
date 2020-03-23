@@ -8,7 +8,6 @@ import reducers from "./reducers";
 import SearchBar from "./containers/search-bar";
 import FilterCategories from "./containers/filter-categories";
 import SortPrice from "./containers/sort-price";
-import Pagination from "./components/pagination"
 import Products from "./components/products"
 
 
@@ -27,7 +26,6 @@ ReactDOM.render(
           </div>
           <br/>
           <Products/>
-          {/* <Pagination/> */}
       </div>
   </Provider>,
   document.getElementById('root')

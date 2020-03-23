@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
 import _ from 'lodash'
 
-
+//this component renders the products and the pagination 
 class Products extends Component {
   constructor() {
     super();
@@ -22,24 +22,14 @@ async componentDidMount() {
    }
 
 
-// componentDidUpdate(prevProps) {
-//   // if (this.state.currentPage !== prevProps.products.currentPage) {
-//   //     this.props.fetchProducts(this.state.currentPage);
-//   //     console.log(this.props.products.products)
-//   //   }
-//     console.log(this.state.currentPage)
-//     console.log(prevProps.products.currentPage)
-
-//   }
-
 //the helper function for when you click the page 
 handleClickForPagination() {
   this.props.fetchProducts(this.state.currentPage)
 }
 
 
-
-renderPages() {
+//renders page numbers
+renderPageNumbers() {
     
     let pageNumbers = [];
     let count = this.props.products.count 
@@ -67,14 +57,15 @@ renderPages() {
     renderProducts() {
   
         return (
-          _.map(this.props.products.products, p => {
+          //uses lodash map property bc products prop is an object 
+          _.map(this.props.products.products, product => {
          return (
-         <div className="col-4 text-center" key={p._id}>
-            <div className="category">Category: {p.category}</div>
-            <div className="price">${p.price}</div>
+         <div className="col-4 text-center" key={product._id}>
+            <div className="category">Category: {product.category}</div>
+            <div className="price">${product.price}</div>
            
             <img src="https://www.oysterdiving.com/wp-content/uploads/Deep-sea-diving.jpg" alt="" width="240" height="auto" className="mx-auto d-block"></img>
-            <div className="item-name">{p.name}</div>
+            <div className="item-name">{product.name}</div>
             <br/>
             <br/>
         </div>)
@@ -87,7 +78,7 @@ renderPages() {
         return(
         <div className="row row-row-cols3 text-center">
             {this.renderProducts()}
-            {this.renderPages()}
+            {this.renderPageNumbers()}
           </div>
         )
     }
@@ -97,8 +88,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchProducts }, dispatch);
   }
   
-function mapStateToProps({products}) {
- return {products}
+function mapStateToProps(state) {
+ return state
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

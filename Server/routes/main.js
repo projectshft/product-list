@@ -12,10 +12,6 @@ router.get('/generate-fake-data', (req, res, next) => {
             product: product._id
         })
 
-        // })
-        // review.save((err)=> {
-        //     if (err) throw err
-        // })
         review.save()
         product.category = faker.commerce.department()
         product.name = faker.commerce.productName()
@@ -31,9 +27,8 @@ router.get('/generate-fake-data', (req, res, next) => {
     res.end()
 })
 
-
+//get all the products and following queries 
 router.get('/products', (req, res, next) => {
-
 
     const perPage = 9
     // return the first page by default
@@ -64,9 +59,7 @@ router.get('/products', (req, res, next) => {
             price: 1
         }
     }
-    //variable query = reusable for actual search for the products and the total number of count
-    //here's what the object looks like and see the object as the parameter 
-    //if you add new key to the object 
+    
     Product
         .find(queryFilter)
         .skip((perPage * page) - perPage)
@@ -93,18 +86,14 @@ router.get('/products', (req, res, next) => {
 router.get('/products/:productId', (req, res, next) => {
 
     //find the sinigular product by Params product Id
-    Product.findOne({
-        //why does this work and not in the post one??? ask Sean
-        //TODO: 
-        _id: req.params.productId
-    }).exec((err, product) => {
+    Product.findOne({_id: req.params.productId})
+    .exec((err, product) => {
         if (err) {
             res.send(err)
         } else {
             res.send(product)
         }
     })
-
 
 });
 
@@ -136,11 +125,11 @@ router.get('/reviews', (req, res, next) => {
         //limit 40 reviews per page
         .limit(40)
         .exec((err, reviews) => {
-            // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+    
             Review.count().exec((err, count) => {
                 if (err) return next(err)
 
-                res.send(reviews)
+                res.send({reviews:reviews, count: count})
             })
         })
 
@@ -151,10 +140,11 @@ router.post('/products', (req, res, next) => {
 
     let newProduct = new Product()
     let newReview = new Review({
-        text: faker.commerce.productAdjective(),
-        userName: faker.name.findName(),
-        product: newProduct._id
+        text: req.body.text,
+        userName: req.body.userName, 
+        product: req.body.product
     })
+
     newProduct.category = req.body.category
     newProduct.name = req.body.name
     newProduct.price = req.body.price

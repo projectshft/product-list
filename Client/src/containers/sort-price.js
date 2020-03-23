@@ -4,20 +4,19 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
 
-
+//this component sorts the price from low to high and high to low 
 class SortPrice extends Component {
 
     constructor() {
         super();
 
-        this.state = { currentState: ''}
+        this.state = { currentSort: ''}
        
         this.handleSortPrice = this.handleSortPrice.bind(this)
       }
 
-
+    //helper function that fetches products based on the change in select
     handleSortPrice(){
-
         this.props.fetchProducts(this.state.currentSort)
     
     }
@@ -43,8 +42,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchProducts }, dispatch);
   }
   
-function mapStateToProps({products}) {
- return {products}
+function mapStateToProps(state) {
+ return state
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SortPrice);

@@ -4,30 +4,33 @@ import { fetchProducts } from '../actions/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+//this component is for the search bar
 class SearchBar extends Component {
 
     constructor(props) {
         super(props);
-    
+        //sets state to empty 
         this.state = { currentSearch: '' };
     
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
       }
-    
+      //updates state to the input in the search bar
       onInputChange(event) {
         this.setState({ currentSearch: "search=" + event.target.value });
       }
     
+      //when you submit your form you fetch products based on the term submitted
       onFormSubmit(event) {
         event.preventDefault();
         
         let currentSearch = this.state.currentSearch
 
         this.props.fetchProducts(currentSearch);
-        this.setState({ currentSearch: '' });
-
+  
       }
+
+
     render () {
         return (
 

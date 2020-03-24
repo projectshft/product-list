@@ -1,10 +1,15 @@
-import { FETCH_PRODUCTS } from '../actions/index';
+  
+import { FETCH_PRODUCTS } from '../actions/index'
 
-export default function(state = {products: [], count: 0}, action) { //state = {}
+const Default_STATE = {
+  currentPage: 'page=1', sort:'', category:''
+}
+
+export default function(state = Default_STATE, action) {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      return action.payload.data;
-    default: 
+      return {...state, products: action.payload.data.products, count: action.payload.data.count }
+    default:
       return state;
-  } 
+  }
 }

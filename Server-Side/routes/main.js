@@ -38,27 +38,49 @@ router.get('/products', (req, res, next) => {
     const searchedCategory = req.query.category
     //variable for price if entered on the query 
     const priceRange = req.query.price
+    // variable for the text inputed through the search
+    const searchQuery = req.query.search
 
+    // Adaptive variables
+    let filteredQuery = {};
+    let sortCategory = "";
 
-    let initialQuery = Product.find({})
-
+    // If category is entered on the request
     if (searchedCategory) {
-        initialQuery = Product.find({
+        filteredQuery = {
             category: searchedCategory
-        })
+        }
+    }
+
+    // If a product name was typed in the search input
+    if (searchQuery) {
+        filteredQuery = {
+            $textInput: {$search: searchQuery}
+        }
+    }
+
+    // if a search input was entered and a category specified
+    if (searchQuery && searchedCategory) {
+        filteredQuery = {
+            category: searchedCategory,
+            $textInput: {$search: searchQuery}
+        }
     }
 
     //Sorting by price if query was entered
+    
     if (priceRange == 'highest') {
-        initialQuery = initialQuery.sort('-price')
+       sortCategory = {price: -1}
     } else if (priceRange == 'lowest') {
-        initialQuery = initialQuery.sort('price')
+       sortCategory = {price: 1}
     }
 
 
-    initialQuery
+    Product
+        .find(filteredQuery)
         .skip((perPage * page) - perPage)
         .limit(perPage)
+        .sort(sortCategory)
         .exec((err, products) => {
             Product.distinct("category").exec((err, categories) => {
                    // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
@@ -67,8 +89,7 @@ router.get('/products', (req, res, next) => {
 
                     res.send({
                         product: products,
-                        productCount: count,
-                        category: categories
+                        productCount: count
                     })
                 })
 

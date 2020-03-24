@@ -1,15 +1,15 @@
 import axios from 'axios'
 
 export const FETCH_PRODUCTS = "fetch_products";
-export const SAVE_CATEGORY = "fetch_category";
-export const SORT_PRICE = "sort_price"
+// export const SAVE_CATEGORY = "fetch_category";
+// export const SORT_PRICE = "sort_price"
 
-const baseURL = "http://localhost:8000";
+const baseURL = "http://localhost:8000/products?";
 
 
-export const fetchProducts = (page, category = "", sort = "") => {
+export function fetchProducts (page, category, sort, searchInput) {
 
-    const url = `${baseURL}/products?page=${page}${category}&price=${sort}`;
+    const url = `${baseURL}&${page}&${category}&${sort}&${searchInput}`;
     const request = axios.get(url)
     return {
         type: FETCH_PRODUCTS,
@@ -17,18 +17,18 @@ export const fetchProducts = (page, category = "", sort = "") => {
     };
 }
 
-export const selectedCategory = (category) => {
-    return {
-        type: SAVE_CATEGORY,
-        payload: category
-    }
-}
+// export const selectedCategory = (category) => {
+//     return {
+//         type: SAVE_CATEGORY,
+//         payload: category
+//     }
+// }
 
 
-export function sortPrice(price) {
+// export function sortPrice(price) {
 
-    return {
-        type: SORT_PRICE,
-        payload: price
-    };
-}
+//     return {
+//         type: SORT_PRICE,
+//         payload: price
+//     };
+// }

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchProducts } from '../actions/index'
 import _ from 'lodash'
-import PropTypes from 'prop-types';
 
 class Products extends Component {
     constructor() {
@@ -15,7 +14,6 @@ class Products extends Component {
 
     async componentDidMount() {
         await this.props.fetchProducts()
-        console.log(this.props.products)
     }
 
 

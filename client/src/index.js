@@ -8,11 +8,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import Products from './components/products';
 import reducers from './reducers';
+import SearchedCategories from './containers/categories'
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore)
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
+    < SearchedCategories />
     < Products />
   </Provider>,
   document.getElementById('root')

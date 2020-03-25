@@ -7,18 +7,28 @@ import _ from 'lodash'
 class Products extends Component {
     constructor() {
         super();
+        // set the state of pageNumber to page=1 then change based on pagination
+        this.state ={
+            pageNumber: "page=1"
+        }
 
-
-        // this.handleClickForPagination = this.handleClickForPagination.bind(this)
+        //binging the function so we can pass state as an argument 
+        this.executePagination = this.executePagination.bind(this)
     }
 
     async componentDidMount() {
         await this.props.fetchProducts()
     }
 
-  
+    //Executes pagination once the page is clicked
+    executePagination() {
+        this.props.fetchProducts(this.state.pageNumber)
+    }
 
+    renderPageToggle() {
 
+        //need a way to display the next 9 products out of the the total product Count
+    }
 
     renderProducts() {
 
@@ -54,6 +64,7 @@ class Products extends Component {
             <div>
                 <div>
                     {this.renderProducts()}
+                    {/* {this.renderPageToggle()} */}
                 </div>
             </div>
         );

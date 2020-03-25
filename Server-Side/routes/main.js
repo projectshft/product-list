@@ -43,7 +43,7 @@ router.get('/products', (req, res, next) => {
 
     // Adaptive variables
     let filteredQuery = {};
-    let sortCategory = "";
+    let sortCategory;
 
     // If category is entered on the request
     if (searchedCategory) {
@@ -147,11 +147,24 @@ router.get('/reviews', (req, res, next) => {
 
 // Creates a new product in the database
 router.post('/products', (req, res, next) => {
+    let reqCategory = req.body.category;
+    let reqName = req.body.name;
+    let reqPrice = req.body.price;
+
+    //Edgecase Write Error if any of the categories are left blank in the request
+    if (!reqCategory || !reqName || !reqPrice ) {
+        res.writeHead(401, ("Error"), {
+            "Content-Type": "plain/text"
+        });
+        res.end("Error: Category OR Name OR Price was left blank in the request.")
+    } 
+
+
     //Make an instance of the product model
     let newProduct = new Product({
-        category: faker.commerce.department(),
-        name: faker.commerce.productName(),
-        price: faker.commerce.price(),
+        category: reqCategory,
+        name: reqName,
+        price: reqPrice,
         image: 'https://images.unsplash.com/photo-1542395765-761de4ee9696?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
         reviews: []
     });

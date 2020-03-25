@@ -7,8 +7,8 @@ import _ from 'lodash'
 class Products extends Component {
     constructor() {
         super();
-        
-    
+
+
         // this.handleClickForPagination = this.handleClickForPagination.bind(this)
     }
 
@@ -16,31 +16,35 @@ class Products extends Component {
         await this.props.fetchProducts()
     }
 
+  
+
+
 
     renderProducts() {
 
         return _.map(this.props.products.products, product => {
-            return(
+            return (
                 <div className="col-md-3" key={product._id}
-                style={{ display: 'inline-block', margin: '2%' }}>
-                <div>
+                    style={{ display: 'inline-block', margin: '2%' }}>
                     <div>
-                        <h3> ${product.price}</h3>
-                        <img
-                            className="card-img img-responsive"
-                            src={product.image}
+                        <div>
+                            <h3> ${product.price}</h3>
+                            <img
+                                className="card-img img-responsive"
+                                src={product.image}
 
-                        />
-                    </div>
-                    <div className="row">
-                        <h5> {product.name}</h5>
-                    </div>
-                    <div className="row">
-                        <h6> {product.category}</h6>
+                            />
+                        </div>
+                        <div className="row">
+                            <h5> {product.name}</h5>
+                        </div>
+                        <div className="row">
+                            <h6> {product.category}</h6>
+                        </div>
                     </div>
                 </div>
-            </div>
-            )}
+            )
+        }
         )
 
     }
@@ -48,7 +52,7 @@ class Products extends Component {
     render() {
         return (
             <div>
-                <div className="row row-row-cols3 text-center">
+                <div>
                     {this.renderProducts()}
                 </div>
             </div>

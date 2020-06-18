@@ -55,24 +55,18 @@ router.get('/products/:product', (req, res, next) => {
 router.post('/products', (req, res, next) => {
     // create new product
     let newProduct = new Product()
-    // fill out product's key object pairs
-    newProduct.category = 'Artisan Bread'
-    newProduct.name = 'Focacia de Sudan'
-    newProduct.price = 20
+    // fill out product's key object pairs from the request body
+    newProduct.category = req.body.category
+    newProduct.name = req.body.name
+    newProduct.price = req.body.price
     newProduct.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
 
-    newProduct.save(err => {
+    newProduct.save((err, product) => {
         if (err) {
             console.log(err)
         }
+        res.json('product saved')
     })
-    
-    Product
-        .findOne({name:'Focacia de Sudan'}, (err, product) => {
-        res.json(product)
-    })
-
-
 })
 
 

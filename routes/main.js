@@ -60,12 +60,29 @@ router.post('/products', (req, res, next) => {
     newProduct.name = req.body.name
     newProduct.price = req.body.price
     newProduct.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-
+    // save new product and console log any errors that occur
     newProduct.save((err, product) => {
         if (err) {
             console.log(err)
         }
         res.json('product saved')
+    })
+})
+
+router.post('/products/:product/reviews', (req, res, next) => {
+    // create new review
+    let newReview = new Review;
+    // fill out reviews's key object pairs from the request body
+    newReview.userName = req.body.userName
+    newReview.text = req.body.text
+    // assign product based on params
+    newReview.product = req.params.product
+
+    newReview.save((err, review) => {
+        if (err) {
+            console.log(err)
+        }
+        res.json('review saved')
     })
 })
 

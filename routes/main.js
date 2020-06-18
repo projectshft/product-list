@@ -1,21 +1,79 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+const Review = require('../models/review')
 
-router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    let product = new Product()
+// router.get('/generate-fake-data', (req, res, next) => {
+//   for (let i = 0; i < 90; i++) {
+//     let product = new Product()
 
-    product.category = faker.commerce.department()
-    product.name = faker.commerce.productName()
-    product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+//     product.category = faker.commerce.department()
+//     product.name = faker.commerce.productName()
+//     product.price = faker.commerce.price()
+//     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
 
-    product.save((err) => {
-      if (err) throw err
-    })
-  }
-  res.end()
+//     product.save((err) => {
+//       if (err) throw err
+//     })
+//   }
+//   res.end()
+// })
+
+router.get('/products', (req, res, next) => {
+    const perPage = 9
+  
+    // return the first page by default
+    const page = req.query.page || 1
+  
+    Product
+      .find({})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+        Product.count().exec((err, count) => {
+          if (err) return next(err)
+  
+          res.send(products)
+        })
+      })
 })
+
+router.get('/products/:product', (req, res, next) => {
+    // grab :product from the params
+    productID = req.params.product
+    // find the product based off of the productID
+    Product
+        .findOne({_id: productID}, (err, product) => {
+            if (err) {
+                console.log(err)
+            }
+            res.json(product)
+        })
+})
+
+router.post('/products', (req, res, next) => {
+    // create new product
+    let newProduct = new Product()
+    // fill out product's key object pairs
+    newProduct.category = 'Artisan Bread'
+    newProduct.name = 'Focacia de Sudan'
+    newProduct.price = 20
+    newProduct.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+
+    newProduct.save(err => {
+        if (err) {
+            console.log(err)
+        }
+    })
+    
+    Product
+        .findOne({name:'Focacia de Sudan'}, (err, product) => {
+        res.json(product)
+    })
+
+
+})
+
 
 module.exports = router

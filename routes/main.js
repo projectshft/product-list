@@ -18,7 +18,10 @@ const Product = require('../models/product')
 //   res.end()
 // })
 
-router.params
+router.param('product', function(req, res, next, id) {
+  req.product = String(id);
+  next();
+});
 
 router.get('/products', (req, res, next) => {
   const perPage = 9
@@ -40,15 +43,16 @@ router.get('/products', (req, res, next) => {
     })
 })
 
-router.get('/products/:product', (req, res, next, id) => {
+router.get('/products/:product', (req, res, next) => {
 
+  console.log(req.product)
   Product
-    .find({_id: id})
-    .exec((err, products) => {
+    .find({_id: req.product})
+    .exec((err, product) => {
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
-        res.send(products)
+        res.send(product)
       })
     })
 })

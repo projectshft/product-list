@@ -18,7 +18,7 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 
     let numReviews = getRandomNumber(7);
-    for(let i = 0; i < numReviews; i++) {
+    for (let i = 0; i < numReviews; i++) {
       let review = new Review({
         userName: faker.internet.userName(),
         text: faker.random.words(),
@@ -41,37 +41,40 @@ router.get('/products', (req, res, next) => {
   const category = req.query.category;
   const name = req.query.query;
   let priceSort = "";
-  if(req.query.price === 'highest') {
+  if (req.query.price === 'highest') {
     priceSort = "-price"
   } else if (req.query.price === "lowest") {
     priceSort = "price"
   }
 
   let query;
-  if(category && name) {
-    query = Product.find({category: category, name: {"$regex": name, "$options": "i"}})
-  } else if( category && !name) {
-    query = Product.find({category: category});
+  if (category && name) {
+    query = { category: category, name: { "$regex": name, "$options": "i" } }
+  } else if (category && !name) {
+    query = { category: category };
   } else if (!category && name) {
-    query = Product.find({name: {"$regex": name, "$options": "i"}})
+    query = { name: { "$regex": name, "$options": "i" } }
   } else {
-    query = Product.find()
+    query = {}
   }
-  query
+
+  //let myCount = query.count();
+
+  Product.find(query)
     .sort(priceSort)
     .populate('reviews')
-    .skip((page - 1) * itemsPerPage)
     .limit(itemsPerPage)
     .exec((err, products) => {
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-        res.send(products);
-      })
+      Product.find(query)
+        .count()
+        .exec((err, count) => {
+        res.send({products, count});
     })
-  });
+    })
+});
 
 router.get('/products/:product', (req, res, next) => {
-  Product.find({ _id: req.params.product})
+  Product.find({ _id: req.params.product })
     .populate('reviews')
     .exec((err, products) => {
       Product.count().exec((err, count) => {
@@ -84,7 +87,7 @@ router.get('/products/:product', (req, res, next) => {
 router.get('/products/:product/reviews', (req, res, next) => {
   const itemsPerPage = 4;
   const page = req.query.page || 1;
-  Product.find({_id: req.params.product})
+  Product.find({ _id: req.params.product })
     .populate('reviews')
     .exec((err, products) => {
       if (err) return next(err)
@@ -113,7 +116,7 @@ router.post('/products', (req, res, next) => {
 })
 
 router.delete('/products/:product', (req, res, next) => {
-  Product.remove({ _id: req.params.product}, err => {
+  Product.remove({ _id: req.params.product }, err => {
     if (err) throw err;
 
     res.end();
@@ -121,7 +124,7 @@ router.delete('/products/:product', (req, res, next) => {
 })
 
 router.delete('/reviews/:review', (req, res, next) => {
-  Review.remove({ _id: req.params.review}, err => {
+  Review.remove({ _id: req.params.review }, err => {
     if (err) throw err;
 
     res.end();

@@ -28,40 +28,42 @@ router.get('/products', (req, res, next) => {
     const page = req.query.page || 1
 
     // grab optional queries
-    const category = req.query.category
+    let category = req.query.category
     const price = req.query.price
-    const search = req.body.search
+    const search = req.query.query
   
-    // Product
-    //   .find({})
-    //   .skip((perPage * page) - perPage)
-    //   .limit(perPage)
-    //   .exec((err, products) => {
-    //     // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-    //     Product.count().exec((err, count) => {
-    //       if (err) return next(err)
-  
-    //       res.send(products)
-    //     })
-    //   })
     let query = Product.find({})
 
-    if (category) {
-        query = query.find({category: category})
+    if (search) {
+        // use text index to search full product
+        query = query.find({$text: {$search: search}})
     }
 
+    // build up the query, first check if category is present and search by it
+    if (category) {
+        // make sure first letter is capitalized and all others are lowercase
+        category = category.toLowerCase()
+        category = category[0].toUpperCase() + category.slice(1)
+        // only return those products that have a matching category
+        query = query.find({category: category})
+    }
+    // sort by price whether the query is highest or lowest; highest by default
     if (price) {
-        if (price === 'highest') {
+        if (price === 'lowest') {
+            query = query.sort({price: 1})
+        } else if (price === 'highest') {
             query = query.sort({price: -1})
         } else {
-            query = query.sort({price: 1})
+            res.status(400).send('price query must either be set to highest or lowest')
         }
-
     }
 
     query
+        // skip for as many pages as you're on - 1 page's worth of products
         .skip((perPage * page) - perPage)
+        // limit responses per page
         .limit(perPage)
+        // execute the query
         .exec((err, products) => {
             if (err) {
                 throw err
@@ -71,7 +73,14 @@ router.get('/products', (req, res, next) => {
                     throw err
                 }     
             })
-            res.json(products)
+            if (products.length === 0) {
+                // return something if the array will be empty
+                res.json('No results for that search. Try simplifying your search to one word')
+            } else {
+                res.json(products)
+            }
+            
+            
         })
 });
 

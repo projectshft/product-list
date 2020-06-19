@@ -39,6 +39,13 @@ router.get('/products', (req, res, next) => {
   const itemsPerPage = 9;
   const page = req.query.page || 1;
   const category = req.query.category;
+  let priceSort = "";
+  if(req.query.price === 'highest') {
+    priceSort = "-price"
+  } else if (req.query.price === "lowest") {
+    priceSort = "price"
+  }
+
   let query;
   if(category) {
     query = Product.find({category: category})
@@ -46,6 +53,7 @@ router.get('/products', (req, res, next) => {
     query = Product.find();
   }
   query
+    .sort(priceSort)
     .populate('reviews')
     .skip((page - 1) * itemsPerPage)
     .limit(itemsPerPage)

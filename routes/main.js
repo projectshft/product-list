@@ -56,7 +56,24 @@ router.get("/products/:product", (req, res) => {
 });
 
 // Creates a new product in the database
-router.post("/products", (req, res) => {});
+router.post("/products", (req, res) => {
+  // create the new product object based on its constructor
+  const newProduct = new Product({
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+    reviews: [],
+  });
+
+  Product.create(newProduct, (err, data) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(data);
+    }
+  });
+});
 
 // Creates a new review in the database by adding it to the correct product's reviews array.
 router.post("/products/:product/reviews", (req, res) => {
@@ -71,7 +88,7 @@ router.post("/products/:product/reviews", (req, res) => {
 
   req.product.save((err, data) => {
     if (err) {
-      console.error(err);
+      res.send(err);
     } else {
       res.send(data);
     }

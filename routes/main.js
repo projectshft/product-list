@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const faker = require("faker");
+const Review = require("../models/review");
 const Product = require("../models/product");
 
 router.get("/generate-fake-data", (req, res, next) => {
@@ -16,6 +17,16 @@ router.get("/generate-fake-data", (req, res, next) => {
     });
   }
   res.end();
+});
+
+// we want to grab and send the product id for different routes that need it
+router.param("product", function (req, res, next, id) {
+  // we need to find the product that matches
+  Product.findById(id, (err, product) => {
+    if (err) throw err;
+    req.product = product;
+    next();
+  });
 });
 
 router.get("/products", (req, res, next) => {
@@ -37,6 +48,10 @@ router.get("/products", (req, res, next) => {
         res.send(products);
       });
     });
+});
+
+router.get("/products/:product", (req, res) => {
+  res.send(req.product);
 });
 
 module.exports = router;

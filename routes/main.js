@@ -40,9 +40,8 @@ router.param("review", function (req, res, next, id) {
 
   Product.findOne({ reviews: { $elemMatch: { _id: id } } }).exec(
     (err, product) => {
-      // if (err) throw err;
-      // how should I be handling an edge case here?
       if (!product) {
+        res.status(404);
         return res.send("There is no product in our store matching that id");
       } else {
         req.product = product;
@@ -52,6 +51,7 @@ router.param("review", function (req, res, next, id) {
   );
 });
 
+// gets the products, paginated
 router.get("/products", (req, res, next) => {
   const perPage = 9;
 
@@ -76,6 +76,16 @@ router.get("/products", (req, res, next) => {
 // Returns a specific product by its id
 router.get("/products/:product", (req, res) => {
   res.send(req.product);
+});
+
+// Returns ALL the reviews for a product
+router.get("/products/:product/reviews", (req, res) => {
+  const perPage = 4;
+
+  // return the first page by default
+  const page = req.query.page || 1;
+
+  return res.send(req.product.reviews);
 });
 
 // Creates a new product in the database

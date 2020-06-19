@@ -2,6 +2,7 @@ const router = require("express").Router();
 const faker = require("faker");
 const ReviewSchema = require("../models/review");
 const Product = require("../models/product");
+const Review = require("../models/review").Review;
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -25,12 +26,30 @@ router.param("product", function (req, res, next, id) {
   Product.findById(id, (err, product) => {
     if (err) throw err;
     if (!product) {
-      return res.send("There is no product in our store matching that id");
+      return res.send("There is no product associated with that review ID");
     } else {
       req.product = product;
     }
     next();
   });
+});
+
+// we should be able to find a product by a review Id, too
+router.param("review", function (req, res, next, id) {
+  // we need to search through products since our data is nested
+
+  Product.findOne({ reviews: { $elemMatch: { _id: id } } }).exec(
+    (err, product) => {
+      // if (err) throw err;
+      // how should I be handling an edge case here?
+      if (!product) {
+        return res.send("There is no product in our store matching that id");
+      } else {
+        req.product = product;
+      }
+      next();
+    }
+  );
 });
 
 router.get("/products", (req, res, next) => {
@@ -104,6 +123,20 @@ router.delete("/products/:product", (req, res) => {
   req.product.remove((err) => {
     if (err) throw err;
     return res.send("Person successfully deleted");
+  });
+});
+
+// Deletes a review by id
+router.delete("/reviews/:review", (req, res) => {
+  // we already found the parent product with router.param
+  // so now we just need to remove the right review and save
+  req.product.reviews.id(req.params.review).remove();
+  req.product.save((err, data) => {
+    if (err) {
+      return res.send(err);
+    } else {
+      return res.send(data);
+    }
   });
 });
 

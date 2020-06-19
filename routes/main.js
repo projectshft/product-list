@@ -69,4 +69,23 @@ router.post('/products', (req, res, next) => {
   res.send(product);
 })
 
+router.post('/products/:product/reviews', (req, res, next, id) => {
+  console.log(req.body.text);
+  console.log(req.body.userName);
+
+  // use reviewSchema here??? BUT HOW
+
+  // let review = {
+  //   userName: req.body.userName,
+
+  // }
+
+  req.product.reviews.push(review);
+
+  req.product.save((err) => {
+    if (err) throw err
+  })
+  res.send(req.product);
+})
+
 module.exports = router

@@ -29,19 +29,33 @@ router.get('/products', (req, res, next) => {
 
     // grab optional queries
     const category = req.query.category
+    const price = req.query.price
+    const search = req.body.search
   
-    Product
-      .find({})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-        Product.count().exec((err, count) => {
-          if (err) return next(err)
+    // Product
+    //   .find({})
+    //   .skip((perPage * page) - perPage)
+    //   .limit(perPage)
+    //   .exec((err, products) => {
+    //     // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+    //     Product.count().exec((err, count) => {
+    //       if (err) return next(err)
   
-          res.send(products)
-        })
-      })
+    //       res.send(products)
+    //     })
+    //   })
+    let query = Product.find({})
+
+    if (category) {
+        query = query.find({category: category})
+    }
+
+    query.exec((err, product) => {
+        if (err) {
+            throw err
+        }
+        res.json(product)
+    })
 });
 
 router.get('/products/:product', (req, res, next) => {

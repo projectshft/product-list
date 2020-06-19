@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
-const Review = require('../models/review')
+const Review = require('../models/review');
+const { Mongoose } = require('mongoose');
+const product = require('../models/product');
 
 // router.get('/generate-fake-data', (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
@@ -24,6 +26,9 @@ router.get('/products', (req, res, next) => {
   
     // return the first page by default
     const page = req.query.page || 1
+
+    // grab optional queries
+    const category = req.query.category
   
     Product
       .find({})
@@ -37,11 +42,12 @@ router.get('/products', (req, res, next) => {
           res.send(products)
         })
       })
-})
+});
 
 router.get('/products/:product', (req, res, next) => {
     // grab :product from the params
     productID = req.params.product
+
     // find the product based off of the productID
     Product
         .findOne({_id: productID}, (err, product) => {
@@ -50,7 +56,29 @@ router.get('/products/:product', (req, res, next) => {
             }
             res.json(product)
         })
-})
+});
+
+router.get('/products/:product/reviews', (req, res, next) => {
+    const perPage = 4
+    // return the first page by default
+    const page = req.query.page || 1
+    // grab :product from the params
+    productID = req.params.product
+    // find the product based off of the productID
+    Product
+        .findOne({_id: productID})
+            .populate({
+                // add in pagination with limit and skip
+                path:'reviews',
+                options: {
+                    limit: perPage,
+                    skip: (perPage*page) - perPage}
+                })
+            .exec((err, product) => {
+                res.json(product.reviews)
+            })
+    
+});
 
 router.post('/products', (req, res, next) => {
     // create new product
@@ -67,7 +95,7 @@ router.post('/products', (req, res, next) => {
         }
         res.json('product saved')
     })
-})
+});
 
 router.post('/products/:product/reviews', (req, res, next) => {
     // create new review
@@ -77,14 +105,62 @@ router.post('/products/:product/reviews', (req, res, next) => {
     newReview.text = req.body.text
     // assign product based on params
     newReview.product = req.params.product
-
+    // find product and add new review to its reviews array
+    Product
+        .findOne({_id: req.params.product}, (err, product) => {
+            if (err) {
+                throw err
+            }
+            product.reviews.push(newReview._id)
+            product.save()
+        })
+    // save new review and error as needed
     newReview.save((err, review) => {
         if (err) {
             console.log(err)
         }
         res.json('review saved')
     })
-})
+});
+
+router.delete('/products/:product', (req, res, next) => {
+    // grab :product from the params
+    productID = req.params.product
+    // delete product 
+    Product.deleteOne({_id: productID}, (err) => {
+        if (err) {
+            throw err
+        }
+        // then delete all reviews referencing that product
+        Review.deleteMany({product: productID}, err => {
+            if (err) {
+                throw err
+            }
+            res.json('product deleted')
+        }) 
+    })
+});
+
+router.delete('/reviews/:review', (req, res, next) => {
+    // grab :product from the params
+    reviewID = req.params.review
+    // find prouduct referencing reviewID
+    Product.findOne({reviews: reviewID}, (err, product) => {
+        if (err) {
+            throw err
+        }
+        // remove reviewID from array
+        product.reviews.splice(product.reviews[reviewID], 1)
+        product.save()
+        // find and delete review itself
+        Review.deleteOne({_id: reviewID}, (err, review)=> {
+            if (err) {
+                throw err
+            }
+            res.json('review deleted')
+        })
+    })
+});
 
 
 module.exports = router

@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+const Review = require('../models/reviews')
 
 // router.get('/generate-fake-data', (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
@@ -10,6 +11,7 @@ const Product = require('../models/product')
 //     product.name = faker.commerce.productName()
 //     product.price = faker.commerce.price()
 //     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+//     product.reviews = []  
 
 //     product.save((err) => {
 //       if (err) throw err
@@ -37,5 +39,52 @@ router.get('/products', (req, res, next) => {
         })
       })
   })
+
+
+router.get('/products/:product', (req, res) => {
+  const { product } = req.params
+  // const productToReturn = req.query.product
+
+  Product.findById(product).exec((err, product) => {
+      if (err) {
+          return console.error(err);
+      }
+      res.send(product)
+  })
+})
+
+//since this is post there will also be a body param
+//requires params in the body and in the url 
+//needs edge cases for if the body doesn't contain username & text
+router.post('/products/:product/reviews', (req, res) => {
+  const { product } = req.params
+  const username = req.body.username
+  const text = req.body.text
+
+  Product.findById(product)
+    .populate('Review')
+    .exec((err, product) => {
+    if (err) {
+        return console.error(err);
+    }
+
+    let review = new Review(
+      {
+        userName: username,
+        text: text,
+        product: product._id
+      }
+    )
+    
+    product.reviews.push(review)
+    // product.save();
+    res.send(review) //right now this looks like it might be adding the review?
+
+    
+  })
+})
+
+
+
 
 module.exports = router

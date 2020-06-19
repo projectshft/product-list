@@ -50,5 +50,16 @@ router.get('/products', (req, res, next) => {
     })
   });
 
+  router.get('/products/:product', (req, res, next) => {
+    Product.find({ _id: req.params.product})
+      .populate('reviews')
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err)
+          res.send(products);
+        })
+      })
+  })
+
 
 module.exports = router

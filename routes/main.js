@@ -41,7 +41,8 @@ router.get('/products', (req, res, next) => {
       })
   })
 
-
+//GETS a product by its id
+//ID required in url params
 router.get('/products/:product', (req, res) => {
     const { product } = req.params
     // const productToReturn = req.query.product
@@ -55,6 +56,27 @@ router.get('/products/:product', (req, res) => {
         }
         res.send(product)
     })
+})
+
+//POSTS a new product in the database
+//requires category, name, price, image in the body params
+router.post('/products', (req, res) => {
+    const category = req.body.category
+    const name = req.body.name
+    const price = req.body.price
+    const image = req.body.image
+
+    let product = new Product(
+      {
+        category: category,
+        name: name,
+        price: price,
+        image: image, 
+        reviews: []
+      }
+    )
+    product.save()
+    res.send(product)// dont need this, just checking it out 
 })
 
 //since this is post there will also be a body param
@@ -89,10 +111,19 @@ router.post('/products/:product/reviews', (req, res) => {
   })
 })
 
+//GETS reviews for designated product
+//Requires product id in the url and optional page in query
+// /products/reviews?page=3
 router.get('/products/:product/reviews', (req, res) => {
   const { product } = req.params
 
+  const perPage = 4
+
+  const page = req.query.page || 1 //takes the optional page number in the query or defaults to the first page
+
   Product.findById(product)
+    .skip((perPage * page) - perPage) //how to tell if this is working?
+    .limit(perPage)
     .populate('reviews')
     .exec((err, product) => {
       if (err) {

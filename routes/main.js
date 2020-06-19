@@ -38,7 +38,14 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', (req, res, next) => {
   const itemsPerPage = 9;
   const page = req.query.page || 1;
-  Product.find()
+  const category = req.query.category;
+  let query;
+  if(category) {
+    query = Product.find({category: category})
+  } else {
+    query = Product.find();
+  }
+  query
     .populate('reviews')
     .skip((page - 1) * itemsPerPage)
     .limit(itemsPerPage)

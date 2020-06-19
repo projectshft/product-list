@@ -20,6 +20,7 @@ const Review = require('../models/reviews')
 //   res.end()
 // })
 
+// will look like: /products?page=3
 router.get('/products', (req, res, next) => {
     const perPage = 9
   
@@ -42,46 +43,65 @@ router.get('/products', (req, res, next) => {
 
 
 router.get('/products/:product', (req, res) => {
-  const { product } = req.params
-  // const productToReturn = req.query.product
+    const { product } = req.params
+    // const productToReturn = req.query.product
 
-  Product.findById(product).exec((err, product) => {
-      if (err) {
-          return console.error(err);
-      }
-      res.send(product)
-  })
+    Product
+      .findById(product)
+      // .populate('Review')
+      .exec((err, product) => {
+        if (err) {
+            return console.error(err);
+        }
+        res.send(product)
+    })
 })
 
 //since this is post there will also be a body param
-//requires params in the body and in the url 
+//requires product id in url and username and text in post body
 //needs edge cases for if the body doesn't contain username & text
 router.post('/products/:product/reviews', (req, res) => {
+    const { product } = req.params
+    const username = req.body.username
+    const text = req.body.text
+
+    Product
+      .findById(product) //find the product by the id in the url
+      .populate('reviews') //populate the review schema
+      .exec((err, product) => {
+      if (err) {
+          return console.error(err);
+      }
+
+      let review = new Review(//create a new review based on the review schema including the post body and the product id
+        {
+          userName: username,
+          text: text,
+          product: product._id
+        }
+      )
+    
+    review.save()
+    product.reviews.push(review) //push the new review to the product review array
+    product.save() //save the product with the new review
+    res.send(review) //
+
+  })
+})
+
+router.get('/products/:product/reviews', (req, res) => {
   const { product } = req.params
-  const username = req.body.username
-  const text = req.body.text
 
   Product.findById(product)
-    .populate('Review')
+    .populate('reviews')
     .exec((err, product) => {
-    if (err) {
-        return console.error(err);
-    }
-
-    let review = new Review(
-      {
-        userName: username,
-        text: text,
-        product: product._id
+      if (err) {
+        console.error(err);
+      } else {
+        res.send(product);
       }
-    )
-    
-    product.reviews.push(review)
-    // product.save();
-    res.send(review) //right now this looks like it might be adding the review?
+    })
 
-    
-  })
 })
 
 

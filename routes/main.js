@@ -24,7 +24,11 @@ router.param("product", function (req, res, next, id) {
   // we need to find the product that matches
   Product.findById(id, (err, product) => {
     if (err) throw err;
-    req.product = product;
+    if (!product) {
+      return res.send("There is no product in our store matching that id");
+    } else {
+      req.product = product;
+    }
     next();
   });
 });
@@ -92,6 +96,14 @@ router.post("/products/:product/reviews", (req, res) => {
     } else {
       res.send(data);
     }
+  });
+});
+
+// Deletes a product by id
+router.delete("/products/:product", (req, res) => {
+  req.product.remove((err) => {
+    if (err) throw err;
+    return res.send("Person successfully deleted");
   });
 });
 

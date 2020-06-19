@@ -88,29 +88,31 @@ router.get('/products/:productId', (req, res, next) => {
 
 /*
 GET /products/:product/reviews: Returns ALL the reviews for a product (by productId in url), but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
+
+Still need to work on how to count the reviews and paginate them to 4 per page
 */
 router.get('/products/:productId/reviews', (req, res, next) => {
-  //get the productId from the request
+  //gets the productId from the request
   const productId = req.params.productId;
   
-  //limit the reviews to 4 per page
+  //limits the reviews to 4 per page
   const reviewsPerPage = 4
   
 
-  // return the first page by default, if user doesn't specify a page in the query
+  // returns the first page of reviews by default, if user doesn't specify a page in the query
   const page = req.query.page || 1
 
-  //right now we're returning the whole product, we need to get just the reviews out of the product, so do we search the product collection and get the reviews array or do we search the reviews collection by the product id. I feel like it should be the former. 
+  // this will search the products collection by product id and return the reviews for that product in an array
   Product
     .find({_id: productId})
     .skip((reviewsPerPage * page) - reviewsPerPage)
     .limit(reviewsPerPage)
-    .exec((err, product) => {
+    .exec((err, foundProduct) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
-        res.send(product.reviews)
+        res.send(foundProduct[0].reviews)
       })
     })
 })

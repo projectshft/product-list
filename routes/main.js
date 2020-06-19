@@ -4,44 +4,44 @@ const router = require('express').Router()
 // this is a package that will help us populate our database with a bunch of fake data.
 const faker = require('faker')
 const Product = require('../models/product')
-//const Review = require('../models/review')
+const Review = require('../models/review')
 
 
 // Now if you fire up your server and make a GET request to localhost:8000/generate-fake-data, it will create and save 90 new products each time you do. You might only want to do this once or twice.
 // Now check your database to see a products collection with all your data.
-router.get('/generate-fake-data', (req, res, next) => {
-  const adjectiveArray = ['great', 'awesome', 'awful', 'weird', 'useless'];
-
-  
-  for (let i = 0; i < 90; i++) {
-    let product = new Product();
-    let randomNumOfReviews = Math.floor(Math.random() * 10);
-    const getReviews = (randomNumOfReviews, productName) => {
-      let reviews = [];
-      
-      for (let j = 0; j < randomNumOfReviews; j++) {
-        //let review = new Review();
-        let randomNumOfAdjectiveArray = Math.floor(Math.random() * 5);
-        reviews.push({
-          userName: faker.name.findName(),
-          text: `This ${productName} is ${adjectiveArray[randomNumOfAdjectiveArray]}`
-        })
-      }
-      return reviews;
-    }
-    product.category = faker.commerce.department()
-    product.name = faker.commerce.productName()
-    product.price = faker.commerce.price()
-    product.image = 'https://via.placeholder.com/250?text=Product+Image'
-    product.reviews = getReviews(randomNumOfReviews, product.name)
+// router.get('/generate-fake-data', (req, res, next) => {
+//   const adjectiveArray = ['great', 'awesome', 'awful', 'weird', 'useless'];
 
 
-    product.save((err) => {
-      if (err) throw err
-    })
-  }
-  res.end()
-})
+//   for (let i = 0; i < 90; i++) {
+//     let product = new Product();
+//     let randomNumOfReviews = Math.floor(Math.random() * 10);
+//     const getReviews = (randomNumOfReviews, productName) => {
+//       let reviews = [];
+
+//       for (let j = 0; j < randomNumOfReviews; j++) {
+//         //let review = new Review();
+//         let randomNumOfAdjectiveArray = Math.floor(Math.random() * 5);
+//         reviews.push({
+//           userName: faker.name.findName(),
+//           text: `This ${productName} is ${adjectiveArray[randomNumOfAdjectiveArray]}`
+//         })
+//       }
+//       return reviews;
+//     }
+//     product.category = faker.commerce.department()
+//     product.name = faker.commerce.productName()
+//     product.price = faker.commerce.price()
+//     product.image = 'https://via.placeholder.com/250?text=Product+Image'
+//     product.reviews = getReviews(randomNumOfReviews, product.name)
+
+
+//     product.save((err) => {
+//       if (err) throw err
+//     })
+//   }
+//   res.end()
+// })
 
 // Next we'll create our paginating GET route. We'll want the client to be able to pass in any "page" they want to get a different set of products each time and limit them to only 10 products at one time. 
 router.get('/products', (req, res, next) => {
@@ -76,7 +76,7 @@ router.get('/products/:productId', (req, res, next) => {
 
   //find the product by the productId provided in the request parameter
   Product
-    .find({_id: productId})
+    .find({ _id: productId })
     .exec((err, foundProduct) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
       Product.count().exec((err, count) => {
@@ -98,17 +98,17 @@ Is an empty array sent back if there are no reviews?
 router.get('/products/:productId/reviews', (req, res, next) => {
   //gets the productId from the request
   const productId = req.params.productId;
-  
+
   //limits the reviews to 4 per page
   const reviewsPerPage = 4
-  
+
 
   // returns the first page of reviews by default, if user doesn't specify a page in the query
   const page = req.query.page || 1
 
   // this will search the products collection by product id and return the reviews for that product in an array
   Product
-    .find({_id: productId})
+    .find({ _id: productId })
     .skip((reviewsPerPage * page) - reviewsPerPage)
     .limit(reviewsPerPage)
     .exec((err, foundProduct) => {
@@ -126,22 +126,22 @@ POST /products: Creates a new product in the database (right now with randomly g
 */
 router.post('/products', (req, res, next) => {
 
-    let product = new Product();
-  
-    product.category = faker.commerce.department()
-    product.name = faker.commerce.productName()
-    product.price = faker.commerce.price()
-    product.image = 'https://via.placeholder.com/250?text=Product+Image'
-    product.reviews = []
+  let product = new Product();
+
+  product.category = faker.commerce.department()
+  product.name = faker.commerce.productName()
+  product.price = faker.commerce.price()
+  product.image = 'https://via.placeholder.com/250?text=Product+Image'
+  product.reviews = []
 
 
-    product.save((err) => {
-      if (err) throw err
-    })
-
-    res.end()
+  product.save((err) => {
+    if (err) throw err
   })
-  
+
+  res.end()
+})
+
 
 
 /*
@@ -153,33 +153,60 @@ router.post('/products/:productId/reviews', (req, res, next) => {
   const reviewUserName = req.body.username;
   const reviewText = req.body.text;
   const newReview = {
-    userName: reviewUserName, 
+    userName: reviewUserName,
     text: reviewText
   }
-  
+
 
   // this will search the products collection by product id so that we can add the new review to it
+  // $addToSet will add a review to the reviews array, and setting new:true will return the updated record
   Product
-    .find({_id: productId})
-    .exec((err, foundProduct) => {
-      //add the new review to the product's reviews array
-      foundProduct[0].reviews.push(newReview)
-      res.send(foundProduct)
-      //res.send(foundProduct[0].reviews)
-      // foundProduct.save((err) => {
-      //   if (err) throw err
-      // })
+    .findByIdAndUpdate(productId, { $addToSet: { reviews: newReview } }, { new: true })
+    .exec((err, product) => {
+      if (err) throw err;
+      res.send(product)
     })
-    //res.end();
+  // .then((docs) => {
+  //   if (docs) {
+  //     resolve({ success: true, data: docs });
+  //   } else {
+  //     reject({ success: false, data: "no such product exists" });
+  //   }
+  // }).catch((err) => {
+  //   reject(err);
+  // })
+
+  // res.send()
 })
 
 /*
 DELETE /products/:product: Deletes a product by id
 */
+router.delete('/products/:productId', (req, res, next) => {
+  productIdToDelete = req.params.productId;
+  Product.findByIdAndDelete(productIdToDelete, function (err) {
+    if (err) console.log(err);
+    console.log("Successful deletion");
+  });
+
+  res.end()
+})
+
 
 /*
 DELETE /reviews/:review: Deletes a review by id
 */
+router.delete('/reviews/:reviewId', (req, res, next) => {
+  const productId = req.body.productId
+  const reviewIdToDelete = req.params.reviewId;
+  Product.findByIdAndUpdate(productId, { $pull: { reviews: { _id: reviewIdToDelete } } })
+    .exec((err, product) => {
+      if (err) throw err;
+
+    })
+
+  res.end()
+})
 
 module.exports = router
 

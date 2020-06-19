@@ -2,6 +2,7 @@ const router = require("express").Router();
 const faker = require("faker");
 const ReviewSchema = require("../models/review");
 const Product = require("../models/product");
+const { response } = require("express");
 const Review = require("../models/review").Review;
 
 router.get("/generate-fake-data", (req, res, next) => {
@@ -78,14 +79,29 @@ router.get("/products/:product", (req, res) => {
   res.send(req.product);
 });
 
-// Returns ALL the reviews for a product
+// Returns ALL the reviews for a product, but limited to 4 at a time.
 router.get("/products/:product/reviews", (req, res) => {
-  const perPage = 4;
+  // this is how many reviews to show at a time
+  const perReq = 4;
 
-  // return the first page by default
-  const page = req.query.page || 1;
+  // in order to limit, we'll use $slice
+  // we need to determine where to start slicing from
+  if (req.query.page) {
+    skipAmount = (req.query.page - 1) * perReq;
+  } else {
+    // start from the top if there is no page query passed
+    skipAmount = 0;
+  }
 
-  return res.send(req.product.reviews);
+  Product.findById(
+    req.params.product,
+    {
+      reviews: { $slice: [skipAmount, perReq] },
+    },
+    (err, trimmed) => {
+      return res.send(trimmed.reviews);
+    }
+  );
 });
 
 // Creates a new product in the database

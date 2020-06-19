@@ -19,12 +19,12 @@ const Product = require('../models/product')
 // })
 
 router.param('product', function(req, res, next, id) {
-  req.product = String(id);
+  req.product =  Product.find({_id: id});
   next();
 });
 
 router.get('/products', (req, res, next) => {
-  const perPage = 9
+  const perPage = 9;
 
   // return the first page by default
   const page = req.query.page || 1
@@ -44,17 +44,15 @@ router.get('/products', (req, res, next) => {
 })
 
 router.get('/products/:product', (req, res, next) => {
-
-  console.log(req.product)
-  Product
-    .find({_id: req.product})
-    .exec((err, product) => {
+// Using the product params
+    req.product.exec((err, product) => {
       Product.count().exec((err, count) => {
         if (err) return next(err)
-
         res.send(product)
       })
     })
 })
+
+router.post('/products')
 
 module.exports = router

@@ -100,4 +100,13 @@ router.delete('/products/:product', (req, res, next) => {
   })
 })
 
+router.delete('/reviews/:review', (req, res, next) => {
+  Review.remove({ _id: req.params.review}, err => {
+    if (err) throw err;
+
+    res.end();
+  })
+})
+
+
 module.exports = router

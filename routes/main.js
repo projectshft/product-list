@@ -50,30 +50,47 @@ router.get('/products', (req, res, next) => {
     })
   });
 
-  router.get('/products/:product', (req, res, next) => {
-    Product.find({ _id: req.params.product})
-      .populate('reviews')
-      .exec((err, products) => {
-        Product.count().exec((err, count) => {
-          if (err) return next(err)
-          res.send(products);
-        })
-      })
-  })
-
-  router.get('/products/:product/reviews', (req, res, next) => {
-    const itemsPerPage = 4;
-    const page = req.query.page || 1;
-    Product.find({_id: req.params.product})
-      .populate('reviews')
-      .exec((err, products) => {
+router.get('/products/:product', (req, res, next) => {
+  Product.find({ _id: req.params.product})
+    .populate('reviews')
+    .exec((err, products) => {
+      Product.count().exec((err, count) => {
         if (err) return next(err)
-        let startIndex = (page - 1) * itemsPerPage;
-        let endIndex = page * itemsPerPage;
-        let reviews = products[0].reviews.slice(startIndex, endIndex);
-        res.send(reviews);
+        res.send(products);
       })
+    })
+})
+
+router.get('/products/:product/reviews', (req, res, next) => {
+  const itemsPerPage = 4;
+  const page = req.query.page || 1;
+  Product.find({_id: req.params.product})
+    .populate('reviews')
+    .exec((err, products) => {
+      if (err) return next(err)
+      let startIndex = (page - 1) * itemsPerPage;
+      let endIndex = page * itemsPerPage;
+      let reviews = products[0].reviews.slice(startIndex, endIndex);
+      res.send(reviews);
+    })
+})
+
+router.post('/products', (req, res, next) => {
+  let product = new Product();
+
+  product.category = req.body.category;
+  product.name = req.body.name;
+  product.price = req.body.price;
+  product.image = req.body.image;
+
+  console.log(product);
+
+  product.save((err) => {
+    if (err) throw err
   })
 
+  res.send(product);
+
+})
 
 module.exports = router

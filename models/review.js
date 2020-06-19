@@ -7,4 +7,4 @@ const ReviewSchema = new Schema({
   product: { type: Schema.Types.ObjectId, ref: 'product' }
 })
 
-module.exports = mongoose.model('Review', ReviewSchema)
+module.exports = mongoose.model('review', ReviewSchema)

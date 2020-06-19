@@ -3,7 +3,12 @@ const Schema = mongoose.Schema;
 
 const ReviewSchema = new Schema({
   userName: String,
-  text: Number,
+  text: String,
 });
 
-module.exports = ReviewSchema;
+const Review = mongoose.model("Review", ReviewSchema);
+
+module.exports = {
+  ReviewSchema,
+  Review,
+};

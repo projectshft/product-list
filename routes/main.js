@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const faker = require("faker");
-const Review = require("../models/review");
+const ReviewSchema = require("../models/review");
 const Product = require("../models/product");
 
 router.get("/generate-fake-data", (req, res, next) => {
@@ -50,8 +50,32 @@ router.get("/products", (req, res, next) => {
     });
 });
 
+// Returns a specific product by its id
 router.get("/products/:product", (req, res) => {
   res.send(req.product);
+});
+
+// Creates a new product in the database
+router.post("/products", (req, res) => {});
+
+// Creates a new review in the database by adding it to the correct product's reviews array.
+router.post("/products/:product/reviews", (req, res) => {
+  // construct the comment
+  const comment = {
+    userName: req.body.userName,
+    text: req.body.text,
+  };
+
+  // add the review to the post
+  req.product.reviews.push(comment);
+
+  req.product.save((err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.send(data);
+    }
+  });
 });
 
 module.exports = router;

@@ -9,37 +9,39 @@ const Product = require('../models/product')
 
 // Now if you fire up your server and make a GET request to localhost:8000/generate-fake-data, it will create and save 90 new products each time you do. You might only want to do this once or twice.
 // Now check your database to see a products collection with all your data.
-// router.get('/generate-fake-data', (req, res, next) => {
-//   const adjectiveArray = ['great', 'awesome', 'awful', 'weird', 'useless'];
+router.get('/generate-fake-data', (req, res, next) => {
+  const adjectiveArray = ['great', 'awesome', 'awful', 'weird', 'useless'];
 
   
-//   for (let i = 0; i < 90; i++) {
-//     let product = new Product();
-//     let randomNumOfReviews = Math.floor(Math.random() * 10);
-//     const getReviews = (randomNumOfReviews, productName) => {
-//       let reviews = [];
-//       for (let j = 0; j < randomNumOfReviews; j++) {
-//         let randomNumOfAdjectiveArray = Math.floor(Math.random() * 5);
-//         reviews.push({
-//           userName: faker.name.findName(),
-//           text: `This ${productName} is ${adjectiveArray[randomNumOfAdjectiveArray]}`
-//         })
-//       }
-//       return reviews;
-//     }
-//     product.category = faker.commerce.department()
-//     product.name = faker.commerce.productName()
-//     product.price = faker.commerce.price()
-//     product.image = 'https://via.placeholder.com/250?text=Product+Image'
-//     product.reviews = getReviews(randomNumOfReviews, product.name)
+  for (let i = 0; i < 90; i++) {
+    let product = new Product();
+    let randomNumOfReviews = Math.floor(Math.random() * 10);
+    const getReviews = (randomNumOfReviews, productName) => {
+      let reviews = [];
+      
+      for (let j = 0; j < randomNumOfReviews; j++) {
+        //let review = new Review();
+        let randomNumOfAdjectiveArray = Math.floor(Math.random() * 5);
+        reviews.push({
+          userName: faker.name.findName(),
+          text: `This ${productName} is ${adjectiveArray[randomNumOfAdjectiveArray]}`
+        })
+      }
+      return reviews;
+    }
+    product.category = faker.commerce.department()
+    product.name = faker.commerce.productName()
+    product.price = faker.commerce.price()
+    product.image = 'https://via.placeholder.com/250?text=Product+Image'
+    product.reviews = getReviews(randomNumOfReviews, product.name)
 
 
-//     product.save((err) => {
-//       if (err) throw err
-//     })
-//   }
-//   res.end()
-// })
+    product.save((err) => {
+      if (err) throw err
+    })
+  }
+  res.end()
+})
 
 // Next we'll create our paginating GET route. We'll want the client to be able to pass in any "page" they want to get a different set of products each time and limit them to only 10 products at one time. 
 router.get('/products', (req, res, next) => {
@@ -145,6 +147,31 @@ router.post('/products', (req, res, next) => {
 /*
 POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
 */
+router.post('/products/:productId/reviews', (req, res, next) => {
+  //gets the productId, review username and review text from the request
+  const productId = req.params.productId;
+  const reviewUserName = req.body.username;
+  const reviewText = req.body.text;
+  const newReview = {
+    userName: reviewUserName, 
+    text: reviewText
+  }
+  
+
+  // this will search the products collection by product id so that we can add the new review to it
+  Product
+    .find({_id: productId})
+    .exec((err, foundProduct) => {
+      //add the new review to the product's reviews array
+      foundProduct[0].reviews.push(newReview)
+      res.send(foundProduct)
+      //res.send(foundProduct[0].reviews)
+      // foundProduct.save((err) => {
+      //   if (err) throw err
+      // })
+    })
+    //res.end();
+})
 
 /*
 DELETE /products/:product: Deletes a product by id

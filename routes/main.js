@@ -39,6 +39,7 @@ router.get('/products', (req, res, next) => {
   const itemsPerPage = 9;
   const page = req.query.page || 1;
   const category = req.query.category;
+  const name = req.query.query;
   let priceSort = "";
   if(req.query.price === 'highest') {
     priceSort = "-price"
@@ -47,10 +48,14 @@ router.get('/products', (req, res, next) => {
   }
 
   let query;
-  if(category) {
-    query = Product.find({category: category})
+  if(category && name) {
+    query = Product.find({category: category, name: {"$regex": name, "$options": "i"}})
+  } else if( category && !name) {
+    query = Product.find({category: category});
+  } else if (!category && name) {
+    query = Product.find({name: {"$regex": name, "$options": "i"}})
   } else {
-    query = Product.find();
+    query = Product.find()
   }
   query
     .sort(priceSort)

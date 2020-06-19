@@ -61,5 +61,19 @@ router.get('/products', (req, res, next) => {
       })
   })
 
+  router.get('/products/:product/reviews', (req, res, next) => {
+    const itemsPerPage = 4;
+    const page = req.query.page || 1;
+    Product.find({_id: req.params.product})
+      .populate('reviews')
+      .exec((err, products) => {
+        if (err) return next(err)
+        let startIndex = (page - 1) * itemsPerPage;
+        let endIndex = page * itemsPerPage;
+        let reviews = products[0].reviews.slice(startIndex, endIndex);
+        res.send(reviews);
+      })
+  })
+
 
 module.exports = router

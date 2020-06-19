@@ -39,19 +39,25 @@ router.get('/products', (req, res, next) => {
 })
 
 router.get('/products/:product', (req, res, next) => {
+  //retrieving product id from request and assigning to variable
   let productId = req.params.product
-  //peruse the documentation for mongoose (in one of the lessons)
-  let individualProduct = Product.find({_id: {productId}}, (err, result) => {
+  
+  if(!productId) {
+    response.writeHead(404, "Unable to find product");
+    return response.end();
+  }
+  
+  Product.findById({ _id: productId }, (err, result) => {
     if (err) {
       return console.error(err);
     }
     console.log(result);
     //send product by productId
-    return res.end(productId)
+    return res.send(result)
   });
+  
+});
 
-  
-  
-})
+
 
 module.exports = router

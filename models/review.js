@@ -1,13 +1,12 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+// const mongoose = require('mongoose')
+// const Schema = mongoose.Schema
 
-const reviewSchema = new Schema({
-  userName: String,
-  text: String,
-  product: { type: Schema.Types.ObjectId, ref: 'product' }
-})
+// const ReviewSchema = new Schema({
+//   userName: String,
+//   text: String
+// })
 
-module.exports = mongoose.model('review', reviewSchema)
+// module.exports = mongoose.model('Review', ReviewSchema)
 
 
 

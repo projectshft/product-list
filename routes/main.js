@@ -16,45 +16,56 @@ router.get('/generate-fake-data', (request, response, next) => {
     })
   }
   response.end();
-})
+});
 
 router.get('/products', (request, response, next) => {
   //products to display on each page
   const perPage = 9;
 
-  // return the first page by default
-  const page = request.query.page || 1;
-
-  //get category query 
+  //get queries
+  const page = request.query.page || 1; //return first page by default
   const searchCategory = request.query.category;
-
-  //get search query
   const searchQuery = request.query.query;
+  let sortBy = request.query.price;
 
-  //
-  // let sortBy = { price: request.query.price } || {}
+  //translate sort query into mongo terminology
+  if (sortBy === 'highest') {
+    sortBy = 'desc';
+  } else if (sortBy === 'lowest') {
+    sortBy = 'asc';
+  }
 
-  // if (sortBy.price === 'highest') {
-  //   sortBy.price = 'desc'
-  // } else if (sortBy.price === 'lowest') {
-  //   sortBy.price = 'asc'
-  // }
+  //for total count of filtered product results
+  let resultCount;
 
+  //search to get filtered result count
   Product
-    .find(searchCategory ? { category: searchCategory } : {})
-    .collation({ locale: 'en', strength: 2 })
-    .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {})
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((error, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.countDocuments().exec((error, count) => {
-        //handle error
-        if (error) return next(error);
+    .find(searchCategory ? { category: searchCategory } : {}) //optionally filter by category
+    .collation({ locale: 'en', strength: 2 }) //make search case insensitive
+    .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {}) //optionally search by query (case insensitive)
+    .countDocuments() //count how many filtered results were found
+    .exec((error, count) => {
+      //send error
+      if (error) return next(error);
 
-        //send filtered/sorted products and count
-        response.send({ count, products });
-      });
+      //save count
+      resultCount = count;
+    });
+
+  //search to get filtered result products
+  Product
+    .find(searchCategory ? { category: searchCategory } : {}) //optionally filter by category
+    .collation({ locale: 'en', strength: 2 }) //make search case insensitive
+    .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {}) //optionally search by query (case insensitive)
+    .sort(sortBy ? { price: sortBy } : 0) //optionally sort by price
+    .skip((perPage * page) - perPage) //skip results based on page number
+    .limit(perPage) //limit results per page
+    .exec((error, products) => {
+      //send error
+      if (error) return next(error);
+
+      //send count of total filtered results and limited products
+      response.send({ count: resultCount, productResults: products });
     });
 });
 
@@ -63,7 +74,6 @@ router.get('/products/:product', (request, response, next) => {
   Product
     .findOne({ _id: request.params.product })
     .exec((error, foundProduct) => {
-
       //send error if product not found
       if (error) return next(error);
 

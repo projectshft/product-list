@@ -45,13 +45,41 @@ const Review = require('../models/review')
 
 // Next we'll create our paginating GET route. We'll want the client to be able to pass in any "page" they want to get a different set of products each time and limit them to only 10 products at one time. 
 router.get('/products', (req, res, next) => {
+
+  //set max products per page to 9
   const perPage = 9
 
   // return the first page by default
-  const page = req.query.page || 1
+  const page = req.query.page || 1;
+
+  // get optional query parameter from request to find by product category
+  const categoryType = req.query.category || null;
+
+  // get optional query parameter from request to sort the products by price (ascending or descending)
+  const priceSortType = req.query.price || null;
+
+  // get optional query search string from request to search products by their name and category
+  const searchQuery = req.query.search || null;
+
+
+
+  // this function will be called when we're building up our query below
+  // check that this is not defaulting to highest if no param is given
+  const getSortType = priceSortType => {
+    if (priceSortType == "highest") {
+      return -1;
+    } else if (priceSortType == "lowest") {
+      return 1;
+    } else {
+      return null;
+    }
+  }
+
 
   Product
-    .find({})
+    //.find({ $and: [{ category: categoryType }, {$match: { $or:[ {name: { $regex: searchQuery}}, { category: { $regex: searchQuery}}]}} ]})
+    .find({ $or: [{ name: { $regex: searchQuery, $options: "i"}}, { category: { $regex: searchQuery, $options: "i"}}]})
+    .sort({ price: getSortType(priceSortType) })
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
@@ -160,6 +188,7 @@ router.post('/products/:productId/reviews', (req, res, next) => {
 
   // this will search the products collection by product id so that we can add the new review to it
   // $addToSet will add a review to the reviews array, and setting new:true will return the updated record
+  // GO BACK AND CHANGE THIS TO $PUSH
   Product
     .findByIdAndUpdate(productId, { $addToSet: { reviews: newReview } }, { new: true })
     .exec((err, product) => {

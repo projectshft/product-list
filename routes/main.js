@@ -19,7 +19,7 @@ const Product = require('../models/product')
 // })
 
 router.param('product', function(req, res, next, id) {
-  req.product =  Product.find({_id: id});
+  req.product = Product.find({_id: id});
   next();
 });
 
@@ -53,6 +53,19 @@ router.get('/products/:product', (req, res, next) => {
     })
 })
 
-router.post('/products')
+router.post('/products', (req, res, next) => {
+  let product = new Product();
+
+  product.category = req.body.category; // need edge case
+  product.name = req.body.name; // edge case needed
+  product.price = req.body.price; // edge case needed
+  product.image = req.body.image || 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png';
+  product.reviews = req.body.reviews || [];
+
+  product.save((err) => {
+    if (err) throw err
+  })
+  res.send(product);
+})
 
 module.exports = router

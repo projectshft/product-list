@@ -50,12 +50,29 @@ router.get('/products', (req, res, next) => {
         query = query.find({category: category})
     }
 
-    query.exec((err, product) => {
-        if (err) {
-            throw err
+    if (price) {
+        if (price === 'highest') {
+            query = query.sort({price: -1})
+        } else {
+            query = query.sort({price: 1})
         }
-        res.json(product)
-    })
+
+    }
+
+    query
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec((err, products) => {
+            if (err) {
+                throw err
+            }
+            Product.count().exec((err, products) => {
+                if (err) {
+                    throw err
+                }     
+            })
+            res.json(products)
+        })
 });
 
 router.get('/products/:product', (req, res, next) => {

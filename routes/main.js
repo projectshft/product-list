@@ -5,7 +5,7 @@ const Product = require('../models/product')
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
-
+    console.log(req.body);
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
@@ -70,22 +70,22 @@ router.post('/products', (req, res, next) => {
 })
 
 router.post('/products/:product/reviews', (req, res, next, id) => {
-  console.log(req.body.text);
-  console.log(req.body.userName);
+  console.log(req.body);
+ 
 
-  // use reviewSchema here??? BUT HOW
+  // // use reviewSchema here??? BUT HOW
 
-  // let review = {
-  //   userName: req.body.userName,
+  // // let review = {
+  // //   userName: req.body.userName,
 
-  // }
+  // // }
 
-  req.product.reviews.push(review);
+  // // req.product.reviews.push(review);
 
-  req.product.save((err) => {
-    if (err) throw err
-  })
-  res.send(req.product);
+  // // req.product.save((err) => {
+  // //   if (err) throw err
+  // // })
+  // res.send(req.product);
 })
 
 module.exports = router

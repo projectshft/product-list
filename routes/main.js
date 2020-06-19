@@ -90,6 +90,8 @@ router.get('/products/:productId', (req, res, next) => {
 GET /products/:product/reviews: Returns ALL the reviews for a product (by productId in url), but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
 
 Still need to work on how to count the reviews and paginate them to 4 per page
+
+Is an empty array sent back if there are no reviews?
 */
 router.get('/products/:productId/reviews', (req, res, next) => {
   //gets the productId from the request
@@ -118,8 +120,27 @@ router.get('/products/:productId/reviews', (req, res, next) => {
 })
 
 /*
-POST /products: Creates a new product in the database
+POST /products: Creates a new product in the database (right now with randomly generated properties and an empty reviews array)
 */
+router.post('/products', (req, res, next) => {
+
+    let product = new Product();
+  
+    product.category = faker.commerce.department()
+    product.name = faker.commerce.productName()
+    product.price = faker.commerce.price()
+    product.image = 'https://via.placeholder.com/250?text=Product+Image'
+    product.reviews = []
+
+
+    product.save((err) => {
+      if (err) throw err
+    })
+
+    res.end()
+  })
+  
+
 
 /*
 POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.

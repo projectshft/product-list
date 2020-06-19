@@ -90,7 +90,14 @@ router.post('/products', (req, res, next) => {
   })
 
   res.send(product);
+})
 
+router.delete('/products/:product', (req, res, next) => {
+  Product.remove({ _id: req.params.product}, err => {
+    if (err) throw err;
+
+    res.end();
+  })
 })
 
 module.exports = router

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { searchProducts, filterCategory, sortProducts } from "../actions/index";
+import { searchProducts } from "../actions/index";
 
 // material UI imports
 import { withStyles } from "@material-ui/core";
@@ -46,11 +46,11 @@ class FilterOptionsBar extends React.Component {
   }
 
   handleCategoryChange(category) {
-    this.props.filterCategory(category);
+    this.props.searchProducts({ category: category });
   }
 
   handleSortChange(sortPreference) {
-    this.props.sortProducts(sortPreference);
+    this.props.searchProducts({ sortPreference: sortPreference });
   }
 
   handleSearchBarChange(event) {
@@ -59,7 +59,7 @@ class FilterOptionsBar extends React.Component {
 
   onKeyPress = (e) => {
     if (e.which === 13) {
-      this.props.searchProducts(this.state.searchTerm);
+      this.props.searchProducts({ searchTerm: this.state.searchTerm });
     }
   };
 
@@ -144,10 +144,7 @@ FilterOptionsBar.propTypes = {
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    { searchProducts, filterCategory, sortProducts },
-    dispatch
-  );
+  return bindActionCreators({ searchProducts }, dispatch);
 }
 
 export default connect(

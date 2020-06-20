@@ -47,6 +47,7 @@ const styles = (theme) => ({
 class ProductGrid extends React.Component {
   constructor(props) {
     super(props);
+
     this.renderProducts = this.renderProducts.bind(this);
   }
 
@@ -58,7 +59,7 @@ class ProductGrid extends React.Component {
   renderProducts() {
     const { classes } = this.props;
 
-    return fakeData.map((product) => {
+    return this.props.products.map((product) => {
       const generatePriceSubHeader = () => {
         return `Price: ${product.price}`;
       };
@@ -108,7 +109,7 @@ class ProductGrid extends React.Component {
   }
 }
 
-const fakeData = [
+/* const fakeData = [
   {
     _id: "5eed193bc207ae3200ca5748",
     reviews: [],
@@ -216,10 +217,14 @@ const fakeData = [
     image: "https://via.placeholder.com/250?text=Product+Image",
     __v: 0,
   },
-];
+]; */
 
 function mapStateToProps(state) {
-  return { products: state.products };
+  console.log("state is", state);
+
+  return {
+    products: state.products,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

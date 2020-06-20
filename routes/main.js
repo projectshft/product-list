@@ -1,23 +1,24 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+//const Review = require('../models/product')
 
-router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    let product = new Product()
-    console.log(req.body);
-    product.category = faker.commerce.department()
-    product.name = faker.commerce.productName()
-    product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-    product.reviews = [];
+// router.get('/generate-fake-data', (req, res, next) => {
+//   for (let i = 0; i < 90; i++) {
+//     let product = new Product()
+//     console.log(req.body);
+//     product.category = faker.commerce.department()
+//     product.name = faker.commerce.productName()
+//     product.price = faker.commerce.price()
+//     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+//     product.reviews = [];
 
-    product.save((err) => {
-      if (err) throw err
-    })
-  }
-  res.end()
-})
+//     product.save((err) => {
+//       if (err) throw err
+//     })
+//   }
+//   res.end()
+// })
 
 router.param('product', function(req, res, next, id) {
   req.product = Product.find({_id: id});
@@ -54,7 +55,7 @@ router.get('/products/:product', (req, res, next) => {
     })
 })
 
-router.post('/products', (req, res, next) => {
+router.post('/products', (req, res) => {
   let product = new Product();
 
   product.category = req.body.category; // need edge case
@@ -69,23 +70,19 @@ router.post('/products', (req, res, next) => {
   res.send(product);
 })
 
-router.post('/products/:product/reviews', (req, res, next, id) => {
-  console.log(req.body);
- 
+router.post('/products/:product/reviews', (req, res) => {
+  
+ // use reviewSchema here??? BUT HOW
 
-  // // use reviewSchema here??? BUT HOW
+  //let review = new Review; 
+  
+  console.log(req.product);
+  req.product.reviews.push({text: req.body.text, userName: req.body.userName});
 
-  // // let review = {
-  // //   userName: req.body.userName,
-
-  // // }
-
-  // // req.product.reviews.push(review);
-
-  // // req.product.save((err) => {
-  // //   if (err) throw err
-  // // })
-  // res.send(req.product);
+  req.product.save((err) => {
+    if (err) throw err
+  })
+  res.send(req.product);
 })
 
 module.exports = router

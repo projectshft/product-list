@@ -54,6 +54,14 @@ router.param("review", function (req, res, next, id) {
 
 // gets the products, paginated
 router.get("/products", (req, res, next) => {
+  // let's grab and map the passed in queries
+  const optionalQuery = {
+    page: req.query.page || null,
+    category: req.query.category || null,
+    price: req.query.price || null,
+    query: req.query.query || null,
+  };
+
   const perPage = 9;
 
   // return the first page by default

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const reviewSchema = new Schema({
+const ReviewSchema = new Schema({
   userName: String,
   text: String,
 });
@@ -11,9 +11,10 @@ const ProductSchema = new Schema({
   name: String,
   price: Number,
   image: String,
-  reviews: [reviewSchema]
+  reviews: [ReviewSchema]
 })
 
 
 
-module.exports = mongoose.model('Product', ProductSchema)
+module.exports.Product = mongoose.model('Product', ProductSchema)
+module.exports.Review = mongoose.model('Review', ReviewSchema)

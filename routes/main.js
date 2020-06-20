@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const faker = require('faker')
-const Product = require('../models/product')
+const { Product } = require('../models/product')
+const { Review } = require('../models/product')
+
 
 // router.get('/generate-fake-data', (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
@@ -58,6 +60,57 @@ router.get('/products/:product', (req, res, next) => {
   
 });
 
+router.get('/products/:product/reviews', (req, res, next) => {
+
+  
+});
+
+router.post('/products/', (req, res, next) => {
+    
+  if (!req.body.category || !req.body.name || !req.body.price || !req.body.image) {
+    response.writeHead(404, "Not enough product information");
+    return response.end();
+  }
+  
+  let product = new Product()
+
+  product.category = req.body.category
+  product.name = req.body.name
+  product.price = req.body.price
+  product.image = req.body.image
+
+  product.save((err) => {
+    if (err) throw err
+  })
+
+  res.send(`Added New Product named: ${product.name}`)
+});
+
+router.post('/products/:product/reviews', (req, res, next) => {
+
+  let productId = req.params.product
+  let reviewUserName = req.body.userName
+  let reviewText = req.body.text
+
+  let review = new Review({
+    userName: reviewUserName,
+    text: reviewText,
+  });
+
+  Product.findById({ _id: productId }, (err, result) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log(result)
+    result.reviews.push(review)
+    //save review
+    result.save(() => {
+      //Send back review that was added
+      return res.send(review)
+    })
+  });
+  
+});
 
 
 module.exports = router

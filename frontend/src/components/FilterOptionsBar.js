@@ -13,15 +13,9 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
-import { blue } from "@material-ui/core/colors";
+import Box from "@material-ui/core/Box";
 
 const styles = (theme) => ({
-  floatLeft: {
-    float: "left",
-  },
-  floatRight: {
-    float: "right",
-  },
   formControl: {
     marginLeft: theme.spacing(1),
     minWidth: 120,
@@ -74,59 +68,64 @@ class FilterOptionsBar extends React.Component {
     const { classes } = this.props;
     return (
       <Container className={classes.filterOptionsBar} maxWidth="md">
-        <div className={classes.floatLeft}>
-          <TextField
-            id="outlined-basic"
-            label="Search"
-            variant="outlined"
-            value={this.state.searchTerm}
-            onChange={this.handleSearchBarChange}
-            onKeyPress={this.onKeyPress}
-          />
-        </div>
+        <Box display="flex">
+          <Box flexGrow={1}>
+            <TextField
+              id="outlined-basic"
+              label="Search"
+              variant="outlined"
+              value={this.state.searchTerm}
+              onChange={this.handleSearchBarChange}
+              onKeyPress={this.onKeyPress}
+            />
+          </Box>
 
-        <div className={classes.floatRight}>
-          <FormControl className={classes.formControl} variant="outlined">
-            <InputLabel id="category-label">Category</InputLabel>
-            <Select
-              labelId="category-label"
-              id="category-select"
-              value={this.state.category}
-              onChange={this.handleCategoryChange}
-              label="Category">
-              <MenuItem value={"Shoes"}>Shoes</MenuItem>
-              <MenuItem value={"Music"}>Music</MenuItem>
-              <MenuItem value={"Books"}>Books</MenuItem>
-              <MenuItem value={"Computers"}>Computers</MenuItem>
-              <MenuItem value={"Electronics"}>Electronics</MenuItem>
-              <MenuItem value={"Movies"}>Movies</MenuItem>
-              <MenuItem value={"Toys"}>Toys</MenuItem>
-              <MenuItem value={"Kids"}>Kids</MenuItem>
-              <MenuItem value={"Health"}>Health</MenuItem>
-              <MenuItem value={"Beauty"}>Beauty</MenuItem>
-              <MenuItem value={"Sports"}>Sports</MenuItem>
-              <MenuItem value={"Clothing"}>Clothing</MenuItem>
-              <MenuItem value={"Home"}>Home</MenuItem>
-              <MenuItem value={"Tools"}>Tools</MenuItem>
-              <MenuItem value={"Automotive"}>Automotive</MenuItem>
-              <MenuItem value={"Garden"}>Garden</MenuItem>
-              <MenuItem value={"Industrial"}>Industrial</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl} variant="outlined">
-            <InputLabel id="sort-label">sort by:</InputLabel>
-            <Select
-              labelId="sort-label"
-              id="price-sort"
-              value={this.state.sortStatus}
-              onChange={this.handleSortChange}
-              label="Sort by">
-              <MenuItem value={"highest"}>Price: Highest to Lowest</MenuItem>
-              <MenuItem value={"lowest"}>Price: Lowest to Highest</MenuItem>
-              <MenuItem value={"none"}>No sorting</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+          <Box>
+            <FormControl className={classes.formControl} variant="outlined">
+              <InputLabel id="category-label">Category</InputLabel>
+              <Select
+                labelId="category-label"
+                id="category-select"
+                value={this.state.category}
+                onChange={this.handleCategoryChange}
+                label="Category">
+                <MenuItem value={"Shoes"}>Shoes</MenuItem>
+                <MenuItem value={"Music"}>Music</MenuItem>
+                <MenuItem value={"Books"}>Books</MenuItem>
+                <MenuItem value={"Computers"}>Computers</MenuItem>
+                <MenuItem value={"Electronics"}>Electronics</MenuItem>
+                <MenuItem value={"Movies"}>Movies</MenuItem>
+                <MenuItem value={"Toys"}>Toys</MenuItem>
+                <MenuItem value={"Kids"}>Kids</MenuItem>
+                <MenuItem value={"Health"}>Health</MenuItem>
+                <MenuItem value={"Beauty"}>Beauty</MenuItem>
+                <MenuItem value={"Sports"}>Sports</MenuItem>
+                <MenuItem value={"Clothing"}>Clothing</MenuItem>
+                <MenuItem value={"Home"}>Home</MenuItem>
+                <MenuItem value={"Tools"}>Tools</MenuItem>
+                <MenuItem value={"Automotive"}>Automotive</MenuItem>
+                <MenuItem value={"Garden"}>Garden</MenuItem>
+                <MenuItem value={"Industrial"}>Industrial</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+
+          <Box>
+            <FormControl className={classes.formControl} variant="outlined">
+              <InputLabel id="sort-label">sort by:</InputLabel>
+              <Select
+                labelId="sort-label"
+                id="price-sort"
+                value={this.state.sortStatus}
+                onChange={this.handleSortChange}
+                label="Sort by">
+                <MenuItem value={"highest"}>Price: Highest to Lowest</MenuItem>
+                <MenuItem value={"lowest"}>Price: Lowest to Highest</MenuItem>
+                <MenuItem value={"none"}>No sorting</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
       </Container>
     );
   }

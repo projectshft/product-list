@@ -1,0 +1,8 @@
+.bold-number {
+    font-weight: bold;
+}
+
+.page-number {
+    display: inline-block;
+    margin: 1em;
+}

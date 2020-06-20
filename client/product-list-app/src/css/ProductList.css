@@ -1,0 +1,23 @@
+
+.product-details {
+    margin: 20px;
+}
+
+.product-image {
+    width: 100%;
+    margin: 20px auto;
+}
+
+.product-category {
+    padding: 0;
+    margin: 1.5em auto 0;
+    text-align: left;
+    font-size: 18px;
+}
+
+.product-price {
+    margin: auto;
+    font-weight: bold;
+    text-align: right;
+    font-size: 40px;
+}

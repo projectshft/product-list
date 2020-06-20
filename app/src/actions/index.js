@@ -11,7 +11,7 @@ export function fetchProducts(page, search, category, sort) {
   // at this point the request doesn't contain the returned api data yet, it's probably still in the pending state. We need a way to set our store state until AFTER the promise is fulfilled (when the api returns data). We only want to call the reducer when the data is returned, this is where applyMiddleware comes in (see the main index.js)
   //the payload is a promise (request)
   return {
-    type: FETCH_WEATHER,
+    type: FETCH_PRODUCTS,
     payload: request
   };
 }

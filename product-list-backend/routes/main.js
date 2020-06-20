@@ -12,7 +12,7 @@ const product = require('../models/product');
 //     product.category = faker.commerce.department()
 //     product.name = faker.commerce.productName()
 //     product.price = faker.commerce.price()
-//     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+//     product.image = 'https://i1.wp.com/pakfactory.com/blog/wp-content/uploads/2018/11/BLNCD-3.jpg?resize=1024%2C1024&ssl=1'
 
 //     product.save((err) => {
 //       if (err) throw err

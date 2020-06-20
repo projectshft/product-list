@@ -27,6 +27,7 @@ class MainPage extends React.Component {
   render() {
     return (
       <div>
+        <h1 className="text-center">PRODUCTS</h1>
         <SearchFilterSortBar />
         <ProductTable products={this.props.products} />
       </div>
@@ -54,21 +55,21 @@ class SearchFilterSortBar extends React.Component {
     return (
       <form class="form-inline">
         {/* <div class="form-row"> */}
-          <label class="ml-2 mr-2" for="exampleFormControlInput1">Search</label>
-          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Search..." />
-          <label class="ml-2 mr-2" for="inlineFormCustomSelectCategory">Filter by Category: </label>
-          <select class="form-control custom-select" id="inlineFormCustomSelectCategory">
-            <option selected>Category</option>
-            <option value="Home">Home</option>
-            <option value="Baby">Baby</option>
-            <option value="Garden">Garden</option>
-          </select>
-          <label class="ml-2 mr-2" for="inlineFormCustomSelectSort">Sort by Price: </label>
-          <select class="form-control custom-select" for="inlineFormCustomSelectSort">
-            <option selected>Sort Type</option>
-            <option value="Highest">Price: Low to High</option>
-            <option value="Lowest">Price: High to Low</option>
-          </select>
+        <label className="ml-2 mr-2" for="exampleFormControlInput1">Search</label>
+        <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Search..." />
+        <label className="ml-2 mr-2" for="inlineFormCustomSelectCategory">Filter by Category: </label>
+        <select className="form-control custom-select" id="inlineFormCustomSelectCategory">
+          <option selected>Category</option>
+          <option value="Home">Home</option>
+          <option value="Baby">Baby</option>
+          <option value="Garden">Garden</option>
+        </select>
+        <label className="ml-2 mr-2" for="inlineFormCustomSelectSort">Sort by Price: </label>
+        <select className="form-control custom-select" for="inlineFormCustomSelectSort">
+          <option selected>Sort Type</option>
+          <option value="Highest">Price: Low to High</option>
+          <option value="Lowest">Price: High to Low</option>
+        </select>
         {/* </div> */}
       </form>
     );
@@ -78,26 +79,48 @@ class SearchFilterSortBar extends React.Component {
 //this will be the outer table component that holds our product rows and products
 //the products are passed down as props so we can access them in this component. Each row will be passed a product as a prop and the product's id will be used a the key (react requirement)
 class ProductTable extends React.Component {
+  renderProducts(product) {
+    //console.log('products in product list', product)
+    const name = product.name;
+    const category = product.category;
+    const imgUrl = product.image;
+    const price = product.price;
+    // console.log(name, category, imgUrl, price)
+    return (
+      <div>
+        <tr key={product._id}>
+          <td>{name}</td>
+          <td>{name}</td>
+          <td>{name}</td>
+        </tr>
+        <tr key={product._id}>
+          <td>{name}</td>
+          <td>{name}</td>
+          <td>{name}</td>
+        </tr>
+        <tr key={product._id}>
+          <td>{name}</td>
+          <td>{name}</td>
+          <td>{name}</td>
+        </tr>
+      </div>
+    );
+  }
+
   render() {
-    const rows = [];
-    
-    this.props.products.forEach((product) => {
-      rows.push(
-        <ProductRow
-          product={product}
-          key={product._id} />
-      );
-    });
+    // const rows = [];
+
+    // this.props.products.forEach((product) => {
+    //   rows.push(
+    //     <ProductRow
+    //       product={product}
+    //       key={product._id} />
+    //   );
+    // });
 
     return (
-      <table>
-        {/* <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-          </tr>
-        </thead> */}
-        <tbody>{rows}</tbody>
+      <table className="table">
+        <tbody>{this.props.products.map(this.renderProducts)}</tbody>
       </table>
     );
   }

@@ -58,15 +58,29 @@ router.get('/products/:product', (req, res) => {
 })
 
 router.get('/products/:product/reviews', (req, res) => {
-
+  // Only 4 per page
+  const perPage = 4;
+  // return the first page by default
+  const page = req.query.page || 1;
   // Find product by Id
   Product
-    .findById(req.params.product, (err, product) => {
+    .findOne({
+      _id: req.params.product
+    })
+    .populate({
+      path: 'reviews',
+      // .skip((perPage * page) - perPage)
+    })
+    .exec((err, product) => {
       if (err) throw err;
-
-      res.send(product.reviews);
+      let reviewPage = [];
+      for (i = ((perPage * page) - perPage); i < ((perPage * page) - perPage) + 4; i++) {
+        if (i < product.reviews.length) {
+          reviewPage.push(product.reviews[i])
+        }
+      }
+      res.send(reviewPage);
     });
-
 })
 
 

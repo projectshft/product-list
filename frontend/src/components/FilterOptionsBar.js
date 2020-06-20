@@ -1,4 +1,6 @@
 import React from "react";
+
+// material UI imports
 import Typography from "@material-ui/core/Typography";
 
 class FilterOptionsBar extends React.Component {

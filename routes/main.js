@@ -47,14 +47,15 @@ router.get('/products', (req, res, next) => {
         // only return those products that have a matching category
         query = query.find({category: category})
     }
-    // sort by price whether the query is highest or lowest; highest by default
+    // sort by price whether the query is highest or lowest
     if (price) {
         if (price === 'lowest') {
             query = query.sort({price: 1})
         } else if (price === 'highest') {
             query = query.sort({price: -1})
         } else {
-            res.status(400).send('price query must either be set to highest or lowest')
+            // if query entered incorrectly, say so
+            res.status(400).send('price query must either be set to highest or lowest.')
         }
     }
 
@@ -75,12 +76,10 @@ router.get('/products', (req, res, next) => {
             })
             if (products.length === 0) {
                 // return something if the array will be empty
-                res.json('No results for that search. Try simplifying your search to one word')
+                res.json('No results for that search. Try simplifying your search to one word or changing the category query.')
             } else {
                 res.json(products)
-            }
-            
-            
+            } 
         })
 });
 
@@ -93,6 +92,7 @@ router.get('/products/:product', (req, res, next) => {
         .findOne({_id: productID}, (err, product) => {
             if (err) {
                 console.log(err)
+                res.status(400).json('that product ID is invalid.')
             }
             res.json(product)
         })
@@ -115,6 +115,9 @@ router.get('/products/:product/reviews', (req, res, next) => {
                     skip: (perPage*page) - perPage}
                 })
             .exec((err, product) => {
+                if (err) {
+                    res.status(400).json('that product ID is invalid.')
+                }
                 res.json(product.reviews)
             })
     
@@ -124,17 +127,21 @@ router.post('/products', (req, res, next) => {
     // create new product
     let newProduct = new Product()
     // fill out product's key object pairs from the request body
-    newProduct.category = req.body.category
-    newProduct.name = req.body.name
-    newProduct.price = req.body.price
-    newProduct.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-    // save new product and console log any errors that occur
-    newProduct.save((err, product) => {
-        if (err) {
-            console.log(err)
-        }
-        res.json('product saved')
-    })
+    if (req.body.category && req.body.name && req.body.price && req.body.image) {
+        newProduct.category = req.body.category
+        newProduct.name = req.body.name
+        newProduct.price = req.body.price
+        newProduct.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+        // save new product and console log any errors that occur
+        newProduct.save((err, product) => {
+            if (err) {
+                console.log(err)
+            }
+            res.json('product saved')
+        })
+    } else {
+        res.status(400).json('Missing some of the fields. Please make sure all fields are filled out.')
+    }
 });
 
 router.post('/products/:product/reviews', (req, res, next) => {
@@ -145,22 +152,31 @@ router.post('/products/:product/reviews', (req, res, next) => {
     newReview.text = req.body.text
     // assign product based on params
     newReview.product = req.params.product
-    // find product and add new review to its reviews array
-    Product
-        .findOne({_id: req.params.product}, (err, product) => {
+    // make sure all fields are present
+    if (newReview.userName && newReview.text) {
+        // find product and add new review to its reviews array
+        Product
+        .findOne({_id: req.params.product})
+        .exec((err, product) => {
             if (err) {
-                throw err
-            }
-            product.reviews.push(newReview._id)
-            product.save()
-        })
+            res.status(400).json('that product ID is invalid.')
+        }
+        product.reviews.push(newReview._id)
+        product.save()
+    })
+            
     // save new review and error as needed
     newReview.save((err, review) => {
         if (err) {
             console.log(err)
+            res.status(500).json('Something went wrong. Please try again later.')
         }
         res.json('review saved')
     })
+    } else {
+        // if not all fields filled out, say so
+        res.status(400).json('Missing some of the fields. Please make sure all fields are filled out.')
+    }
 });
 
 router.delete('/products/:product', (req, res, next) => {
@@ -169,12 +185,14 @@ router.delete('/products/:product', (req, res, next) => {
     // delete product 
     Product.deleteOne({_id: productID}, (err) => {
         if (err) {
-            throw err
+            console.log(err)
+            res.status(400).json('invalid product ID')
         }
         // then delete all reviews referencing that product
         Review.deleteMany({product: productID}, err => {
             if (err) {
-                throw err
+                console.log(err)
+                res.status(500).json('Something went wrong. Please try again later.')
             }
             res.json('product deleted')
         }) 
@@ -187,7 +205,8 @@ router.delete('/reviews/:review', (req, res, next) => {
     // find prouduct referencing reviewID
     Product.findOne({reviews: reviewID}, (err, product) => {
         if (err) {
-            throw err
+            console.log(err)
+            res.status(400).json('invalid review ID.')
         }
         // remove reviewID from array
         product.reviews.splice(product.reviews[reviewID], 1)
@@ -195,7 +214,8 @@ router.delete('/reviews/:review', (req, res, next) => {
         // find and delete review itself
         Review.deleteOne({_id: reviewID}, (err, review)=> {
             if (err) {
-                throw err
+                console.log(err)
+                res.status(500).json('Something went wrong. Please try again later.')
             }
             res.json('review deleted')
         })

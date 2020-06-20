@@ -115,6 +115,27 @@ router.post('/products', (req, res, next) => {
   res.send(product);
 })
 
+router.post('/products/:product/reviews', (req, res, next) => {
+  let review = new Review();
+  review.userName = req.body.userName;
+  review.text = req.body.text;
+  review.product = req.params.product;
+
+  Product.findOne({_id: review.product})
+    .exec((err, product) => {
+      if (err) return next(err)
+      review.save((err) => {
+        if (err) return next(err)
+      })
+      console.log(product);
+      product.reviews.push(review);
+      product.save((err) => {
+        if (err) throw err
+      })
+      res.send(review);
+    })
+})
+
 router.delete('/products/:product', (req, res, next) => {
   Product.remove({ _id: req.params.product }, err => {
     if (err) throw err;

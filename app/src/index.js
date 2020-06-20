@@ -29,7 +29,7 @@ class MainPage extends React.Component {
       <div>
         <h1 className="text-center">PRODUCTS</h1>
         <SearchFilterSortBar />
-        <ProductTable products={this.props.products} />
+        <ProductContainer products={this.props.products} />
       </div>
     );
   }
@@ -53,19 +53,19 @@ Where do we make our row? another outer div with class="row"?
 class SearchFilterSortBar extends React.Component {
   render() {
     return (
-      <form class="form-inline">
+      <form className="form-inline">
         {/* <div class="form-row"> */}
-        <label className="ml-2 mr-2" for="exampleFormControlInput1">Search</label>
+        <label className="ml-2 mr-2" htmlFor="exampleFormControlInput1">Search</label>
         <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Search..." />
-        <label className="ml-2 mr-2" for="inlineFormCustomSelectCategory">Filter by Category: </label>
+        <label className="ml-2 mr-2" htmlFor="inlineFormCustomSelectCategory">Filter by Category: </label>
         <select className="form-control custom-select" id="inlineFormCustomSelectCategory">
-          <option selected>Category</option>
+          {/* <option defaultValue="Toys">Toys</option> */}
           <option value="Home">Home</option>
           <option value="Baby">Baby</option>
           <option value="Garden">Garden</option>
         </select>
-        <label className="ml-2 mr-2" for="inlineFormCustomSelectSort">Sort by Price: </label>
-        <select className="form-control custom-select" for="inlineFormCustomSelectSort">
+        <label className="ml-2 mr-2" htmlFor="inlineFormCustomSelectSort">Sort by Price: </label>
+        <select className="form-control custom-select" htmlFor="inlineFormCustomSelectSort">
           <option selected>Sort Type</option>
           <option value="Highest">Price: Low to High</option>
           <option value="Lowest">Price: High to Low</option>
@@ -78,79 +78,160 @@ class SearchFilterSortBar extends React.Component {
 
 //this will be the outer table component that holds our product rows and products
 //the products are passed down as props so we can access them in this component. Each row will be passed a product as a prop and the product's id will be used a the key (react requirement)
-class ProductTable extends React.Component {
-  renderProducts(product) {
-    //console.log('products in product list', product)
-    const name = product.name;
-    const category = product.category;
-    const imgUrl = product.image;
-    const price = product.price;
-    // console.log(name, category, imgUrl, price)
+class ProductContainer extends React.Component {
+
+
+  renderProducts(products) {
+    // products.map(products)
+    console.log('products in renderProducts function:', products)
+
+    // const name = cityData.city.name;
+    // const temps = cityData.list.map(weather => weather.main.temp);
+    // const pressures = cityData.list.map(weather => weather.main.pressure);
+    // const humidities = cityData.list.map(weather => weather.main.humidity);
+    // console.log(temps,pressures,humidities)
     return (
       <div>
-        <tr key={product._id}>
-          <td>{name}</td>
-          <td>{name}</td>
-          <td>{name}</td>
-        </tr>
-        <tr key={product._id}>
-          <td>{name}</td>
-          <td>{name}</td>
-          <td>{name}</td>
-        </tr>
-        <tr key={product._id}>
-          <td>{name}</td>
-          <td>{name}</td>
-          <td>{name}</td>
-        </tr>
+        <div class="row">
+          <IndividualProductDiv products={products} />
+          <IndividualProductDiv products={products} />
+          <IndividualProductDiv products={products} />
+        </div>
+        <div class="row">
+          <IndividualProductDiv products={products} />
+          <IndividualProductDiv products={products} />
+          <IndividualProductDiv products={products} />
+        </div>
+        <div class="row">
+          <IndividualProductDiv products={products} />
+          <IndividualProductDiv products={products} />
+          <IndividualProductDiv products={products} />
+        </div>
+      </div>
+    );
+
+  }
+
+
+  render() {
+    const products = this.props.products;
+
+    return (
+      <div>
+        {this.renderProducts(products)}
       </div>
     );
   }
+}
 
+// renderRows(products) {
+//   //console.log('products in product list', product)
+//   const name = product.name;
+//   const category = product.category;
+//   const imgUrl = product.image;
+//   const price = product.price;
+//   // console.log(name, category, imgUrl, price)
+//   for (let i = 0; i < products.length; i++) {
+//     let rowProducts = [];
+//     for (let j = 0; j < 3; j++) {
+//       rowProducts.push(products[i])
+//     }
+
+//   }
+//   return (
+//     <tr>
+//       <ProductRow products={this.productsArray} />
+//     </tr>
+//   );
+// }
+
+
+// const rows = [];
+// const rowProductArray = [];
+// //const productsCopy = this.props.products.slice();
+// console.log(this.props.products)  //this is an array of all our product objects
+// //console.log(productsCopy)
+// this.props.products.forEach((product, index) => {
+//   const testObj = { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 }
+
+//   //const clonedProduct = Object.assign({}, product)
+//   //console.log('Cloned product:', clonedProduct);
+//   rowProductArray.push(product);
+//   //console.log('log product by index', rowProductArray[0])
+//   //console.log('Row product array', rowProductArray);
+//   if (index === 2 || index === 5 || index === 8) {
+//     rows.push(<ProductRow rowProducts={rowProductArray} key={index} />);
+//     rowProductArray.length = 0;
+//   }
+// })
+// console.log('rows', rows[0])
+
+
+
+// console.log(rows);
+class IndividualProductDiv extends React.Component {
   render() {
-    // const rows = [];
-
-    // this.props.products.forEach((product) => {
-    //   rows.push(
-    //     <ProductRow
-    //       product={product}
-    //       key={product._id} />
-    //   );
-    // });
-
+    let products = this.props.products;
+    let url = products[0].img
     return (
-      <table className="table">
-        <tbody>{this.props.products.map(this.renderProducts)}</tbody>
-      </table>
-    );
+      <div class="col-md-4">
+        <div>
+          <div>{products[0].category}{products[0].price}</div>
+          <div><img src={url}></img></div>
+          <div>{products[0].name}</div>
+        </div>
+      </div>
+    )
   }
 }
 
 
-class ProductRow extends React.Component {
-  render() {
-    const product = this.props.product;
-    const price = product.price;
-    const category = product.category;
-    const img = product.img;
-    const name = product.name;
 
-    return (
-      <tr>
-        <td>{name}</td>
-      </tr>
-    );
-  }
-}
+// class ProductRow extends React.Component {
+
+//   render() {
+//     const cells = [];
+//     let productsRowArray = this.props.rowProducts;
+//     console.log(this.props.rowProducts)
+//     productsRowArray.forEach(product => {
+//       cells.push(
+//         <ProductTableCell product={product} key={product._id} />
+//       )
+//     })
+
+//     return (
+//       <tr>{cells}</tr>
+//     );
+//   }
+// }
+
+// class ProductTableCell extends React.Component {
+//   render() {
+//     const product = this.props.product;
+//     const price = product.price;
+//     const category = product.category;
+//     const imgUrl = product.image;
+//     const name = product.name;
+
+//     return (
+//       <td>
+//         {name}
+//       </td>
+//     );
+//   }
+// }
 
 // temporary data (that mocks our real db data) that we can work with to test static version of app
 const PRODUCTS = [
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] }
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 }
 ];
 
 //Here is where instantiate our App with Redux and create our store and wire up our store/reducers with our App

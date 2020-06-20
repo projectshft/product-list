@@ -1,17 +1,18 @@
-import React from 'react';
-import { Component } from 'react';
+import React, {Component} from 'react';
 
 
 export default class IndividualProductDiv extends Component {
+  //do we need to add a constructor to receive props?
+
   render() {
-    let products = this.props.products;
-    let url = products[0].img
+    const product = this.props.product;
+
     return (
       <div className="col-md-4">
         <div>
-          <div>{products[0].category}{products[0].price}</div>
-          <div><img src={url}></img></div>
-          <div>{products[0].name}</div>
+          <div>{product.category}{product.price}</div>
+          <div><img src={product.img}></img></div>
+          <div>{product.name}</div>
         </div>
       </div>
     )

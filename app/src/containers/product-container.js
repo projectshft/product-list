@@ -1,21 +1,18 @@
-import React from 'react';
-import { Component } from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import IndividualProductDiv from './individual-product'
 
+
 //this will be the outer container component that holds our product rows and products
-//the products are passed down as props so we can access them in this component. Each row will be passed a product as a prop and the product's id will be used a the key (react requirement)
-export default class ProductContainer extends Component {
+//the products will be passed in as props so we can access them in this component. Each row will be passed a product as a prop and the product's id will be used a the key (react requirement)
+class ProductContainer extends Component {
 
 
   renderProducts(products) {
     // products.map(products)
     console.log('products in renderProducts function:', products)
 
-    // const name = cityData.city.name;
-    // const temps = cityData.list.map(weather => weather.main.temp);
-    // const pressures = cityData.list.map(weather => weather.main.pressure);
-    // const humidities = cityData.list.map(weather => weather.main.humidity);
-    // console.log(temps,pressures,humidities)
+    // need to only pass the data for one product per IndividualProductDiv below, tbd..
     return (
       <div>
         <div class="row">
@@ -40,12 +37,19 @@ export default class ProductContainer extends Component {
 
 
   render() {
-    const products = this.props.products;
+    //const products = this.props.products;
 
     return (
       <div>
-        {this.renderProducts(products)}
+        {this.renderProducts(this.props.products)}
       </div>
     );
   }
 }
+
+function mapStateToProps({ products }) {
+  console.log('Map state to props', products);
+  return { products };
+}
+
+export default connect(mapStateToProps)(ProductContainer);

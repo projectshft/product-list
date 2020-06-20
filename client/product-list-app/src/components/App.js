@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
-import ProductList from "./ProductList";
+import SearchPage from "./SearchPage";
 
 import "../css/App.css";
 
@@ -21,7 +21,7 @@ const App = () => {
 
       <Switch>
         {/* Default/List View */}
-        <Route exact path={["/", "/products"]} component={ProductList} />
+        <Route exact path={["/", "/products"]} component={SearchPage} />
       </Switch>
 
     </Container>

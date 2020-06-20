@@ -54,32 +54,47 @@ router.param("review", function (req, res, next, id) {
 
 // gets the products, paginated
 router.get("/products", (req, res, next) => {
-  // let's grab and map the passed in queries
-  const optionalQuery = {
-    page: req.query.page || null,
-    category: req.query.category || null,
-    price: req.query.price || null,
-    query: req.query.query || null,
-  };
+  // we'll need an array for conditions
+  const conditions = {};
+
+  // update conditions for search queries
+  if (req.query.category) {
+    conditions.category = req.query.category;
+  }
+
+  // update conditions for search queries
+  if (req.query.query) {
+    var regex = new RegExp(req.query.query);
+    conditions.name = { $regex: regex, $options: "i" };
+  }
+
+  // setting options up for query
 
   const perPage = 9;
-
-  // return the first page by default
   const page = req.query.page || 1;
 
-  Product.find({})
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      /* Note that we're not sending `count` back at the moment, 
+  let options = {
+    skip: perPage * page - perPage,
+    limit: perPage,
+  };
+
+  if (req.query.sort) {
+    // sort in descending order if starting highest
+    options.sort = {
+      price: req.query.sort === "highest" ? "descending" : "ascending",
+    };
+  }
+
+  Product.find(conditions, null, options).exec((err, products) => {
+    /* Note that we're not sending `count` back at the moment, 
       but in the future we might want to know how many are coming 
       back so we can figure out the number of pages */
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
+    Product.count().exec((err, count) => {
+      if (err) return next(err);
 
-        res.send(products);
-      });
+      res.send(products);
     });
+  });
 });
 
 // Returns a specific product by its id

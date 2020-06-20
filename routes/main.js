@@ -205,7 +205,16 @@ router.delete('/reviews/:review', (req, res) => {
     if (err) {
       console.error(err);
     } else {
-      console.log("review deleted");
+      Product.findById(review.product)//this part is not working 
+      .exec((err, product) => {
+        if (err) {
+          console.error(err);
+        } else {
+          review.remove()
+          product.save()
+          console.log(review)
+        }
+      })
     }
   })
 })

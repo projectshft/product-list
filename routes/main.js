@@ -78,10 +78,14 @@ router.get("/products", (req, res, next) => {
     limit: perPage,
   };
 
+  // sorting -- an optional option
   if (req.query.sort) {
+    // in case someone does it via the URL (not the page)
+    const lowerCaseQuery = req.query.sort.toLowerCase();
+
     // sort in descending order if starting highest
     options.sort = {
-      price: req.query.sort === "highest" ? "descending" : "ascending",
+      price: lowerCaseQuery === "highest" ? "descending" : "ascending",
     };
   }
 

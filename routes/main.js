@@ -21,16 +21,24 @@ const { Review } = require('../models/product')
 // })
 
 router.get('/products', (req, res, next) => {
-  let sortBy = ''
+  let sortBy = {}
   let categories = {}
-  //Applying categories variable the value in the request
+  //Applying to the categories variable the value in the request query
   //for use in Product.find() 
   if (req.query.category) {
     categories = {category: req.query.category}
   }  
   
+  //Applying to the sortBy variable the value in the request query
+  //for use in Product.sort()
   if (req.query.sort) {
-    sortBy = req.query.sort
+    
+    if (req.query.sort === 'highest') {
+      sortBy = {price: 'descending'}
+    } else if (req.query.sort === 'lowest') {
+      sortBy = {price: 'ascending'}
+    }
+    
   }
 
   const perPage = 9

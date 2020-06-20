@@ -99,6 +99,22 @@ router.post('/products', (req, res) => {
   res.send(product);
 })
 
+router.delete('/products/:product', (req, res) => {
+
+  Product
+    .findOne({
+      _id: req.params.product
+    })
+    .deleteOne({})
+    .exec((err) => {
+      if (err) throw err;
+      else {console.log("Product successfully deleted!")
+      }
+    })
+    
+    res.send("Product successfully deleted");
+})
+
 router.post('/products/:product/reviews', (req, res) => {
 
   // Find product by Id
@@ -124,7 +140,6 @@ router.post('/products/:product/reviews', (req, res) => {
     });
 
 })
-
 
 
 module.exports = router

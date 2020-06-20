@@ -23,16 +23,111 @@ import reducers from './reducers';
 // after building the static version we will deal with state, redux, separation of components
 
 
+class MainPage extends React.Component {
+  render() {
+    return (
+      <div>
+        <SearchFilterSortBar />
+        <ProductTable products={this.props.products} />
+      </div>
+    );
+  }
+}
 
+//dropdowns can be a button if needed
+/*another option if needed:
+        <div class="dropdown-menu">
+          <h6 class="dropdown-header">Dropdown header</h6>
+          <a class="dropdown-item" href="#">Action</a> 
+          <a class="dropdown-item" href="#">Another action</a>
+        </div>
+
+From bootstrap docs:
+Form controls
+Textual form controls—like <input>s, <select>s, and <textarea>s—are styled with the .form-control class. Included are styles for general appearance, focus state, sizing, and more.
+Be sure to explore our custom forms to further style <select>s.  
+
+Where do we make our row? another outer div with class="row"?
+ */
+class SearchFilterSortBar extends React.Component {
+  render() {
+    return (
+      <form class="form-inline">
+        {/* <div class="form-row"> */}
+          <label class="ml-2 mr-2" for="exampleFormControlInput1">Search</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Search..." />
+          <label class="ml-2 mr-2" for="inlineFormCustomSelectCategory">Filter by Category: </label>
+          <select class="form-control custom-select" id="inlineFormCustomSelectCategory">
+            <option selected>Category</option>
+            <option value="Home">Home</option>
+            <option value="Baby">Baby</option>
+            <option value="Garden">Garden</option>
+          </select>
+          <label class="ml-2 mr-2" for="inlineFormCustomSelectSort">Sort by Price: </label>
+          <select class="form-control custom-select" for="inlineFormCustomSelectSort">
+            <option selected>Sort Type</option>
+            <option value="Highest">Price: Low to High</option>
+            <option value="Lowest">Price: High to Low</option>
+          </select>
+        {/* </div> */}
+      </form>
+    );
+  }
+}
+
+//this will be the outer table component that holds our product rows and products
+//the products are passed down as props so we can access them in this component. Each row will be passed a product as a prop and the product's id will be used a the key (react requirement)
+class ProductTable extends React.Component {
+  render() {
+    const rows = [];
+    
+    this.props.products.forEach((product) => {
+      rows.push(
+        <ProductRow
+          product={product}
+          key={product._id} />
+      );
+    });
+
+    return (
+      <table>
+        {/* <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead> */}
+        <tbody>{rows}</tbody>
+      </table>
+    );
+  }
+}
+
+
+class ProductRow extends React.Component {
+  render() {
+    const product = this.props.product;
+    const price = product.price;
+    const category = product.category;
+    const img = product.img;
+    const name = product.name;
+
+    return (
+      <tr>
+        <td>{name}</td>
+      </tr>
+    );
+  }
+}
 
 // temporary data (that mocks our real db data) that we can work with to test static version of app
 const PRODUCTS = [
-  {_id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', reviews: [{_id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome'}]},
-  {_id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', reviews: [{_id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome'}]},
-  {_id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', reviews: [{_id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome'}]},
-  {_id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', reviews: [{_id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome'}]},
-  {_id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', reviews: [{_id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome'}]},
-  {_id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', reviews: [{_id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome'}]}
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] },
+  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0, reviews: [{ _id: '5eed0c1f27079b4398415859', username: 'Ludie Greenholt', text: 'This Incredible Metal Mouse is awesome' }] }
 ];
 
 //Here is where instantiate our App with Redux and create our store and wire up our store/reducers with our App

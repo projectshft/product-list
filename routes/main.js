@@ -21,13 +21,26 @@ const { Review } = require('../models/product')
 // })
 
 router.get('/products', (req, res, next) => {
+  let sortBy = ''
+  let categories = {}
+  //Applying categories variable the value in the request
+  //for use in Product.find() 
+  if (req.query.category) {
+    categories = {category: req.query.category}
+  }  
+  
+  if (req.query.sort) {
+    sortBy = req.query.sort
+  }
+
   const perPage = 9
 
   // return the first page by default
   const page = req.query.page || 1
-
+  
   Product
-    .find({})
+    .find(categories)
+    .sort(sortBy)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
@@ -79,8 +92,8 @@ router.get('/products/:product/reviews', (req, res, next) => {
 router.post('/products/', (req, res, next) => {
     
   if (!req.body.category || !req.body.name || !req.body.price || !req.body.image) {
-    response.writeHead(404, "Not enough product information");
-    return response.end();
+    res.writeHead(404, "Not enough product information");
+    return res.end();
   }
   
   let product = new Product()
@@ -101,12 +114,12 @@ router.post('/products/:product/reviews', (req, res, next) => {
   
   //Hold data for new review in variables
   let productId = req.params.product
-  let reviewUserName = req.body.userName
+  let reviewUserName = req.body.username
   let reviewText = req.body.text
 
   if (!reviewUserName || !reviewText) {
-    response.writeHead(404, "Not enough review information. Ensure Username and text is entered");
-    return response.end();
+    res.writeHead(404, "Not enough review information. Ensure Username and text is entered");
+    return res.end();
   }
 
   //Create new review
@@ -130,10 +143,33 @@ router.post('/products/:product/reviews', (req, res, next) => {
   
 });
 
-// router.post('/products/:product/reviews', (req, res, next) => {
-  
+router.delete('/products/:product', (req, res, next) => {
+  let productId = req.params.product
 
-// });
+  Product.findByIdAndDelete({ _id: productId }, (err, result) =>{
+    if (err) {
+      return console.error(err)
+    }
+    console.log(result)
+    //Returning the product that was deleted
+    return res.send(result)
+  });
+
+});
+
+router.delete('/reviews/:review', (req, res, next) => {
+  let reviewId = req.params.review
+
+  Review.findByIdAndDelete({ _id: reviewId }, (err, result) =>{
+    if (err) {
+      return console.error(err)
+    }
+    console.log(result)
+    //Returning the product that was deleted
+    return res.send(result)
+  });
+
+});
 
 
 module.exports = router

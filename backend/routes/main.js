@@ -97,7 +97,7 @@ router.get("/products", (req, res, next) => {
       .count()
       .exec((err, count) => {
         if (err) return next(err);
-
+        console.log(count);
         res.send(products);
       });
   });

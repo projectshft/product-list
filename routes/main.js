@@ -3,22 +3,22 @@ const faker = require('faker')
 const { Product } = require('../models/product')
 const { Review } = require('../models/product')
 
+//***COMMENTING OUT FAKE DATA REQUEST TO PREVENT ACCIDENTAL REGENERATION OF FAKE DATA***
+// router.get('/generate-fake-data', (req, res, next) => {
+//   for (let i = 0; i < 90; i++) {
+//     let product = new Product()
 
-router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    let product = new Product()
+//     product.category = faker.commerce.department()
+//     product.name = faker.commerce.productName()
+//     product.price = faker.commerce.price()
+//     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
 
-    product.category = faker.commerce.department()
-    product.name = faker.commerce.productName()
-    product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-
-    product.save((err) => {
-      if (err) throw err
-    })
-  }
-  res.end()
-})
+//     product.save((err) => {
+//       if (err) throw err
+//     })
+//   }
+//   res.end()
+// })
 
 router.get('/products', (req, res, next) => {
   const perPage = 9
@@ -54,7 +54,7 @@ router.get('/products/:product', (req, res, next) => {
       return console.error(err);
     }
     console.log(result);
-    //send product by productId
+    //send back product by productId
     return res.send(result)
   });
   
@@ -62,6 +62,17 @@ router.get('/products/:product', (req, res, next) => {
 
 router.get('/products/:product/reviews', (req, res, next) => {
 
+  let productId = req.params.product
+  
+  //Search database for productId from parameter
+  Product.findById({ _id: productId }, (err, result) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log(result);
+    //send back review array from found productId
+    return res.send(result.reviews)
+  });
   
 });
 
@@ -87,11 +98,18 @@ router.post('/products/', (req, res, next) => {
 });
 
 router.post('/products/:product/reviews', (req, res, next) => {
-
+  
+  //Hold data for new review in variables
   let productId = req.params.product
   let reviewUserName = req.body.userName
   let reviewText = req.body.text
 
+  if (!reviewUserName || !reviewText) {
+    response.writeHead(404, "Not enough review information. Ensure Username and text is entered");
+    return response.end();
+  }
+
+  //Create new review
   let review = new Review({
     userName: reviewUserName,
     text: reviewText,
@@ -103,7 +121,7 @@ router.post('/products/:product/reviews', (req, res, next) => {
     }
     console.log(result)
     result.reviews.push(review)
-    //save review
+    //save review to specific productId
     result.save(() => {
       //Send back review that was added
       return res.send(review)
@@ -111,6 +129,11 @@ router.post('/products/:product/reviews', (req, res, next) => {
   });
   
 });
+
+// router.post('/products/:product/reviews', (req, res, next) => {
+  
+
+// });
 
 
 module.exports = router

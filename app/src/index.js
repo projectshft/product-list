@@ -30,6 +30,7 @@ class MainPage extends React.Component {
         <h1 className="text-center">PRODUCTS</h1>
         <SearchFilterSortBar />
         <ProductContainer products={this.props.products} />
+        <PaginationComponent products={this.props.products} />
       </div>
     );
   }
@@ -174,7 +175,7 @@ class IndividualProductDiv extends React.Component {
     let products = this.props.products;
     let url = products[0].img
     return (
-      <div class="col-md-4">
+      <div className="col-md-4">
         <div>
           <div>{products[0].category}{products[0].price}</div>
           <div><img src={url}></img></div>
@@ -185,6 +186,30 @@ class IndividualProductDiv extends React.Component {
   }
 }
 
+
+class PaginationComponent extends React.Component {
+
+  renderPages(count) {
+    if (count <= 9 ) {
+      return <div className="col-md-2 pages"><span> className="col-md-2"1</span></div>
+    } else if (count <= 18) {
+      return <div className="col-md-2 pages"><span className="col-md-2 pages">1</span><span className="col-md-2 pages">2</span></div>
+    } else if (count <= 27) {
+      return <div className="col-md-2 pages"><span className="col-md-2 pages">1</span><span className="col-md-2 pages">2</span><span className="col-md-2">3</span></div>
+    } else {
+      return <div><span>Need more pages</span></div>
+    }
+    
+  }
+
+  render() {
+    const products = this.props.products;
+    const count = products.length;
+    return(
+      <div className="row text-center">{this.renderPages(20)}</div>
+    )
+  }
+}
 
 
 // class ProductRow extends React.Component {

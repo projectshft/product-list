@@ -72,6 +72,9 @@ class FilterOptionsBar extends React.Component {
           <Box flexGrow={1}>
             <TextField
               id="outlined-basic"
+              style={{
+                backgroundColor: "#FDFDFDFD",
+              }}
               label="Search"
               variant="outlined"
               value={this.state.searchTerm}
@@ -86,6 +89,9 @@ class FilterOptionsBar extends React.Component {
               <Select
                 labelId="category-label"
                 id="category-select"
+                style={{
+                  backgroundColor: "#FDFDFDFD",
+                }}
                 value={this.state.category}
                 onChange={this.handleCategoryChange}
                 label="Category">
@@ -117,6 +123,9 @@ class FilterOptionsBar extends React.Component {
                 labelId="sort-label"
                 id="price-sort"
                 value={this.state.sortStatus}
+                style={{
+                  backgroundColor: "#FDFDFDFD",
+                }}
                 onChange={this.handleSortChange}
                 label="Sort by">
                 <MenuItem value={"highest"}>Price: Highest to Lowest</MenuItem>

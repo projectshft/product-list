@@ -5,7 +5,6 @@ import { bindActionCreators } from "redux";
 import { searchProducts, filterCategory, sortProducts } from "../actions/index";
 
 // material UI imports
-import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
@@ -144,10 +143,6 @@ FilterOptionsBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {};
-}
-
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     { searchProducts, filterCategory, sortProducts },
@@ -156,6 +151,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(withStyles(styles)(FilterOptionsBar));

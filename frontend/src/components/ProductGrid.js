@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
+import { searchProducts } from "../actions/index";
+import { bindActionCreators } from "redux";
 
 // components used
 import SingleProductBox from "./SingleProductBox";
@@ -7,13 +10,13 @@ import Footer from "./Footer";
 // design
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
@@ -39,12 +42,22 @@ const useStyles = makeStyles((theme) => ({
     float: "right",
     fontSize: 18,
   },
-}));
+});
 
-const ProductGrid = () => {
-  const classes = useStyles();
+class ProductGrid extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderProducts = this.renderProducts.bind(this);
+  }
 
-  const renderProducts = () => {
+  componentDidMount() {
+    // need to make the initial API call
+    this.props.searchProducts();
+  }
+
+  renderProducts() {
+    const { classes } = this.props;
+
     return fakeData.map((product) => {
       const generatePriceSubHeader = () => {
         return `Price: ${product.price}`;
@@ -76,20 +89,24 @@ const ProductGrid = () => {
         </Grid>
       );
     });
-  };
+  }
 
-  return (
-    <div>
-      <Container className={classes.cardGrid} maxWidth="md">
-        <Grid container spacing={4}>
-          {renderProducts()}
-        </Grid>
-      </Container>
+  render() {
+    const { classes } = this.props;
 
-      <Footer />
-    </div>
-  );
-};
+    return (
+      <div>
+        <Container className={classes.cardGrid} maxWidth="md">
+          <Grid container spacing={4}>
+            {this.renderProducts()}
+          </Grid>
+        </Container>
+
+        <Footer />
+      </div>
+    );
+  }
+}
 
 const fakeData = [
   {
@@ -201,4 +218,15 @@ const fakeData = [
   },
 ];
 
-export default ProductGrid;
+function mapStateToProps(state) {
+  return { products: state.products };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ searchProducts }, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(ProductGrid));

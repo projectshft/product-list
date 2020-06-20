@@ -1,11 +1,16 @@
+import axios from "axios";
+
 export const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
 export const FILTER_CATEGORY = "FILTER_CATEGORY";
 export const SORT_PRODUCTS = "SORT_PRODUCTS";
 
-export function searchProducts(term) {
-  const request = "";
+const ROOT_URL = `http://localhost:8000`;
 
-  request.then(console.log("HI!!!!"));
+export function searchProducts(term) {
+  const url = `${ROOT_URL}/products`;
+  const request = axios.get(url);
+
+  request.then(console.log("request is", request));
 
   return {
     type: SEARCH_PRODUCTS,

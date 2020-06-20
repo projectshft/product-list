@@ -10,7 +10,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-   
+
     product.save((err) => {
       if (err) throw err
     })
@@ -18,8 +18,10 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
-router.param('product', function(req, res, next, id) {
-  req.product = Product.find({_id: id});
+router.param('product', function (req, res, next, id) {
+  req.product = Product.find({
+    _id: id
+  });
   next();
 });
 
@@ -34,7 +36,9 @@ router.get('/products', (req, res, next) => {
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+      // Note that we're not sending `count` back at the moment, 
+      //but in the future we might want to know how many are coming back 
+      // so we can figure out the number of pages
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
@@ -43,15 +47,28 @@ router.get('/products', (req, res, next) => {
     })
 })
 
-router.get('/products/:product', (req, res, next) => {
-// Using the product params
-    req.product.exec((err, product) => {
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-        res.send(product)
-      })
-    })
+router.get('/products/:product', (req, res) => {
+  // Using the product params
+  req.product.exec((err, product) => {
+    // If no id exists, throw an error
+    if (err) throw err;
+    //Otherwise, return the product 
+    res.send(product);
+  })
 })
+
+router.get('/products/:product/reviews', (req, res) => {
+
+  // Find product by Id
+  Product
+    .findById(req.params.product, (err, product) => {
+      if (err) throw err;
+
+      res.send(product.reviews);
+    });
+
+})
+
 
 router.post('/products', (req, res) => {
   let product = new Product();
@@ -69,22 +86,31 @@ router.post('/products', (req, res) => {
 })
 
 router.post('/products/:product/reviews', (req, res) => {
-  
- // use reviewSchema here??? BUT HOW
-  
+
+  // Find product by Id
   Product
     .findById(req.params.product, (err, product) => {
       if (err) throw err;
-    
-      product.reviews.push({ userName: req.body.userName, text: req.body.text });
 
+      // Subdoc exists on product,
+      // so we push the body of the request
+      // to the selected product 
+      product.reviews.push({
+        userName: req.body.userName,
+        text: req.body.text
+      });
+
+      // save product, console log success or error,
+      // and return product in response
       product.save(err => {
         if (err) throw err;
         else console.log('Product successfully updated!');
       });
       res.send(product);
-  });
-  
+    });
+
 })
+
+
 
 module.exports = router

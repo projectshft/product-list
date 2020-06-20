@@ -21,30 +21,73 @@ const Review = require('../models/reviews')
 // })
 
 // will look like: /products?page=3
+//GET all products
+//Optional param: page number, will default to the first page if none selected
+//Optional param: sort by category (localhost:8000/products?page=1&category=tools)
+//Optional param: sort by highest or lowest
+//localhost:8000/products?page=1&category=tools&price=highest
+//localhost:8000/products?page=1&category=tools&price=lowest
+//limits results to 9 per page
 router.get('/products', (req, res, next) => {
+    const category = req.query.category
+    const query =req.query.query
+    const sort = req.query.price
+    //TODO have sort reflect "highest/lowest" instead of "asc/desc"
+
     const perPage = 9
   
     // return the first page by default
     const page = req.query.page || 1
-  
-    Product
-      .find({})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-        Product.count().exec((err, count) => {
-          if (err) return next(err)
-  
+
+    var conditions = {}
+
+    if (category && query) {
+      conditions = {
+        $and : [
+          {category:category}, {name: { $regex: query, $options: "i" } }
+        ]
+      }
+
+    } else if (query && !category) {
+      conditions = {name: { $regex: query, $options: "i" } }
+
+    } else if (!query && category)
+      conditions = {category:category}
+
+    let base = Product.find(conditions).sort({price:sort}).skip((perPage * page) - perPage).limit(perPage)
+    return base.exec((err, products) => {
           res.send(products)
-        })
       })
+   
   })
+
+  //   Product
+  //     .find({
+  //       $and : [
+  //         {category:category}, {name: { $regex: query, $options: "i" } }
+  //       ]
+  //     })
+  //     .sort({price:sort})
+  //     .skip((perPage * page) - perPage)
+  //     .limit(perPage)
+  //     .exec((err, products) => {
+  //       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+  //       Product.count().exec((err, count) => {
+  //         if (err) return next(err) //need to move this above
+  
+  //         res.send(products)
+  //       })
+
+
+  //     })
+  // })
+
 
 //GETS a product by its id
 //ID required in url params
 router.get('/products/:product', (req, res) => {
     const { product } = req.params
+   
     // const productToReturn = req.query.product
 
     Product
@@ -120,6 +163,7 @@ router.get('/products/:product/reviews', (req, res) => {
   const perPage = 4
 
   const page = req.query.page || 1 //takes the optional page number in the query or defaults to the first page
+  
 
   Product.findById(product)
     .skip((perPage * page) - perPage) //how to tell if this is working?
@@ -133,6 +177,37 @@ router.get('/products/:product/reviews', (req, res) => {
       }
     })
 
+})
+
+//DELETE product by id
+//requires id in url
+router.delete('/products/:product', (req, res) => {
+  const { product } = req.params
+
+  Product.findByIdAndDelete(product)
+  .exec((err, product) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log("product deleted");
+    }
+  })
+})
+
+
+//DELETE review by id
+//requires id in url
+router.delete('/reviews/:review', (req, res) => {
+  const { review } = req.params
+
+  Review.findByIdAndDelete(review) //deletes are updated in postman but not in compass?
+  .exec((err, review) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log("review deleted");
+    }
+  })
 })
 
 

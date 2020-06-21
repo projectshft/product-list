@@ -6,7 +6,7 @@ import ReduxPromise from 'redux-promise';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import App from './components/app';
-import reducers from './reducers';
+import reducers from './reducers/reducers';
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 

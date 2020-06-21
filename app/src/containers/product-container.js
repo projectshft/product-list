@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import IndividualProductDiv from './individual-product'
+import PaginationComponent from './pagination'
 
 
 //this will be the outer container component that holds our product rows and products
@@ -29,6 +30,9 @@ class ProductContainer extends Component {
           <IndividualProductDiv products={products} />
           <IndividualProductDiv products={products} />
           <IndividualProductDiv products={products} />
+        </div>
+        <div>
+         <PaginationComponent pageCount={products.length}/>
         </div>
       </div>
     );

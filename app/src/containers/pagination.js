@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
+import PageNumber from './page-numbers'
 
 // in this component, the user will be able to click on a page number and see a new set of products render (if there is more than one page of products). Outgoing data will be page number (api call) but I'm thinking there won't be any incoming data because the product-container is what will be updated, not the pagination component
 //this component should be passed the number of products or number of pages from the product container, keep it 'dumb', maybe only pass number of pages
@@ -14,24 +15,17 @@ class PaginationComponent extends Component {
     this.state = { page: '' };
 
     this.onPageClick = this.onPageClick.bind(this);
+    this.showPageNumbers = this.showPageNumbers.bind(this);
   }
 
   onPageClick(event) {
-    this.setState({page: event.target.value});
+    this.setState({ page: event.target.value });
     this.props.fetchProducts(this.state.page);
   }
 
-  renderPages(count) {
-    if (count <= 9 ) {
-      return <div className="col-md-2 pages"><span> className="col-md-2"1</span></div>
-    } else if (count <= 18) {
-      return <div className="col-md-2 pages"><span className="col-md-2 pages">1</span><span className="col-md-2 pages">2</span></div>
-    } else if (count <= 27) {
-      return <div className="col-md-2 pages"><span className="col-md-2 pages">1</span><span className="col-md-2 pages">2</span><span className="col-md-2">3</span></div>
-    } else {
-      return <div><span>Need more pages</span></div>
-    }
-    
+  showPageNumbers(pageCount) {
+
+
   }
 
   render() {
@@ -39,8 +33,24 @@ class PaginationComponent extends Component {
     //const products = this.props.products;
     const count = this.props.pageCount;
     //const count = products.length;
-    return(
-      <div className="row text-center">{this.renderPageNumbers(count)}</div>
+    this.showPageNumbers(count)
+
+    const pageNumbers = [];
+
+
+    return (
+      <div className="row text-center">
+        <span id="pageOne" className="col-md-2 pages" onClick={this.onPageClick}>1</span>
+        <span id="pageTwo" className="col-md-2 pages" onClick={this.onPageClick}>2</span>
+        <span id="pageThree" className="col-md-2 pages" onClick={this.onPageClick}>3</span>
+        <span id="pageFour" className="col-md-2 pages" onClick={this.onPageClick}>4</span>
+        <span id="pageFive" className="col-md-2 pages" onClick={this.onPageClick}>5</span>
+        <span id="pageSix" className="col-md-2 pages" onClick={this.onPageClick}>6</span>
+        <span id="pageSeven" className="col-md-2 pages" onClick={this.onPageClick}>7</span>
+        <span id="pageEight" className="col-md-2 pages" onClick={this.onPageClick}>8</span>
+        <span id="pageNine" className="col-md-2 pages" onClick={this.onPageClick}>9</span>
+        <span id="pageTen" className="col-md-2 pages" onClick={this.onPageClick}>10</span>
+      </div>
     )
   }
 }

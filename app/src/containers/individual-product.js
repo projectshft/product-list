@@ -14,7 +14,7 @@ export default class IndividualProductDiv extends Component {
   //     setTimeout(this.waitForData, 3000)
   // }
     return (
-      <div className="col-md-4">
+      <div>
         <div>
           <div>{product.category}{product.price}</div>
           <div><img src={product.image}></img></div>

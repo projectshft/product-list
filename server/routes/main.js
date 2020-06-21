@@ -78,8 +78,9 @@ router.get('/products', (req, res, next) => {
 
   Product
     //.find({ $and: [{ category: categoryType }, {$match: { $or:[ {name: { $regex: searchQuery}}, { category: { $regex: searchQuery}}]}} ]})
-    .find({ $or: [{ name: { $regex: searchQuery, $options: "i"}}, { category: { $regex: searchQuery, $options: "i"}}]})
-    .sort({ price: getSortType(priceSortType) })
+   // .find({ $or: [{ name: { $regex: searchQuery, $options: "i"}}, { category: { $regex: searchQuery, $options: "i"}}]})
+    .find({})
+   // .sort({ price: getSortType(priceSortType) })
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {

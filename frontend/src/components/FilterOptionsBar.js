@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { filterProducts } from "../actions/index";
 import { withRouter } from "react-router";
+import queryString from "query-string";
 
 // material UI imports
 import { withStyles } from "@material-ui/core";
@@ -56,10 +57,7 @@ class FilterOptionsBar extends React.Component {
   handleSortChange(event) {
     event.preventDefault();
     console.log("Sort val is", event.target.value);
-    this.setState(
-      { queries: { sortStatus: event.target.value } },
-      this.startSearch
-    );
+    this.setState({ queries: { sort: event.target.value } }, this.startSearch);
   }
 
   handleSearchBarChange(event) {
@@ -81,7 +79,18 @@ class FilterOptionsBar extends React.Component {
   };
 
   startSearch() {
-    this.props.history.push(this.props.url);
+    // we need to update the url when we begin
+    // console.log("parsedFromPathName is", parsedFromPathName);
+
+    const parsedfromLocation = queryString.parse(this.props.location.search);
+    const mergedObjects = { ...parsedfromLocation, ...this.state.queries };
+
+    const stringifiedNewQuery = queryString.stringify(mergedObjects);
+
+    console.log("props are ", this.props);
+
+    this.props.history.push(`?${stringifiedNewQuery}`);
+
     this.props.filterProducts(this.props.location.search, this.state.queries);
   }
 
@@ -99,7 +108,7 @@ class FilterOptionsBar extends React.Component {
               }}
               label="Search"
               variant="outlined"
-              value={this.state.searchTerm}
+              value={this.state.queries.query}
               onChange={this.handleSearchBarChange}
               onKeyPress={this.onSearchKeyPress}
             />
@@ -114,7 +123,7 @@ class FilterOptionsBar extends React.Component {
                 style={{
                   backgroundColor: "#FDFDFDFD",
                 }}
-                value={this.state.category}
+                value={this.state.queries.category}
                 onChange={this.handleCategoryChange}
                 label="Category">
                 <MenuItem value={"Shoes"}>Shoes</MenuItem>
@@ -144,7 +153,7 @@ class FilterOptionsBar extends React.Component {
               <Select
                 labelId="sort-label"
                 id="price-sort"
-                value={this.state.sortStatus}
+                value={this.state.queries.sort}
                 style={{
                   backgroundColor: "#FDFDFDFD",
                 }}
@@ -168,7 +177,6 @@ FilterOptionsBar.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    url: state.products.url,
     page: state.page,
   };
 }

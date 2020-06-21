@@ -26,6 +26,7 @@ export function filterProducts(existingSearchQueryPath, newParams) {
     // turn that merged object into a query
     const stringifiedQuery = queryString.stringify(merged);
 
+    console.log("stringifiedQuery in action is ", stringifiedQuery);
     appendToUrl += `?${stringifiedQuery}`;
   }
 

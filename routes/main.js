@@ -60,6 +60,13 @@ router.get('/products', (request, response, next) => {
           //send error
           if (error) return response.send(error);
 
+            // //calculate number of pages
+            // const numOfPages = Math.ceil(resultCount / perPage);
+
+            //send error if page doesn't exist
+            if (page > 1 && products.length === 0) return response.status(404).send("Page does not exist")
+  
+
           //send count of total filtered results and limited products
           response.send({ count: resultCount, productResults: products });
         });
@@ -68,7 +75,7 @@ router.get('/products', (request, response, next) => {
 });
 
 router.get('/products/:product', (request, response, next) => {
-  
+
   //find product with product id
   Product
     .findById(request.params.product)
@@ -78,25 +85,54 @@ router.get('/products/:product', (request, response, next) => {
 
       //if another error, send error
       if (error) return response.send(error);
-      
+
       //send product if found
       response.send(foundProduct);
     });
 });
 
 router.get('/products/:product/reviews', (request, response, next) => {
-  //find product with product id
-  Product 
-    .findOne({ _id: request.params.product }, { reviews: 1, _id: 0 }) //get just reviews 
-    .exec((error, foundReviews) => {
+  //get product id
+  const productId = request.params.product;
+
+  //get page number, default to page 1
+  const reviewsPage = request.query.page || 1;
+
+  //set number of reviews per page 
+  const reviewsPerPage = 4;
+
+  //set up skip formula
+  const reviewsToSkip = (reviewsPerPage * reviewsPage) - reviewsPerPage;
+
+  //get count of reviews for pagination
+  Product
+    .findById(productId)
+    .exec((error, foundProduct) => {
       //if no product by that id found, send error
-      if (!foundReviews) return response.status(404).send("Product not found")
-      
+      if (!foundProduct) return response.status(404).send("Product not found")
+
       //if another error, send error
       if (error) return response.send(error);
 
-      //send product if found
-      response.send(foundReviews);
+      //save count
+      const reviewCount = foundProduct.reviews.length;
+
+      //find product and get reviews
+      Product //perform a skip and limit on review items
+        .findOne({ _id: productId }, { reviews: { $slice: [reviewsToSkip, reviewsPerPage] }})
+        .exec((error, foundReviews) => {
+          //if no product by that id found, send error
+          if (!foundReviews) return response.status(404).send("Product not found")
+
+          //if another error, send error
+          if (error) return response.send(error);
+
+          //send error if page doesn't exist
+          if (reviewsPage > 1 && numOfPages < reviewsPage) return response.status(404).send("Page does not exist")
+
+          //send reviews and count
+          response.send({total_review_count: reviewCount, reviews: foundReviews.reviews });
+        });
     });
 });
 
@@ -125,6 +161,9 @@ router.post('/products/:product/reviews', (request, response, next) => {
   //get review from request
   const reviewToAdd = request.body;
 
+  //check for valid fields on review
+  if (!reviewToAdd.username || !reviewToAdd.text) return response.status(400).send("Invalid parameters. Requires username and text.")
+
   Product  //find the product to review  && add review to product's reviews array
     .updateOne({ _id: request.params.product }, { $push: { reviews: reviewToAdd } })
     .exec((error, updatedProduct) => {
@@ -145,7 +184,7 @@ router.delete('/products/:product', (request, response, next) => {
     .findOneAndDelete((error, deletedProduct) => {
       //send error if product not found
       if (!deletedProduct) return response.status(404).send("Product not found")
-      
+
       //if another error, send error
       if (error) return response.send(error);
 

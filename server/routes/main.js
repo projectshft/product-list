@@ -88,7 +88,9 @@ router.get('/products', (req, res, next) => {
       // If you want to count all documents in a large collection, use the estimatedDocumentCount() function instead. If you call countDocuments({}), MongoDB will always execute a full collection scan and not use any indexes.
       Product.count().exec((err, count) => {
         if (err) return next(err)
-
+        console.log('Count inside product.count= ', count)
+        //we'll try sending the product count back as a response header (using append) and then pulling that out for the pagination component
+        res.append("productCount", count.toString())
         res.send(products)
       })
     })

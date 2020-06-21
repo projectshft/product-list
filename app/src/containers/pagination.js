@@ -50,7 +50,7 @@ class PaginationComponent extends Component {
     const pageNumbers = [];
     let pageNumber = 0;
     for (let i = 0; i < productsCount; i++) {
-      if (i % 9 === 0 || i === productsCount - 1) {
+      if (i % 9 === 0 || i === productsCount - 2) {
         pageNumber++;
         pageNumbers.push(
           <PageNumber key={pageNumber} page={pageNumber} />

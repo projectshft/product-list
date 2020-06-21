@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
+const Review = require('../models/product')
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -18,12 +19,19 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
-router.param('product', function (req, res, next, id) {
+router.param('product', (req, res, next, id) => {
   req.product = Product.find({
     _id: id
   });
   next();
 });
+
+router.param('review', (req, res, next, id) => {
+  req.product = Review.find({
+    _id: id
+  });
+  next();
+})
 
 router.get('/products', (req, res, next) => {
   const perPage = 9;
@@ -141,5 +149,31 @@ router.post('/products/:product/reviews', (req, res) => {
 
 })
 
+router.delete('/products/:product/:review', (req, res) => {
+  Product
+    .findOne({
+      _id: req.params.product
+    })
+    .exec((err, product) => {
+      if (err) throw err;
+
+      product.reviews.id(req.params.review).remove();
+      console.log(product.reviews);
+      console.log(req.params.review);
+      
+      // //delete the product
+      // product.reviews.splice({
+      //   userName: req.body.userName,
+      //   text: req.body.text
+      // });
+
+      product.save(err => {
+        if (err) throw err;
+        else console.log('Review successfully deleted!');
+      });
+      res.send("Review successfully deleted");
+    });
+
+});
 
 module.exports = router

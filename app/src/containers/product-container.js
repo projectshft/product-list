@@ -16,7 +16,7 @@ class ProductContainer extends Component {
     //the props is an object that just contains the fetchProducts function
 
     //the state will contain our user search input, category selection and/or price sort selection
-    this.state = { search: '', category: '', price: '' };
+    this.state = { page: '1', search: '', category: '', price: '' };
     //this.componentDidMount(this.state);
 
     // this.onInputChange = this.onInputChange.bind(this);

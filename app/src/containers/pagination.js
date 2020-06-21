@@ -19,8 +19,18 @@ class PaginationComponent extends Component {
   }
 
   onPageClick(event) {
-    this.setState({ page: event.target.value });
-    this.props.fetchProducts(this.state.page);
+    console.log('page click event.target= ', event.target.innerHTML)
+    const page = event.target.innerHTML.toString();
+    //console.log('page clicked', event.target.value)
+    this.setState({ page: page }, () => {
+      console.log('State inside onPageClick:', this.state)
+       console.log('State inside onPageClick:', this.state.page)
+      this.props.fetchProducts(this.state.page);
+    });
+   // console.log('State inside onPageClick:', this.state)
+    //console.log('State inside onPageClick:', this.state.page)
+    //this.props.fetchProducts(this.state.page);
+   // this.setState({page: ''})
   }
 
   // showPageNumbers(pageCount) {
@@ -35,12 +45,13 @@ class PaginationComponent extends Component {
     //const count = products.length;
     //this.showPageNumbers(count)
     console.log('Inside pagination component, this.props= ', this.props)
-    const productsCount = this.props.productCount;
+    const productsCount = this.props.products[1]
+    console.log('Inside pagination component, this.props.products[1]= ', this.props.products[1])
     const pageNumbers = [];
-    let pageNumber;
+    let pageNumber = 0;
     for (let i = 0; i < productsCount; i++) {
       if (i % 9 === 0 || i === productsCount - 1) {
-        pageNumber = (i % 9) + 1;
+        pageNumber++;
         pageNumbers.push(
           <PageNumber key={pageNumber} page={pageNumber} />
         )
@@ -50,7 +61,7 @@ class PaginationComponent extends Component {
 
     return (
       <table>
-        <tbody><tr>{pageNumbers}</tr></tbody>
+        <tbody><tr onClick={this.onPageClick} className="pages">{pageNumbers}</tr></tbody>
       </table>
     )
   }
@@ -78,9 +89,9 @@ function mapDispatchToProps(dispatch) {
 
 // this component also needs to receive the number of products from the search, so it can render the appropriate number of pages at the bottom of the screen
 // rethinking that this component doesn't need to receive the new products, only the product container component should be sent that data
-// function mapStateToProps({ productCount }) {
-//   console.log('Map state to props', productCount);
-//   return { productCount };
-// }
+function mapStateToProps({ products }) {
+  console.log('Map state to props inside pagination', products);
+  return { products };
+}
 
-export default connect(null, mapDispatchToProps)(PaginationComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(PaginationComponent);

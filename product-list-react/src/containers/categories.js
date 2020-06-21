@@ -17,8 +17,17 @@ class Categories extends Component {
 
   handleInputChange(event) {
     console.log(event.target.value);
-    this.setState({ category: event.target.value});
-    this.props.addCategory(event.target.value);
+    let category = "";
+    if (event.target.value !== 'Categories') {
+      this.setState({ category: event.target.value});
+      this.props.addCategory(event.target.value);
+      category = event.target.value;
+    } else {
+      this.setState({ category: ""})
+      this.props.addCategory("");
+    }
+    
+    this.props.fetchProducts(this.props.searchTerm, category, this.props.sortBy);
   }
 
 
@@ -58,15 +67,22 @@ class Categories extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addCategory: category => dispatch(addCategory(category))
+    addCategory: category => dispatch(addCategory(category)),
+    fetchProducts: (searchTerm, category, sortBy) => dispatch(fetchProducts(searchTerm, category, sortBy))
   }
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ fetchProducts }, dispatch);
-// }
+
+function mapStateToProps(state) {
+  console.log('categories state: ' + state.searchTerm)
+  return {
+    searchTerm: state.searchTerm,
+    category: state.category,
+    sortBy: state.sortBy
+  }
+}
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Categories);

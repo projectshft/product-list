@@ -24,7 +24,7 @@ class Products extends Component {
   renderProducts() {
     let myProducts = [];
     if (this.props.products[0]) {
-      
+      console.log("COUNT: " + this.props.products[0].count);
       myProducts = this.props.products[0].products;
       console.log(myProducts);
     }
@@ -40,11 +40,11 @@ class Products extends Component {
       productRow.push(
         <div className="col-md-3">
           <div className="card">
-            <h5 className="card-title">{myProducts[i].name}</h5>
+          <span><p>Category: {myProducts[i].category}</p></span>
+          <span><h4> ${myProducts[i].price}</h4></span>
             <img className="card-img-top" src="https://via.placeholder.com/250?text=Product+Image" />
             <div className="card-body">
-              <p>{myProducts[i].price}</p>
-              <p>{myProducts[i].category}</p>
+            <h5 className="card-title">{myProducts[i].name}</h5>
 
             </div>
           </div>

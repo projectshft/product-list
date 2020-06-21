@@ -15,6 +15,7 @@ class SearchBar extends Component {
   }
 
   onInputChange(event) {
+    //event.preventDefault();
     this.setState({ searchTerm: event.target.value });
   }
 
@@ -28,6 +29,7 @@ class SearchBar extends Component {
     this.props.addSearchTerm(this.state.searchTerm);
     console.log(this.props.sortBy);
     this.props.fetchProducts(this.state.searchTerm, this.props.category, this.props.sortBy);
+    //this.setState({ searchTerm: ""});
   }
 
   render() {

@@ -19,6 +19,7 @@ class Categories extends Component {
     console.log(event.target.value)
     this.props.addSortBy(event.target.value);
     this.setState({ sortBy: event.target.value });
+    this.props.fetchProducts(this.props.searchTerm, this.props.category, event.target.value);
   }
 
   
@@ -36,11 +37,20 @@ class Categories extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addSortBy: sortBy => dispatch(addSortBy(sortBy))
+    addSortBy: sortBy => dispatch(addSortBy(sortBy)),
+    fetchProducts: (searchTerm, category, sortBy) => dispatch(fetchProducts(searchTerm, category, sortBy))
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    searchTerm: state.searchTerm,
+    category: state.category,
+    sortBy: state.sortBy
   }
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Categories);

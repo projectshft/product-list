@@ -4,15 +4,17 @@ const ROOT_URL = "//localhost:8000/"
 
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
-let searchPath = "";
-let categoryPath = "";
-let sortPath = "";
 
-export function fetchProducts(searchTerm="", category="", sortBy="") {
+
+export function fetchProducts(searchTerm = "", category = "", sortBy = "", page = "") {
+  let searchPath = "";
+  let categoryPath = "";
+  let sortPath = "";
+  let pagePath = "";
   console.log("category: " + category);
   console.log("searchterm: " + searchTerm);
   console.log("sortBy: " + sortBy);
-  if (searchTerm) {
+  if (searchTerm.length > 0) {
     searchPath = "query=" + searchTerm;
   }
   if (category.length > 0) {
@@ -20,12 +22,15 @@ export function fetchProducts(searchTerm="", category="", sortBy="") {
     console.log(category.length);
     categoryPath = "category=" + category;
   }
-  if (sortBy) {
+  if (sortBy.length > 0) {
     sortPath = "price=" + sortBy;
   }
-  
-  
-  const url = `${ROOT_URL}products?${searchPath}&${categoryPath}&${sortPath}`;
+  if (page) {
+    pagePath = "page=" + page;
+  }
+
+
+  const url = `${ROOT_URL}products?${searchPath}&${categoryPath}&${sortPath}&${pagePath}`;
 
   const request = axios.get(url);
   console.log('Request', request);

@@ -63,6 +63,7 @@ router.get('/products', (req, res, next) => {
   Product.find(query)
     .sort(priceSort)
     .populate('reviews')
+    .skip((page - 1) * itemsPerPage)
     .limit(itemsPerPage)
     .exec((err, products) => {
       Product.find(query)

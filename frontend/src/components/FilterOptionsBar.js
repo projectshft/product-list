@@ -74,12 +74,23 @@ class FilterOptionsBar extends React.Component {
   };
 
   startSearch() {
+    console.log("page is apparently", this.props.page);
+    const page = this.props.page;
+    const searchParam = this.state.searchTerm || "none";
+    const categoryParam = this.state.category || "none";
+    const sortParam = this.state.sortStatus || "none";
+
+    let queryToPush = `?query=${searchParam}&category=${categoryParam}&sort=${sortParam}&page=${page}`;
+
+    this.props.history.push(queryToPush);
+
     // passing each
     this.props.searchProducts(
-      null, // because this is handled in the nav bar at bottom
+      this.props.page,
       this.state.searchTerm,
       this.state.category,
-      this.state.sortStatus
+      this.state.sortStatus,
+      this.props.location.search
     );
   }
 
@@ -164,10 +175,19 @@ FilterOptionsBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+function mapStateToProps(state) {
+  return {
+    page: state.page,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ searchProducts }, dispatch);
 }
 
 export default withRouter(
-  connect(null, mapDispatchToProps)(withStyles(styles)(FilterOptionsBar))
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(styles)(FilterOptionsBar))
 );

@@ -10,28 +10,13 @@ import ReduxPromise from "redux-promise";
 
 import reducers from "./reducers";
 
-const theme = createMuiTheme({
-  typography: {
-    button: {
-      fontSize: "1rem",
-    },
-  },
-  palette: {
-    secondary: {
-      main: "#002BCA",
-    },
-  },
-});
-
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <Provider store={createStoreWithMiddleware(reducers)}>
-      <Router>
-        <Route path="/" component={App} />
-      </Router>
-    </Provider>
-  </ThemeProvider>,
+  <Provider store={createStoreWithMiddleware(reducers)}>
+    <Router>
+      <Route path="/" component={App} />
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );

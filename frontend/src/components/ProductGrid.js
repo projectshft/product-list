@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { searchProducts } from "../actions/index";
+import { searchProducts, storePage } from "../actions/index";
 import { bindActionCreators } from "redux";
+import queryString from "query-string";
 
 // design
 import Grid from "@material-ui/core/Grid";
@@ -100,7 +101,18 @@ class ProductGrid extends React.Component {
   }
 
   pullNewPage() {
-    console.log("newly desired page is", this.state.page);
+    const parsed = queryString.parse(this.props.location.search);
+
+    const page = this.state.page;
+    const searchParam = parsed.query || "none";
+    const categoryParam = parsed.category || "none";
+    const sortParam = parsed.sort || "none";
+
+    let queryToPush = `?query=${searchParam}&category=${categoryParam}&sort=${sortParam}&page=${page}`;
+
+    this.props.history.push(queryToPush);
+
+    this.props.storePage(this.state.page);
     this.props.searchProducts(this.state.page);
   }
 
@@ -176,7 +188,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchProducts }, dispatch);
+  return bindActionCreators({ searchProducts, storePage }, dispatch);
 }
 
 export default connect(

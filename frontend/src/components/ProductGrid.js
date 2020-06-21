@@ -56,6 +56,8 @@ class ProductGrid extends React.Component {
     this.state = {
       page: "1",
     };
+
+    this.props.history.push("/");
   }
 
   componentDidMount() {
@@ -101,11 +103,20 @@ class ProductGrid extends React.Component {
   }
 
   pullNewPage() {
-    const parsed = queryString.parse(this.props.location.search);
-    parsed.page = this.state.page;
+    // need to update history
+    const parsedfromLocation = queryString.parse(this.props.location.search);
+    const mergedObjects = {
+      ...parsedfromLocation,
+      ...{ page: this.state.page },
+    };
 
-    this.props.storePage(this.state.page);
-    this.props.filterProducts(null, parsed);
+    const stringifiedNewQuery = queryString.stringify(mergedObjects);
+
+    this.props.history.push(`?${stringifiedNewQuery}`);
+
+    this.props.filterProducts(this.props.location.search, {
+      page: this.state.page,
+    });
   }
 
   renderPagination() {
@@ -173,7 +184,6 @@ function mapStateToProps(state) {
   console.log("state is", state);
 
   return {
-    url: state.products.url,
     countObject: state.products[0] || 0,
     products: state.products.slice(1),
   };

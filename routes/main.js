@@ -36,7 +36,7 @@ router.get('/products', (request, response, next) => {
   }
 
   //for total count of filtered product results
-  let resultCount;
+  // let resultCount;
 
   //search to get filtered result count
   Product
@@ -49,24 +49,40 @@ router.get('/products', (request, response, next) => {
       if (error) return next(error);
 
       //save count
-      resultCount = count;
+      const resultCount = count;
+      //search to get filtered result products
+      Product
+        .find(searchCategory ? { category: searchCategory } : {}) //optionally filter by category
+        .collation({ locale: 'en', strength: 2 }) //make search case insensitive
+        .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {}) //optionally search by query (case insensitive)
+        .sort(sortBy ? { price: sortBy } : 0) //optionally sort by price
+        .skip((perPage * page) - perPage) //skip results based on page number
+        .limit(perPage) //limit results per page
+        .exec((error, products) => {
+          //send error
+          if (error) return next(error);
+
+          //send count of total filtered results and limited products
+          response.send({ count: resultCount, productResults: products });
+        });
+
     });
 
-  //search to get filtered result products
-  Product
-    .find(searchCategory ? { category: searchCategory } : {}) //optionally filter by category
-    .collation({ locale: 'en', strength: 2 }) //make search case insensitive
-    .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {}) //optionally search by query (case insensitive)
-    .sort(sortBy ? { price: sortBy } : 0) //optionally sort by price
-    .skip((perPage * page) - perPage) //skip results based on page number
-    .limit(perPage) //limit results per page
-    .exec((error, products) => {
-      //send error
-      if (error) return next(error);
+  // //search to get filtered result products
+  // Product
+  //   .find(searchCategory ? { category: searchCategory } : {}) //optionally filter by category
+  //   .collation({ locale: 'en', strength: 2 }) //make search case insensitive
+  //   .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {}) //optionally search by query (case insensitive)
+  //   .sort(sortBy ? { price: sortBy } : 0) //optionally sort by price
+  //   .skip((perPage * page) - perPage) //skip results based on page number
+  //   .limit(perPage) //limit results per page
+  //   .exec((error, products) => {
+  //     //send error
+  //     if (error) return next(error);
 
-      //send count of total filtered results and limited products
-      response.send({ count: resultCount, productResults: products });
-    });
+  //     //send count of total filtered results and limited products
+  //     response.send({ count: resultCount, productResults: products });
+  //   });
 });
 
 router.get('/products/:product', (request, response, next) => {

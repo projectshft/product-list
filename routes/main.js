@@ -21,13 +21,22 @@ const { Review } = require('../models/product')
 // })
 
 router.get('/products', (req, res, next) => {
+  //variables for Product search parameter setup
   let sortBy = {}
   let categories = {}
+  let query = {}
+
   //Applying to the categories variable the value in the request query
   //for use in Product.find() 
   if (req.query.category) {
     categories = {category: req.query.category}
-  }  
+  }
+
+  //Applying to the query variable the value in the request query
+  //for use in Product.find() 
+  if (req.query.query) {
+    query = {"name": { "$regex": req.query.query, "$options": "i"} }
+  }
   
   //Applying to the sortBy variable the value in the request query
   //for use in Product.sort()
@@ -47,7 +56,9 @@ router.get('/products', (req, res, next) => {
   const page = req.query.page || 1
   
   Product
+    //chaining find to allow search/filter of categories and product names
     .find(categories)
+    .find(query)
     .sort(sortBy)
     .skip((perPage * page) - perPage)
     .limit(perPage)

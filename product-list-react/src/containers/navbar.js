@@ -11,15 +11,24 @@ import { fetchProducts } from '../actions/index';
 export default class NavBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {term: '', category: '', sortBy: ''};
+    this.state = { term: '', category: '', sortBy: '' };
   }
 
   render() {
     return (
       <div className="row">
-        <SearchBar />
-        <Categories />
-        <SortBy />
+        <div className="col-md-4">
+          <SearchBar />
+        </div>
+        <div className="col-md-4">
+          <Categories />
+        </div>
+        <div className="col-md-4">
+          <SortBy />
+        </div>
+
+
+
       </div>
     )
   }

@@ -56,3 +56,8 @@ export const addSortBy = sortBy => ({
   type: "ADD_SORTBY",
   payload: sortBy
 })
+
+export const addPage = page => ({
+  type: "ADD_PAGE",
+  payload: page
+})

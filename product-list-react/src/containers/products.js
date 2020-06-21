@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../actions/index';
 
 class Products extends Component {
+  constructor(props) {
+    super(props);
+
+    this.props.fetchProducts();
+  }
   // renderProducts() {
   //   let myProducts = [];
   //   console.log(this.props.products);
@@ -95,7 +101,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+  return {
+    fetchProducts: (searchTerm, category, sortBy) => dispatch(fetchProducts(searchTerm, category, sortBy))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products); 

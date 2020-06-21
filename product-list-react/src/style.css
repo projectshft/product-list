@@ -1,0 +1,11 @@
+.current-page-button {
+  background-color: yellow;
+  padding: 0;
+  border: none;
+}
+
+.page-button {
+  background: none;
+  padding: 0;
+  border: none;
+}

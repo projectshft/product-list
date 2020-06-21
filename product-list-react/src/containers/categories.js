@@ -5,6 +5,7 @@ import { fetchProducts } from '../actions/index';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import { addCategory } from '../actions/index';
+import { addPage } from '../actions/index';
 
 class Categories extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class Categories extends Component {
       this.setState({ category: ""})
       this.props.addCategory("");
     }
-    
+    this.props.addPage(1);
     this.props.fetchProducts(this.props.searchTerm, category, this.props.sortBy);
   }
 
@@ -59,7 +60,7 @@ class Categories extends Component {
         <option value="Sports">Sports</option>
         <option value="Movies">Movies</option>
         <option value="Games">Games</option>
-        <option value="Jewelry">Jewelry</option>
+        <option value="Jewelery">Jewelery</option>
       </select>
     )
   }
@@ -68,7 +69,8 @@ class Categories extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     addCategory: category => dispatch(addCategory(category)),
-    fetchProducts: (searchTerm, category, sortBy) => dispatch(fetchProducts(searchTerm, category, sortBy))
+    fetchProducts: (searchTerm, category, sortBy) => dispatch(fetchProducts(searchTerm, category, sortBy)),
+    addPage: (page) => dispatch(addPage(page))
   }
 }
 
@@ -78,7 +80,8 @@ function mapStateToProps(state) {
   return {
     searchTerm: state.searchTerm,
     category: state.category,
-    sortBy: state.sortBy
+    sortBy: state.sortBy,
+    page: state.page
   }
 }
 

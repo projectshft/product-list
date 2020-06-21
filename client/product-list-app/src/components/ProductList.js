@@ -44,7 +44,7 @@ class ProductList extends Component {
         } else {
             // if no results returned 
             return (
-                <p className="no-results">No search results found. Try using another search phrase or removing filters.</p>
+                <p className="no-results">No results found.</p>
             )
         }
     }

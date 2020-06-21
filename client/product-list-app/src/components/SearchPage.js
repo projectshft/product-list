@@ -38,7 +38,7 @@ class SearchPage extends Component {
     //render list of page links based on number of search results
     renderPageLinks() {
 
-        //get page numbers based on total results
+        //get page numbers based on total results and round up result
         const numOfPages = Math.ceil(this.props.productCount / 9);
 
         //array of page numbers to map html to
@@ -83,7 +83,8 @@ class SearchPage extends Component {
 
     //to set category filter and get filtered search results
     setCategory(newCategory) {
-        this.setState({ category: newCategory },
+        //reset page number to 1 on each filter change
+        this.setState({ category: newCategory, page: 1 },
             () => {
                 this.props.searchProducts(this.state)
             }
@@ -92,7 +93,8 @@ class SearchPage extends Component {
 
     //to set sort parameter and get sorted search results
     setSort(newSort) {
-        this.setState({ price: newSort },
+        //reset page number to 1 on each new sort
+        this.setState({ price: newSort, page: 1 },
             () => {
                 this.props.searchProducts(this.state);
             }
@@ -101,7 +103,8 @@ class SearchPage extends Component {
 
     //to set new search term and get search results based on query
     setQuery(newQuery) {
-        this.setState({ query: newQuery },
+        //reset page number to 1 on each new search
+        this.setState({ query: newQuery, page: 1 },
             () => {
                 this.props.searchProducts(this.state);
             }

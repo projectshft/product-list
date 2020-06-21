@@ -21,6 +21,7 @@ const product = require('../models/product');
 //   res.end()
 // })
 
+
 router.get('/products', (req, res, next) => {
     const perPage = 9
   

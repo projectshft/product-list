@@ -38,9 +38,17 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
+  // optional category
+  const byCategory = req.query.category;
+
+  query = {};
+
+  if (byCategory) {
+    query.category = byCategory;
+  }
 
   Product
-    .find({})
+    .find(query)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {

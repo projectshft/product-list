@@ -65,6 +65,7 @@ router.get('/products/:product', (req, res, next) => {
   //retrieving product id from request and assigning to variable
   let productId = req.params.product
   
+  //send back error if no product is located
   if(!productId) {
     response.writeHead(404, "Unable to find product");
     return response.end();
@@ -98,7 +99,7 @@ router.get('/products/:product/reviews', (req, res, next) => {
 });
 
 router.post('/products/', (req, res, next) => {
-    
+  //send back error if all product info is not completed
   if (!req.body.category || !req.body.name || !req.body.price || !req.body.image) {
     res.writeHead(404, "Not enough product information");
     return res.end();
@@ -125,6 +126,7 @@ router.post('/products/:product/reviews', (req, res, next) => {
   let reviewUserName = req.body.username
   let reviewText = req.body.text
 
+  //send back error if all review fields are not entered
   if (!reviewUserName || !reviewText) {
     res.writeHead(404, "Not enough review information. Ensure Username and text is entered");
     return res.end();
@@ -165,6 +167,7 @@ router.delete('/products/:product', (req, res, next) => {
 
 });
 
+//======NOT WORKING=======
 router.delete('/reviews/:review', (req, res, next) => {
   let reviewId = req.params.review
 
@@ -173,7 +176,7 @@ router.delete('/reviews/:review', (req, res, next) => {
       return console.error(err)
     }
     console.log(result)
-    //Returning the product that was deleted
+    //Returning the review that was deleted
     return res.send(result)
   });
 

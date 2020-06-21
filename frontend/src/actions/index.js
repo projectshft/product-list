@@ -8,65 +8,33 @@ export const STORE_PAGE = "STORE_PAGE";
 
 const ROOT_URL = `http://localhost:8000`;
 
-export function filterProducts(queries) {
-  let url = `${ROOT_URL}/products`;
+export function filterProducts(existingSearchQueryPath, newParams) {
+  // existingSearchQueryPath is from this.props.location.search
 
-  const request = "";
+  let appendToUrl = "/products";
 
-  return {
-    type: FILTER_PRODUCTS,
-    payload: request,
-  };
-}
+  console.log("newParams are", newParams);
 
-export function searchProducts(
-  page,
-  searchTerm,
-  category,
-  sortStatus,
-  searchPath
-) {
-  let url = `${ROOT_URL}/products`;
-  const parsed = queryString.parse(searchPath);
-  console.log("parsed is", parsed);
+  // if any queries were passed, we'll filter
+  if (newParams) {
+    // break up the existing search query path
+    const parsed = queryString.parse(existingSearchQueryPath);
 
-  const params = {
-    page,
-    searchTerm,
-    category,
-    sortStatus,
-  };
+    // merge newParams with existingSearchQueryPath
+    const merged = { ...parsed, ...newParams };
 
-  console.log("params object is ", params);
+    // turn that merged object into a query
+    const stringifiedQuery = queryString.stringify(merged);
 
-  // if an argument was passed, we know to add the ?
-  if (arguments.length > 0) {
-    url += "?";
-
-    if (params.page) {
-      url += `page=${params.page}&`;
-    }
-
-    if (params.searchTerm) {
-      url += `query=${params.searchTerm}&`;
-    }
-
-    if (params.category) {
-      url += `category=${params.category}&`;
-    }
-
-    if (params.sortStatus) {
-      url += `sort=${params.sortStatus}&`;
-    }
+    appendToUrl += `?${stringifiedQuery}`;
   }
 
-  console.log("url is ", url);
-
-  const request = axios.get(url);
+  const request = axios.get(ROOT_URL + appendToUrl);
+  request.then(console.log("request is", request));
   request.then(console.log("request is", request));
 
   return {
-    type: SEARCH_PRODUCTS,
+    type: FILTER_PRODUCTS,
     payload: request,
   };
 }

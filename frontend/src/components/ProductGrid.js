@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { searchProducts, storePage } from "../actions/index";
+import { filterProducts, storePage } from "../actions/index";
 import { bindActionCreators } from "redux";
 import queryString from "query-string";
 
@@ -60,7 +60,7 @@ class ProductGrid extends React.Component {
 
   componentDidMount() {
     // need to make the initial API call
-    this.props.searchProducts();
+    this.props.filterProducts();
   }
 
   renderProducts() {
@@ -102,18 +102,10 @@ class ProductGrid extends React.Component {
 
   pullNewPage() {
     const parsed = queryString.parse(this.props.location.search);
-
-    const page = this.state.page;
-    const searchParam = parsed.query || "none";
-    const categoryParam = parsed.category || "none";
-    const sortParam = parsed.sort || "none";
-
-    let queryToPush = `?query=${searchParam}&category=${categoryParam}&sort=${sortParam}&page=${page}`;
-
-    this.props.history.push(queryToPush);
+    parsed.page = this.state.page;
 
     this.props.storePage(this.state.page);
-    this.props.searchProducts(this.state.page);
+    this.props.filterProducts(null, parsed);
   }
 
   renderPagination() {
@@ -131,7 +123,6 @@ class ProductGrid extends React.Component {
 
     return pageLinks.map((page) => {
       // want to return a different button for the current
-      console.log(page);
       if (page == this.state.page) {
         return (
           <Button
@@ -182,13 +173,14 @@ function mapStateToProps(state) {
   console.log("state is", state);
 
   return {
+    url: state.products.url,
     countObject: state.products[0] || 0,
-    products: state.products.slice(1, 10),
+    products: state.products.slice(1),
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchProducts, storePage }, dispatch);
+  return bindActionCreators({ filterProducts, storePage }, dispatch);
 }
 
 export default connect(

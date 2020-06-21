@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { searchProducts } from "../actions/index";
+import { filterProducts } from "../actions/index";
 import { withRouter } from "react-router";
 
 // material UI imports
@@ -36,9 +36,7 @@ class FilterOptionsBar extends React.Component {
     super(props);
 
     this.state = {
-      category: "",
-      searchTerm: "",
-      sortStatus: "",
+      queries: {},
     };
 
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
@@ -49,21 +47,30 @@ class FilterOptionsBar extends React.Component {
 
   handleCategoryChange(event) {
     event.preventDefault();
-    this.setState({ category: event.target.value }, this.startSearch);
+    this.setState(
+      { queries: { category: event.target.value } },
+      this.startSearch
+    );
   }
 
   handleSortChange(event) {
     event.preventDefault();
     console.log("Sort val is", event.target.value);
-    this.setState({ sortStatus: event.target.value }, this.startSearch);
+    this.setState(
+      { queries: { sortStatus: event.target.value } },
+      this.startSearch
+    );
   }
 
   handleSearchBarChange(event) {
-    this.setState({ searchTerm: event.target.value });
+    this.setState({ queries: { query: event.target.value } });
 
     // handle the edge case of someone deleting everything from bar
     if (!event.target.value) {
-      this.setState({ searchTerm: event.target.value }, this.startSearch);
+      this.setState(
+        { queries: { query: event.target.value } },
+        this.startSearch
+      );
     }
   }
 
@@ -74,24 +81,8 @@ class FilterOptionsBar extends React.Component {
   };
 
   startSearch() {
-    console.log("page is apparently", this.props.page);
-    const page = this.props.page;
-    const searchParam = this.state.searchTerm || "none";
-    const categoryParam = this.state.category || "none";
-    const sortParam = this.state.sortStatus || "none";
-
-    let queryToPush = `?query=${searchParam}&category=${categoryParam}&sort=${sortParam}&page=${page}`;
-
-    this.props.history.push(queryToPush);
-
-    // passing each
-    this.props.searchProducts(
-      this.props.page,
-      this.state.searchTerm,
-      this.state.category,
-      this.state.sortStatus,
-      this.props.location.search
-    );
+    this.props.history.push(this.props.url);
+    this.props.filterProducts(this.props.location.search, this.state.queries);
   }
 
   render() {
@@ -177,12 +168,13 @@ FilterOptionsBar.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    url: state.products.url,
     page: state.page,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchProducts }, dispatch);
+  return bindActionCreators({ filterProducts }, dispatch);
 }
 
 export default withRouter(

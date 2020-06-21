@@ -12,6 +12,43 @@ code {
     monospace;
 }
 
+.search-bar {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .pages {
   font-size: 20px;
 }
+
+.whole-product-div {
+  margin-top: 30px;
+}
+
+.product-div {
+  /* height: 20px; */
+  display: flex;
+  justify-content: space-evenly;
+  vertical-align: center;
+}
+
+.price {
+  font-size: 20px;
+}
+
+.category {
+  font-size: 14px;
+  padding-top: 5px;
+}
+
+.img-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.product-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+

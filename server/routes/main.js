@@ -52,49 +52,98 @@ router.get('/products', (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1;
 
-  // get optional query parameter from request to find by product category
-  const categoryType = req.query.category || null;
 
-  // get optional query parameter from request to sort the products by price (ascending or descending)
-  const priceSortType = req.query.price || null;
+   // get optional query parameter from request to find by product category
+   const categoryType = req.query.category || null;
+    console.log('category: ', categoryType)
+   // get optional query parameter from request to sort the products by price (ascending or descending)
+   const priceSortType = req.query.price || null;
+ 
+   // get optional query search string from request to search products by their name and category
+   const search = req.query.search || null;
+    console.log('search: ', search)
 
-  // get optional query search string from request to search products by their name and category
-  const searchQuery = req.query.search || null;
 
+  const regex = new RegExp(search);
 
-
-  // this function will be called when we're building up our query below
+    // this function will be called when we're building up our query below
   // check that this is not defaulting to highest if no param is given
   const getSortType = priceSortType => {
-    if (priceSortType == "highest") {
-      return -1;
-    } else if (priceSortType == "lowest") {
+    if (priceSortType == "Highest") {
       return 1;
-    } else {
-      return null;
-    }
+    } else  {
+      return -1;
+    } 
   }
+ 
+var query = {};
+if (categoryType) {
+  query.category = categoryType;
+}
+if (search) {
+  query.name = regex;
+}
+// if (priceSortType) {
+//   query.sort.price = getSortType(priceSortType);
+// }  
+ 
 
 
-  Product
-    //.find({ $and: [{ category: categoryType }, {$match: { $or:[ {name: { $regex: searchQuery}}, { category: { $regex: searchQuery}}]}} ]})
-   // .find({ $or: [{ name: { $regex: searchQuery, $options: "i"}}, { category: { $regex: searchQuery, $options: "i"}}]})
-    .find({})
-   // .sort({ price: getSortType(priceSortType) })
-    .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      // If you want to count all documents in a large collection, use the estimatedDocumentCount() function instead. If you call countDocuments({}), MongoDB will always execute a full collection scan and not use any indexes.
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-        console.log('Count inside product.count= ', count)
-        //we'll try sending the product count back as a response header (using append) and then pulling that out for the pagination component
-        res.append("productCount", count.toString())
-        res.send(products)
+
+
+
+
+  
+    Product
+      .find(query)
+      //.skip((perPage * page) - perPage)
+     // .limit(perPage)
+      .sort({ price: getSortType(priceSortType) })
+      .exec((err, products) => {
+        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+        console.log('Number of found products: ', products.length)
+        //res.append('Total products found', products.length.toString());
+        res.append('productCount', products.length.toString());
+        res.send(products);
+        // Product.count().exec((err, count) => {
+        //   if (err) return next(err)
+  
+          
+        // })
       })
-    })
-})
+  })
+ // Product
+    //.find({ $and: [{ category: categoryType }, {$match: { $or:[ {name: { $regex: searchQuery}}, { category: { $regex: searchQuery}}]}} ]})
+    // .find({ $or: [{ name: { $regex: searchQuery, $options: "i"}}, 
+    //              
+    //               { category: categoryType}, 
+    //               {}]} )
+  //  .find({queryOptions})
+   // .find({ $or: [ { category: category }, { name: { $regex: search, $options: "i"}}, { category: { $regex: search, $options: "i"}}]}) 
+    // .find({ category: categoryType})
+    // .count({ category: categoryType}, function (err, count) {
+    //   res.append("productCount", count.toString())
+    // })             
+    //.sort({ price: getSortType(priceSortType) })
+    //.skip((perPage * page) - perPage)
+    //.limit(perPage)
+    // .exec((err, products) => {
+    //   console.log('products count: ', products)
+    //   // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+    //   // If you want to count all documents in a large collection, use the estimatedDocumentCount() function instead. If you call countDocuments({}), MongoDB will always execute a full collection scan and not use any indexes.
+      
+    //   Product.countDocuments().exec((err, count) => {
+    //     if (err) return next(err)
+    //     res.send(products)
+    //     //console.log('Count inside product.count= ', products.length)
+
+        //we'll try sending the product count back as a response header (using append) and then pulling that out for the pagination component
+        //res.append("productCount", products.length.toString())
+        //res.append("productCount", count.toString())
+        
+//       })
+//     })
+// })
 
 
 

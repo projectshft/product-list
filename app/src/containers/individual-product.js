@@ -15,10 +15,10 @@ export default class IndividualProductDiv extends Component {
   // }
     return (
       <div>
-        <div>
-          <div>{product.category}{product.price}</div>
-          <div><img src={product.image}></img></div>
-          <div>{product.name}</div>
+        <div className="whole-product-div">
+          <div className="product-div"><span className="category">Category: {product.category}</span><span className="price">${product.price}</span></div>
+          <div className="img-div"><img src={product.image}></img></div>
+          <div className="product-div"><span className="product-name">{product.name}</span></div>
         </div>
       </div>
     )

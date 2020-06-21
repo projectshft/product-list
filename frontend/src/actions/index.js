@@ -4,20 +4,27 @@ export const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
 
 const ROOT_URL = `http://localhost:8000`;
 
-export function searchProducts(searchTerm, category, sortStatus) {
+export function searchProducts(page, searchTerm, category, sortStatus) {
   let url = `${ROOT_URL}/products`;
 
   const params = {
+    page,
     searchTerm,
     category,
     sortStatus,
   };
+
+  console.log("params object is ", params);
 
   console.log("Arguments are", arguments);
 
   // if an argument was passed, we know to add the ?
   if (arguments.length > 0) {
     url += "?";
+
+    if (params.page) {
+      url += `page=${params.page}&`;
+    }
 
     if (params.searchTerm) {
       url += `query=${params.searchTerm}&`;

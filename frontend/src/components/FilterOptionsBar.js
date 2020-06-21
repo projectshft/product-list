@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { searchProducts } from "../actions/index";
-import { withRouter, generatePath } from "react-router";
+import { withRouter } from "react-router";
 
 // material UI imports
 import { withStyles } from "@material-ui/core";
@@ -76,6 +76,7 @@ class FilterOptionsBar extends React.Component {
   startSearch() {
     // passing each
     this.props.searchProducts(
+      null, // because this is handled in the nav bar at bottom
       this.state.searchTerm,
       this.state.category,
       this.state.sortStatus

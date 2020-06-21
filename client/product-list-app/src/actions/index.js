@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // server address
-const ROOT_URL = 'localhost:8000/products';
+const ROOT_URL = 'http://localhost:8000/products';
 
 export const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
 

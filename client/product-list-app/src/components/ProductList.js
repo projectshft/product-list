@@ -75,9 +75,9 @@ class ProductList extends Component {
         this.renderProducts = this.renderProducts.bind(this);
     }
 
-    componentDidMount() {
-        this.props.searchProducts();
-      }
+    // componentDidMount() {
+    //     this.props.searchProducts();
+    //   }
 
     //populate html with search results
     renderProducts() {
@@ -85,9 +85,9 @@ class ProductList extends Component {
         console.log("PROPS (PRODUCT LIST):", this.props);
 
 
-        if (this.props) {
+        if (this.props.products.productResults !== undefined) {
 
-            return this.props.products.map((product) => {
+            return this.props.products.productResults.map((product) => {
     
                 return (
                     <Col md={4} className="product-container" key={Math.random() * 1000}>
@@ -131,7 +131,7 @@ class ProductList extends Component {
 
 function mapStateToProps(state) {
     return {
-        products: state.products.productResults
+        products: state.products
     };
 
 }

@@ -21,7 +21,6 @@ const product = require('../models/product');
 //   res.end()
 // })
 
-
 router.get('/products', (req, res, next) => {
     const perPage = 9
   
@@ -70,17 +69,18 @@ router.get('/products', (req, res, next) => {
             if (err) {
                 throw err
             }
-            Product.count().exec((err, products) => {
+            Product.count().exec((err, count) => {
                 if (err) {
                     throw err
                 }     
+                products.unshift(count)
+                if (products.length === 0) {
+                    // return something if the array will be empty
+                    res.json('No results for that search. Try simplifying your search to one word or changing the category query.')
+                } else {
+                    res.json(products)
+                } 
             })
-            if (products.length === 0) {
-                // return something if the array will be empty
-                res.json('No results for that search. Try simplifying your search to one word or changing the category query.')
-            } else {
-                res.json(products)
-            } 
         })
 });
 

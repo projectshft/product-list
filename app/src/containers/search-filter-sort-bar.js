@@ -21,16 +21,25 @@ Where do we make our row? another outer div with class="row"?
 class SearchFilterSortBar extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    console.log('Inside searchfiltersortbar constructor, props= ', props);
     //the props is an object that just contains the fetchProducts function
 
     //the state will contain our user search input, category selection and/or price sort selection
     this.state = { search: '', category: '', price: '' };
+    //this.componentDidMount();
 
     this.onInputChange = this.onInputChange.bind(this);
     this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
     this.onCategorySelect = this.onCategorySelect.bind(this);
     this.onPriceSortSelect = this.onPriceSortSelect.bind(this);
+  }
+
+  componentDidMount() {
+    console.log("Inside component did mount for searchfilterbar, this.props=", this.props)
+    //this.setState({ search: 'Shoes', category: 'Shoe', price: 'Highest' });
+    //test for getting all products on page load
+    
+    this.props.fetchProducts();
   }
 
   onInputChange(event) {

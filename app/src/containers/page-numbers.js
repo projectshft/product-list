@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 
 export default class PageNumber extends Component {
   render() {
-    const category = this.props.category;
+    console.log('Inside Page Numbers, this.props= ', this.props)
+    const pageNumber = this.props.page;
     return (
-      <tr>
-        <th colSpan="2">
-          {category}
-        </th>
-      </tr>
+      <td onClick={this.onPageClick}>{pageNumber}</td>
     );
   }
 }

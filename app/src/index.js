@@ -5,12 +5,12 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxPromise from 'redux-promise';
 import 'bootstrap/dist/css/bootstrap.css';
+import MainPage from './components/main-page';
 import reducers from './reducers';
-import MainPage from './components/main-page'
 
-//we've installed redux-promise and applyMiddleware comes built in with redux. Here we're enhancing our store with the middleware, that will ensure the reducer isn't called until the api returns with the data (the promise is fulfilled). applyMiddleware is a function that when invoked returns another function. We then invoke that function to create the store. Then in the Provider below, when we actually create the store, it will have the functionality to wait call the reducer to update our store until the api returns. (side note: nothing will dispatch if the promise is rejected)
 
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
+
+
 
 // PHASE 1
 // Notes from "Thinking in React" documentation: https://reactjs.org/docs/thinking-in-react.html
@@ -33,23 +33,27 @@ const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
 
 // temporary data (that mocks our real db data) that we can work with to test static version of app
-const PRODUCTS = [
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
-  { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 }
-];
+// const PRODUCTS = [
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 },
+//   { _id: '5eed0c1f27079b4398415858', category: 'Home', name: 'Incredible Metal Mouse', price: 432, img: 'https://via.placeholder.com/250?text=Product+Image', _v: 0 }
+// ];
+
+//we've installed redux-promise and applyMiddleware comes built in with redux. Here we're enhancing our store with the middleware, that will ensure the reducer isn't called until the api returns with the data (the promise is fulfilled). applyMiddleware is a function that when invoked returns another function. We then invoke that function to create the store. Then in the Provider below, when we actually create the store, it will have the functionality to wait to call the reducer to update our store until the api returns. (side note: nothing will dispatch if the promise is rejected)
+
+const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
 //Here is where instantiate our App with Redux and create our store and wire up our store/reducers with our App
 // uncomment when ready to work with redux
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
-    <MainPage products={PRODUCTS} />
+    <MainPage />
   </Provider>,
   document.getElementById('root')
 );

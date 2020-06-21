@@ -8,7 +8,7 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
 
-   // this.state = { searchTerm: ''};
+   this.state = { searchTerm: ''};
 
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -22,9 +22,11 @@ class SearchBar extends Component {
     event.preventDefault();
     console.log('searchbar props category: ' + this.props.category);
     console.log('searchbar props term: ' + this.props.searchTerm);
+    console.log('searchbar props sortBy: ' + this.props.sortBy);
     console.log(this.props);
     console.log(this.state);
     this.props.addSearchTerm(this.state.searchTerm);
+    console.log(this.props.sortBy);
     this.props.fetchProducts(this.state.searchTerm, this.props.category, this.props.sortBy);
   }
 
@@ -50,7 +52,7 @@ class SearchBar extends Component {
 function mapDispatchToProps(dispatch) {
   return { 
     addSearchTerm: searchTerm => dispatch(addSearchTerm(searchTerm)),
-    fetchProducts: (searchTerm, category) => dispatch(fetchProducts(searchTerm, category))
+    fetchProducts: (searchTerm, category, sortBy) => dispatch(fetchProducts(searchTerm, category, sortBy))
   }
 }
 

@@ -15,36 +15,49 @@ class Categories extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleInputChange(selectedOption) {
-    console.log(selectedOption[0].categoryName);
-    this.setState({ category: selectedOption[0].categoryName});
-    this.props.addCategory(selectedOption[0].categoryName);
+  handleInputChange(event) {
+    console.log(event.target.value);
+    this.setState({ category: event.target.value});
+    this.props.addCategory(event.target.value);
   }
 
-  
 
+
+  // render() {
+  //   return (
+  //     <Typeahead
+  //       id="category-dropdown"
+  //       labelKey={(option) => `${option.categoryName}`}
+  //       options={[
+  //         { categoryName: 'Toys'},
+  //         { categoryName: 'Garden'},
+  //         { categoryName: 'Sports'},
+  //         { categoryName: 'Movies'},
+  //         { categoryName: 'Games'},
+  //         { categoryName: 'Jewelry'}
+  //       ]}
+  //       onChange={this.handleInputChange}
+  //       placeholder="Categories"
+  //     />
+  //   );
+  // }
   render() {
     return (
-      <Typeahead
-        id="category-dropdown"
-        labelKey={(option) => `${option.categoryName}`}
-        options={[
-          { categoryName: 'Toys'},
-          { categoryName: 'Garden'},
-          { categoryName: 'Sports'},
-          { categoryName: 'Movies'},
-          { categoryName: 'Games'},
-          { categoryName: 'Jewelry'}
-        ]}
-        onChange={this.handleInputChange}
-        placeholder="Categories"
-      />
-    );
+      <select class="browser-default custom-select" onChange={this.handleInputChange}>
+        <option selected>Categories</option>
+        <option value="Toys">Toys</option>
+        <option value="Garden">Garden</option>
+        <option value="Sports">Sports</option>
+        <option value="Movies">Movies</option>
+        <option value="Games">Games</option>
+        <option value="Jewelry">Jewelry</option>
+      </select>
+    )
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return { 
+  return {
     addCategory: category => dispatch(addCategory(category))
   }
 }

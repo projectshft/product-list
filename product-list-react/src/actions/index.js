@@ -8,9 +8,10 @@ let searchPath = "";
 let categoryPath = "";
 let sortPath = "";
 
-export function fetchProducts(searchTerm, category="", sortBy="") {
+export function fetchProducts(searchTerm="", category="", sortBy="") {
   console.log("category: " + category);
   console.log("searchterm: " + searchTerm);
+  console.log("sortBy: " + sortBy);
   if (searchTerm) {
     searchPath = "query=" + searchTerm;
   }
@@ -19,7 +20,7 @@ export function fetchProducts(searchTerm, category="", sortBy="") {
     console.log(category.length);
     categoryPath = "category=" + category;
   }
-  if (sortPath) {
+  if (sortBy) {
     sortPath = "price=" + sortBy;
   }
   

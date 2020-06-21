@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
+import {addSortBy} from '../actions/index';
+
 class Categories extends Component {
   constructor(props) {
     super(props);
@@ -13,30 +15,29 @@ class Categories extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  handleInputChange(selectedOption) {
-    this.setState({ sortBy: selectedOption });
+  handleInputChange(event) {
+    console.log(event.target.value)
+    this.props.addSortBy(event.target.value);
+    this.setState({ sortBy: event.target.value });
   }
 
   
 
   render() {
     return (
-      <Typeahead
-        id="sortByDropdown"
-        labelKey={(option) => `${option.sortByOptionTitle}`}
-        options={[
-          { id: 1, sortByOptionTitle: 'Price: High to Low', sortByOption: 'highest'},
-          { id: 2, sortByOptionTitle: 'Price: Low to High', sortByOption: 'lowest'}
-        ]}
-        onChange={this.handleInputChange}
-        placeholder="Sort By"
-      />
-    );
+      <select class="browser-default custom-select" onChange={this.handleInputChange}>
+        <option selected>Sort By Price</option>
+        <option value="highest">High to Low</option>
+        <option value="lowest">Low to High</option>
+      </select>
+    )
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchProducts }, dispatch);
+  return {
+    addSortBy: sortBy => dispatch(addSortBy(sortBy))
+  }
 }
 
 export default connect(

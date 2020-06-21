@@ -40,10 +40,12 @@ class Products extends Component {
       productRow.push(
         <div className="col-md-3">
           <div className="card">
+            <h5 className="card-title">{myProducts[i].name}</h5>
             <img className="card-img-top" src="https://via.placeholder.com/250?text=Product+Image" />
             <div className="card-body">
-              <h5 className="card-title">{myProducts[i].name}</h5>
+              <p>{myProducts[i].price}</p>
               <p>{myProducts[i].category}</p>
+
             </div>
           </div>
         </div>

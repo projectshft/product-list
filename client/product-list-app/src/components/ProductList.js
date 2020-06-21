@@ -85,9 +85,9 @@ class ProductList extends Component {
         console.log("PROPS (PRODUCT LIST):", this.props);
 
 
-        if (this.props.products.productResults !== undefined) {
+        if (this.props.products !== undefined) {
 
-            return this.props.products.productResults.map((product) => {
+            return this.props.products.map((product) => {
     
                 return (
                     <Col md={4} className="product-container" key={Math.random() * 1000}>
@@ -98,7 +98,7 @@ class ProductList extends Component {
                                         <p className="product-category">Category: {product.category}</p>
                                     </Col>
                                     <Col sm={2}>
-                                        <p className="product-price">{product.price}</p>
+                                        <p className="product-price">${product.price}</p>
                                     </Col>
                                 </Row>
                             </Container>
@@ -131,7 +131,7 @@ class ProductList extends Component {
 
 function mapStateToProps(state) {
     return {
-        products: state.products
+        products: state.products.productResults
     };
 
 }

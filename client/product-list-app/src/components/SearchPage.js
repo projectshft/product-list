@@ -31,14 +31,14 @@ class SearchPage extends Component {
 
     componentDidMount() {
         this.props.searchProducts(this.state);
-      }
+    }
 
     //render list of page links based on number of search results
     renderPageLinks() {
-        // const numOfPages = Math.ceil(this.props.pageCount / 9);
-        const numOfPages = 12;  //***TODO***: replace fake data with props
+        const numOfPages = Math.ceil(this.props.productCount / 9);
+        // const numOfPages = 12;  //***TODO***: replace fake data with props
         const pageNumbers = [];
-        const currentPage = 7;
+        const currentPage = this.state.page;
 
         for (let pageNumber = 1; pageNumber <= numOfPages; pageNumber++) {
             pageNumbers.push(pageNumber); //***TODO***: replace fake data with props
@@ -50,7 +50,7 @@ class SearchPage extends Component {
             const pageStatus = () => { return page === currentPage ? "bold-number" : '' }
 
             return (
-                <li className="page-number {pageStatus}" key={Math.random() * 1000}>
+                <li className={`page-number ${pageStatus()}`} key={Math.random() * 1000}>
                     <Link to=""
 
                         //update current page when page number is clicked
@@ -64,18 +64,29 @@ class SearchPage extends Component {
     }
 
     updatePageNumber(pageNumber) {
-        this.setState({ page: pageNumber });
-        this.props.searchProducts(this.state);
+        this.setState(
+            { page: pageNumber },
+            () => {
+                this.props.searchProducts(this.state);
+            }
+        );
     }
 
     setCategory(newCategory) {
-        this.setState({ category: newCategory });
-        this.props.searchProducts(this.state);
+        this.setState({ category: newCategory },
+            () => {
+                this.props.searchProducts(this.state)
+            }
+        );
+
     }
 
     setSort(newSort) {
-        this.setState({ price: newSort })
-        this.props.searchProducts(this.state);
+        this.setState({ price: newSort },
+            () => {
+                this.props.searchProducts(this.state);
+            }
+        );
     }
 
     render() {

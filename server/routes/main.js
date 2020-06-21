@@ -96,20 +96,22 @@ if (search) {
   
     Product
       .find(query)
-      //.skip((perPage * page) - perPage)
-     // .limit(perPage)
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
       .sort({ price: getSortType(priceSortType) })
       .exec((err, products) => {
         // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
         console.log('Number of found products: ', products.length)
         //res.append('Total products found', products.length.toString());
-        res.append('productCount', products.length.toString());
-        res.send(products);
-        // Product.count().exec((err, count) => {
-        //   if (err) return next(err)
-  
-          
-        // })
+        // res.append('productCount', products.length.toString());
+        
+        Product.count(query).exec((err, count) => {
+          if (err) return next(err)
+          console.log('In product count, count is: ', count)
+          console.log('In product count, products are: ', products)
+          res.append('productCount', count.toString());
+          res.send(products);
+        })
       })
   })
  // Product

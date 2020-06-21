@@ -25,7 +25,7 @@ class SearchBar extends Component {
     console.log(this.props);
     console.log(this.state);
     this.props.addSearchTerm(this.state.searchTerm);
-    this.props.fetchProducts(this.props.searchTerm, this.props.category, this.props.sortBy);
+    this.props.fetchProducts(this.state.searchTerm, this.props.category, this.props.sortBy);
   }
 
   render() {

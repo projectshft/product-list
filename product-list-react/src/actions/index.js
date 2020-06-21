@@ -8,21 +8,23 @@ let searchPath = "";
 let categoryPath = "";
 let sortPath = "";
 
-export function fetchProducts(searchTerm, category, sortBy) {
+export function fetchProducts(searchTerm, category="", sortBy="") {
   console.log("category: " + category);
   console.log("searchterm: " + searchTerm);
   if (searchTerm) {
-    searchPath = "?query=" + searchTerm;
+    searchPath = "query=" + searchTerm;
   }
-  if (category) {
-    categoryPath = "?category=" + category;
+  if (category.length > 0) {
+    console.log("IF CATEGORY: " + category);
+    console.log(category.length);
+    categoryPath = "category=" + category;
   }
   if (sortPath) {
-    sortPath = "?price=" + sortBy;
+    sortPath = "price=" + sortBy;
   }
   
   
-  const url = `${ROOT_URL}products${searchPath}${categoryPath}${sortPath}`;
+  const url = `${ROOT_URL}products?${searchPath}&${categoryPath}&${sortPath}`;
 
   const request = axios.get(url);
   console.log('Request', request);

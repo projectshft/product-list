@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { searchProducts } from "../actions/index";
+import { withRouter, generatePath } from "react-router";
 
 // material UI imports
 import { withStyles } from "@material-ui/core";
@@ -43,28 +44,47 @@ class FilterOptionsBar extends React.Component {
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.handleSortChange = this.handleSortChange.bind(this);
     this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
+    this.startSearch = this.startSearch.bind(this);
   }
 
-  handleCategoryChange(category) {
-    this.props.searchProducts({ category: category });
+  handleCategoryChange(event) {
+    event.preventDefault();
+    this.setState({ category: event.target.value }, this.startSearch);
   }
 
-  handleSortChange(sortPreference) {
-    this.props.searchProducts({ sortPreference: sortPreference });
+  handleSortChange(event) {
+    event.preventDefault();
+    console.log("Sort val is", event.target.value);
+    this.setState({ sortStatus: event.target.value }, this.startSearch);
   }
 
   handleSearchBarChange(event) {
     this.setState({ searchTerm: event.target.value });
+
+    // handle the edge case of someone deleting everything from bar
+    if (!event.target.value) {
+      this.setState({ searchTerm: event.target.value }, this.startSearch);
+    }
   }
 
-  onKeyPress = (e) => {
+  onSearchKeyPress = (e) => {
     if (e.which === 13) {
-      this.props.searchProducts({ searchTerm: this.state.searchTerm });
+      this.startSearch();
     }
   };
 
+  startSearch() {
+    // passing each
+    this.props.searchProducts(
+      this.state.searchTerm,
+      this.state.category,
+      this.state.sortStatus
+    );
+  }
+
   render() {
     const { classes } = this.props;
+
     return (
       <Container className={classes.filterOptionsBar} maxWidth="md">
         <Box display="flex">
@@ -78,7 +98,7 @@ class FilterOptionsBar extends React.Component {
               variant="outlined"
               value={this.state.searchTerm}
               onChange={this.handleSearchBarChange}
-              onKeyPress={this.onKeyPress}
+              onKeyPress={this.onSearchKeyPress}
             />
           </Box>
 
@@ -147,7 +167,6 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ searchProducts }, dispatch);
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(FilterOptionsBar));
+export default withRouter(
+  connect(null, mapDispatchToProps)(withStyles(styles)(FilterOptionsBar))
+);

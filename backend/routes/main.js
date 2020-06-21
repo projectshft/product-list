@@ -98,6 +98,7 @@ router.get("/products", (req, res, next) => {
       .exec((err, count) => {
         if (err) return next(err);
         console.log(count);
+        products.unshift({ count: count });
         res.send(products);
       });
   });

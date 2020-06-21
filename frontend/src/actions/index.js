@@ -4,17 +4,31 @@ export const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
 
 const ROOT_URL = `http://localhost:8000`;
 
-export function searchProducts(input) {
+export function searchProducts(searchTerm, category, sortStatus) {
   let url = `${ROOT_URL}/products`;
 
-  console.log("input is", input);
+  const params = {
+    searchTerm,
+    category,
+    sortStatus,
+  };
 
-  // if there is any input to filter, we need to get the URL ready
-  if (input) {
-    url = url + "?";
+  console.log("Arguments are", arguments);
 
-    if (input.searchTerm) {
-      url += `query=${input.searchTerm}`;
+  // if an argument was passed, we know to add the ?
+  if (arguments.length > 0) {
+    url += "?";
+
+    if (params.searchTerm) {
+      url += `query=${params.searchTerm}&`;
+    }
+
+    if (params.category) {
+      url += `category=${params.category}&`;
+    }
+
+    if (params.sortStatus) {
+      url += `sort=${params.sortStatus}&`;
     }
   }
 

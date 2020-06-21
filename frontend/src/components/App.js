@@ -28,7 +28,7 @@ const App = () => {
         <FilterOptionsBar />
 
         <Switch>
-          <Route exact path={["/"]} component={ProductGrid} />
+          <Route path={["/"]} component={ProductGrid} />
         </Switch>
       </Container>
     </div>

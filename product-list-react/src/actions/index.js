@@ -9,6 +9,8 @@ let categoryPath = "";
 let sortPath = "";
 
 export function fetchProducts(searchTerm, category, sortBy) {
+  console.log("category: " + category);
+  console.log("searchterm: " + searchTerm);
   if (searchTerm) {
     searchPath = "?query=" + searchTerm;
   }
@@ -31,3 +33,18 @@ export function fetchProducts(searchTerm, category, sortBy) {
   }
 
 }
+
+export const addSearchTerm = searchTerm => ({
+  type: "ADD_SEARCHTERM",
+  payload: searchTerm
+})
+
+export const addCategory = category => ({
+  type: "ADD_CATEGORY",
+  payload: category
+})
+
+export const addSortBy = sortBy => ({
+  type: "ADD_SORTBY",
+  payload: sortBy
+})

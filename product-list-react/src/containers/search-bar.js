@@ -2,26 +2,30 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
+import { addSearchTerm } from '../actions/index';
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { term: ''};
+   // this.state = { searchTerm: ''};
 
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   onInputChange(event) {
-    this.setState({ term: event.target.value });
+    this.setState({ searchTerm: event.target.value });
   }
 
   onFormSubmit(event) {
     event.preventDefault();
-
-    this.props.fetchProducts(this.state.term);
-    this.setState({ term: ''});
+    console.log('searchbar props category: ' + this.props.category);
+    console.log('searchbar props term: ' + this.props.searchTerm);
+    console.log(this.props);
+    console.log(this.state);
+    this.props.addSearchTerm(this.state.searchTerm);
+    this.props.fetchProducts(this.props.searchTerm, this.props.category, this.props.sortBy);
   }
 
   render() {
@@ -30,7 +34,7 @@ class SearchBar extends Component {
         <input
           placeholder="Enter a product to search for"
           className="form-control"
-          value={this.state.term}
+          value={this.props.searchTerm}
           onChange={this.onInputChange}
         />
         <span className="input-group-btn">
@@ -44,10 +48,21 @@ class SearchBar extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchProducts }, dispatch);
+  return { 
+    addSearchTerm: searchTerm => dispatch(addSearchTerm(searchTerm)),
+    fetchProducts: (searchTerm, category) => dispatch(fetchProducts(searchTerm, category))
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    term: state.searchTerm,
+    category: state.category,
+    sortBy: state.sortBy
+  }
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SearchBar);

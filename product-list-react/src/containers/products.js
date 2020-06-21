@@ -24,7 +24,15 @@ class Products extends Component {
   renderProducts() {
     let myProducts = [];
     if (this.props.products[0]) {
+      
       myProducts = this.props.products[0].products;
+      console.log(myProducts);
+    }
+    if(!myProducts) {
+      console.log("PRODUCTS IS EMPTY");
+      return (
+        <div></div>
+      )
     }
     let productCards = [];
     let productRow = [];
@@ -35,6 +43,7 @@ class Products extends Component {
             <img className="card-img-top" src="https://via.placeholder.com/250?text=Product+Image" />
             <div className="card-body">
               <h5 className="card-title">{myProducts[i].name}</h5>
+              <p>{myProducts[i].category}</p>
             </div>
           </div>
         </div>
@@ -77,7 +86,7 @@ class Products extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state.products)
+  console.log(state)
   return {
     products: state.products
   }

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
 
-import SearchBar from './containers/search-bar';
+
 import Products from './containers/products';
+import NavBar from './containers/navbar';
 
 
 export default class App extends Component {
@@ -10,7 +11,7 @@ export default class App extends Component {
     return (
       <div>
         <h1>PRODUCTS</h1>
-        <SearchBar />
+        <NavBar />
         <Products />
       </div>
     ) 

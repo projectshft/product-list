@@ -125,7 +125,7 @@ class ProductGrid extends React.Component {
           <Button
             onClick={this.handlePageClick}
             value={String(page)}
-            color="secondary"
+            variant="contained"
             key={`pageButton${page}`}>
             {page}
           </Button>

@@ -7,7 +7,7 @@ import "../css/App.css";
 
 const App = () => {
   return (
-    <Container id="app-view">
+    <Container fluid id="app-view">
 
       {/* Header */}
       <Row id="header">

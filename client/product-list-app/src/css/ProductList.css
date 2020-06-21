@@ -1,6 +1,6 @@
 
-.product-details {
-    margin: 20px;
+.product-container {
+    margin: 2vw;
 }
 
 .product-image {
@@ -8,16 +8,29 @@
     margin: 20px auto;
 }
 
+.product-name {
+    font-size: 2vw;
+    text-align: center;
+}
+
 .product-category {
     padding: 0;
-    margin: 1.5em auto 0;
-    text-align: left;
-    font-size: 18px;
+    margin: .5em auto ;
+    font-size: 1.8vw;
+}
+
+.product-category span {
+    font-size: 1.4vw;
+    padding: 0;
+    font-style: italic;
 }
 
 .product-price {
-    margin: auto;
     font-weight: bold;
-    text-align: right;
-    font-size: 40px;
+    font-size: 2.7vw;
+}
+
+.no-results {
+    font-size: 25px;
+    text-align: center;
 }

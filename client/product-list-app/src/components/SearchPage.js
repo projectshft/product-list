@@ -27,32 +27,40 @@ class SearchPage extends Component {
         this.renderPageLinks = this.renderPageLinks.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
         this.setCategory = this.setCategory.bind(this);
+        this.setQuery = this.setQuery.bind(this);
     }
 
+    //default search to get unfiltered products on page load
     componentDidMount() {
         this.props.searchProducts(this.state);
     }
 
     //render list of page links based on number of search results
     renderPageLinks() {
+
+        //get page numbers based on total results
         const numOfPages = Math.ceil(this.props.productCount / 9);
-        // const numOfPages = 12;  //***TODO***: replace fake data with props
+
+        //array of page numbers to map html to
         const pageNumbers = [];
+
+        //get current page to style link
         const currentPage = this.state.page;
 
+        //create array of sequential numbers to use for page links
         for (let pageNumber = 1; pageNumber <= numOfPages; pageNumber++) {
-            pageNumbers.push(pageNumber); //***TODO***: replace fake data with props
+            pageNumbers.push(pageNumber);
         }
 
-        //make page number bold if current page
+        //create page links
+        return pageNumbers.map((page, index) => {
 
-        return pageNumbers.map(page => {
+            //make current page number bold
             const pageStatus = () => { return page === currentPage ? "bold-number" : '' }
 
             return (
-                <li className={`page-number ${pageStatus()}`} key={Math.random() * 1000}>
+                <li className={`page-number ${pageStatus()}`} key={index}>
                     <Link to=""
-
                         //update current page when page number is clicked
                         onClick={event => {
                             this.updatePageNumber(page)
@@ -63,6 +71,7 @@ class SearchPage extends Component {
         });
     }
 
+    //to update current page on click and get updated search results
     updatePageNumber(pageNumber) {
         this.setState(
             { page: pageNumber },
@@ -72,15 +81,16 @@ class SearchPage extends Component {
         );
     }
 
+    //to set category filter and get filtered search results
     setCategory(newCategory) {
         this.setState({ category: newCategory },
             () => {
                 this.props.searchProducts(this.state)
             }
         );
-
     }
 
+    //to set sort parameter and get sorted search results
     setSort(newSort) {
         this.setState({ price: newSort },
             () => {
@@ -89,9 +99,19 @@ class SearchPage extends Component {
         );
     }
 
+    //to set new search term and get search results based on query
+    setQuery(newQuery) {
+        this.setState({ query: newQuery },
+            () => {
+                this.props.searchProducts(this.state);
+            }
+        );
+    }
+
+
     render() {
         return (
-            <Container className="search-page" >
+            <Container className="search-page" fluid >
                 <Row>
                     <Col>
                         {/* Search bar, filter, and sort options */}
@@ -99,19 +119,31 @@ class SearchPage extends Component {
 
                             {/* Search bar */}
                             <Col md={4}>
-                                <Form>
+                                <Form onSubmit={event => { event.preventDefault(); }}>
                                     <Form.Group controlId="searchBar.ControlInput1">
+
                                         <Form.Label>Search:</Form.Label>
-                                        <Form.Control type="email" placeholder="intelligent concrete salad" />
+
+                                        {/* Set state of query property when input is updated */}
+                                        <Form.Control
+                                            value={this.state.query}
+                                            onChange={event => {
+                                                this.setQuery(event.target.value);
+                                            }}
+                                            type="search"
+                                        />
                                     </Form.Group>
                                 </Form>
                             </Col>
 
                             {/* Category Filter */}
                             <Col md={4}>
-                                <Form>
+                                <Form onSubmit={event => { event.preventDefault(); }}>
                                     <Form.Group controlId="sortBy.ControlSelect2">
+
                                         <Form.Label>Filter by Category:</Form.Label>
+
+                                        {/* Set state of category property when input is updated */}
                                         <Form.Control
                                             as="select"
                                             value={this.state.category}
@@ -119,6 +151,7 @@ class SearchPage extends Component {
                                                 this.setCategory(event.target.value);
                                             }}
                                         >
+                                            <option value="">----</option>
                                             <option value="automotive">Automotive</option>
                                             <option value="baby">Baby</option>
                                             <option value="books">Books</option>
@@ -145,7 +178,7 @@ class SearchPage extends Component {
 
                             {/* Sort Filter */}
                             <Col md={4}>
-                                <Form>
+                                <Form onSubmit={event => { event.preventDefault(); }}>
                                     <Form.Group controlId="sortBy.ControlSelect2">
                                         <Form.Label>Sort by:</Form.Label>
                                         <Form.Control
@@ -155,6 +188,7 @@ class SearchPage extends Component {
                                                 this.setSort(event.target.value);
                                             }}
                                         >
+                                            <option value="">----</option>
                                             <option value="lowest">Price: Low to High</option>
                                             <option value="highest">Price: High to Low</option>
                                         </Form.Control>
@@ -162,8 +196,14 @@ class SearchPage extends Component {
                                 </Form>
                             </Col>
                         </Row>
+
                         {/* Display page of products */}
-                        <ProductList />
+                        <Row>
+                            <Col md={12}>
+                            
+                            <ProductList />
+                            </Col>
+                        </Row>
 
                         {/* Page number links */}
                         <Row>

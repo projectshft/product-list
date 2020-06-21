@@ -38,17 +38,33 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
-  // optional category
-  const byCategory = req.query.category;
-
+  // optional category. TODO: standardize case
+  const filterByCategory = req.query.category;
+  const sortByPrice = req.query.price;
+  const filterByQuery = req.query.query;
   query = {};
+  sort = {};
 
-  if (byCategory) {
-    query.category = byCategory;
+  if (filterByCategory) {
+    query.category = filterByCategory;
+  }
+
+  if (filterByQuery) {
+    query.name = {$regex: filterByQuery };
+  }
+
+  if (sortByPrice) {
+    if (sortByPrice === "highest") {
+    sort.price = -1; //highest to lowest- descending
+    }
+    if (sortByPrice === "lowest") {
+      sort.price = 1; //lowest to highest- ascending
+    }
   }
 
   Product
     .find(query)
+    .sort(sort)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {

@@ -16,9 +16,10 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 const styles = (theme) => ({
   cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
   },
+
   card: {
     height: "100%",
     display: "flex",
@@ -52,7 +53,7 @@ class ProductGrid extends React.Component {
     this.pullNewPage = this.pullNewPage.bind(this);
 
     this.state = {
-      page: "",
+      page: "1",
     };
   }
 
@@ -117,6 +118,20 @@ class ProductGrid extends React.Component {
     }
 
     return pageLinks.map((page) => {
+      // want to return a different button for the current
+      console.log(page);
+      if (page == this.state.page) {
+        return (
+          <Button
+            onClick={this.handlePageClick}
+            value={String(page)}
+            color="secondary"
+            key={`pageButton${page}`}>
+            {page}
+          </Button>
+        );
+      }
+
       return (
         <Button
           onClick={this.handlePageClick}
@@ -137,13 +152,15 @@ class ProductGrid extends React.Component {
           <Grid container spacing={4}>
             {this.renderProducts()}
           </Grid>
+        </Container>
+        <Grid container alignItems="center" justify="center">
           <ButtonGroup
-            variant="text"
+            className={classes.paginationButtons}
             color="primary"
             aria-label="text primary button group">
             {this.renderPagination()}
           </ButtonGroup>
-        </Container>
+        </Grid>
       </div>
     );
   }

@@ -25,7 +25,7 @@ class SearchFilterSortBar extends Component {
     //the props is an object that just contains the fetchProducts function
 
     //the state will contain our user search input, category selection and/or price sort selection
-    this.state = { search: '', category: '', price: '' };
+    this.state = {page: '1', search: '', category: '', price: '' };
     //this.componentDidMount();
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -39,11 +39,12 @@ class SearchFilterSortBar extends Component {
     //this.setState({ search: 'Shoes', category: 'Shoe', price: 'Highest' });
     //test for getting all products on page load
     
-    this.props.fetchProducts();
+    this.props.fetchProducts(this.state);
   }
 
   onInputChange(event) {
     this.setState({ search: event.target.value });
+    event.preventDefault();
   }
 
   onSearchButtonClick(event) {
@@ -51,24 +52,32 @@ class SearchFilterSortBar extends Component {
 
     // This will fetch the products from the search input
     // the state at this point is already updated from event handler of the user typing, so we invoke the fetchProducts function (to make the api call) and then reset the state back back to its original state (clearing the search property value)
-    this.props.fetchProducts(this.state.search);
-    this.setState({ term: '' });
+    this.props.fetchProducts(this.state);
+    //this.setState({ term: '' });
   }
 
   //this will update the state if the user selects a category. Then the fetchProducts function will make the api call for the selected category's products
   // look up how to know when user selects an option..
   onCategorySelect(event) {
-    this.setState({ category: event.target.value });
-    this.props.fetchProducts(this.state.category);
-  }
+    this.setState({ category: event.target.value }, () => {
+      console.log('State inside onCategorySelect:', this.state)
+      this.props.fetchProducts(this.state);
+  })
+  event.preventDefault();
+}
 
   // this will update the state if the user selects a price sort option (highest to lowest, and vice versa)
   // since we have query parameters for price sorting, I'm thinking this will also make an api call based on the user's selection
   // research the way our handler will be invoked, is it onChange? where will I put the handler in the jsx below?
   onPriceSortSelect(event) {
-    this.setState({ price: event.target.value });
-    this.props.fetchProducts(this.state.price);
+    this.setState({ price: event.target.value }, () => {
+      console.log('State inside priceSortSelect:', this.state)
+      this.props.fetchProducts(this.state);
+    });
+   // this.props.fetchProducts(this.state.price);
+   event.preventDefault();
   }
+  
 
 
   render() {
@@ -78,33 +87,33 @@ class SearchFilterSortBar extends Component {
         <input value={this.state.search} onChange={this.onInputChange} type="text" className="form-control" id="exampleFormControlInput1" placeholder="Search..." />
         <button onClick={this.onSearchButtonClick} type="submit" className="btn btm-primary">Search</button>
         <label className="ml-2 mr-2" htmlFor="inlineFormCustomSelectCategory">Filter by Category: </label>
-        <select className="form-control custom-select" id="inlineFormCustomSelectCategory">
+        <select onChange={this.onCategorySelect} className="form-control custom-select" id="inlineFormCustomSelectCategory">
           <option defaultValue="All">All</option>
-          <option value="Home">Baby</option>
-          <option value="Baby">Books</option>
-          <option value="Garden">Grocery</option>
-          <option value="Home">Clothing</option>
-          <option value="Baby">Tools</option>
-          <option value="Garden">Kids</option>
+          <option value="Baby">Baby</option>
+          <option value="Books">Books</option>
+          <option value="Grocery">Grocery</option>
+          <option value="Clothing">Clothing</option>
+          <option value="Tools">Tools</option>
+          <option value="Kids">Kids</option>
           <option value="Home">Home</option>
-          <option value="Baby">Garden</option>
-          <option value="Garden">Automotive</option>
-          <option value="Home">Toys</option>
-          <option value="Baby">Beauty</option>
-          <option value="Garden">Computers</option>
-          <option value="Home">Sports</option>
-          <option value="Baby">Shoes</option>
-          <option value="Garden">Games</option>
-          <option value="Home">Jewelry</option>
-          <option value="Baby">Electronics</option>
-          <option value="Garden">Industrial</option>
-          <option value="Garden">Movies</option>
-          <option value="Home">Music</option>
-          <option value="Baby">Health</option>
-          <option value="Garden">Outdoors</option>
+          <option value="Garden">Garden</option>
+          <option value="Automotive">Automotive</option>
+          <option value="Toys">Toys</option>
+          <option value="Beauty">Beauty</option>
+          <option value="Computers">Computers</option>
+          <option value="Sports">Sports</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Games">Games</option>
+          <option value="Jewelry">Jewelry</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Industrial">Industrial</option>
+          <option value="Movies">Movies</option>
+          <option value="Music">Music</option>
+          <option value="Health">Health</option>
+          <option value="Outdoors">Outdoors</option>
         </select>
         <label className="ml-2 mr-2" htmlFor="inlineFormCustomSelectSort">Sort by Price: </label>
-        <select className="form-control custom-select" htmlFor="inlineFormCustomSelectSort">
+        <select onChange={this.onPriceSortSelect} className="form-control custom-select" htmlFor="inlineFormCustomSelectSort">
           <option selected>Sort Type</option>
           <option value="Highest">Price: Low to High</option>
           <option value="Lowest">Price: High to Low</option>

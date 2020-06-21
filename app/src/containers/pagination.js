@@ -25,7 +25,7 @@ class PaginationComponent extends Component {
     this.setState({ page: page }, () => {
       console.log('State inside onPageClick:', this.state)
        console.log('State inside onPageClick:', this.state.page)
-      this.props.fetchProducts(this.state.page);
+      this.props.fetchProducts(this.state);
     });
    // console.log('State inside onPageClick:', this.state)
     //console.log('State inside onPageClick:', this.state.page)
@@ -48,9 +48,10 @@ class PaginationComponent extends Component {
     const productsCount = this.props.products[1]
     console.log('Inside pagination component, this.props.products[1]= ', this.props.products[1])
     const pageNumbers = [];
-    let pageNumber = 0;
-    for (let i = 0; i < productsCount; i++) {
-      if (i % 9 === 0 || i === productsCount - 2) {
+    let pageNumber = 1;
+    pageNumbers.push(pageNumber)
+    for (let i = 1; i < productsCount; i++) {
+      if (i % 9 === 0) {
         pageNumber++;
         pageNumbers.push(
           <PageNumber key={pageNumber} page={pageNumber} />

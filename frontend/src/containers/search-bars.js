@@ -87,13 +87,32 @@ class SearchBars extends Component {
     }
 
     renderCategoryOptions() {
-        if (this.props.products.products) {
-            this.props.products.products.map(product => {
-                console.log(product.category)
+        // let categoriesArray = []
+        // if (this.props.products.categories) {
+        //     const shortCategoryList = this.props.products.categories.reduce(category => {
+        //         if (categoriesArray.includes(category)) {
+        //             return false
+        //         } else {
+        //             categoriesArray.push(category)
+        //             return true
+        //         } 
+        //     }, [])
+        //     console.log(shortCategoryList)
+        // }
+
+        if (this.props.products.categories) {
+            let categoriesArray = []
+            this.props.products.categories.forEach(category => {
+                categoriesArray.push(category.category)
+            }) 
+            // filter down to only unique values of categories
+            const categoriesArrayUnique = categoriesArray.filter((value, index, array) => array.indexOf(value) === index); 
+            return categoriesArrayUnique.map(category => {
                 return (
-                    <option>{JSON.stringify(product.category)}</option>
+                    <option key={category}>{category}</option>
                 )
             })
+            
         }
     }
 
@@ -110,10 +129,10 @@ class SearchBars extends Component {
                         <Col>
                         <Form.Control as="select" onChange={this.selectCategory.bind(this)}>
                             <option>Sort by Category</option>
-                            <option>Baby</option>
+                            {/* <option>Baby</option>
                             <option>Tools</option>
-                            <option>Outdoors</option>
-                            {/* {this.renderCategoryOptions()} */}
+                            <option>Outdoors</option> */}
+                            {this.renderCategoryOptions()}
                         </Form.Control>    
                         </Col>
                         <Col>

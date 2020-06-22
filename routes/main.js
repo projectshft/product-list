@@ -86,6 +86,33 @@ router.get('/products', (req, res, next) => {
         }
     }
 
+    let query3 = Product.find({})
+
+    if (search) {
+        // use text index to search full product
+        query3 = query3.find({$text: {$search: search}})
+    }
+
+    // build up the query, first check if category is present and search by it
+    if (category) {
+        // make sure first letter is capitalized and all others are lowercase
+        category = category.toLowerCase()
+        category = category[0].toUpperCase() + category.slice(1)
+        // only return those products that have a matching category
+        query3 = query3.find({category: category})
+    }
+    // sort by price whether the query is highest or lowest
+    if (price) {
+        if (price === 'lowest') {
+            query3 = query3.sort({price: 1})
+        } else if (price === 'highest') {
+            query3 = query3.sort({price: -1})
+        } else {
+            // if query entered incorrectly, say so
+            res.status(400).send('price query must either be set to highest or lowest.')
+        }
+    }
+
     let officialQuery = {
         products: [],
         count: null
@@ -106,11 +133,21 @@ router.get('/products', (req, res, next) => {
                 .count()
                 // execute callback function
                 .exec((err, count) => {
+                    query3
+                        // just return categories
+                        .select('category -_id')
+                        // then execute
+                        .exec((err, categories) => {
+                            if (err) {
+                                throw err
+                            }
+                            officialQuery.categories = categories
+                            res.json(officialQuery)
+                        })
                     if (err) {
                         throw err
                     }
                     officialQuery.count = count
-                    res.json(officialQuery)
                 })
             if (products.length === 0) {
                 // return something if the array will be empty
@@ -122,7 +159,7 @@ router.get('/products', (req, res, next) => {
 });
 
 router.get('/products/categories', (req, res, next) => {
-    
+
 })
 
 router.get('/products/:product', (req, res, next) => {

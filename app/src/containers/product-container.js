@@ -17,22 +17,9 @@ class ProductContainer extends Component {
 
     //the state will contain our user search input, category selection and/or price sort selection
     this.state = { page: '1', search: '', category: '', price: '' };
-    //this.componentDidMount(this.state);
-
-    // this.onInputChange = this.onInputChange.bind(this);
-    // this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
-    // this.onCategorySelect = this.onCategorySelect.bind(this);
-    // this.onPriceSortSelect = this.onPriceSortSelect.bind(this);
+  
   }
 
-  // componentDidMount(state) {
-  //   console.log("Inside component did mount for product-container, this.props=", this.props)
-  //   console.log("Inside component did mount for product-container, state=", state)
-  //   //this.setState({ search: 'Shoes', category: 'Shoe', price: 'Highest' });
-  //   //test for getting all products on page load
-    
-  //   this.props.fetchProducts(state);
-  // }
 
   renderProducts() {
     // products.map(products)
@@ -45,49 +32,6 @@ class ProductContainer extends Component {
         </div>
       )
     })
-    //console.log('products in renderProducts function:', products[0])
-    // const productsArray = products[0];
-    //  products.forEach(product => {
-    //   console.log('inside forEach in renderProducts, product= ', product)
-    //    product.forEach(prod => {
-    //     console.log('inside 2nd forEach in renderProducts, product= ', prod)
-    //     return  (
-    //       <div key={prod._id}>
-    //         <IndividualProductDiv product={prod} />
-    //       </div>
-    //     )
-    //   })
-     
-    // })
-    // const name = products.product.name;
-    // const id = products.product._id;
-    // console.log('inside render products: name=', name);
-    // console.log('inside render products: id=', id);
-    
-    // need to only pass the data for one product per IndividualProductDiv below, tbd..
-    // return (
-    //   <div>
-    //     <div className="row">
-    //       <IndividualProductDiv product={products[0]} />
-    //       <IndividualProductDiv product={products[1]} />
-    //       <IndividualProductDiv product={products[2]} />
-    //     </div>
-    //     <div className="row">
-    //       <IndividualProductDiv product={products[3]} />
-    //       <IndividualProductDiv product={products[4]} />
-    //       <IndividualProductDiv product={products[5]} />
-    //     </div>
-    //     <div className="row">
-    //       <IndividualProductDiv product={products[6]} />
-    //       <IndividualProductDiv product={products[7]} />
-    //       <IndividualProductDiv product={products[8]} />
-    //     </div>
-    //     <div>
-    //      <PaginationComponent productCount={products.length} />
-    //     </div>
-    //   </div>
-    // );
-
   }
 
 
@@ -97,8 +41,6 @@ class ProductContainer extends Component {
     return (
       <div className="row">
         {this.renderProducts()}
-        {/* {this.renderProducts(this.props.products)} */}
-        {/* {this.props.products.map(this.renderProducts)} */}
       </div>
     );
   }

@@ -5,7 +5,7 @@ export default class PageNumber extends Component {
     //console.log('Inside Page Numbers, this.props= ', this.props)
     const pageNumber = this.props.page;
     return (
-      <td>{pageNumber}</td>
+      <td className="cell">{pageNumber}</td>
     );
   }
 }

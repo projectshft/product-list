@@ -51,4 +51,16 @@ code {
   font-weight: 600;
 }
 
+.table {
+  margin-top: 30px;
+}
+
+.cell {
+  width: 30px !important;
+}
+
+.cell:hover {
+  cursor: pointer;
+  color: blue;
+}
 

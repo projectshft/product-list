@@ -27,29 +27,18 @@ class PaginationComponent extends Component {
        console.log('State inside onPageClick:', this.state.page)
       this.props.fetchProducts(this.state);
     });
-   // console.log('State inside onPageClick:', this.state)
-    //console.log('State inside onPageClick:', this.state.page)
-    //this.props.fetchProducts(this.state.page);
-   // this.setState({page: ''})
   }
 
-  // showPageNumbers(pageCount) {
-
-
-  // }
+ 
 
   render() {
-    // look into just sending the number of pages vs product count to this component from product-container, to keep this component 'dumb'
-    //const products = this.props.products;
-    //const count = this.props.productCount;
-    //const count = products.length;
-    //this.showPageNumbers(count)
+  
     console.log('Inside pagination component, this.props= ', this.props)
     const productsCount = this.props.products[1]
     console.log('Inside pagination component, this.props.products[1]= ', this.props.products[1])
     const pageNumbers = [];
     let pageNumber = 1;
-    pageNumbers.push(pageNumber)
+    pageNumbers.push(<PageNumber key={pageNumber} page={pageNumber} />)
     for (let i = 1; i < productsCount; i++) {
       if (i % 9 === 0) {
         pageNumber++;
@@ -61,25 +50,15 @@ class PaginationComponent extends Component {
 
 
     return (
-      <table>
+      <div className="row justify-content-center">
+      <table className="table w-auto">
         <tbody><tr onClick={this.onPageClick} className="pages">{pageNumbers}</tr></tbody>
       </table>
+      </div>
     )
   }
 }
 
-{/* <div className="row text-center">
-<span id="pageOne" className="col-md-2 pages" onClick={this.onPageClick}>1</span>
-<span id="pageTwo" className="col-md-2 pages" onClick={this.onPageClick}>2</span>
-<span id="pageThree" className="col-md-2 pages" onClick={this.onPageClick}>3</span>
-<span id="pageFour" className="col-md-2 pages" onClick={this.onPageClick}>4</span>
-<span id="pageFive" className="col-md-2 pages" onClick={this.onPageClick}>5</span>
-<span id="pageSix" className="col-md-2 pages" onClick={this.onPageClick}>6</span>
-<span id="pageSeven" className="col-md-2 pages" onClick={this.onPageClick}>7</span>
-<span id="pageEight" className="col-md-2 pages" onClick={this.onPageClick}>8</span>
-<span id="pageNine" className="col-md-2 pages" onClick={this.onPageClick}>9</span>
-<span id="pageTen" className="col-md-2 pages" onClick={this.onPageClick}>10</span>
-</div> */}
 
 // the only action we're binding is fetchPage. This function is wrapped in a dispatch call and will dispatch an action to our reducer
 // from this pagination component, we're invoking the fetchPage action creator every time the user clicks a page number, which calls our api to return the products for that page

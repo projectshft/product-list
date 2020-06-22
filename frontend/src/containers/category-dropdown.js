@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
 
-class SearchBar extends Component {
+class CategoryDropdown extends Component {
   constructor(props) {
     super(props);
 
     this.state = { term: '' };
 
-    this.onInputChange = this.onInputChange.bind(this);
+    this.onClick = this.onClick.bind(this);
    // this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  onInputChange(event) {
+  onClick(event) {
     this.setState({ term: event.target.value });
     this.props.fetchProducts(this.state.term);
   }
@@ -39,4 +39,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   null,
   mapDispatchToProps
-)(SearchBar);
+)(CategoryDropdown);

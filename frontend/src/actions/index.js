@@ -6,7 +6,7 @@ const ROOT_URL = 'localhost:8000/products';
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
 export function fetchProducts(query) {
-  const url = `${ROOT_URL}`;
+  const url = `${ROOT_URL}`; // we're going to have to do some work here
   const request = axios.get(url);
 
   console.log('Request', request);

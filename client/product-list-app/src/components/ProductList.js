@@ -26,10 +26,10 @@ class ProductList extends Component {
                     <Col className="product-col" md={4} key={index}>
                         <Container className="product-container">
                             <Row>
-                                <Col className="category-col" md={8}>
+                                <Col className="category-col" sm={9} md={6} lg={8}>
                                     <p className="product-category"><span>Category:</span> {product.category}</p>
                                 </Col>
-                                <Col className="price-col" md={4}>
+                                <Col className="price-col" sm={3} md={6} lg={4}>
                                     <p className="product-price">${product.price}</p>
                                 </Col>
                             </Row>

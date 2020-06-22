@@ -1,43 +1,42 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { fetchProducts } from '../actions/index';
 
 class ProductList extends Component {
-  renderProducts(productData) {
 
-    const name = cityData.city.name;
-    const temp = cityData.list.map(weather => weather.main.temp);
-    const pressures = cityData.list.map(weather => weather.main.pressure);
-    const humidities =  cityData.list.map(weather => weather.main.humidity);
+  constructor(props) {
+    super(props);
+
+    this.state = { term: '' };
+
+
+  }
+
+  // onInputChange(event) {
+  //   this.setState({ term: event.target.value });
+  //   this.props.fetchProducts(this.state.term);
+  // }
+
+  renderProducts(productData) {
+    
 
     return (
-      <tr key={cityData.city.id}>
-        <td>{name}</td>
-        <td>
-          <Chart data={temp} color="orange" units="F" />
-        </td>
-        <td>
-          <Chart data={pressures} color="green" units="hPa" />
-        </td>
-        <td>
-          <Chart data={humidities} color="black" units="%" />
-        </td>
-      </tr>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-3 border">
+
+          </div>
+        </div>
+      </div>
     );
   }
 
   render() {
     return (
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>City</th>
-            <th>Temperature (K)</th>
-            <th>Pressure (hPa)</th>
-            <th>Humidity (%)</th>
-          </tr>
-        </thead>
-        <tbody>{this.props.weather.map(this.renderWeather)}</tbody>
-      </table>
+      <div>
+        <div className="product">{console.log(this.props.fetchProducts)}</div>
+      </div>
     );
   }
 }
@@ -46,4 +45,8 @@ function mapStateToProps({ products }) {
   return { products };
 }
 
-export default connect(mapStateToProps)(ProductList);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchProducts }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

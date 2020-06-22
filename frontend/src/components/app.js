@@ -1,8 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
 
-import SearchBar from '../containers/search-bar';
+//import SearchBar from '../containers/search-bar';
 import SortDropdown from '../containers/sort-dropdown';
+import ProductList from '../containers/product-list';
 
 export default class App extends Component {
   render() {
@@ -18,7 +19,7 @@ export default class App extends Component {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-3">
-              <SearchBar />
+              {/* <SearchBar /> */}
             </div>
             <div className="col-md-3">
               <p>dropdown categories</p>
@@ -29,7 +30,10 @@ export default class App extends Component {
           </div>
         </div>
         <div className="container">
-          
+          <div className="row justify-content-center">
+              <ProductList />
+
+            </div>
         </div>
       </div>
     );

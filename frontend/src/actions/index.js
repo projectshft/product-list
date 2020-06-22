@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const ROOT_URL = `http://localhost:8000`;
 
-export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
+export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
 //get products by search query
 export function fetchProducts(searchParam) {
@@ -17,10 +17,11 @@ export function fetchProducts(searchParam) {
 }
 
 export const CATEGORY_SORT = 'CATEGORY_SORT';
+
 //sort products by category name
 export function categorySort(categoryParam, query) {
-  const url = `${ROOT_URL}/products?query=${query}&category=${categoryParam}`; //when I hardcode a query in, it renders off center
-  // const url = `${ROOT_URL}/products?category=${categoryParam}`; //how to add on optional params?
+  const url = `${ROOT_URL}/products?query=${query}&category=${categoryParam}`; 
+  // const url = `${ROOT_URL}/products?category=${categoryParam}`; 
   const request = axios.get(url);
 
   return {
@@ -30,7 +31,8 @@ export function categorySort(categoryParam, query) {
 }
 
 export const PRICE_SORT = 'PRICE_SORT';
-//sort products by category name
+
+//sort products by price 
 export function priceSort(price, query) {
   const url = `${ROOT_URL}/products?query=${query}&price=${price}`; //how to add on optional params?
   const request = axios.get(url);

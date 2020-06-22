@@ -5,17 +5,13 @@ import _ from "lodash";
 
 export default function(state = [], action) {
     switch (action.type) {
-        case FETCH_PRODUCTS:
-            // console.log('Inside reducer',action.payload.data);
-            // console.log(_.mapKeys(action.payload.data, "id"))
-            // return _.mapKeys(action.payload.data, "id");
+        case FETCH_PRODUCTS: //get to api with search query passed in
             return ([action.payload.data, ...state]);
-        case CATEGORY_SORT:
+        case CATEGORY_SORT: //get to api with search query and category
             return ([action.payload.data, ...state]);
-        case PRICE_SORT:
+        case PRICE_SORT: //get to api with query, catefory and price passed in
             return ([action.payload.data, ...state]);
         default: 
-            // console.log(state)
             return state;
             
     }

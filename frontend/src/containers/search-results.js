@@ -13,18 +13,20 @@ import Dropdown from 'react-bootstrap/Dropdown'
 
 //Search bar component is a container component as it will
 //have to talk with our state in order to kick off requests to the Open Weather API and populate our store with data
-class SearchBar extends Component {
+class SearchResults extends Component {
   constructor(props) {//the props are an objects that contains fetch weather function
     super(props);
 
     this.state = { term: ''};
 
+    //binds functions to this state term
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
     this.handlePrice = this.handlePrice.bind(this);
   }
 
+  //sets the term state when the inpu changes
   onInputChange(event) {
     // console.log(this.state)
     this.setState({ term: event.target.value });
@@ -33,15 +35,11 @@ class SearchBar extends Component {
   //on search button, fetch products function calls api with search term
   onFormSubmit(event) {
     event.preventDefault();
-
-    
     this.props.fetchProducts(this.state.term);//fetch products with search query
-    // this.setState({ term: ''});
     // console.log(this.props.fetchProducts(this.state.term))
-    // console.log("inside fetch props " + this.props)
   }
 
- 
+ // search term and price selected are used to filter products
   handlePrice(price){
     let query = this.state.term
     // console.log(price)
@@ -49,7 +47,7 @@ class SearchBar extends Component {
 
   }
 
-  //when category is selected in drop down menu, categorySort is called
+  //when category is selected in drop down menu, categorySort API call is made with category and search query passed in
   handleSelect(event){
     let query = this.state.term //how to add in optional search query?
 
@@ -60,7 +58,7 @@ class SearchBar extends Component {
   }
 
 
-
+  //render product list 
   renderProducts() {
     
     // console.log(this.props.products[0])
@@ -70,7 +68,7 @@ class SearchBar extends Component {
         return (
             <div className="card" key={product._id}>
               <p><span className="category">Category: {product.category}</span>
-              <span className="price">{product.price}</span>
+              <span className="price">${product.price}</span>
               </p>
               <div className="image-container">
                   <img src={product.image}></img>
@@ -181,4 +179,4 @@ function mapDispatchToProps(dispatch) {//this is an action creator. this is wher
   return bindActionCreators({ fetchProducts, categorySort, priceSort }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);

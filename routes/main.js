@@ -3,6 +3,8 @@ const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/reviews')
 
+//code to generate new products in database. Added new image as one from assignment wasn't working
+
 // router.get('/generate-fake-data', (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
 //     let product = new Product()
@@ -20,8 +22,10 @@ const Review = require('../models/reviews')
 //   res.end()
 // })
 
-// will look like: /products?page=3
+
+
 //GET all products
+
 //Optional param: page number, will default to the first page if none selected
 //Optional param: sort by category (localhost:8000/products?page=1&category=tools)
 //Optional param: sort by highest or lowest
@@ -39,12 +43,12 @@ router.get('/products', (req, res, next) => {
     // return the first page by default
     const page = req.query.page || 1
 
-    var conditions = {}
-
+    var conditions = {} //empty container to be able to account for various combinations of queries possible
+ 
     if (category && query) {
       conditions = {
         $and : [
-          {category:category}, {name: { $regex: query, $options: "i" } }
+          {category:category}, {name: { $regex: query, $options: "i" } }//returns names containing the query (doesn't have to be direct match)
         ]
       }
 
@@ -65,30 +69,8 @@ router.get('/products', (req, res, next) => {
    
   })
 
-  //   Product
-  //     .find({
-  //       $and : [
-  //         {category:category}, {name: { $regex: query, $options: "i" } }
-  //       ]
-  //     })
-  //     .sort({price:sort})
-  //     .skip((perPage * page) - perPage)
-  //     .limit(perPage)
-  //     .exec((err, products) => {
-  //       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-  //       Product.count().exec((err, count) => {
-  //         if (err) return next(err) //need to move this above
-  
-  //         res.send(products)
-  //       })
-
-
-  //     })
-  // })
-
-
 //GETS a product by its id
-//ID required in url params
+//REQUIRES ID in url params
 router.get('/products/:product', (req, res) => {
     const { product } = req.params
    
@@ -105,8 +87,8 @@ router.get('/products/:product', (req, res) => {
     })
 })
 
-//POSTS a new product in the database
-//requires category, name, price, image in the body params
+//POSTS a new product in the database with pbody paramters provided
+//REQUIRES category, name, price, image in the body params
 router.post('/products', (req, res) => {
     const category = req.body.category
     const name = req.body.name
@@ -123,11 +105,11 @@ router.post('/products', (req, res) => {
       }
     )
     product.save()
-    res.send(product)// dont need this, just checking it out 
+    // res.send(product)// dont need this, just checking it out 
 })
 
-//since this is post there will also be a body param
-//requires product id in url and username and text in post body
+// POSTS a new review to a selected product
+//REQUIRES product id in url and username and text in post body
 //needs edge cases for if the body doesn't contain username & text
 router.post('/products/:product/reviews', (req, res) => {
     const { product } = req.params
@@ -159,7 +141,7 @@ router.post('/products/:product/reviews', (req, res) => {
 })
 
 //GETS reviews for designated product
-//Requires product id in the url and optional page in query
+//REQUIRES product id in the url and optional page in query
 // /products/reviews?page=3
 router.get('/products/:product/reviews', (req, res) => {
   const { product } = req.params
@@ -170,7 +152,7 @@ router.get('/products/:product/reviews', (req, res) => {
   
 
   Product.findById(product)
-    .skip((perPage * page) - perPage) //how to tell if this is working?
+    .skip((perPage * page) - perPage) 
     .limit(perPage)
     .populate('reviews')
     .exec((err, product) => {
@@ -184,7 +166,7 @@ router.get('/products/:product/reviews', (req, res) => {
 })
 
 //DELETE product by id
-//requires id in url
+//REQUIRES id in url
 router.delete('/products/:product', (req, res) => {
   const { product } = req.params
 
@@ -209,7 +191,7 @@ router.delete('/reviews/:review', (req, res) => {
     if (err) {
       console.error(err);
     } else {
-      Product.findById(review.product)//this part is not working 
+      Product.findById(review.product)//not working. Intend to select the above product associated with the review and remove the review
       .exec((err, product) => {
         if (err) {
           console.error(err);

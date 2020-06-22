@@ -6,12 +6,15 @@ mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true})
 
 const app = express()
 
+//setting up CORS
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+//Applying json and bodyparser
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true

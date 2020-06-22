@@ -92,8 +92,7 @@ class SearchPage extends Component {
 
     //to set sort parameter and get sorted search results
     setSort(newSort) {
-        //reset page number to 1 on each new sort
-        this.setState({ price: newSort, page: 1 },
+        this.setState({ price: newSort },
             () => {
                 this.props.searchProducts(this.state);
             }

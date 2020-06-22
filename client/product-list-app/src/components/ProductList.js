@@ -46,7 +46,9 @@ class ProductList extends Component {
         } else {
             // if no results returned 
             return (
-                <p className="no-results">No results found.</p>
+                <Col  className="no-results">
+                <p>No results found.</p>
+                </Col>
             )
         }
     }

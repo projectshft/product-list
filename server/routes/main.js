@@ -2,6 +2,7 @@ const router = require('express').Router()
 // this is a package that will help us populate our database with a bunch of fake data.
 const faker = require('faker')
 const Product = require('../models/product')
+const { response } = require('express')
 
 
 /* Two get requests were completed to generate 180 product documents in our collection. 
@@ -72,7 +73,7 @@ router.get('/products', (req, res, next) => {
 
   /* This function will be called in the .sort method of the db query below and will 
      control if user sees/selects prices listed high to low or vice versa
-  */   
+  */
   const getSortType = priceSortType => {
     if (priceSortType == "Highest") {
       return 1;
@@ -84,7 +85,7 @@ router.get('/products', (req, res, next) => {
   /* Here we are building up are query. The queries are optional, so we will check if they
      are defined and if so, will add them to a query object that will be used in .find
      below
-  */   
+  */
   var query = {};
   if (categoryType) {
     query.category = categoryType;
@@ -95,7 +96,7 @@ router.get('/products', (req, res, next) => {
   if (categoryType === "All") {
     query = {};
   }
- 
+
   /* first we will search the products collection based on any category or search term 
      queries from the user. The skip method allows for pagination (eg, if the user wants
      to see page 2. Since products are limited to 9 per page by the .limit method, a new
@@ -117,7 +118,7 @@ router.get('/products', (req, res, next) => {
          state of the query on clicking a page number, the query values and total product
          count are appended to the headers of the response, and reattached to the state in 
          the reducer.
-      */   
+      */
       Product.count(query).exec((err, count) => {
         if (err) return next(err)
         res.append('productCount', [count.toString()])
@@ -138,22 +139,20 @@ router.get('/products/:productId', (req, res, next) => {
   Product
     .find({ _id: productId })
     .exec((err, foundProduct) => {
-   
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
-
-        res.send(foundProduct)
-      })
+      if (err) return next(err)
+      res.send(foundProduct)
     })
 })
+
 
 
 /*
 GET /products/:product/reviews: Returns ALL the reviews for a product (by productId in url)
 , but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve
  them out of the products. You should be able to pass in an optional page query parameter
- to paginate.
+ to paginate. The reviews will come back as an array
 */
+
 router.get('/products/:productId/reviews', (req, res, next) => {
   //gets the productId from the request
   const productId = req.params.productId;
@@ -165,19 +164,24 @@ router.get('/products/:productId/reviews', (req, res, next) => {
   const page = req.query.page || 1
 
   // this will search the products collection by product id and return the reviews for that product in an array
+
   Product
-    .find({ _id: productId })
+    .find({ _id: productId }, { reviews: { $slice: [0, reviewsPerPage] } })
     .skip((reviewsPerPage * page) - reviewsPerPage)
     .limit(reviewsPerPage)
     .exec((err, foundProduct) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-      Product.count().exec((err, count) => {
-        if (err) return next(err)
+      if (err) return next(err)
 
-        res.send(foundProduct[0].reviews)
+      Product.count({ _id: productId }).exec((err, count) => {
+        if (err) return next(err)
+        //count will be the total number of reviews
+        console.log(count);
+        res.send(foundProduct.reviews)
       })
     })
 })
+
+
 
 /*
 POST /products: Creates a new product in the database (right now with randomly generated properties and an empty reviews array)
@@ -215,12 +219,10 @@ router.post('/products/:productId/reviews', (req, res, next) => {
     text: reviewText
   }
 
-
   // this will search the products collection by product id so that we can add the new review to it
-  // $addToSet will add a review to the reviews array, and setting new:true will return the updated record
-  // GO BACK AND TRY $PUSH
+  // $push will add a review to the reviews array, and setting new:true will return the updated record
   Product
-    .findByIdAndUpdate(productId, { $addToSet: { reviews: newReview } }, { new: true })
+    .findByIdAndUpdate(productId, { $push: { reviews: newReview } }, { new: true })
     .exec((err, product) => {
       if (err) throw err;
       res.send(product)
@@ -245,16 +247,17 @@ router.delete('/products/:productId', (req, res, next) => {
 DELETE /reviews/:review: Deletes a review by id
 */
 router.delete('/reviews/:reviewId', (req, res, next) => {
+
   const productId = req.body.productId
   const reviewIdToDelete = req.params.reviewId;
   Product.findByIdAndUpdate(productId, { $pull: { reviews: { _id: reviewIdToDelete } } })
     .exec((err, product) => {
       if (err) throw err;
-
     })
 
   res.end()
 })
+
 
 module.exports = router
 

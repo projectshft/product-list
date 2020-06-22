@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
-import { Typeahead } from 'react-bootstrap-typeahead';
-
 import {addSortBy} from '../actions/index';
 import {addPage} from '../actions/index';
 
@@ -17,18 +14,16 @@ class Categories extends Component {
   }
 
   handleInputChange(event) {
-    console.log(event.target.value)
+    //when a sortBy value is selected, add it to the store, and fetch products using that sorting filter
     this.props.addSortBy(event.target.value);
     this.setState({ sortBy: event.target.value });
     this.props.fetchProducts(this.props.searchTerm, this.props.category, event.target.value, this.props.page);
   }
 
-  
-
   render() {
     return (
-      <select class="browser-default custom-select navbar-form" onChange={this.handleInputChange}>
-        <option selected>Sort By Price</option>
+      <select className="browser-default custom-select navbar-form" onChange={this.handleInputChange}>
+        <option>Sort By Price</option>
         <option value="highest">High to Low</option>
         <option value="lowest">Low to High</option>
       </select>

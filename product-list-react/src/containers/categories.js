@@ -1,60 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
-import { Typeahead } from 'react-bootstrap-typeahead';
-
 import { addCategory } from '../actions/index';
 import { addPage } from '../actions/index';
 
 class Categories extends Component {
   constructor(props) {
     super(props);
-
     this.state = { category: '' };
-
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange(event) {
-    console.log(event.target.value);
+    //empty value to default to when there is no category selected
     let category = "";
+    //if statement to prevent the dropdown title from being passed as a value
     if (event.target.value !== 'Categories') {
       this.setState({ category: event.target.value});
       this.props.addCategory(event.target.value);
+      //setting category to this value to avoid the time it takes to get it after using setState
       category = event.target.value;
     } else {
+      //if the selected value on the dropdown is "Categories" (the title), set the category as an empty string
+      // category: "" will mean no category is applied to the search
       this.setState({ category: ""})
       this.props.addCategory("");
     }
+    //set the current page in the store as the first page after adding a new category
     this.props.addPage(1);
     this.props.fetchProducts(this.props.searchTerm, category, this.props.sortBy);
   }
 
-
-
-  // render() {
-  //   return (
-  //     <Typeahead
-  //       id="category-dropdown"
-  //       labelKey={(option) => `${option.categoryName}`}
-  //       options={[
-  //         { categoryName: 'Toys'},
-  //         { categoryName: 'Garden'},
-  //         { categoryName: 'Sports'},
-  //         { categoryName: 'Movies'},
-  //         { categoryName: 'Games'},
-  //         { categoryName: 'Jewelry'}
-  //       ]}
-  //       onChange={this.handleInputChange}
-  //       placeholder="Categories"
-  //     />
-  //   );
-  // }
   render() {
+    //returns a dropdown form with hard-coded categories to select from
     return (
-      <select class="browser-default custom-select navbar-form" onChange={this.handleInputChange}>
-        <option selected>Categories</option>
+      <select className="browser-default custom-select navbar-form" onChange={this.handleInputChange}>
+        <option>Categories</option>
         <option value="Toys">Toys</option>
         <option value="Garden">Garden</option>
         <option value="Sports">Sports</option>
@@ -74,9 +55,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-
 function mapStateToProps(state) {
-  console.log('categories state: ' + state.searchTerm)
   return {
     searchTerm: state.searchTerm,
     category: state.category,

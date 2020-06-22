@@ -3,10 +3,12 @@ const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
 
+//gets a random number
 var getRandomNumber = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+//generates and adds fake data to the database
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product()
@@ -14,8 +16,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
-
+    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png';
 
     let numReviews = getRandomNumber(7);
     for (let i = 0; i < numReviews; i++) {
@@ -29,18 +30,20 @@ router.get('/generate-fake-data', (req, res, next) => {
     }
 
     product.save((err) => {
-      if (err) throw err
+      if (err) return next(err)
     })
   }
   res.end()
 })
 
+//gets products with optional search queries/filters
 router.get('/products', (req, res, next) => {
   const itemsPerPage = 9;
   const page = req.query.page || 1;
   const category = req.query.category;
   const name = req.query.query;
   let priceSort = "";
+  //adding sorting query
   if (req.query.price === 'highest') {
     priceSort = "-price"
   } else if (req.query.price === "lowest") {
@@ -58,8 +61,6 @@ router.get('/products', (req, res, next) => {
     query = {}
   }
 
-  //let myCount = query.count();
-
   Product.find(query)
     .sort(priceSort)
     .populate('reviews')
@@ -69,11 +70,12 @@ router.get('/products', (req, res, next) => {
       Product.find(query)
         .count()
         .exec((err, count) => {
-        res.send({products, count});
-    })
+          res.send({ products, count });
+        })
     })
 });
 
+//gets a product with the supplied product id
 router.get('/products/:product', (req, res, next) => {
   Product.find({ _id: req.params.product })
     .populate('reviews')
@@ -85,6 +87,7 @@ router.get('/products/:product', (req, res, next) => {
     })
 })
 
+//gets reviews from a product (required product id)
 router.get('/products/:product/reviews', (req, res, next) => {
   const itemsPerPage = 4;
   const page = req.query.page || 1;
@@ -99,6 +102,7 @@ router.get('/products/:product/reviews', (req, res, next) => {
     })
 })
 
+//adds a product to the database
 router.post('/products', (req, res, next) => {
   let product = new Product();
 
@@ -107,47 +111,46 @@ router.post('/products', (req, res, next) => {
   product.price = req.body.price;
   product.image = req.body.image;
 
-  console.log(product);
-
   product.save((err) => {
-    if (err) throw err
+    if (err) return next(err)
   })
 
   res.send(product);
 })
 
+//adds a review to a product in the database
 router.post('/products/:product/reviews', (req, res, next) => {
   let review = new Review();
   review.userName = req.body.userName;
   review.text = req.body.text;
   review.product = req.params.product;
 
-  Product.findOne({_id: review.product})
+  Product.findOne({ _id: review.product })
     .exec((err, product) => {
       if (err) return next(err)
       review.save((err) => {
         if (err) return next(err)
       })
-      console.log(product);
       product.reviews.push(review);
       product.save((err) => {
-        if (err) throw err
+        if (err) return next(err)
       })
       res.send(review);
     })
 })
-
+//deletes a product from the database
 router.delete('/products/:product', (req, res, next) => {
   Product.remove({ _id: req.params.product }, err => {
-    if (err) throw err;
+    if (err) return next(err);
 
     res.end();
   })
 })
 
+//deletes a review from the database
 router.delete('/reviews/:review', (req, res, next) => {
   Review.remove({ _id: req.params.review }, err => {
-    if (err) throw err;
+    if (err) return next(err);
 
     res.end();
   })

@@ -1,54 +1,48 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
-import { addSearchTerm } from '../actions/index';
 import { addPage } from '../actions/index';
 
 class Footer extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { page: 1};
+    //set page to 1 when the footer is first loaded
+    this.state = { page: 1 };
     this.props.addPage(1);
     this.handlePageClick = this.handlePageClick.bind(this);
   }
 
+  //when a user clicks a page in the footer, get that page from the server
   handlePageClick = (event) => {
     event.preventDefault();
     this.setState({ page: event.currentTarget.value });
-    console.log("page click event: " + event.currentTarget.value);
     this.props.addPage(event.currentTarget.value);
     this.props.fetchProducts(this.props.searchTerm, this.props.category, this.props.sortBy, event.currentTarget.value);
   }
 
   render() {
-    console.log('starting footer render');
-    console.log(this.props.products[0]);
-    console.log(this.state.page);
-    if(!this.props.products[0]) {
+    //if there are no products, return an empty div
+    if (!this.props.products[0]) {
       return (
         <div></div>
       )
     }
+    //array to hold the buttons for each page
     let indexLinks = [];
-    for(let i = 0; i < this.props.products[0].count; i++) {
-      if (i%9 === 0) {
-        if ((i/9 + 1) == this.props.page) {
+    for (let i = 0; i < this.props.products[0].count; i++) {
+      // if statement executes every 9 products (when a new page starts)
+      if (i % 9 === 0) {
+        //if this button is for the current selected page, highlight it
+        if ((i / 9 + 1) == this.props.page) {
           indexLinks.push(
-            <span> <button className="current-page-button" value={(i/9) + 1} onClick={this.handlePageClick}><h5>{(i/9) + 1}</h5></button> </span>
-            )
+            <span key={"pageButton" + (i / 9 + 1)}> <button className="current-page-button" value={(i / 9) + 1} onClick={this.handlePageClick}><h5>{(i / 9) + 1}</h5></button> </span>
+          )
         } else {
           indexLinks.push(
-            <span>  <button className="page-button" value={(i/9) + 1} onClick={this.handlePageClick}><h5>{(i/9) + 1}</h5></button>  </span>
-            )
+            <span key={"pageButton" + (i / 9 + 1)}>  <button className="page-button" value={(i / 9) + 1} onClick={this.handlePageClick}><h5>{(i / 9) + 1}</h5></button>  </span>
+          )
         }
-        
-      // } else if (i === (this.props.products[0].count - 1)) {
-      //   indexLinks.push(
-      //     <span> <button value={Math.ceil(i/9) + 1} onClick={this.handlePageClick}>{Math.ceil(i/9) + 1}LAST</button> </span>
-      //   )
-       }
+      }
     }
     return (
       <div className="footer-container">{indexLinks}</div>

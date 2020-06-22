@@ -1,35 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
 import { addSearchTerm } from '../actions/index';
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
-
-   this.state = { searchTerm: ''};
+    this.state = { searchTerm: '' };
 
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   onInputChange(event) {
-    //event.preventDefault();
     this.setState({ searchTerm: event.target.value });
   }
 
   onFormSubmit(event) {
     event.preventDefault();
-    console.log('searchbar props category: ' + this.props.category);
-    console.log('searchbar props term: ' + this.props.searchTerm);
-    console.log('searchbar props sortBy: ' + this.props.sortBy);
-    console.log(this.props);
-    console.log(this.state);
     this.props.addSearchTerm(this.state.searchTerm);
-    console.log(this.props.sortBy);
     this.props.fetchProducts(this.state.searchTerm, this.props.category, this.props.sortBy);
-    //this.setState({ searchTerm: ""});
   }
 
   render() {
@@ -52,7 +42,7 @@ class SearchBar extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return { 
+  return {
     addSearchTerm: searchTerm => dispatch(addSearchTerm(searchTerm)),
     fetchProducts: (searchTerm, category, sortBy) => dispatch(fetchProducts(searchTerm, category, sortBy))
   }

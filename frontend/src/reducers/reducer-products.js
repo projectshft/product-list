@@ -1,5 +1,6 @@
 import { FETCH_PRODUCTS } from '../actions/index';
 import { CATEGORY_SORT } from '../actions/index';
+import { PRICE_SORT } from '../actions/index';
 import _ from "lodash";
 
 export default function(state = [], action) {
@@ -10,6 +11,8 @@ export default function(state = [], action) {
             // return _.mapKeys(action.payload.data, "id");
             return ([action.payload.data, ...state]);
         case CATEGORY_SORT:
+            return ([action.payload.data, ...state]);
+        case PRICE_SORT:
             return ([action.payload.data, ...state]);
         default: 
             // console.log(state)

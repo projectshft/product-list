@@ -10,7 +10,7 @@ const Review = require('../models/reviews')
 //     product.category = faker.commerce.department()
 //     product.name = faker.commerce.productName()
 //     product.price = faker.commerce.price()
-//     product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+//     product.image = 'https://www.digitalcitizen.life/sites/default/files/styles/img_amp/public/featured/2016-08/photo_gallery.jpg'
 //     product.reviews = []  
 
 //     product.save((err) => {
@@ -56,7 +56,11 @@ router.get('/products', (req, res, next) => {
 
     let base = Product.find(conditions).sort({price:sort}).skip((perPage * page) - perPage).limit(perPage)
     return base.exec((err, products) => {
-          res.send(products)
+         
+          base.countDocuments().exec((err, count) => {
+            res.send(products)
+            console.log(count)
+          })
       })
    
   })

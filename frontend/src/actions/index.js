@@ -18,12 +18,25 @@ export function fetchProducts(searchParam) {
 
 export const CATEGORY_SORT = 'CATEGORY_SORT';
 //sort products by category name
-export function categorySort(categoryParam) {
-  const url = `${ROOT_URL}/products?category=Tools`;//hardcoded for now
+export function categorySort(categoryParam, query) {
+  const url = `${ROOT_URL}/products?query=${query}&category=${categoryParam}`; //when I hardcode a query in, it renders off center
+  // const url = `${ROOT_URL}/products?category=${categoryParam}`; //how to add on optional params?
   const request = axios.get(url);
 
   return {
     type: CATEGORY_SORT,
+    payload: request
+  };
+}
+
+export const PRICE_SORT = 'PRICE_SORT';
+//sort products by category name
+export function priceSort(price, query) {
+  const url = `${ROOT_URL}/products?query=${query}&price=${price}`; //how to add on optional params?
+  const request = axios.get(url);
+
+  return {
+    type: PRICE_SORT,
     payload: request
   };
 }

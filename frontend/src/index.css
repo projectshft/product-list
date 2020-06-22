@@ -11,14 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.empty {
+  margin-top: 30px;
+}
+
 .card {
   display: inline-block;
-  width: 22%;
-  height: 100px;
-  
+  width: 150px;
+  height: 150px;
   border: 1px solid black;
   padding: 2px;
-  margin: 5%;
+  margin: 7%;
 }
 
 .category {
@@ -29,3 +33,19 @@ code {
   float: right;
 }
 
+.product-list {
+  text-align: center;
+  align-items: center;
+}
+
+.image-container{
+  text-align: center;
+}
+img {
+  width: 120px;
+  height: 60px;
+}
+
+h1 {
+  text-align: center;
+}

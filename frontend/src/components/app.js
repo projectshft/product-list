@@ -10,6 +10,7 @@ export default class App extends Component {
     return (
       <div className="col-md-8 offset-md-2">
         <h1>Products</h1>
+        <div className="empty"></div>
         <SearchBar />
         
       </div>

@@ -38,7 +38,7 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
-  // optional category. TODO: standardize case
+  // optional categories. TODO: standardize case for Category and Query
   const filterByCategory = req.query.category;
   const sortByPrice = req.query.price;
   const filterByQuery = req.query.query;
@@ -181,15 +181,8 @@ router.delete('/products/:product/:review', (req, res) => {
     .exec((err, product) => {
       if (err) throw err;
 
-      product.reviews.id(req.params.review).remove();
-      console.log(product.reviews);
-      console.log(req.params.review);
-      
-      // //delete the product
-      // product.reviews.splice({
-      //   userName: req.body.userName,
-      //   text: req.body.text
-      // });
+      // Delete review and save product
+      product.reviews.id(req.params.review).remove(); 
 
       product.save(err => {
         if (err) throw err;

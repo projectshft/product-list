@@ -3,7 +3,6 @@ import { Row, Col, Container, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-// import _ from "lodash";
 import "../css/SearchPage.css";
 import { searchProducts } from "../actions/index";
 import ProductList from './ProductList'
@@ -19,8 +18,6 @@ class SearchPage extends Component {
             query: "",
             price: "",
             page: 1
-            // clickedPage: null ***TODO*** Figure out how to send page number as parameter for new search
-            //Search Params?? Here or store
         }
 
         //bind functions
@@ -28,6 +25,7 @@ class SearchPage extends Component {
         this.updatePageNumber = this.updatePageNumber.bind(this);
         this.setCategory = this.setCategory.bind(this);
         this.setQuery = this.setQuery.bind(this);
+        this.populateCategories = this.populateCategories.bind(this);
     }
 
     //default search to get unfiltered products on page load
@@ -61,6 +59,7 @@ class SearchPage extends Component {
             return (
                 <li className={`page-number ${pageStatus()}`} key={index}>
                     <Link to=""
+                        className="page-number-link"
                         //update current page when page number is clicked
                         onClick={event => {
                             this.updatePageNumber(page)
@@ -111,6 +110,26 @@ class SearchPage extends Component {
         );
     }
 
+    //to render categories in dropdown menu
+    populateCategories() {
+        //get categories
+        const availableCategories = this.props.categories
+
+        //check if categories have been fetched
+        if (availableCategories) {
+            //map categories to dropdown list
+            return this.props.categories.map(category => {
+                return (
+                    <option>{category}</option>
+                );
+            });
+        } else {
+            return (
+                <option value="">(no categories available)</option>
+            )
+        }
+    }
+
 
     render() {
         return (
@@ -154,26 +173,12 @@ class SearchPage extends Component {
                                                 this.setCategory(event.target.value);
                                             }}
                                         >
-                                            <option value="">----</option>
-                                            <option value="automotive">Automotive</option>
-                                            <option value="baby">Baby</option>
-                                            <option value="books">Books</option>
-                                            <option value="clothing">Clothing</option>
-                                            <option value="games">Games</option>
-                                            <option value="garden">Garden</option>
-                                            <option value="grocery">Grocery</option>
-                                            <option value="health">Health</option>
-                                            <option value="home">Home</option>
-                                            <option value="industrial">Industrial</option>
-                                            <option value="jewelery">Jewelry</option>
-                                            <option value="kids">Kids</option>
-                                            <option value="movies">Movies</option>
-                                            <option value="music">Music</option>
-                                            <option value="outdoors">Outdoors</option>
-                                            <option value="shoes">Shoes</option>
-                                            <option value="sports">Sports</option>
-                                            <option value="tools">Tools</option>
-                                            <option value="toys">Toys</option>
+                                            {/* option to remove category filter */}
+                                            <option value="">(Show All)</option>
+
+                                            {/* render all available categories */}
+                                            {this.populateCategories()}
+
                                         </Form.Control>
                                     </Form.Group>
                                 </Form>
@@ -184,6 +189,8 @@ class SearchPage extends Component {
                                 <Form onSubmit={event => { event.preventDefault(); }}>
                                     <Form.Group controlId="sortBy.ControlSelect2">
                                         <Form.Label>Sort by:</Form.Label>
+
+                                        {/* Set state of sort property when input is updated */}
                                         <Form.Control
                                             as="select"
                                             value={this.state.price}
@@ -191,9 +198,12 @@ class SearchPage extends Component {
                                                 this.setSort(event.target.value);
                                             }}
                                         >
-                                            <option value="">----</option>
+
+                                            {/* Sort filters  */}
+                                            <option value="">(none)</option> {/* option to remove sort filter */}
                                             <option value="lowest">Price: Low to High</option>
                                             <option value="highest">Price: High to Low</option>
+
                                         </Form.Control>
                                     </Form.Group>
                                 </Form>
@@ -203,8 +213,8 @@ class SearchPage extends Component {
                         {/* Display page of products */}
                         <Row>
                             <Col md={12}>
-                            
-                            <ProductList />
+
+                                <ProductList />
                             </Col>
                         </Row>
 
@@ -228,7 +238,8 @@ class SearchPage extends Component {
 
 function mapStateToProps(state) {
     return {
-        productCount: state.products.count
+        productCount: state.products.count,
+        categories: state.products.categories
     };
 }
 

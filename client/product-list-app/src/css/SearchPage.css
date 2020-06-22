@@ -1,3 +1,7 @@
+.search-page {
+    margin: 30px auto 0;
+}
+
 .bold-number {
     font-weight: bold;
 }
@@ -5,4 +9,26 @@
 .page-number {
     display: inline-block;
     margin: 1em;
+}
+
+.page-links {
+    text-align: center;
+    background-color: rgba(255, 255, 255, .4);
+    margin: 20px auto 40px;
+    border-radius: 7px;
+}
+
+.search-page Label {
+    color: #64585d;
+    padding: .3em;
+    border-radius: 5px;
+}
+
+.page-number-link {
+    color: #685c60;
+    font-size: 18px;
+}
+
+.page-number-link:hover {
+    color: #beaab1;
 }

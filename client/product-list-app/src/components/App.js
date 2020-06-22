@@ -13,9 +13,8 @@ const App = () => {
       <Row id="header">
         <Col>
           <header>
-            <h1>PRODUCTS</h1>
+            <h1>Products</h1>
           </header>
-          <hr />
         </Col>
       </Row>
 

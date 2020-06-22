@@ -14,11 +14,13 @@ class ProductList extends Component {
 
     //populate html with search results
     renderProducts() {
+        //get products
+        const products = this.props.products
 
-        // check for results
-        if (this.props.products.length > 0) {
+        // check if results were fetched and not empty
+        if (products && products.length > 0) {
 
-            return this.props.products.map((product, index) => {
+            return products.map((product, index) => {
 
                 return (
                             <Col className="product-col" md={4} key={index}>
@@ -65,7 +67,7 @@ class ProductList extends Component {
 
 function mapStateToProps(state) {
     return {
-        products: state.products.productResults
+        products: state.products.product_results
     };
 
 }

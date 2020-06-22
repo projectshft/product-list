@@ -9,7 +9,7 @@ router.get('/generate-fake-data', (request, response, next) => {
     product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
-    product.image = 'https://via.placeholder.com/250?text=Product+Image';
+    product.image = faker.image.image();
 
     product.save((error) => {
       if (error) throw error;
@@ -35,42 +35,48 @@ router.get('/products', (request, response, next) => {
     sortBy = 'asc';
   }
 
-  //search to get filtered result count
+  //get all available categories
   Product
-    .find(searchCategory ? { category: searchCategory } : {}) //optionally filter by category
-    .collation({ locale: 'en', strength: 2 }) //make search case insensitive
-    .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {}) //optionally search by query (case insensitive)
-    .countDocuments() //count how many filtered results were found
-    .exec((error, count) => {
+    .distinct('category')
+    .exec((error, categories) => {
       //send error
-      if (error) return response.send(error);
+      if (error) return response.send(error.message);
 
-      //save count
-      const resultCount = count;
+      //set categories
+      const availableCategories = categories;
 
-      //search to get filtered result products
+      //search to get filtered result count
       Product
         .find(searchCategory ? { category: searchCategory } : {}) //optionally filter by category
         .collation({ locale: 'en', strength: 2 }) //make search case insensitive
         .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {}) //optionally search by query (case insensitive)
-        .sort(sortBy ? { price: sortBy } : 0) //optionally sort by price
-        .skip((perPage * page) - perPage) //skip results based on page number
-        .limit(perPage) //limit results per page
-        .exec((error, products) => {
+        .countDocuments() //count how many filtered results were found
+        .exec((error, count) => {
           //send error
-          if (error) return response.send(error);
+          if (error) return response.send("Error: " + error.message);
 
-            // //calculate number of pages
-            // const numOfPages = Math.ceil(resultCount / perPage);
+          //save count
+          const resultCount = count;
 
-            //send error if page doesn't exist
-            if (page > 1 && products.length === 0) return response.status(404).send("Page does not exist")
-  
+          //search to get filtered result products
+          Product
+            .find(searchCategory ? { category: searchCategory } : {}) //optionally filter by category
+            .collation({ locale: 'en', strength: 2 }) //make search case insensitive
+            .where(searchQuery ? { name: { $regex: searchQuery, $options: 'i' } } : {}) //optionally search by query (case insensitive)
+            .sort(sortBy ? { price: sortBy } : 0) //optionally sort by price
+            .skip((perPage * page) - perPage) //skip results based on page number
+            .limit(perPage) //limit results per page
+            .exec((error, products) => {
+              //send error if page doesn't exist
+              if (page > 1 && products.length === 0) return response.status(404).send("Page does not exist");
 
-          //send count of total filtered results and limited products
-          response.send({ count: resultCount, productResults: products });
+              //if another error, send error
+              if (error) return response.send("Error: " + error.message);
+
+              //send count of total filtered results and limited products
+              response.send({ count: resultCount, categories: availableCategories, product_results: products });
+            });
         });
-
     });
 });
 
@@ -84,7 +90,7 @@ router.get('/products/:product', (request, response, next) => {
       if (!foundProduct) return response.status(404).send("Product not found");
 
       //if another error, send error
-      if (error) return response.send(error);
+      if (error) return response.send("Error: " + error.message);
 
       //send product if found
       response.send(foundProduct);
@@ -119,19 +125,19 @@ router.get('/products/:product/reviews', (request, response, next) => {
 
       //find product and get reviews
       Product //perform a skip and limit on review items
-        .findOne({ _id: productId }, { reviews: { $slice: [reviewsToSkip, reviewsPerPage] }})
-        .exec((error, foundReviews) => {
+        .findOne({ _id: productId }, { reviews: { $slice: [reviewsToSkip, reviewsPerPage] } })
+        .exec((error, foundProduct) => {
           //if no product by that id found, send error
-          if (!foundReviews) return response.status(404).send("Product not found")
-
-          //if another error, send error
-          if (error) return response.send(error);
+          if (!foundProduct) return response.status(404).send("Product not found")
 
           //send error if page doesn't exist
-          if (reviewsPage > 1 && numOfPages < reviewsPage) return response.status(404).send("Page does not exist")
+          if (reviewsPage > 1 && foundProduct.reviews.length === 0) return response.status(404).send("Page does not exist")
+
+          //if another error, send error
+          if (error) return response.send(error.message);
 
           //send reviews and count
-          response.send({total_review_count: reviewCount, reviews: foundReviews.reviews });
+          response.send({ total_review_count: reviewCount, reviews: foundProduct.reviews });
         });
     });
 });
@@ -149,7 +155,7 @@ router.post('/products', (request, response, next) => {
   Product
     .create(productToAdd, (error, addedProduct) => {
       //send error if product not added
-      if (error) return response.send(error);
+      if (error) return response.send(error.message);
 
       //send new product
       response.send(addedProduct);
@@ -171,7 +177,7 @@ router.post('/products/:product/reviews', (request, response, next) => {
       if (!updatedProduct) return response.status(404).send("Product not found");
 
       //send error if product not found/review not updated
-      if (error) return response.send(error);
+      if (error) return response.send(error.message);
 
       //send confirmation
       response.send("Review added");
@@ -186,7 +192,7 @@ router.delete('/products/:product', (request, response, next) => {
       if (!deletedProduct) return response.status(404).send("Product not found")
 
       //if another error, send error
-      if (error) return response.send(error);
+      if (error) return response.send(error.message);
 
       //send confirmation
       response.send("Product has been removed");
@@ -201,7 +207,7 @@ router.delete('/reviews/:review', (request, response, next) => {
       if (!deletedReview) return response.status(404).send("Review not found");
 
       //if another error, send error
-      if (error) return response.send(error)
+      if (error) return response.send(error.message)
 
       //send confirmation
       response.send("Review has been removed");

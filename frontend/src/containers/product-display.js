@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 class ProductDisplay extends Component {
 
     createProductModules() {
-        if (this.props.products && Array.isArray(this.props.products) && this.props.products.length > 1) {
-            return this.props.products.map((product, index) => {
-                if (index !== 0) {
+        if (this.props.products.products && Array.isArray(this.props.products.products) && this.props.products.products.length > 0) {
+            return this.props.products.products.map((product) => {
                     return (
                         <div key={product._id} className="product-module">
                             <p key={`category of ${product._id}`}>Category: <strong>{product.category}</strong></p>
@@ -15,7 +14,6 @@ class ProductDisplay extends Component {
                             <h1 key={`name of ${product._id}`}>{product.name}</h1>
                         </div>
                     )
-                }
             })
         } else {
             return (

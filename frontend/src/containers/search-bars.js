@@ -63,7 +63,7 @@ class SearchBars extends Component {
 
     renderPageNumbers() {
         
-        const listLength = this.props.products[0]
+        const listLength = this.props.products.count
         console.log(listLength)
         const numOfPages = Math.ceil(listLength / 9)
         const pageArray = []
@@ -86,6 +86,17 @@ class SearchBars extends Component {
         })
     }
 
+    renderCategoryOptions() {
+        if (this.props.products.products) {
+            this.props.products.products.map(product => {
+                console.log(product.category)
+                return (
+                    <option>{JSON.stringify(product.category)}</option>
+                )
+            })
+        }
+    }
+
 
     render() {
         
@@ -102,6 +113,7 @@ class SearchBars extends Component {
                             <option>Baby</option>
                             <option>Tools</option>
                             <option>Outdoors</option>
+                            {/* {this.renderCategoryOptions()} */}
                         </Form.Control>    
                         </Col>
                         <Col>

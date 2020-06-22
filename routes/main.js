@@ -59,6 +59,38 @@ router.get('/products', (req, res, next) => {
         }
     }
 
+    let query2 = Product.find({})
+
+    if (search) {
+        // use text index to search full product
+        query2 = query2.find({$text: {$search: search}})
+    }
+
+    // build up the query, first check if category is present and search by it
+    if (category) {
+        // make sure first letter is capitalized and all others are lowercase
+        category = category.toLowerCase()
+        category = category[0].toUpperCase() + category.slice(1)
+        // only return those products that have a matching category
+        query2 = query2.find({category: category})
+    }
+    // sort by price whether the query is highest or lowest
+    if (price) {
+        if (price === 'lowest') {
+            query2 = query2.sort({price: 1})
+        } else if (price === 'highest') {
+            query2 = query2.sort({price: -1})
+        } else {
+            // if query entered incorrectly, say so
+            res.status(400).send('price query must either be set to highest or lowest.')
+        }
+    }
+
+    let officialQuery = {
+        products: [],
+        count: null
+    }
+
     query
         // skip for as many pages as you're on - 1 page's worth of products
         .skip((perPage * page) - perPage)
@@ -68,21 +100,30 @@ router.get('/products', (req, res, next) => {
         .exec((err, products) => {
             if (err) {
                 throw err
-            }
-            Product.count().exec((err, count) => {
-                if (err) {
-                    throw err
-                }     
-                products.unshift(count)
-                if (products.length === 0) {
-                    // return something if the array will be empty
-                    res.json('No results for that search. Try simplifying your search to one word or changing the category query.')
-                } else {
-                    res.json(products)
-                } 
-            })
-        })
+            }   
+            query2
+                // this time grab count
+                .count()
+                // execute callback function
+                .exec((err, count) => {
+                    if (err) {
+                        throw err
+                    }
+                    officialQuery.count = count
+                    res.json(officialQuery)
+                })
+            if (products.length === 0) {
+                // return something if the array will be empty
+                res.json('No results for that search. Try simplifying your search to one word or changing the category query.')
+            } else {
+                officialQuery.products = products
+            }      
+        }) 
 });
+
+router.get('/products/categories', (req, res, next) => {
+    
+})
 
 router.get('/products/:product', (req, res, next) => {
     // grab :product from the params

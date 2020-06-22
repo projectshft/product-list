@@ -15,9 +15,9 @@ export default function(state = [], action) {
             // return [action.payload.data, ...state];
             
             console.log('inside reducer, checking size of state, state: ', state)
-            console.log('inside reducer: action.payload.headers.productCount:', action.payload.headers.productcount)
-            console.log('inside reducer, checking concat for new state: ', [action.payload.data, action.payload.headers.productCount, ...state])
-            return [action.payload.data, action.payload.headers.productcount, ...state];
+           // console.log('inside reducer: action.payload.headers.productCount:', action.payload.headers.productcount)
+            console.log('inside reducer, checking concat for new state: ', [action.payload.data, action.payload.headers.productcount, action.payload.headers.querydata, ...state])
+            return [action.payload.data, action.payload.headers.productcount, action.payload.headers.querydata, ...state];
             //return state.concat([action.payload.data],[action.payload.headers.productcount])
             //return state;
         default: 

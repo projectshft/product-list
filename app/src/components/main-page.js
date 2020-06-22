@@ -13,7 +13,7 @@ export default class MainPage extends Component {
         <h1 className="text-center">PRODUCTS</h1>
         <SearchFilterSortBar />
         <ProductContainer />
-        <Pagination />
+        {/* <Pagination /> */}
       </div>
     );
   }

@@ -7,57 +7,36 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'
 
 export function fetchProducts(state) {
   console.log('inside fetchProducts, this is state: ', state)
-  const page = state.page;
+  const page = Number(state.page);
   const search = state.search;
   const category = state.category;
   const price = state.price;
-  const queryArray = [];
-  if (page) {
-    queryArray.push(page)
-  }
-  if (search) {
-    queryArray.push(search)
-  }
-  if (category) {
-    queryArray.push(category)
-  }
-  if (price) {
-    queryArray.push(price)
-  }
-  console.log('queryArray: ', queryArray)
-  const queryCount = queryArray.length;
-  console.log('queryArray count: ', queryArray.length)
+  
 
   let url = ROOT_URL;
-  if (page || search || category || price) {
-    url = url + '?';
-    if (page) {
-      url = `${url}page=${page}`;
-    }
-    if (search && queryCount === 1) {
-      url = `${url}search=${search}`;
-
-    } else if (search) {
-      url = `${url}&search=${search}`;
-    }
-
-    if (category && queryCount === 1) {
-      
-      url = `${url}category=${category}`;
-
-    } else if (category) {
-      
-      url = `${url}&category=${category}`;
-    }
-    if (price && queryCount === 1) {
-      
-      url = `${url}price=${price}`;
-
-    } else if (price) {
+  
+    url = url + `?page=${page}`;
     
-      url = `${url}&price=${price}`;
+    if (search === "null") {
+      
+    } else {
+      url = url + `&search=${search}`
     }
-  }
+    
+    if (category === "null") {
+
+    } else {
+      url = url + `&category=${category}`
+    }
+
+    if (price === "null") {
+
+    } else {
+      url = url + `&price=${price}`
+    }
+   
+
+  
   //const url = `${ROOT_URL}?page=${page}&query=${search}&category=${category}&price=${sort}`;
   
   console.log('url with page: ', url);

@@ -3,21 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions/index';
 
-//dropdowns can be a button if needed
-/*another option if needed:
-        <div class="dropdown-menu">
-          <h6 class="dropdown-header">Dropdown header</h6>
-          <a class="dropdown-item" href="#">Action</a> 
-          <a class="dropdown-item" href="#">Another action</a>
-        </div>
 
-From bootstrap docs:
-Form controls
-Textual form controls—like <input>s, <select>s, and <textarea>s—are styled with the .form-control class. Included are styles for general appearance, focus state, sizing, and more.
-Be sure to explore our custom forms to further style <select>s.  
-
-Where do we make our row? another outer div with class="row"?
- */
 class SearchFilterSortBar extends Component {
   constructor(props) {
     super(props);

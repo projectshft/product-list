@@ -11,30 +11,48 @@ class PaginationComponent extends Component {
     super(props);
     console.log(props);
     //the props is an object that contains the fetchPageNumber function
-
-    this.state = { page: '' };
-
+    console.log('Inside pagination component, props=', props)
+    this.state = {page: '1', search: '', category: '', price: '', productsCount: '' };
+    // this.state = this.props.state;
+    console.log('Inside pagination constructor, this.state=', this.state)
     this.onPageClick = this.onPageClick.bind(this);
+    //this.parseData = this.parseData.bind(this);
     //this.showPageNumbers = this.showPageNumbers.bind(this);
   }
 
   onPageClick(event) {
+    console.log('on page click state is: ', this.state)
     console.log('page click event.target= ', event.target.innerHTML)
     const page = event.target.innerHTML.toString();
-    //console.log('page clicked', event.target.value)
-    this.setState({ page: page }, () => {
+    console.log('on page click, this.props.products', this.props.products)
+    const newData = this.props.products[2].split(', ');
+    this.setState({ page: page, search: newData[0], category: newData[1], price: newData[3]}, () => {
       console.log('State inside onPageClick:', this.state)
-       console.log('State inside onPageClick:', this.state.page)
+      console.log('State inside onPageClick:', this.state.page)
+      console.log('Props inside onPageClick: ', this.props.products)
+      
+      console.log('new data', newData)
+      console.log('new state', this.state)
       this.props.fetchProducts(this.state);
-    });
+   });
+  // event.preventDefault();
+   //this.props.fetchProducts(this.state);
+   //this.props.onPageClick(event.target.innerHTML.toString())
+   
   }
 
- 
-
   render() {
-  
+    const page = this.props.page;
+    const propsCopy = [...this.props.products]
+    console.log('props copy', propsCopy)
+   
+   
     console.log('Inside pagination component, this.props= ', this.props)
-    const productsCount = this.props.products[1]
+   // const persistedData = this.props.products[1].split(',');
+    //console.log('persistedData: ', persistedData)
+    const productsCount = this.props.products[1];
+    console.log('products count:', productsCount)
+    // const persistedData = productsCount.split(' ')
     console.log('Inside pagination component, this.props.products[1]= ', this.props.products[1])
     const pageNumbers = [];
     let pageNumber = 1;
@@ -51,9 +69,10 @@ class PaginationComponent extends Component {
 
     return (
       <div className="row justify-content-center">
-      <table className="table w-auto">
-        <tbody><tr onClick={this.onPageClick} className="pages">{pageNumbers}</tr></tbody>
-      </table>
+        <table className="table w-auto">
+          <tbody><tr onClick={this.onPageClick} className="pages">{pageNumbers}</tr></tbody>
+          
+        </table>
       </div>
     )
   }

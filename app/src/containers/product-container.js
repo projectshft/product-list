@@ -17,20 +17,33 @@ class ProductContainer extends Component {
 
     //the state will contain our user search input, category selection and/or price sort selection
     this.state = { page: '1', search: '', category: '', price: '' };
-  
+
+    this.handlePageClick = this.handlePageClick.bind(this);
+
+  }
+
+
+  handlePageClick(newPage) {
+    console.log('inside handlePageClick, this.state', this.state)
+    this.setState({ page: newPage })
+
   }
 
 
   renderProducts() {
-    // products.map(products)
-    console.log('products in renderProducts function:', this.props.products)
+    console.log('in renderProducts function, this.state', this.state)
+    console.log('in renderProducts function, this.props.products:', this.props.products)
     return _.map(this.props.products[0], product => {
       console.log('products in renderProducts _map function: product=', product)
-      return(
+      return (
+
         <div className="col-md-4" key={product._id}>
           <IndividualProductDiv product={product} />
         </div>
+
+
       )
+
     })
   }
 
@@ -39,8 +52,9 @@ class ProductContainer extends Component {
     //const products = this.props.products;
     console.log('Inside product-container render, this.props= ', this.props)
     return (
-      <div className="row">
-        {this.renderProducts()}
+      <div>
+        <div className="row">{this.renderProducts()}</div>
+        <div><PaginationComponent onPageClick={this.handlePageClick} /></div>
       </div>
     );
   }

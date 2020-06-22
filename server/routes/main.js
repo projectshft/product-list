@@ -109,44 +109,12 @@ if (search) {
           if (err) return next(err)
           console.log('In product count, count is: ', count)
           console.log('In product count, products are: ', products)
-          res.append('productCount', count.toString());
+          res.append('productCount', [count.toString()])
+          res.append('queryData', [search, categoryType, page, priceSortType]);
           res.send(products);
         })
       })
   })
- // Product
-    //.find({ $and: [{ category: categoryType }, {$match: { $or:[ {name: { $regex: searchQuery}}, { category: { $regex: searchQuery}}]}} ]})
-    // .find({ $or: [{ name: { $regex: searchQuery, $options: "i"}}, 
-    //              
-    //               { category: categoryType}, 
-    //               {}]} )
-  //  .find({queryOptions})
-   // .find({ $or: [ { category: category }, { name: { $regex: search, $options: "i"}}, { category: { $regex: search, $options: "i"}}]}) 
-    // .find({ category: categoryType})
-    // .count({ category: categoryType}, function (err, count) {
-    //   res.append("productCount", count.toString())
-    // })             
-    //.sort({ price: getSortType(priceSortType) })
-    //.skip((perPage * page) - perPage)
-    //.limit(perPage)
-    // .exec((err, products) => {
-    //   console.log('products count: ', products)
-    //   // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
-    //   // If you want to count all documents in a large collection, use the estimatedDocumentCount() function instead. If you call countDocuments({}), MongoDB will always execute a full collection scan and not use any indexes.
-      
-    //   Product.countDocuments().exec((err, count) => {
-    //     if (err) return next(err)
-    //     res.send(products)
-    //     //console.log('Count inside product.count= ', products.length)
-
-        //we'll try sending the product count back as a response header (using append) and then pulling that out for the pagination component
-        //res.append("productCount", products.length.toString())
-        //res.append("productCount", count.toString())
-        
-//       })
-//     })
-// })
-
 
 
 /*

@@ -36,11 +36,11 @@ class Footer extends Component {
       if (i%9 === 0) {
         if ((i/9 + 1) == this.props.page) {
           indexLinks.push(
-            <span> <button className="current-page-button" value={(i/9) + 1} onClick={this.handlePageClick}>{(i/9) + 1}</button> </span>
+            <span> <button className="current-page-button" value={(i/9) + 1} onClick={this.handlePageClick}><h5>{(i/9) + 1}</h5></button> </span>
             )
         } else {
           indexLinks.push(
-            <span> <button className="page-button" value={(i/9) + 1} onClick={this.handlePageClick}>{(i/9) + 1}</button> </span>
+            <span>  <button className="page-button" value={(i/9) + 1} onClick={this.handlePageClick}><h5>{(i/9) + 1}</h5></button>  </span>
             )
         }
         
@@ -51,7 +51,7 @@ class Footer extends Component {
        }
     }
     return (
-      <div>{indexLinks}</div>
+      <div className="footer-container">{indexLinks}</div>
     )
   }
 }

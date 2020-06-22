@@ -44,15 +44,12 @@ class Products extends Component {
     let productRow = [];
     for (let i = 0; i < myProducts.length; i++) {
       productRow.push(
-        <div className="col-md-3">
+        <div className="col-md-4 card-container">
           <div className="card">
-          <span><p>Category: {myProducts[i].category}</p></span>
-          <span><h4> ${myProducts[i].price}</h4></span>
-            <img className="card-img-top" src="https://via.placeholder.com/250?text=Product+Image" />
-            <div className="card-body">
+          <span className="card-category"><h6>Category: {myProducts[i].category}</h6></span>
+          <span className="card-price"><h4>${myProducts[i].price}</h4></span>
+            <img className="card-img" src="https://via.placeholder.com/250?text=Product+Image" />
             <h5 className="card-title">{myProducts[i].name}</h5>
-
-            </div>
           </div>
         </div>
       )
@@ -85,8 +82,7 @@ class Products extends Component {
 
   render() {
     return (
-      <div className = "products-container">
-        <h2>My Products</h2>
+      <div className="products-container">
         {this.renderProducts()}
       </div>
     )

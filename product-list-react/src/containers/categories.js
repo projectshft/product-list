@@ -53,7 +53,7 @@ class Categories extends Component {
   // }
   render() {
     return (
-      <select class="browser-default custom-select" onChange={this.handleInputChange}>
+      <select class="browser-default custom-select navbar-form" onChange={this.handleInputChange}>
         <option selected>Categories</option>
         <option value="Toys">Toys</option>
         <option value="Garden">Garden</option>

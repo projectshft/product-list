@@ -16,20 +16,26 @@ export default class NavBar extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-4">
-          <SearchBar />
+      <div>
+        <div className="row">
+          <h1 className="title">PRODUCTS</h1>
         </div>
-        <div className="col-md-4">
-          <Categories />
-        </div>
-        <div className="col-md-4">
-          <SortBy />
-        </div>
+        <div className="row navbar-container">
+          <div className="col-md-4 navbar-item-container">
+            <SearchBar />
+          </div>
+          <div className="col-md-4 navbar-item-container">
+            <Categories />
+          </div>
+          <div className="col-md-4 navbar-item-container">
+            <SortBy />
+          </div>
 
 
 
+        </div>
       </div>
+
     )
   }
 }

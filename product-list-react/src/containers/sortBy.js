@@ -27,7 +27,7 @@ class Categories extends Component {
 
   render() {
     return (
-      <select class="browser-default custom-select" onChange={this.handleInputChange}>
+      <select class="browser-default custom-select navbar-form" onChange={this.handleInputChange}>
         <option selected>Sort By Price</option>
         <option value="highest">High to Low</option>
         <option value="lowest">Low to High</option>

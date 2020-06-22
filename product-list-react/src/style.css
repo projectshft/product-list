@@ -9,3 +9,50 @@
   padding: 0;
   border: none;
 }
+
+.title {
+  margin: 1% auto;
+}
+
+.products-container {
+  margin: 1% auto;
+}
+
+.card {
+  display: inline-block;
+  height: 50%;
+  width: 50%;
+  text-align: center;
+}
+
+.card-container {
+  text-align: center;
+}
+
+.card-category {
+  float: left;
+}
+
+.card-price {
+  float: right;
+}
+
+.navbar-container {
+  margin: 1% auto;
+  text-align: center;
+}
+
+.footer-container {
+  margin: 1% auto;
+  text-align: center;
+}
+
+.navbar-form {
+
+  text-align: center;
+}
+
+.navbar-item-container {
+  margin: auto;
+  text-align: center;
+}

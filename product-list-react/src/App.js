@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
-import Products from './containers/products';
-import NavBar from './containers/navbar';
-import Footer from './containers/footer';
+import Products from './components/products';
+import NavBar from './components/navbar';
+import Footer from './components/footer';
 
 export default class App extends Component {
   render() {

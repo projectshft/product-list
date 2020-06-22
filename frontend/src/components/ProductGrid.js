@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { filterProducts, storePage } from "../actions/index";
+import { filterProducts } from "../actions/index";
 import { bindActionCreators } from "redux";
 import queryString from "query-string";
 
@@ -97,7 +97,6 @@ class ProductGrid extends React.Component {
 
   handlePageClick(event) {
     event.preventDefault();
-    console.log(event);
 
     this.setState({ page: event.target.textContent }, this.pullNewPage);
   }
@@ -181,7 +180,7 @@ class ProductGrid extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log("state is", state);
+  console.log("state within productGrid mapStateToProps is", state);
 
   return {
     countObject: state.products[0] || 0,
@@ -190,7 +189,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ filterProducts, storePage }, dispatch);
+  return bindActionCreators({ filterProducts }, dispatch);
 }
 
 export default connect(

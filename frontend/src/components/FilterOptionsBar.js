@@ -56,7 +56,6 @@ class FilterOptionsBar extends React.Component {
 
   handleSortChange(event) {
     event.preventDefault();
-    console.log("Sort val is", event.target.value);
     this.setState({ queries: { sort: event.target.value } }, this.startSearch);
   }
 
@@ -80,14 +79,10 @@ class FilterOptionsBar extends React.Component {
 
   startSearch() {
     // we need to update the url when we begin
-    // console.log("parsedFromPathName is", parsedFromPathName);
-
     const parsedfromLocation = queryString.parse(this.props.location.search);
     const mergedObjects = { ...parsedfromLocation, ...this.state.queries };
 
     const stringifiedNewQuery = queryString.stringify(mergedObjects);
-
-    console.log("props are ", this.props);
 
     this.props.history.push(`?${stringifiedNewQuery}`);
 

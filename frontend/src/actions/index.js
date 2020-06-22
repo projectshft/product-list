@@ -1,10 +1,7 @@
 import axios from "axios";
-import { withRouter } from "react-router";
 import queryString from "query-string";
 
-export const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
 export const FILTER_PRODUCTS = "FILTER_PRODUCTS";
-export const STORE_PAGE = "STORE_PAGE";
 
 const ROOT_URL = `http://localhost:8000`;
 
@@ -31,21 +28,9 @@ export function filterProducts(existingSearchQueryPath, newParams) {
   }
 
   const request = axios.get(ROOT_URL + appendToUrl);
-  request.then(console.log("request is", request));
-  request.then(console.log("request is", request));
 
   return {
     type: FILTER_PRODUCTS,
-    payload: request,
-  };
-}
-
-// useful for just telling other parts of app what page we are on
-export function storePage(page) {
-  const request = page;
-
-  return {
-    type: STORE_PAGE,
     payload: request,
   };
 }

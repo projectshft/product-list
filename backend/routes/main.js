@@ -97,7 +97,7 @@ router.get("/products", (req, res, next) => {
       .count()
       .exec((err, count) => {
         if (err) return next(err);
-        console.log(count);
+        // add count to beginning of result, so that we can access for pagination
         products.unshift({ count: count });
         res.send(products);
       });

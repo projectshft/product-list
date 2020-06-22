@@ -2,7 +2,8 @@ import { SEARCH_PRODUCTS } from "../actions/index";
 
 export default function (state = {
   count: 0,
-  productResults: []
+  product_results: [],
+  categories: []
 }, action) {
   switch (action.type) {
     case SEARCH_PRODUCTS:

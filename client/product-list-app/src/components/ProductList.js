@@ -23,31 +23,31 @@ class ProductList extends Component {
             return products.map((product, index) => {
 
                 return (
-                            <Col className="product-col" md={4} key={index}>
+                    <Col className="product-col" md={4} key={index}>
                         <Container className="product-container">
-                                    <Row>
-                                        <Col className="category-col" md={8}>
-                                            <p className="product-category"><span>Category:</span> {product.category}</p>
-                                        </Col>
-                                        <Col className="price-col" md={4}>
-                                            <p className="product-price">${product.price}</p>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <img className="product-image" src={product.image} alt={product.name} />
-                                            <h3 className="product-name">{product.name}</h3>
-                                        </Col>
-                                    </Row>
-                    </Container>
-                            </Col>
+                            <Row>
+                                <Col className="category-col" md={8}>
+                                    <p className="product-category"><span>Category:</span> {product.category}</p>
+                                </Col>
+                                <Col className="price-col" md={4}>
+                                    <p className="product-price">${product.price}</p>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <img className="product-image" src={product.image} alt={product.name} />
+                                    <h3 className="product-name">{product.name}</h3>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Col>
                 );
             });
         } else {
             // if no results returned 
             return (
-                <Col  className="no-results">
-                <p>No results found.</p>
+                <Col className="no-results">
+                    <p>No results found.</p>
                 </Col>
             )
         }

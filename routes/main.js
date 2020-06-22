@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const faker = require('faker')
-const Product = require('../models/product')
-const Review = require('../models/review')
+const Products = require('../models/product')
+const Reviews = require('../models/review')
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -48,14 +48,14 @@ router.get('/products', (req, res, next) => {
         price = { price: 1 }
     }
 
-  Product
+  Products
     .find(productSearch)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .sort(price)
     .exec((error, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count(productSearch).exec((err, count) => {
+      Products.count(productSearch).exec((err, count) => {
         if (err) return next(err)
 
         res.send({products: products, productCount: count})

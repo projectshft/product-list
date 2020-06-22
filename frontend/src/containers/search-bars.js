@@ -26,6 +26,7 @@ class SearchBars extends Component {
 
     search(event) {
         if (event.keyCode === 13) {
+            event.preventDefault()
             this.setState({query: event.target.value}, () => {
                 this.requestProducts()
             })
@@ -93,7 +94,7 @@ class SearchBars extends Component {
                 <Form>
                     <Form.Row>
                         <Col xs={7}>
-                        <Form.Control placeholder="Search" id="search"  onKeyUp={this.search.bind(this)}/>
+                        <Form.Control placeholder="Search" id="search"  onKeyDown={this.search.bind(this)}/>
                         </Col>
                         <Col>
                         <Form.Control as="select" onChange={this.selectCategory.bind(this)}>

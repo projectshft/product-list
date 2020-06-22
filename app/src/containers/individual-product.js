@@ -1,18 +1,15 @@
 import React, {Component} from 'react';
 
-
+/* This component is responsible for rendering only one product. It should be 
+   limited to receiving info for one product only, which is passed from the product-
+   container component. This component will be initialized and rendered the number of
+   times it needs to appear on the page (up to 9)
+*/   
 export default class IndividualProductDiv extends Component {
-  //do we need to add a constructor to receive props?
-  // waitForData() {
-  //   console.log('waiting for data')
-  // }
   
   render() {
-    console.log('Inside IndividualProductDiv, this.props= ', this.props)
     const product = this.props.product;
-  //   if (!product) {
-  //     setTimeout(this.waitForData, 3000)
-  // }
+
     return (
       <div>
         <div className="whole-product-div">

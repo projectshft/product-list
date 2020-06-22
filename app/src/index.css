@@ -26,7 +26,6 @@ code {
 }
 
 .product-div {
-  /* height: 20px; */
   display: flex;
   justify-content: space-evenly;
   vertical-align: center;

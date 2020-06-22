@@ -1,71 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import { fetchProducts } from '../actions/index';
 import IndividualProductDiv from './individual-product'
 import PaginationComponent from './pagination';
 import _ from "lodash";
 
 
-//this will be the outer container component that holds our product rows and products
-//the products will be passed in as props so we can access them in this component. Each row will be passed a product as a prop and the product's id will be used a the key (react requirement)
+/* This will be the outer container component that holds our product rows and products. 
+   The products will be passed in as props so we can access them in this component. Each row will be passed a product as a prop and the product's id will be used a the key (react requirement)
+*/
 class ProductContainer extends Component {
   constructor(props) {
     super(props);
-    console.log('Inside ProductContainer constructor, props= ', props);
-    //the props is an object that just contains the fetchProducts function
-
-    //the state will contain our user search input, category selection and/or price sort selection
-    this.state = { page: '1', search: '', category: '', price: '' };
-
-    this.handlePageClick = this.handlePageClick.bind(this);
 
   }
 
-
-  handlePageClick(newPage) {
-    console.log('inside handlePageClick, this.state', this.state)
-    this.setState({ page: newPage })
-
-  }
-
-
+  /* this function will be called from the main render() function and will map through
+    all the products received, and will create an individualProductDiv component for each
+  */  
   renderProducts() {
-    console.log('in renderProducts function, this.state', this.state)
-    console.log('in renderProducts function, this.props.products:', this.props.products)
     return _.map(this.props.products[0], product => {
-      console.log('products in renderProducts _map function: product=', product)
       return (
-
         <div className="col-md-4" key={product._id}>
           <IndividualProductDiv product={product} />
         </div>
-
-
       )
-
     })
   }
 
 
   render() {
-    //const products = this.props.products;
-    console.log('Inside product-container render, this.props= ', this.props)
     return (
       <div>
         <div className="row">{this.renderProducts()}</div>
-        <div><PaginationComponent onPageClick={this.handlePageClick} /></div>
+        <div><PaginationComponent  /></div>
       </div>
     );
   }
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ fetchProducts }, dispatch);
-// }
-
+/* this component will only need to receive state from the redux store, in order to render
+   the products on the page
+*/   
 function mapStateToProps({ products }) {
-  console.log('Inside mapStateToProps of product-container, products:', products);
   return { products };
 }
 

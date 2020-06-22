@@ -4,46 +4,50 @@ const router = require('express').Router()
 // this is a package that will help us populate our database with a bunch of fake data.
 const faker = require('faker')
 const Product = require('../models/product')
-const Review = require('../models/review')
 
 
-// Now if you fire up your server and make a GET request to localhost:8000/generate-fake-data, it will create and save 90 new products each time you do. You might only want to do this once or twice.
-// Now check your database to see a products collection with all your data.
-// router.get('/generate-fake-data', (req, res, next) => {
-//   const adjectiveArray = ['great', 'awesome', 'awful', 'weird', 'useless'];
+/* Two get requests were completed to generate 180 product documents in our collection. 
+   They are also filled with a random number of reviews that are relevant to the product. 
+
+router.get('/generate-fake-data', (req, res, next) => {
+  const adjectiveArray = ['great', 'awesome', 'awful', 'weird', 'useless'];
+
+  for (let i = 0; i < 90; i++) {
+    let product = new Product();
+    let randomNumOfReviews = Math.floor(Math.random() * 10);
+    const getReviews = (randomNumOfReviews, productName) => {
+      let reviews = [];
+
+      for (let j = 0; j < randomNumOfReviews; j++) {
+        //let review = new Review();
+        let randomNumOfAdjectiveArray = Math.floor(Math.random() * 5);
+        reviews.push({
+          userName: faker.name.findName(),
+          text: `This ${productName} is ${adjectiveArray[randomNumOfAdjectiveArray]}`
+        })
+      }
+      return reviews;
+    }
+    product.category = faker.commerce.department()
+    product.name = faker.commerce.productName()
+    product.price = faker.commerce.price()
+    product.image = 'https://via.placeholder.com/250?text=Product+Image'
+    product.reviews = getReviews(randomNumOfReviews, product.name)
 
 
-//   for (let i = 0; i < 90; i++) {
-//     let product = new Product();
-//     let randomNumOfReviews = Math.floor(Math.random() * 10);
-//     const getReviews = (randomNumOfReviews, productName) => {
-//       let reviews = [];
+    product.save((err) => {
+      if (err) throw err
+    })
+  }
+  res.end()
+})
 
-//       for (let j = 0; j < randomNumOfReviews; j++) {
-//         //let review = new Review();
-//         let randomNumOfAdjectiveArray = Math.floor(Math.random() * 5);
-//         reviews.push({
-//           userName: faker.name.findName(),
-//           text: `This ${productName} is ${adjectiveArray[randomNumOfAdjectiveArray]}`
-//         })
-//       }
-//       return reviews;
-//     }
-//     product.category = faker.commerce.department()
-//     product.name = faker.commerce.productName()
-//     product.price = faker.commerce.price()
-//     product.image = 'https://via.placeholder.com/250?text=Product+Image'
-//     product.reviews = getReviews(randomNumOfReviews, product.name)
+*/
 
-
-//     product.save((err) => {
-//       if (err) throw err
-//     })
-//   }
-//   res.end()
-// })
-
-// Next we'll create our paginating GET route. We'll want the client to be able to pass in any "page" they want to get a different set of products each time and limit them to only 10 products at one time. 
+/* Next we'll create our paginating GET route. We'll want the client to be able to pass in
+   any "page" they want to get a different set of products each time and limit them to
+   only 9 products at one time. 
+*/
 router.get('/products', (req, res, next) => {
 
   //set max products per page to 9
@@ -53,68 +57,74 @@ router.get('/products', (req, res, next) => {
   const page = req.query.page || 1;
 
 
-   // get optional query parameter from request to find by product category
-   const categoryType = req.query.category || null;
-    console.log('category: ', categoryType)
-   // get optional query parameter from request to sort the products by price (ascending or descending)
-   const priceSortType = req.query.price || null;
- 
-   // get optional query search string from request to search products by their name and category
-   const search = req.query.search || null;
-    console.log('search: ', search)
+  // get optional query parameter from request to find by product category
+  const categoryType = req.query.category || null;
 
+  // get optional query parameter from request to sort the products by price (ascending or descending)
+  const priceSortType = req.query.price || null;
 
+  // get optional query search string from request to search products by their name and category
+  const search = req.query.search || null;
+
+  /* Here we'll create a regular expression based on the search term. This way we can 
+    search the entire name of the product for just one word, instead of needing an exact
+    match
+  */
   const regex = new RegExp(search);
 
-    // this function will be called when we're building up our query below
-  // check that this is not defaulting to highest if no param is given
+  /* This function will be called in the .sort method of the db query below and will 
+     control if user sees/selects prices listed high to low or vice versa
+  */   
   const getSortType = priceSortType => {
     if (priceSortType == "Highest") {
       return 1;
-    } else  {
+    } else {
       return -1;
-    } 
+    }
+  }
+
+  /* Here we are building up are query. The queries are optional, so we will check if they
+     are defined and if so, will add them to a query object that will be used in .find
+     below
+  */   
+  var query = {};
+  if (categoryType) {
+    query.category = categoryType;
+  }
+  if (search) {
+    query.name = regex;
   }
  
-var query = {};
-if (categoryType) {
-  query.category = categoryType;
-}
-if (search) {
-  query.name = regex;
-}
-// if (priceSortType) {
-//   query.sort.price = getSortType(priceSortType);
-// }  
- 
+  /* first we will search the products collection based on any category or search term 
+     queries from the user. The skip method allows for pagination (eg, if the user wants
+     to see page 2. Since products are limited to 9 per page by the .limit method, a new
+     request must be made to view the products on different page numbers. 
+  */
+  Product
+    .find(query)
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
+    .sort({ price: getSortType(priceSortType) })
+    .exec((err, products) => {
+      if (err) throw err;
 
-
-
-
-
-
-  
-    Product
-      .find(query)
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .sort({ price: getSortType(priceSortType) })
-      .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-        console.log('Number of found products: ', products.length)
-        //res.append('Total products found', products.length.toString());
-        // res.append('productCount', products.length.toString());
-        
-        Product.count(query).exec((err, count) => {
-          if (err) return next(err)
-          console.log('In product count, count is: ', count)
-          console.log('In product count, products are: ', products)
-          res.append('productCount', [count.toString()])
-          res.append('queryData', [search, categoryType, page, priceSortType]);
-          res.send(products);
-        })
+      /* the products argument above represents the results of the first query search, and 
+         will be limited to 9 or below. These are the product that we will return below in
+         each response. However we also want to know the total number of products that were
+         found in the .find query, so we handle this below with count(query) and this will
+         give us the total count, which is needed for pagination. In order to persist the 
+         state of the query on clicking a page number, the query values and total product
+         count are appended to the headers of the response, and reattached to the state in 
+         the reducer.
+      */   
+      Product.count(query).exec((err, count) => {
+        if (err) return next(err)
+        res.append('productCount', [count.toString()])
+        res.append('queryData', [search, categoryType, page, priceSortType]);
+        res.send(products);
       })
-  })
+    })
+})
 
 
 /*
@@ -124,11 +134,10 @@ router.get('/products/:productId', (req, res, next) => {
   //get the productId from the request
   const productId = req.params.productId;
 
-  //find the product by the productId provided in the request parameter
   Product
     .find({ _id: productId })
     .exec((err, foundProduct) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back
+   
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
@@ -139,11 +148,10 @@ router.get('/products/:productId', (req, res, next) => {
 
 
 /*
-GET /products/:product/reviews: Returns ALL the reviews for a product (by productId in url), but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
-
-Still need to work on how to count the reviews and paginate them to 4 per page
-
-Is an empty array sent back if there are no reviews?
+GET /products/:product/reviews: Returns ALL the reviews for a product (by productId in url)
+, but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve
+ them out of the products. You should be able to pass in an optional page query parameter
+ to paginate.
 */
 router.get('/products/:productId/reviews', (req, res, next) => {
   //gets the productId from the request
@@ -151,7 +159,6 @@ router.get('/products/:productId/reviews', (req, res, next) => {
 
   //limits the reviews to 4 per page
   const reviewsPerPage = 4
-
 
   // returns the first page of reviews by default, if user doesn't specify a page in the query
   const page = req.query.page || 1
@@ -210,24 +217,13 @@ router.post('/products/:productId/reviews', (req, res, next) => {
 
   // this will search the products collection by product id so that we can add the new review to it
   // $addToSet will add a review to the reviews array, and setting new:true will return the updated record
-  // GO BACK AND CHANGE THIS TO $PUSH
+  // GO BACK AND TRY $PUSH
   Product
     .findByIdAndUpdate(productId, { $addToSet: { reviews: newReview } }, { new: true })
     .exec((err, product) => {
       if (err) throw err;
       res.send(product)
     })
-  // .then((docs) => {
-  //   if (docs) {
-  //     resolve({ success: true, data: docs });
-  //   } else {
-  //     reject({ success: false, data: "no such product exists" });
-  //   }
-  // }).catch((err) => {
-  //   reject(err);
-  // })
-
-  // res.send()
 })
 
 /*

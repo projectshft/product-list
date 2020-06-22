@@ -1,5 +1,3 @@
-// we'll want to import our model and add some routes for filling our database with fake data.
-
 const router = require('express').Router()
 // this is a package that will help us populate our database with a bunch of fake data.
 const faker = require('faker')
@@ -93,6 +91,9 @@ router.get('/products', (req, res, next) => {
   }
   if (search) {
     query.name = regex;
+  }
+  if (categoryType === "All") {
+    query = {};
   }
  
   /* first we will search the products collection based on any category or search term 

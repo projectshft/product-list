@@ -78,7 +78,7 @@ class SearchFilterSortBar extends Component {
         <button onClick={this.onSearchButtonClick} type="submit" className="btn btm-primary">Search</button>
         <label className="ml-2 mr-2" htmlFor="inlineFormCustomSelectCategory">Filter by Category: </label>
         <select onChange={this.onCategorySelect} className="form-control custom-select" id="inlineFormCustomSelectCategory">
-          <option defaultValue="All">All</option>
+          <option value="All">All</option>
           <option value="Baby">Baby</option>
           <option value="Books">Books</option>
           <option value="Grocery">Grocery</option>

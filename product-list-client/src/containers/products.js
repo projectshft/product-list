@@ -123,23 +123,19 @@ class Products extends Component {
     return _.map(this.props.products.products, product => {
       return (
         <div className="col-md-3" style={{ display: 'inline-block', margin: '4%' }}>
+            <div>
                 <div>
-                    <div>
-                        <h3> ${product.price}</h3>
-                        <img
-                            className="img-thumbnail"
-                            src={product.image}
-                            alt=''
-                            />
-                    </div>
-                    <div className="row">
-                      <h5> {product.name}</h5>
-                    </div>
-                    <div className="row">
-                      <h6> {product.category}</h6>
-                    </div>
+                    <h3> ${product.price}</h3>
+                    <img className="img-thumbnail" src={product.image} alt=''/>
+                </div>
+                <div className="row">
+                  <h5> {product.name}</h5>
+                </div>
+                <div className="row">
+                  <h6> {product.category}</h6>
                 </div>
             </div>
+        </div>
       )
     })
       

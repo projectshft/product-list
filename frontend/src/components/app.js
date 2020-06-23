@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 
 //import SearchBar from '../containers/search-bar';
-import SortDropdown from '../containers/sort-dropdown';
+//import SortDropdown from '../containers/sort-dropdown';
 import ProductList from '../containers/product-list';
 
 export default class App extends Component {
@@ -22,17 +22,18 @@ export default class App extends Component {
               {/* <SearchBar /> */}
             </div>
             <div className="col-md-3">
-              <p>dropdown categories</p>
+              {/* <p>dropdown categories</p> */}
             </div>
             <div className="col-md-3">
-              <SortDropdown />
+              {/* <SortDropdown /> */}
             </div>
           </div>
         </div>
         <div className="container">
-          <div className="row justify-content-center">
+          <div className="row">
+            <div className="col-md-3"> 
               <ProductList />
-
+              </div>
             </div>
         </div>
       </div>

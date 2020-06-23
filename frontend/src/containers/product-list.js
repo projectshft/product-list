@@ -5,29 +5,19 @@ import { fetchProducts } from '../actions/index';
 
 class ProductList extends Component {
 
-  constructor(props) {
-    super(props);
+  componentDidMount() {
 
-    this.state = { term: '' };
-
-
-  }
-
-  // onInputChange(event) {
-  //   this.setState({ term: event.target.value });
-  //   this.props.fetchProducts(this.state.term);
-  // }
+    this.props.fetchProducts();
+ }
 
   renderProducts(productData) {
     
-
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-3 border">
+      <div className="container border p-2">
+            <p>{productData.name}</p>
+            <p>Category: {productData.category}</p>
+            <p>{productData.price}</p>
 
-          </div>
-        </div>
       </div>
     );
   }
@@ -35,14 +25,14 @@ class ProductList extends Component {
   render() {
     return (
       <div>
-        <div className="product">{console.log(this.props.fetchProducts)}</div>
+        <div className="product">{this.props.products.map(this.renderProducts)}</div>
       </div>
     );
   }
 }
 
-function mapStateToProps({ products }) {
-  return { products };
+function mapStateToProps(state) {
+  return { products: state.products };
 }
 
 function mapDispatchToProps(dispatch) {

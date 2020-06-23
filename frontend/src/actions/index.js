@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
-export function fetchProducts() {
+export function fetchProducts(query) {
   const url = 'http://localhost:8000/products'; // we're going to have to do some work here
   const request = axios.get(url);
 

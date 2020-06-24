@@ -122,7 +122,7 @@ router.post('/products', (req, res) => {
   product.category = req.body.category; // need edge case
   product.name = req.body.name; // edge case needed
   product.price = req.body.price; // edge case needed
-  product.image = req.body.image || 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png';
+  product.image = req.body.image || 'https://via.placeholder.com/250?text=Product+Image';
   //product.reviews = req.body.reviews || [ReviewSchema];
 
   product.save((err) => {

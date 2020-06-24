@@ -29,12 +29,8 @@ export default class App extends Component {
             </div>
           </div>
         </div>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-3"> 
-              <ProductList />
-              </div>
-            </div>
+        <div className="container ">            
+            <ProductList />
         </div>
       </div>
     );

@@ -13,11 +13,14 @@ class ProductList extends Component {
   renderProducts(productData) {
     
     return (
-      <div className="container border p-2">
-            <p>{productData.name}</p>
-            <p>Category: {productData.category}</p>
-            <p>{productData.price}</p>
-
+      <div className="col-md-4 ">
+        <div class="d-flex justify-content-between">
+            <p className="text-left">Category: {productData.category}</p>
+            <p className="text-right"> {productData.price}</p>
+          </div>
+        <img className=" mx-auto d-block" src="https://via.placeholder.com/250?text=Product+Image"></img>
+        <p className="text-center">{productData.name}</p>
+  
       </div>
     );
   }
@@ -25,7 +28,7 @@ class ProductList extends Component {
   render() {
     return (
       <div>
-        <div className="product">{this.props.products.map(this.renderProducts)}</div>
+        <div className="product row ">{this.props.products.map(this.renderProducts)}</div>
       </div>
     );
   }

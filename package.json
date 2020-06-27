@@ -17,9 +17,15 @@
   },
   "homepage": "https://github.com/matthew-colapietro/product-list#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
+    "bootstrap": "^4.5.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
-    "mongoose": "^5.9.18"
+    "mongoose": "^5.9.18",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-promise": "^0.6.0"
   }
 }

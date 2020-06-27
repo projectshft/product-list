@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
+import { fetchProductInformation } from "../actions";
 
 class App extends Component {
   constructor() {
@@ -6,13 +10,21 @@ class App extends Component {
 
   }
 
+  componentDidMount() {
+    this.props.fetchProductInformation();
+  }
+
   render() {
     return (
       <div>
-        
+
       </div>
     )
   }
 }
 
-export default App;
+function mapDispatchToProp(dispatch) {
+  return bindActionCreators({ fetchProductInformation }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProp)(App);

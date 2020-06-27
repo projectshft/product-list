@@ -1,6 +1,6 @@
 import { FETCH_PRODUCTS } from '../actions/index';
 
-//this is the ParksReducer
+//this is the ProductsReducer
 export default function(state = null, action) {
   switch (action.type) {
     case FETCH_PRODUCTS:

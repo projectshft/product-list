@@ -1,11 +1,18 @@
 import axios from 'axios';
 
-//const ROOT_URL = ;
+const ROOT_URL = 'http://localhost:8000/products';
 
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
 export function fetchProducts(query) {
-  const url = 'http://localhost:8000/products'; // we're going to have to do some work here
+  let url = ROOT_URL; 
+  
+  if (!query) {
+    url = ROOT_URL;
+  } else {
+    url = ROOT_URL + "?search=" + query; 
+  }
+  
   const request = axios.get(url);
 
   console.log('Request', request);
@@ -15,3 +22,4 @@ export function fetchProducts(query) {
     payload: request
   };
 }
+

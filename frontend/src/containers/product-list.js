@@ -14,18 +14,17 @@ class ProductList extends Component {
     
     return (
       <div className="col-md-4 pt-2 mb-4 border">
- {/* Make a container as wide as img, and then float the text on either side */}
-      <div className="row d-flex ">
-        <div className="col-sm-9 mx-auto d-block">
-        <div class="d-flex justify-content-between ">
+        <div className="row d-flex ">
+          <div className="col-sm-9 mx-auto d-block">
+            <div class="d-flex justify-content-between ">
             <p className="text-left mb-0">Category: {productData.category} </p>
             <p className="text-right mb-0">${productData.price}</p>
-        </div>
-        </div>
-        </div>
+            </div>
+          </div>
+         </div>
         <img className="img-fluid mx-auto d-block pb-1 pb-2" src="https://via.placeholder.com/250?text=Product+Image"></img>
  
-        <h5 className="text-center">{productData.name}</h5>
+      <h5 className="text-center">{productData.name}</h5>
   
       </div>
     );

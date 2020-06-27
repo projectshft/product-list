@@ -19,29 +19,31 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
-router.param('product', (req, res, next, id) => {
-  req.product = Product.find({
-    _id: id
-  });
-  next();
-});
+// router.param('product', (req, res, next, id) => {
+//   req.product = Product.find({
+//     _id: id
+//   });
+//   next();
+// });
 
-router.param('review', (req, res, next, id) => {
-  req.product = Review.find({
-    _id: id
-  });
-  next();
-})
+// router.param('review', (req, res, next, id) => {
+//   req.product = Review.find({
+//     _id: id
+//   });
+//   next();
+// })
 
 router.get('/products', (req, res, next) => {
+  
   const perPage = 9;
 
   // return the first page by default
   const page = req.query.page || 1
+  
   // optional categories. TODO: standardize case for Category and Query
   const filterByCategory = req.query.category;
   const sortByPrice = req.query.price;
-  const filterByQuery = req.query.query;
+  const filterBySearch = req.query.search;
   query = {};
   sort = {};
 
@@ -49,8 +51,8 @@ router.get('/products', (req, res, next) => {
     query.category = filterByCategory;
   }
 
-  if (filterByQuery) {
-    query.name = {$regex: filterByQuery };
+  if (filterBySearch) {
+    query.name = {$regex: filterBySearch };
   }
 
   if (sortByPrice) {
@@ -74,6 +76,11 @@ router.get('/products', (req, res, next) => {
       Product.count().exec((err, count) => {
         if (err) return next(err)
 
+        // let data = {
+        //   products: products,
+        //   page: page
+        // }
+
         res.send(products)
       })
     })
@@ -81,8 +88,8 @@ router.get('/products', (req, res, next) => {
 
 router.get('/products/:product', (req, res) => {
   // Using the product params
-  req.product.exec((err, product) => {
-    // If no id exists, throw an error
+  Product
+  .findById(req.params.product, (err, product) => {
     if (err) throw err;
     //Otherwise, return the product 
     res.send(product);
@@ -90,21 +97,22 @@ router.get('/products/:product', (req, res) => {
 })
 
 router.get('/products/:product/reviews', (req, res) => {
-  // Only 4 per page
+
   const perPage = 4;
   // return the first page by default
   const page = req.query.page || 1;
-  // Find product by Id
+  
   Product
     .findOne({
       _id: req.params.product
     })
     .populate({
       path: 'reviews',
-      // .skip((perPage * page) - perPage)
     })
     .exec((err, product) => {
       if (err) throw err;
+
+      // If no error, push all reviews on the selected query page to reviewPage
       let reviewPage = [];
       for (i = ((perPage * page) - perPage); i < ((perPage * page) - perPage) + 4; i++) {
         if (i < product.reviews.length) {

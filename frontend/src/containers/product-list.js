@@ -16,7 +16,7 @@ class ProductList extends Component {
       <div className="col-md-4 pt-2 mb-4 border">
         <div className="row d-flex ">
           <div className="col-sm-9 mx-auto d-block">
-            <div class="d-flex justify-content-between ">
+            <div className="d-flex justify-content-between ">
             <p className="text-left mb-0">Category: {productData.category} </p>
             <p className="text-right mb-0">${productData.price}</p>
             </div>
@@ -40,7 +40,7 @@ class ProductList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { products: state.products };
+  return { products: state.products }; // and state.count, and state.sort, and state.filter...
 }
 
 function mapDispatchToProps(dispatch) {

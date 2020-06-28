@@ -1,42 +1,68 @@
-// import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import { fetchProducts } from '../actions/index';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchProducts, setCategory, fetchCategories } from '../actions/index';
 
-// class CategoryDropdown extends Component {
-//   constructor(props) {
-//     super(props);
+class SortDropdown extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.sortProducts = this.sortProducts.bind(this);
+  }
 
-//     this.state = { term: '' };
-
-//     this.onClick = this.onClick.bind(this);
-//    // this.onFormSubmit = this.onFormSubmit.bind(this);
-//   }
-
-//   onClick(event) {
-//     this.setState({ term: event.target.value });
-//     this.props.fetchProducts(this.state.term);
-//   }
+  sortProducts = (option, event) => {
+    event.preventDefault();
+    this.props.setSortOption(option);
+    console.log("In our container, the sort option is now")
+    console.log(this.props.sort);
+    console.log("Now we fetch products")
+    this.props.fetchProducts(this.props.searchTerm, option, null)
+  }
 
 
-//   render() {
-//     return (
-//       <div className="search-bar">
-//       <input
-//         placeholder="search"
-//         value={this.state.term}
-//         onChange={event => this.onInputChange(event.target.value)}
-//       />
-//     </div>
-//     );
-//   }
-// }
+  render() {
+    return (
+      <div>
+        <div className="dropdown">
+          <button 
+          className="btn btn-secondary dropdown-toggle" 
+          type="button" 
+          data-toggle="dropdown">
+            Sort By Price
+          </button>
+          <div className="dropdown-menu">
+            <button 
+            className="dropdown-item high-to-low" 
+            type="button"
+            onClick={event => this.sortProducts("highest", event)}>
+              High to low
+            </button>
+            <button 
+            className="dropdown-item low-to-high" 
+            type="button"
+            onClick={event => this.sortProducts("lowest", event)}>
+              Low to high
+              </button>
+          </div>
+        </div>
+    </div>
+    );
+  }
+}
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ fetchProducts }, dispatch);
-// }
+function mapStateToProps(state) {
+  return {     
+    searchTerm: state.searchTerm,
+    sort: state.sort,
+    category: state.category
+  }; // and state.count, and state.sort, and state.filter...
+}
 
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(CategoryDropdown);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchProducts, }, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SortDropdown);

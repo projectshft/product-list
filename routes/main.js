@@ -33,6 +33,16 @@ router.get('/generate-fake-data', (req, res, next) => {
 //   next();
 // })
 
+router.get('/categories', (req, res) => {
+  Product
+    .distinct('category')
+    .exec((err, categories) => {
+      if (err) throw err;
+      //Otherwise, return the categories 
+      res.send(categories);
+    })
+})
+
 router.get('/products', (req, res, next) => {
   
   const perPage = 9;

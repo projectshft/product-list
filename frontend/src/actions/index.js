@@ -1,34 +1,33 @@
 import axios from 'axios';
 
-const ROOT_URL_CATEGORIES = 'http://localhost:8000/categories';
-const ROOT_URL_PRODUCTS = 'http://localhost:8000/products';
+const ROOT_URL = 'http://localhost:8000/products';
 const QUERY = '?';
 const JOIN = '&';
 const CATEGORY = 'category=';
 const SEARCH = 'search=';
 const SORT = 'price=';
 
-export const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
+//export const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 export const SET_SORT_OPTION = 'SET_SORT_OPTION';
 export const SET_CATEGORY = 'SET_CATEGORY';
 
-export function fetchCategories() {
-  console.log("fetchCategories was called")
-  let url = ROOT_URL_CATEGORIES;
+// export function fetchCategories() {
+//   console.log("fetchCategories was called")
+//   let url = ROOT_URL_CATEGORIES;
 
-  const request = axios.get(url);
-  console.log("This is the categories request");
-  console.log(request);
-  return {
-    type: FETCH_CATEGORIES,
-    payload: request
-  };
-}
+//   const request = axios.get(url);
+//   console.log("This is the categories request");
+//   console.log(request);
+//   return {
+//     type: FETCH_CATEGORIES,
+//     payload: request
+//   };
+// }
 
 export function fetchProducts(searchTerm = null, sortOption = null, category = null) {
-  let url = ROOT_URL_PRODUCTS; 
+  let url = ROOT_URL; 
   
   if (searchTerm || sortOption || category) {
     url += QUERY;
@@ -45,7 +44,6 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
     
       // No search term
     } else if (sortOption) {
-      console.log("second was called")
       url += SORT + sortOption;
       if (category) {
         url += JOIN + CATEGORY + category;
@@ -59,8 +57,7 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
 
   
   const request = axios.get(url);
-  console.log("This is the products request");
-  console.log(request);
+
   return {
     type: FETCH_PRODUCTS,
     payload: request

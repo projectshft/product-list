@@ -1,6 +1,11 @@
 import axios from 'axios';
 
 const ROOT_URL = 'http://localhost:8000/products';
+const QUERY = '?';
+const JOIN = '&';
+const CATEGORY = 'category=';
+const SEARCH = 'search=';
+const SORT = 'price=';
 
 
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
@@ -12,9 +17,28 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
   let url = ROOT_URL; 
   
   if (searchTerm || sortOption || category) {
-    url += "?price=" + sortOption + "&category=" + category;
+    url += QUERY;
+
+    // Search Term
     if (searchTerm) {
-      url += "&search=" + searchTerm;
+      url += SEARCH + searchTerm;
+      if (sortOption) {
+        url += JOIN + SORT + sortOption;
+      }
+      if (category) {
+        url += JOIN + CATEGORY + category;
+      }
+    
+      // No search term
+    } else if (sortOption) {
+      url += SORT + sortOption;
+      if (category) {
+        url += JOIN + CATEGORY + category;
+      }
+    
+      // no price sort
+    } else if (category) {
+      url += CATEGORY + category;
     }
   }
 
@@ -28,6 +52,7 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
 }
 
 export function setSortOption(sortOption) {
+  console.log("IN actions, sort was set to " + sortOption);
   return {
     type: SET_SORT_OPTION,
     payload: sortOption

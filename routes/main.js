@@ -42,15 +42,15 @@ router.get('/products', (req, res, next) => {
   
   // optional categories. TODO: standardize case for Category and Query
   const category = req.query.category;
-  const sortOption = req.query.price || "highest";
+  const sortOption = req.query.price;
   const searchTerm = req.query.search;
   query = {};
   sort = {};
 
-  // if (category) {
+  if (category) {
     
-  //   query.category = category;
-  // }
+    query.category = category;
+  }
 
   if (searchTerm) {
     query.name = {$regex: searchTerm };

@@ -13,8 +13,10 @@ class SortDropdown extends Component {
   sortProducts = (option, event) => {
     event.preventDefault();
     this.props.setSortOption(option);
-    console.log(option);
-    this.props.fetchProducts("Pizza", option, null)
+    console.log("In our container, the sort option is now")
+    console.log(this.props.sort);
+    console.log("Now we fetch products")
+    this.props.fetchProducts(this.props.searchTerm, option, null)
   }
 
 
@@ -49,7 +51,10 @@ class SortDropdown extends Component {
 }
 
 function mapStateToProps(state) {
-  return { sortOption: state.sortOption }; // and state.count, and state.sort, and state.filter...
+  return {     
+    searchTerm: state.searchTerm,
+    sort: state.sort 
+  }; // and state.count, and state.sort, and state.filter...
 }
 
 function mapDispatchToProps(dispatch) {

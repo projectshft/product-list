@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../actions/index';
+import { fetchProducts, setSearchTerm } from '../actions/index';
 
 class SearchBar extends Component {
   constructor(props) {
@@ -11,7 +11,11 @@ class SearchBar extends Component {
   }
 
   onInputChange(searchTerm) {
-    this.props.fetchProducts(searchTerm);
+    this.props.setSearchTerm(searchTerm);
+    console.log("In our container, the searchTerm is now")
+    console.log(this.props.searchTerm);
+    console.log("Now we fetch products")
+    this.props.fetchProducts(searchTerm, this.props.sort, null);
   }
 
 
@@ -31,11 +35,18 @@ class SearchBar extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return { 
+    searchTerm: state.searchTerm,
+    sort: state.sort
+  }; 
+}
+
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchProducts }, dispatch);
+  return bindActionCreators({ fetchProducts, setSearchTerm }, dispatch);
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SearchBar);

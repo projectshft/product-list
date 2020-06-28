@@ -5,7 +5,6 @@ export default function(state = [], action) {
     case FETCH_PRODUCTS:
       return action.payload.data; // data .product, data .count
     default:
-      console.log(state)
       return state;
   }
 }

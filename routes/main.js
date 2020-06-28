@@ -41,27 +41,28 @@ router.get('/products', (req, res, next) => {
   const page = req.query.page || 1
   
   // optional categories. TODO: standardize case for Category and Query
-  const filterByCategory = req.query.category;
-  const sortByPrice = req.query.price;
-  const filterBySearch = req.query.search;
+  const category = req.query.category;
+  const sortOption = req.query.price;
+  const searchTerm = req.query.search;
   query = {};
   sort = {};
 
-  if (filterByCategory) {
-    query.category = filterByCategory;
+  // if (category) {
+    
+  //   query.category = category;
+  // }
+
+  if (searchTerm) {
+    query.name = {$regex: searchTerm };
   }
 
-  if (filterBySearch) {
-    query.name = {$regex: filterBySearch };
-  }
-
-  if (sortByPrice) {
-    if (sortByPrice === "highest") {
+  if (sortOption) {
+    if (sortOption === "highest") {
     sort.price = -1; //highest to lowest- descending
     }
-    if (sortByPrice === "lowest") {
+    if (sortOption === "lowest") {
       sort.price = 1; //lowest to highest- ascending
-    }
+    } // otherwise nothing happens
   }
 
   Product

@@ -2,19 +2,22 @@ import axios from 'axios';
 
 const ROOT_URL = 'http://localhost:8000/products';
 
-export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
+
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
+export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 export const SET_SORT_OPTION = 'SET_SORT_OPTION';
 export const SET_CATEGORY = 'SET_CATEGORY';
 
-export function fetchProducts(query) {
+export function fetchProducts(searchTerm = null, sortOption = null, category = null) {
   let url = ROOT_URL; 
   
-  if (!query) {
-    url = ROOT_URL;
-  } else {
-    url = ROOT_URL + "?search=" + query; 
+  if (searchTerm || sortOption || category) {
+    url += "?price=" + sortOption + "&category=" + category;
+    if (searchTerm) {
+      url += "&=search" + searchTerm;
+    }
   }
+
   
   const request = axios.get(url);
 

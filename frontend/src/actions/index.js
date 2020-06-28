@@ -18,9 +18,11 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
   
   if (searchTerm || sortOption || category) {
     url += QUERY;
-
     // Search Term
-    if (searchTerm) {
+    if (searchTerm.length !== 0) {
+      
+      console.log("first was called")
+      console.log(searchTerm)
       url += SEARCH + searchTerm;
       if (sortOption) {
         url += JOIN + SORT + sortOption;
@@ -31,6 +33,7 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
     
       // No search term
     } else if (sortOption) {
+      console.log("second was called")
       url += SORT + sortOption;
       if (category) {
         url += JOIN + CATEGORY + category;

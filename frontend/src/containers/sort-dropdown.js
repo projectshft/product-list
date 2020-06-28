@@ -13,9 +13,7 @@ class SortDropdown extends Component {
   sortProducts = (option, event) => {
     event.preventDefault();
     this.props.setSortOption(option);
-    console.log("In our container, the sort option is now")
-    console.log(this.props.sort);
-    console.log("Now we fetch products")
+
     this.props.fetchProducts(this.props.searchTerm, option, this.props.category)
   }
 

@@ -10,6 +10,7 @@ class CategoryDropdown extends Component {
     // The categories have local state for now
     this.state = {
       categories: [
+        "(None)",
         "Automotive",
         "Baby",
         "Beauty",

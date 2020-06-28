@@ -5,6 +5,7 @@ import SearchBar from '../containers/search-bar';
 import CategoryDropdown from '../containers/category-dropdown'
 import SortDropdown from '../containers/sort-dropdown';
 import ProductList from '../containers/product-list';
+import Pages from '../containers/product-list';
 
 export default class App extends Component {
   render() {
@@ -31,7 +32,15 @@ export default class App extends Component {
         <div className="container ">            
             <ProductList />
         </div>
-      </div>
+ 
+      <div className="container">
+         <div className="row justify-content-center my-3">
+            <div>
+              <Pages />
+            </div>
+          </div>
+        </div>
+       </div>
     );
   }
 }

@@ -32,7 +32,6 @@ class ProductList extends Component {
   }
 
   render() {
-    console.log("The product list was rendered")
     return (
       <div>
         <div className="product row ">{this.props.products.map(this.renderProducts)}</div>

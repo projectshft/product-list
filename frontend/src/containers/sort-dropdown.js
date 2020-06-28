@@ -14,7 +14,7 @@ class SortDropdown extends Component {
     event.preventDefault();
     this.props.setSortOption(option);
 
-    this.props.fetchProducts(this.props.searchTerm, option, this.props.category)
+    this.props.fetchProducts(this.props.searchTerm, option, this.props.category, this.props.page)
   }
 
 
@@ -42,7 +42,8 @@ function mapStateToProps(state) {
   return {     
     searchTerm: state.searchTerm,
     sort: state.sort,
-    category: state.category
+    category: state.category,
+    page: state.page
   }; // and state.count, and state.sort, and state.filter...
 }
 

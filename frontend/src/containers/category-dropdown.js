@@ -10,7 +10,6 @@ class CategoryDropdown extends Component {
     // The categories have local state for now
     this.state = {
       categories: [
-        "(None)",
         "Automotive",
         "Baby",
         "Beauty",
@@ -39,21 +38,12 @@ class CategoryDropdown extends Component {
     this.selectCategoryFromMenu = this.selectCategoryFromMenu.bind(this);
   }
 
-//   componentDidMount() {
-
-//       let url = 'http://localhost:8000/categories';
-    
-//       const request = axios.get(url);
-//       console.log("This is the categories request");
-//       console.log(request);
-//       this.setState({allCategories: request.data});
-//  }
 
   selectCategoryFromMenu = (category, event) => {
     event.preventDefault();
 
     this.props.setCategory(category);
-    this.props.fetchProducts(this.props.searchTerm, this.props.sort, category)
+    this.props.fetchProducts(this.props.searchTerm, this.props.sort, category, this.props.page)
   }
 
 
@@ -84,8 +74,9 @@ function mapStateToProps(state) {
   return {     
     searchTerm: state.searchTerm,
     sort: state.sort,
-    category: state.category
-  }; // and state.count
+    category: state.category,
+    page: state.page
+  }; 
 }
 
 function mapDispatchToProps(dispatch) {

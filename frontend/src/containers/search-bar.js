@@ -15,7 +15,7 @@ class SearchBar extends Component {
     console.log("In our container, the searchTerm is now")
     console.log(this.props.searchTerm);
     console.log("Now we fetch products")
-    this.props.fetchProducts(searchTerm, this.props.sort, this.props.category);
+    this.props.fetchProducts(searchTerm, this.props.sort, this.props.category, this.props.page);
   }
 
 
@@ -39,8 +39,9 @@ function mapStateToProps(state) {
   return { 
     searchTerm: state.searchTerm,
     sort: state.sort,
-    category: state.category
-  }; 
+    category: state.category,
+    page: state.page
+  }
 }
 
 function mapDispatchToProps(dispatch) {

@@ -7,17 +7,21 @@ class SortDropdown extends Component {
   constructor(props) {
     super(props);
     
+    this.toggleOpen = this.toggleOpen.bind(this);
   }
 
-  onClick(event) {
+  toggleOpen() {
   }
 
 
   render() {
     return (
       <div>
-        <div className="dropdown">
-          <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div className="dropdown" onClick={this.toggleOpen}>
+          <button className="btn btn-secondary dropdown-toggle" 
+          type="button" 
+          id="dropdownMenu2" 
+          data-toggle="dropdown">
             Dropdown
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenu2">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 
 import SearchBar from '../containers/search-bar';
+import CategoryDropdown from '../containers/category-dropdown'
 import SortDropdown from '../containers/sort-dropdown';
 import ProductList from '../containers/product-list';
 
@@ -20,7 +21,7 @@ export default class App extends Component {
           <div className="row ">
               <SearchBar />
             <div className="col-sm-4">
-              <p>dropdown categories</p>
+              <CategoryDropdown />
             </div>
             <div className="col-sm-4">
               <SortDropdown />

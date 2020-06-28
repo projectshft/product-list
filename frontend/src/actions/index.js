@@ -15,12 +15,14 @@ export const SET_SORT_OPTION = 'SET_SORT_OPTION';
 export const SET_CATEGORY = 'SET_CATEGORY';
 
 export function fetchCategories() {
+  console.log("fetchCategories was called")
   let url = ROOT_URL_CATEGORIES;
 
   const request = axios.get(url);
-
+  console.log("This is the categories request");
+  console.log(request);
   return {
-    type: FETCH_PRODUCTS,
+    type: FETCH_CATEGORIES,
     payload: request
   };
 }
@@ -33,8 +35,6 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
     // Search Term
     if (searchTerm.length !== 0) {
       
-      console.log("first was called")
-      console.log(searchTerm)
       url += SEARCH + searchTerm;
       if (sortOption) {
         url += JOIN + SORT + sortOption;
@@ -57,9 +57,10 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
     }
   }
 
-  console.log(url);
+  
   const request = axios.get(url);
-
+  console.log("This is the products request");
+  console.log(request);
   return {
     type: FETCH_PRODUCTS,
     payload: request

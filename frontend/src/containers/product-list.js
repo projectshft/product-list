@@ -8,6 +8,7 @@ class ProductList extends Component {
   componentDidMount() {
 
     this.props.fetchProducts();
+    
  }
 
   renderProducts(productData) {
@@ -40,7 +41,7 @@ class ProductList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { products: state.products }; // and state.count, and state.sort, and state.filter...
+  return { products: state.products }; 
 }
 
 function mapDispatchToProps(dispatch) {

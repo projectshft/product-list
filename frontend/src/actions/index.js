@@ -14,11 +14,11 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
   if (searchTerm || sortOption || category) {
     url += "?price=" + sortOption + "&category=" + category;
     if (searchTerm) {
-      url += "&=search" + searchTerm;
+      url += "&search=" + searchTerm;
     }
   }
 
-  
+  console.log(url);
   const request = axios.get(url);
 
   return {

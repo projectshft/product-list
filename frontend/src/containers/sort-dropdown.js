@@ -7,27 +7,40 @@ class SortDropdown extends Component {
   constructor(props) {
     super(props);
     
-    this.toggleOpen = this.toggleOpen.bind(this);
+    this.sortProducts = this.sortProducts.bind(this);
   }
 
-  toggleOpen() {
+  sortProducts = (option, event) => {
+    event.preventDefault();
+    this.props.setSortOption(option);
+    console.log(option);
+    this.props.fetchProducts("Pizza", option, null)
   }
 
 
   render() {
     return (
       <div>
-        <div className="dropdown" onClick={this.toggleOpen}>
-          <button className="btn btn-secondary dropdown-toggle" 
+        <div className="dropdown">
+          <button 
+          className="btn btn-secondary dropdown-toggle" 
           type="button" 
-          id="dropdownMenu2" 
           data-toggle="dropdown">
-            Dropdown
+            Sort By Price
           </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button className="dropdown-item" type="button">Action</button>
-            <button className="dropdown-item" type="button">Another action</button>
-            <button className="dropdown-item" type="button">Something else here</button>
+          <div className="dropdown-menu">
+            <button 
+            className="dropdown-item high-to-low" 
+            type="button"
+            onClick={event => this.sortProducts("highest", event)}>
+              High to low
+            </button>
+            <button 
+            className="dropdown-item low-to-high" 
+            type="button"
+            onClick={event => this.sortProducts("lowest", event)}>
+              Low to high
+              </button>
           </div>
         </div>
     </div>

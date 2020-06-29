@@ -23,6 +23,10 @@ class App extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return { products: state.products};
+}
+
 function mapDispatchToProp(dispatch) {
   return bindActionCreators({ fetchProductInformation }, dispatch);
 }

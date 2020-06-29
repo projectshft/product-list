@@ -4,7 +4,7 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
 
 //const API_KEY = ''; API KEY NOT NEEDED
-const ROOT_URL = 'localhost:8000/products/'
+const ROOT_URL = 'localhost:8000/products'
 
 //API pull for Park information
 export function fetchProductInformation(query, category, sort) {

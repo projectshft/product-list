@@ -5,9 +5,31 @@ const ROOT_URL = "http://localhost:8000/products";
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
 
-export function fetchProducts (page, category, sort, searchInput) {
+export function fetchProducts (query, searchInput) {
 
-    const url = `${ROOT_URL}?page=${page}&category=${category}&price=${sort}&query=${searchInput}`;
+    let pageSort = "";
+    let categoryTerm = "";
+    let searchTerm = "";
+    let priceSort = "";
+    
+    if (query.page) {
+        pageSort = query.page;
+    }
+
+    if (query.category) {
+        categoryTerm = query.category;
+    }
+
+    if (query.sort) {
+        priceSort = query.sort
+    }
+
+    if (searchInput) {
+        searchTerm = searchInput;
+    }
+
+
+    let url = `${ROOT_URL}?page=${pageSort}&category=${categoryTerm}&price=${priceSort}&query=${searchTerm}`;
     const request = axios.get(url)
     console.log('Request', request);
     return {

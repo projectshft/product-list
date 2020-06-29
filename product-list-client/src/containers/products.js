@@ -33,15 +33,18 @@ class Products extends Component {
   }
 
   filterCategory() {
-    this.props.fetchProducts(this.state.category)
+    let query = { category: this.state.category }
+    this.props.fetchProducts(query)
   }
 
   filterPrice() {
-    this.props.fetchProducts(this.state.price)
+    let query = { price: this.state.price }
+    this.props.fetchProducts(query)
   }
   
   changePage() {
-    this.props.fetchProducts(this.state.page)
+    let query = { page: this.state.page.number }
+    this.props.fetchProducts(query)
   }
 
   renderHeading() {
@@ -72,29 +75,28 @@ class Products extends Component {
               <div>
                 <select class="custom-select" id="inputGroupSelect01" onChange= {event=> this.setState({ category: event.target.value }, () => {this.filterCategory()})}>
                     <option defaultValue>Select</option>
-                    <option>Industrial</option>
-                    <option>Shoes</option>
-                    <option>Movies</option>
-                    <option>Health</option>
-                    <option>Electronics</option>
-                    <option>Kids</option>
-                    <option>Automotive</option>
-                    <option>Garden</option>
-                    <option>Clothing</option> 
-                    <option>Toys</option> 
-                    <option>Beauty</option> 
-                    <option>Books</option>
-                    <option>Music</option>
-                    <option>Tools</option>
-                    <option>Computers</option>
-                    <option>Jewelery</option>
-                    <option>Baby</option>
-                    <option>Movies</option>
-                    <option>Outdoors</option>
-                    <option>Sports</option>
-                    <option>Grocery</option>
-                    <option>Home</option>
-                    <option>Games</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Shoes">Shoes</option>
+                    <option value="Movies">Movies</option>
+                    <option value="Health">Health</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Kids">Kids</option>
+                    <option value="Automotive">Automotive</option>
+                    <option value="Garden">Garden</option>
+                    <option value="Clothing">Clothing</option> 
+                    <option value="Toys">Toys</option> 
+                    <option value="Beauty">Beauty</option> 
+                    <option value="Books">Books</option>
+                    <option value="Music">Music</option>
+                    <option value="Tools">Tools</option>
+                    <option value="Computers">Computers</option>
+                    <option value="Jewelry">Jewelery</option>
+                    <option value="Baby">Baby</option>
+                    <option value="Outdoors">Outdoors</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Grocery">Grocery</option>
+                    <option value="Home">Home</option>
+                    <option value="Games">Games</option>
                   </select>
               </div>
             </div> 
@@ -102,7 +104,7 @@ class Products extends Component {
             <div class="col-md-3">
               <div><h5 id="category-text">Sort:</h5></div>
               <div>
-                <select className="custom-select"  onChange= {event=> this.setState({ price: event.target.value }, () => {this.filterPrice()})}>
+                <select class="custom-select"  onChange= {event=> this.setState({ price: event.target.value }, () => {this.filterPrice()})}>
                   <option defaultValue>Select</option>
                   <option value="lowest">Price: Low to High</option>
                   <option value="highest">Price: High to Low</option>
@@ -140,31 +142,27 @@ class Products extends Component {
     })
       
   }
-    // set page numbers based on number of products
-    renderPages() {
-  
-      let pageNumbers = [];
-      let productCount = this.props.products.productCount
-      
-      
-      for (let i = 1; i <= Math.ceil((productCount / 9)); i++) {
-          pageNumbers.push(i)
-      }
-      
-      return pageNumbers.map(number => {
-          return (
-              <div>
-                <nav aria-label="Page navigation example">
-                  <ul>
-                    <li className="page-item pagination" key={number} onClick={event => this.setState({ page: {number} }, () => { this.changePage() })}><a class="page-link" href="#">{number}</a></li>
-                  </ul>
-                </nav>
-              </div>
-          );
-      });
-     
-  
+  // set page numbers based on number of products
+  renderPages() {
+
+    let pageNumbers = [];
+    let productCount = this.props.products.productCount
+    
+    
+    for (let i = 1; i <= Math.ceil((productCount / 9)); i++) {
+        pageNumbers.push(i)
     }
+    
+    return pageNumbers.map(number => {
+        return (
+            <div>
+              <li class="page-item" key={number} onClick={event => this.setState({ page: {number} }, () => { this.changePage() })}><a class="page-link" href="#">{number}</a></li>
+            </div>
+        );
+    });
+    
+
+  }
 
   render() {
     return (
@@ -178,8 +176,12 @@ class Products extends Component {
             <div>
               {this.renderProducts()}
             </div>
-            <div>                 
-              {this.renderPages()}
+            <div>
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  {this.renderPages()}
+                </ul>
+              </nav>
             </div>
         </div>
     );

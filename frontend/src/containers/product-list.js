@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../actions/index';
-import product from '../../../models/product';
 
 class ProductList extends Component {
 

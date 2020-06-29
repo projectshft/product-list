@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../actions/index';
+import product from '../../../models/product';
 
 class ProductList extends Component {
 
@@ -22,7 +23,7 @@ class ProductList extends Component {
             </div>
           </div>
          </div>
-        <img className="img-fluid mx-auto d-block pb-1 pb-2" src="https://via.placeholder.com/250?text=Product+Image"></img>
+        <img className="img-fluid mx-auto d-block pb-1 pb-2" src={productData.image}></img>
  
       <h5 className="text-center">{productData.name}</h5>
   

@@ -10,7 +10,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
-    product.image = 'https://www.oysterdiving.com/components/com_easyblog/themes/wireframe/images/placeholder-image.png'
+    product.image = "https://via.placeholder.com/250?text=Product+Image";
 
     product.save((err) => {
       if (err) throw err

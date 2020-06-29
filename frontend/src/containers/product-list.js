@@ -40,7 +40,7 @@ class ProductList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { products: state.products.products }; 
+  return { products: state.productData.products }; 
 }
 
 function mapDispatchToProps(dispatch) {

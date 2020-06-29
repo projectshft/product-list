@@ -12,9 +12,6 @@ class SearchBar extends Component {
 
   onInputChange(searchTerm) {
     this.props.setSearchTerm(searchTerm);
-    console.log("In our container, the searchTerm is now")
-    console.log(this.props.searchTerm);
-    console.log("Now we fetch products")
     this.props.fetchProducts(searchTerm, this.props.sort, this.props.category, this.props.page);
   }
 

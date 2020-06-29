@@ -39,12 +39,12 @@ class CategoryDropdown extends Component {
     this.selectCategoryFromMenu = this.selectCategoryFromMenu.bind(this);
   }
 
-
+  // "None" resets the category query param to null
   selectCategoryFromMenu = (category, event) => {
     event.preventDefault();
     if (category === "(None)") {
-    this.props.setCategory(null);
-    this.props.fetchProducts(this.props.searchTerm, this.props.sort, null, this.props.page)
+      this.props.setCategory(null);
+      this.props.fetchProducts(this.props.searchTerm, this.props.sort, null, this.props.page)
     } else {
       this.props.setCategory(category);
       this.props.fetchProducts(this.props.searchTerm, this.props.sort, category, this.props.page)
@@ -52,21 +52,25 @@ class CategoryDropdown extends Component {
   }
 
 
-
+  // TODO: After dropdown selection, display active menu selection
   render() {
     return (
       <div>
-        <div className="dropdown"><button className="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+        <div className="dropdown">
+          <button className="btn btn-secondary dropdown-toggle" 
+          type="button" 
+          data-toggle="dropdown">
             Set Category
           </button>
           <div className="dropdown-menu">
             {this.state.categories.map((categoryData) => {
-                  return (
-                    <button className="dropdown-item" type="button" 
-                      onClick={event => this.selectCategoryFromMenu(categoryData, event)}>
-                      {categoryData}
-                    </button>
-                  );
+              return (
+                <button className="dropdown-item" 
+                type="button" 
+                onClick={event => this.selectCategoryFromMenu(categoryData, event)}>
+                  {categoryData}
+                </button>
+              );
             })}
           </div>
         </div>

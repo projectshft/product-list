@@ -13,6 +13,7 @@ class SortDropdown extends Component {
   sortProducts = (option, event) => {
     event.preventDefault();
 
+    // "None" resets the sortOption query param to null
     if (option === "none") {
       this.props.setSortOption(null);
       this.props.fetchProducts(this.props.searchTerm, null, this.props.category, this.props.page)
@@ -22,7 +23,7 @@ class SortDropdown extends Component {
     }
   }
 
-
+  // TODO: After dropdown selection, display active menu selection
   render() {
     return (
       <div>

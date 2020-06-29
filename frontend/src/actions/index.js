@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// Creating URL components for readability
+
 const ROOT_URL = 'http://localhost:8000/products';
 const QUERY = '?';
 const JOIN = '&';
@@ -8,39 +10,30 @@ const SEARCH = 'search=';
 const SORT = 'price=';
 const PAGE = 'page=';
 
-//export const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
+
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 export const SET_SORT_OPTION = 'SET_SORT_OPTION';
 export const SET_CATEGORY = 'SET_CATEGORY';
 export const SET_PAGE = 'SET_PAGE';
 
-// export function fetchCategories() {
-//   console.log("fetchCategories was called")
-//   let url = ROOT_URL_CATEGORIES;
-
-//   const request = axios.get(url);
-//   console.log("This is the categories request");
-//   console.log(request);
-//   return {
-//     type: FETCH_CATEGORIES,
-//     payload: request
-//   };
-// }
 
 
 export function fetchProducts(searchTerm = null, sortOption = null, category = null, page = 1) {
   let url = ROOT_URL; 
   
+  // url only modified when query param is added
+  // all params are optional
   if (searchTerm || sortOption || category || page > 1) {
     url += QUERY;
 
-    // If page greater than 1, added it to the search
+    // page is always the first of the optional query params,
+    // but only if the page selected is greater than 1
     if (page > 1 ) {
       url += PAGE + page + JOIN;
     }
    
-    // Search Term
+    // searchTerm is the next optional query param
     if (searchTerm.length !== 0) {
       
       url += SEARCH + searchTerm;
@@ -52,21 +45,21 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
         url += JOIN + CATEGORY + category;
       }
     
-      // No search term
+    // sortOption is the next optional query param
+    // as long as it is not null
     } else if (sortOption) {
       url += SORT + sortOption;
       if (category !== null && category.length !== 0) {
         url += JOIN + CATEGORY + category;
       }
     
-      // no price sort
+    // category is the last optional query param
+    // as long as it is not null
     } else if (category !== null && category.length !== 0) {
-      console.log('just category was called')
       url += CATEGORY + category;
     }
   }
 
-  console.log(url);
   const request = axios.get(url);
 
   return {
@@ -76,7 +69,6 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
 }
 
 export function setSortOption(sortOption) {
-  console.log("IN actions, sort was set to " + sortOption);
   return {
     type: SET_SORT_OPTION,
     payload: sortOption
@@ -104,4 +96,22 @@ export function setPage(page) {
   }
 }
 
+// Not currently being used: fetchCategories()
 
+/////////////////////////////////////////////////////
+
+
+//export const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
+
+// export function fetchCategories() {
+//   console.log("fetchCategories was called")
+//   let url = ROOT_URL_CATEGORIES;
+
+//   const request = axios.get(url);
+//   console.log("This is the categories request");
+//   console.log(request);
+//   return {
+//     type: FETCH_CATEGORIES,
+//     payload: request
+//   };
+// }

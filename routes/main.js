@@ -19,6 +19,10 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
+//////////////////////////////////////////////////////
+
+// Router params and routes not being used
+
 // router.param('product', (req, res, next, id) => {
 //   req.product = Product.find({
 //     _id: id
@@ -33,18 +37,22 @@ router.get('/generate-fake-data', (req, res, next) => {
 //   next();
 // })
 
-router.get('/categories', (req, res) => {
-  Product
-    .distinct('category')
-    .exec((err, categories) => {
-      if (err) throw err;
-      //Otherwise, return the categories 
-      res.send(categories);
-    })
-})
+
+// router.get('/categories', (req, res) => {
+//   Product
+//     .distinct('category')
+//     .exec((err, categories) => {
+//       if (err) throw err;
+//       //Otherwise, return the categories 
+//       res.send(categories);
+//     })
+// })
+
+//////////////////////////////////////////////////////
 
 router.get('/products', (req, res, next) => {
   
+  // Return nine results per page
   const perPage = 9;
 
   // return the first page by default
@@ -58,7 +66,6 @@ router.get('/products', (req, res, next) => {
   sort = {};
 
   if (category) {
-    
     query.category = category;
   }
 
@@ -72,23 +79,20 @@ router.get('/products', (req, res, next) => {
     }
     if (sortOption === "lowest") {
       sort.price = 1; //lowest to highest- ascending
-    } // otherwise nothing happens
+    } 
   }
 
+  // Finds product based on query, sort, and page number
   Product
     .find(query)
     .sort(sort)
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, 
-      //but in the future we might want to know how many are coming back 
-      // so we can figure out the number of pages
+      // Finds count based on query
       Product.find(query).count().exec((err, count) => {
         if (err) return next(err)
 
-
-        
         res.send({
           count: count,
           products: products
@@ -98,11 +102,11 @@ router.get('/products', (req, res, next) => {
 })
 
 router.get('/products/:product', (req, res) => {
-  // Using the product params
+
   Product
   .findById(req.params.product, (err, product) => {
     if (err) throw err;
-    //Otherwise, return the product 
+
     res.send(product);
   })
 })

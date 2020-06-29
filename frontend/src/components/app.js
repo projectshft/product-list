@@ -22,7 +22,7 @@ export default class App extends Component {
           <div className="row ">
               <SearchBar />
             <div className="col-sm-4">
-              <CategoryDropdown />
+              <CategoryDropdown /> 
             </div>
             <div className="col-sm-4">
               <SortDropdown />
@@ -30,17 +30,16 @@ export default class App extends Component {
           </div>
         </div>
         <div className="container ">            
-            <ProductList />
+          <ProductList />
         </div>
- 
-      <div className="container">
+        <div className="container">
          <div className="row justify-content-center mb-3">
             <div>
               <Pages />
             </div>
           </div>
         </div>
-       </div>
+      </div>
     );
   }
 }

@@ -11,7 +11,8 @@ class Pages extends Component {
     this.selectPage = this.selectPage.bind(this);
   }
 
-
+  // TODO: If on a page other than one, reset page to 1
+  // on category change or searchTerm change
   selectPage = (page, event) => {
     event.preventDefault();
 
@@ -22,8 +23,12 @@ class Pages extends Component {
 
 
   render() {
-    
+
     let pages = [];
+    
+    // Note that our counter begins at 1,
+    // and its limit is 1 + the number of products
+    // divided by 9 (the max number of products displayed per page)
     for (let i = 1; i < (this.props.count/9) + 1; i++) {
       pages.push(<a href='#' onClick={event => this.selectPage(i, event)}>{i.toString()} </a>);
     }
@@ -42,7 +47,7 @@ function mapStateToProps(state) {
     sort: state.sort,
     category: state.category,
     page: state.page,
-    count: state.products.count
+    count: state.productData.count
   }; 
 }
 

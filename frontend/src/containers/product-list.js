@@ -6,7 +6,7 @@ import { fetchProducts } from '../actions/index';
 class ProductList extends Component {
 
   componentDidMount() {
-
+    console.log("ComponentDidMount was called")
     this.props.fetchProducts();
     
  }
@@ -32,6 +32,7 @@ class ProductList extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div>
         <div className="product row ">{this.props.products.map(this.renderProducts)}</div>
@@ -41,7 +42,9 @@ class ProductList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { products: state.products }; 
+  console.log("Here is the state at the time of product-list render")
+  console.log(state)
+  return { products: state.products.products }; 
 }
 
 function mapDispatchToProps(dispatch) {

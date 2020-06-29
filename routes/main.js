@@ -84,15 +84,15 @@ router.get('/products', (req, res, next) => {
       // Note that we're not sending `count` back at the moment, 
       //but in the future we might want to know how many are coming back 
       // so we can figure out the number of pages
-      Product.count().exec((err, count) => {
+      Product.find(query).count().exec((err, count) => {
         if (err) return next(err)
 
-        // let data = {
-        //   products: products,
-        //   page: page
-        // }
 
-        res.send(products)
+        
+        res.send({
+          count: count,
+          products: products
+        })
       })
     })
 })

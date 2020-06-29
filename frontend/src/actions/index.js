@@ -28,6 +28,7 @@ export const SET_PAGE = 'SET_PAGE';
 //   };
 // }
 
+
 export function fetchProducts(searchTerm = null, sortOption = null, category = null, page = 1) {
   let url = ROOT_URL; 
   
@@ -67,7 +68,7 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
 
   console.log(url);
   const request = axios.get(url);
-
+  console.log(request);
   return {
     type: FETCH_PRODUCTS,
     payload: request

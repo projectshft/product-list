@@ -8,9 +8,6 @@ class Pages extends Component {
   constructor(props) {
     super(props);
 
-    // The pages are using local state
-    this.state = {pages: 10}
-
     this.selectPage = this.selectPage.bind(this);
   }
 
@@ -26,11 +23,11 @@ class Pages extends Component {
 
   render() {
     console.log("Pages is rendering")
+    console.log("Count is " + this.props.count);
     let pages = [];
-    for (let i = 1; i < this.state.pages + 1; i++) {
+    for (let i = 1; i < (this.props.count/9) + 1; i++) {
       pages.push(<a href='#' onClick={event => this.selectPage(i, event)}>{i.toString()} </a>);
     }
-    console.log(pages);
 
     return (
       <div>
@@ -45,7 +42,8 @@ function mapStateToProps(state) {
     searchTerm: state.searchTerm,
     sort: state.sort,
     category: state.category,
-    page: state.page
+    page: state.page,
+    count: state.products.count
   }; 
 }
 

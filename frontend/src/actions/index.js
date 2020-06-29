@@ -39,28 +39,28 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
     if (page > 1 ) {
       url += PAGE + page + JOIN;
     }
-
-    
+   
     // Search Term
     if (searchTerm.length !== 0) {
       
       url += SEARCH + searchTerm;
+
       if (sortOption) {
         url += JOIN + SORT + sortOption;
       }
-      if (category.length !== 0) {
+      if (category !== null && category.length !== 0) {
         url += JOIN + CATEGORY + category;
       }
     
       // No search term
     } else if (sortOption) {
       url += SORT + sortOption;
-      if (category.length !== 0) {
+      if (category !== null && category.length !== 0) {
         url += JOIN + CATEGORY + category;
       }
     
       // no price sort
-    } else if (category.length !== 0) {
+    } else if (category !== null && category.length !== 0) {
       console.log('just category was called')
       url += CATEGORY + category;
     }
@@ -68,7 +68,7 @@ export function fetchProducts(searchTerm = null, sortOption = null, category = n
 
   console.log(url);
   const request = axios.get(url);
-  console.log(request);
+
   return {
     type: FETCH_PRODUCTS,
     payload: request

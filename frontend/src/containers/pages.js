@@ -22,8 +22,7 @@ class Pages extends Component {
 
 
   render() {
-    console.log("Pages is rendering")
-    console.log("Count is " + this.props.count);
+    
     let pages = [];
     for (let i = 1; i < (this.props.count/9) + 1; i++) {
       pages.push(<a href='#' onClick={event => this.selectPage(i, event)}>{i.toString()} </a>);

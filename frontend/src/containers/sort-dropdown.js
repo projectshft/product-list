@@ -12,9 +12,14 @@ class SortDropdown extends Component {
 
   sortProducts = (option, event) => {
     event.preventDefault();
-    this.props.setSortOption(option);
 
+    if (option === "none") {
+      this.props.setSortOption(null);
+      this.props.fetchProducts(this.props.searchTerm, null, this.props.category, this.props.page)
+    } else {
+    this.props.setSortOption(option);
     this.props.fetchProducts(this.props.searchTerm, option, this.props.category, this.props.page)
+    }
   }
 
 
@@ -30,6 +35,9 @@ class SortDropdown extends Component {
             </button>
             <button className="dropdown-item lowest" type="button" onClick={event => this.sortProducts("lowest", event)}>
               Low to high
+              </button>
+              <button className="dropdown-item none" type="button" onClick={event => this.sortProducts("none", event)}>
+              (None)
               </button>
           </div>
         </div>

@@ -10,6 +10,7 @@ class CategoryDropdown extends Component {
     // The categories have local state for now
     this.state = {
       categories: [
+        "(None)",
         "Automotive",
         "Baby",
         "Beauty",
@@ -41,9 +42,13 @@ class CategoryDropdown extends Component {
 
   selectCategoryFromMenu = (category, event) => {
     event.preventDefault();
-
-    this.props.setCategory(category);
-    this.props.fetchProducts(this.props.searchTerm, this.props.sort, category, this.props.page)
+    if (category === "(None)") {
+    this.props.setCategory(null);
+    this.props.fetchProducts(this.props.searchTerm, this.props.sort, null, this.props.page)
+    } else {
+      this.props.setCategory(category);
+      this.props.fetchProducts(this.props.searchTerm, this.props.sort, category, this.props.page)
+    }
   }
 
 

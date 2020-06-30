@@ -5,7 +5,7 @@ const ROOT_URL = "http://localhost:8000/products";
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
 
-export function fetchProducts (query, searchInput) {
+export function fetchProducts (query = {}, searchInput) {
 
     let pageSort = "";
     let categoryTerm = "";
@@ -20,8 +20,8 @@ export function fetchProducts (query, searchInput) {
         categoryTerm = query.category;
     }
 
-    if (query.sort) {
-        priceSort = query.sort
+    if (query.price) {
+        priceSort = query.price
     }
 
     if (searchInput) {
@@ -29,7 +29,7 @@ export function fetchProducts (query, searchInput) {
     }
 
 
-    let url = `${ROOT_URL}?page=${pageSort}&category=${categoryTerm}&price=${priceSort}&query=${searchTerm}`;
+    let url = `${ROOT_URL}?page=${pageSort}&category=${categoryTerm}&price=${priceSort}&search=${searchTerm}`;
     const request = axios.get(url)
     console.log('Request', request);
     return {

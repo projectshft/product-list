@@ -17,7 +17,7 @@ class Products extends Component {
         page: ''
       }
       
-      this.handleClickEvent = this.handleClickEvent.bind(this);
+      this.handleSearchClick = this.handleSearchClick.bind(this);
       this.filterCategory = this.filterCategory.bind(this);
       this.filterPrice = this.filterPrice.bind(this);
       this.changePage = this.changePage.bind(this);
@@ -28,8 +28,8 @@ class Products extends Component {
   }
 
   
-  handleClickEvent() {
-    this.props.fetchProducts(this.state.search)
+  handleSearchClick() {
+    this.props.fetchProducts( {} , this.state.search)
   }
 
   filterCategory() {
@@ -49,9 +49,9 @@ class Products extends Component {
 
   renderHeading() {
     return (
-      <div class="row">
-        <div class="col-md-12">
-          <h3 class="text-center">Product List</h3>
+      <div className="row">
+        <div className="col-md-12">
+          <h3 className="text-center">Product List</h3>
         </div>
       </div>
     )
@@ -61,19 +61,19 @@ class Products extends Component {
   renderSearch() {
     return (
       <div>
-        <form class="search-form">
-          <div class="form-group">
-            <div class="col-md-3">
-              <div class="input-group">
-                <input type="text" id="search-input" class="form-control" placeholder="Search Products" onChange= {event => {this.setState({ search: event.target.value})}}></input>
-                <button id="search-button" type="button" class="btn btn-primary search" onClick= {event=> {this.handleClickEvent(event)}}>Search</button>
+        <form className="search-form">
+          <div className="form-group">
+            <div className="col-md-3">
+              <div className="input-group">
+                <input type="text" id="search-input" className="form-control" placeholder="Search Products" onChange= {event => {this.setState({ search: event.target.value})}}></input>
+                <button id="search-button" type="button" className="btn btn-primary search" onClick= {event=> {this.handleSearchClick(event)}}>Search</button>
               </div>
             </div>
 
-            <div class="col-md-3">
+            <div className="col-md-3">
               <div><h5 id="category-text">Product Category:</h5></div>
               <div>
-                <select class="custom-select" id="inputGroupSelect01" onChange= {event=> this.setState({ category: event.target.value }, () => {this.filterCategory()})}>
+                <select className="custom-select" id="inputGroupSelect01" onChange= {event=> this.setState({ category: event.target.value }, () => {this.filterCategory()})}>
                     <option defaultValue>Select</option>
                     <option value="Industrial">Industrial</option>
                     <option value="Shoes">Shoes</option>
@@ -101,10 +101,10 @@ class Products extends Component {
               </div>
             </div> 
 
-            <div class="col-md-3">
+            <div className="col-md-3">
               <div><h5 id="category-text">Sort:</h5></div>
               <div>
-                <select class="custom-select"  onChange= {event=> this.setState({ price: event.target.value }, () => {this.filterPrice()})}>
+                <select className="custom-select"  onChange= {event=> this.setState({ price: event.target.value }, () => {this.filterPrice()})}>
                   <option defaultValue>Select</option>
                   <option value="lowest">Price: Low to High</option>
                   <option value="highest">Price: High to Low</option>
@@ -156,7 +156,7 @@ class Products extends Component {
     return pageNumbers.map(number => {
         return (
             <div>
-              <li class="page-item" key={number} onClick={event => this.setState({ page: {number} }, () => { this.changePage() })}><a class="page-link" href="#">{number}</a></li>
+              <li className="page-item" key={number} onClick={event => this.setState({ page: {number} }, () => { this.changePage() })}><a className="page-link" href="#">{number}</a></li>
             </div>
         );
     });
@@ -178,7 +178,7 @@ class Products extends Component {
             </div>
             <div>
               <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
+                <ul className="pagination justify-content-center">
                   {this.renderPages()}
                 </ul>
               </nav>

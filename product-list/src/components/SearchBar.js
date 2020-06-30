@@ -17,7 +17,11 @@ class SearchBar extends Component {
           <input type="text"></input>
 
           <label>sort by:</label>
-          <input type="text"></input>
+          <select id="cars" name="cars">
+            <option value="highest">highest</option>
+            <option value="lowest">lowest</option>
+          </select>
+
         </form>
       </div>
     )

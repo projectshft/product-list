@@ -11,13 +11,17 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchProductInformation();
+    this.props.fetchProductInformation('', 'highest', '');
+  }
+
+  componentDidUpdate() {
+    this.props.fetchProductInformation('', 'highest', '');
   }
 
   render() {
     return (
       <div>
-
+        
       </div>
     )
   }

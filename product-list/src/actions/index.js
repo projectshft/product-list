@@ -6,8 +6,9 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 //const API_KEY = ''; API KEY NOT NEEDED
 const ROOT_URL = 'localhost:8000/products'
 
-//API pull for Park information
-export function fetchProductInformation(query, category, sort) {
+//API pull for Products information
+export function fetchProductInformation(category, sort, query) {
+  console.log(`fetching products with: ${category}, ${sort}`)
   const url = `${ROOT_URL}/?page=1&category=${category}&sort=${sort}&query=${query}`
   const request = axios.get(url);
 

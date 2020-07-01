@@ -23,7 +23,7 @@ const App = () => {
     <div>
       <Container maxwidth="sm">
         <Typography variant="h3" className={classes.header}>
-          Products
+          Pierre's Products Demo
         </Typography>
         <FilterOptionsBar />
 

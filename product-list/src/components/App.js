@@ -11,17 +11,30 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchProductInformation('', 'highest', '');
+    this.props.fetchProductInformation(1, '', 'highest', '');
   }
 
-  componentDidUpdate() {
-    this.props.fetchProductInformation('', 'highest', '');
-  }
+  // componentDidUpdate() {
+  //   this.props.fetchProductInformation(1, '', 'highest', '');
+  // }
 
   render() {
     return (
       <div>
-        
+        <form>
+          <label>Search</label>
+          <input type="search"></input>
+          
+          <label>Filter by Category</label>
+          <input type="text"></input>
+
+          <label>sort by:</label>
+          <select id="cars" name="cars">
+            <option value="highest">highest</option>
+            <option value="lowest">lowest</option>
+          </select>
+
+        </form>
       </div>
     )
   }

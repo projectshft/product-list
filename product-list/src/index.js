@@ -15,7 +15,7 @@ ReactDOM.render(
  <Provider store={createStoreWithMiddleware(reducers)}>
     <div>
       <h1>Products</h1>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <App />
     </div>
  </Provider>,

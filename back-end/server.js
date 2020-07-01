@@ -7,7 +7,7 @@ const mainRoutes = require('./routes/main')
 mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true})
 
 const app = express()
-
+//using cors for server to server request
 app.use(cors());
 
 app.use(bodyParser.json())

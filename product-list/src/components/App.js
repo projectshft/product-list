@@ -9,15 +9,28 @@ class App extends Component {
   constructor() {
     super()
 
+    this.state = {
+      query: '',
+      category: '',
+      sort: '',
+    }
+
   }
 
   componentDidMount() {
     this.props.fetchProductInformation(1, '', 'highest', '');
   }
 
-  // componentDidUpdate() {
-  //   this.props.fetchProductInformation(1, '', 'highest', '');
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    //first ensure componentDidUpdate is not checking updating on first API pull
+    if (!prevProps.products) {
+      console.log('first update')
+      //checking state to see if any changes have been made
+      //based on changes to the form in the render function
+    } else if (prevState.query !== this.state.query || prevState.category !== this.state.category || prevState.sort !== this.state.sort){
+      this.props.fetchProductInformation(1, this.state.category, this.state.sort, this.state.query);
+    }
+  }
 
   render() {
     //display "loading" text if props does not yet contain data
@@ -33,21 +46,20 @@ class App extends Component {
        //map through each product in the array returned in props
        this.props.products.map(product => {
          return (
-            <div class="col-md-3 offset-md-5 m-2 bg-secondary">
-              <div class="row">
-                <div class="col-md-8">
+            <div className="col-md-3 offset-md-5 m-2 bg-secondary">
+              <div className="row">
+                <div className="col-md-8">
                   <p>Category: {product.category}</p>
                 </div>
-                <div class="col-md-4">
-                  <h5 class="text-right ">${(product.price)/100}</h5>
+                <div className="col-md-4">
+                  <h5 className="text-right ">${(product.price)/100}</h5>
                 </div>
               </div>
-              <img class="mx-auto d-block w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjlJapFK9txjcNzYxxibA5Sghs_0IkTh2_gQ&usqp=CAU"></img>
-              <h4 class="text-center">{product.name}</h4>
+              <img className="mx-auto d-block w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQjlJapFK9txjcNzYxxibA5Sghs_0IkTh2_gQ&usqp=CAU"></img>
+              <h4 className="text-center">{product.name}</h4>
             </div>
-         )
-       })
-       
+          )
+        })
       )
     }
 
@@ -55,25 +67,40 @@ class App extends Component {
 
       <div>
         {/* form for searching products displayed at the top of the page */}
-        <div class="row justify-content-md-center">
+        <div className="row justify-content-md-center py-2">
           <form>
-            <label class="p">Search</label>
-            <input type="search"></input>
+            {/* user's search bar entry will be stored in state */}
+            <label className="mr-2">Search</label>
+            <input className="mr-4" type="search" onChange={event => this.setState({ query: event.target.value }) }></input>
             
-            <label>Filter by Category</label>
-            <input type="text"></input>
+            {/* category selection changes will be stored in state */}
+            <label className="mr-2">Filter by Category</label>
+            <select className="mr-4" name="category" onChange={event => this.setState({ category: event.target.value }) }>
+              <option value=""></option>
+              <option value="Automotive">Automotive</option>
+              <option value="Books">Books</option>
+              <option value="Clothing">Clothing</option>
+              <option value="Games">Games</option>
+              <option value="Health">Health</option>
+              <option value="Home">Home</option>
+              <option value="Jewelery">Jewelery</option>
+              <option value="Kids">Kids</option>
+              <option value="Toys">Toys</option>
+            </select>
 
-            <label>sort by:</label>
-            <select id="cars" name="cars">
+            {/* sort selection change will be changed in state */}
+            <label className="mr-2">sort by:</label>
+            <select className="mr-4" id="cars" name="cars" onChange={event => this.setState({ sort: event.target.value }) }>
               <option value="highest">highest</option>
               <option value="lowest">lowest</option>
             </select>
 
           </form>
         </div>
-
-        <div class="container-fluid">
-          <div class="row justify-content-md-center">
+        
+        {/* Display all products in redux fetch request */}
+        <div className="container-fluid">
+          <div className="row justify-content-md-center">
             {productDisplay()}
           </div>
         </div>

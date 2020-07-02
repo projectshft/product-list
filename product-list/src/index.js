@@ -15,7 +15,7 @@ const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 ReactDOM.render(
  <Provider store={createStoreWithMiddleware(reducers)}>
     <div>
-      <div class="row justify-content-md-center">
+      <div className="row justify-content-md-center">
         <h1>Products</h1>
       </div>
       <App />

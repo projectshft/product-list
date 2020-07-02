@@ -6,7 +6,6 @@ import promise from "redux-promise";
 import reducers from "./reducers";
 import 'bootstrap/dist/css/bootstrap.css';
 
-import SearchBar from "./components/SearchBar"
 import App from "./components/App"
 
 

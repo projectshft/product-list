@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import 'bootstrap/dist/css/bootstrap.css';
+import '../App.css'
+import ReactPaginate from 'react-paginate';
+
 
 import { fetchProductInformation } from "../actions";
 
@@ -13,7 +16,10 @@ class App extends Component {
       query: '',
       category: '',
       sort: '',
+      currentPage: 1,
     }
+
+    this.handlePageClick = this.handlePageClick.bind(this);
 
   }
 
@@ -27,9 +33,25 @@ class App extends Component {
       console.log('first update')
       //checking state to see if any changes have been made
       //based on changes to the form in the render function
-    } else if (prevState.query !== this.state.query || prevState.category !== this.state.category || prevState.sort !== this.state.sort){
-      this.props.fetchProductInformation(1, this.state.category, this.state.sort, this.state.query);
+    } else if (prevState.query !== this.state.query || prevState.category !== this.state.category || 
+              prevState.sort !== this.state.sort || prevState.currentPage !== this.state.currentPage){
+      this.props.fetchProductInformation(this.state.currentPage, this.state.category, this.state.sort, this.state.query);
+      console.log(this.state)
     }
+  }
+
+  handlePageClick = (e) => {
+    
+    console.log(e.selected)
+    
+    const selectedPage = e.selected;
+
+    this.setState({
+      currentPage: selectedPage
+    })
+
+    console.log(this.state)
+
   }
 
   render() {
@@ -104,6 +126,25 @@ class App extends Component {
             {productDisplay()}
           </div>
         </div>
+
+
+        <div className="row justify-content-md-center">
+         
+          <ReactPaginate
+              previousLabel={"prev"}
+              nextLabel={"next"}
+              breakLabel={"..."}
+              breakClassName={"break-me"}
+              pageCount={this.state.pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={this.handlePageClick}
+              containerClassName={"pagination"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"}
+            />
+
+          </div>
       
       </div>
     )

@@ -36,22 +36,16 @@ class App extends Component {
     } else if (prevState.query !== this.state.query || prevState.category !== this.state.category || 
               prevState.sort !== this.state.sort || prevState.currentPage !== this.state.currentPage){
       this.props.fetchProductInformation(this.state.currentPage, this.state.category, this.state.sort, this.state.query);
-      console.log(this.state)
     }
   }
 
   handlePageClick = (e) => {
     
-    console.log(e.selected)
-    
-    const selectedPage = e.selected;
+    const selectedPage = e.selected + 1;
 
     this.setState({
       currentPage: selectedPage
     })
-
-    console.log(this.state)
-
   }
 
   render() {
@@ -127,7 +121,7 @@ class App extends Component {
           </div>
         </div>
 
-
+        
         <div className="row justify-content-md-center">
          
           <ReactPaginate

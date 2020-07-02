@@ -35,12 +35,13 @@ class App extends Component {
       //based on changes to the form in the render function
     } else if (prevState.query !== this.state.query || prevState.category !== this.state.category || 
               prevState.sort !== this.state.sort || prevState.currentPage !== this.state.currentPage){
+      
       this.props.fetchProductInformation(this.state.currentPage, this.state.category, this.state.sort, this.state.query);
     }
   }
 
+  //function to handle the clicking of each page in ReactPagination
   handlePageClick = (e) => {
-    
     const selectedPage = e.selected + 1;
 
     this.setState({
@@ -58,11 +59,12 @@ class App extends Component {
 
     //helper function to display each product in the router return
     const productDisplay = () => {
+      console.log(this.props.products.count)
       return (
        //map through each product in the array returned in props
-       this.props.products.map(product => {
+       this.props.products.products.map(product => {
          return (
-            <div className="col-md-3 offset-md-5 m-2 bg-secondary">
+            <div className="col-md-3 offset-md-5 m-2 product-div">
               <div className="row">
                 <div className="col-md-8">
                   <p>Category: {product.category}</p>
@@ -121,24 +123,23 @@ class App extends Component {
           </div>
         </div>
 
-        
+        {/* container for Pagination buttons for the user
+        onPageChange is the function that will update the state by calling the handlePageClick function */}
         <div className="row justify-content-md-center">
-         
           <ReactPaginate
-              previousLabel={"prev"}
-              nextLabel={"next"}
-              breakLabel={"..."}
-              breakClassName={"break-me"}
-              pageCount={this.state.pageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={this.handlePageClick}
-              containerClassName={"pagination"}
-              subContainerClassName={"pages pagination"}
-              activeClassName={"active"}
-            />
-
-          </div>
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+          />
+        </div>
       
       </div>
     )

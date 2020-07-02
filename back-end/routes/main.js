@@ -63,11 +63,11 @@ router.get('/products', (req, res, next) => {
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
+      // Sending count of categories router call back with list of products
+  Product.find(categories).find(query).count().exec((err, count) => {
         if (err) return next(err)
 
-        res.send(products)
+        res.send({products, count})
       })
     })
 })

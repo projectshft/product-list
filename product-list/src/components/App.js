@@ -59,7 +59,6 @@ class App extends Component {
 
     //helper function to display each product in the router return
     const productDisplay = () => {
-      console.log(this.props.products.count)
       return (
        //map through each product in the array returned in props
        this.props.products.products.map(product => {

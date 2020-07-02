@@ -131,7 +131,8 @@ class App extends Component {
             nextLabel={"next"}
             breakLabel={"..."}
             breakClassName={"break-me"}
-            pageCount={this.state.pageCount}
+            //changing the number of pages to display based on the query search results
+            pageCount={Math.ceil((this.props.products.count)/9)}
             marginPagesDisplayed={2}
             pageRangeDisplayed={5}
             onPageChange={this.handlePageClick}

@@ -9,7 +9,7 @@ export const GET_SORT = "GET_SORT";
 
 const ROOT_URL = `http://localhost:3001`;
 
-
+//Get products
 export function fetchProducts() {
     const request = axios.get(ROOT_URL + "/products");
 
@@ -21,6 +21,7 @@ export function fetchProducts() {
     };
 }
 
+//Get products by id
 export function fetchProducts(id) {
     const request = axios.get(ROOT_URL + "/products/" + id);
 
@@ -32,6 +33,7 @@ export function fetchProducts(id) {
     };
   }
 
+  //Get product from search
 export function findProducts(query) {
     const request = axios.get(ROOT_URL + "search?query=" + query) 
         .catch((error) => {
@@ -48,6 +50,7 @@ export function findProducts(query) {
     }
 }
 
+//Get category
 export function getCategory(category) {
     return {
       type: GET_CATEGORY,
@@ -55,6 +58,7 @@ export function getCategory(category) {
     }
   }
 
+  //Get the current page
 export function getPage(page) {
   return {
     type: GET_PAGE,
@@ -62,6 +66,7 @@ export function getPage(page) {
   }
 }
 
+//Get sort method
 export function getSort(sort) {
   return {
     type: GET_SORT,

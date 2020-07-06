@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProducts, GET_CATEGORY } from '../actions/index.js';
+import { fetchProducts, getCategory } from '../actions/index.js';
 
 
 function mapStateToProps(state) {

@@ -13,6 +13,7 @@ class App extends Component {
 
       <div>
         <div>
+        <h1>TEST</h1>
           <Products/>
           <Categories/>
           <SearchBar/>

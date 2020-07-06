@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
-import SearchFilterSortBar from '../containers/search-filter-sort-bar'
-import ProductContainer from '../containers/product-container'
+import SearchFilterSortBar from './search-filter-sort-bar'
+import ProductContainer from './product-container'
 
 
 

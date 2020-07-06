@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const mainRoutes = require('./routes/main')
+const mainRoutes = require('./server/routes/main')
 const app = express()
 
 
@@ -18,6 +18,6 @@ app.use(bodyParser.urlencoded({
 
 app.use(mainRoutes)
 
-app.listen(8000, () => {
-  console.log('Node.js listening on port ' + 8000)
+app.listen(3001, () => {
+  console.log('Node.js listening on port ' + 3001)
 })

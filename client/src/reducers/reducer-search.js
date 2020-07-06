@@ -1,8 +1,8 @@
-import { SEARCH } from '../actions/index';
+import { FIND_PRODUCTS } from '../actions/index';
 
 export default function(state = [], action) {
   switch (action.type) {
-    case SEARCH:
+    case FIND_PRODUCTS:
       return action.payload;
     default:
 

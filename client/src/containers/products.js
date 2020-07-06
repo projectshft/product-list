@@ -18,6 +18,7 @@ class Products extends Component {
     if (this.props.products[0]) {
       productList = this.props.products[0].products;
     }
+    console.log(productList)
 }
 
 render() {

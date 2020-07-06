@@ -1,8 +1,8 @@
-import { SORT_CATEGORY } from '../actions/index';
+import { GET_CATEGORY } from '../actions/index';
 
 export default function(state = [], action) {
   switch (action.type) {
-    case SORT_CATEGORY:
+    case GET_CATEGORY:
       return action.payload;
     default:
 

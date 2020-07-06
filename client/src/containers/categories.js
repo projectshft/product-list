@@ -6,7 +6,7 @@ import { fetchProducts, GET_CATEGORY } from '../actions/index.js';
 
 function mapStateToProps(state) {
     return {     
-      searchTerm: state.searchTerm,
+      search: state.search,
       sort: state.sort,
       category: state.category,
       page: state.page

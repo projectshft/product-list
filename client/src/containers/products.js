@@ -28,6 +28,7 @@ render() {
     </div>
   )
 }
+}
 
 function mapStateToProps(state) {
   return {

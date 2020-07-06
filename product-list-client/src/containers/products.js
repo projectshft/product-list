@@ -121,8 +121,11 @@ class Products extends Component {
   
   // display products on the page
   renderProducts() {
+    if (this.props.products.products) {
+      
     
     return _.map(this.props.products.products, product => {
+      
       return (
         <div className="col-md-3" style={{ display: 'inline-block', margin: '4%' }}>
             <div>
@@ -141,7 +144,13 @@ class Products extends Component {
       )
     })
       
-  }
+  } else {
+  return (
+    <div> <h6> Products could not be found </h6> </div>
+    )
+  } 
+    
+}
   // set page numbers based on number of products
   renderPages() {
 

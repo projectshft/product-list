@@ -4,10 +4,8 @@ import SearchFilterSortBar from './search-filter-sort-bar'
 import ProductContainer from './product-container'
 
 
-
-
 /* this will be a stateless component as it is only responsible for rendering the 
-   search/filter/sort bar, the product container and the pagination component
+   search/filter/sort bar and product container
 */   
 export default class MainPage extends Component {
   render() {

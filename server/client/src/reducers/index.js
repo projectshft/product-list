@@ -3,7 +3,10 @@ import ProductsReducer from './reducer-products';
 import TotalProductsReducer from './reducer-total-products';
 import QueryReducer from './reducer-query'
 
-//Only one reducer for now, but good practice to combine reducers for future functionality
+
+/* We will combine three reducers to separate out our redux store state into three
+parts: the products, the number of total products, and the persisting query state
+*/
 const rootReducer = combineReducers({
   products: ProductsReducer,
   totalProducts: TotalProductsReducer,

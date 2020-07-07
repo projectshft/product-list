@@ -7,12 +7,12 @@ import { fetchProducts } from '../actions/index';
 class SearchFilterSortBar extends Component {
   constructor(props) {
     super(props);
-    
+
     //the props is an object that just contains the fetchProducts function
 
-    //the state will contain our user search input, category selection and/or price sort selection
-    this.state = {page: '1', search: '', category: '', price: '' };
-   
+    //this local state will contain our user search input, category selection and/or price sort selection
+    this.state = { page: '1', search: '', category: '', price: '' };
+
 
     this.onInputChange = this.onInputChange.bind(this);
     this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
@@ -23,14 +23,14 @@ class SearchFilterSortBar extends Component {
   /* When this component is initialized by main-page.js, we will use this React function
      to complete an initial search with empty query string, therefore all products will
      be returned and all pages shown when the application initially loads
-  */   
+  */
   componentDidMount() {
     this.props.fetchProducts(this.state);
   }
 
   /* When the user types in a search term, the state will be updated with the term, but
      the api/DB won't be called yet
-  */   
+  */
   onInputChange(event) {
     this.setState({ search: event.target.value });
     event.preventDefault();
@@ -42,32 +42,32 @@ class SearchFilterSortBar extends Component {
     /* This will fetch the products from the search input. The state at this point is
      already updated from event handler of the user typing, so we invoke the fetchProducts 
      function on user hitting enter
-    */ 
+    */
     this.props.fetchProducts(this.state);
-    
+
   }
 
   /* this will update the state if the user selects a category. Then the fetchProducts
    function will make the api call for the selected category's products
-  */ 
+  */
   onCategorySelect(event) {
     this.setState({ category: event.target.value }, () => {
       this.props.fetchProducts(this.state);
-  })
-  event.preventDefault();
-}
+    })
+    event.preventDefault();
+  }
 
   /* this will update the state if the user selects a price sort option (highest to
      lowest, and vice versa)
-  */ 
+  */
   onPriceSortSelect(event) {
     this.setState({ price: event.target.value }, () => {
       this.props.fetchProducts(this.state);
     });
-  
-   event.preventDefault();
+
+    event.preventDefault();
   }
-  
+
 
 
   render() {
@@ -124,5 +124,5 @@ function mapDispatchToProps(dispatch) {
 /* We pass in null (placeholder) as the first connect argument because we're only
  dispatching from this component. There is no mapStateToProps because we're not displaying 
  any data in this component
-*/ 
+*/
 export default connect(null, mapDispatchToProps)(SearchFilterSortBar);

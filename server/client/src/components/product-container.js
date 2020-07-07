@@ -7,7 +7,8 @@ import _ from "lodash";
 
 
 /* This will be the outer container component that holds our product rows and products. 
-   The products will be passed in as props so we can access them in this component. Each row will be passed a product as a prop and the product's id will be used a the key (react requirement)
+   The products will be passed in as props so we can access them in this component. Each row 
+   will be passed a product as a prop and the product's id will be used a the key (react requirement)
 */
 class ProductContainer extends Component {
   constructor(props) {
@@ -17,10 +18,9 @@ class ProductContainer extends Component {
 
   /* this function will be called from the main render() function and will map through
     all the products received, and will create an individualProductDiv component for each
-  */  
+  */
   renderProducts() {
-   
-    console.log('inside renderProducts, this.props=', this.props)
+
     return _.map(this.props.products, product => {
       return (
         <div className="col-md-4" key={product._id}>
@@ -35,7 +35,7 @@ class ProductContainer extends Component {
     return (
       <div>
         <div className="row mt-3">{this.renderProducts()}</div>
-        <PaginationComponent  />
+        <PaginationComponent />
       </div>
     );
   }
@@ -43,12 +43,14 @@ class ProductContainer extends Component {
 
 /* this component will only need to receive state from the redux store, in order to render
    the products on the page
-*/   
-function mapStateToProps( state ) {
-  console.log('inside mapStateToProps Product-Container, state=', state)
-  return { products: state.products, 
+*/
+function mapStateToProps(state) {
+
+  return {
+    products: state.products,
     totalProducts: state.totalProducts,
-    query: state.query};
+    query: state.query
+  };
 }
 
 export default connect(mapStateToProps)(ProductContainer);

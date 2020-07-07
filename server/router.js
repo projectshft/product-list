@@ -5,8 +5,10 @@ const Product = require('./models/product')
 
 
 
-// Two get requests were completed to generate 180 product documents in our collection. 
-//   They are also filled with a random number of reviews that are relevant to the product. 
+/* Two get requests were completed to generate 180 product ('fake') documents in our collection, 
+   The data faker will generate random categories, prices, pictures, and names for the products collection. 
+   Each products will also be filled with a random number of reviews that are relevant to the product. 
+*/
 
 router.get('/generate-fake-data', (req, res, next) => {
   const adjectiveArray = ['great', 'awesome', 'awful', 'weird', 'useless'];
@@ -111,13 +113,12 @@ router.get('/products', (req, res, next) => {
       if (err) throw err;
 
       /* the products argument above represents the results of the first query search, and 
-         will be limited to 9 or below. These are the product that we will return below in
+         will be limited to 9 or below. These are the products that we will return below in
          each response. However we also want to know the total number of products that were
          found in the .find query, so we handle this below with count(query) and this will
          give us the total count, which is needed for pagination. In order to persist the 
          state of the query on clicking a page number, the query values and total product
-         count are appended to the headers of the response, and reattached to the state in 
-         the reducer.
+         count are appended to the response
       */
       Product.count(query).exec((err, count) => {
         if (err) return next(err)
@@ -126,9 +127,6 @@ router.get('/products', (req, res, next) => {
         products.push({categoryType: categoryType});
         products.push({page: page})
         products.push({priceSortType: priceSortType})
-       // products.push()
-        //res.append('productCount', [count.toString()])
-        //res.append('queryData', [search, categoryType, page, priceSortType]);
         res.send(products);
       })
     })

@@ -12,8 +12,6 @@ code {
     monospace;
 }
 
-
-
 .header {
   font-size: 60px;
   font-family: cursive;
@@ -23,7 +21,6 @@ code {
   display: flex;
   justify-content: space-evenly;
 }
-
 
 .pages {
   font-size: 20px;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOT_URL = `http://localhost:8000/products`;
+const ROOT_URL = `/products`;
 
 // set action type to a variable, to prevent possible typos in reducer
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'

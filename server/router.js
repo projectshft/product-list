@@ -2,7 +2,7 @@ const router = require('express').Router()
 // this is a package that will help us populate our database with a bunch of fake data.
 const faker = require('faker')
 const Product = require('./models/product')
-const { response } = require('express')
+
 
 
 // Two get requests were completed to generate 180 product documents in our collection. 
@@ -31,7 +31,6 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
     product.image = faker.image.image()
-    //product.image = 'https://via.placeholder.com/250?text=Product+Image'
     product.reviews = getReviews(randomNumOfReviews, product.name)
 
 

@@ -14,7 +14,7 @@ class PaginationComponent extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {page: '1', search: '', category: '', price: '', productsCount: '' };
+    this.state = {page: '1', search: '', category: '', price: ''};
    
     this.onPageClick = this.onPageClick.bind(this);
    
@@ -28,18 +28,26 @@ class PaginationComponent extends Component {
   */   
   onPageClick(event) {
     const page = event.target.innerHTML.toString();
-    const originalData = this.props.products[2].split(', ');
-    this.setState({ page: page, search: originalData[0], category: originalData[1], price: originalData[3]}, () => {
+    console.log('inside page click, page=', page)
+    console.log('inside page click, this.props.query=', this.props.query)
+   
+  const search = this.props.query[3].search;
+  const category = this.props.query[2].categoryType;
+  const price = this.props.query[0].priceSortType;
+  this.setState({ page: page, search: search, category: category, price: price}, () => {
+    console.log('inside page click, new state=', this.state)
       this.props.fetchProducts(this.state);
    });
+ 
   }
 
   render() {
    /* the total number of products is sent back in the response and we're accessing it here
       in order to calculate and show the correct number of pages on the display
    */   
-    const productsCount = this.props.products[1];
-   
+    const productsCount = this.props.total.totalProducts;
+    console.log('inside pagination render, this.props.products=', this.props)
+   console.log('inside pagination render, products count=', productsCount)
     const pageNumbers = [];
     let pageNumber = 1;
     pageNumbers.push(<PageNumber key={pageNumber} page={pageNumber} />)
@@ -75,8 +83,11 @@ function mapDispatchToProps(dispatch) {
    when a new page is clicked. Also we will need the total number of products from the
    search, so it can render the appropriate number of pages at the bottom of the screen
 */
-function mapStateToProps({ products }) {
-  return { products };
+function mapStateToProps(state) {
+  console.log('inside mapStateToProps pagination, state=', state)
+  return { products: state.products, 
+           total: state.totalProducts,
+           query: state.query};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaginationComponent);

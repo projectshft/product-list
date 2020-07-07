@@ -1,12 +1,12 @@
 const router = require('express').Router()
 // this is a package that will help us populate our database with a bunch of fake data.
 const faker = require('faker')
-const Product = require('./server/models/product')
+const Product = require('./models/product')
 const { response } = require('express')
 
 
-/* Two get requests were completed to generate 180 product documents in our collection. 
-   They are also filled with a random number of reviews that are relevant to the product. 
+// Two get requests were completed to generate 180 product documents in our collection. 
+//   They are also filled with a random number of reviews that are relevant to the product. 
 
 router.get('/generate-fake-data', (req, res, next) => {
   const adjectiveArray = ['great', 'awesome', 'awful', 'weird', 'useless'];
@@ -30,7 +30,8 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.category = faker.commerce.department()
     product.name = faker.commerce.productName()
     product.price = faker.commerce.price()
-    product.image = 'https://via.placeholder.com/250?text=Product+Image'
+    product.image = faker.image.image()
+    //product.image = 'https://via.placeholder.com/250?text=Product+Image'
     product.reviews = getReviews(randomNumOfReviews, product.name)
 
 
@@ -41,14 +42,14 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
-*/
+
 
 /* Next we'll create our paginating GET route. We'll want the client to be able to pass in
    any "page" they want to get a different set of products each time and limit them to
    only 9 products at one time. 
 */
 router.get('/products', (req, res, next) => {
-
+  console.log('inside router.get /products')
   //set max products per page to 9
   const perPage = 9
 
@@ -121,8 +122,14 @@ router.get('/products', (req, res, next) => {
       */
       Product.count(query).exec((err, count) => {
         if (err) return next(err)
-        res.append('productCount', [count.toString()])
-        res.append('queryData', [search, categoryType, page, priceSortType]);
+        products.push({totalProducts: count});
+        products.push({search: search})
+        products.push({categoryType: categoryType});
+        products.push({page: page})
+        products.push({priceSortType: priceSortType})
+       // products.push()
+        //res.append('productCount', [count.toString()])
+        //res.append('queryData', [search, categoryType, page, priceSortType]);
         res.send(products);
       })
     })

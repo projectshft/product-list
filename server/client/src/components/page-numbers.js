@@ -4,6 +4,10 @@ import React, { Component } from 'react';
    it needs (which is the page number)
 */   
 export default class PageNumber extends Component {
+  constructor () {
+    super()
+    
+  }
   render() {
     const pageNumber = this.props.page;
     return (

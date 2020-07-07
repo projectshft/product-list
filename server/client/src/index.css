@@ -43,6 +43,12 @@ code {
 .img-div {
   display: flex;
   justify-content: space-evenly;
+ 
+}
+
+.img {
+  height: 250px;
+  width: 250px;
 }
 
 .product-name {

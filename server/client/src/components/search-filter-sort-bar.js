@@ -73,9 +73,8 @@ class SearchFilterSortBar extends Component {
   render() {
     return (
       <form className="form-inline search-bar">
-        <label className="ml-2 mr-2" htmlFor="exampleFormControlInput1">Search</label>
         <input value={this.state.search} onChange={this.onInputChange} type="text" className="form-control" id="exampleFormControlInput1" placeholder="Search..." />
-        <button onClick={this.onSearchButtonClick} type="submit" className="btn btm-primary">Search</button>
+        <button onClick={this.onSearchButtonClick} type="submit" className="btn btn-primary">Search</button>
         <label className="ml-2 mr-2" htmlFor="inlineFormCustomSelectCategory">Filter by Category: </label>
         <select onChange={this.onCategorySelect} className="form-control custom-select" id="inlineFormCustomSelectCategory">
           <option value="All">All</option>

@@ -13,10 +13,9 @@ export default class MainPage extends Component {
   render() {
     return (
       <div>
-        <h1 className="text-center">PRODUCTS</h1>
+        <h1 className="header text-center mt-3 mb-3">Peculiar Products</h1>
         <SearchFilterSortBar />
         <ProductContainer />
-        
       </div>
     );
   }

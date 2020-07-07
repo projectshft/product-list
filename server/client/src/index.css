@@ -12,10 +12,18 @@ code {
     monospace;
 }
 
+
+
+.header {
+  font-size: 60px;
+  font-family: cursive;
+}
+
 .search-bar {
   display: flex;
   justify-content: space-evenly;
 }
+
 
 .pages {
   font-size: 20px;
@@ -38,6 +46,7 @@ code {
 .category {
   font-size: 14px;
   padding-top: 5px;
+  font-family: cursive;
 }
 
 .img-div {
@@ -54,6 +63,7 @@ code {
 .product-name {
   font-size: 20px;
   font-weight: 600;
+  font-family: cursive;
 }
 
 .table {

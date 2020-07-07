@@ -17,23 +17,17 @@ export function fetchProducts(state) {
   
     url = url + `?page=${page}`;
     
-    if (search === null) {
-      
-    } else {
+    if (search !== null) {
       url = url + `&search=${search}`
-    }
+    } 
 
-    if (category === null) {
-
-    } else {
+    if (category !== null) {
       url = url + `&category=${category}`
-    }
+    } 
 
-    if (price === null) {
-
-    } else {
+    if (price !== null) {
       url = url + `&price=${price}`
-    }
+    } 
    
  console.log('inside fetch products action, url=', url)
   const request = axios.get(url);

@@ -11,9 +11,9 @@ export default function(state = [], action) {
             */  
             
            const query = action.payload.data.filter(el=> {
-              if (!el._id || !el.totalProducts) {
+              if (!el._id && !el.totalProducts) {
                 return el;
-              }
+              } 
            })
 
          
@@ -26,7 +26,7 @@ export default function(state = [], action) {
         */
        console.log('inside inside reducer-query: action.payload.data=', action.payload.data)
            console.log('inside inside reducer-query: query=', query)
-            return [...state, ...query];
+            return query;
            
         default: 
             return state;

@@ -9,7 +9,7 @@ export default function(state = 0, action) {
                priceSort, as well as total number of products found based on our query (we
                need this for pagination)). We don't want to mutate the state, so we can use destructuring (or concat) to accomplish this
             */   
-           const totalProducts = action.payload.data.find(element => element.totalProducts)
+           const totalProducts = action.payload.data.find(element => element.totalProducts || element.totalProducts === 0)
 
          //  })
            /* products.push({totalProducts: count});

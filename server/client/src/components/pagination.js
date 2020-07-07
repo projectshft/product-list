@@ -31,9 +31,9 @@ class PaginationComponent extends Component {
     console.log('inside page click, page=', page)
     console.log('inside page click, this.props.query=', this.props.query)
    
-  const search = this.props.query[3].search;
-  const category = this.props.query[2].categoryType;
-  const price = this.props.query[0].priceSortType;
+  const search = this.props.query[0].search;
+  const category = this.props.query[1].categoryType;
+  const price = this.props.query[3].priceSortType;
   this.setState({ page: page, search: search, category: category, price: price}, () => {
     console.log('inside page click, new state=', this.state)
       this.props.fetchProducts(this.state);
@@ -46,6 +46,9 @@ class PaginationComponent extends Component {
       in order to calculate and show the correct number of pages on the display
    */   
     const productsCount = this.props.total.totalProducts;
+    if (productsCount === 0) {
+      return <h4 className="text-center">No Products Found, Please Search Again</h4>
+    }
     console.log('inside pagination render, this.props.products=', this.props)
    console.log('inside pagination render, products count=', productsCount)
     const pageNumbers = [];

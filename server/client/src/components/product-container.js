@@ -19,6 +19,7 @@ class ProductContainer extends Component {
     all the products received, and will create an individualProductDiv component for each
   */  
   renderProducts() {
+   
     console.log('inside renderProducts, this.props=', this.props)
     return _.map(this.props.products, product => {
       return (
@@ -33,7 +34,7 @@ class ProductContainer extends Component {
   render() {
     return (
       <div>
-        <div className="row">{this.renderProducts()}</div>
+        <div className="row mt-3">{this.renderProducts()}</div>
         <PaginationComponent  />
       </div>
     );

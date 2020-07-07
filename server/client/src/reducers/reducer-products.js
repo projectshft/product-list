@@ -9,7 +9,7 @@ export default function(state = {}, action) {
                priceSort, as well as total number of products found based on our query (we
                need this for pagination)). We don't want to mutate the state, so we can use destructuring (or concat) to accomplish this
             */   
-           const products = action.payload.data.filter((product, index) => {
+           const products = action.payload.data.filter(product => {
                 if (product._id) { 
                     return product;
                 }
@@ -24,7 +24,7 @@ export default function(state = {}, action) {
            console.log('inside reducer-products: products=', products)
            console.log('inside reducer-products: action.payload=', action.payload)
            console.log('inside inside reducer-products: action.payload.data=', action.payload.data)
-            return {...state, ...products};
+            return products;
            
         default: 
             return state;

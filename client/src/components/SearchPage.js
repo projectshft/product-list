@@ -10,7 +10,7 @@ import ProductList from './ProductList'
 
 class SearchPage extends Component {
     constructor(props) {
-        super(props)
+        super()
 
         //keep track of current (clicked) page
         this.state = {

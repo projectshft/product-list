@@ -7,7 +7,7 @@ import { searchProducts } from "../actions/index";
 
 class ProductList extends Component {
     constructor(props) {
-        super(props)
+        super();
 
         this.renderProducts = this.renderProducts.bind(this);
     }
@@ -15,7 +15,7 @@ class ProductList extends Component {
     //populate html with search results
     renderProducts() {
         //get products
-        const products = this.props.products
+        const products = this.props.products;
 
         // check if results were fetched and not empty
         if (products && products.length > 0) {

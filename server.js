@@ -1,11 +1,13 @@
 const express = require('express');
+const app = express();
+const cors = require('cors');
+const router = require('./routes/main');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+// const mainRoutes = require('./routes/main');
 
 mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true, useUnifiedTopology: true } );
 
-const app = express();
 app.use(cors());
 
 // app.use((req, res, next) => {
@@ -20,14 +22,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-const mainRoutes = require('./routes/main');
-const router = require('./routes/main');
 router(app);
 
-app.use(mainRoutes);
+// app.use(mainRoutes);
 
 
 app.listen(8000, () => {
-  console.log('Node.js listening on port ' + 8000);
+  console.log('Server listening on port ' + 8000);
 });
       

@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import SearchPage from "./SearchPage";
+import FakeDataGenerator from './FakeDataGenerator';
 
 import "../css/App.css";
 
@@ -13,7 +14,7 @@ const App = () => {
       <Row id="header">
         <Col>
           <header>
-            <h1>Products</h1>
+            <h1>Peculiar Products</h1>
           </header>
         </Col>
       </Row>
@@ -21,6 +22,7 @@ const App = () => {
       <Switch>
         {/* Default/List View */}
         <Route exact path={["/", "/products"]} component={SearchPage} />
+        <Route exact path={"/fake-data"} component={FakeDataGenerator} />
       </Switch>
 
     </Container>

@@ -117,9 +117,9 @@ class SearchPage extends Component {
         //check if categories have been fetched
         if (availableCategories) {
             //map categories to dropdown list
-            return this.props.categories.map(category => {
+            return this.props.categories.map((category, index) => {
                 return (
-                    <option>{category}</option>
+                    <option key={index}>{category}</option>
                 );
             });
         } else {

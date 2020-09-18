@@ -4,7 +4,7 @@ const Product = require('../models/product');
 
 module.exports = function(app) {
 
-  app.get('/generate-fake-data', (request, response, next) => {
+  app.get('/api/generate-fake-data', (request, response, next) => {
     for (let i = 0; i < 90; i++) {
       let product = new Product();
   
@@ -20,7 +20,7 @@ module.exports = function(app) {
     response.end();
   });
   
-  app.get('/products', (request, response, next) => {
+  app.get('/api/products', (request, response, next) => {
     //products to display on each page
     const perPage = 9;
   
@@ -82,7 +82,7 @@ module.exports = function(app) {
       });
   });
   
-  app.get('/products/:product', (request, response, next) => {
+  app.get('/api/products/:product', (request, response, next) => {
   
     //find product with product id
     Product
@@ -99,7 +99,7 @@ module.exports = function(app) {
       });
   });
   
-  app.get('/products/:product/reviews', (request, response, next) => {
+  app.get('/api/products/:product/reviews', (request, response, next) => {
     //get product id
     const productId = request.params.product;
   
@@ -144,7 +144,7 @@ module.exports = function(app) {
       });
   });
   
-  app.post('/products', (request, response, next) => {
+  app.post('/api/products', (request, response, next) => {
     //get product info from request
     const productToAdd = request.body;
   
@@ -164,7 +164,7 @@ module.exports = function(app) {
       });
   });
   
-  app.post('/products/:product/reviews', (request, response, next) => {
+  app.post('/api/products/:product/reviews', (request, response, next) => {
   
     //get review from request
     const reviewToAdd = request.body;
@@ -186,7 +186,7 @@ module.exports = function(app) {
       });
   });
   
-  app.delete('/products/:product', (request, response, next) => {
+  app.delete('/api/products/:product', (request, response, next) => {
     Product
       .where({ _id: request.params.product })
       .findOneAndDelete((error, deletedProduct) => {
@@ -201,7 +201,7 @@ module.exports = function(app) {
       });
   });
   
-  app.delete('/reviews/:review', (request, response, next) => {
+  app.delete('/api/reviews/:review', (request, response, next) => {
     Product
       .updateOne({ reviews: { $elemMatch: { _id: request.params.review } } }, { $pull: { reviews: { _id: request.params.review } } })
       .exec((error, deletedReview) => {

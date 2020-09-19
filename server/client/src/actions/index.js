@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // server address
-const ROOT_URL = 'http://localhost:8000/api';
+const ROOT_URL = '/api';
 
 export const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
 export const GET_RANDOM_DATA = "GET_RANDOM_DATA";

@@ -11,7 +11,7 @@ module.exports = function(app) {
       product.category = faker.commerce.department();
       product.name = faker.commerce.productName();
       product.price = faker.commerce.price();
-      product.image = faker.image.image();
+      product.image = faker.random.image();
   
       product.save((error) => {
         if (error) throw error;

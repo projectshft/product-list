@@ -9,9 +9,6 @@ const keys = require('./config/keys');
 
 // DB Setup
 mongoose.connect(keys.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true } );
-// mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true } );
-
-
 
 app.use(cors());
 

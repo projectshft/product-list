@@ -22,7 +22,7 @@ module.exports = function(app) {
   
   app.get('/api/products', (request, response, next) => {
     //products to display on each page
-    const perPage = 9;
+    const perPage = 8;
   
     //get queries
     const page = request.query.page || 1; //return first page by default

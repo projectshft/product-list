@@ -1,5 +1,7 @@
 .search-page {
     margin: 30px auto 0;
+    width: 80% !important;
+    max-width: 1400px;
 }
 
 .bold-number {

@@ -1,10 +1,10 @@
 
 .product-container {
-    margin: 3vw auto;
+    margin: 20px auto;
     background-color: rgba(255, 255, 255, .4);
     padding: 10px;
     border-radius: 7px;
-    height: 90%;
+    /* height: 90%; */
 }
 
 .product-image {
@@ -24,7 +24,7 @@
 .product-category {
     padding: 0;
     margin: .5em auto ;
-    font-size: 20px;
+    font-size: 18px;
     color: #685c60;
 }
 
@@ -46,4 +46,9 @@
     font-size: 25px;
     text-align: center;
     color: #685c60;
+}
+
+
+.product-col {
+    display: flex;
 }

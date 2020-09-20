@@ -23,7 +23,7 @@ class ProductList extends Component {
             return products.map((product, index) => {
 
                 return (
-                    <Col className="product-col" md={3} key={index}>
+                    <Col className="product-col" lg={3} key={index}>
                         <Container className="product-container">
                             <Row>
                                 <Col className="category-col" sm={9} md={6} lg={8}>

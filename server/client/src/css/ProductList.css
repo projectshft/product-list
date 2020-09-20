@@ -37,7 +37,7 @@
 
 .product-price {
     font-weight: bold;
-    font-size: 30px;
+    font-size: 22px;
     color: #685c60;
     text-align: right;
 }
@@ -52,3 +52,4 @@
 .product-col {
     display: flex;
 }
+

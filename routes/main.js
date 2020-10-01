@@ -62,8 +62,24 @@ router.get('/products/:product/reviews', (req, res, next) => {
   res.send(/*response*/)
 })
 
-// creates a new product in the database
+// creates a new product in the database body category / name / price / image
 router.post('/products', (req, res, next) => {
+  console.log(req.body[0].name)
+  console.log(req.body[0].price)
+  const newProduct = new Product({
+    category : req.body[0].category,
+    name : req.body[0].name,
+    price : req.body[0].price,
+    image: req.body[0].image
+  })
+  newProduct.save()
+  
+  /* {
+    category : req.body[0].category,
+    name : req.body[0].name,
+    price : req.body[0].price,
+    image: req.body[0].image
+  } */
   if (err) return next(err)
   res.send(/*response*/)
 })

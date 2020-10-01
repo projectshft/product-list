@@ -22,3 +22,4 @@ router.get('/newroute', (req, res, next) => {
   res.send(/*response*/)
 })
 
+{"_id":{"$oid":"5f7616c77b108078742fc9cf"},"category":"Kids","name":"Intelligent Fresh Chair","price":660,"image":"https://via.placeholder.com/250?text=Product+Image","__v":0}

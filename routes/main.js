@@ -48,9 +48,13 @@ router.get('/products', (req, res, next) => {
 // returns specific product by id
 router.get('/products/:product', (req, res, next) => {
   console.log(`param ${req.params.product}`)
+  Product
+    .find({_id: req.params.product})
+     .exec((err, products) => {
   if (err) return next(err)
-  res.send(req.params.product)
-})
+  console.log(products)
+  res.send(products)
+})})
 
 // returns all reviews of a product, limited to 4 @ time, ?page= option to start page
 router.get('/products/:product/reviews', (req, res, next) => {

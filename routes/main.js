@@ -59,12 +59,15 @@ router.get('/products/:product', (req, res, next) => {
 // returns product categories  TODO
 router.get('/categories', (req, res, next) => {
   console.log(`getting categories`)
-  // Product
-  //   .aggregate([ {$match: {}}, { $group: { _id: null, categories: {$addToSet: "$category"}}}])
-  //    .exec((err, categories) => {
+  // both of the below methods work, but have different styles of results. Will keep around
+  // for whichever is easiest on frontend
+  Product
+    .aggregate([ {$match: {}}, { $group: { _id: null, categories: {$addToSet: "$category"}}}])
+     .exec((err, categories) => {
 
-  Product.distinct('category', (err, categories) => {
-    if (err) {console.log(err)
+  // Product.distinct('category', (err, categories) => {
+   
+  if (err) {console.log(err)
     } else {
       console.log(JSON.stringify(categories))
       res.send(JSON.stringify(categories))

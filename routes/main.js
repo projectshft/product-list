@@ -83,14 +83,19 @@ if (req.query.category || req.query.price || req.query.q) {
     .sort(pricingSort)
     .exec((err, products) => {
       console.log('products by category ', categorizing)
-      // counting all for future use?
-      Product.countDocuments().exec((err, count) => {
-        if (err) return next(err)
-        // TODO this
-        res.send(JSON.stringify(products))
+      // counting results
+      console.log('finding the num of prods', products.length)
+      products.count = products.length
+      console.log('prods as obj', products)
+      let niceProducts = {}
+      niceProducts.list = products
+      niceProducts.count = products.length
+      res.send(JSON.stringify(niceProducts))
+        
+
       })
-    })}
-  }) 
+  }})
+
 // returns specific product by id
 router.get('/products/:product', (req, res, next) => {
   console.log(`param ${req.params.product}`)

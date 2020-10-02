@@ -2,6 +2,8 @@ const router = require('express').Router()
 const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 router.get('/generate-fake-data', (req, res, next) => {
     let product;
@@ -63,13 +65,13 @@ router.get('/products/:product/reviews', (req, res, next) => {
     let page = req.query.page || 1
     //console.log(product)
 
-    Product.find({_id: product}).exec((err, prod) => {
+    Product.find({_id: product}).exec((err, prod) => {          ///HOW TO HANDLE THIS ASYNCHRONOUSLY. 
         let reviews = prod[0].reviews
         
         const getReviews = () => {
             let reviewsToReturn = [];
             for( let i = 0; i < reviews.length; i++) {
-                Review.find({_id: reviews[i]}).exec((err, review) => {
+                Review.find({_id: reviews[i]}).exec((err, review) => {          ///REVIEWSTORETURN IS EMPTY WHEN PASSED TO RES
                     if(err) return next(err)
                     reviewsToReturn.push(review)
                     
@@ -83,19 +85,21 @@ router.get('/products/:product/reviews', (req, res, next) => {
 })
 
 router.post('/products', (req, res) => {
-    console.log(req.body)
+    console.log(req.query)
 
-    let newProduct = new Product({
-        category: req.body.category,
-        name: req.body.name,
-        price: req.body.price,
-        image: req.body.image,
-        reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}]
+    let newProduct = new Product({                  ////HOW TO HANDLE INPUT DATA FROM A FORM??
+        category: req.query.category,
+        name: req.query.name,
+        price: req.query.price,
+        image: req.query.image,
+        reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}]     ///HOW TO DYNAMICALLY CREATE THIS??
     })
 
-    // newProduct.save((err) => {
-    //     if (err) throw err
-    // })
+    newProduct.save((err) => {
+        if (err) throw err
+    })
     res.end()
 })
+
+
 module.exports = router

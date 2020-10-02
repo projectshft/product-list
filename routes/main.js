@@ -56,6 +56,24 @@ router.get('/products/:product', (req, res, next) => {
   res.send(JSON.stringify(products))
 })})
 
+// returns product categories  TODO
+router.get('/categories', (req, res, next) => {
+  console.log(`getting categories`)
+  // Product
+  //   .aggregate([ {$match: {}}, { $group: { _id: null, categories: {$addToSet: "$category"}}}])
+  //    .exec((err, categories) => {
+
+  Product.distinct('category', (err, categories) => {
+    if (err) {console.log(err)
+    } else {
+      console.log(JSON.stringify(categories))
+      res.send(JSON.stringify(categories))
+    }
+    
+})})
+
+
+
 // returns all reviews of a product, limited to 4 @ time, ?page= option to start page
 router.get('/products/:product/reviews', (req, res, next) => {
   console.log(`product review retrieval for ${req.params.product}`)

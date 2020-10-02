@@ -30,7 +30,7 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
-if (!req.query.category && !req.query.sort && !req.query.query) {
+if (!req.query.category && !req.query.price && !req.query.query) {
   console.log('products no queries')
   Product
     .find({})
@@ -47,9 +47,17 @@ if (!req.query.category && !req.query.sort && !req.query.query) {
     })}
     // return products in category
 
-if (req.query.category && !req.query.sort && !req.query.query) {
-  console.log('products by category ', req.query.category)
-  console.log(typeof req.query.category)
+if (req.query.category && req.query.price && !req.query.query) {
+  console.log('products by sort ', req.query.price)
+  let pricingSort = {}
+  if (req.query.price.replace(/["]+/g, '') === "Lowest") { 
+    pricingSort = { "price" : "asc"} 
+  } else if (req.query.price.replace(/["]+/g, '') === "Highest") {
+    pricingSort = { "price" : "desc"} 
+  } else {
+    pricingSort = { "_id" : "asc"}  // easier to predict behavior
+  }
+console.log('pricing sort', pricingSort)
   const categorizing = { "category" : req.query.category.replace(/["]+/g, '')}
   //categorizing[category] = req.query.category // || null
   console.log('products by category ', categorizing)
@@ -57,7 +65,7 @@ if (req.query.category && !req.query.sort && !req.query.query) {
     .find(categorizing)
     .skip((page-1) * perPage)
     .limit(perPage)
-    .sort({_id : 'asc'})
+    .sort(pricingSort)
     .exec((err, products) => {
       console.log('products by category ', categorizing)
       // counting all for future use?

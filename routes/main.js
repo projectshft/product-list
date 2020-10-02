@@ -30,21 +30,44 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
-
+if (!req.query.category && !req.query.sort && !req.query.query) {
+  console.log('products no queries')
   Product
     .find({})
-    .skip((perPage * page) - perPage)
+    .skip((page-1) * perPage)
     .limit(perPage)
     .sort({_id : 'asc'})
     .exec((err, products) => {
       // counting all for future use?
       Product.countDocuments().exec((err, count) => {
         if (err) return next(err)
-
+        // TODO this
         res.send(JSON.stringify(products))
       })
-    })
-})
+    })}
+    // return products in category
+
+if (req.query.category && !req.query.sort && !req.query.query) {
+  console.log('products by category ', req.query.category)
+  console.log(typeof req.query.category)
+  const categorizing = { "category" : req.query.category.replace(/["]+/g, '')}
+  //categorizing[category] = req.query.category // || null
+  console.log('products by category ', categorizing)
+  Product
+    .find(categorizing)
+    .skip((page-1) * perPage)
+    .limit(perPage)
+    .sort({_id : 'asc'})
+    .exec((err, products) => {
+      console.log('products by category ', categorizing)
+      // counting all for future use?
+      Product.countDocuments().exec((err, count) => {
+        if (err) return next(err)
+        // TODO this
+        res.send(JSON.stringify(products))
+      })
+    })}
+  }) 
 // returns specific product by id
 router.get('/products/:product', (req, res, next) => {
   console.log(`param ${req.params.product}`)

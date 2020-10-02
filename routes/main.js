@@ -30,7 +30,7 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
-if (!req.query.category && !req.query.price && !req.query.query) {
+if (!req.query.category && !req.query.price && !req.query.q) {
   console.log('products no queries')
   Product
     .find({})
@@ -47,22 +47,37 @@ if (!req.query.category && !req.query.price && !req.query.query) {
     })}
     // return products in category
 
-if (req.query.category && req.query.price && !req.query.query) {
+if (req.query.category || req.query.price || req.query.q) {
   console.log('products by sort ', req.query.price)
+  //clean up this mess of quotes // TODO look this up in Express 
+  if (req.query.price) {req.query.price = req.query.price.replace(/["]+/g, '')}
+  if (req.query.category) {req.query.category = req.query.category.replace(/["]+/g, '')}
+  if (req.query.q) {req.query.q = req.query.q.replace(/["]+/g, '')}  //.replace(/[']+/g, '') 
+
+  // configure .sort() parameters
   let pricingSort = {}
-  if (req.query.price.replace(/["]+/g, '') === "Lowest") { 
+  if (req.query.price === "Lowest") { 
     pricingSort = { "price" : "asc"} 
-  } else if (req.query.price.replace(/["]+/g, '') === "Highest") {
+  } else if (req.query.price === "Highest") {
     pricingSort = { "price" : "desc"} 
   } else {
     pricingSort = { "_id" : "asc"}  // easier to predict behavior
   }
-console.log('pricing sort', pricingSort)
-  const categorizing = { "category" : req.query.category.replace(/["]+/g, '')}
-  //categorizing[category] = req.query.category // || null
-  console.log('products by category ', categorizing)
+
+// configure .find() parameters
+  const categorizing = { "category" : req.query.category}
+  console.log('ultimate thing is ')
+  console.log('/'+req.query.q+'/i')
+  let querySearch = {}
+  // trying to send %like% search to object
+  // if (req.query.q) {querySearch = { "name" : '/'+req.query.q+'/i'}}
+  // instead just verbose search for now 
+  if (req.query.q) {querySearch = { "name" : req.query.q}}
+  console.log('querySearch obj', querySearch)
+  
   Product
-    .find(categorizing)
+    .find()
+    .and([categorizing, querySearch])
     .skip((page-1) * perPage)
     .limit(perPage)
     .sort(pricingSort)

@@ -1,7 +1,7 @@
 const router = require('express').Router()
+const { response } = require('express')
 const faker = require('faker')
 const Product = require('../models/product')
-const Reviews = require('../models/product')
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -19,8 +19,9 @@ router.get('/generate-fake-data', (req, res, next) => {
   res.end()
 })
 
+// gets the list of products
 router.get('/products', (req, res, next) => {
-    const perPage = 10
+    const perPage = 9
 
   // return the first page by default
   const page = req.query.page || 1
@@ -46,14 +47,35 @@ router.get('/products/:product', (req, res, next) => {
 
   Product
     .findById(productId).exec((err, product) => {
-        if (err) {
-            throw err;
+        if (err || product._id === null) {
+            res.sendStatus(400)
         } else {
             res.send(product);
         }
     })
 })
+//*** NEEDS WORK */
+// get reviews for a specific product
+router.get('/products/:product/reviews', (req, res, next) => {
+    let productId = req.params.product
+    Reviews.findById(productId).exec((err, product) => {
+        if (err) {
+            throw err;
+        } else {
+            res.send(product.review)
+        }
+    })
+})
 
-// post products, receive request as body 
-// key values can be sent as an array
+// create a new product in the db
+router.post('/products', (req,res, next) => {
+    let product = new Product(req.body);
+    product.save()
+    res.send(product)
+})
+
+// create a new review in the db 
+router.post('/products/:product/reviews', (req,res, next) => {
+    
+})
 module.exports = router

@@ -62,7 +62,7 @@ router.get('/products/:product/reviews', (req, res, next) => {
         if (err) {
             throw err;
         } else {
-            res.send(product.review)
+            res.send(product)
         }
     })
 })
@@ -74,7 +74,6 @@ router.post('/products', (req,res, next) => {
     res.send(product)
 })
 
-//*** NEEDS WORK */
 // create a new review in the db 
 router.post('/products/:product/reviews', (req,res, next) => {
     let productId = req.params.product;
@@ -96,7 +95,7 @@ router.delete('/products/:product', (req,res, next) => {
     let productId = req.params.product
 
     Product
-      .findById(productId).exec((err, product) => {
+      .findByIdAndUpdate(productId).exec((err, product) => {
                 if (err || product._id === null) {
                 res.sendStatus(400)
             } else {
@@ -106,6 +105,18 @@ router.delete('/products/:product', (req,res, next) => {
       })
 })
 
-//*** NEEDS WORK */
 //delete a review based on its id
+router.delete('/reviews/:review', (req,res, next) => {
+    let productId = req.body.productId;
+    let reviewId = req.params.review;
+
+    Product
+      .findByIdAndUpdate(productId, { $pull: { reviews: {_id: reviewId}}}).exec((err, product) => {
+                if (err || product._id === null) {
+                res.sendStatus(400)
+            } else {
+                res.send('removed review');
+            }
+      })
+})
 module.exports = router

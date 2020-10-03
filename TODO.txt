@@ -1,0 +1,8 @@
+return reviews of product
+
+return counts of results
+
+search return categories  (extension 1)
+
+clean up nonsense error detection functions in main.js 
+

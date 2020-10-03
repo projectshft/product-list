@@ -21,7 +21,7 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 // gets the list of products
 router.get('/products', (req, res, next) => {
-    const perPage = 9
+  const perPage = 9
 
   // return the first page by default
   const page = req.query.page || 1
@@ -56,10 +56,15 @@ router.get('/products', (req, res, next) => {
     .skip((perPage * page) - perPage)
     .sort(sortPrice)
     .exec((err, products) => {
+      Product.find(query).countDocuments().exec((err, count) => {
         if (err) return next(err)
         else {
-          res.send(products)
-        }   
+          let info = {};
+          info.count = count
+          info.products = products
+          res.send(info)
+        }
+      })
     })
 })
 

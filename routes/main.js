@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const { response } = require('express')
 const faker = require('faker')
-const product = require('../models/product')
 const Product = require('../models/product')
 
 router.get('/generate-fake-data', (req, res, next) => {
@@ -26,20 +25,31 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
-  // an optional query to filter products by
+  // optional queries to filter products by
   const category = req.query.category;
+  const price = req.query.price;
   let query = {};
+  let sortPrice = {};
 
   // if category query is sent, add the category query to our query object
   if(category) {
     query.category = category
   }
-  
+  // if price query is sent, add the price query to our sortPrice object
+  if(price) {
+    if (price === 'highest') {
+      sortPrice.price = -1
+    }
+    if (price === 'lowest') {
+      sortPrice.price = 1
+    }
+  }
+
   Product
     .find(query)
     .limit(perPage)
     .skip((perPage * page) - perPage)
-    .sort({_id: 'asc'})
+    .sort(sortPrice)
     .exec((err, products) => {
         if (err) return next(err)
         else {

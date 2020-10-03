@@ -41,6 +41,7 @@ router.get('/products', (req, res, next) => {
       })
     })
 })
+
 // get specific a product by its id
 router.get('/products/:product', (req, res, next) => {
     let productId = req.params.product
@@ -54,16 +55,25 @@ router.get('/products/:product', (req, res, next) => {
         }
     })
 })
-//*** NEEDS WORK */
+
 // get reviews for a specific product
 router.get('/products/:product/reviews', (req, res, next) => {
     let productId = req.params.product
-    Product.findById(productId).exec((err, product) => {
-        if (err) {
-            throw err;
+
+    const reviewsPerPage = 4
+    // return the first page by default
+    const page = req.query.page || 1
+    // skips the correct amount of reviews
+    const numberToSkip = ((page-1) * reviewsPerPage)
+
+    Product.findById(productId, { reviews: {$slice: [ numberToSkip, reviewsPerPage]}})
+    .limit(reviewsPerPage)
+    .exec((err, product) => {
+        if (err || product._id === null) {
+          res.sendStatus(400)
         } else {
-            res.send(product)
-        }
+              res.send(product.reviews)
+          }
     })
 })
 

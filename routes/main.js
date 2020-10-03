@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const { response } = require('express')
 const faker = require('faker')
+const product = require('../models/product')
 const Product = require('../models/product')
 
 router.get('/generate-fake-data', (req, res, next) => {
@@ -25,20 +26,25 @@ router.get('/products', (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1
+  // an optional query to filter products by
+  const category = req.query.category;
+  let query = {};
 
+  // if category query is sent, add the category query to our query object
+  if(category) {
+    query.category = category
+  }
+  
   Product
-    .find({})
-    .skip((perPage * page) - perPage)
+    .find(query)
     .limit(perPage)
+    .skip((perPage * page) - perPage)
     .sort({_id: 'asc'})
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
         if (err) return next(err)
-
-        res.send(products)
-        console.log(products);
-      })
+        else {
+          res.send(products)
+        }   
     })
 })
 
@@ -66,7 +72,7 @@ router.get('/products/:product/reviews', (req, res, next) => {
     // skips the correct amount of reviews
     const numberToSkip = ((page-1) * reviewsPerPage)
 
-    Product.findById(productId, { reviews: {$slice: [ numberToSkip, reviewsPerPage]}})
+    Product.findById(productId, { reviews: {$slice: [numberToSkip, reviewsPerPage]}})
     .limit(reviewsPerPage)
     .exec((err, product) => {
         if (err || product._id === null) {

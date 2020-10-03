@@ -76,6 +76,22 @@ router.post('/products', (req,res, next) => {
 
 // create a new review in the db 
 router.post('/products/:product/reviews', (req,res, next) => {
-    
+
+})
+
+//delete a product based on its id
+router.delete('/products/:product', (req,res, next) => {
+    let productId = req.params.product
+
+    Product
+      .findById(productId).exec((err, product) => {
+          product.remove(err => {
+                if (err || product._id === null) {
+                res.sendStatus(400)
+            } else {
+                res.send('removed');
+            }
+          })
+      })
 })
 module.exports = router

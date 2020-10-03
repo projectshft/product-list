@@ -118,7 +118,7 @@ router.get('/products/:product', (req, res, next) => {
 })
 
 // returns product categories 
-router.get('/categories', (req, res, next) => {
+router.get('/weekcategories', (req, res, next) => {
   console.log(`getting categories`)
   // both of the below methods work, but have different styles of results. Will keep around
   // for whichever is easiest on frontend
@@ -185,7 +185,7 @@ router.post('/products', (req, res, next) => {
       console.log(error)
     } else {
       console.log('new product successfully created')
-      res.send(200)
+      res.end()
     }
   })
 })
@@ -200,7 +200,7 @@ router.post('/:product/reviews', (req, res, next) => {
     product: req.params.product
   })
   newReview.save()
-  res.send(200)
+  res.end()
 })
 
 // deletes a product by id
@@ -211,7 +211,7 @@ router.delete('/products/:product', (req, res, next) => {
   }, (err) => {
     if (err) console.log(err)
   })
-  res.send()
+  res.end()
 })
 
 // deletes a review by id
@@ -222,7 +222,7 @@ router.delete('/reviews/:review', (req, res, next) => {
   }, (err) => {
     if (err) console.log(err)
   })
-  res.sendStatus(200)
+  res.end()
 })
 
 module.exports = router

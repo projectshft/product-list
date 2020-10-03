@@ -77,14 +77,15 @@ router.post('/products', (req,res, next) => {
 //*** NEEDS WORK */
 // create a new review in the db 
 router.post('/products/:product/reviews', (req,res, next) => {
-    let productId = req.params.product
+    let productId = req.params.product;
+    let reviewToAdd = req.body;
 
   Product
-    .findById(productId).exec((err, product) => {
+    .findByIdAndUpdate(productId, { $push: {reviews: reviewToAdd}}).exec((err, product) => {
         if (err || product._id === null) {
             res.sendStatus(400)
         } else {
-            res.send(product);
+            res.send('review added');
         }
     })
 

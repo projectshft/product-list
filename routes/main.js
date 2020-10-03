@@ -21,91 +21,97 @@ router.get('/generate-fake-data', (req, res, next) => {
 })
 
 // get all products, ?page= for starting page
-  // 2) ?/&category= option
-    // 3) sort by ?/&price=highest/lowest
-      // 4) ?/&query= search results product name, make case insensitive if possible
+// 2) ?/&category= option
+// 3) sort by ?/&price=highest/lowest
+// 4) ?/&query= search results product name, make case insensitive if possible
 // count of products returned needs to dynamically reflect results
-router.get('/products', (req, res, next) => {
+router.get('/products/', (req, res, next) => {
   const perPage = 9
 
   // return the first page by default
   const page = req.query.page || 1
-if (!req.query.category && !req.query.price && !req.query.q) {
-  console.log('products no queries')
-  Product
-    .find({})
-    .skip((page-1) * perPage)
-    .limit(perPage)
-    .sort({_id : 'asc'})
-    .exec((err, products) => {
-      // counting all for future use?
-      Product.countDocuments().exec((err, count) => {
-        if (err) return next(err)
-        // TODO this
-        res.send(JSON.stringify(products))
-      })
-    })}
-    // return products in category
 
-if (req.query.category || req.query.price || req.query.q) {
   console.log('products by sort ', req.query.price)
   //clean up this mess of quotes // TODO look this up in Express 
-  if (req.query.price) {req.query.price = req.query.price.replace(/["]+/g, '')}
-  if (req.query.category) {req.query.category = req.query.category.replace(/["]+/g, '')}
-  if (req.query.q) {req.query.q = req.query.q.replace(/["]+/g, '')}  //.replace(/[']+/g, '') 
+  if (req.query.price) {
+    req.query.price = req.query.price.replace(/["]+/g, '')
+  }
+  if (req.query.category) {
+    req.query.category = req.query.category.replace(/["]+/g, '')
+  }
+  if (req.query.q) {
+    req.query.q = req.query.q.replace(/["]+/g, '')
+  } //.replace(/[']+/g, '') 
 
   // configure .sort() parameters
   let pricingSort = {}
-  if (req.query.price === "Lowest") { 
-    pricingSort = { "price" : "asc"} 
+  if (req.query.price === "Lowest") {
+    pricingSort = {
+      "price": "asc"
+    }
   } else if (req.query.price === "Highest") {
-    pricingSort = { "price" : "desc"} 
+    pricingSort = {
+      "price": "desc"
+    }
   } else {
-    pricingSort = { "_id" : "asc"}  // easier to predict behavior
+    pricingSort = {
+      "_id": "asc"
+    } // easier to predict behavior
   }
-
-// configure .find() parameters
-  const categorizing = { "category" : req.query.category}
-  console.log('ultimate thing is ')
-  console.log('/'+req.query.q+'/i')
+console.log('pricingSort ', pricingSort)
+  // configure .find() parameters
+  let categorizing = {}
+  if (req.query.category) {categorizing = {
+    "category": req.query.category
+  } }
+  
   let querySearch = {}
   // trying to send %like% search to object
   // if (req.query.q) {querySearch = { "name" : '/'+req.query.q+'/i'}}
   // instead just verbose search for now 
-  if (req.query.q) {querySearch = { "name" : req.query.q}}
-  console.log('querySearch obj', querySearch)
+  // TODO make better
+  if (req.query.q) {
+    querySearch = {
+      "name": req.query.q
+    }
+  }
   
   Product
     .find()
     .and([categorizing, querySearch])
-    .skip((page-1) * perPage)
+    .skip((page - 1) * perPage)
     .limit(perPage)
     .sort(pricingSort)
     .exec((err, products) => {
-      console.log('products by category ', categorizing)
-      // counting results
-      console.log('finding the num of prods', products.length)
-      products.count = products.length
-      console.log('prods as obj', products)
+      if (err) {console.log(err)}
+      // inject product count into new object 
+      Product
+      .find()
+      .and([categorizing, querySearch])
+      .sort(pricingSort)
+      .countDocuments()
+      .exec((err, count) => {
       let niceProducts = {}
-      niceProducts.list = products
-      niceProducts.count = products.length
+        niceProducts.list = products
+        niceProducts.count = count
       res.send(JSON.stringify(niceProducts))
-        
-
-      })
-  }})
+    })
+})
+})
 
 // returns specific product by id
 router.get('/products/:product', (req, res, next) => {
   console.log(`param ${req.params.product}`)
   Product
-    .find({_id: req.params.product})
-     .exec((err, products) => {
+    .find({
+      _id: req.params.product
+    })
+    .exec((err, products) => {
 
-  console.log(products)
-  res.send(JSON.stringify(products))
-})})
+      console.log(products)
+      res.send(JSON.stringify(products))
+    })
+})
 
 // returns product categories  TODO
 router.get('/categories', (req, res, next) => {
@@ -113,18 +119,29 @@ router.get('/categories', (req, res, next) => {
   // both of the below methods work, but have different styles of results. Will keep around
   // for whichever is easiest on frontend
   Product
-    .aggregate([ {$match: {}}, { $group: { _id: null, categories: {$addToSet: "$category"}}}])
-     .exec((err, categories) => {
+    .aggregate([{
+      $match: {}
+    }, {
+      $group: {
+        _id: null,
+        categories: {
+          $addToSet: "$category"
+        }
+      }
+    }])
+    .exec((err, categories) => {
 
-  // Product.distinct('category', (err, categories) => {
-   
-  if (err) {console.log(err)
-    } else {
-      console.log(JSON.stringify(categories))
-      res.send(JSON.stringify(categories))
-    }
-    
-})})
+      // Product.distinct('category', (err, categories) => {
+
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(JSON.stringify(categories))
+        res.send(JSON.stringify(categories))
+      }
+
+    })
+})
 
 
 
@@ -136,13 +153,16 @@ router.get('/products/:product/reviews', (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1
   Review
-    .find({product : req.params.product})
+    .find({
+      product: req.params.product
+    })
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .exec((err, reviews) => {
       if (err) console.log(err)
-      console.log(JSON.stringify(reviews))})
-    res.sendStatus(200)
+      console.log(JSON.stringify(reviews))
+    })
+  res.sendStatus(200)
 })
 
 // creates a new product in the database body = category / name / price / image
@@ -151,13 +171,13 @@ router.post('/products', (req, res, next) => {
   console.log(req.body[0].name)
   console.log(req.body[0].price)
   const newProduct = new Product({
-    category : req.body[0].category,
-    name : req.body[0].name,
-    price : req.body[0].price,
+    category: req.body[0].category,
+    name: req.body[0].name,
+    price: req.body[0].price,
     image: req.body[0].image
   })
   newProduct.save((err, data) => {
-    if (err) { 
+    if (err) {
       console.log(error)
     } else {
       console.log('new product successfully created')
@@ -173,7 +193,8 @@ router.post('/:product/reviews', (req, res, next) => {
   const newReview = new Review({
     userName: req.body[0].userName,
     text: req.body[0].text,
-    product: req.params.product})
+    product: req.params.product
+  })
   newReview.save()
   res.send(200)
 })
@@ -181,7 +202,9 @@ router.post('/:product/reviews', (req, res, next) => {
 // deletes a product by id
 router.delete('/products/:product', (req, res, next) => {
   console.log('deleting', req.params.product)
-  Product.deleteOne({ _id : req.params.product}, (err) => {
+  Product.deleteOne({
+    _id: req.params.product
+  }, (err) => {
     if (err) console.log(err)
   })
   res.sendStatus(200)
@@ -190,7 +213,9 @@ router.delete('/products/:product', (req, res, next) => {
 // deletes a review by id
 router.delete('/reviews/:review', (req, res, next) => {
   console.log('deleting', req.params.review)
-  Review.deleteOne({ _id : req.params.review}, (err) => {
+  Review.deleteOne({
+    _id: req.params.review
+  }, (err) => {
     if (err) console.log(err)
   })
   res.sendStatus(200)

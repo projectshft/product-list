@@ -5,7 +5,7 @@ const Product = require('../models/product')
 const Review = require('../models/review')
 
 router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 90; i++) {
     let product = new Product()
 
     product.category = faker.commerce.department()
@@ -58,13 +58,15 @@ router.get('/products/', (req, res, next) => {
       "_id": "asc"
     } // easier to predict behavior
   }
-console.log('pricingSort ', pricingSort)
+  console.log('pricingSort ', pricingSort)
   // configure .find() parameters
   let categorizing = {}
-  if (req.query.category) {categorizing = {
-    "category": req.query.category
-  } }
-  
+  if (req.query.category) {
+    categorizing = {
+      "category": req.query.category
+    }
+  }
+
   let querySearch = {}
   // trying to send %like% search to object
   // if (req.query.q) {querySearch = { "name" : '/'+req.query.q+'/i'}}
@@ -75,7 +77,7 @@ console.log('pricingSort ', pricingSort)
       "name": req.query.q
     }
   }
-  
+
   Product
     .find()
     .and([categorizing, querySearch])
@@ -83,20 +85,22 @@ console.log('pricingSort ', pricingSort)
     .limit(perPage)
     .sort(pricingSort)
     .exec((err, products) => {
-      if (err) {console.log(err)}
+      if (err) {
+        console.log(err)
+      }
       // inject product count into new object 
       Product
-      .find()
-      .and([categorizing, querySearch])
-      .sort(pricingSort)
-      .countDocuments()
-      .exec((err, count) => {
-      let niceProducts = {}
-        niceProducts.list = products
-        niceProducts.count = count
-      res.send(JSON.stringify(niceProducts))
+        .find()
+        .and([categorizing, querySearch])
+        .sort(pricingSort)
+        .countDocuments()
+        .exec((err, count) => {
+          let niceProducts = {}
+          niceProducts.list = products
+          niceProducts.count = count
+          res.send(JSON.stringify(niceProducts))
+        })
     })
-})
 })
 
 // returns specific product by id
@@ -113,7 +117,7 @@ router.get('/products/:product', (req, res, next) => {
     })
 })
 
-// returns product categories  TODO
+// returns product categories 
 router.get('/categories', (req, res, next) => {
   console.log(`getting categories`)
   // both of the below methods work, but have different styles of results. Will keep around
@@ -160,9 +164,9 @@ router.get('/products/:product/reviews', (req, res, next) => {
     .limit(perPage)
     .exec((err, reviews) => {
       if (err) console.log(err)
-      console.log(JSON.stringify(reviews))
+      res.send(JSON.stringify(reviews))
     })
-  res.sendStatus(200)
+  // res.sendStatus(200)
 })
 
 // creates a new product in the database body = category / name / price / image
@@ -207,7 +211,7 @@ router.delete('/products/:product', (req, res, next) => {
   }, (err) => {
     if (err) console.log(err)
   })
-  res.sendStatus(200)
+  res.send()
 })
 
 // deletes a review by id

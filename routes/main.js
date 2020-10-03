@@ -28,6 +28,7 @@ router.get('/products', (req, res, next) => {
   // optional queries to filter products by
   const category = req.query.category;
   const price = req.query.price;
+  const search = req.query.search;
   let query = {};
   let sortPrice = {};
 
@@ -43,6 +44,10 @@ router.get('/products', (req, res, next) => {
     if (price === 'lowest') {
       sortPrice.price = 1
     }
+  }
+  // if search query is sent, add the search query to our query object
+  if(search){
+    query.name = {$regex: search, $options: 'i'};
   }
 
   Product

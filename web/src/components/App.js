@@ -10,12 +10,19 @@ import albumItems from '../data/album';
 
 
 class App extends React.Component {
-  constructor(props) {
-      super(props);
+  // constructor(props) {
+      // super(props);
       // this.state = {
       //   products: state.products
       // }
-  }
+      componentDidMount() {
+      console.log('props.products @ App =', this.props.products)
+      if (this.props.products.list.length === 0) {
+          console.log('trying to trigger fetchProducts()')
+          this.props.fetchProducts(null, null, null);
+          console.log(' ->and got props.products', this.props.products)}}
+        
+  // }
   render() {
       return (
           <div>
@@ -33,9 +40,9 @@ function mapStateToProps(state) {
   };
 }
 
-// function mapDispatchToProps(dispatch) {
-// //  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
-// }
+function mapDispatchToProps(dispatch) {
+ return bindActionCreators({ fetchProducts }, dispatch);
+}
 
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions';
-import Album from './Album';
+// import Album from './Album';
+import Catalog from './Catalog';
 import CategorySelector from './CategorySelector'
 import SortHighLow from './SortHighLow'
 import SearchBox from './SearchBox'
@@ -29,7 +30,8 @@ const Main = props  => {
             </Container>
             <Container>
             {/* <Album album={album} /> */}
-            <Album />
+            {/* <Album /> */}
+            <Catalog />
             </Container>
             <Container>
                 <Row>

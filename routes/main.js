@@ -71,7 +71,7 @@ router.get('/products', (request, response, next) => {
               };
               response.send({ allProdsUnsorted: allProdsUnsorted });
             });
-        } else if (request.query.sort === 'lowToHigh') {
+        } else if (request.query.sort === 'lowest') {
           Product.find({})
             .sort({ price: +1 })
             .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
@@ -86,7 +86,7 @@ router.get('/products', (request, response, next) => {
                 allProdsLowToHigh: allProdsLowToHigh,
               });
             });
-        } else if (request.query.sort === 'highToLow') {
+        } else if (request.query.sort === 'highest') {
           Product.find({})
             .sort({ price: -1 })
             .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
@@ -115,7 +115,6 @@ router.get('/products', (request, response, next) => {
             if (error) {
               return error;
             }
-            console.log('no error!');
             const prodCatCount = countOfProdInCategory;
 
             if (!request.query.sort) {
@@ -133,7 +132,7 @@ router.get('/products', (request, response, next) => {
                     productCatResultsUnsorted: productCatResultsUnsorted,
                   });
                 });
-            } else if (request.query.sort === 'lowToHigh') {
+            } else if (request.query.sort === 'lowest') {
               Product.find({ category: request.query.category })
                 .sort({ price: +1 })
                 .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
@@ -149,7 +148,7 @@ router.get('/products', (request, response, next) => {
                     prodCatResultsLowToHigh: prodCatResultsLowToHigh,
                   });
                 });
-            } else if (request.query.sort === 'highToLow') {
+            } else if (request.query.sort === 'highest') {
               Product.find({ category: request.query.category })
                 .sort({ price: -1 })
                 .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
@@ -294,7 +293,6 @@ router.delete('/reviews/:reviewId', (request, response, next) => {
     } else {
       Product.find({ reviews: request.params.reviewId }, (error, product) => {
         if (error) return error;
-        console.log('found');
       });
     }
     response.end();

@@ -189,7 +189,7 @@ router.get('/products/:productId', (request, response, next) => {
 });
 
 //TODO: limit review results to 4 & implement optional pagination
-//GET full-text reviews by productId: successful.
+//GET full-text reviews by productId: BROKEN.
 router.get('/products/:productId/reviews', (request, response, next) => {
   //if the productId is invalid, deliver a Bad Request error
   if (!mongoose.isValidObjectId(request.params.productId)) {
@@ -201,11 +201,13 @@ router.get('/products/:productId/reviews', (request, response, next) => {
 
   Product.findById(request.params.productId)
     .populate('reviews')
+    // .skip(returnLimit * page - returnLimit) //4*1=4-4=0: skip nothing for page 1
+    // .limit(returnLimit)
     .exec((error, product) => {
       if (error || !product) {
         response.sendStatus(404);
       }
-      response.return(product.reviews);
+      response.send(product.reviews);
 
       // .limit(returnLimit)
       // .skip(returnLimit * page - returnLimit)
@@ -213,11 +215,11 @@ router.get('/products/:productId/reviews', (request, response, next) => {
       //   if (error || !product.reviews) {
       //     response.sendStatus(404);
       //   }
-      //   response.end();
+        response.end();
     });
 });
 
-//COULD DO: Handle edge cases and errors
+//COULD DO: Handle edge cases and errors (empty fields, non-number for price)
 //POST a new product to the collection: successful
 router.post('/products', (request, response, next) => {
   let product = new Product();

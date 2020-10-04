@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import ProductsIndex from './containers/products-index';
 import './index.css';
-import App from './App';
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ProductsIndex />
   </React.StrictMode>,
   document.getElementById('root')
 );

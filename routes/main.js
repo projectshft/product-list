@@ -49,124 +49,196 @@ router.get('/generate-fake-reviews', (request, response, next) => {
 //GET Products by category, 9 per page, count of items in category & total count: successful
 //GET All Products sort by price low to high w/ counts: successful
 //GET Products by category as above, sort by price low to high w/ all counts: successful
+//GET Products by search term & sort: successful!
 router.get('/products', (request, response, next) => {
   const perPage = 9;
   const page = request.query.page || 1; //req.query.page is optional. will default to 1 if not sent
 
-  if (!request.query.category) {
+  if (!request.query.query) {
     Product.find({}) //
       .count()
       .exec((error, allProductsCount) => {
         if (error) return next(error);
 
-        if (!request.query.sort) {
-          Product.find({})
-            .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
-            .limit(perPage) //limit to 9 per page
-            .exec((error, allProductsUnsorted) => {
+        if (!request.query.category && !request.query.search) {
+          Product.find({}) //
+            .count()
+            .exec((error, allProductsCount) => {
               if (error) return next(error);
-              const allProdsUnsorted = {
-                countOfAllProducts: allProductsCount,
-                listOfAllProducts: allProductsUnsorted,
-              };
-              response.send({ allProdsUnsorted: allProdsUnsorted });
+
+              if (!request.query.sort) {
+                Product.find({})
+                  .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                  .limit(perPage) //limit to 9 per page
+                  .exec((error, allProductsUnsorted) => {
+                    if (error) return next(error);
+                    const allProdsUnsorted = {
+                      countOfAllProducts: allProductsCount,
+                      listOfAllProducts: allProductsUnsorted,
+                    };
+                    response.send({ allProdsUnsorted: allProdsUnsorted });
+                  });
+              } else if (request.query.sort === 'lowest') {
+                Product.find({})
+                  .sort({ price: +1 })
+                  .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                  .limit(perPage) //limit to 9 per page
+                  .exec((error, allProductsLowToHigh) => {
+                    if (error) return next(error);
+                    const allProdsLowToHigh = {
+                      countOfAllProducts: allProductsCount,
+                      allProductsLowToHigh: allProductsLowToHigh,
+                    };
+                    response.send({
+                      allProdsLowToHigh: allProdsLowToHigh,
+                    });
+                  });
+              } else if (request.query.sort === 'highest') {
+                Product.find({})
+                  .sort({ price: -1 })
+                  .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                  .limit(perPage) //limit to 9 per page
+                  .exec((error, allProductsHighToLow) => {
+                    if (error) return error;
+                    const allProdsHighToLow = {
+                      countOfAllProducts: allProductsCount,
+                      allProductsHighToLow: allProductsHighToLow,
+                    };
+                    response.send({
+                      allProdsHighToLow: allProdsHighToLow,
+                    });
+                  });
+              }
             });
-        } else if (request.query.sort === 'lowest') {
+        } else if (request.query.category) {
           Product.find({})
-            .sort({ price: +1 })
-            .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
-            .limit(perPage) //limit to 9 per page
-            .exec((error, allProductsLowToHigh) => {
+            .count()
+            .exec((error, allProductsCount) => {
               if (error) return next(error);
-              const allProdsLowToHigh = {
-                countOfAllProducts: allProductsCount,
-                allProductsLowToHigh: allProductsLowToHigh,
-              };
-              response.send({
-                allProdsLowToHigh: allProdsLowToHigh,
-              });
+
+              Product.find({ category: request.query.category })
+                .count()
+                .exec((error, countOfProdInCategory) => {
+                  if (error) {
+                    return error;
+                  }
+                  const prodCatCount = countOfProdInCategory;
+
+                  if (!request.query.sort) {
+                    Product.find({ category: request.query.category })
+                      .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                      .limit(perPage) //limit to 9 per page
+                      .exec((error, listOfProdInCategoryUnsorted) => {
+                        if (error) return next(error);
+                        const productCatResultsUnsorted = {
+                          allProductsCount: allProductsCount,
+                          countOfProdInCategory: prodCatCount,
+                          listOfProdInCategoryUnsorted: listOfProdInCategoryUnsorted,
+                        };
+                        response.send({
+                          productCatResultsUnsorted: productCatResultsUnsorted,
+                        });
+                      });
+                  } else if (request.query.sort === 'lowest') {
+                    Product.find({ category: request.query.category })
+                      .sort({ price: +1 })
+                      .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                      .limit(perPage) //limit to 9 per page
+                      .exec((error, prodByCatLowToHigh) => {
+                        if (error) return next(error);
+                        const prodCatResultsLowToHigh = {
+                          allProductsCount: allProductsCount,
+                          countOfProdInCategory: countOfProdInCategory,
+                          prodByCatLowToHigh: prodByCatLowToHigh,
+                        };
+                        response.send({
+                          prodCatResultsLowToHigh: prodCatResultsLowToHigh,
+                        });
+                      });
+                  } else if (request.query.sort === 'highest') {
+                    Product.find({ category: request.query.category })
+                      .sort({ price: -1 })
+                      .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                      .limit(perPage) //limit to 9 per page
+                      .exec((error, prodByCatHighToLow) => {
+                        if (error) return next(error);
+                        const productCatResultsHighToLow = {
+                          allProductsCount: allProductsCount,
+                          countOfProdInCategory: countOfProdInCategory,
+                          prodByCatHighToLow: prodByCatHighToLow,
+                        };
+                        response.send({
+                          productCatResultsHighToLow: productCatResultsHighToLow,
+                        });
+                        response.end();
+                      });
+                  }
+                });
             });
-        } else if (request.query.sort === 'highest') {
+        } else if (request.query.search) {
+          //first count all products (again)
           Product.find({})
-            .sort({ price: -1 })
-            .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
-            .limit(perPage) //limit to 9 per page
-            .exec((error, allProductsHighToLow) => {
-              if (error) return error;
-              const allProdsHighToLow = {
-                countOfAllProducts: allProductsCount,
-                allProductsHighToLow: allProductsHighToLow,
-              };
-              response.send({
-                allProdsHighToLow: allProdsHighToLow,
-              });
+            .count()
+            .exec((error, allProductsCount) => {
+              if (error) return next(error);
+
+              Product.find({ $text: { $search: request.query.search } })
+                .count()
+                .exec((error, countOfProdSearched) => {
+                  if (error) return next(error);
+
+                  if (!request.query.sort) {
+                    Product.find({ $text: { $search: request.query.search } })
+                      .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                      .limit(perPage) //limit to 9 per page
+                      .exec((error, listOfProdSearchedUnsorted) => {
+                        if (error) return next(error);
+                        const productSearchResultsUnsorted = {
+                          allProductsCount: allProductsCount,
+                          countOfProdSearched: countOfProdSearched,
+                          listOfProdSearchedUnsorted: listOfProdSearchedUnsorted,
+                        };
+                        response.send({
+                          productSearchResultsUnsorted: productSearchResultsUnsorted,
+                        });
+                      });
+                  } else if (request.query.sort === 'lowest') {
+                    Product.find({ $text: { $search: request.query.search } })
+                      .sort({ price: +1 })
+                      .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                      .limit(perPage) //limit to 9 per page
+                      .exec((error, prodSearchedLowToHigh) => {
+                        if (error) return next(error);
+                        const prodSearchResultsLowToHigh = {
+                          allProductsCount: allProductsCount,
+                          countOfProdSearched: countOfProdSearched,
+                          prodSearchedLowToHigh: prodSearchedLowToHigh,
+                        };
+                        response.send({
+                          prodSearchResultsLowToHigh: prodSearchResultsLowToHigh,
+                        });
+                      });
+                  } else if (request.query.sort === 'highest') {
+                    Product.find({ category: request.query.search })
+                      .sort({ price: -1 })
+                      .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
+                      .limit(perPage) //limit to 9 per page
+                      .exec((error, prodSearchedHighToLow) => {
+                        if (error) return next(error);
+                        const productSearchResultsHighToLow = {
+                          allProductsCount: allProductsCount,
+                          countOfProdSearched: countOfProdSearched,
+                          prodSearchedHighToLow: prodSearchedHighToLow,
+                        };
+                        response.send({
+                          productSearchResultsHighToLow: productSearchResultsHighToLow,
+                        });
+                        response.end();
+                      });
+                  }
+                });
             });
         }
-      });
-  } else {
-    Product.find({})
-      .count()
-      .exec((error, allProductsCount) => {
-        if (error) return next(error);
-
-        Product.find({ category: request.query.category })
-          .count()
-          .exec((error, countOfProdInCategory) => {
-            if (error) {
-              return error;
-            }
-            const prodCatCount = countOfProdInCategory;
-
-            if (!request.query.sort) {
-              Product.find({ category: request.query.category })
-                .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
-                .limit(perPage) //limit to 9 per page
-                .exec((error, listOfProdInCategoryUnsorted) => {
-                  if (error) return next(error);
-                  const productCatResultsUnsorted = {
-                    allProductsCount: allProductsCount,
-                    countOfProdInCategory: prodCatCount,
-                    listOfProdInCategoryUnsorted: listOfProdInCategoryUnsorted,
-                  };
-                  response.send({
-                    productCatResultsUnsorted: productCatResultsUnsorted,
-                  });
-                });
-            } else if (request.query.sort === 'lowest') {
-              Product.find({ category: request.query.category })
-                .sort({ price: +1 })
-                .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
-                .limit(perPage) //limit to 9 per page
-                .exec((error, prodByCatLowToHigh) => {
-                  if (error) return next(error);
-                  const prodCatResultsLowToHigh = {
-                    allProductsCount: allProductsCount,
-                    countOfProdInCategory: countOfProdInCategory,
-                    prodByCatLowToHigh: prodByCatLowToHigh,
-                  };
-                  response.send({
-                    prodCatResultsLowToHigh: prodCatResultsLowToHigh,
-                  });
-                });
-            } else if (request.query.sort === 'highest') {
-              Product.find({ category: request.query.category })
-                .sort({ price: -1 })
-                .skip(perPage * page - perPage) //9*1=9-9=0: skip nothing for page 1
-                .limit(perPage) //limit to 9 per page
-                .exec((error, prodByCatHighToLow) => {
-                  if (error) return next(error);
-                  const productCatResultsHighToLow = {
-                    allProductsCount: allProductsCount,
-                    countOfProdInCategory: countOfProdInCategory,
-                    prodByCatHighToLow: prodByCatHighToLow,
-                  };
-                  response.send({
-                    productCatResultsHighToLow: productCatResultsHighToLow,
-                  });
-                  response.end();
-                });
-            }
-          });
       });
   }
 });
@@ -189,7 +261,8 @@ router.get('/products/:productId', (request, response, next) => {
 });
 
 //TODO: limit review results to 4 & implement optional pagination
-//GET full-text reviews by productId: BROKEN.
+//GET full-text reviews by productId: successful!
+//FOR TESTING: localhost:8000/products/5f77b2f2863dc51630ad4857/reviews
 router.get('/products/:productId/reviews', (request, response, next) => {
   //if the productId is invalid, deliver a Bad Request error
   if (!mongoose.isValidObjectId(request.params.productId)) {
@@ -201,21 +274,21 @@ router.get('/products/:productId/reviews', (request, response, next) => {
 
   Product.findById(request.params.productId)
     .populate('reviews')
-    // .skip(returnLimit * page - returnLimit) //4*1=4-4=0: skip nothing for page 1
-    // .limit(returnLimit)
-    .exec((error, product) => {
-      if (error || !product) {
-        response.sendStatus(404);
+    .exec((error, reviews) => {
+      if (error || !reviews) {
+        return next(error);
       }
-      response.send(product.reviews);
+      response.send(reviews);
 
-      // .limit(returnLimit)
-      // .skip(returnLimit * page - returnLimit)
-      // .exec((error, reviews) => {
-      //   if (error || !product.reviews) {
-      //     response.sendStatus(404);
-      //   }
-        response.end();
+      //PROBLEM: these methods do not work on variable 'reviews'
+      //SOLUTION? Loop through review array? 
+      //Challenge for pagination.
+      //   .skip(returnLimit * page - returnLimit)
+      //   .limit(returnLimit)
+      //   .exec((error, reviews) => {
+      //     if (error) return next(error);
+      //     response.send(reviews);
+      //   });
     });
 });
 
@@ -282,6 +355,7 @@ router.delete('/products/:productId', (request, response, next) => {
 });
 
 //TODO! remove reviewId from the product
+//TODO? Switch away from population method
 //DELETE review by reviewID: successful
 router.delete('/reviews/:reviewId', (request, response, next) => {
   //if the reviewId is invalid, deliver a Bad Request error

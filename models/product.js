@@ -8,6 +8,7 @@ const productSchema = new Schema({
   image: String,
   reviews: [{ type: Schema.Types.ObjectId, ref: 'review' }],
 });
+productSchema.index({ name: 'text', 'name': 'text' });
 
 const Product = mongoose.model('product', productSchema);
 

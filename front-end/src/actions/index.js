@@ -5,6 +5,7 @@ export const FETCH_PRODUCTS_BY_CATEGORY = 'fetch_products_by_category';
 
 const ROOT_URL = 'localhost:8000/products';
 
+
 // initial fetch posts, should load the first 9 products on page load
 export function fetchProducts() {
     const request = axios.get(`${ROOT_URL}`)

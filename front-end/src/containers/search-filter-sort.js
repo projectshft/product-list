@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 class SearchFilterSort extends Component {
     render (){
         return (
-            <div></div>
+            <div>Search bar, filter and sort options will go here</div>
         )
     }
 }

@@ -1,0 +1,66 @@
+[
+    {
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Games",
+        "name": "Handmade Plastic Salad",
+        "price": 18,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    },{
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Sports",
+        "name": "Practical Metal Car",
+        "price": 812,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    },{
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Beauty",
+        "name": "Licensed Cotton Gloves",
+        "price": 876,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    },{
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Music",
+        "name": "Sleek Metal Soap",
+        "price": 756,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    },{
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Movie",
+        "name": "Small Fresh Chair",
+        "price": 719,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    },{
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Toys",
+        "name": "Unbranded Plastic Sausages",
+        "price": 968,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    },{
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Home",
+        "name": "Increadible Plastic Pizza",
+        "price": 747,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    },{
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Toys",
+        "name": "Refined Metal Sausages",
+        "price": 784,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    },{
+        "_id": "5f78a799e0aca5664b2ff37e",
+        "category": "Games",
+        "name": "Generic Metal Sausages",
+        "price": 812,
+        "image": "https://via.placeholder.com/250?text=Product+Image",
+        "__v": 0
+    }
+]

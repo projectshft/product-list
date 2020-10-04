@@ -118,7 +118,7 @@ router.get('/products/:product', (req, res, next) => {
 })
 
 // returns product categories 
-router.get('/weekcategories', (req, res, next) => {
+router.get('/categories', (req, res, next) => {
   console.log(`getting categories`)
   // both of the below methods work, but have different styles of results. Will keep around
   // for whichever is easiest on frontend

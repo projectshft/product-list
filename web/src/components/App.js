@@ -6,7 +6,7 @@ import './App.css';
 // import { render } from 'react-dom';
 //import Header from './Header';
 import Main from './Main';
-import albumItems from '../data/album';
+// import albumItems from '../data/album';
 
 
 class App extends React.Component {

@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
-// these are temps
-import DestinationReducer from "./reducer-destination";
-import DistanceReducer from "./reducer-send-dest";
+
+import ProductsReducer from "./reducer-fetch-products";
+// this is vestigial is that how you spell that?
+// import DistanceReducer from "./reducer-send-dest";
 
 const rootReducer = combineReducers({
-    destinations: DestinationReducer,
-    distance: DistanceReducer,
+    products: ProductsReducer,
   });
   
   export default rootReducer;

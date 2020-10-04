@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../actions';
 import Album from './Album';
 import CategorySelector from './CategorySelector'
 import SortHighLow from './SortHighLow'
@@ -6,7 +9,7 @@ import SearchBox from './SearchBox'
 import CatalogIndex from './CatalogIndex'
 import { Container, Row, Col, Jumbotron, Pagination } from 'reactstrap';
 
-const Main = ({ album }) => {
+const Main = props  => {
     return (
         <main role="main">
             <Jumbotron className="text-center">
@@ -25,7 +28,8 @@ const Main = ({ album }) => {
                 </Row>
             </Container>
             <Container>
-            <Album album={album} />
+            {/* <Album album={album} /> */}
+            <Album />
             </Container>
             <Container>
                 <Row>
@@ -38,18 +42,17 @@ const Main = ({ album }) => {
     );
 };
 
-export default Main;
-// don't think I need state stuff
-/* function mapStateToProps(state) {
+
+function mapStateToProps(state) {
     return {
-   //   destinations: state.destinations,
-     // selectedRadius: state.selectedRadius,
+     products: state.products
     };
   }
-  
+
+
   function mapDispatchToProps(dispatch) {
-  //  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
+    return bindActionCreators({ fetchProducts }, dispatch);
   }
   
   
-  export default connect(mapStateToProps, mapDispatchToProps)(App); */
+  export default connect(mapStateToProps, mapDispatchToProps)(Main); 

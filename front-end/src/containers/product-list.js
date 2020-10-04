@@ -11,21 +11,21 @@ class ProductList extends Component {
         this.props.fetchProducts();
     }
     //
-    // renderProducts(){
-    //     return (this.props.products.products, product => {
-    //         return (
-    //             <li className='list-group-item'>{product.name}</li>
-    //         )
-    //     })
+    renderProducts(){
+        return (this.props.products, product => {
+            return (
+                <li className='list-group-item'>{product.name}</li>
+            )
+        })
 
-    // }
+    }
     render(){
         return (
             <div>
                 <div>Product list will go here</div>
-                    {/* <ul className='list-group'>
+                    <ul className='list-group'>
                         {this.renderProducts()}
-                    </ul> */}
+                    </ul>
             </div>
         )
     }

@@ -8,8 +8,19 @@ const ROOT_URL = 'http://localhost:8000/products?';
 export function fetchProducts(page, category, search) {
   console.log('In actions index/ fetchProducts()')
   // TODO separate quantity? (thinking this is a wasted call to db)
+  let queryBuild = '';
+  if (search) {
+    queryBuild = queryBuild + `q=${search}&`
+  }
+  if (page) {
+    queryBuild = queryBuild + `page=${page}&`;
+  }
+  if (category) {
+    queryBuild = queryBuild + `category=${category}`
+  }
+
   const request = axios.get(
-    `${ROOT_URL}`
+    `${ROOT_URL}${queryBuild}`
   );
   // ?=${search}&page=${page}&category=${category}
   

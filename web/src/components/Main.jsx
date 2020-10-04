@@ -17,7 +17,7 @@ const Main = props  => {
                 <Container>
                     <h1 className="jumbotron-heading">Wonderous Products</h1>
                     <p className="lead text-muted">
-                        Shop from the most fabulously, randomly summoned catalog. Premium prices, bargain products, and movies about concrete await!
+                        Shop from the most fabulously, randomly summoned catalog on Earth. Premium prices, bargain products, and movies about concrete await!
                     </p>
                 </Container>
             </Jumbotron>

@@ -1,0 +1,8 @@
+.product {
+    border-style: solid;
+    display: inline-block;
+}
+
+.category, .name {
+    display: inline
+}

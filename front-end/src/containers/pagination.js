@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 class Pagination extends Component {
     render (){
         return (
-            <div></div>
+            <div>pagination will go here</div>
         )
     }
 }

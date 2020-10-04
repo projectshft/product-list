@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions'
+import '../CSS/product-list.css'
 
 // holds the 9 or fewer current products on our main display set by
 // the search-filter-sort field
@@ -10,23 +11,28 @@ class ProductList extends Component {
     componentDidMount(){
         this.props.fetchProducts();
     }
-    //
+    //create a function to map the products correctly, 3 rows of 3 products each
     renderProducts(){
-        return (this.props.products, product => {
+        //console.log(this.props.products.products)
+         let products =this.props.products.products.map(product => {
             return (
-                <li className='list-group-item'>{product.name}</li>
+                <div className= 'col-4 product' key={product._id}>
+                    <div className='col-2 category'>Category: {product.category}</div>
+                    <div className='col-2 price'>${product.price}</div>
+                    <img className='col-2 image' src={product.image}></img>
+                    <div className='col-2 name'>{product.name}</div>
+                </div>
             )
-        })
-
+        });
+        return products;
     }
     render(){
         return (
-            <div>
-                <div>Product list will go here</div>
-                    <ul className='list-group'>
-                        {this.renderProducts()}
-                    </ul>
-            </div>
+        
+                <div className='row-container'>
+                    {this.renderProducts()}
+                </div>
+        
         )
     }
 }

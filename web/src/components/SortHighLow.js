@@ -11,7 +11,7 @@ const SortHighLow =(props) => {
     
 // get state of categories from action
     return (
-        <div class="text-center"><Dropdown isOpen={dropdownOpen} toggle={toggle}>
+        <div className='text-center'><Dropdown isOpen={dropdownOpen} toggle={toggle}>
             <DropdownToggle caret>
                 Sort 
             </DropdownToggle>
@@ -35,9 +35,9 @@ function mapStateToProps(state) {
     };
   }
   
-  function mapDispatchToProps(dispatch) {
+  // function mapDispatchToProps(dispatch) {
   //  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
-  }
+  //}
   
   
-  export default connect(mapStateToProps, mapDispatchToProps)(SortHighLow);
+  export default connect(mapStateToProps)(SortHighLow);

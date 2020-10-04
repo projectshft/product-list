@@ -3,7 +3,7 @@ import { fetchProducts } from '../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './App.css';
-import { render } from 'react-dom';
+// import { render } from 'react-dom';
 //import Header from './Header';
 import Main from './Main';
 import albumItems from '../data/album';
@@ -12,10 +12,9 @@ import albumItems from '../data/album';
 class App extends React.Component {
   constructor(props) {
       super(props);
-      this.state = {
-        productResults: albumItems,
-        returnedCount: 9
-      }
+      // this.state = {
+      //   products: state.products
+      // }
   }
   render() {
       return (
@@ -30,14 +29,13 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-     productResults: state.productResults,
-     returnedCount: state.returnedCount
+     products: state.products
   };
 }
 
-function mapDispatchToProps(dispatch) {
-//  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
-}
+// function mapDispatchToProps(dispatch) {
+// //  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
+// }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

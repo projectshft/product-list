@@ -6,7 +6,7 @@ const CatalogIndex =(props) => {
     
 // get state of categories from action
     return (
-      <div class="text-center">
+      <div className='text-center'>
       <Pagination aria-label="Page navigation example">
       <PaginationItem>
           <PaginationLink first href="#" />
@@ -60,9 +60,9 @@ function mapStateToProps(state) {
     };
   }
   
-  function mapDispatchToProps(dispatch) {
+  // function mapDispatchToProps(dispatch) {
   //  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
-  }
+  // }
   
   
-  export default connect(mapStateToProps, mapDispatchToProps)(CatalogIndex);
+  export default connect(mapStateToProps)(CatalogIndex);

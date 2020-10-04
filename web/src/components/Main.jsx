@@ -7,7 +7,7 @@ import CategorySelector from './CategorySelector'
 import SortHighLow from './SortHighLow'
 import SearchBox from './SearchBox'
 import CatalogIndex from './CatalogIndex'
-import { Container, Row, Col, Jumbotron, Pagination } from 'reactstrap';
+import { Container, Row, Col, Jumbotron } from 'reactstrap';
 
 const Main = props  => {
     return (

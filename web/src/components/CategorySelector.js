@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component, useState } from 'react';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
@@ -11,7 +11,7 @@ const CategorySelector =(props) => {
     
 // get state of categories from action
     return (
-        <div class="text-center"><Dropdown isOpen={dropdownOpen} toggle={toggle}>
+        <div className='text-center'><Dropdown isOpen={dropdownOpen} toggle={toggle}>
             <DropdownToggle caret>
                 Categories 
             </DropdownToggle>
@@ -52,9 +52,9 @@ function mapStateToProps(state) {
     };
   }
   
-  function mapDispatchToProps(dispatch) {
+//   function mapDispatchToProps(dispatch) {
   //  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
-  }
+//   }
   
   
-  export default connect(mapStateToProps, mapDispatchToProps)(CategorySelector);
+  export default connect(mapStateToProps)(CategorySelector);

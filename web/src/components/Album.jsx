@@ -1,21 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
     Card,
     CardImg,
-    CardText,
     CardBody,
     Col,
     Container,
     Row,
 } from 'reactstrap';
-
-const Album = ({ album }) => {
+import { fetchProducts } from '../actions';
+// const Album = ({ album }) => {
+    
+const Album = props => {
     return (
         <div className="album py-5 bg-light">
             <Container>
                 <Row>
-                    {album.map((item, key) => {
+                    {props.products.list.map((item, key) => {
                         return (
                             <Col md="4" key={key}>
                                 <Card className="mb-4 box-shadow">
@@ -41,14 +43,14 @@ const Album = ({ album }) => {
 };
 
 function mapStateToProps(state) {
+    console.log('album mapstatetoprops state.products is ', state.products)
     return {
-   //   destinations: state.destinations,
-     // selectedRadius: state.selectedRadius,
+     products: state.products
     };
   }
   
   function mapDispatchToProps(dispatch) {
-  //  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
+  return bindActionCreators({ fetchProducts }, dispatch);
   }
   
   

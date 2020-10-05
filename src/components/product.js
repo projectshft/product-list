@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Product = ({product}) => {
     return (
-        <div>
+        <div className="container-md offset-3">
             <span>{product.category}  {product.price}</span>
             <span>{product.image}</span>
             <span>{product.name}</span>

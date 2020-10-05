@@ -36,8 +36,8 @@ class Catalog extends Component {
                         return (
                             <Col md="4" key={key}>
                                 <Card className="mb-4 box-shadow">
-                                <Row><Col><p class="ml-3 mt-3 pt-1">Category: {item.category}</p></Col>
-                                <Col><h2 class="text-right mr-3 pt-1">${item.price}</h2></Col></Row>
+                                <Row><Col><p className="ml-3 mt-3 pt-1">Category: {item.category}</p></Col>
+                                <Col><h2 className="text-right mr-3 pt-1">${item.price}</h2></Col></Row>
                                 <CardBody style={{marginTop: '-35px'}}>
                                     <CardImg
                                         top
@@ -46,7 +46,7 @@ class Catalog extends Component {
                                         alt={item.name}
                                     />
                                     </CardBody>
-                                    <h3 class="text-center" style={{marginTop: '-20px'}}>{item.name}</h3>
+                                    <h3 className="text-center" style={{marginTop: '-20px'}}>{item.name}</h3>
                                 </Card>
                             </Col>
                         );

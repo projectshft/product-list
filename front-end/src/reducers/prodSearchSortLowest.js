@@ -1,1 +1,0 @@
-//localhost:8000/products?search=rustic

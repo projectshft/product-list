@@ -22,7 +22,7 @@ class Catalog extends Component {
   // if (this.props.products.list.length === 0) {
   //     console.log('trying to trigger fetchProducts()')
   //     fetchProducts(null, null, null);
-  //     console.log(' ->and got props.products', this.props.products)}
+  //     console.log(' ->and got props.products', this.props.products)} 
     }
 
       render() {

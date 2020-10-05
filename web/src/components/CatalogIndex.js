@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import ReactDOM from 'react-dom'
+// import ReactDOM from 'react-dom'
 
 // TODO, I think. Make this page a Component and create a function to call
 // within the jsx return() to render the enumerated page links
 const CatalogIndex =(props) => {
-  let pageCount = Math.ceil(props.products.count / 9)
-  let pageButtons = ''
+  // let pageCount = Math.ceil(props.products.count / 9)
+  // let pageButtons = ''
   
 // printPageLinks() {
 //   for (let p = 1; p <= pageCount; p++){
@@ -20,7 +20,7 @@ const CatalogIndex =(props) => {
   //   pageButtons += `<span>   ${p}  </span>`
   // }
 /*   pageButtons += `<PaginationItem>
-  <PaginationLink href="#">
+  <PaginationLink href="#"> 
     ${p}
   </PaginationLink>
 </PaginationItem>` */

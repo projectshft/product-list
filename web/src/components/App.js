@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import './App.css';
 // import { render } from 'react-dom';
 //import Header from './Header';
-import Main from './Main';
+import Main from './Main.js';
 // import albumItems from '../data/album';
 
 

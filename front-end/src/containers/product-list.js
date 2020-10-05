@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions'
-import '../CSS/product-list.css'
+
 
 // holds the 9 or fewer current products on our main display set by
 // the search-filter-sort field

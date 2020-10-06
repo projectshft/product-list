@@ -6,6 +6,10 @@ import { fetchProducts } from '../actions'
 
 // holds the 9 or fewer current products on our main display set by
 // the search-filter-sort field
+// let setPage = 1;
+// let searchTerm = '&search=tasty';
+// let setCategory ='&category=Garden';
+// let sortChoice = '&price=highest';
 class ProductList extends Component {
     //pass in API call as props
     componentDidMount(){
@@ -27,6 +31,7 @@ class ProductList extends Component {
         return products;
     }
     render(){
+        
         return (
         
                 <div className='row-container'>

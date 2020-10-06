@@ -13,7 +13,7 @@ class Pagination extends Component {
             // page numbers shown should decrease as the number of products decrease when searching by
             // a specific product name or sorting by category 
             <div className = 'footer'>
-                <p>Page #: {this.props.page}</p>
+                <p>Page #: {this.props.products.count/9}</p>
             </div>
             
         )
@@ -22,7 +22,7 @@ class Pagination extends Component {
 
 function mapStateToProps(state) {
     return {
-        page: state.page
+        products: state.products
     }
 }
 

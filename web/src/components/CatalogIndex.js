@@ -6,26 +6,19 @@ import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 // TODO, I think. Make this page a Component and create a function to call
 // within the jsx return() to render the enumerated page links
 const CatalogIndex =(props) => {
-  // let pageCount = Math.ceil(props.products.count / 9)
-  // let pageButtons = ''
+   let pageCount = Math.ceil(props.products.count / 9)
+   let pageButtons = ''
   
-// printPageLinks() {
-//   for (let p = 1; p <= pageCount; p++){
-//     pageButtons += `<span>  ${p}  </span>`
-//   }
-//   return (<span> {pageButtons} </span>);
-// }
-
-  // for (let p = 1; p <= pageCount; p++){
-  //   pageButtons += `<span>   ${p}  </span>`
-  // }
-/*   pageButtons += `<PaginationItem>
-  <PaginationLink href="#"> 
-    ${p}
-  </PaginationLink>
-</PaginationItem>` */
-  // ReactDOM.render(pageButtons, document.getElementById('buttons'))
-// get state of categories from action
+  const printPageLinks =() => {
+    let pagesLinks =[];
+    for (let p = 0; p <= pageCount; p++){
+    pagesLinks.push(
+    <PaginationItem>
+      <PaginationLink href='#'>{p+1}</PaginationLink>
+    </PaginationItem>)
+    }
+    return pagesLinks
+  }
 
     return ( 
       <div className='text-center'>
@@ -39,7 +32,8 @@ const CatalogIndex =(props) => {
         </PaginationItem>
         {/* <span id="buttons"></span> */}
         {/* {pageButtons} */}
-        future function to render these goes here
+        {/* future function to render these goes here */}
+        {printPageLinks()}
          <PaginationItem>
           <PaginationLink next href="#" />
         </PaginationItem>

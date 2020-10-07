@@ -7,9 +7,11 @@ import '../CSS/App.css'
 const App = () => {
   return (
     <div>
+      <div className='col-md-10 offset-1'>
 <SearchFilterSort></SearchFilterSort>
 <ProductList></ProductList>
 <Pagination></Pagination>
+      </div>
     </div>
   );
 }

@@ -27,9 +27,9 @@ class Pagination extends Component {
                         <li key={number} className='page-item'>
                             {/* TODO, figure out how to pass in the number into fetchproducts and have that 
                             update to the correct page */}
-                            <a onClick={() => fetchProducts(number)} href='' className='page-link'>
+                            <div onClick={() => this.props.fetchProducts(number)} href='' className='page-link'>
                                 {number}
-                            </a>
+                            </div>
                         </li>
                     ))}
                 </ul>

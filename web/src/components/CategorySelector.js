@@ -1,22 +1,27 @@
 import React from 'react';
 import { useState } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-
+import { fetchProducts } from "../actions";
 const CategorySelector =(props) => {
     
       const [dropdownOpen, setDropdownOpen] = useState(false);
       const toggle = () => setDropdownOpen(prevState => !prevState);
     
-    
+      const userSearchCategory = (changeEvent) => {
+          console.log('Category changed to: ', changeEvent.currentTarget.textContent);
+            // props.fetchProducts(null, null, changeEvent.target.value);
+        };
+        
 // get state of categories from action
     return (
-        <div className='text-center'><Dropdown isOpen={dropdownOpen} toggle={toggle}>
-            <DropdownToggle caret>
+        <div className='text-center'><Dropdown isOpen={dropdownOpen} toggle={toggle} >
+            <DropdownToggle caret >
                 Categories 
-            </DropdownToggle>
-            <DropdownMenu>
-                <DropdownItem>Home</DropdownItem>
+            </DropdownToggle >
+            <DropdownMenu >
+                <DropdownItem ><div value="Home" onClick={userSearchCategory}>Home</div></DropdownItem>
                 <DropdownItem>Electronics</DropdownItem>
                 <DropdownItem>Beauty</DropdownItem>
                 <DropdownItem>Shoes</DropdownItem>
@@ -45,16 +50,19 @@ const CategorySelector =(props) => {
 
 
 
-function mapStateToProps(state) {
-    return {
-   //   destinations: state.destinations,
-     // selectedRadius: state.selectedRadius,
-    };
-  }
-  
-//   function mapDispatchToProps(dispatch) {
-  //  return bindActionCreators({ sendDistance, fetchDestination }, dispatch);
-//   }
-  
-  
-  export default connect(mapStateToProps)(CategorySelector);
+    function mapStateToProps(state) {
+      return {
+        products: state.products,
+      };
+    }
+    
+    function mapDispatchToProps(dispatch) {
+      return bindActionCreators(
+        {
+          fetchProducts,
+        },
+        dispatch
+      );
+    }
+    
+    export default connect(mapStateToProps, mapDispatchToProps)(CategorySelector);

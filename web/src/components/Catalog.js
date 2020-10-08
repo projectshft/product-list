@@ -18,11 +18,6 @@ class Catalog extends Component {
       aTest: "just a test"
     }
   
-  // console.log('props.products @ catalog =', this.props.products)
-  // if (this.props.products.list.length === 0) {
-  //     console.log('trying to trigger fetchProducts()')
-  //     fetchProducts(null, null, null);
-  //     console.log(' ->and got props.products', this.props.products)} 
     }
 
       render() {

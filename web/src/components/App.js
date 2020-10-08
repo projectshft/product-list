@@ -19,7 +19,7 @@ class App extends React.Component {
       console.log('props.products @ App =', this.props.products)
       if (this.props.products.list.length === 0) {
           console.log('trying to trigger fetchProducts()')
-          this.props.fetchProducts(null, null, null);
+          this.props.fetchProducts(null, null, null, null);
           console.log(' ->and got props.products', this.props.products)}}
         
   // }

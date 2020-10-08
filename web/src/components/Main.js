@@ -29,8 +29,6 @@ const Main = props  => {
                 </Row>
             </Container>
             <Container>
-            {/* <Album album={album} /> */}
-            {/* <Album /> */}
             <Catalog />
             </Container>
             <Container>

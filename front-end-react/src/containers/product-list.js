@@ -1,42 +1,38 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../actions';
 
 class ProductList extends Component {
+  componentDidMount() {
+    this.props.fetchProducts();
+  }
+
   renderProducts() {
-    const name = allProdsUnsorted.listOfAllProducts.map(product => product.name)
-    const category = allProdsUnsorted.listOfAllProducts.map(product => product.category)
-    const price = allProdsUnsorted.listOfAllProducts.map(product => product.price)
-    const image = allProdsUnsorted.listOfAllProducts.map(product => product.image)
-  
-    return (
-      <tr key={allProdsUnsorted.listOfAllProducts._id}>
-        <td>{name}</td>
-        <td>{category}</td>
-        <td>{price}</td>
-        <td>{image}</td>
-      </tr>
-    );  
+    return this.props.products.list.map((product) => {
+      return (
+        <li className='list-group-item' key={product.name}>
+          {product.name}
+        </li>
+      );
+    });
   }
 
   render() {
     return (
-      <table className="table">
-        {/* <thead>
-          <tr>
-            <th>City</th>
-            <th>Temperature (K)</th>
-            <th>Pressure (hPa)</th>
-            <th>Humidity (%)</th>
-          </tr>
-        </thead> */}
-        <tbody>{this.props.product.map(this.renderProducts)}</tbody>
+      <table className='table'>
+        <tbody>{this.renderProducts}</tbody>
       </table>
     );
   }
 }
 
-function mapStateToProps({ product }) {
-  return { product };
+function mapStateToProps({ products }) {
+  return { products };
 }
 
-export default connect(mapStateToProps)(ProductList);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchProducts }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

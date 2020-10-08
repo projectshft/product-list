@@ -16,6 +16,29 @@ h2 {
   text-align: center;
 }
 
+.search {
+  margin-left: 110px;
+}
+
+.select-category {
+  margin-left: 320px;
+}
+
+.select-sort-order {
+  margin-left: 60px;
+}
+
 .productImage {
-  height: 80px;
+  height: 150px;
+  border-width: 20px;
+  border-color: black;
+}
+
+.category {
+  font-size: 10px;
+  margin-left: 95px;
+}
+
+.price {
+  margin-left: 35px;
 }

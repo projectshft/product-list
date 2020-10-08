@@ -14,3 +14,14 @@ export function fetchProducts() {  //search, page, category, sort
     payload: request //api call
   };
 }
+
+export function searchProducts() {  //search, page, category, sort
+  const request = axios.get(`${ROOT_URL}?search={}`); //a promise
+
+  console.log('Request', request);
+
+  return {
+    type: FETCH_PRODUCTS, //FETCH_PRODUCTS is action name"
+    payload: request //api call
+  };
+}

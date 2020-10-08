@@ -8,21 +8,22 @@ class ProductList extends Component {
     this.props.fetchProducts();
   }
 
-  renderProducts() {
-    return this.props.products.list.map((product) => {
-      return (
-        <li className='list-group-item' key={product.name}>
-          {product.name}
-        </li>
-      );
-    });
-  }
-
   render() {
     return (
-      <table className='table'>
-        <tbody>{this.renderProducts()}</tbody>
-      </table>
+      <div className='container'>
+        <div className='row'>
+          {this.props.products.list.map((product) => (
+            <div key={product._id} id='productItem' className='col-md-4 text-center'>
+              <h5>{product.name}</h5>
+              <img
+                className='productImage'
+                alt='Product Preview'
+                src={product.image}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 }

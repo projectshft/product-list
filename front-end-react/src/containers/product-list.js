@@ -21,7 +21,7 @@ class ProductList extends Component {
   render() {
     return (
       <table className='table'>
-        <tbody>{this.renderProducts}</tbody>
+        <tbody>{this.renderProducts()}</tbody>
       </table>
     );
   }

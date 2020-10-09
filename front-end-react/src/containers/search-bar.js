@@ -20,7 +20,7 @@ class SearchBar extends Component {
 
   onFormSubmit(event) {
     event.preventDefault();
-    this.props.fetchProducts(this.state.search, '', '');
+    this.props.fetchProducts(this.state.search, '', '', '');
     this.setState({ search: '' });
   }
 

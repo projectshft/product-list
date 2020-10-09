@@ -15,7 +15,7 @@ class SortProducts extends Component {
     //setState is async. Use second parameter function that runs after state is set
     this.setState({ sort: event.target.value }, function () {
       console.log("in sort container & this.state.sort = " + this.state.sort);
-      this.props.fetchProducts('', '', this.state.sort);
+      this.props.fetchProducts('', '', this.state.sort, '');
     });
   }
 
@@ -44,4 +44,3 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(null, mapDispatchToProps)(SortProducts);
 
-//onSubmit={this.onFormSubmit}

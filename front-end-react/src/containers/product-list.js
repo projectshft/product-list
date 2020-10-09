@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Pagination from "react-js-pagination";
 import { fetchProducts } from '../actions';
 
 
 
 class ProductList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { page: 1, count: 0, list: [] };
 
+    this.handlePageChange = this.handlePageChange.bind(this);
+
+  }
 
   componentDidMount() {
     this.props.fetchProducts();
+  }
+
+  handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ page: pageNumber }, function () {
+      this.props.fetchProducts('', '', '', this.state.page);
+      console.log("this.state.page: " + this.state.page);
+
+    });
   }
 
   render() {
@@ -32,7 +48,20 @@ class ProductList extends Component {
             </div>
           ))}
         </div>
+        <div id='pagination'>
+          <Pagination            
+          activePage={this.state.page}
+          itemsCountPerPage={9}
+          totalItemsCount={this.props.products.count}
+          pageRangeDisplayed={5}
+          // itemClass="page-item"
+          // linkClass="page-link"
+          onChange={this.handlePageChange.bind(this)}
+          />
+          <div className='product-count'>Total products: {this.props.products.count}</div>
       </div>
+      </div>
+      
     );
   }
 }

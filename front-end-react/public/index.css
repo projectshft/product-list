@@ -46,3 +46,15 @@ h2 {
 .price {
   margin-left: 35px;
 }
+
+.pagination {
+  padding-top: 20px;
+  margin-left: 500px;
+  margin-bottom: 0px;
+}
+
+.product-count {
+  padding-top: 0px;
+  margin-left: 470px;
+  font-size: medium;
+}

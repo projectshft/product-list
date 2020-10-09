@@ -16,7 +16,7 @@ class CategoryDropdown extends Component {
     //setState is async. Use second parameter function that runs after state is set
     this.setState({ category: event.target.value }, function () {
       console.log('in cat container & this.state.category: ' + this.state.category);
-      this.props.fetchProducts('', this.state.category, '');
+      this.props.fetchProducts('', this.state.category, '', '');
     });
   }
 

@@ -23,13 +23,13 @@ class SearchFilterSort extends Component {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
          {/* TODO, add onclick to take the values of the text box and filter by that category*/}
-                            <Dropdown.Item>Games</Dropdown.Item>
-                            <Dropdown.Item>Health</Dropdown.Item>
-                            <Dropdown.Item>Tools</Dropdown.Item>
-                            <Dropdown.Item>Clothing</Dropdown.Item>
-                            <Dropdown.Item>Outdoors</Dropdown.Item>
-                            <Dropdown.Item>Music</Dropdown.Item>
-                            <Dropdown.Item>Electronics</Dropdown.Item>
+                            <Dropdown.Item value = {"Games"}>Games</Dropdown.Item>
+                            <Dropdown.Item value = {"Health"}>Health</Dropdown.Item>
+                            <Dropdown.Item value = {"Tools"}>Tools</Dropdown.Item>
+                            <Dropdown.Item value = {"Clothing"}>Clothing</Dropdown.Item>
+                            <Dropdown.Item value = {"Outdoors"}>Outdoors</Dropdown.Item>
+                            <Dropdown.Item value = {"Music"}>Music</Dropdown.Item>
+                            <Dropdown.Item value = {"Electronics"}>Electronics</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown id='sort'>
@@ -37,8 +37,8 @@ class SearchFilterSort extends Component {
                             Sort by Price
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item>High-Low</Dropdown.Item>
-                            <Dropdown.Item>Low-High</Dropdown.Item>
+                            <Dropdown.Item value = {"highest"}>High-Low</Dropdown.Item>
+                            <Dropdown.Item value = {"lowest"}>Low-High</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </form>

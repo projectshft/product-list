@@ -11,7 +11,7 @@ class Pagination extends Component {
         //loops through and assigns the correct amount of pages determined by parameters given
         for(let i = 1; i <= Math.ceil(this.props.products.count/9); i++) {
             pageNumbers.push(i);
-            console.log(pageNumbers);
+            // console.log(pageNumbers);
         }
         return (
 
@@ -24,9 +24,9 @@ class Pagination extends Component {
                 
                 <ul className='pagination'>
                     {pageNumbers.map(number => (
-                        <li key={number} className='page-item'>
+                        <li key={number}>
                             {/* TODO, figure out how to delete the page number after the first click, right now it's updating wrong*/}
-                            <div onClick={() => this.props.fetchProducts(number)} className='page-link'>
+                            <div onClick={() => this.props.fetchProducts({page: number})} className='page-link'>
                                 {number}
                             </div>
                         </li>
@@ -34,6 +34,8 @@ class Pagination extends Component {
                 </ul>
                 
             </div>
+
+            
             
         )
     }

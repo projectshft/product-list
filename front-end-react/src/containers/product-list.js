@@ -20,7 +20,6 @@ class ProductList extends Component {
   }
 
   handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
     this.setState({ page: pageNumber }, function () {
       this.props.fetchProducts('', '', '', this.state.page);
       console.log("this.state.page: " + this.state.page);
@@ -54,8 +53,6 @@ class ProductList extends Component {
           itemsCountPerPage={9}
           totalItemsCount={this.props.products.count}
           pageRangeDisplayed={5}
-          // itemClass="page-item"
-          // linkClass="page-link"
           onChange={this.handlePageChange.bind(this)}
           />
           <div className='product-count'>Total products: {this.props.products.count}</div>

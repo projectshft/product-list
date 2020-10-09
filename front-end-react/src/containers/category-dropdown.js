@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { searchCategories } from '../actions/index';
+import { fetchProducts } from '../actions/index';
 
 class CategoryDropdown extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class CategoryDropdown extends Component {
     //setState is async. Use second parameter function that runs after state is set
     this.setState({ category: event.target.value }, function () {
       console.log('in cat container & this.state.category: ' + this.state.category);
-      this.props.searchCategories(this.state.category);
+      this.props.fetchProducts('', this.state.category, '');
     });
   }
 
@@ -44,7 +44,7 @@ class CategoryDropdown extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchCategories }, dispatch);
+  return bindActionCreators({ fetchProducts }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(CategoryDropdown);

@@ -6,12 +6,7 @@ import { fetchProducts } from '../actions';
 
 
 class ProductList extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = { list: []  };
-    // this.change = this.change.bind(this);
-  }
 
   componentDidMount() {
     this.props.fetchProducts();
@@ -43,8 +38,8 @@ class ProductList extends Component {
 }
 
 //these come back as data.products.list
-function mapStateToProps( state ) {
-  return { products, searchedProducts, searchedCategories, sortedProducts };
+function mapStateToProps({ products}) {
+  return { products };
 }
 
 function mapDispatchToProps(dispatch) {

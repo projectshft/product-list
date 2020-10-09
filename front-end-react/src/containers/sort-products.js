@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { sortProducts } from '../actions';
+import { fetchProducts } from '../actions';
 
 class SortProducts extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class SortProducts extends Component {
     //setState is async. Use second parameter function that runs after state is set
     this.setState({ sort: event.target.value }, function () {
       console.log("in sort container & this.state.sort = " + this.state.sort);
-      this.props.sortProducts(this.state.sort);
+      this.props.fetchProducts('', '', this.state.sort);
     });
   }
 
@@ -39,7 +39,7 @@ class SortProducts extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ sortProducts }, dispatch);
+  return bindActionCreators({ fetchProducts }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(SortProducts);

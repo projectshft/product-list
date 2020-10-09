@@ -3,33 +3,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../actions';
 
+
+
 class ProductList extends Component {
+
   componentDidMount() {
     this.props.fetchProducts();
   }
 
   render() {
+    console.log('rendering!')
+    console.log("Product props: " + this.props);
     return (
       <div className='container'>
-        <div className='row'>
-          <form className='form-inline search'>
-            <button className='btn btn-primary btn-sm' type='submit'>
-              Search
-            </button>
-            <input className='form-control-sm' type='text' />
-          </form>
-          <select class='custom-select-inline custom-select-sm select-category'>
-            <option selected>Select a category</option>
-            <option value='1'>One</option>
-            <option value='2'>Two</option>
-            <option value='3'>Three</option>
-          </select>
-          <select class='custom-select-inline custom-select-sm select-sort-order'>
-            <option selected>Sort by</option>
-            <option value='lowest'>Price: low to high</option>
-            <option value='highest'>Price: high to low</option>
-          </select>
-        </div>
+
         <div className='row'>
           {this.props.products.list.map((product) => (
             <div key={product._id} id='productItem' className='col-md-4 '>
@@ -51,8 +38,8 @@ class ProductList extends Component {
   }
 }
 
-function mapStateToProps({ products }) {
-  return { products };
+function mapStateToProps({ products, searchedProducts, searchedCategories, sortedProducts }) {
+  return { products, searchedProducts, searchedCategories, sortedProducts };
 }
 
 function mapDispatchToProps(dispatch) {

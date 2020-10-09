@@ -5,6 +5,24 @@ import { fetchProducts } from '../actions'
 
 //component for navigating through the pages of products
 class Pagination extends Component {
+    constructor() {
+        super()
+
+        this.state = {
+            page: 1
+        }
+        this.selectPage = this.selectPage.bind(this);
+    }
+
+    getProducts() {
+        this.props.fetchProducts(this.state)
+    }
+    selectPage (event) {
+        this.setState({page: event.target.value}, () => {
+            this.getProducts()
+        })
+        
+    }
     render (){
         // array that will hold the correct page numbers shown on screen
         const pageNumbers = [];
@@ -24,11 +42,9 @@ class Pagination extends Component {
                 
                 <ul className='pagination'>
                     {pageNumbers.map(number => (
-                        <li key={number}>
+                        <li key={number} onClick={this.selectPage} value={number} className='page-link'>
                             {/* TODO, figure out how to delete the page number after the first click, right now it's updating wrong*/}
-                            <div onClick={() => this.props.fetchProducts({page: number})} className='page-link'>
                                 {number}
-                            </div>
                         </li>
                     ))}
                 </ul>
@@ -36,7 +52,7 @@ class Pagination extends Component {
             </div>
 
             
-            
+            //onClick={() => this.props.fetchProducts({page: number})}
         )
     }
 }

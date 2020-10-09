@@ -15,15 +15,15 @@ class SearchFilterSort extends Component {
                         <h1>PRODUCTS</h1>
                     </div>
                 </div>
-                <form class="form-inline md-form mr-auto mb-4">
-                    <input id='search' class="form-control mr-sm-2" type="text" placeholder="Search for a product" aria-label="Search"></input>
+                <form className="form-inline md-form mr-auto mb-4">
+                    <input id='search' className="form-control mr-sm-2" type="text" placeholder="Search for a product" aria-label="Search"></input>
                     <Dropdown id='category'>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                             Filter By Category
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
          {/* TODO, add onclick to take the values of the text box and filter by that category*/}
-                            <Dropdown.Item value = {"Games"}>Games</Dropdown.Item>
+                            <Dropdown.Item onClick={() => this.props.fetchProducts({setCategory: this.value})} value = {"Games"}>Games</Dropdown.Item>
                             <Dropdown.Item value = {"Health"}>Health</Dropdown.Item>
                             <Dropdown.Item value = {"Tools"}>Tools</Dropdown.Item>
                             <Dropdown.Item value = {"Clothing"}>Clothing</Dropdown.Item>

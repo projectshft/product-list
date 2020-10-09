@@ -1,9 +1,6 @@
 import axios from 'axios';
 
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'; //a convention to add a line like this
-export const SEARCH_PRODUCTS = 'SEARCH_PRODUCTS';
-export const SEARCH_CATEGORIES = 'SEARCH_CATEGORIES';
-export const SORT_PRODUCTS = 'SORT_PRODUCTS';
 
 const ROOT_URL = 'http://localhost:8000/products';
 let request = '';

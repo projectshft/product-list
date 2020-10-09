@@ -6,18 +6,22 @@ import { fetchProducts } from '../actions';
 
 
 class ProductList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { list: []  };
+    // this.change = this.change.bind(this);
+  }
 
   componentDidMount() {
     this.props.fetchProducts();
   }
 
   render() {
-    console.log('rendering!')
-    console.log("Product props: " + this.props);
+    console.log('rendering product list!')
     return (
       <div className='container'>
-
-        <div className='row'>
+        <div className='row product-grid'>
           {this.props.products.list.map((product) => (
             <div key={product._id} id='productItem' className='col-md-4 '>
               <span className='category'>Category: {product.category}</span>
@@ -38,7 +42,8 @@ class ProductList extends Component {
   }
 }
 
-function mapStateToProps({ products, searchedProducts, searchedCategories, sortedProducts }) {
+//these come back as data.products.list
+function mapStateToProps( state ) {
   return { products, searchedProducts, searchedCategories, sortedProducts };
 }
 

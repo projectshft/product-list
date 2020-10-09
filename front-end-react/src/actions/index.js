@@ -19,6 +19,7 @@ export function fetchProducts() {  //search, page, category, sort
 }
 
 export function searchProducts(search) {  //search, page, category, sort
+  console.log('in searchProducts action & search= ' + search);
   const request = axios.get(`${ROOT_URL}?search=${search}`); //a promise
 
   console.log('Request', request);
@@ -30,6 +31,8 @@ export function searchProducts(search) {  //search, page, category, sort
 }
 
 export function searchCategories(category) {  //search, page, category, sort
+  console.log('in searchCategories action & category= ' + category);
+
   const request = axios.get(`${ROOT_URL}?category=${category}`); //a promise
 
   console.log('Request', request);
@@ -41,6 +44,7 @@ export function searchCategories(category) {  //search, page, category, sort
 }
 
 export function sortProducts(sort) {  //search, page, category, sort
+  console.log('in sortProducts action & sort= ' + sort);
   const request = axios.get(`${ROOT_URL}?sort=${sort}`); //a promise
 
   console.log('Request', request);

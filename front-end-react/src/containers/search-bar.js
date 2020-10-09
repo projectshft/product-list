@@ -8,7 +8,6 @@ class SearchBar extends Component {
     super(props);
 
     this.state = { search: '' };
-
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
@@ -16,19 +15,17 @@ class SearchBar extends Component {
   onInputChange(event) {
     console.log("search term: " + event.target.value);
     this.setState({ search: event.target.value });
+    console.log("this.state.search: " + this.state.search);
   }
 
   onFormSubmit(event) {
     event.preventDefault();
-
     this.props.searchProducts(this.state.search);
     this.setState({ search: '' });
   }
 
   render() {
     return (
-      <div className='container'>
-        <div className='row'>
           <form
             onSubmit={this.onFormSubmit}
             className='input-group form-inline search'>
@@ -44,8 +41,6 @@ class SearchBar extends Component {
               onChange={this.onInputChange}
             />
           </form>
-        </div>
-      </div>
     );
   }
 }

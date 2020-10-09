@@ -20,13 +20,17 @@ h2 {
   margin-left: 110px;
 }
 
-/* .select-category {
-  /* margin-left: 320px; */
-/* } */
+.select-category {
+  margin-left: 500px;
+}
 
-/* .select-sort-order { */
-  /* margin-left: 60px; */
-/* } */ 
+.select-sort-order {
+  margin-left: 830px;
+}
+
+.product-grid {
+  padding-top: 20px;
+}
 
 .productImage {
   height: 150px;

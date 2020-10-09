@@ -8,34 +8,40 @@ class SortProducts extends Component {
     super(props);
 
     this.state = { sort: '' };
-    this.getSelectedValue = this.getSelectedValue.bind(this)
+    this.change = this.change.bind(this);
   }
-  
-  getSelectedValue() {
-    let value = document.getElementById("sort");
-    let result = value.options[value.selectedIndex].value;
-    console.log(result);
-    // document.getElementById("result").innerHTML = result;
+
+  change(event) {
+    //setState is async. Use second parameter function that runs after state is set
+    this.setState({ sort: event.target.value }, function () {
+      console.log("in sort container & this.state.sort = " + this.state.sort);
+      this.props.sortProducts(this.state.sort);
+    });
   }
 
   render() {
     return (
-      <div className='container'>
-        <div className='row'>
-          <select id='sort' className='custom-select-inline custom-select-sm select-sort-order'>
-            <option defaultValue>Sort by</option>
-            <option value='lowest'>Price: low to high</option>
-            <option value='highest'>Price: high to low</option>
-          </select>
-          <button type="button" onclick={this.getSelectedValue}>Implement sort!</button>
-        </div></div>
-    )
+          <form className="form-inline" >
+            <div className='form-group-dropdown'>
+              <select
+                id='sort'
+                value={this.state.sort}
+                onChange={this.change}
+                className='select-sort-order'>
+                <option defaultValue>Sort by price</option>
+                <option value='lowest'>Price: low to high</option>
+                <option value='highest'>Price: high to low</option>
+              </select>
+            </div>
+          </form>
+    );
   }
 }
-
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ sortProducts }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(SortProducts);
+
+//onSubmit={this.onFormSubmit}

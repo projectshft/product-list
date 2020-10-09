@@ -1,20 +1,7 @@
 import React, { Component } from 'react';
-import Select from 'react-select';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { searchCategories } from '../actions/index';
-
-const Categories = [
-  { label: 'Tools', value: 'Tools' },
-  { label: 'Garden', value: 'Garden' },
-  { label: 'Shoes', value: 'Shoes' },
-  { label: 'Books', value: 'Books' },
-  { label: 'Clothing', value: 'Clothing' },
-  { label: 'Health', value: 'Health' },
-  { label: 'Jewelery', value: 'Jewelery' },
-];
-
-let selectedValue;
 
 class CategoryDropdown extends Component {
   constructor(props) {
@@ -22,27 +9,36 @@ class CategoryDropdown extends Component {
 
     this.state = { category: '' };
 
-    this.onChange = this.onChange.bind(this);
+    this.change = this.change.bind(this);
   }
 
-  onChange() {
-    console.log('selected value: ' + selectedValue);
-    this.props.searchCategories(selectedValue);
+  change(event) {
+    //setState is async. Use second parameter function that runs after state is set
+    this.setState({ category: event.target.value }, function () {
+      console.log('in cat container & this.state.category: ' + this.state.category);
+      this.props.searchCategories(this.state.category);
+    });
   }
 
   render() {
     return (
-      <div className='container'>
-        <div className='row'>
-          <div className='col-sm-3'>
-            <Select className='select-category'
+          <span>
+            <select
+              id='categories'
+              className='select-category'
               placeholder='Select category'
-              value={Categories.find((cat) => cat.value === selectedValue)} // set selected value
-              options={Categories} // set list of the data
-            />
-          </div>
-        </div>
-      </div>
+              value={this.state.category}
+              onChange={this.change}>
+              <option defaultValue>Select a category</option>
+              <option value='Tools'>Tools</option>
+              <option value='Garden'>Garden</option>
+              <option value='Shoes'>Shoes</option>
+              <option value='Books'>Books</option>
+              <option value='Clothing'>Clothing</option>
+              <option value='Health'>Health</option>
+              <option value='Jewelery'>Jewelery</option>
+            </select>
+          </span>
     );
   }
 }

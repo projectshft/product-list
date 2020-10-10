@@ -3,7 +3,7 @@ import axios from 'axios';
 export const FETCH_PRODUCTS = 'fetch_products';
 
 const ROOT_URL = 'http://localhost:8000/products';
-let QUERY = '?page=';
+let QUERY = '?';
 
 // QUERY = QUERY + '1&category=Music&search=fantastic'
 // initial fetch posts, should load the first 9 products on page load
@@ -16,25 +16,26 @@ export function fetchProducts(params) {
     if (params !== undefined) {
         if (params.page) {
             const page = params.page;
-            QUERY = QUERY + page;
+            QUERY = QUERY + `&page=${page}`;
         }
-        if(params.searchTerm){
-            const searchTerm = params.searchTerm;
-            QUERY = QUERY + `&search=${searchTerm}`;
+        if(params.search){
+            const search = params.search;
+            QUERY = QUERY + `&search=${search}`;
         }
-        if(params.setCategory){
-            const setCategory = params.setCategory;
-            QUERY = QUERY + `&category=${setCategory}`;
+        if(params.category){
+            const category = params.category;
+            QUERY = QUERY + `&category=${category}`;
         }
-        if(params.sortChoice){
-            const sortChoice = params.sortChoice;
-            QUERY = QUERY + `&price=${sortChoice}`;
+        if(params.sort){
+            const sort = params.sort;
+            QUERY = QUERY + `&price=${sort}`;
         }
     }
 const request = axios.get(ROOT_URL + QUERY)
-
+console.log(QUERY)
     return {
         type: FETCH_PRODUCTS,
         payload: request
+        
     };
 }

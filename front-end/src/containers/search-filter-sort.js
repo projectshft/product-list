@@ -6,6 +6,27 @@ import { fetchProducts } from '../actions';
 
 //component used to search/filter/sort our list of products
 class SearchFilterSort extends Component {
+    constructor() {
+        super()
+
+        this.state = {
+            category: null,
+            search: null,
+            sort: null
+        }
+        this.selectCategory = this.selectCategory.bind(this);
+    }
+
+    getProducts() {
+        this.props.fetchProducts(this.state)
+    }
+    
+    selectCategory (event) {
+        this.setState({category: event.target.dataset.mssg}, () => {
+            this.getProducts()
+        })
+        
+    }
 
     render() {
         return (
@@ -21,15 +42,14 @@ class SearchFilterSort extends Component {
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                             Filter By Category
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
-         {/* TODO, add onclick to take the values of the text box and filter by that category*/}
-                            <Dropdown.Item onClick={() => this.props.fetchProducts({setCategory: this.value})} value = {"Games"}>Games</Dropdown.Item>
-                            <Dropdown.Item value = {"Health"}>Health</Dropdown.Item>
-                            <Dropdown.Item value = {"Tools"}>Tools</Dropdown.Item>
-                            <Dropdown.Item value = {"Clothing"}>Clothing</Dropdown.Item>
-                            <Dropdown.Item value = {"Outdoors"}>Outdoors</Dropdown.Item>
-                            <Dropdown.Item value = {"Music"}>Music</Dropdown.Item>
-                            <Dropdown.Item value = {"Electronics"}>Electronics</Dropdown.Item>
+                        <Dropdown.Menu onClick={this.selectCategory}>
+                            <Dropdown.Item data-mssg='Games'>Games</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Health'>Health</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Tools'>Tools</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Clothing'>Clothing</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Outdoors'>Outdoors</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Music'>Music</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Electronics'>Electronics</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown id='sort'>
@@ -37,8 +57,8 @@ class SearchFilterSort extends Component {
                             Sort by Price
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item value = {"highest"}>High-Low</Dropdown.Item>
-                            <Dropdown.Item value = {"lowest"}>Low-High</Dropdown.Item>
+                            <Dropdown.Item value={"highest"}>High-Low</Dropdown.Item>
+                            <Dropdown.Item value={"lowest"}>Low-High</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </form>

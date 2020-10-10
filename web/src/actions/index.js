@@ -3,6 +3,7 @@ import axios from 'axios';
 // action for calling products via API
 export const FETCH_PRODUCTS = 'fetch_products';
 export const SET_CURRENT_PAGE = 'set_current_page';
+export const SET_SORT_ORDER = 'set_sort_order';
 
 const ROOT_URL = 'http://localhost:8000/products?';
 
@@ -19,7 +20,7 @@ export function fetchProducts(page, category, search, sort) {
     queryBuild = queryBuild + `category=${category}&`
   }
   if (sort) {
-    queryBuild = queryBuild + `sort=${sort}`
+    queryBuild = queryBuild + `price=${sort}`
   }
 
   const request = axios.get(
@@ -28,7 +29,7 @@ export function fetchProducts(page, category, search, sort) {
   // ?=${search}&page=${page}&category=${category}
   // TODO tesy sorting
 console.log('got', request);
-console.log(` and page: ${page} and category: ${category} and search: ${search}`);
+console.log(` and page: ${page} and category: ${category} and search: ${search} and sort: ${sort}`);
   return {
     type: FETCH_PRODUCTS,
     payload: request
@@ -42,6 +43,11 @@ export function setCurrentPage(page) {
     payload: page  };
 }
 
-
+export function setSortOrder(order) {
+  return {
+    type: SET_SORT_ORDER,
+    payload: order
+  }
+}
 
 //sends to reducers

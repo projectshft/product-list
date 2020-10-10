@@ -1,6 +1,8 @@
 import { FETCH_PRODUCTS } from '../actions';
 
-export default function (state = {list:[],count:0}, action) {
+const initialState = {list:[],count:0};
+
+export default function (state = initialState, action) {
   console.log('in fetchProducts reducer');
 
   switch (action.type) {

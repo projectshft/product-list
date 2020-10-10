@@ -33,9 +33,7 @@ const Main = props  => {
             </Container>
             <Container>
                 <Row>
-                <Col xs="6" sm="4"></Col>
-                <Col xs="6" sm="4"><CatalogIndex></CatalogIndex></Col>
-                <Col sm="4"></Col>
+                <Col><CatalogIndex></CatalogIndex></Col>
                 </Row>
                 </Container>
         </main>

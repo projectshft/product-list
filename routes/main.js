@@ -88,7 +88,7 @@ router.get('/products/', (req, res, next) => {
       if (err) {
         console.log(err)
       }
-      // inject product count into new object 
+      // inject product count into object 
       Product
         .find()
         .and([categorizing, querySearch])

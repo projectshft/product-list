@@ -11,8 +11,19 @@ const CategorySelector =(props) => {
     
       const userSearchCategory = (changeEvent) => {
           console.log('Category changed to: ', changeEvent.currentTarget.textContent);
-            // props.fetchProducts(null, null, changeEvent.target.value);
+          props.fetchProducts(null, changeEvent.currentTarget.textContent);
         };
+
+   /*      const getCategoryDropdowns =() => {
+          let categoryDropdowns =[];
+          for (let p = 0; p <= pageCount; p++){
+          pagesLinks.push(
+          <PaginationItem>
+            <PaginationLink href='#'>{p+1}</PaginationLink>
+          </PaginationItem>)
+          }
+          return pagesLinks
+        } */
         
 // get state of categories from action
     return (
@@ -21,25 +32,26 @@ const CategorySelector =(props) => {
                 Categories 
             </DropdownToggle >
             <DropdownMenu >
-                <DropdownItem ><div value="Home" onClick={userSearchCategory}>Home</div></DropdownItem>
-                <DropdownItem>Electronics</DropdownItem>
-                <DropdownItem>Beauty</DropdownItem>
-                <DropdownItem>Shoes</DropdownItem>
-                <DropdownItem>Tools</DropdownItem>
-                <DropdownItem>Industrial</DropdownItem>
-                <DropdownItem>Books</DropdownItem>
-                <DropdownItem>Jewelery</DropdownItem>
-                <DropdownItem>Automotive</DropdownItem>
-                <DropdownItem>Health</DropdownItem>
-                <DropdownItem>Toys</DropdownItem>
-                <DropdownItem>Kids</DropdownItem>
-                <DropdownItem>Movies</DropdownItem>
-                <DropdownItem>Sports</DropdownItem>
-                <DropdownItem>Grocery</DropdownItem>
-                <DropdownItem>Outdoors</DropdownItem>
-                <DropdownItem>Clothing</DropdownItem>
-                <DropdownItem>Garden</DropdownItem>
-                <DropdownItem>Games</DropdownItem>
+              {/* {getCategoryDropdowns} */}
+                <DropdownItem><div onClick={userSearchCategory}>Home</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Electronics</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Beauty</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Shoes</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Tools</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Industrial</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Books</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Jewelery</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Automotive</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Health</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Toys</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Kids</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Movies</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Sports</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Grocery</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Outdoors</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Clothing</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Garden</div></DropdownItem>
+                <DropdownItem><div onClick={userSearchCategory}>Games</div></DropdownItem>
 
             </DropdownMenu>
             </Dropdown></div>

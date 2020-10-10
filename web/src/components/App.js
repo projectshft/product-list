@@ -33,7 +33,7 @@ class App extends React.Component {
   }
 }
 
-
+// TODO get rid of this?
 function mapStateToProps(state) {
   return {
      products: state.products

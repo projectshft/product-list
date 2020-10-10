@@ -33,8 +33,9 @@ const CatalogIndex = (props) => {
 
   const userSetPage = (changeEvent) => {
     console.log('Page changed to: ', changeEvent.currentTarget.textContent);
-    props.fetchProducts(changeEvent.currentTarget.value);
-    props.setCurrentPage(changeEvent.currentTarget.value);
+    props.setCurrentPage(changeEvent.currentTarget.textContent);
+    props.fetchProducts(changeEvent.currentTarget.textContent);
+    
   }
   
   const userFirstPage = () => {

@@ -15,6 +15,7 @@ class SearchFilterSort extends Component {
             sort: null
         }
         this.selectCategory = this.selectCategory.bind(this);
+        this.sortPrice = this.sortPrice.bind(this);
     }
 
     getProducts() {
@@ -26,6 +27,12 @@ class SearchFilterSort extends Component {
             this.getProducts()
         })
         
+    }
+
+    sortPrice (event) {
+        this.setState({sort: event.target.dataset.mssg}, () => {
+            this.getProducts()
+        })
     }
 
     render() {
@@ -56,9 +63,9 @@ class SearchFilterSort extends Component {
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                             Sort by Price
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item value={"highest"}>High-Low</Dropdown.Item>
-                            <Dropdown.Item value={"lowest"}>Low-High</Dropdown.Item>
+                        <Dropdown.Menu onClick={this.sortPrice}>
+                            <Dropdown.Item data-mssg='highest'>High-Low</Dropdown.Item>
+                            <Dropdown.Item data-mssg='lowest'>Low-High</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </form>

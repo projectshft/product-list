@@ -16,6 +16,8 @@ class SearchFilterSort extends Component {
         }
         this.selectCategory = this.selectCategory.bind(this);
         this.sortPrice = this.sortPrice.bind(this);
+        this.getSearch = this.getSearch.bind(this);
+        this.handleSearchChange = this.handleSearchChange.bind(this);
     }
 
     getProducts() {
@@ -29,12 +31,25 @@ class SearchFilterSort extends Component {
         
     }
 
-    sortPrice (event) {
+    sortPrice(event) {
         this.setState({sort: event.target.dataset.mssg}, () => {
             this.getProducts()
         })
     }
 
+    handleSearchChange(event) {
+        this.setState({search: event.target.value})
+        console.log(this.state.search)
+    }
+    getSearch(event) {
+        event.preventDefault();
+        if (event.keyCode === 13){
+            if(this.state.search === null) {
+                alert('Enter a specific item name')
+            }
+                this.getProducts();
+        }
+    }
     render() {
         return (
             <div>
@@ -43,8 +58,8 @@ class SearchFilterSort extends Component {
                         <h1>PRODUCTS</h1>
                     </div>
                 </div>
-                <form className="form-inline md-form mr-auto mb-4">
-                    <input id='search' className="form-control mr-sm-2" type="text" placeholder="Search for a product" aria-label="Search"></input>
+                <div className="form-inline md-form mr-auto mb-4">
+                    <input value={this.state.search || ''} onChange={this.handleSearchChange} onKeyUp={this.getSearch} className="form-control mr-sm-2" type="text" placeholder="Search for a product" aria-label="Search"></input>
                     <Dropdown id='category'>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                             Filter By Category
@@ -68,7 +83,7 @@ class SearchFilterSort extends Component {
                             <Dropdown.Item data-mssg='lowest'>Low-High</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                </form>
+                </div>
             </div>
         )
     }

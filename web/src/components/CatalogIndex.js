@@ -19,6 +19,12 @@ const CatalogIndex = (props) => {
   // console.log('total page count: ', pageCount)
   
   let pageCount = Math.ceil(props.products.count / 9);
+  
+  //edge case: if results of query result in less pages than current page number, start at 1
+  if (props.currentPage > pageCount) {
+    props.setCurrentPage(1);
+    props.fetchProducts(1, props.category, props.searchTerm, props.sortOrder);
+  }
 
   const printPageLinks =() => {
     let pagesLinks =[];
@@ -30,34 +36,34 @@ const CatalogIndex = (props) => {
     }
     return pagesLinks
   }
-
+//TODO set current page link color
   const userSetPage = (changeEvent) => {
     console.log('Page changed to: ', changeEvent.currentTarget.textContent);
     props.setCurrentPage(changeEvent.currentTarget.textContent);
-    props.fetchProducts(changeEvent.currentTarget.textContent);
+    props.fetchProducts(changeEvent.currentTarget.textContent, props.category, props.searchTerm, props.sortOrder);
     
   }
   
   const userFirstPage = () => {
     console.log('Page changed to: ', 1);
-    props.fetchProducts(1);
+    props.fetchProducts(1, props.category, props.searchTerm, props.sortOrder);
     props.setCurrentPage(1);
   }
   
   const userLastPage = () => {
-    props.fetchProducts(pageCount);
+    props.fetchProducts(pageCount, props.category, props.searchTerm, props.sortOrder);
     console.log('Page changed to: ', pageCount);
     props.setCurrentPage(pageCount);
   }
   
   const userNextPage = () => {
-    props.fetchProducts(props.currentPage + 1 >= pageCount ? pageCount : props.currentPage + 1);
+    props.fetchProducts(props.currentPage + 1 >= pageCount ? pageCount : props.currentPage + 1, props.category, props.searchTerm, props.sortOrder);
     console.log('Page changed to: ', props.currentPage + 1 >= pageCount ? pageCount : props.currentPage + 1);
     props.setCurrentPage(props.currentPage + 1 >= pageCount ? pageCount : props.currentPage + 1);
   }
 
   const userPrevPage = () => {
-    props.fetchProducts(props.currentPage -1 <= 1 ? 1 : props.currentPage - 1);
+    props.fetchProducts(props.currentPage -1 <= 1 ? 1 : props.currentPage - 1, props.category, props.searchTerm, props.sortOrder);
     console.log('Page changed to: ' , props.currentPage - 1 <= 1 ? 1 : props.currentPage - 1);
     props.setCurrentPage(props.currentPage - 1 <= 1 ? 1 : props.currentPage - 1);
   }
@@ -97,7 +103,10 @@ const CatalogIndex = (props) => {
 function mapStateToProps(state) { 
         return {
         products: state.products,
-        currentPage: state.currentPage
+        currentPage: state.currentPage,
+        sortOrder: state.sortOrder,
+        searchTerm: state.searchTerm,
+        category: state.category
 
       };
     }

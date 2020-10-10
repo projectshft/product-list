@@ -21,7 +21,8 @@ const SortHighLow =(props) => {
              sortPriority = 'None';
          }
 
-        props.fetchProducts(props.currentPage, null, null, sortPriority);
+        props.fetchProducts(props.currentPage, props.category, props.searchTerm, sortPriority);
+        props.setSortOrder(sortPriority);
       };
     
 // get state of categories from action
@@ -45,7 +46,9 @@ const SortHighLow =(props) => {
 
 function mapStateToProps(state) {
     return {
-        currentPage: state.currentPage
+        currentPage: state.currentPage,
+        searchTerm: state.searchTerm,
+        category: state.category
 
     };
   }

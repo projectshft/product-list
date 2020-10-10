@@ -2,13 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap";
-import { fetchProducts } from "../actions";
+import { fetchProducts, setSearchTerm } from "../actions";
 
 const SearchBox = (props) => {
   const userSearchTerms = (changeEvent) => {
     if (changeEvent.key === "Enter") {
       console.log("search term: ", changeEvent.target.value);
-      props.fetchProducts(null, null, changeEvent.target.value);
+      props.fetchProducts(props.currentPage, props.category, changeEvent.target.value, props.sortOrder);
+      props.setSearchTerm(changeEvent.target.value)
     }
   };
 
@@ -25,7 +26,9 @@ const SearchBox = (props) => {
 };
 function mapStateToProps(state) {
   return {
-    products: state.products,
+    currentPage: state.currentPage,
+    sortOrder: state.sortOrder,
+    category: state.category
   };
 }
 
@@ -33,6 +36,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       fetchProducts,
+      setSearchTerm
     },
     dispatch
   );

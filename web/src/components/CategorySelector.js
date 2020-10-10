@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { fetchProducts } from "../actions";
+import { fetchProducts, setCategory } from "../actions";
 const CategorySelector =(props) => {
     
       const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -11,7 +11,8 @@ const CategorySelector =(props) => {
     
       const userSearchCategory = (changeEvent) => {
           console.log('Category changed to: ', changeEvent.currentTarget.textContent);
-          props.fetchProducts(null, changeEvent.currentTarget.textContent);
+          props.fetchProducts(props.currentPage, changeEvent.currentTarget.textContent, props.searchTerm, props.sortOrder);
+          props.setCategory(changeEvent.currentTarget.textContent)
         };
 
    /*      const getCategoryDropdowns =() => {
@@ -64,7 +65,10 @@ const CategorySelector =(props) => {
 
     function mapStateToProps(state) {
       return {
-        products: state.products,
+        currentPage: state.currentPage,
+        sortOrder: state.sortOrder,
+        searchTerm: state.searchTerm
+
       };
     }
     
@@ -72,6 +76,7 @@ const CategorySelector =(props) => {
       return bindActionCreators(
         {
           fetchProducts,
+          setCategory
         },
         dispatch
       );

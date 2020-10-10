@@ -4,6 +4,8 @@ import axios from 'axios';
 export const FETCH_PRODUCTS = 'fetch_products';
 export const SET_CURRENT_PAGE = 'set_current_page';
 export const SET_SORT_ORDER = 'set_sort_order';
+export const SET_SEARCH_TERM = 'set_search_term';
+export const SET_CATEGORY = 'set_category';
 
 const ROOT_URL = 'http://localhost:8000/products?';
 
@@ -47,6 +49,20 @@ export function setSortOrder(order) {
   return {
     type: SET_SORT_ORDER,
     payload: order
+  }
+}
+
+export function setSearchTerm(term) {
+  return {
+    type: SET_SEARCH_TERM,
+    payload: term
+  }
+}
+
+export function setCategory(category) {
+  return {
+    type: SET_CATEGORY,
+    payload: category
   }
 }
 

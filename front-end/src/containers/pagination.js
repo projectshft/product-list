@@ -39,7 +39,7 @@ class Pagination extends Component {
             // page 1 is loaded on default
             // page numbers shown should decrease as the number of products decrease when searching by
             // a specific product name or sorting by category 
-            <div className = 'footer'>
+            <div className = 'footer offset-3'>
                 
                 <ul className='pagination'>
                     {pageNumbers.map(number => (

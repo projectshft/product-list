@@ -1,18 +1,29 @@
-.product {
+/* .product {
     border-style: solid;
     display: inline-block;
 }
 
 .category, .name {
     display: inline
-}
+} */
 
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.products {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .product-card {
+    padding: 1%;
+    flex-grow: 1;
+    flex-basis: 33%;
   }
 
   #category {
-      margin-right: 25%;
+    margin-right: 50%;
+} 
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
   }

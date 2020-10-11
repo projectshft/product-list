@@ -19,13 +19,24 @@ class ProductList extends Component {
     renderProducts(){
         //console.log(this.props.products.products)
          let products =this.props.products.products.map(product => {
-            return (
-                <div className= 'col-4 product' key={product._id}>
-                    <div className='col-2 category'>Category: {product.category}</div>
-                    <div className='col-2 price'>${product.price}</div>
-                    <img className='col-2 image' src={product.image}></img>
-                    <div className='col-2 name'>{product.name}</div>
+            return (      
+                <div className='product-card' key={product._id}>
+                    <div className='product-image'>
+                        <img src={product.image}></img>
+                    </div>
+                    <div className='product-info'>
+                        <h5>Category: {product.category}</h5>
+                        <h5>{product.name}</h5>
+                        <h6>${product.price}</h6>
+                    </div>             
                 </div>
+            
+                // <div className= 'col-4 product' key={product._id}>
+                //     <div className='col-2 category'>Category: {product.category}</div>
+                //     <div className='col-2 price'>${product.price}</div>
+                //     <img className='col-2 image' src={product.image}></img>
+                //     <div className='col-2 name'>{product.name}</div>
+                // </div>
             )
         });
         return products;
@@ -34,7 +45,7 @@ class ProductList extends Component {
         
         return (
         
-                <div className='row-container'>
+                <div className='products'>
                     {this.renderProducts()}
                 </div>
         

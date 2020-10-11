@@ -16,6 +16,9 @@ export function fetchProducts(params) {
     if (params !== undefined) {
         if (params.page) {
             const page = params.page;
+            // if(QUERY.includes(`page`)){
+            //     QUERY
+            // }
             QUERY = QUERY + `&page=${page}`;
         }
         if(params.search){

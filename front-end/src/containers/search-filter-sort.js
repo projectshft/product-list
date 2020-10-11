@@ -27,6 +27,7 @@ class SearchFilterSort extends Component {
     selectCategory (event) {
         this.setState({category: event.target.dataset.mssg}, () => {
             this.getProducts()
+            this.setState({category: null})
         })
         
     }
@@ -34,6 +35,7 @@ class SearchFilterSort extends Component {
     sortPrice(event) {
         this.setState({sort: event.target.dataset.mssg}, () => {
             this.getProducts()
+            this.setState({sort: null})
         })
     }
 
@@ -48,6 +50,7 @@ class SearchFilterSort extends Component {
                 alert('Enter a specific item name')
             }
                 this.getProducts();
+                this.setState({search: null})
         }
     }
     render() {

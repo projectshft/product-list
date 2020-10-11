@@ -9,7 +9,7 @@ class Pagination extends Component {
         super()
 
         this.state = {
-            page: 1
+            page: null
         }
         this.selectPage = this.selectPage.bind(this);
     }
@@ -20,6 +20,7 @@ class Pagination extends Component {
     selectPage (event) {
         this.setState({page: event.target.value}, () => {
             this.getProducts()
+            // this.setState({page: null})
         })
         
     }

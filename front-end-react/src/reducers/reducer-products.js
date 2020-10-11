@@ -1,7 +1,6 @@
 import { FETCH_PRODUCTS } from "../actions/index";
 
 export default function (state = { count: 0, list: [] }, action) {
-  console.log('in fetch reducer & state list = ' + state);
   switch (action.type) {
     case FETCH_PRODUCTS:
       return action.payload.data.products
@@ -9,6 +8,9 @@ export default function (state = { count: 0, list: [] }, action) {
       return state;
   }
 }
+
+//DOMAIN STATE = {count: 0, list: []}
+//APP STATE = {search: '', category: '', sort: ''}
 
 //DOMAIN STATE: all of the products retrieved from the server
 //APP STATE: category 'tools' is selected, sort 'lowest' is selected

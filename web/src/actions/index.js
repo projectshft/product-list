@@ -66,4 +66,18 @@ export function setCategory(category) {
   }
 }
 
+export function getCategories(page, category, search, sort) {
+  console.log('In actions index.js getCategories()');
+
+  const request = axios.get(
+    `${ROOT_URL}/categories`
+  );
+  //returns obj with _id: null and categories: []
+console.log('got', request.categories);
+  return {
+    type: GET_CATEGORIES,
+    payload: request
+  };
+}
+
 //sends to reducers

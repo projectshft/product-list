@@ -1,27 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../actions/index';
 
 class CategoryDropdown extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { category: '' };
-
-    this.change = this.change.bind(this);
-  }
-
-  change(event) {
-    //setState is async. Use second parameter function that runs after state is set
-    this.setState({ category: event.target.value }, function () {
-      console.log(
-        'in cat container & this.state.category: ' + this.state.category
-      );
-      this.props.fetchProducts('', this.state.category, '', '');
-      });
-  }
-
+  
   render() {
     return (
       <span>
@@ -29,8 +9,8 @@ class CategoryDropdown extends Component {
           id='dropdowncategories'
           className='select-category'
           placeholder='Select category'
-          value={this.state.category}
-          onChange={this.change}>
+          value={this.props.category}
+          onChange={this.props.setCategory}>
           <option defaultValue>Select a category</option>
           <option value='Baby'>Baby</option>
           <option value='Beauty'>Beauty</option>
@@ -58,8 +38,5 @@ class CategoryDropdown extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchProducts }, dispatch);
-}
 
-export default connect(null, mapDispatchToProps)(CategoryDropdown);
+export default CategoryDropdown;

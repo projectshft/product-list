@@ -5,6 +5,14 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'; //a convention to add a line lik
 const ROOT_URL = 'http://localhost:8000/products';
 let request = '';
 
+// export function setCategory(category) {
+//   request = axios.get(`${ROOT_URL}?category=${category})
+// }
+
+// export function setSearch(search) {
+
+// }
+
 export function fetchProducts(search, category, sort, page) {
   request = axios.get(`${ROOT_URL}?search=${search}&category=${category}&sort=${sort}&page=${page}`); //a promise
   return {

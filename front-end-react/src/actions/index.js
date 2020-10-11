@@ -14,4 +14,3 @@ export function fetchProducts(search, category, sort, page) {
     payload: request, //api call
   };
 }
-

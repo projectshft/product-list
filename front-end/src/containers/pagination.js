@@ -9,7 +9,7 @@ class Pagination extends Component {
         super()
 
         this.state = {
-            page: null
+            page: 1
         }
         this.selectPage = this.selectPage.bind(this);
     }

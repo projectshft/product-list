@@ -16,21 +16,38 @@ export function fetchProducts(params) {
     if (params !== undefined) {
         if (params.page) {
             const page = params.page;
-            // if(QUERY.includes(`page`)){
-            //     QUERY
+            console.log('Page is ' + page);
+            // if(QUERY.includes('&page=')){
+            //     QUERY = QUERY.replace('&page=', '')
+            //     QUERY = QUERY.replace(/\d+/g, '')
+            //     console.log(`old query is:` + QUERY)
             // }
             QUERY = QUERY + `&page=${page}`;
         }
         if(params.search){
             const search = params.search;
+            // if(QUERY.includes('&search=')){
+            //     QUERY = QUERY.replace('&search=', '')
+            //     console.log(`old query is:` + QUERY)
+            // }
             QUERY = QUERY + `&search=${search}`;
         }
         if(params.category){
             const category = params.category;
+            // if(QUERY.includes('&category=')){
+            //     QUERY = QUERY.replace('&category=', '')
+            //     console.log(`old query is:` + QUERY)
+            // }
             QUERY = QUERY + `&category=${category}`;
         }
         if(params.sort){
             const sort = params.sort;
+            // if(QUERY.includes('&price=')){
+            //     QUERY = QUERY.replace('&price=', '')
+            //     QUERY = QUERY.replace('highest', '')
+            //     QUERY = QUERY.replace('lowest', '')
+            //     console.log(`old query is:` + QUERY)
+            // }
             QUERY = QUERY + `&price=${sort}`;
         }
     }

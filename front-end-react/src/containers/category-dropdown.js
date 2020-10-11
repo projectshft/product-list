@@ -19,14 +19,14 @@ class CategoryDropdown extends Component {
         'in cat container & this.state.category: ' + this.state.category
       );
       this.props.fetchProducts('', this.state.category, '', '');
-    });
+      });
   }
 
   render() {
     return (
       <span>
         <select
-          id='categories'
+          id='dropdowncategories'
           className='select-category'
           placeholder='Select category'
           value={this.state.category}

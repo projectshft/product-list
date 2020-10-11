@@ -14,18 +14,24 @@ code {
 
 h2 {
   text-align: center;
+  padding: 20px;
 }
 
-.search {
-  margin-left: 110px;
+#searchbox {
+  margin-left: 0px;
 }
 
-.select-category {
-  margin-left: 500px;
+#dropdowncategory {
+  margin-left: 0px;
+  font-size: 10px;
 }
 
-.select-sort-order {
-  margin-left: 830px;
+#dropdownsortandrefresh {
+  margin-left: 0px;
+}
+
+.btn-refresh {
+  margin-left: 20px;
 }
 
 .product-grid {
@@ -40,11 +46,11 @@ h2 {
 
 .category {
   font-size: 10px;
-  margin-left: 95px;
+  margin-left: 90px;
 }
 
 .price {
-  margin-left: 35px;
+  margin-left: 45px;
 }
 
 .pagination {

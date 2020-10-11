@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Pagination from "react-js-pagination";
+import Pagination from 'react-js-pagination';
 import { fetchProducts } from '../actions';
 
 
@@ -12,23 +12,21 @@ class ProductList extends Component {
     this.state = { page: 1, count: 0, list: [] };
 
     this.handlePageChange = this.handlePageChange.bind(this);
-
   }
 
   componentDidMount() {
-    this.props.fetchProducts();
+    this.props.fetchProducts('', '', '', '');
   }
 
   handlePageChange(pageNumber) {
     this.setState({ page: pageNumber }, function () {
       this.props.fetchProducts('', '', '', this.state.page);
-      console.log("this.state.page: " + this.state.page);
-
+      console.log('this.state.page: ' + this.state.page);
     });
   }
 
   render() {
-    console.log('rendering product list!')
+    console.log('rendering product list!');
     return (
       <div className='container'>
         <div className='row product-grid'>
@@ -48,23 +46,26 @@ class ProductList extends Component {
           ))}
         </div>
         <div id='pagination'>
-          <Pagination            
-          activePage={this.state.page}
-          itemsCountPerPage={9}
-          totalItemsCount={this.props.products.count}
-          pageRangeDisplayed={5}
-          onChange={this.handlePageChange.bind(this)}
+          <Pagination
+            activePage={this.state.page}
+            itemsCountPerPage={9}
+            //TO UNDERSTAND: {this.props.products.list.length} shows 
+            //correct # producst but does not not implement correct # pages. WHY?
+            totalItemsCount={this.props.products.count}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange.bind(this)}
           />
-          <div className='product-count'>Total products: {this.props.products.count}</div>
+          <div className='product-count'>
+            Total products: {this.props.products.count}
+          </div>
+        </div>
       </div>
-      </div>
-      
     );
   }
 }
 
 //these come back as data.products.list
-function mapStateToProps({ products}) {
+function mapStateToProps({ products }) {
   return { products };
 }
 

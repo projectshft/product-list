@@ -10,12 +10,13 @@ class SearchBar extends Component {
     this.state = { search: '' };
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onBtnClick = this.onBtnClick.bind(this);
   }
 
   onInputChange(event) {
-    console.log("search term: " + event.target.value);
+    console.log('search term: ' + event.target.value);
     this.setState({ search: event.target.value });
-    console.log("this.state.search: " + this.state.search);
+    console.log('this.state.search: ' + this.state.search);
   }
 
   onFormSubmit(event) {
@@ -24,28 +25,31 @@ class SearchBar extends Component {
     this.setState({ search: '' });
   }
 
+  onBtnClick() {
+    this.props.fetchProducts('', '', '', '');
+    //HOW TO return dropdowns to their default values?
+  }
+
   render() {
     return (
-          <form
-            onSubmit={this.onFormSubmit}
-            className='input-group form-inline search'>
-            <span className='input-group-btn'>
-              <button type='submit' className='btn btn-secondary btn-sm'>
-                Submit
-              </button>
-            </span>
-            <input
-              className='form-control-sm'
-              placeholder='Search for products'
-              value={this.state.search}
-              onChange={this.onInputChange}
-            />
-          </form>
+      <span className='row' id='searchbox'>
+        <form
+          onSubmit={this.onFormSubmit}
+          className='input-group form-inline search'>
+          <button type='submit' className='btn btn-secondary btn-sm'>
+            Submit
+          </button>
+          <input
+            className='form-control-sm'
+            placeholder='Search for products'
+            value={this.state.search}
+            onChange={this.onInputChange}
+          />
+        </form>
+      </span>
     );
   }
 }
-
-
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchProducts }, dispatch);

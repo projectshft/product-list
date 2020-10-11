@@ -17,37 +17,39 @@ export function fetchProducts(params) {
         if (params.page) {
             const page = params.page;
             console.log('Page is ' + page);
-            // if(QUERY.includes('&page=')){
-            //     QUERY = QUERY.replace('&page=', '')
-            //     QUERY = QUERY.replace(/\d+/g, '')
-            //     console.log(`old query is:` + QUERY)
-            // }
+            if(QUERY.includes('&page=')){
+                QUERY = QUERY.replace('&page=', '')
+                //remove the page number variable from the query string
+                QUERY = QUERY.replace(/\d+/g, '')
+                console.log(`old query is:` + QUERY)
+            }
             QUERY = QUERY + `&page=${page}`;
         }
         if(params.search){
             const search = params.search;
-            // if(QUERY.includes('&search=')){
-            //     QUERY = QUERY.replace('&search=', '')
-            //     console.log(`old query is:` + QUERY)
-            // }
+            if(QUERY.includes('&search=')){
+                QUERY = QUERY.split('?')[0]
+                QUERY = '?' + QUERY
+                console.log(`old query is:` + QUERY)
+            }
             QUERY = QUERY + `&search=${search}`;
         }
         if(params.category){
             const category = params.category;
-            // if(QUERY.includes('&category=')){
-            //     QUERY = QUERY.replace('&category=', '')
-            //     console.log(`old query is:` + QUERY)
-            // }
+            if(QUERY.includes('&category=')){
+                QUERY = QUERY.split('?')[0]
+                QUERY = '?' + QUERY
+                console.log(`old query is:` + QUERY)
+            }
             QUERY = QUERY + `&category=${category}`;
         }
         if(params.sort){
             const sort = params.sort;
-            // if(QUERY.includes('&price=')){
-            //     QUERY = QUERY.replace('&price=', '')
-            //     QUERY = QUERY.replace('highest', '')
-            //     QUERY = QUERY.replace('lowest', '')
-            //     console.log(`old query is:` + QUERY)
-            // }
+            if(QUERY.includes('&price=')){
+                QUERY = QUERY.replace('&price=highest', '')
+                QUERY = QUERY.replace('&price=lowest', '')
+                console.log(`old query is:` + QUERY)
+            }
             QUERY = QUERY + `&price=${sort}`;
         }
     }

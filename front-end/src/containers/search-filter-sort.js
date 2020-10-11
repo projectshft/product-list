@@ -65,7 +65,7 @@ class SearchFilterSort extends Component {
                     <input value={this.state.search || ''} onChange={this.handleSearchChange} onKeyUp={this.getSearch} className="form-control mr-sm-2" type="text" placeholder="Search for a product" aria-label="Search"></input>
                     <Dropdown id='category'>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            Filter By Category
+                            Filter by Category
                         </Dropdown.Toggle>
                         <Dropdown.Menu onClick={this.selectCategory}>
                             <Dropdown.Item data-mssg='Games'>Games</Dropdown.Item>

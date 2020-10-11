@@ -19,7 +19,7 @@ class SearchFilterSort extends Component {
         this.getSearch = this.getSearch.bind(this);
         this.handleSearchChange = this.handleSearchChange.bind(this);
     }
-
+    // helper function for fetch products
     getProducts() {
         this.props.fetchProducts(this.state)
     }
@@ -61,7 +61,7 @@ class SearchFilterSort extends Component {
                         <h1>PRODUCTS</h1>
                     </div>
                 </div>
-                <div className="form-inline md-form mr-auto mb-4">
+                <div className="form-inline md-form">
                     <input value={this.state.search || ''} onChange={this.handleSearchChange} onKeyUp={this.getSearch} className="form-control mr-sm-2" type="text" placeholder="Search for a product" aria-label="Search"></input>
                     <Dropdown id='category'>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">

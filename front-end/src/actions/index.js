@@ -5,7 +5,6 @@ export const FETCH_PRODUCTS = 'fetch_products';
 const ROOT_URL = 'http://localhost:8000/products';
 let QUERY = '?';
 
-// QUERY = QUERY + '1&category=Music&search=fantastic'
 // initial fetch posts, should load the first 9 products on page load
 export function fetchProducts(params) {
 

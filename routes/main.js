@@ -108,10 +108,7 @@ router.get('/products', (request, response, next) => {
     Product.find({ category: request.query.category })
       .count()
       .exec((error, countOfProdInCategory) => {
-        if (error) {
-          return error;
-        }
-        const prodCatCount = countOfProdInCategory;
+        if (error) return next(error);
 
         if (!request.query.sort) {
           Product.find({ category: request.query.category })
@@ -120,7 +117,7 @@ router.get('/products', (request, response, next) => {
             .exec((error, listOfProdInCategoryUnsorted) => {
               if (error) return next(error);
               const productCatResultsUnsorted = {
-                count: prodCatCount,
+                count: countOfProdInCategory,
                 list: listOfProdInCategoryUnsorted,
               };
               response.send({
@@ -215,7 +212,6 @@ router.get('/products', (request, response, next) => {
       });
   }
 });
-
 //GET Product by productId: successful
 router.get('/products/:productId', (request, response, next) => {
   //if the productId is invalid, deliver a Bad Request error

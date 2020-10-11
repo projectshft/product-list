@@ -11,14 +11,13 @@ class ProductList extends Component {
     super(props);
     this.state = { page: 1, count: 0, list: [] };
 
-    this.handlePageChange = this.handlePageChange.bind(this);
-  }
+ }
 
   componentDidMount() {
-    this.props.fetchProducts('', '', '', '');
+    this.props.fetchProducts('', '', '','');
   }
 
-  handlePageChange(pageNumber) {
+  handlePageChange = (pageNumber) => {
     this.setState({ page: pageNumber }, function () {
       this.props.fetchProducts('', '', '', this.state.page);
       console.log('this.state.page: ' + this.state.page);

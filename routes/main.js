@@ -142,6 +142,7 @@ router.get('/categories', (req, res, next) => {
       if (err) {
         console.log(err)
       } else {
+        console.log('Got categories')
         console.log(JSON.stringify(categories))
         res.send(JSON.stringify(categories))
       }

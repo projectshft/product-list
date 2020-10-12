@@ -5,18 +5,6 @@ import { bindActionCreators } from "redux";
 import { setCurrentPage, fetchProducts } from "../actions";
 
 const CatalogIndex = (props) => {
-
-// class CatalogIndex extends React.Component {
-  // constructor(props) {
-    //  super(props);
-    //  this.state = {
-    //    products: this.state.products,
-    //    pageCount: Math.ceil(props.products.count / 9),
-    //    currentPage: this.state.currentPage
-    // }
-  // this.userFirstPage = this.userFirstPage.bind(this)}
-  // let pageCount = Math.ceil(props.products.count / 9)
-  // console.log('total page count: ', pageCount)
   
   let pageCount = Math.ceil(props.products.count / 9);
   

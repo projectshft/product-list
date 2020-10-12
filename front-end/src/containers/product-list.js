@@ -5,11 +5,6 @@ import { fetchProducts } from '../actions'
 
 
 // holds the 9 or fewer current products on our main display set by
-// the search-filter-sort field
-// let setPage = 1;
-// let searchTerm = '&search=tasty';
-// let setCategory ='&category=Garden';
-// let sortChoice = '&price=highest';
 class ProductList extends Component {
     //pass in API call as props
     componentDidMount(){
@@ -30,13 +25,6 @@ class ProductList extends Component {
                         <h6>${product.price}</h6>
                     </div>             
                 </div>
-            
-                // <div className= 'col-4 product' key={product._id}>
-                //     <div className='col-2 category'>Category: {product.category}</div>
-                //     <div className='col-2 price'>${product.price}</div>
-                //     <img className='col-2 image' src={product.image}></img>
-                //     <div className='col-2 name'>{product.name}</div>
-                // </div>
             )
         });
         return products;

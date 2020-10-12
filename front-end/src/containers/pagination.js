@@ -33,12 +33,6 @@ class Pagination extends Component {
             // console.log(pageNumbers);
         }
         return (
-
-            // 9 products should return max per page, 91 products are in the db
-            // 91/9 = 10.11 or 11 pages should be shown be default when page loads
-            // page 1 is loaded on default
-            // page numbers shown should decrease as the number of products decrease when searching by
-            // a specific product name or sorting by category 
             <div className = 'footer offset-2'>
                 
                 <ul className='pagination'>

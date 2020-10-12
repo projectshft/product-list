@@ -75,6 +75,12 @@ class SearchFilterSort extends Component {
                             <Dropdown.Item data-mssg='Outdoors'>Outdoors</Dropdown.Item>
                             <Dropdown.Item data-mssg='Music'>Music</Dropdown.Item>
                             <Dropdown.Item data-mssg='Electronics'>Electronics</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Shoes'>Shoes</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Garden'>Garden</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Grocery'>Grocery</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Kids'>Kids</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Automotive'>Automotive</Dropdown.Item>
+                            <Dropdown.Item data-mssg='Jewelery'>Jewelery</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown id='sort'>

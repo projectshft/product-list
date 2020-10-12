@@ -8,8 +8,13 @@ const SearchBox = (props) => {
   const userSearchTerms = (changeEvent) => {
     if (changeEvent.key === "Enter") {
       console.log("search term: ", changeEvent.target.value);
-      props.fetchProducts(props.currentPage, props.category, changeEvent.target.value, props.sortOrder);
-      props.setSearchTerm(changeEvent.target.value)
+      props.fetchProducts(
+        props.currentPage,
+        props.category,
+        changeEvent.target.value,
+        props.sortOrder
+      );
+      props.setSearchTerm(changeEvent.target.value);
     }
   };
 
@@ -28,7 +33,7 @@ function mapStateToProps(state) {
   return {
     currentPage: state.currentPage,
     sortOrder: state.sortOrder,
-    category: state.category
+    category: state.category,
   };
 }
 

@@ -1,24 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../actions'
-import {
-  Card,
-  CardImg,
-  CardBody,
-  Col,
-  Container,
-  Row,
-} from 'reactstrap';
+import { Card,  CardImg,  CardBody,  Col,  Container,  Row } from 'reactstrap';
+
 class Catalog extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      aTest: "just a test"
-    }
-  
-    }
 
       render() {
       console.log('catalog props.products ',this.props.products)
@@ -53,9 +38,8 @@ class Catalog extends Component {
 };
 };
 function mapStateToProps(state) {
-  return { products: state.products }
+  return { 
+    products: state.products 
+    }
 };
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchProducts });
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Catalog);
+export default connect(mapStateToProps)(Catalog);

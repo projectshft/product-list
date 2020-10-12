@@ -25,3 +25,16 @@ router.get('/newroute', (req, res, next) => {
 // {"_id":{"$oid":"5f7616c77b108078742fc9cf"},"category":"Kids","name":"Intelligent Fresh Chair","price":660,"image":"https://via.placeholder.com/250?text=Product+Image","__v":0}
 // {"_id":{"$oid":"5f7616c77b108078742fc9b7"},"category":"Clothing","name":"Practical Fresh Ball","price":22,"image":"https://via.placeholder.com/250?text=Product+Image","__v":0}
 // {"_id":{"$oid":"5f7616c77b108078742fc9bc"},"category":"Health","name":"Handmade Fresh Soap","price":543,"image":"https://via.placeholder.com/250?text=Product+Image","__v":0}
+
+
+
+  //  const getCategoryDropdowns =() => {
+  //     let categoryCount = props.categories.length;
+  //     let categoryDropdowns =[];
+  //     //could also map with an index
+  //     for (let p = 0; p < categoryCount; p++){
+  //       let dropdownLinkItem = '<DropdownItem key=' + p + '><div onClick={userSearchCategory}>' + props.categories[p] + '</div></DropdownItem>';
+  //       categoryDropdowns.push(dropdownLinkItem);
+  //     }
+  //     return categoryDropdowns;
+  //   }

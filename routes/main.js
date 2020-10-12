@@ -1,5 +1,4 @@
 const router = require('express').Router()
-// const bodyParser = require('body-parser')
 const faker = require('faker')
 const Product = require('../models/product')
 const Review = require('../models/review')

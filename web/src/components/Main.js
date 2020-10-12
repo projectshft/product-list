@@ -1,8 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../actions';
-// import Album from './Album';
 import Catalog from './Catalog';
 import CategorySelector from './CategorySelector'
 import SortHighLow from './SortHighLow'
@@ -39,18 +35,5 @@ const Main = props  => {
         </main>
     );
 };
-
-
-function mapStateToProps(state) {
-    return {
-     products: state.products
-    };
-  }
-
-
-  function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchProducts }, dispatch);
-  }
   
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(Main); 
+  export default Main; 

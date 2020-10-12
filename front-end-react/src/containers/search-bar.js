@@ -13,7 +13,7 @@ class SearchBar extends Component {
           </button>
           <input
             className='form-control-sm'
-            placeholder='Search for products'
+            placeholder='Search (Cap First Letter)'
             value={this.props.search}
             onChange={this.props.onSearchInputChange}
           />

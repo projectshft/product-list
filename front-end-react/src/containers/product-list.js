@@ -9,18 +9,18 @@ import { fetchProducts } from '../actions';
 class ProductList extends Component {
   constructor(props) {
     super(props);
-    this.state = { page: 1, count: 0, list: [] };
-
- }
-
+  
+    //this.props.products.list { list = [] } passed from app.js
+    this.state = { count: 0};
+  }
   componentDidMount() {
     this.props.fetchProducts('', '', '','');
   }
 
   handlePageChange = (pageNumber) => {
     this.setState({ page: pageNumber }, function () {
-      this.props.fetchProducts('', '', '', this.state.page);
-      console.log('this.state.page: ' + this.state.page);
+      this.props.fetchProducts('', '', '', this.props.page);
+      console.log('this.state.page: ' + this.props.page);
     });
   }
 
@@ -46,7 +46,7 @@ class ProductList extends Component {
         </div>
         <div id='pagination'>
           <Pagination
-            activePage={this.state.page}
+            activePage={this.props.page}
             itemsCountPerPage={9}
             //TO UNDERSTAND: {this.props.products.list.length} shows 
             //correct # producst but does not not implement correct # pages. WHY?
@@ -63,7 +63,7 @@ class ProductList extends Component {
   }
 }
 
-//these come back as data.products.list
+//these come back as data.products
 function mapStateToProps({ products }) {
   return { products };
 }

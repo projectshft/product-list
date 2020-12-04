@@ -7,11 +7,11 @@ import '../CSS/App.css'
 const App = () => {
   return (
     <div>
-      <div className='col-md-10 offset-1'>
-<SearchFilterSort></SearchFilterSort>
-<ProductList></ProductList>
-<Pagination></Pagination>
-      </div>
+        <SearchFilterSort></SearchFilterSort>
+        <ProductList></ProductList>
+        <div  className='col-md-12 offset-2'>
+        <Pagination></Pagination>    
+        </div>
     </div>
   );
 }

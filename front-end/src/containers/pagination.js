@@ -33,7 +33,7 @@ class Pagination extends Component {
             // console.log(pageNumbers);
         }
         return (
-            <div className = 'footer offset-2'>
+            <div className='footer'>
                 
                 <ul className='pagination'>
                     {pageNumbers.map(number => (

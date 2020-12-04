@@ -1,6 +1,7 @@
 .products {
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 20px;
   }
   
   .product-card {
@@ -14,9 +15,8 @@
 } 
 
   .footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    bottom: -15px;
+    position:fixed;
   }
   body {
     background-image: url(old_moon.png)

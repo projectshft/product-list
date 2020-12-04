@@ -12,7 +12,9 @@ const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
+  <div className= 'col-md-9 offset-2'>
     <App />
+  </div>
   </Provider>,
   document.getElementById('root')
 );

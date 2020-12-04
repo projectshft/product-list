@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 
-mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true})
+mongoose.connect('mongodb://localhost/products', {useNewUrlParser: true, useUnifiedTopology: true})
 
 const app = express()
 

@@ -5,13 +5,22 @@ const { Product, Review } = require("../models/product");
 // GET /products?page=# --- Returns: products w/ pagination
 router.get('/products', (req, res) => {
   const page = req.query.page || 1
+  const category = req.query.category || null
   const perPage = 9
   const skipNum = ((page * perPage) - perPage);
-  
-  Product.find({}).skip(skipNum).limit(perPage).exec(function (err, products) {
-    if (err) return console.log(err);
-    res.send(products)
-  });
+
+  if (category !== null) { //sort by categories if present in query
+    Product.find({ category: category}).skip(skipNum).limit(perPage).exec(function (err, products) {
+      if (err) return console.log(err);
+      res.send(products);
+    });
+
+  } else { //otherwise return all products paginated
+    Product.find({}).skip(skipNum).limit(perPage).exec(function (err, products) {
+      if (err) return console.log(err);
+      res.send(products);
+    });
+  };
 });
 
 // GET: /products/:product --- Returns a specific product by its id

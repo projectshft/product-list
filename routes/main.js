@@ -7,12 +7,19 @@ router.get('/products', (req, res) => {
   const page = req.query.page || 1
   const category = req.query.category || null;
   const sort = req.query.sort || null;
+  const query = req.query.query || null;
   const perPage = 9
   const skipNum = ((page * perPage) - perPage);
   let filterObject = {};
   let sortObject = {};
 
+  if (query) {
+    const regex = new RegExp(query, 'i')
+    filterObject.name = {$regex: regex};
+  }
+
   if (category) filterObject.category = category; //filter by category
+
   if (sort == 'highest') sortObject.price = -1; //sort by price high
   if (sort == 'lowest') sortObject.price = 1; //sort by price low
 

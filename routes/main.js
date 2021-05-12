@@ -7,12 +7,28 @@ router.get("/products", (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
 
-  if (req.query.category && req.query.price == 'lowest') {
-    console.log(req.query.category);
-    console.log(req.query.price);
+  if (req.query.price) {
+    let query = {};
+    if (req.query.category) {
+      query['category'] = req.query.category
+    }
+
+    if (req.query.query) {
+      query['name'] = req.query.query
+    }
+
+    let sort = {};
+    if (req.query.price == 'highest') {
+      sort['desc'] = req.query.price
+    }
+    if (req.query.price == 'lowest') {
+      sort['asc'] = req.query.price;
+    };
+    console.log(sort);
+
     Product
-      .find({ category: { $eq: req.query.category } })
-      .sort({ price: 1 })
+      .find(query)
+      .sort({ price: Object.keys(sort) })
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec((err, products) => {
@@ -24,12 +40,18 @@ router.get("/products", (req, res, next) => {
       });
   }
 
-  if (req.query.category && req.query.price == 'highest') {
-    console.log(req.query.category);
-    console.log(req.query.price);
+  if (!req.query.price) {
+    let query = {};
+    if (req.query.category) {
+      query['category'] = req.query.category
+    }
+
+    if (req.query.query) {
+      query['name'] = req.query.query
+    }
+
     Product
-      .find({ category: { $eq: req.query.category } })
-      .sort({ price: -1 })
+      .find(query)
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec((err, products) => {
@@ -40,21 +62,6 @@ router.get("/products", (req, res, next) => {
         });
       });
   }
-
-  else {
-    Product
-      .find({})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        Product.count().exec((err, count) => {
-          if (err) return next(err);
-
-          res.send(products);
-        });
-      });
-  }
-
 });
 
 router.get("/products/:product", (req, res) => {

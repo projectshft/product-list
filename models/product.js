@@ -7,7 +7,7 @@ const reviewSchema = new Schema({
   product: { type: Schema.Types.ObjectId, ref: "product" },
 });
 
-const Review = mongoose.model("reviews", reviewSchema);
+const Review = mongoose.model("review", reviewSchema);
 
 const productSchema = new Schema({
   category: String,

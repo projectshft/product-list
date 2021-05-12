@@ -2,7 +2,7 @@ const router = require("express").Router();
 const faker = require("faker");
 const { Product, Review } = require("../models/product");
 
-//gets products w/ pagination
+//GET /products?page=#: Returns products w/ pagination
 router.get('/products', (req, res) => {
   const page = req.query.page || 1
   const perPage = 9
@@ -14,7 +14,22 @@ router.get('/products', (req, res) => {
   });
 });
 
+//GET /products/:product: Returns a specific product by its id
+//sampple route for testing: /products/609c0adf8ed5031bdbd78373
+router.get('/products/:product', (req, res) => {
+  const productId = req.params.product
 
+  Product.findById(productId).exec(function (err, product) {
+    if (err) return console.log(err);
+    res.send(product)
+  });
+});
+
+
+
+
+
+//
 /* 
 GET /products/:product: Returns a specific product by its id
 

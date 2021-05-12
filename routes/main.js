@@ -80,18 +80,24 @@ router.post('/products/:product/reviews', (req, res) => {
   });
 });
 
+// DELETE /products/:product --- Deletes a product by id
+router.delete('/products/:product', (req, res) => {
+  const productId = req.params.product;
+ 
+  Product.findById(productId).exec(function (err, product) {   //find the product
+    if (err) return console.log(err);
+
+    product.remove((err) => { //delete the product
+      if (err) throw err;
+      res.send('Success')
+    });
+  });
+});
+
+// DELETE /reviews/:review: Deletes a review by id
+
+
 module.exports = router;
-
-
-/*
-TODO:
-
-POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
-
-DELETE /products/:product: Deletes a product by id
-
-DELETE /reviews/:review: Deletes a review by id
-*/
 
 
 /*****************************Testing*****************************

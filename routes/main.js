@@ -60,13 +60,31 @@ router.post('/products/', (req, res) => {
   });
 });
 
+// POST /products/:product/reviews --- Creates new review in the db, adds to existing product
+router.post('/products/:product/reviews', (req, res) => {
+  const productId = req.params.product;
+  const { userName, text } = req.body;
+
+  Product.findById(productId).exec(function (err, product) {   //find the product
+    if (err) return console.log(err);
+
+    const newReview = new Review({ //create the new review
+      userName: userName || null,
+      text: text || null,
+      product: product._id
+    });
+
+    newReview.save(); //save to db
+    product.reviews.push(newReview) //add to found prodcut
+    res.send(newReivew); //return new review to user
+  });
+});
+
 module.exports = router;
 
 
 /*
 TODO:
-
-// POST /products/:product/reviews --- Creates new review in the db, adds to existing product
 
 POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
 

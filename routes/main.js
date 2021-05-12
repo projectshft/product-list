@@ -33,9 +33,9 @@ router.get('/products/:product/reviews', (req, res) => {
   const perPage = 4
   const skipNum = ((page * perPage) - perPage);
 
-  Review.find({ product: productId }).skip(skipNum).limit(perPage).exec(function (err, product) {
+  Review.find({ product: productId }).skip(skipNum).limit(perPage).exec(function (err, review) {
     if (err) return console.log(err);
-    res.send(product)
+    res.send(review)
   }); 
 });
 
@@ -94,8 +94,19 @@ router.delete('/products/:product', (req, res) => {
   });
 });
 
-// DELETE /reviews/:review: Deletes a review by id
+// DELETE /reviews/:review --- Deletes a review by id
+router.delete('/reviews/:review', (req, res) => {
+  const reviewId = req.params.review
+  
+  Review.findById(reviewId).exec(function (err, review) {
+    if (err) return console.log(err);
 
+    review.remove((err) => { //delete the review
+      if (err) throw err;
+      res.send('Success')
+    });
+  });  
+});
 
 module.exports = router;
 

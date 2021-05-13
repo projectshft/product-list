@@ -27,6 +27,20 @@ router.get("/", (req, res, next) => {
     })
 });
 
+router.post("/", (req, res) => {
+  //TODO: Check if inputs missing from body
+  const newProduct = new Product();
+  newProduct.category = req.body.category;
+  newProduct.name = req.body.name;
+  newProduct.price = req.body.price;
+  newProduct.image = req.body.image;
+  newProduct.reviews = [];
+
+  newProduct.save().then(savedProduct => {
+    res.send(savedProduct);
+  })
+})
+
 router.get("/:product", (req, res, next) => {
   if(!req.product) {
     res.status(404).send("Product Not Found");
@@ -40,6 +54,7 @@ router.get("/:product/reviews", (req, res, next) => {
     res.status(404).send("Product Not Found");
     return;
   }
+  //TODO: Paginate to just 4 and deal with population
   res.send(req.product.reviews);
 })
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const faker = require("faker");
 const Product = require("../models/product");
+const Review = require("../models/review");
 
 router.get("/products", (req, res, next) => {
   const perPage = 9;
@@ -58,25 +59,35 @@ router.get("/products/:product", (req, res) => {
     .catch(err => next(err))
 });
 
-//to retest
+//tested
 router.get("/products/:product/reviews", (req, res) => {
-  Product.findById(req.params.product)
-    .then(productFound => {
+  Product
+    .findById(req.params.product)
+    .populate("reviews")
+    .then((productFound) => {
       if (!productFound) { return res.status(404).end(); }
       return res.status(200).json(productFound.reviews);
     })
-    .catch(err => next(err))
+    .catch((err) => next(err))
 });
 
-// in porgress
-// router.post("/products/:product/reviews", (req, res) => {
-//   Review.create(req.body, function (err, review) {
-//     if (err) {
-//       return res.status(401);
-//     }
-//     res.status(200).json(review);
-//   })
-// });
+// tested
+router.post("/products/:product/reviews", (req, res, next) => {
+  Review.create(req.body, function (err, review) {
+    if (err) {
+      return res.status(401);
+    }
+    Product
+      .findById(req.params.product)
+      .then(productFound => {
+        if (!productFound) { return res.status(404) }
+        review.save();
+        productFound.reviews.push(review);
+        productFound.save();
+        res.status(200).json(review);
+      })
+  })
+})
 
 //tested
 router.post("/products", (req, res) => {
@@ -98,7 +109,7 @@ router.delete("/products/:product", (req, res) => {
     .catch(err => next(err))
 });
 
-// to be tested
+//tested
 router.delete("/reviews/:review", (req, res) => {
   Review.findByIdAndRemove(req.params.review)
     .then(reviewFound => {

@@ -53,6 +53,19 @@ router.get("/:product", (req, res, next) => {
   res.send(req.product);
 })
 
+router.delete("/:product", (req, res) => {
+  if(!req.product) {
+    res.status(404).send("Product Not Found");
+    return;
+  }
+  Product.findByIdAndDelete(req.product._id).exec((err, deletedProduct) => {
+    if(err) {
+      console.error(err);
+    }
+    res.send("Product Deleted");
+  })
+})
+
 router.get("/:product/reviews", (req, res, next) => {
   if(!req.product) {
     res.status(404).send("Product Not Found");

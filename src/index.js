@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import promise from "redux-promise";
 
 
-import Container from "./components/container"
+import Container from "./components/container";
 import reducers from "./reducers";
 
 

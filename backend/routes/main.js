@@ -4,24 +4,21 @@ const { Product, Review } = require("../models/product");
 
 // GET /products?page=# --- Returns: products w/ pagination
 router.get('/products', (req, res) => {
-  const page = req.query.page || 1;
-  const category = req.query.category || null;
-  const sort = req.query.sort || null;
-  const name = req.query.name || null;
+  const { page, category, sort, name } = req.query || null;
   const perPage = 9;
   const skipNum = ((page * perPage) - perPage);
   let filterObject = {};
   let sortObject = {};
 
   if (name) { 
-    const regex = new RegExp(name, 'i') //case insensitive
+    const regex = new RegExp(name, 'i'); //case insensitive
     filterObject.name = {$regex: regex};
-  }
+  };
 
   if (category) {
-    const regex = new RegExp(category, 'i') //case insensitive
+    const regex = new RegExp(category, 'i');
     filterObject.category = {$regex: regex};
-  }
+  };
 
   if (sort === 'highest') sortObject.price = -1; //sort by price high
   if (sort === 'lowest') sortObject.price = 1; //sort by price low

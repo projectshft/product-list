@@ -31,7 +31,7 @@ const Pagination = (props) => {
     <div className="container-fluid p-4">
       <div className="row">
         <div className="col">
-            <ul className="pagination pagination-lg justify-content-end">
+            <ul className="pagination pagination-lg justify-content-center">
               {renderPagination()}
             </ul>
         </div>

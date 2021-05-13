@@ -15,8 +15,10 @@ router.param("product", (req, res, next, id) => {
 
 router.get("/", (req, res, next) => {
   const page = req.query.page || 1;
+  //TODO: Convert catgory so it is not case sensitive
+  const category = req.query.category || {"$exists": true};
   const perPage = 9;
-  Product.find({})
+  Product.find({category})
     .skip((page-1)*perPage)
     .limit(perPage)
     .exec((err, products) => {

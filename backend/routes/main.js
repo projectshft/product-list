@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const faker = require("faker");
+//const faker = require("faker");
 const { Product, Review } = require("../models/product");
 
 // GET /products?page=# --- Returns: products w/ pagination
@@ -20,13 +20,17 @@ router.get('/products', (req, res) => {
 
   if (category) filterObject.category = category; //filter by category
 
-  if (sort == 'highest') sortObject.price = -1; //sort by price high
-  if (sort == 'lowest') sortObject.price = 1; //sort by price low
+  if (sort === 'highest') sortObject.price = -1; //sort by price high
+  if (sort === 'lowest') sortObject.price = 1; //sort by price low
 
   Product.find(filterObject).sort(sortObject).skip(skipNum).limit(perPage).exec(function (err, products) {
     if (err) return console.log(err);
-    res.send(products);
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(products))
+    //res.send(products);
   });
+
+  //res.writeHead(200, { "Content-Type": "application/json" });
 });
 
 // GET: /products/:product --- Returns a specific product by its id
@@ -91,7 +95,7 @@ router.post('/products/:product/reviews', (req, res) => {
 
     newReview.save(); //save to db
     product.reviews.push(newReview) //add to found prodcut
-    res.send(newReivew); //return new review to user
+    res.send(newReview); //return new review to user
   });
 });
 
@@ -127,17 +131,14 @@ module.exports = router;
 
 
 /*****************************Testing*****************************
-
 // Generates dummy products for testing 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
-
     product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image";
-
     product.save((err) => {
       if (err) throw err;
     });

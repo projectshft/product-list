@@ -28,12 +28,16 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res) => {
-  //TODO: Check if inputs missing from body
+  const {category, name, price, image } = req.body;
+  if(!category || !name || !price) {
+    res.status(400).send("Must provide product category, name, and price")
+    return;
+  }
   const newProduct = new Product();
-  newProduct.category = req.body.category;
-  newProduct.name = req.body.name;
-  newProduct.price = req.body.price;
-  newProduct.image = req.body.image;
+  newProduct.category = category;
+  newProduct.name = name;
+  newProduct.price = price;
+  newProduct.image =  image || "https://via.placeholder.com/250?text=Product+Image";
   newProduct.reviews = [];
 
   newProduct.save().then(savedProduct => {

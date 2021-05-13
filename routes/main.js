@@ -9,22 +9,12 @@ router.get("/products", (req, res, next) => {
 
   if (req.query.price) {
     let query = {};
-    if (req.query.category) {
-      query['category'] = req.query.category
-    }
-
-    if (req.query.query) {
-      query['name'] = req.query.query
-    }
+    if (req.query.category) query['category'] = req.query.category
+    if (req.query.query) query['name'] = req.query.query
 
     let sort = {};
-    if (req.query.price == 'highest') {
-      sort['desc'] = req.query.price
-    }
-    if (req.query.price == 'lowest') {
-      sort['asc'] = req.query.price;
-    };
-    console.log(sort);
+    if (req.query.price == 'highest') sort['desc'] = req.query.price
+    if (req.query.price == 'lowest') sort['asc'] = req.query.price;
 
     Product
       .find(query)
@@ -42,13 +32,8 @@ router.get("/products", (req, res, next) => {
 
   if (!req.query.price) {
     let query = {};
-    if (req.query.category) {
-      query['category'] = req.query.category
-    }
-
-    if (req.query.query) {
-      query['name'] = req.query.query
-    }
+    if (req.query.category) query['category'] = req.query.category
+    if (req.query.query) query['name'] = req.query.query
 
     Product
       .find(query)
@@ -57,22 +42,43 @@ router.get("/products", (req, res, next) => {
       .exec((err, products) => {
         Product.count().exec((err, count) => {
           if (err) return next(err);
-
           res.send(products);
         });
       });
   }
 });
 
+//tested
 router.get("/products/:product", (req, res) => {
   Product.findById(req.params.product)
     .then(productFound => {
-      if (!productFound) { return res.status(404).end(); }
+      if (!productFound) { return res.status(403).end(); }
       return res.status(200).json(productFound);
     })
     .catch(err => next(err))
 });
 
+//to retest
+router.get("/products/:product/reviews", (req, res) => {
+  Product.findById(req.params.product)
+    .then(productFound => {
+      if (!productFound) { return res.status(404).end(); }
+      return res.status(200).json(productFound.reviews);
+    })
+    .catch(err => next(err))
+});
+
+// in porgress
+// router.post("/products/:product/reviews", (req, res) => {
+//   Review.create(req.body, function (err, review) {
+//     if (err) {
+//       return res.status(401);
+//     }
+//     res.status(200).json(review);
+//   })
+// });
+
+//tested
 router.post("/products", (req, res) => {
   Product.create(req.body, function (err, product) {
     if (err) {
@@ -82,16 +88,7 @@ router.post("/products", (req, res) => {
   })
 });
 
-// router.post("/products/:product/reviews", (req, res) => {
-//   Product.findById(req.params.product)
-//   Product.reviews.create(req.body, function (err, review) {
-//     if (err) {
-//       return res.status(401);
-//     }
-//     res.status(200).json(review);
-//   })
-// });
-
+//tested
 router.delete("/products/:product", (req, res) => {
   Product.findByIdAndRemove(req.params.product)
     .then(productFound => {
@@ -101,7 +98,18 @@ router.delete("/products/:product", (req, res) => {
     .catch(err => next(err))
 });
 
+// to be tested
+router.delete("/reviews/:review", (req, res) => {
+  Review.findByIdAndRemove(req.params.review)
+    .then(reviewFound => {
+      if (!reviewFound) { return res.status(404).end(); }
+      return res.status(200).json(reviewFound);
+    })
+    .catch(err => next(err))
+});
+
 module.exports = router;
+
 
 
 // router.get("/generate-fake-data", (req, res, next) => {

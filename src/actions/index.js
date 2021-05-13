@@ -4,7 +4,7 @@ export const GET_PRODUCTS = "GET_PRODUCTS";
 
 
 export function getProducts() {
-  return axios.get(`http://localhost:8000/products/`)
+  return axios.get(`http://localhost:8000/products/?sort=lowest`)
   .then(response => {
 
     //console.log(response);

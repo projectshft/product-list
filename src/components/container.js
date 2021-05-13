@@ -23,13 +23,19 @@ function renderBody () {
    
     const productMap = data.products[0].map(item => 
 
-    <div key={item.name} style={{width: "18rem"}}>
+    <div key={item.name} style={{width: "32vw"}} className="p-3">
       <div className="card">
-        <img className="card-img-top" src={item.image} alt="img"/>
         <div className="card-body">
+          <div className="row">
+            <div className="col-auto">
+              <p className="card-text">Category: <b>{item.category}</b></p>
+            </div>
+            <div className="col">
+              <h5 className="text-end"><b>${item.price}</b></h5>
+            </div>
+           </div>
+          <img className="card-img pb-2" src={item.image} alt="img"/>
           <h5 className="card-title">{item.name}</h5>
-          <p className="card-text">Category: {item.category}</p>
-          <p className="card-text">Price ${item.price}</p>
         </div>
       </div>
     </div>
@@ -38,21 +44,21 @@ function renderBody () {
 
      return (
       <div className="container-fluid">
-      <div className="row">
-      <div className="col-md-4">{productMap[0] || null}</div>
-      <div className="col-md-4">{productMap[1] || null }</div>
-      <div className="col-md-4">{productMap[2] || null }</div>
-      </div>
-      <div className="row">
-      <div className="col-md-4">{productMap[3] || null }</div>
-      <div className="col-md-4">{productMap[4] || null }</div>
-      <div className="col-md-4">{productMap[5] || null }</div>
-      </div>
-      <div className="row">
-      <div className="col-md-4">{productMap[6]}</div>
-      <div className="col-md-4">{productMap[7] || null}</div>
-      <div className="col-md-4">{productMap[8] || null}</div>
-      </div>
+        <div className="row">
+          <div className="col-md-4">{productMap[0] || null}</div>
+          <div className="col-md-4">{productMap[1] || null }</div>
+          <div className="col-md-4">{productMap[2] || null }</div>
+        </div>
+        <div className="row">
+          <div className="col-md-4">{productMap[3] || null }</div>
+          <div className="col-md-4">{productMap[4] || null }</div>
+          <div className="col-md-4">{productMap[5] || null }</div>
+        </div>
+        <div className="row">
+          <div className="col-md-4">{productMap[6]}</div>
+          <div className="col-md-4">{productMap[7] || null}</div>
+          <div className="col-md-4">{productMap[8] || null}</div>
+        </div>
    </div>
     )
   }
@@ -95,12 +101,6 @@ return (
 <div>{renderBody()}</div>
 
 </div>
-
-
-
-
-
-
 
 )
 

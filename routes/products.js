@@ -15,10 +15,19 @@ router.param("product", (req, res, next, id) => {
 
 router.get("/", (req, res, next) => {
   const page = req.query.page || 1;
+  const perPage = 9;
   //TODO: Convert catgory so it is not case sensitive
   const category = req.query.category || {"$exists": true};
-  const perPage = 9;
+  // Sorting by Price if query provided
+  let price = ''
+  if(req.query.price === "highest") {
+    price = "-price";
+  }
+  if(req.query.price === "lowest") {
+    price = "price";
+  }
   Product.find({category})
+    .sort(price)
     .skip((page-1)*perPage)
     .limit(perPage)
     .exec((err, products) => {

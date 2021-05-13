@@ -30,12 +30,17 @@ router.get("/", (req, res, next) => {
 router.get("/:product", (req, res, next) => {
   if(!req.product) {
     res.status(404).send("Product Not Found");
+    return;
   }
-  res.send(req.product)
+  res.send(req.product);
 })
 
 router.get("/:product/reviews", (req, res, next) => {
-
+  if(!req.product) {
+    res.status(404).send("Product Not Found");
+    return;
+  }
+  res.send(req.product.reviews);
 })
 
 module.exports = router;

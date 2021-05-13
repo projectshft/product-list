@@ -2,10 +2,13 @@ const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
 const products = require("./products");
+const reviews = require("./reviews");
 const Review = require("../models/review");
 const mongoose = require("mongoose");
 
 router.use("/products", products);
+
+router.use("/reviews", reviews);
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {

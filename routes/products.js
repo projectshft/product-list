@@ -71,8 +71,12 @@ router.get("/:product/reviews", (req, res, next) => {
     res.status(404).send("Product Not Found");
     return;
   }
-  //TODO: Paginate to just 4 and deal with population
-  res.send(req.product.reviews);
+  const page = req.query.page || 1;
+  const perPage = 4;
+  const reviewsSkipped = (page-1)*perPage;
+  req.product.populate({path: "reviews", perDocumentLimit: perPage, options: {skip: reviewsSkipped}}, () => {
+    res.send(req.product.reviews);
+  })
 })
 
 router.post("/:product/reviews", (req, res) => {

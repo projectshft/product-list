@@ -14,6 +14,7 @@ router.param("product", (req, res, next, id) => {
 })
 
 router.get("/", (req, res, next) => {
+  //TODO: Get the full count of products for the search before the skip and limit functions do their work
   const page = req.query.page || 1;
   const perPage = 9;
   //TODO: Convert catgory so it is not case sensitive
@@ -26,7 +27,9 @@ router.get("/", (req, res, next) => {
   if(req.query.price === "lowest") {
     price = "price";
   }
-  Product.find({category})
+  // Searching by query if query provided (Expand to include category search if needed)
+  const query = req.query.query ? {$regex: req.query.query, $options: "i"} : {"$exists": true};
+  Product.find({category, name: query})
     .sort(price)
     .skip((page-1)*perPage)
     .limit(perPage)
@@ -34,7 +37,12 @@ router.get("/", (req, res, next) => {
       if(err) {
         console.log(err);
       }
-      res.send(products);
+      Product.count({category, name: query}).exec((err, count) => {
+        if(err) {
+          console.log(err);
+        }
+        res.send({products, count});
+      })
     })
 });
 

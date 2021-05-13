@@ -75,4 +75,23 @@ router.get("/:product/reviews", (req, res, next) => {
   res.send(req.product.reviews);
 })
 
+router.post("/:product/reviews", (req, res) => {
+  if(!req.product) {
+    res.status(404).send("Product Not Found");
+    return;
+  }
+  const {username, text} = req.body;
+  if(!username || !text) {
+    res.status(400).send("Must include review text and username");
+  }
+  const newReview = new Review();
+  newReview.username = username;
+  newReview.text = text;
+  newReview.product = req.product;
+  newReview.save()
+  req.product.reviews.push(newReview);
+  req.product.save()
+  res.send("New Review Added");
+})
+
 module.exports = router;

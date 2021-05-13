@@ -1,14 +1,19 @@
 import { GET_PRODUCTS } from "../actions";
 
 const DEFAULT_STATE = {
-  products: []
+  products: [],
+  count: null,
+  categories: []
 }
 
 const ProductsReducer = function(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case GET_PRODUCTS:
+      console.log(action.payload)
       return {
-        products: [action.payload.data],
+        products: action.payload.data.products,
+        count: action.payload.data.count,
+        categories: action.payload.data.categories
         }
     default:
       return state;

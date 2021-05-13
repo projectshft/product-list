@@ -13,24 +13,36 @@ router.get('/products', (req, res) => {
   let filterObject = {};
   let sortObject = {};
 
-  if (query) {
-    const regex = new RegExp(query, 'i')
+  if (query) { 
+    const regex = new RegExp(query, 'i') //case insensitive
     filterObject.name = {$regex: regex};
   }
 
-  if (category) filterObject.category = category; //filter by category
+  if (category) {
+    const regex = new RegExp(category, 'i') //case insensitive
+    filterObject.category = {$regex: regex};
+  }
 
   if (sort === 'highest') sortObject.price = -1; //sort by price high
   if (sort === 'lowest') sortObject.price = 1; //sort by price low
 
-  Product.find(filterObject).sort(sortObject).skip(skipNum).limit(perPage).exec(function (err, products) {
+  Product.find({}).select('category -_id').exec(function (err, categories) {
     if (err) return console.log(err);
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(products))
-    //res.send(products);
-  });
 
-  //res.writeHead(200, { "Content-Type": "application/json" });
+    Product.find(filterObject).sort(sortObject).skip(skipNum).limit(perPage).exec(function (err, products) {
+      if (err) return console.log(err);
+
+      Product.find(filterObject).sort(sortObject).countDocuments().exec(function (err, count) {
+        if (err) return console.log(err);
+
+        res.send({
+          products: products,
+          count: count,
+          categories: categories
+        })
+      })
+    });
+  })
 });
 
 // GET: /products/:product --- Returns a specific product by its id

@@ -10,7 +10,7 @@ const Pagination = (props) => {
 
   // update state with new fetch for next page of results
   const handlePageClick = (i) => {
-    options.page = `page=${i}`
+    options.page = `page=${i}`;
     dispatch(getProducts(options));
   };
 
@@ -40,4 +40,4 @@ const Pagination = (props) => {
   );
 };
 
-export default Pagination
+export default Pagination;

@@ -4,17 +4,17 @@ const { Product, Review } = require("../models/product");
 
 // GET /products?page=# --- Returns: products w/ pagination
 router.get('/products', (req, res) => {
-  const page = req.query.page || 1
+  const page = req.query.page || 1;
   const category = req.query.category || null;
   const sort = req.query.sort || null;
-  const query = req.query.query || null;
-  const perPage = 9
+  const name = req.query.name || null;
+  const perPage = 9;
   const skipNum = ((page * perPage) - perPage);
   let filterObject = {};
   let sortObject = {};
 
-  if (query) { 
-    const regex = new RegExp(query, 'i') //case insensitive
+  if (name) { 
+    const regex = new RegExp(name, 'i') //case insensitive
     filterObject.name = {$regex: regex};
   }
 
@@ -29,7 +29,7 @@ router.get('/products', (req, res) => {
   // get the categories for all products in the store, sends client unique categories
   Product.find({}).select('category -_id').exec(function (err, categories) {
     if (err) return console.log(err);
-    const uniqueCategories = [...new Set(categories.map(item => item.category))]
+    const uniqueCategories = [...new Set(categories.map(item => item.category))]; 
   
     //sort by query params, limit results for pagination
     Product.find(filterObject).sort(sortObject).skip(skipNum).limit(perPage).exec(function (err, products) {
@@ -43,16 +43,16 @@ router.get('/products', (req, res) => {
           products: products,
           count: count,
           categories: uniqueCategories
-        })
-      })
+        });
+      });
     });
-  })
+  });
 });
 
 // GET: /products/:product --- Returns a specific product by its id
 // Test route: /products/609c0adf8ed5031bdbd78373
 router.get('/products/:product', (req, res) => {
-  const productId = req.params.product
+  const productId = req.params.product;
 
   Product.findById(productId).exec(function (err, product) {
     if (err) return console.log(err);
@@ -63,14 +63,14 @@ router.get('/products/:product', (req, res) => {
 // GET /products/:product/reviews --- Returns reviews w/ pagination
 // Test route: /products/609c0adf8ed5031bdbd78373/reviews/?page=2
 router.get('/products/:product/reviews', (req, res) => {
-  const productId = req.params.product
-  const page = req.query.page || 1
-  const perPage = 4
+  const productId = req.params.product;
+  const page = req.query.page || 1;
+  const perPage = 4;
   const skipNum = ((page * perPage) - perPage);
 
   Review.find({ product: productId }).skip(skipNum).limit(perPage).exec(function (err, review) {
     if (err) return console.log(err);
-    res.send(review)
+    res.send(review);
   }); 
 });
 
@@ -110,7 +110,7 @@ router.post('/products/:product/reviews', (req, res) => {
     });
 
     newReview.save(); //save to db
-    product.reviews.push(newReview) //add to found prodcut
+    product.reviews.push(newReview); //add to found prodcut
     res.send(newReview); //return new review to user
   });
 });
@@ -124,24 +124,25 @@ router.delete('/products/:product', (req, res) => {
 
     product.remove((err) => { //delete the product
       if (err) throw err;
-      res.send('Success')
+      res.send('Success');
     });
   });
 });
 
 // DELETE /reviews/:review --- Deletes a review by id
 router.delete('/reviews/:review', (req, res) => {
-  const reviewId = req.params.review
+  const reviewId = req.params.review;
   
   Review.findById(reviewId).exec(function (err, review) {
     if (err) return console.log(err);
 
     review.remove((err) => { //delete the review
       if (err) throw err;
-      res.send('Success')
+      res.send('Success');
     });
   });  
 });
+
 
 module.exports = router;
 

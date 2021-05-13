@@ -26,19 +26,23 @@ router.get('/products', (req, res) => {
   if (sort === 'highest') sortObject.price = -1; //sort by price high
   if (sort === 'lowest') sortObject.price = 1; //sort by price low
 
+  // get the categories for all products in the store, sends client unique categories
   Product.find({}).select('category -_id').exec(function (err, categories) {
     if (err) return console.log(err);
-
+    const uniqueCategories = [...new Set(categories.map(item => item.category))]
+  
+    //sort by query params, limit results for pagination
     Product.find(filterObject).sort(sortObject).skip(skipNum).limit(perPage).exec(function (err, products) {
       if (err) return console.log(err);
 
+      // get count of products matching query params, return with above data
       Product.find(filterObject).sort(sortObject).countDocuments().exec(function (err, count) {
         if (err) return console.log(err);
 
         res.send({
           products: products,
           count: count,
-          categories: categories
+          categories: uniqueCategories
         })
       })
     });

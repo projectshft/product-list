@@ -8,12 +8,12 @@ import ProductArea from './productArea'
 import { useEffect } from 'react'
 
 const Container = () => {
-  const { products, count } = useSelector(state => state.storeData);
-  
+  const { products, count, categories } = useSelector(state => state.storeData);
+  let options = {}
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getProducts(options));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },  [getProducts])
 
@@ -29,9 +29,11 @@ const Container = () => {
   };
 
   function renderSearchArea () {
-    return (
-      <SearchBar></SearchBar>
-    );
+    if (!_.isEmpty(categories)) {
+      return (
+        <SearchBar categoryData={categories}></SearchBar>
+      );
+    }
   };
 
   return (

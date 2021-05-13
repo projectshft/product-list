@@ -1,14 +1,16 @@
 import { getProducts } from '../actions';
 import { useDispatch } from 'react-redux';
 
-
 const Pagination = (props) => {
   const dispatch = useDispatch();
+  let options = {};
 
+  //determine num pages based on count of items returned matching query params
   const numPages = Math.ceil(props.productCount / 9);
 
+  //update state with new fetch for next page of results
   const handlePageClick = (i) => {
-    const options = `page=${i}`
+    options.page = `page=${i}`
     dispatch(getProducts(options));
   }
 

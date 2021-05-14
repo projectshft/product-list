@@ -14,12 +14,11 @@ router.param("product", (req, res, next, id) => {
 })
 
 router.get("/", (req, res, next) => {
-  //TODO: Get the full count of products for the search before the skip and limit functions do their work
   const page = req.query.page || 1;
-  const perPage = 9;
+  const perPage = req.query.perPage || 9;
   //TODO: Convert catgory so it is not case sensitive
   const category = req.query.category || {"$exists": true};
-  // Sorting by Price if query provided
+  // If price query is provided, sort the products by price either ascending or descending
   let price = ''
   if(req.query.price === "highest") {
     price = "-price";
@@ -27,23 +26,20 @@ router.get("/", (req, res, next) => {
   if(req.query.price === "lowest") {
     price = "price";
   }
-  // Searching by query if query provided (Expand to include category search if needed)
+  // If the search query is provided, search to find products matching query (Expand to include category search if needed)
   const query = req.query.query ? {$regex: req.query.query, $options: "i"} : {"$exists": true};
-  Product.find({category, name: query})
+  const productsPromise = Product.find({category, name: query})
     .sort(price)
     .skip((page-1)*perPage)
     .limit(perPage)
-    .exec((err, products) => {
-      if(err) {
-        console.log(err);
-      }
-      Product.count({category, name: query}).exec((err, count) => {
-        if(err) {
-          console.log(err);
-        }
-        res.send({products, count});
-      })
-    })
+    .exec()
+  const countPromise = Product.countDocuments({category, name: query}).exec();
+  Promise.all([productsPromise, countPromise]).then((results) => {
+    const [products, count] = results;
+    res.send({products, count});
+  }).catch((e) => {
+    console.error(e);
+  })
 });
 
 router.post("/", (req, res) => {

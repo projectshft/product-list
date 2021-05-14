@@ -4,6 +4,7 @@ import _ from 'lodash';
 export const GET_PRODUCTS = "GET_PRODUCTS";
 
 let selectedOptions = {};
+let optionsString = ''
 
 export function getProducts(options) {
   const baseUrl = 'http://localhost:8000/products/?';
@@ -25,30 +26,16 @@ export function getProducts(options) {
   
   //if options exist, create search url using options.
   if (!_.isEmpty(selectedOptions)) {
-      const optionsString = `${selectedOptions.page || ''}&${selectedOptions.category || ''}&${selectedOptions.sort || ''}&${selectedOptions.name || ''}`;
-      return axios.get(`${baseUrl}${optionsString}`)
-      .then(response => {
-        return {
-          type: GET_PRODUCTS,
-          payload: response
-        }; 
-      })
-      .catch(error => {
-        alert('Error');
-      });  
-  }
-
-  //return all products when no options exist/on first render
-  else {
-    return axios.get(baseUrl)
-    .then(response => {
-      return {
-        type: GET_PRODUCTS,
-        payload: response
-      }; 
-    })
-    .catch(error => {
-      alert('Error');
-    });
-  };
+      optionsString = `${selectedOptions.page || ''}&${selectedOptions.category || ''}&${selectedOptions.sort || ''}&${selectedOptions.name || ''}`;
+    };
+  return axios.get(`${baseUrl}${optionsString}`)
+  .then(response => {
+    return {
+      type: GET_PRODUCTS,
+      payload: response
+    }; 
+  })
+  .catch(error => {
+    alert('Error');
+  });
 };

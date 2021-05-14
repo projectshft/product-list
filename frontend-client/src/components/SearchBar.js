@@ -1,6 +1,6 @@
 const SearchBar = () => {
   return (
-    <div className="row mt-3">
+    <div className="row mt-3 mb-5">
       <div className="col-md-6">
         <input type="text" className="form-control" placeholder="Search..."/>
       </div>

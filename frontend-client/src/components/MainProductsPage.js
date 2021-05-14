@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar"
 
 const MainProductsPage = () => {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid main">
       <SearchBar />
       <ProductsList />
       <PageSelector />

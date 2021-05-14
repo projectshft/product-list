@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const faker = require("faker");
-const Product = require ("../models/product");
-const Review = require ("../models/product");
+const { Review, Product } = require ("../models/product");
 
 
 router.param('product', function(req, res, next, id) {
@@ -11,9 +10,23 @@ router.param('product', function(req, res, next, id) {
     if (err)
       return next(err);
     if (!product)
-      return next(new Error("Can't find Product."));
+      return next(new Error("Can't find product."));
     
     req.product = product
+    next();
+  })
+})
+
+router.param('review', function(req, res, next, id) {
+  const reviewQuery = Review.findOne({ _id: id });
+
+  reviewQuery.exec((err, review) => {
+    if (err)
+      return next(err);
+    if (!review)
+      return next(new Error("Can't find review."));
+    
+    req.review = review
     next();
   })
 })
@@ -39,33 +52,58 @@ router.get("/products", (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1;
+  const category = req.query.category || null;
+  const price = req.query.price || null;
 
-  Product.find({})
+  if (category !== null && price == 'highest') {
+    Product.find({category: category})
     .skip(perPage * page - perPage)
     .limit(perPage)
-    .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
-
-        res.send(products);
-      });
+    .sort({price: 'desc'})
+    .exec((err, products) => {  
+      res.send(products);
     });
+  } else if (category !== null && price == 'lowest') {
+    Product.find({category: category})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .sort({price: 'asc'})
+    .exec((err, products) => {  
+      res.send(products);
+    });
+  } else {
+    Product.find({})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, products) => {  
+      res.send(products);
+  });
+}
+    
 });
-//return product by id
+//Returns a specific product by its id
 router.get("/products/:product", (req, res, next) => {
 	res.send(req.product)
   next();
 })
 
+//returns products with reviews - extra
+router.get("/reviews", (req, res, next) => {    
+  Product.find({ reviews: {$exists:true, $not: {$size:0}}}).exec((err, reviews) => {
+    res.send(reviews)
+  })
+})
+
+//Returns ALL the reviews for a product, but limited to 4 at a time
 router.get("/products/:product/reviews", (req, res, next) => {
   const reviewsPerPage = 4;
   const reviews = req.product.reviews;
   const page = req.query.page || 1;
 
-	res.send(reviews)
+  res.send(reviews)
 })
 
+//Creates a new product in the database
 router.post("/products", (req, res, next) => {
   let newProduct = new Product({
     category: req.body.category,
@@ -79,6 +117,7 @@ router.post("/products", (req, res, next) => {
   next();
 })
 
+//Creates a new review in the database by adding it to the correct product's reviews array.
 router.post("/products/:product/reviews", (req, res, next) => {    
   let newReview = {
     userName: req.body.userName,
@@ -90,8 +129,18 @@ router.post("/products/:product/reviews", (req, res, next) => {
   res.send(newReview);
 })
 
+//Deletes a product by id
 router.delete("/products/:product", (req, res, next) => {    
-  
+  Product.deleteOne(req.product, function (err) {
+    if (err) return next(err);
+
+    res.send(`product deleted`);
+  });
+})
+
+
+router.get("/products/:product/reviews/:review", (req, res, next) => {    
+  res.send(req.review)
 })
 
 module.exports = router;

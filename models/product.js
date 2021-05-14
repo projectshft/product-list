@@ -6,6 +6,8 @@ const ReviewSchema = new Schema ({
   text: String, 
 })
 
+const Review = mongoose.model("Review", ReviewSchema);
+
 const ProductSchema = new Schema ({
   category: String,
   name: String,
@@ -14,4 +16,6 @@ const ProductSchema = new Schema ({
   reviews: [ReviewSchema]
 });
 
-module.exports = mongoose.model("Product", ProductSchema);
+const Product = mongoose.model("Product", ProductSchema);
+module.exports = { Review, Product };
+

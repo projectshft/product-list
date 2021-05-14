@@ -1,8 +1,12 @@
+import { Redirect, Route, Switch } from "react-router";
+import MainProductsPage from "./components/MainProductsPage";
+
 function App() {
   return (
-    <div>
-      <h1>Test</h1>
-    </div>
+    <Switch>
+      <Route path="/products" component={MainProductsPage}/>
+      <Redirect to="/products"/>
+    </Switch>
   );
 }
 

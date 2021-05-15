@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router";
+import { fetchProducts } from "../actions";
+const queryString = require('query-string');
 
 const SearchBar = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const history = useHistory();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
   const [priceSort, setPriceSort] = useState('');
@@ -12,7 +17,11 @@ const SearchBar = () => {
   }
   const handleCategorySelection = (e) => {
     setCategory(e.target.value);
+    const searchOptions = queryString.parse(location.search);
+    const newSearchOptions = {...searchOptions, category: e.target.value}
+    location.search = queryString.stringify(newSearchOptions);
     debugger;
+    history.push(location);
   }
   const handlePriceSortSelection = (e) => {
     setPriceSort(e.target.value)
@@ -26,7 +35,9 @@ const SearchBar = () => {
       <div className="col-md-3">
         <select className="form-select" onChange={handleCategorySelection} value={category}>
           <option selected>Filter Results By Category...</option>
-          <option value="test">Test</option>
+          <option value="Games">Games</option>
+          <option value="Music">Music</option>
+          <option value="Toys">Toys</option>
         </select>
       </div>
       <div className="col-md-3">

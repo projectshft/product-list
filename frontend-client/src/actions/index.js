@@ -10,6 +10,9 @@ const generateSearchUrlSnippet = (searchOptions) => {
   if(searchOptions.category) {
     searchUrlSnippet += searchUrlSnippet ? `&category=${searchOptions.category}` : `?category=${searchOptions.category}`;
   }
+  if(searchOptions.price) {
+    searchUrlSnippet += searchUrlSnippet ? `&price=${searchOptions.price}` : `?price=${searchOptions.price}`;
+  }
   return searchUrlSnippet
 }
 

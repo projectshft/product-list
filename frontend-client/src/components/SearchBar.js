@@ -11,6 +11,7 @@ const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
   const [priceSort, setPriceSort] = useState('');
+
   const handleSearchInput = (e) => {
     setQuery(e.target.value);
     debugger
@@ -25,7 +26,11 @@ const SearchBar = () => {
   }
   const handlePriceSortSelection = (e) => {
     setPriceSort(e.target.value)
+    const searchOptions = queryString.parse(location.search);
+    const newSearchOptions = {...searchOptions, price: e.target.value}
+    location.search = queryString.stringify(newSearchOptions);
     debugger;
+    history.push(location);
   }
   return (
     <div className="row mt-3 mb-5">
@@ -44,7 +49,8 @@ const SearchBar = () => {
       <div className="col-md-3">
         <select className="form-select" onChange={handlePriceSortSelection} value={priceSort}>
           <option selected>Sort By Price...</option>
-          <option value="test">Test</option>
+          <option value="lowest">Low to High</option>
+          <option value="highest">High to Low</option>
         </select>
       </div>
     </div>

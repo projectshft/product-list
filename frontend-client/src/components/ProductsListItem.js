@@ -9,7 +9,9 @@ const ProductsListItem = ({product}) => {
           <h4>${product.price}</h4>
         </div>
       </div>
-      <img className="img-thumbnail mb-2" src={product.image} alt="..."/>
+      <div className="text-center">
+        <img className="img-thumbnail mb-2" src={product.image} alt="..."/>
+      </div>
       <h3>{product.name}</h3>
     </div>
   ) 

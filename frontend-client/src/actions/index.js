@@ -1,12 +1,29 @@
 import axios from "axios";
-export const INITIAL_PRODUCTS_FETCH = "INITIAL_PRODUCTS_FETCH";
+export const PRODUCTS_FETCH = "PRODUCTS_FETCH";
+export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 
-export const fetchInitialProducts = () => {
+const generateSearchUrlSnippet = (searchOptions) => {
+  let searchUrlSnippet = '';
+  if(searchOptions.page) {
+    searchUrlSnippet += searchUrlSnippet ? `&page=${searchOptions.page}` : `?page=${searchOptions.page}`;
+  }
+  return searchUrlSnippet
+}
+export const fetchProducts = (searchOptions) => {
+  let url = `http://localhost:8000/products${generateSearchUrlSnippet(searchOptions)}`
   debugger;
-  const url = `http://localhost:8000/products`
   const request = axios.get(url);
   return {
-    type: INITIAL_PRODUCTS_FETCH,
+    type: PRODUCTS_FETCH,
     payload: request
+  }
+}
+
+export const setCurrentPage = (searchOptions) => {
+  const newPage = searchOptions.page ? parseInt(searchOptions.page) : 1;
+  debugger;
+  return {
+    type: SET_CURRENT_PAGE,
+    payload: newPage
   }
 }

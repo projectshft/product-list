@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const PageSelector = () => {
   const count = useSelector(({products}) => products.count);
-  const currentPage = 1;
+  const currentPage = useSelector(({currentPage}) => currentPage);
   const productsPerPage = 9;
   const numberOfPages = Math.ceil(count/productsPerPage);
 
@@ -22,8 +23,9 @@ const PageSelector = () => {
 
   const generatePaginationButton = (pageNumber, currentPage) => {
     const classNames = pageNumber === currentPage ? "page-item active" : "page-item";
+    const linkUrl = `/products?page=${pageNumber}`;
     return (
-      <li className={classNames}><a className="page-link" href="#">{pageNumber}</a></li>
+      <li className={classNames}><Link className="page-link" to={linkUrl}>{pageNumber}</Link></li>
     )
   }
   

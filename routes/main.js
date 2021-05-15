@@ -2,7 +2,6 @@ const router = require("express").Router();
 const faker = require("faker");
 const { Review, Product } = require ("../models/product");
 
-
 router.param('product', function(req, res, next, id) {
   const query = Product.findOne({ _id: id });
 
@@ -54,32 +53,72 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
   const category = req.query.category || null;
   const price = req.query.price || null;
+  const query = req.query.query || null;
 
-  if (category !== null && price == 'highest') {
-    Product.find({category: category})
+  if (category !== null && price === 'highest' && query !== null) {
+    Product.find({category: category, name: new RegExp(query, "i")})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .sort({price: 'desc'})
     .exec((err, products) => {  
       res.send(products);
     });
-  } else if (category !== null && price == 'lowest') {
-    Product.find({category: category})
+  } else if (category !== null && price === 'lowest' && query !== null) {
+    Product.find({category: category, name: new RegExp(query, "i")})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .sort({price: 'asc'})
     .exec((err, products) => {  
       res.send(products);
     });
-  } else {
+  } else if (price === 'lowest' && query !== null) {
+    Product.find({name: new RegExp(query, "i")})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .sort({price: 'asc'})
+    .exec((err, products) => {  
+      res.send(products);
+  });
+ } else if (price === 'highest' && query !== null) {
+  Product.find({name: new RegExp(query, "i")})
+  .skip(perPage * page - perPage)
+  .limit(perPage)
+  .sort({price: 'desc'})
+  .exec((err, products) => {  
+    res.send(products);
+}); 
+} else if (price === 'lowest') {
+    Product.find({})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .sort({price: 'asc'})
+    .exec((err, products) => {  
+      res.send(products);
+  });
+  } else if (price === 'highest') {
+    Product.find({})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .sort({price: 'desc'})
+    .exec((err, products) => {  
+      res.send(products);
+  });
+  } else if (query !== null) {
+    Product.find({name: new RegExp(query, "i")})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .sort({price: 'desc'})
+    .exec((err, products) => {  
+      res.send(products);
+  });
+ } else {
     Product.find({})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {  
       res.send(products);
-  });
-}
-    
+    });
+  }
 });
 //Returns a specific product by its id
 router.get("/products/:product", (req, res, next) => {

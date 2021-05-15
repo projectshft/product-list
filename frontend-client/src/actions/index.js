@@ -9,6 +9,7 @@ const generateSearchUrlSnippet = (searchOptions) => {
   }
   return searchUrlSnippet
 }
+
 export const fetchProducts = (searchOptions) => {
   let url = `http://localhost:8000/products${generateSearchUrlSnippet(searchOptions)}`
   debugger;

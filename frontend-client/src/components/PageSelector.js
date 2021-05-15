@@ -9,15 +9,17 @@ const PageSelector = () => {
 
   const generatePreviousButton = (currentPage) => {
     const classes = currentPage === 1 ? "page-item disabled" : "page-item";
+    const linkUrl = `/products?page=${currentPage-1}`;
     return (
-      <li className={classes}><a className="page-link" href="#" tabIndex="-1" aria-disabled="true">Previous</a></li>
+      <li className={classes}><Link className="page-link" to={linkUrl}>Previous</Link></li>
     )
   }
 
   const generateNextButton = (currentPage, finalPage) => {
     const classes = currentPage === finalPage ? "page-item disabled" : "page-item";
+    const linkUrl = `/products?page=${currentPage+1}`;
     return (
-      <li className={classes}><a className="page-link" href="#">Next</a></li>
+      <li className={classes}><Link className="page-link" to={linkUrl}>Next</Link></li>
     )
   }
 

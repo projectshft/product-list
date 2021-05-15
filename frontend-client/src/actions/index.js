@@ -13,6 +13,9 @@ const generateSearchUrlSnippet = (searchOptions) => {
   if(searchOptions.price) {
     searchUrlSnippet += searchUrlSnippet ? `&price=${searchOptions.price}` : `?price=${searchOptions.price}`;
   }
+  if(searchOptions.query) {
+    searchUrlSnippet += searchUrlSnippet ? `&query=${searchOptions.query}` : `?query=${searchOptions.query}`;
+  }
   return searchUrlSnippet
 }
 

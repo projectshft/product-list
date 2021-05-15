@@ -14,7 +14,11 @@ const SearchBar = () => {
 
   const handleSearchInput = (e) => {
     setQuery(e.target.value);
-    debugger
+    const searchOptions = queryString.parse(location.search);
+    const newSearchOptions = {...searchOptions, query: e.target.value}
+    location.search = queryString.stringify(newSearchOptions);
+    debugger;
+    history.push(location);
   }
   const handleCategorySelection = (e) => {
     setCategory(e.target.value);

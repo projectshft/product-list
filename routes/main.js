@@ -3,6 +3,7 @@ const faker = require('faker');
 const { db } = require('../models/products');
 const Product = require('../models/products');
 
+// generates fake data
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     const product = new Product();
@@ -16,7 +17,6 @@ router.get('/generate-fake-data', (req, res, next) => {
       if (err) throw err;
     });
   }
-  res.end();
 });
 
 // gets product by product id but need to figure out error handling
@@ -30,26 +30,45 @@ router.get('/products/:productId', async (req, res) => {
   res.json(dbQuery);
 });
 
+// posts the product to the database still have to figure error handling
+router.post('/product', (req, res) => {
+  const newProduct = new Product({
+    category: req.body.catagory,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+  });
 
+  newProduct.save((err) => err || console.log('Save is a  Success'));
+});
+
+// deletes product by id but what about more error handeling
+router.delete('/products/:productId', (req, res) => {
+  const { productId } = req.params;
+
+  Product.deleteOne({ _id: productId }, (err) =>
+    err
+      ? console.log(`Cast Error: No product with that ID`)
+      : console.log('success')
+  );
+});
 
 // gets products pagination, the route will look like /products?page=3
 router.get('/products', (req, res, next) => {
+  // number of pages to return
   const perPage = 9;
-
+  const { category } = req.query || '';
   // return the first page by default
-  const page = req.query.page || 1;
+  const { page } = req.query;
 
-  Product.find({})
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
-
-        res.send(products);
-      });
-    });
+  Promise.all([
+    Product.find({})
+      .skip(perPage * page - perPage)
+      .limit(perPage),
+    Product.find({ category }),
+  ]).then((err, result) => {
+    res.send(result);
+  });
 });
 
 module.exports = router;

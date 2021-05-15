@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
@@ -7,6 +8,7 @@ const ProductSchema = new Schema({
   name: String,
   price: Number,
   image: String,
+  reviews: [{ type: Schema.Types.ObjectId, ref: 'review' }],
 });
 
 const Products = mongoose.model('Product', ProductSchema);

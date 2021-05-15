@@ -1,33 +1,39 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+const queryString = require('query-string');
 
 const PageSelector = () => {
+  const location = useLocation();
   const count = useSelector(({products}) => products.count);
   const currentPage = useSelector(({currentPage}) => currentPage);
   const productsPerPage = 9;
   const numberOfPages = Math.ceil(count/productsPerPage);
 
+  const createLinkLocation = (currentLocation, page) => {
+    const currentQuery = queryString.parse(currentLocation.search);
+    const queryForLink = {...currentQuery, page};
+    const linkLocation = {...location, search: queryString.stringify(queryForLink)};
+    return linkLocation
+  }
+
   const generatePreviousButton = (currentPage) => {
     const classes = currentPage === 1 ? "page-item disabled" : "page-item";
-    const linkUrl = `/products?page=${currentPage-1}`;
     return (
-      <li className={classes}><Link className="page-link" to={linkUrl}>Previous</Link></li>
+      <li className={classes}><Link className="page-link" to={createLinkLocation(location, currentPage-1)}>Previous</Link></li>
     )
   }
 
   const generateNextButton = (currentPage, finalPage) => {
     const classes = currentPage === finalPage ? "page-item disabled" : "page-item";
-    const linkUrl = `/products?page=${currentPage+1}`;
     return (
-      <li className={classes}><Link className="page-link" to={linkUrl}>Next</Link></li>
+      <li className={classes}><Link className="page-link" to={createLinkLocation(location, currentPage+1)}>Next</Link></li>
     )
   }
 
   const generatePaginationButton = (pageNumber, currentPage) => {
     const classNames = pageNumber === currentPage ? "page-item active" : "page-item";
-    const linkUrl = `/products?page=${pageNumber}`;
     return (
-      <li className={classNames}><Link className="page-link" to={linkUrl}>{pageNumber}</Link></li>
+      <li className={classNames}><Link className="page-link" to={createLinkLocation(location, pageNumber)}>{pageNumber}</Link></li>
     )
   }
   

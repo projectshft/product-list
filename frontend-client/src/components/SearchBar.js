@@ -38,6 +38,7 @@ const SearchBar = () => {
           <option value="Games">Games</option>
           <option value="Music">Music</option>
           <option value="Toys">Toys</option>
+          <option value="Garden">Garden</option>
         </select>
       </div>
       <div className="col-md-3">

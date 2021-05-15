@@ -12,6 +12,7 @@ const MainProductsPage = () => {
   let location = useLocation();
   useEffect(() => {
     const searchOptions = queryString.parse(location.search);
+    console.log(location);
     debugger;
     dispatch(fetchProducts(searchOptions))
     dispatch(setCurrentPage(searchOptions))

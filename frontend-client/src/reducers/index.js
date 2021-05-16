@@ -4,7 +4,7 @@ import productsReducer from './products-reducer';
 
 const rootReducer = combineReducers({
   products: productsReducer,
-  currentPage: currentPageReducer
+  currentPage: currentPageReducer,
 });
 
 export default rootReducer;

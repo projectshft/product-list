@@ -20,9 +20,7 @@ const generateSearchUrlSnippet = (searchOptions) => {
 }
 
 export const fetchProducts = (searchOptions) => {
-  debugger;
   let url = `http://localhost:8000/products${generateSearchUrlSnippet(searchOptions)}`
-  debugger;
   const request = axios.get(url);
   return {
     type: PRODUCTS_FETCH,
@@ -32,7 +30,6 @@ export const fetchProducts = (searchOptions) => {
 
 export const setCurrentPage = (searchOptions) => {
   const newPage = searchOptions.page ? parseInt(searchOptions.page) : 1;
-  debugger;
   return {
     type: SET_CURRENT_PAGE,
     payload: newPage

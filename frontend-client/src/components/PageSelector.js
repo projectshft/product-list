@@ -19,21 +19,21 @@ const PageSelector = () => {
   const generatePreviousButton = (currentPage) => {
     const classes = currentPage === 1 ? "page-item disabled" : "page-item";
     return (
-      <li className={classes}><Link className="page-link" to={createLinkLocation(location, currentPage-1)}>Previous</Link></li>
+      <li key={0} className={classes}><Link className="page-link" to={createLinkLocation(location, currentPage-1)}>Previous</Link></li>
     )
   }
 
   const generateNextButton = (currentPage, finalPage) => {
     const classes = currentPage === finalPage ? "page-item disabled" : "page-item";
     return (
-      <li className={classes}><Link className="page-link" to={createLinkLocation(location, currentPage+1)}>Next</Link></li>
+      <li key={finalPage + 1} className={classes}><Link className="page-link" to={createLinkLocation(location, currentPage+1)}>Next</Link></li>
     )
   }
 
   const generatePaginationButton = (pageNumber, currentPage) => {
     const classNames = pageNumber === currentPage ? "page-item active" : "page-item";
     return (
-      <li className={classNames}><Link className="page-link" to={createLinkLocation(location, pageNumber)}>{pageNumber}</Link></li>
+      <li key={pageNumber} className={classNames}><Link className="page-link" to={createLinkLocation(location, pageNumber)}>{pageNumber}</Link></li>
     )
   }
   

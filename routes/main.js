@@ -1,9 +1,23 @@
+const mongoose = require("mongoose");
 const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
-const Review = require("../models/review");
-var queryString = require('querystring');
+const ReviewSchema = require("../models/review");
+const Review = mongoose.model("Review", ReviewSchema);
+const _ = require('lodash');
 const url = require('url');
+
+// helper methods
+
+const inputFormat = string => {
+  let inputHandler = string.split(' ')
+  let outputHandler = inputHandler.map((word) =>{
+    let upper = word[0].toUpperCase();
+    let lower = word.slice(1).toLowerCase();
+    return upper+lower;
+  })
+  return outputHandler.join(' ')
+}
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -26,7 +40,7 @@ router.get("/generate-fake-data", (req, res, next) => {
       if (err) throw err;
     });
   }
-  // Product.find({reviews: {$exists: false}}).deleteMany().exec((err, res)=>{
+  // Product.find({_id: '609c1166508acb52c8c285be'}).deleteMany().exec((err, res)=>{
   //   console.log(res);
   // })
   res.end();
@@ -37,17 +51,27 @@ router.get("/products", (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1;
+  const priceSort = {}
+  const query = {}
+  let resultsCount
 
-  Product.find({})
+  req.query.category ? query.category = inputFormat(req.query.category) : null;
+  req.query.query ? query.name = { $regex: req.query.query, $options: 'i'} : null;
+  req.query.price === 'highest' ? priceSort.price = -1 : null;
+  req.query.price === 'lowest' ? priceSort.price = 1 : null;
+  
+  Product.find(query).countDocuments((err, count)=>{
+    if (err) return (err);
+    resultsCount = count;
+  })
+
+  Product.find(query)
+    .sort(priceSort)
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.countDocuments().exec((err, count) => {
-        if (err) return next(err);
-
-        res.send(products);
-      });
+        res.send({count: resultsCount, products: [...products]});
     });
 });
 
@@ -86,24 +110,65 @@ router.get("/products/:product/reviews", (req, res) => {
 
 router.post("/products", (req, res) => {
   let newProduct = new Product();
-  newProduct.category = req.body.category,
-  newProduct.image = req.body.image,
-  newProduct.name = req.body.name,
-  newProduct.price = req.body.price,
-  newProduct.reviews = req.body.reviews,
+  newProduct.category = req.body.category;
+  newProduct.image = req.body.image;
+  newProduct.name = req.body.name;
+  newProduct.price = req.body.price;
+  newProduct.reviews = req.body.reviews;
   
   newProduct.save((err) => {
     if (err) {
       return res.send(err);
     }
-  }).exec((err, res) => {
     res.send(`Successfully saved ${newProduct.name} to Database`)
   });
 })
 
+
 router.post("/products/:product/reviews", (req, res) => {
   let review = new Review();
-  
+  review.text = req.body.text;
+  review.username = req.body.username;
+  Product.find({_id: req.params.product})
+    .exec((err, foundProduct) => {
+      if (err) {
+        return res.send(err)
+      }
+      let productReviewed = foundProduct[0];
+      productReviewed.reviews.push(review);
+      productReviewed.save((err)=>{
+        if (err) {
+          return res.send(err)
+        }
+      })
+      res.send(`Successfully saved review for ${productReviewed.name} to Database`)
+    })
+})
+
+router.delete("/products/:product", (req, res) => {
+  Product.deleteOne({_id: req.params.product})
+    .exec((err, foundProduct)=>{
+    if (err) {
+      return res.send(err)
+      }
+      res.send(`Successfully deleted ${req.params.product}`)
+    })
+})
+
+router.delete("/reviews/:review", (req, res)=>{
+  Product.find({"reviews._id": req.params.review})
+    .exec((err, foundProduct)=>{
+    if (foundProduct.length === 0) {
+      return res.send("No review found for that ID")
+      }
+      foundProduct[0].reviews.pull({_id: req.params.review})
+      foundProduct[0].save((err)=>{
+        if (err) {
+          return res.send(err)
+        }
+      })
+      res.send(`Successfully deleted review ${req.params.review}`)
+    })
 })
 
 module.exports = router;

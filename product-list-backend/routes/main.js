@@ -71,7 +71,23 @@ router.get("/products", (req, res, next) => {
     .exec((err, products) => {  
       res.send(products);
     });
-  } else if (price === 'lowest' && query !== null) {
+  } else if (price === 'lowest' && category !== null) {
+    Product.find({category: category})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .sort({price: 'asc'})
+    .exec((err, products) => {  
+      res.send(products);
+  });
+ } else if (price === 'highest' && category !== null) {
+  Product.find({category: category})
+  .skip(perPage * page - perPage)
+  .limit(perPage)
+  .sort({price: 'desc'})
+  .exec((err, products) => {  
+    res.send(products);
+}); 
+} else if (price === 'lowest' && query !== null) {
     Product.find({name: new RegExp(query, "i")})
     .skip(perPage * page - perPage)
     .limit(perPage)
@@ -87,6 +103,14 @@ router.get("/products", (req, res, next) => {
   .exec((err, products) => {  
     res.send(products);
 }); 
+} 
+else if (category !== null) {
+  Product.find({category: category})
+  .skip(perPage * page - perPage)
+  .limit(perPage)
+  .exec((err, products) => {  
+    res.send(products);
+  });
 } else if (price === 'lowest') {
     Product.find({})
     .skip(perPage * page - perPage)

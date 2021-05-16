@@ -1,6 +1,7 @@
 import axios from "axios";
 export const PRODUCTS_FETCH = "PRODUCTS_FETCH";
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+export const CATEGORIES_FETCH = 'CATEGORIES_FETCH';
 
 const generateSearchUrlSnippet = (searchOptions) => {
   let searchUrlSnippet = '';
@@ -33,5 +34,13 @@ export const setCurrentPage = (searchOptions) => {
   return {
     type: SET_CURRENT_PAGE,
     payload: newPage
+  }
+}
+
+export const fetchCategories = () => {
+  const request = axios.get('http://localhost:8000/categories')
+  return {
+    type: CATEGORIES_FETCH,
+    payload: request
   }
 }

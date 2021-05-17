@@ -49,7 +49,6 @@ router.get("/products", (req, res, next) => {
   }
 });
 
-//tested
 router.get("/products/:product", (req, res) => {
   Product.findById(req.params.product)
     .then(productFound => {
@@ -59,7 +58,6 @@ router.get("/products/:product", (req, res) => {
     .catch(err => next(err))
 });
 
-//tested
 router.get("/products/:product/reviews", (req, res) => {
   Product
     .findById(req.params.product)
@@ -71,7 +69,6 @@ router.get("/products/:product/reviews", (req, res) => {
     .catch((err) => next(err))
 });
 
-// tested
 router.post("/products/:product/reviews", (req, res, next) => {
   Review.create(req.body, function (err, review) {
     if (err) {
@@ -87,9 +84,8 @@ router.post("/products/:product/reviews", (req, res, next) => {
         res.status(200).json(review);
       })
   })
-})
+});
 
-//tested
 router.post("/products", (req, res) => {
   Product.create(req.body, function (err, product) {
     if (err) {
@@ -99,7 +95,6 @@ router.post("/products", (req, res) => {
   })
 });
 
-//tested
 router.delete("/products/:product", (req, res) => {
   Product.findByIdAndRemove(req.params.product)
     .then(productFound => {
@@ -109,9 +104,9 @@ router.delete("/products/:product", (req, res) => {
     .catch(err => next(err))
 });
 
-//tested
 router.delete("/reviews/:review", (req, res) => {
   Review.findByIdAndRemove(req.params.review)
+    .populate("product")
     .then(reviewFound => {
       if (!reviewFound) { return res.status(404).end(); }
       return res.status(200).json(reviewFound);
@@ -122,6 +117,7 @@ router.delete("/reviews/:review", (req, res) => {
 module.exports = router;
 
 
+// USE BELOW if need to generate new data
 
 // router.get("/generate-fake-data", (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {

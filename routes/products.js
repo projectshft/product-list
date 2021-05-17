@@ -16,7 +16,6 @@ router.param("product", (req, res, next, id) => {
 router.get("/", (req, res, next) => {
   const page = req.query.page || 1;
   const perPage = req.query.perPage || 9;
-  //TODO: Convert catgory so it is not case sensitive
   const category = req.query.category || {"$exists": true};
   // If price query is provided, sort the products by price either ascending or descending
   let price = ''
@@ -26,7 +25,7 @@ router.get("/", (req, res, next) => {
   if(req.query.price === "lowest") {
     price = "price";
   }
-  // If the search query is provided, search to find products matching query (Expand to include category search if needed)
+  // If the search query is provided, search to find products matching query
   const query = req.query.query ? {$regex: req.query.query, $options: "i"} : {"$exists": true};
   const productsPromise = Product.find({category, name: query})
     .sort(price)

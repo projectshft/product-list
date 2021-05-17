@@ -11,7 +11,7 @@ router.use("/products", products);
 router.use("/reviews", reviews);
 
 router.get("/categories", (req, res) => {
-  const categoriesPromise = Product.find().distinct('category').exec((err, categories) => {
+  Product.find().distinct('category').exec((err, categories) => {
     if(err) {
       console.error(err);
     }

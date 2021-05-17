@@ -10,14 +10,10 @@ const queryString = require('query-string');
 const MainProductsPage = () => {
   const dispatch = useDispatch();
   let location = useLocation();
-  //let history = useHistory();
-  //const searchOptions = useSelector(({searchOptions}) => searchOptions)
   useEffect(() => {
     const searchOptions = queryString.parse(location.search);
     dispatch(fetchProducts(searchOptions))
     dispatch(setCurrentPage(searchOptions))
-    //const newLocation = {...location, search: queryString.stringify(searchOptions, {skipEmptyString: true})}
-    //history.push(newLocation)
   }, [location])
   
   return (

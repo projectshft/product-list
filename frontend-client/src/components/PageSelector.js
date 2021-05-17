@@ -24,7 +24,7 @@ const PageSelector = () => {
   }
 
   const generateNextButton = (currentPage, finalPage) => {
-    const classes = currentPage === finalPage ? "page-item disabled" : "page-item";
+    const classes = currentPage >= finalPage ? "page-item disabled" : "page-item";
     return (
       <li key={finalPage + 1} className={classes}><Link className="page-link" to={createLinkLocation(location, currentPage+1)}>Next</Link></li>
     )

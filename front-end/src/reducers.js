@@ -10,6 +10,8 @@ const INITIAL_STATE = {
     totalRecords: null
     
 }
+
+// reducer to store the exact data
 export  const ProductsReducer = (state = INITIAL_STATE, action) => {
 
     switch (action.type) {

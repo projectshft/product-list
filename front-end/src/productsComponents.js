@@ -1,16 +1,23 @@
-import react from 'react'
-import {useSelector} from 'react-redux'
+import react, {useEffect, useState} from 'react'
+import {useSelector , useDispatch} from 'react-redux'
+import { getProducts } from './actions'
+
+// it gets the initial load and and displays the product
 
 const  Products = () => {
+
+
   let mappedData;
+
   const data = useSelector(state => state.products)
+  
 
   for(let i = 0; i < data.length; i++){
     const currElem = data[i]
     
     mappedData = currElem.map((product) => {
       return (
-      <div key={product.name} style={{width: "32vw"}} className="p-3">
+      <div key={product.name} style={{width: "20vw"}} className="p-3">
       <div className="card">
         <div className="card-body">
           <div className="row">
@@ -30,10 +37,12 @@ const  Products = () => {
     })
 
   }
-console.log(mappedData);
+
   return (
     <div className="container-fluid">
+     
     <div className="row">
+    
       <div className="col-md-4">{mappedData[0]}</div>
       <div className="col-md-4">{mappedData[1]}</div>
       <div className="col-md-4">{mappedData[2]}</div>
@@ -41,12 +50,12 @@ console.log(mappedData);
     <div className="row">
       <div className="col-md-4">{mappedData[3]}</div>
       <div className="col-md-4">{mappedData[4]}</div>
-      <div className="col-md-4">{}</div>
+      <div className="col-md-4">{mappedData[5]}</div>
     </div>
     <div className="row">
-      <div className="col-md-4">{}</div>
-      <div className="col-md-4">{}</div>
-      <div className="col-md-4">{}</div>
+      <div className="col-md-4">{mappedData[6]}</div>
+      <div className="col-md-4">{mappedData[7]}</div>
+      <div className="col-md-4">{mappedData[8]}</div>
     </div>
   </div>
   )

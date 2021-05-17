@@ -8,6 +8,8 @@ import promise from 'redux-promise'
 import App from "./App";
 import { ProductsReducer } from "./reducers";
 
+
+
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(

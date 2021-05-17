@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require("./node_modules/express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const bodyParser = require("./node_modules/body-parser");
 const mainRoutes = require("./routes/main");
 
 mongoose.connect("mongodb://localhost/products", {

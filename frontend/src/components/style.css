@@ -1,0 +1,22 @@
+.products-layout {
+  text-align: center;  
+}
+
+.product {
+  border: solid;
+  border-width:  1px;
+  border-style: solid;
+  border-color:#14213d;
+  margin: 10px; 
+}
+
+.main-layout {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px; 
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+}

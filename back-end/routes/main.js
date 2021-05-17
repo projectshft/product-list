@@ -1,26 +1,9 @@
 const router = require('express').Router();
 const faker = require('faker');
 const Product = require('../models/products');
-const Review = require('../models/reviews');
+const Reviews = require('../models/reviews');
 
-// generates fake data
-router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    const product = new Product();
-
-    product.category = faker.commerce.department();
-    product.name = faker.commerce.productName();
-    product.price = faker.commerce.price();
-    product.image = 'https://via.placeholder.com/250?text=Product+Image';
-    product.reviews = [];
-
-    product.save((err) => {
-      if (err) throw err;
-    });
-  }
-});
-
-// gets product by product id but need to figure out error handling
+// gets product by product id
 router.get('/products/:productId', async (req, res) => {
   const passedInId = req.params.productId;
 
@@ -40,7 +23,7 @@ router.get('/products/:product/reviews', (req, res) => {
     });
 });
 
-// posts the product to the database still have to figure error handling
+// posts the product to the database
 router.post('/product', (req, res) => {
   const newProduct = new Product({
     category: req.body.catagory,
@@ -49,10 +32,10 @@ router.post('/product', (req, res) => {
     image: req.body.image,
   });
 
-  newProduct.save((err) => err || console.log('Save is a  Success'));
+  newProduct.save((err) => err || console.log('Save is a Success'));
 });
 
-// deletes product by id but what about more error handeling
+// deletes product by id
 router.delete('/products/:productId', (req, res) => {
   const { productId } = req.params;
 
@@ -63,7 +46,7 @@ router.delete('/products/:productId', (req, res) => {
   );
 });
 
-// posts a review to the product sort of or i think
+// posts a review to the product
 router.post('/products/:product/reviews', (req, res) => {
   const reviewBody = req.body;
   const product = Product.findById(
@@ -72,7 +55,7 @@ router.post('/products/:product/reviews', (req, res) => {
   );
 
   product.exec().then((product) => {
-    const review = new Review({
+    const review = new Reviews({
       userName: reviewBody.userName,
       text: reviewBody.text,
       productId: product._id,
@@ -84,19 +67,34 @@ router.post('/products/:product/reviews', (req, res) => {
   });
 });
 
+// deletes a review by its id
+router.delete('/reviews/:review', (req, res) => {
+  Reviews.deleteOne({ _id: req.params.review }, (err) =>
+    err
+      ? console.log(`Cast Error: No review with that ID`)
+      : console.log('success')
+  );
+
+  res.status(200).end();
+});
+
 // gets products based on parameters the route will look like
 //   /products?page=3&category=games&price=desc or asc
 router.get('/products', async (req, res) => {
   const perPage = 9;
-  const page = Math.max(0, req.query.page) || 1;
+  const page = req.query.page || 1;
 
+  // pipeline optimazation for aggregation
   const getPaginationPipeline = (pageNo, pageSize) => [
     {
+      // allows to create multiple aggregations within single stage
       $facet: {
         metadata: [
+          // count of documents & adds more fields
           { $count: 'total' },
           { $addFields: { page: pageNo, limit: pageSize } },
         ],
+        // pagination for total documents
         pageData: [
           { $skip: pageSize * pageNo - pageSize },
           { $limit: pageSize },
@@ -104,12 +102,15 @@ router.get('/products', async (req, res) => {
       },
     },
     {
+      // passes specified requested fields to next stage
       $project: {
         pageData: 1,
+        // the elements index
         page: { $arrayElemAt: ['$metadata.page', 0] },
         total: { $arrayElemAt: ['$metadata.total', 0] },
         limit: { $arrayElemAt: ['$metadata.limit', 0] },
         pages: {
+          // gets smallest number then divides by pagesize
           $ceil: {
             $divide: [{ $arrayElemAt: ['$metadata.total', 0] }, pageSize],
           },
@@ -118,14 +119,21 @@ router.get('/products', async (req, res) => {
     },
   ];
 
+  // collection aggreagation
   const products = await Product.aggregate([
     {
+      // matches the name and category to to get the documents options makes them lowercase
       $match: {
         name: { $regex: req.query.name || '', $options: 'i' },
         category: { $regex: req.query.category || '', $options: 'i' },
       },
     },
-    { $sort: { price: Number(req.query.sort) || 1 } },
+
+    // sorts by passing 1 for ascending or -1 for descending
+    {
+      $sort: { price: Number(req.query.sort) || 1 },
+    },
+    // optimized pipeline stage
     ...getPaginationPipeline(page, perPage),
   ]).exec();
 
@@ -133,3 +141,20 @@ router.get('/products', async (req, res) => {
 });
 
 module.exports = router;
+
+// // generates fake data
+// router.get('/generate-fake-data', (req, res, next) => {
+//   for (let i = 0; i < 90; i++) {
+//     const product = new Product();
+
+//     product.category = faker.commerce.department();
+//     product.name = faker.commerce.productName();
+//     product.price = faker.commerce.price();
+//     product.image = 'https://via.placeholder.com/250?text=Product+Image';
+//     product.reviews = [];
+
+//     product.save((err) => {
+//       if (err) throw err;
+//     });
+//   }
+// });

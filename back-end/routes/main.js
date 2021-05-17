@@ -82,34 +82,54 @@ router.post('/products/:product/reviews', (req, res) => {
     product.save();
     res.json([product, review]);
   });
+});
 
-  // gets products based on parameters the route will look like
-  //   /products?page=3&category=games&price=highest
-  router.get('/products', (req, res, next) => {
-    // number of pages to return
-    const perPage = 9;
-    const { category } = req.query || '';
-    // return the first page by default
-    const { page } = req.query;
+// gets products based on parameters the route will look like
+//   /products?page=3&category=games&price=desc or asc
+router.get('/products', async (req, res) => {
+  const perPage = 9;
+  const page = Math.max(0, req.query.page) || 1;
 
-    Promise.all([
-      Product.find({})
-        .skip(perPage * page - perPage)
-        .limit(perPage),
-      Product.find({ category }),
-    ]).then((err, result) => {
-      res.send(result);
-    });
-  });
+  const getPaginationPipeline = (pageNo, pageSize) => [
+    {
+      $facet: {
+        metadata: [
+          { $count: 'total' },
+          { $addFields: { page: pageNo, limit: pageSize } },
+        ],
+        pageData: [
+          { $skip: pageSize * pageNo - pageSize },
+          { $limit: pageSize },
+        ],
+      },
+    },
+    {
+      $project: {
+        pageData: 1,
+        page: { $arrayElemAt: ['$metadata.page', 0] },
+        total: { $arrayElemAt: ['$metadata.total', 0] },
+        limit: { $arrayElemAt: ['$metadata.limit', 0] },
+        pages: {
+          $ceil: {
+            $divide: [{ $arrayElemAt: ['$metadata.total', 0] }, pageSize],
+          },
+        },
+      },
+    },
+  ];
 
-  // Review.create(req.body, (err, review) => {
-  //   Product.findById(req.params.product).then((product) => {
-  //     review.save();
-  //     product.reviews.push(review);
-  //     product.save();
-  //     res.json(review);
-  //   });
-  // });
+  const products = await Product.aggregate([
+    {
+      $match: {
+        name: { $regex: req.query.name || '', $options: 'i' },
+        category: { $regex: req.query.category || '', $options: 'i' },
+      },
+    },
+    { $sort: { price: Number(req.query.sort) || 1 } },
+    ...getPaginationPipeline(page, perPage),
+  ]).exec();
+
+  res.status(200).send(products);
 });
 
 module.exports = router;

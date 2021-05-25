@@ -31,7 +31,7 @@ router.post('/product', (req, res) => {
     price: req.body.price,
     image: req.body.image,
   });
-
+  console.log(req);
   newProduct.save((err) => err || console.log('Save is a Success'));
 });
 
@@ -79,7 +79,7 @@ router.delete('/reviews/:review', (req, res) => {
 });
 
 // gets products based on parameters the route will look like
-//   /products?page=3&category=games&price=desc or asc
+//   /products?page=3&category=games&sort=-1&name=anynameformat
 router.get('/products', async (req, res) => {
   const perPage = 9;
   const page = req.query.page || 1;

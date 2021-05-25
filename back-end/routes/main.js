@@ -82,10 +82,12 @@ router.delete('/reviews/:review', (req, res) => {
 //   /products?page=3&category=games&sort=-1&name=anynameformat
 router.get('/products', async (req, res) => {
   const perPage = 9;
+
   const page = req.query.page || 1;
 
   // pipeline optimazation for aggregation
   const getPaginationPipeline = (pageNo, pageSize) => [
+
     {
       // allows to create multiple aggregations within single stage
       $facet: {
@@ -101,11 +103,12 @@ router.get('/products', async (req, res) => {
         ],
       },
     },
+    //--------------------------------------------------------------------------------
     {
       // passes specified requested fields to next stage
       $project: {
         pageData: 1,
-        // the elements index
+        // the elements index 
         page: { $arrayElemAt: ['$metadata.page', 0] },
         total: { $arrayElemAt: ['$metadata.total', 0] },
         limit: { $arrayElemAt: ['$metadata.limit', 0] },
@@ -129,10 +132,13 @@ router.get('/products', async (req, res) => {
       },
     },
 
+    //-------------------------------------------------------------------
+
     // sorts by passing 1 for ascending or -1 for descending
     {
       $sort: { price: Number(req.query.sort) || 1 },
     },
+    //------------------------------------------------------------------
     // optimized pipeline stage
     ...getPaginationPipeline(page, perPage),
   ]).exec();

@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const faker = require('faker');
-const Product = require('../models/products');
+const Products = require('../models/products');
 const Reviews = require('../models/reviews');
 
 // gets product by product id
 router.get('/products/:productId', async (req, res) => {
   const passedInId = req.params.productId;
 
-  const dbQuery = await Product.find(
+  const dbQuery = await Products.find(
     { _id: passedInId },
     (err, product) => err || product
   );
@@ -16,7 +16,7 @@ router.get('/products/:productId', async (req, res) => {
 
 // gets the review for that product id
 router.get('/products/:product/reviews', (req, res) => {
-  Product.findOne({ _id: req.params.product })
+  Products.findOne({ _id: req.params.product })
     .populate('reviews')
     .exec((err, product) => {
       res.json(product);
@@ -25,7 +25,7 @@ router.get('/products/:product/reviews', (req, res) => {
 
 // posts the product to the database
 router.post('/product', (req, res) => {
-  const newProduct = new Product({
+  const newProduct = new Products({
     category: req.body.catagory,
     name: req.body.name,
     price: req.body.price,
@@ -39,7 +39,7 @@ router.post('/product', (req, res) => {
 router.delete('/products/:productId', (req, res) => {
   const { productId } = req.params;
 
-  Product.deleteOne({ _id: productId }, (err) =>
+  Products.deleteOne({ _id: productId }, (err) =>
     err
       ? console.log(`Cast Error: No product with that ID`)
       : console.log('success')
@@ -49,7 +49,7 @@ router.delete('/products/:productId', (req, res) => {
 // posts a review to the product
 router.post('/products/:product/reviews', (req, res) => {
   const reviewBody = req.body;
-  const product = Product.findById(
+  const product = Products.findById(
     req.params.product,
     (err, productToReturn) => err || productToReturn
   );
@@ -81,69 +81,48 @@ router.delete('/reviews/:review', (req, res) => {
 // gets products based on parameters the route will look like
 //   /products?page=3&category=games&sort=-1&name=anynameformat
 router.get('/products', async (req, res) => {
-  const perPage = 9;
+  let sort;
 
-  const page = req.query.page || 1;
+  if (req.query.sort) {
+    if (req.query.sort === 'highest') sort = -1;
+    if (req.query.sort === 'lowest') sort = 1;
+  } else {
+    sort = null;
+  }
 
-  // pipeline optimazation for aggregation
-  const getPaginationPipeline = (pageNo, pageSize) => [
+  const options = {
+    pageNum: parseInt(req.query.page) || 1,
+    name: req.query.name || '',
+    category: req.query.category || '',
+    sort,
+    limit: 9,
+  };
 
+  const categoryDocs = await Products.find(
     {
-      // allows to create multiple aggregations within single stage
-      $facet: {
-        metadata: [
-          // count of documents & adds more fields
-          { $count: 'total' },
-          { $addFields: { page: pageNo, limit: pageSize } },
-        ],
-        // pagination for total documents
-        pageData: [
-          { $skip: pageSize * pageNo - pageSize },
-          { $limit: pageSize },
-        ],
-      },
+      category: { $regex: options.category, $options: 'i' },
     },
-    //--------------------------------------------------------------------------------
+    { reviews: 0 }
+  )
+    .sort({ price: options.sort })
+    .skip(options.limit * options.pageNum - options.limit)
+    .limit(options.limit);
+
+  const nameDocs = await Products.find(
     {
-      // passes specified requested fields to next stage
-      $project: {
-        pageData: 1,
-        // the elements index 
-        page: { $arrayElemAt: ['$metadata.page', 0] },
-        total: { $arrayElemAt: ['$metadata.total', 0] },
-        limit: { $arrayElemAt: ['$metadata.limit', 0] },
-        pages: {
-          // gets smallest number then divides by pagesize
-          $ceil: {
-            $divide: [{ $arrayElemAt: ['$metadata.total', 0] }, pageSize],
-          },
-        },
-      },
+      name: { $regex: options.name, $options: 'i' },
     },
-  ];
+    { reviews: 0 }
+  )
+    .sort({ price: options.sort })
+    .skip(options.limit * options.pageNum - options.limit)
+    .limit(options.limit);
 
-  // collection aggreagation
-  const products = await Product.aggregate([
-    {
-      // matches the name and category to to get the documents options makes them lowercase
-      $match: {
-        name: { $regex: req.query.name || '', $options: 'i' },
-        category: { $regex: req.query.category || '', $options: 'i' },
-      },
-    },
-
-    //-------------------------------------------------------------------
-
-    // sorts by passing 1 for ascending or -1 for descending
-    {
-      $sort: { price: Number(req.query.sort) || 1 },
-    },
-    //------------------------------------------------------------------
-    // optimized pipeline stage
-    ...getPaginationPipeline(page, perPage),
-  ]).exec();
-
-  res.status(200).send(products);
+  if (req.query.category) res.json(categoryDocs).end();
+  else if (req.query.name) res.json(nameDocs).end();
+  else {
+    res.json(categoryDocs).end();
+  }
 });
 
 module.exports = router;

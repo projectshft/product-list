@@ -80,7 +80,7 @@ router.delete('/reviews/:review', (req, res) => {
 
 // gets products based on parameters the route will look like
 //   /products?page=3&category=games&sort=-1&name=anynameformat
-router.get('/products', async (req, res) => {
+router.get('/products', async (req, res, next) => {
   let sort;
 
   if (req.query.sort) {
@@ -98,30 +98,73 @@ router.get('/products', async (req, res) => {
     limit: 9,
   };
 
-  const categoryDocs = await Products.find(
-    {
-      category: { $regex: options.category, $options: 'i' },
-    },
-    { reviews: 0 }
-  )
-    .sort({ price: options.sort })
-    .skip(options.limit * options.pageNum - options.limit)
-    .limit(options.limit);
+  const query = {
+    category: { $regex: options.category, $options: 'i' },
+    name: { $regex: options.name, $options: 'i' },
+  };
 
-  const nameDocs = await Products.find(
-    {
-      name: { $regex: options.name, $options: 'i' },
-    },
-    { reviews: 0 }
-  )
-    .sort({ price: options.sort })
-    .skip(options.limit * options.pageNum - options.limit)
-    .limit(options.limit);
+  if (req.query.category) {
+    const [docs, totalDocs] = await Promise.all([
+      Products.find(
+        {
+          category: query.category,
+        },
+        { reviews: 0 }
+      )
+        .sort({ price: options.sort })
+        .skip(options.limit * options.pageNum - options.limit)
+        .limit(options.limit),
 
-  if (req.query.category) res.json(categoryDocs).end();
-  else if (req.query.name) res.json(nameDocs).end();
-  else {
-    res.json(categoryDocs).end();
+      Products.find(
+        {
+          category: query.category,
+        },
+        { reviews: 0 }
+      ).countDocuments(),
+    ]);
+    const totalPages = Math.ceil(totalDocs / options.limit);
+
+    res.status(200).json([docs, totalDocs, totalPages]).end();
+  } else if (req.query.name) {
+    const [docs, totalDocs] = await Promise.all([
+      Products.find(
+        {
+          name: query.name,
+        },
+        { reviews: 0 }
+      )
+        .sort({ price: options.sort })
+        .skip(options.limit * options.pageNum - options.limit)
+        .limit(options.limit),
+
+      Products.find(
+        {
+          name: query.name,
+        },
+        { reviews: 0 }
+      ).countDocuments(),
+    ]);
+    const totalPages = Math.ceil(totalDocs / options.limit);
+
+    res.status(200).json([docs, totalDocs, totalPages]).end();
+  } else {
+    const [docs, totalDocs] = await Promise.all([
+      Products.find({}, { reviews: 0 })
+        .sort({ price: options.sort })
+        .skip(options.limit * options.pageNum - options.limit)
+        .limit(options.limit),
+
+      Products.find(
+        {
+          name: query.name,
+        },
+        { reviews: 0 }
+      ).countDocuments(),
+    ]);
+
+    const totalPages = Math.ceil(totalDocs / options.limit);
+
+    res.status(200).json([docs, totalDocs, totalPages]).end();
   }
 });
 

@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, NavDropdown, FormControl, Form, DropdownButton, Button} from 'react-bootstrap'
 import Products from './productsComponents'
 
-import { getProducts, GET_PRODUCTS} from './actions'
+import { getProducts} from './actions'
 import { useDispatch, useSelector} from 'react-redux'
 import isEmpty from 'lodash.isempty'
 
@@ -15,11 +15,11 @@ const  App = ()  =>{
 
  const dispatch =  useDispatch()
 
- const data = useSelector(state => state.products)
-
+ const data = useSelector(state => state)
+ console.log(data)
  // state to control data on page
   const [valueType,setValueType]=useState('name');
-  const [priceType,setPriceType] = useState(1)
+  const [priceType,setPriceType] = useState("lowest")
   const [pageNumber, setPageNumber] = useState(1)
   const [name, setName] = useState('')
   const [category, setCategory] = useState('')
@@ -28,7 +28,7 @@ const  App = ()  =>{
  useEffect(() => {
   dispatch(getProducts(pageNumber, name, category, priceType))
   // eslint-disable-next-line react-hooks/exhaustive-deps
- },[getProducts])
+ },[getProducts, pageNumber])
 
 // renders product display if they are not empty
 const renderProducts = () => {
@@ -44,27 +44,28 @@ const renderProducts = () => {
 // onClick sets the state for next page then kicks off another request for that page data
 const renderNextPage = (e) => {
   e.preventDefault()
-  setPageNumber(prevState => prevState + 1)
-  dispatch(getProducts(pageNumber, name, category, priceType))
+  if(pageNumber == data.totalPages) setPageNumber(data.totalPages)
+  else {
+    setPageNumber(prevState => prevState + 1)
+  }
+  
 }
 
 // onClick sets the state for previouse page then kicks off another request for that page data
 const renderPrevPage = (e) => {
   e.preventDefault()
-  if(pageNumber < 0){
-    setPageNumber(prevState => prevState + 1)
+  if(pageNumber === 1){
+    setPageNumber(1)
   }
   else {
     setPageNumber(prevState => prevState - 1)
-    dispatch(getProducts(pageNumber, name, category, priceType))
   }
- 
 }
 
 // onClick of search kicks off a request with  the updated state
 const HandleOnSearch = (e) => {
   e.preventDefault()
-
+  setPageNumber(1)
   dispatch(getProducts(pageNumber, name, category, priceType))
 }
 
@@ -77,23 +78,26 @@ const HandleOnSearch = (e) => {
   // onSelect sets the state to either 1 for ascending or -1 for descending
   const handlePriceType = (e) => {
     if(e == 'highest'){
-      setPriceType(1)
+      setPriceType("highest")
       
     }
     else if (e == 'lowest'){
-      setPriceType(-1)
+      setPriceType("lowest")
     }
   }
 //onSelect sets the state to either name or category to filter search 
 // search does not have to have exact words it can be anything by utilizing backend aggregation
   const handleOnChange = (e) => {
     if (valueType == 'name') {
+      setCategory('')
       setName(e.target.value)
+      
     }
     else if (valueType == 'category'){
+      setName('')
       setCategory(e.target.value)
+      
     }
-    
   }
 
   return (

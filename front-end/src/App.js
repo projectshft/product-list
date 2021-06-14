@@ -16,7 +16,7 @@ const  App = ()  =>{
  const dispatch =  useDispatch()
 
  const data = useSelector(state => state)
- console.log(data)
+ 
  // state to control data on page
   const [valueType,setValueType]=useState('name');
   const [priceType,setPriceType] = useState("lowest")
@@ -41,7 +41,7 @@ const renderProducts = () => {
   }
 }
 
-// onClick sets the state for next page then kicks off another request for that page data
+// onClick sets the state for next page, prevents from going over total pages
 const renderNextPage = (e) => {
   e.preventDefault()
   if(pageNumber == data.totalPages) setPageNumber(data.totalPages)
@@ -51,7 +51,7 @@ const renderNextPage = (e) => {
   
 }
 
-// onClick sets the state for previouse page then kicks off another request for that page data
+// onClick sets the state for previouse page, prevents from going below page 1
 const renderPrevPage = (e) => {
   e.preventDefault()
   if(pageNumber === 1){
@@ -62,7 +62,7 @@ const renderPrevPage = (e) => {
   }
 }
 
-// onClick of search kicks off a request with  the updated state
+// onClick of search kicks off a request with  the updated state 
 const HandleOnSearch = (e) => {
   e.preventDefault()
   setPageNumber(1)
@@ -75,7 +75,7 @@ const HandleOnSearch = (e) => {
     setValueType(e)
   }
 
-  // onSelect sets the state to either 1 for ascending or -1 for descending
+  // onSelect sets the state to either highest or lowest price
   const handlePriceType = (e) => {
     if(e == 'highest'){
       setPriceType("highest")
@@ -86,7 +86,7 @@ const HandleOnSearch = (e) => {
     }
   }
 //onSelect sets the state to either name or category to filter search 
-// search does not have to have exact words it can be anything by utilizing backend aggregation
+// search does not have to have exact words it can be anything varaition of characters
   const handleOnChange = (e) => {
     if (valueType == 'name') {
       setCategory('')

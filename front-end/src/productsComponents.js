@@ -1,6 +1,4 @@
-import react, {useEffect, useState} from 'react'
-import {useSelector , useDispatch} from 'react-redux'
-import { getProducts } from './actions'
+import {useSelector} from 'react-redux'
 
 // it gets the initial load and and displays the product
 
@@ -9,6 +7,7 @@ const  Products = () => {
 
   const data = useSelector(state => state.products)
     
+  // maps through the state and puts into cards
   const mappedData =  data.map((product) => {
       return (
       <div key={product.name} style={{width: "20vw"}} className="p-3">
@@ -30,7 +29,6 @@ const  Products = () => {
       )
     })
 
-  console.log(mappedData)
 
   return (
     <div className="container-fluid">

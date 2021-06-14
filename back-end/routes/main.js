@@ -78,18 +78,18 @@ router.delete('/reviews/:review', (req, res) => {
   res.status(200).end();
 });
 
-// gets products based on parameters the route will look like
-//   /products?page=3&category=games&sort=-1&name=anynameformat
+// gets products based on query parameters
+//   /products?page=3&category=games&sort=highest&name=anynameformat
 router.get('/products', async (req, res, next) => {
   let sort;
 
+  // conditional to set price sort
   if (req.query.sort) {
     if (req.query.sort === 'highest') sort = -1;
     if (req.query.sort === 'lowest') sort = 1;
-  } else {
-    sort = null;
   }
 
+  // object options for query
   const options = {
     pageNum: parseInt(req.query.page) || 1,
     name: req.query.name || '',
@@ -98,12 +98,15 @@ router.get('/products', async (req, res, next) => {
     limit: 9,
   };
 
+  // a helper for Product.find()
   const query = {
     category: { $regex: options.category, $options: 'i' },
     name: { $regex: options.name, $options: 'i' },
   };
 
+  // if the request has a category truthy in it run this
   if (req.query.category) {
+    // querying DB for the documents based on search also getting back the total documents
     const [docs, totalDocs] = await Promise.all([
       Products.find(
         {
@@ -122,10 +125,16 @@ router.get('/products', async (req, res, next) => {
         { reviews: 0 }
       ).countDocuments(),
     ]);
+
+    // rounding up for total pages we will have for FE pagiination
     const totalPages = Math.ceil(totalDocs / options.limit);
 
     res.status(200).json([docs, totalDocs, totalPages]).end();
-  } else if (req.query.name) {
+  }
+
+  // if the req has a truthy name query
+  else if (req.query.name) {
+    // querying DB for the documents based on search also  getting back the total documents
     const [docs, totalDocs] = await Promise.all([
       Products.find(
         {
@@ -144,10 +153,14 @@ router.get('/products', async (req, res, next) => {
         { reviews: 0 }
       ).countDocuments(),
     ]);
+
+    // rounding up for total pages we will have for FE pagiination
     const totalPages = Math.ceil(totalDocs / options.limit);
 
     res.status(200).json([docs, totalDocs, totalPages]).end();
-  } else {
+  }
+  // if there is no name or category query then run this code to get back all documents
+  else {
     const [docs, totalDocs] = await Promise.all([
       Products.find({}, { reviews: 0 })
         .sort({ price: options.sort })

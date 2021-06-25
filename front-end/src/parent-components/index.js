@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import promise from 'redux-promise'
 
 import App from "./App";
-import { ProductsReducer } from "./reducers";
+import { ProductsReducer } from "../reducers/reducers";
 
 
 

@@ -1,6 +1,6 @@
 
 
-import {GET_PRODUCTS} from "./actions"
+import {GET_PRODUCTS} from "../actions/actions"
 
 const INITIAL_STATE = {
     products: [],

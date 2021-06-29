@@ -5,15 +5,15 @@ import { createStore , applyMiddleware} from "redux";
 import 'bootstrap/dist/css/bootstrap.css';
 import promise from 'redux-promise'
 
-import App from "./App";
-import { ProductsReducer } from "../reducers/reducers";
+import App from "./parent-components/App";
+import  RootReducer  from './reducers/combined-reducers'
 
 
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(ProductsReducer)}>
+  <Provider store={createStoreWithMiddleware(RootReducer)}>
     <App />
   </Provider>,
   document.getElementById('root')

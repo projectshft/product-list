@@ -105,39 +105,12 @@ router.get('/products', async (req, res, next) => {
   };
 
   // if the request has a category truthy in it run this
-  if (req.query.category) {
+  if (req.query.category || req.query.name) {
     // querying DB for the documents based on search also getting back the total documents
-    const [docs, totalDocs] = await Promise.all([
+    const [docs, totalDocs, categories] = await Promise.all([
       Products.find(
         {
           category: query.category,
-        },
-        { reviews: 0 }
-      )
-        .sort({ price: options.sort })
-        .skip(options.limit * options.pageNum - options.limit)
-        .limit(options.limit),
-
-      Products.find(
-        {
-          category: query.category,
-        },
-        { reviews: 0 }
-      ).countDocuments(),
-    ]);
-
-    // rounding up for total pages we will have for FE pagiination
-    const totalPages = Math.ceil(totalDocs / options.limit);
-
-    res.status(200).json([docs, totalDocs, totalPages]).end();
-  }
-
-  // if the req has a truthy name query
-  else if (req.query.name) {
-    // querying DB for the documents based on search also  getting back the total documents
-    const [docs, totalDocs] = await Promise.all([
-      Products.find(
-        {
           name: query.name,
         },
         { reviews: 0 }
@@ -149,19 +122,53 @@ router.get('/products', async (req, res, next) => {
       Products.find(
         {
           name: query.name,
+          category: query.category,
         },
         { reviews: 0 }
       ).countDocuments(),
+
+      Products.distinct('category'),
     ]);
 
     // rounding up for total pages we will have for FE pagiination
     const totalPages = Math.ceil(totalDocs / options.limit);
 
-    res.status(200).json([docs, totalDocs, totalPages]).end();
+    res
+      .status(200)
+      .json([docs, totalDocs, totalPages, categories, options.pageNum])
+      .end();
   }
+
+  // // if the req has a truthy name query
+  // else if (req.query.name) {
+  //   // querying DB for the documents based on search also  getting back the total documents
+  //   const [docs, totalDocs] = await Promise.all([
+  //     Products.find(
+  //       {
+  //         name: query.name,
+  //       },
+  //       { reviews: 0 }
+  //     )
+  //       .sort({ price: options.sort })
+  //       .skip(options.limit * options.pageNum - options.limit)
+  //       .limit(options.limit),
+
+  //     Products.find(
+  //       {
+  //         name: query.name,
+  //       },
+  //       { reviews: 0 }
+  //     ).countDocuments(),
+  //   ]);
+
+  //   // rounding up for total pages we will have for FE pagiination
+  //   const totalPages = Math.ceil(totalDocs / options.limit);
+
+  //   res.status(200).json([docs, totalDocs, totalPages]).end();
+  // }
   // if there is no name or category query then run this code to get back all documents
   else {
-    const [docs, totalDocs] = await Promise.all([
+    const [docs, totalDocs, categories] = await Promise.all([
       Products.find({}, { reviews: 0 })
         .sort({ price: options.sort })
         .skip(options.limit * options.pageNum - options.limit)
@@ -173,11 +180,16 @@ router.get('/products', async (req, res, next) => {
         },
         { reviews: 0 }
       ).countDocuments(),
+
+      Products.distinct('category'),
     ]);
 
     const totalPages = Math.ceil(totalDocs / options.limit);
 
-    res.status(200).json([docs, totalDocs, totalPages]).end();
+    res
+      .status(200)
+      .json([docs, totalDocs, totalPages, categories, options.pageNum])
+      .end();
   }
 });
 

@@ -1,0 +1,24 @@
+#dropdown-item-button{
+  width: 100%
+}
+
+
+
+
+.dropdown-btn{
+  width: 100%
+}
+
+
+.dropdown-toggle,
+.dropdown-menu {
+  width: 100%;
+}
+
+.input-group{
+  width: 100%
+}
+
+.search-icon:hover{
+  cursor:pointer;
+}

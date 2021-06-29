@@ -13,14 +13,22 @@ const FilterArea = () => {
   const [categoryValue, setCategoryValue] = useState('category')
 
   const dispatch = useDispatch()
+  
+  
+  let productCategories
 
   // gets available categories from back end
   const categories = useSelector(state => state.products.categories)
 
   // maps through the categories to render them
-  const productCategory = categories.map((category) => {
+  if(categories){
+    productCategories = categories.map((category) => {
       return <Dropdown.Item eventKey={category}>{category}</Dropdown.Item>
-  })
+    })
+  }
+  else{
+    productCategories = <li>No categories to list</li>
+  }
 
   // on change of name sets local state to the value
     const handleNameChange = (e) => {
@@ -68,7 +76,7 @@ const FilterArea = () => {
         <DropdownButton onSelect={handleCategorySelect} id="dropdown-basic-button" title={`Sort By ${categoryValue}`} className="col-3 " variant="info">
           <p href="#" role="button" className="dropdown-item" onClick={handleAllCategorySelect}>All</p>
           <hr/>
-          {productCategory}
+          {productCategories}
         </DropdownButton>
 
         <DropdownButton onSelect={handlePriceType} id="dropdown-basic-button" title="Sort By Price" className="col-3" variant="info">

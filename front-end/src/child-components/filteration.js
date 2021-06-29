@@ -14,7 +14,6 @@ const FilterArea = () => {
 
   const dispatch = useDispatch()
   
-  
   let productCategories
 
   // gets available categories from back end

@@ -22,3 +22,50 @@
 .search-icon:hover{
   cursor:pointer;
 }
+
+.sr-only{
+  display: none;
+}
+
+.pagination{
+  justify-content: center;
+}
+
+.btn-info{
+  background: #fff;
+  border-radius: 7px;
+  border: 1px solid rgba(0,0,0,0.15);
+  box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+  cursor: pointer;
+  outline: none;
+
+  /* Font settings */
+  font-weight: bold;
+  color: #8AA8BD;
+}
+
+.btn-check:focus + .btn-info, .btn-info:focus{
+  background: #fff;
+  border-radius: 7px;
+  border: 1px solid rgba(0,0,0,0.15);
+  box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+  cursor: pointer;
+  outline: none;
+
+  /* Font settings */
+  font-weight: bold;
+  color: #8AA8BD;
+}
+
+.btn-check:checked + .btn-info, .btn-check:active + .btn-info, .btn-info:active, .btn-info.active, .show > .btn-info.dropdown-toggle{
+  background: #fff;
+  border-radius: 7px;
+  border: 1px solid rgba(0,0,0,0.15);
+  box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+  cursor: pointer;
+  outline: none;
+
+  /* Font settings */
+  font-weight: bold;
+  color: #8AA8BD;
+}

@@ -6,17 +6,19 @@ import Paginate from '../child-components/pagination'
 import FilterArea from '../child-components/filteration'
 
 const App = () => {
-  const filteredData = useSelector(state => state.filterData)
-  
+
   const dispatch = useDispatch()
 
-    useEffect(() => {
-    dispatch(getProducts(filteredData.pageNumber, filteredData.name,filteredData.category, filteredData.priceType))
+  const filteredData = useSelector(state => state.filterData)
+  
+  //gets initial load and depends on change of filteration state
+  useEffect(() => {
+  dispatch(getProducts(filteredData.pageNumber, filteredData.name,filteredData.category, filteredData.priceType))
   }, 
-  [filteredData.pageNumber,
-   filteredData.name,
-   filteredData.category,
-   filteredData.priceType])
+    [filteredData.pageNumber,
+    filteredData.name,
+    filteredData.category,
+    filteredData.priceType])
 
   return (
     <React.Fragment>

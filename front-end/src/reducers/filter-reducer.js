@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   priceType: ''
 }
 
+// filter reducer
 export const FilterReducer = (state = INITIAL_STATE, action) => {
 
   switch (action.type) {

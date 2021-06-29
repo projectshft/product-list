@@ -7,46 +7,45 @@ import { getPage, getName, getCategory, getPriceType  } from "../actions/actions
 
 const FilterArea = () => {
 
+  // name state
   const [name , setName] = useState('')
-  const [category, setCategory] = useState('')
-  const [categoryValue, setCategoryValue] = useState('')
+  //category state
+  const [categoryValue, setCategoryValue] = useState('category')
 
   const dispatch = useDispatch()
 
-  let productCategory;
-
+  // gets available categories from back end
   const categories = useSelector(state => state.products.categories)
 
-  if(categories){
-    productCategory = categories.map((category) => {
+  // maps through the categories to render them
+  const productCategory = categories.map((category) => {
       return <Dropdown.Item eventKey={category}>{category}</Dropdown.Item>
   })
-  }
-  else {
-    productCategory = <Dropdown.Item >No categories to</Dropdown.Item>
-  }
 
-
+  // on change of name sets local state to the value
     const handleNameChange = (e) => {
       setName(e.target.value)
     }
 
+    // on click of name search dispatches the action while setting page to 1
     const handleNameSubmit = () => {
-      setCategory('Category')
       dispatch(getPage(1))
       dispatch(getName(name))
     }
 
+    // on select of category sets page to one and dispatches category 
     const handleCategorySelect = (e) => {
       setCategoryValue(e)
       dispatch(getPage(1))
       dispatch(getCategory(e))
     }
+    // handles the click of  all categories 
     const handleAllCategorySelect = (e) => {
       setCategoryValue('Category')
       dispatch(getCategory(''))
     }
 
+    // handles the price type
     const handlePriceType = (e) => {
       dispatch(getPriceType(e))
     }
@@ -55,25 +54,24 @@ const FilterArea = () => {
     return (
       <div className="container-fluid row mt-2">
 
-          <InputGroup className="col">
-            <FormControl
-              type="text"
-              placeholder="Search product name"
-              aria-label="Input group example"
-              aria-describedby="btnGroupAddon"
-              onChange={handleNameChange}
-            />
-            <InputGroup.Text onClick={handleNameSubmit} id="btnGroupAddon" className="search-icon">search</InputGroup.Text>
-          </InputGroup>
+        <InputGroup className="col-md">
+          <FormControl
+            type="text"
+            placeholder="Search product name"
+            aria-label="Input group example"
+            aria-describedby="btnGroupAddon"
+            onChange={handleNameChange}
+          />
+          <InputGroup.Text onClick={handleNameSubmit} id="btnGroupAddon" className="search-icon">search</InputGroup.Text>
+        </InputGroup>
       
-
-        <DropdownButton onSelect={handleCategorySelect} id="dropdown-basic-button" title={`Sort By ${categoryValue}`} className="col">
-          <p role="button" className="dropdown-item" onClick={handleAllCategorySelect}>All</p>
+        <DropdownButton onSelect={handleCategorySelect} id="dropdown-basic-button" title={`Sort By ${categoryValue}`} className="col-3 " variant="info">
+          <p href="#" role="button" className="dropdown-item" onClick={handleAllCategorySelect}>All</p>
+          <hr/>
           {productCategory}
         </DropdownButton>
 
-
-        <DropdownButton onSelect={handlePriceType} id="dropdown-basic-button" title="Sort By Price" className="col">
+        <DropdownButton onSelect={handlePriceType} id="dropdown-basic-button" title="Sort By Price" className="col-3" variant="info">
           <Dropdown.Item eventKey="highest">Highest</Dropdown.Item>
           <Dropdown.Item eventKey="lowest">Lowest</Dropdown.Item>
         </DropdownButton>

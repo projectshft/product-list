@@ -1,13 +1,14 @@
-import { useState } from "react"
 import { useSelector } from "react-redux"
-import { ProductsReducer } from "../reducers/products-reducer"
+
 
 
 
 const ProductsBody = () => {
   
-  const productData = useSelector(state => state.products.products)
   
+  const productData = useSelector(state => state.products.products)
+
+    // maps through the products and returns a card element
     const mappedData = productData.map((product) => {
       return (
         <div key={product.name} style={{width: "20vw"}} className="p-3">
@@ -28,26 +29,39 @@ const ProductsBody = () => {
       </div> 
       )
     })
+
+    // function to check if products is populated if not render products not found element
+    const renderProducts = () => {
+      if (productData.length){
+        return (
+          <>
+            <div className="row">
+              <div className="col-md-4">{mappedData[0]}</div>
+              <div className="col-md-4">{mappedData[1]}</div>
+              <div className="col-md-4">{mappedData[2]}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-4">{mappedData[3]}</div>
+              <div className="col-md-4">{mappedData[4]}</div>
+              <div className="col-md-4">{mappedData[5]}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-4">{mappedData[6]}</div>
+              <div className="col-md-4">{mappedData[7]}</div>
+              <div className="col-md-4">{mappedData[8]}</div>
+            </div>
+          </>
+        )
+      }
+      else {
+        return <h4 className="mt-4">No products found.</h4>
+      }
+    }
+
   return (
     <div className="container-fluid">
-     
-    <div className="row">
-    
-        <div className="col-md-4">{mappedData[0]}</div>
-        <div className="col-md-4">{mappedData[1]}</div>
-        <div className="col-md-4">{mappedData[2]}</div>
-      </div>
-      <div className="row">
-        <div className="col-md-4">{mappedData[3]}</div>
-        <div className="col-md-4">{mappedData[4]}</div>
-        <div className="col-md-4">{mappedData[5]}</div>
-      </div>
-      <div className="row">
-        <div className="col-md-4">{mappedData[6]}</div>
-        <div className="col-md-4">{mappedData[7]}</div>
-        <div className="col-md-4">{mappedData[8]}</div>
+      {renderProducts()}
     </div>
-  </div>
   )
 }
 

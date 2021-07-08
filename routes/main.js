@@ -8,31 +8,38 @@ router.get("/products", (req, res, next) => {
   const resultsPerPage = 9;
   const { page } = req.query || 1;
   const { category } = req.query || null;
+  const { price } = req.query || "";
 
-  const formattedCategory =
-    category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+  let lookup = Product;
+
+  if (category) {
+    let formattedCategory =
+      category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+
+    lookup = lookup.find({ category: formattedCategory });
+  }
 
   if (!category) {
-    Product.find({})
-      .skip(resultsPerPage * page - resultsPerPage)
-      .limit(resultsPerPage)
-      .exec((err, products) => {
-        Product.countDocuments().exec((err, count) => {
-          if (err) return next(err);
-          else res.send(products);
-        });
-      });
-  } else {
-    Product.find({ category: formattedCategory })
-      .skip(resultsPerPage * page - resultsPerPage)
-      .limit(resultsPerPage)
-      .exec((err, products) => {
-        Product.countDocuments().exec((err, count) => {
-          if (err) return next(err);
-          else res.send(products);
-        });
-      });
+    lookup = lookup.find({});
   }
+
+  if (price) {
+    let sortValue = null;
+    if (price === "highest") sortValue = -1;
+    if (price === "lowest") sortValue = 1;
+
+    lookup = lookup.sort({ price: sortValue });
+  }
+
+  lookup
+    .skip(resultsPerPage * page - resultsPerPage)
+    .limit(resultsPerPage)
+    .exec((err, products) => {
+      Product.countDocuments().exec((err, count) => {
+        if (err) return next(err);
+        else res.send(products);
+      });
+    });
 });
 
 router.get("/products/:product", (req, res, next) => {

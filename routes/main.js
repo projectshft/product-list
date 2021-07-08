@@ -5,12 +5,17 @@ const Product = require("../models/product").Product;
 const Review = require("../models/review").Review;
 
 router.get("/products", (req, res, next) => {
-  const resultsPerPage = 9;
-  const { page } = req.query || 1;
+  const { query } = req.query || "";
   const { category } = req.query || null;
   const { price } = req.query || "";
+  const { page } = req.query || 1;
+  const resultsPerPage = 9;
 
   let lookup = Product;
+
+  if (query) {
+    lookup = lookup.find({ name: new RegExp(query, "i") });
+  }
 
   if (category) {
     let formattedCategory =

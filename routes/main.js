@@ -56,6 +56,7 @@ router.post("/products", (req, res, next) => {
   });
 
   newProduct.save((err, product) => {
+    // Why return next(err)?
     if (err) return next(err);
 
     res.send(product);
@@ -63,17 +64,26 @@ router.post("/products", (req, res, next) => {
 });
 
 router.post("/products/:product/reviews", (req, res, next) => {
-  const { userName, text, product_id } = req.body;
+  const { userName, text } = req.body;
   const { product } = req.params;
 
-  // How do I add the Object Id of the product?
+  // How do I push this review id to the product reviews array?
   const newReview = new Review({
     userName: userName,
     text: text,
-    product_id: product_id,
+    product_id: product,
   });
 
-  // newReview.save();
+  newReview.save();
+
+  let newReviewId = newReview._id;
+  Product.updateOne({ _id: product }, { $push: { reviews: newReviewId } }).exec(
+    (err, data) => {
+      if (err) return next(err);
+
+      console.log(data);
+    }
+  );
   res.send(newReview);
 });
 
@@ -93,7 +103,15 @@ router.delete("/products/:product", (req, res, next) => {
   });
 });
 
-router.delete("/reviews/:review", (req, res, next) => {});
+router.delete("/reviews/:review", (req, res, next) => {
+  const { review } = req.params;
+
+  Review.remove({ _id: review }).exec((err, review) => {
+    if (err) return next(err);
+
+    res.send(review);
+  });
+});
 
 // router.get("/generate-fake-data", (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {

@@ -12,8 +12,14 @@
 }
 
 .searchBar {
-  width: 40%;
+  display: flex;
+  flex-flow: row;
   padding-right: 10px;
+}
+
+.input-bar {
+  width: 500px;
+  margin-right: 5px;
 }
 
 .category {

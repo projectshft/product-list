@@ -1,41 +1,54 @@
 import React, { useState } from "react";
+import { fetchProducts } from "./actions";
+import { useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.css";
-
 import "./App.css";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("");
+  const [sort, setSort] = useState("");
+  const [page, setPage] = useState(1);
 
-  const handleCategorySelect = (e) => {
+  const dispatch = useDispatch();
+
+  const handleProductSearch = (e) => {
     e.preventDefault();
-    console.log(e);
-    // dispatch(fetchProducts(currentCity));
-    // setCity("");
+    dispatch(fetchProducts(searchTerm, category, sort, page));
   };
 
   return (
     <div className="App">
       <h1 className="text-muted display-1 header">Anazon</h1>
       <div className="customerInput">
-        <div className="searchBar">
-          <input
-            className="form-control"
-            value={searchTerm}
-            placeholder="Search"
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-            }}
-          ></input>
-        </div>
+        <form onSubmit={(e) => handleProductSearch(e)}>
+          <div className="searchBar">
+            <input
+              className="form-control input-bar"
+              // value={searchTerm}
+              placeholder="Enter search term"
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+            ></input>
+            <button className="btn btn-primary col-auto" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+
         <div className="category">
           <select
             className="form-control"
             name="category"
             id="category"
-            onChange={(e) => handleCategorySelect(e)}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              handleProductSearch();
+            }}
           >
             {/* Need to write a function to pull out categories */}
-            <option selected="selected">Select a Category ▼</option>
+            <option selected="defaultValue">Select a Category ▼</option>
             <option value="Automotive">Automotive</option>
             <option value="Baby">Baby</option>
             <option value="Beauty">Beauty</option>
@@ -66,8 +79,12 @@ function App() {
             name="sort"
             id="sort"
             placeholder="Sort by Price"
+            onChange={(e) => {
+              setSort(e.target.value);
+              handleProductSearch();
+            }}
           >
-            <option selected="selected">Sort by ▼</option>
+            <option selected="defaultValue">Sort by ▼</option>
             <option value="highest">Highest</option>
             <option value="lowest">Lowest</option>
           </select>

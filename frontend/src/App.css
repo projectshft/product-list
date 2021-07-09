@@ -1,0 +1,22 @@
+.header {
+  text-align: center;
+}
+
+.customerInput {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.searchBar {
+  width: 40%;
+  padding-right: 10px;
+}
+
+.category {
+  padding-right: 10px;
+  text-align: center;
+}

@@ -1,3 +1,7 @@
+.App {
+  background-color: rgb(221, 219, 217);
+}
+
 .header {
   text-align: center;
 }
@@ -25,4 +29,25 @@
 .category {
   padding-right: 10px;
   text-align: center;
+}
+
+.item-header {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+.product-data {
+  justify-content: center;
+}
+
+.product {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.no-products {
+  padding-left: 50px;
 }

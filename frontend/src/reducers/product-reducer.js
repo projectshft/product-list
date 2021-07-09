@@ -2,10 +2,8 @@ import { FETCH_PRODUCTS } from "../actions";
 
 const DEFAULT_STATE = {
   products: [],
-  category: null,
-  searchTerm: null,
-  sort: null,
-  page: null,
+  count: null,
+  categories: [],
 };
 
 const ProductReducer = function (state = DEFAULT_STATE, action) {
@@ -17,7 +15,9 @@ const ProductReducer = function (state = DEFAULT_STATE, action) {
         };
       }
       return {
-        products: [action.payload.data],
+        products: [action.payload.data.products],
+        count: action.payload.data.count,
+        categories: [action.payload.data.categories],
       };
     default:
       return state;

@@ -40,9 +40,16 @@ router.get("/products", (req, res, next) => {
     .skip(resultsPerPage * page - resultsPerPage)
     .limit(resultsPerPage)
     .exec((err, products) => {
-      Product.countDocuments().exec((err, count) => {
-        if (err) return next(err);
-        else res.send(products);
+      lookup.countDocuments().exec((err, count) => {
+        lookup.distinct("category").exec((err, category) => {
+          if (err) return next(err);
+          else
+            res.send({
+              products: products,
+              count: count,
+              categories: category,
+            });
+        });
       });
     });
 });
@@ -139,20 +146,20 @@ router.delete("/reviews/:review", (req, res, next) => {
   });
 });
 
-router.get("/generate-fake-data", (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    let product = new Product();
+// router.get("/generate-fake-data", (req, res, next) => {
+//   for (let i = 0; i < 90; i++) {
+//     let product = new Product();
 
-    product.category = faker.commerce.department();
-    product.name = faker.commerce.productName();
-    product.price = faker.commerce.price();
-    product.image = "https://via.placeholder.com/250?text=Product+Image";
+//     product.category = faker.commerce.department();
+//     product.name = faker.commerce.productName();
+//     product.price = faker.commerce.price();
+//     product.image = "https://via.placeholder.com/250?text=Product+Image";
 
-    product.save((err) => {
-      if (err) throw err;
-    });
-  }
-  res.end();
-});
+//     product.save((err) => {
+//       if (err) throw err;
+//     });
+//   }
+//   res.end();
+// });
 
 module.exports = router;

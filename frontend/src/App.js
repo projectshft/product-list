@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { fetchProducts } from "./actions";
 import { useDispatch } from "react-redux";
+import ProductData from "./components/productData";
+import Pagination from "./components/pagination";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 
 function App() {
+  const categories = useSelector((state) => state.productData.categories);
+
+  console.log("categories", categories);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
   const [page, setPage] = useState(1);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts(searchTerm, category, sort, page));
+  }, [searchTerm, category, sort, page, dispatch]);
 
   const handleProductSearch = (e) => {
     e.preventDefault();
@@ -25,7 +36,6 @@ function App() {
           <div className="searchBar">
             <input
               className="form-control input-bar"
-              // value={searchTerm}
               placeholder="Enter search term"
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -40,15 +50,16 @@ function App() {
         <div className="category">
           <select
             className="form-control"
+            defaultValue={category}
             name="category"
             id="category"
             onChange={(e) => {
               setCategory(e.target.value);
-              handleProductSearch();
             }}
           >
             {/* Need to write a function to pull out categories */}
             <option selected="defaultValue">Select a Category ▼</option>
+            <option value="">All Categories</option>
             <option value="Automotive">Automotive</option>
             <option value="Baby">Baby</option>
             <option value="Beauty">Beauty</option>
@@ -81,7 +92,6 @@ function App() {
             placeholder="Sort by Price"
             onChange={(e) => {
               setSort(e.target.value);
-              handleProductSearch();
             }}
           >
             <option selected="defaultValue">Sort by ▼</option>
@@ -90,7 +100,12 @@ function App() {
           </select>
         </div>
       </div>
-      <div className="products"></div>
+      <div className="products">
+        <ProductData />
+      </div>
+      <div className="pagination">
+        <Pagination />
+      </div>
     </div>
   );
 }

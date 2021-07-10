@@ -104,7 +104,13 @@ function App() {
       <div>
         <nav aria-label="Page navigation example">
           <ul className="pagination">
-            <Pagination />
+            <Pagination
+              searchTerm={searchTerm}
+              category={category}
+              page={page}
+              sort={sort}
+              setPage={setPage}
+            />
           </ul>
         </nav>
       </div>

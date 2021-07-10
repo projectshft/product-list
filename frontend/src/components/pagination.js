@@ -1,20 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts } from "../actions";
+import React from "react";
+import { useSelector } from "react-redux";
 
-const Pagination = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("");
-  const [sort, setSort] = useState("");
-  const [page, setPage] = useState(1);
+const Pagination = (props) => {
   const count = useSelector((state) => state.productData.count);
+
   let paginationPages = [];
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchProducts(searchTerm, category, sort, page));
-  }, [searchTerm, category, sort, page, dispatch]);
 
   if (count !== undefined) {
     const productsPerPage = 9;
@@ -35,7 +25,7 @@ const Pagination = () => {
         className="page-link"
         type="button"
         value={page}
-        onClick={(e) => setPage(e.target.value)}
+        onClick={(e) => props.setPage(e.target.value)}
       >
         {page}
       </button>

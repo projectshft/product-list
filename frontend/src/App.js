@@ -10,8 +10,6 @@ import "./App.css";
 function App() {
   const categories = useSelector((state) => state.productData.categories);
 
-  console.log("categories", categories);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
@@ -103,8 +101,12 @@ function App() {
       <div className="products">
         <ProductData />
       </div>
-      <div className="pagination">
-        <Pagination />
+      <div>
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            <Pagination />
+          </ul>
+        </nav>
       </div>
     </div>
   );

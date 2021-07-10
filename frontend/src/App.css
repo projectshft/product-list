@@ -51,3 +51,9 @@
 .no-products {
   padding-left: 50px;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+}

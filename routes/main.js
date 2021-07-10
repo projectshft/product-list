@@ -12,9 +12,11 @@ router.get("/products", (req, res, next) => {
   const resultsPerPage = 9;
 
   let lookup = Product;
+  let countLookup = Product;
 
   if (query) {
     lookup = lookup.find({ name: new RegExp(query, "i") });
+    countLookup = countLookup.find({ name: new RegExp(query, "i") });
   }
 
   if (category) {
@@ -22,10 +24,10 @@ router.get("/products", (req, res, next) => {
       category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 
     lookup = lookup.find({ category: formattedCategory });
-  }
-
-  if (!category) {
+    countLookup = countLookup.find({ category: formattedCategory });
+  } else {
     lookup = lookup.find({});
+    countLookup = countLookup.find({});
   }
 
   if (price) {
@@ -33,14 +35,15 @@ router.get("/products", (req, res, next) => {
     if (price === "highest") sortValue = -1;
     if (price === "lowest") sortValue = 1;
 
-    lookup = lookup.sort({ price: sortValue });
+    lookup.sort({ price: sortValue });
+    countLookup.sort({ price: sortValue });
   }
 
   lookup
     .skip(resultsPerPage * page - resultsPerPage)
     .limit(resultsPerPage)
     .exec((err, products) => {
-      lookup.countDocuments().exec((err, count) => {
+      countLookup.countDocuments().exec((err, count) => {
         lookup.distinct("category").exec((err, category) => {
           if (err) return next(err);
           else

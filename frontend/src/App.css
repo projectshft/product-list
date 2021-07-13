@@ -1,0 +1,62 @@
+.App {
+  background-color: rgb(221, 219, 217);
+}
+
+.header {
+  text-align: center;
+}
+
+.customerInput {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.searchBar {
+  display: flex;
+  flex-flow: row;
+  padding-right: 10px;
+}
+
+.input-bar {
+  width: 500px;
+  margin-right: 5px;
+}
+
+.category {
+  padding-right: 10px;
+  text-align: center;
+}
+
+.item-header {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+.product-data {
+  justify-content: center;
+}
+
+.product {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  text-align: center;
+  background-color: white;
+  background-clip: content-box;
+  box-shadow: inset 0 0 0 15px rgb(221, 219, 217);
+}
+
+.no-products {
+  padding-left: 50px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+}

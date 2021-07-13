@@ -4,6 +4,7 @@ import { fetchProducts } from "./actions";
 import { useDispatch } from "react-redux";
 import ProductData from "./components/productData";
 import Pagination from "./components/pagination";
+import Categories from "./components/categories";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 
@@ -56,30 +57,10 @@ function App() {
             }}
           >
             {/* Need to write a function to pull out categories */}
-            <option selected="defaultValue">Select a Category ▼</option>
-            <option value="">All Categories</option>
-            <option value="Automotive">Automotive</option>
-            <option value="Baby">Baby</option>
-            <option value="Beauty">Beauty</option>
-            <option value="Books">Books</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Computers">Computers</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Games">Games</option>
-            <option value="Garden">Garden</option>
-            <option value="Grocery">Grocery</option>
-            <option value="Health">Health</option>
-            <option value="Home">Home</option>
-            <option value="Industrial">Industrial</option>
-            <option value="Jewelery">Jewelery</option>
-            <option value="Kids">Kids</option>
-            <option value="Movies">Movies</option>
-            <option value="Music">Music</option>
-            <option value="Outdoors">Outdoors</option>
-            <option value="Shoes">Shoes</option>
-            <option value="Sports">Sports</option>
-            <option value="Tools">Tools</option>
-            <option value="Toys">Toys</option>
+            <option defaultValue="defaultValue" value="" key="default">
+              All Categories ▼
+            </option>
+            <Categories categories={categories} />
           </select>
         </div>
         <div className="sort">
@@ -92,7 +73,7 @@ function App() {
               setSort(e.target.value);
             }}
           >
-            <option selected="defaultValue">Sort by ▼</option>
+            <option defaultValue="defaultValue">Sort by ▼</option>
             <option value="highest">Highest</option>
             <option value="lowest">Lowest</option>
           </select>

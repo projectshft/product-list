@@ -23,7 +23,7 @@ const ProductData = () => {
       );
 
       if ((index + 1) % 3 === 0) {
-        columns.push(<div className="w-100"></div>);
+        columns.push(<div className="w-100" key={index}></div>);
       }
     });
   }

@@ -46,6 +46,9 @@
   flex-flow: column;
   justify-content: space-between;
   text-align: center;
+  background-color: white;
+  background-clip: content-box;
+  box-shadow: inset 0 0 0 15px rgb(221, 219, 217);
 }
 
 .no-products {

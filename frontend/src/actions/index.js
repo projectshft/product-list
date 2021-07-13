@@ -1,5 +1,4 @@
 import axios from "axios";
-// import { saveState } from "../localStorage";
 
 const ROOT_URL = "http://localhost:8000/products?";
 

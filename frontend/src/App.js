@@ -56,7 +56,6 @@ function App() {
               setCategory(e.target.value);
             }}
           >
-            {/* Need to write a function to pull out categories */}
             <option defaultValue="defaultValue" value="" key="default">
               All Categories ▼
             </option>

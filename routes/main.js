@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const faker = require("faker");
-const Product = require("../models/product");
+const { Product, Review } = require("../models/product");
 
 router.param("product", async function (req, res, next, id) {
   req.product = await Product.findById(id);
@@ -48,8 +48,35 @@ router.get("/products", (req, res, next) => {
     });
 });
 
-router.get("/products/:product", (req, res, next) => {
+router.get("/products/:product", (req, res) => {
   res.json(req.product);
 });
+
+router.get("/products/:product/reviews", (req, res) => {});
+
+router.post("/products", (req, res) => {});
+
+router.post("/products/:product/reviews", (req, res) => {
+  const product = req.product;
+  const userName = req.body.userName;
+  const text = req.body.text;
+
+  addReview(product, userName, text);
+
+  res.json(product);
+});
+
+// ***** Helper Functions *****
+const addReview = (product, userName, text) => {
+  const review = new Review({
+    userName,
+    text,
+    product: product._id,
+  });
+
+  product.reviews.push(review);
+  review.save();
+  product.save();
+};
 
 module.exports = router;

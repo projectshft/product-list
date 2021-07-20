@@ -34,19 +34,30 @@ router.get("/products", (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1;
-
+  const searchQueries = {};
   const category = req.query.category;
+  const query = req.query.query;
+  const sortMethod = {};
 
-  const query = () => {
-    if (!category) {
-      return {};
-    }
+  if (category) {
+    searchQueries.category = category;
+  }
 
-    return { category };
-  };
+  if (query) {
+    searchQueries.name = query;
+  }
 
-  Product.find(query())
+  if (req.query.price === "highest") {
+    sortMethod.price = "desc";
+  }
+
+  if (req.query.price === "lowest") {
+    sortMethod.price = "asc";
+  }
+
+  Product.find(searchQueries)
     .populate("reviews")
+    .sort(sortMethod)
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {

@@ -93,7 +93,24 @@ router.post("/products/:product/reviews", (req, res) => {
   res.json(product);
 });
 
+router.delete("/products/:product", async (req, res) => {
+  const deletedProduct = await deleteProduct(req.product._id);
+
+  if (!deletedProduct) {
+    return res.sendStatus(404);
+  }
+
+  return res.json(deletedProduct);
+});
+
+router.delete("/reviews/:review", (req, res) => {});
+
 // ***** Helper Functions *****
+const deleteProduct = async (id) => {
+  const deletedProduct = await Product.findByIdAndDelete(id);
+  return deletedProduct;
+};
+
 const addReview = (product, userName, text) => {
   const review = new Review({
     userName,

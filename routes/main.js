@@ -35,7 +35,17 @@ router.get("/products", (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1;
 
-  Product.find({})
+  const category = req.query.category;
+
+  const query = () => {
+    if (!category) {
+      return {};
+    }
+
+    return { category };
+  };
+
+  Product.find(query())
     .populate("reviews")
     .skip(perPage * page - perPage)
     .limit(perPage)

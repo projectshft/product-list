@@ -40,7 +40,7 @@ router.get("/products", (req, res, next) => {
     .limit(perPage)
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
+      Product.countDocuments().exec((err, count) => {
         if (err) return next(err);
 
         res.send(products);
@@ -73,7 +73,15 @@ router.get("/products/:product/reviews", (req, res) => {
     });
 });
 
-router.post("/products", (req, res) => {});
+router.post("/products", (req, res) => {
+  const category = req.body.category;
+  const name = req.body.name;
+  const price = req.body.price;
+  const image = req.body.image;
+
+  const product = addProduct(category, name, price, image);
+  res.json(product);
+});
 
 router.post("/products/:product/reviews", (req, res) => {
   const product = req.product;
@@ -96,6 +104,19 @@ const addReview = (product, userName, text) => {
   product.reviews.push(review);
   review.save();
   product.save();
+};
+
+const addProduct = (category, name, price, image) => {
+  const product = new Product({
+    category,
+    name,
+    price,
+    image,
+    reviews: [],
+  });
+
+  product.save();
+  return product;
 };
 
 module.exports = router;

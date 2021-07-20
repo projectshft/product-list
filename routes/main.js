@@ -6,7 +6,7 @@ router.param("product", async function (req, res, next, id) {
   req.product = await Product.findById(id).populate("reviews");
 
   if (!req.product) {
-    throw new Error("No product found with id provided");
+    res.sendStatus(404);
   }
 
   next();
@@ -36,6 +36,7 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
 
   Product.find({})
+    .populate("reviews")
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
@@ -103,9 +104,22 @@ router.delete("/products/:product", async (req, res) => {
   return res.json(deletedProduct);
 });
 
-router.delete("/reviews/:review", (req, res) => {});
+router.delete("/reviews/:review", async (req, res) => {
+  const deletedReview = await deleteReview(req.params.review);
+
+  if (!deletedReview) {
+    return res.sendStatus(404);
+  }
+
+  return res.json(deletedReview);
+});
 
 // ***** Helper Functions *****
+const deleteReview = async (id) => {
+  const deletedReview = await Review.findByIdAndDelete(id);
+  return deletedReview;
+};
+
 const deleteProduct = async (id) => {
   const deletedProduct = await Product.findByIdAndDelete(id);
   return deletedProduct;

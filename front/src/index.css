@@ -13,3 +13,7 @@ body {
 .pagination {
   margin: 30px 0 50px 0;
 }
+
+.page-link {
+  cursor: pointer;
+}

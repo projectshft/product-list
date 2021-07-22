@@ -1,17 +1,28 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setPageQuery } from "../actions";
 
 export default function PageNavigation() {
   const numOfProducts = useSelector((state) => state.productCount);
   const numOfPages = Math.ceil(numOfProducts / 9);
   const pageLinks = [];
+  const currentPage = useSelector((state) => state.page);
+
+  const dispatch = useDispatch();
+
+  const handleClick = (page) => {
+    dispatch(setPageQuery(page));
+  };
 
   for (let i = 1; i <= numOfPages; i++) {
+    let liClassName = "page-item";
+    if (i === currentPage) {
+      liClassName += " active";
+    }
+
     pageLinks.push(
-      <li key={i} className="page-item">
-        <a className="page-link" href="#">
-          {i}
-        </a>
+      <li key={i} onClick={() => handleClick(i)} className={liClassName}>
+        <p className="page-link">{i}</p>
       </li>
     );
   }

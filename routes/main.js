@@ -23,7 +23,7 @@ router.param("product", function (req, res, next, id) {
     if (err) {
       next(err);
     } else {
-      req.product = product;
+      req.product = product[0];
       next();
     }
   });
@@ -50,7 +50,6 @@ router.get("/products", (req, res, next) => {
 router.get("/products/:product", (req, res, next) => {
   res.status(200).send(req.product);
   //const id = req.params.product;
-
   // Product.findById(id).exec((err, product) => {
   //   if (err) return next(err);
   //   res.status(200).send(product);
@@ -59,7 +58,25 @@ router.get("/products/:product", (req, res, next) => {
 });
 
 //GET /products/:product/reviews
+router.get("/products/:product/reviews", (req, res, next) => {
+  res.status(200).send(req.product.reviews);
+});
 
 //POST /products
+router.post("/products", (req, res, next) => {
+  //add properties validation?
+  if (
+    !req.body.category ||
+    !req.body.name ||
+    !req.body.price ||
+    !req.body.image
+  ) {
+    res.status(400).send("Bad request");
+  } else {
+    const product = new Product(req.body);
+    product.save();
+    res.status(200).send("Product saved");
+  }
+});
 
 module.exports = router;

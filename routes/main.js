@@ -36,15 +36,15 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
   const searchQueries = {};
   const category = req.query.category;
-  const query = req.query.query;
+  const name = req.query.name;
   const sortMethod = {};
 
   if (category) {
     searchQueries.category = category;
   }
 
-  if (query) {
-    searchQueries.name = query;
+  if (name) {
+    searchQueries.name = name;
   }
 
   if (req.query.price === "highest") {
@@ -61,7 +61,6 @@ router.get("/products", (req, res, next) => {
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
       Product.countDocuments(searchQueries).exec((err, count) => {
         if (err) return next(err);
 

@@ -22,7 +22,7 @@ export default function Header() {
   let queryString = `?page=${page}`;
 
   if (searchTerm) {
-    queryString += `&search=${searchTerm}`;
+    queryString += `&name=${searchTerm}`;
   }
 
   if (categoryQuery) {
@@ -36,7 +36,7 @@ export default function Header() {
   useEffect(() => {
     dispatch(fetchProducts(queryString));
     dispatch(fetchCount(queryString));
-    console.log("searched");
+    console.log(queryString);
   }, [dispatch, queryString]);
 
   return (

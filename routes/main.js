@@ -7,8 +7,8 @@ const Review = require("../models/review");
 //   for (let i = 0; i < 90; i++) {
 //     let product = new Product();
 
-//     product.category = faker.commerce.department();
-//     product.name = faker.commerce.productName();
+//     product.category = faker.commerce.department().toUpperCase();
+//     product.name = faker.commerce.productName().toUpperCase();
 //     product.price = faker.commerce.price();
 //     product.image = "https://via.placeholder.com/250?text=Product+Image";
 
@@ -43,20 +43,42 @@ router.param("review", function (req, res, next, id) {
 
 router.get("/products", (req, res, next) => {
   const perPage = 9;
-
   const page = req.query.page || 1;
+  let data = {};
 
-  Product.find({})
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
-
-        res.send(products);
+  //category or empty find
+  if (req.query.category) {
+    Product.find({ category: req.query.category.toUpperCase() })
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.countDocuments(
+          { category: req.query.category.toUpperCase() },
+          (err, count) => {
+            if (err) return next(err);
+            data = {
+              products: products,
+              count: count,
+            };
+            res.send(data);
+          }
+        );
       });
-    });
+  } else {
+    Product.find({})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.countDocuments({}, (err, count) => {
+          if (err) return next(err);
+          data = {
+            products: products,
+            count: count,
+          };
+        });
+        res.send(data);
+      });
+  }
 });
 
 router.get("/products/:product", (req, res, next) => {

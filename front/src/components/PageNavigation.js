@@ -6,7 +6,7 @@ export default function PageNavigation() {
   const numOfProducts = useSelector((state) => state.productCount);
   const numOfPages = Math.ceil(numOfProducts / 9);
   const pageLinks = [];
-  const currentPage = useSelector((state) => state.page);
+  const currentPage = useSelector((state) => state.currentPage);
 
   const dispatch = useDispatch();
 

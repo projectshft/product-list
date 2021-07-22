@@ -7,6 +7,6 @@ import { categoryReducer } from "./categories";
 export const allReducers = combineReducers({
   productCount: productCountReducer,
   products: productReducer,
-  page: pageQueryReducer,
+  currentPage: pageQueryReducer,
   categories: categoryReducer,
 });

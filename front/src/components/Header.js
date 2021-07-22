@@ -1,15 +1,23 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, fetchCount } from "../actions";
+import { fetchProducts, fetchCount, setPageQuery } from "../actions";
 
 export default function Header() {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryQuery, setCategoryQuery] = useState("");
   const [priceSortMethod, setPriceSortMethod] = useState("");
 
+  const numOfProducts = useSelector((state) => state.productCount);
   const categories = useSelector((state) => state.categories);
-  const page = useSelector((state) => state.page);
+  const page = useSelector((state) => state.currentPage);
+
+  const dispatch = useDispatch();
+
+  //Make sure page isn't out of range
+  if (page > Math.ceil(numOfProducts / 9)) {
+    dispatch(setPageQuery(1));
+  }
 
   let queryString = `?page=${page}`;
 
@@ -24,8 +32,6 @@ export default function Header() {
   if (priceSortMethod) {
     queryString += `&price=${priceSortMethod}`;
   }
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProducts(queryString));

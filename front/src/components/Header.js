@@ -22,7 +22,7 @@ export default function Header() {
   let queryString = `?page=${page}`;
 
   if (searchTerm) {
-    queryString += `&name=${searchTerm}`;
+    queryString += `&query=${searchTerm}`;
   }
 
   if (categoryQuery) {

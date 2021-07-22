@@ -36,15 +36,15 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
   const searchQueries = {};
   const category = req.query.category;
-  const name = req.query.name;
+  const query = req.query.query;
   const sortMethod = {};
 
   if (category) {
     searchQueries.category = category;
   }
 
-  if (name) {
-    searchQueries.name = name;
+  if (query) {
+    searchQueries.name = query;
   }
 
   if (req.query.price === "highest") {

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
+const Review = require("../models/review");
 
 // router.get("/generate-fake-data", (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
@@ -74,6 +75,21 @@ router.post("/products", (req, res, next) => {
     res.status(400).send("Bad request");
   } else {
     const product = new Product(req.body);
+    product.save();
+    res.status(200).send("Product saved");
+  }
+});
+
+router.post("/products/:product/reviews", (req, res, next) => {
+  const product = req.product;
+  //add properties validation?
+  if (!req.body.username || !req.body.text) {
+    res.status(400).send("Bad request");
+  } else {
+    const review = new Review({ product: product._id, ...req.body });
+    review.save();
+
+    product.reviews.push(review);
     product.save();
     res.status(200).send("Product saved");
   }

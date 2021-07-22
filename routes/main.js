@@ -30,6 +30,17 @@ router.param("product", function (req, res, next, id) {
   });
 });
 
+router.param("review", function (req, res, next, id) {
+  Review.find({ _id: id }, function (err, review) {
+    if (err) {
+      next(err);
+    } else {
+      req.review = review[0];
+      next();
+    }
+  });
+});
+
 router.get("/products", (req, res, next) => {
   const perPage = 9;
 
@@ -77,7 +88,6 @@ router.get("/products/:product/reviews", (req, res, next) => {
 
 //POST /products
 router.post("/products", (req, res, next) => {
-  //add properties validation?
   if (
     !req.body.category ||
     !req.body.name ||
@@ -95,7 +105,7 @@ router.post("/products", (req, res, next) => {
 //POST /products/:product/reviews
 router.post("/products/:product/reviews", (req, res, next) => {
   const product = req.product;
-  //add properties validation?
+
   if (!req.body.username || !req.body.text) {
     res.status(400).send("Bad request");
   } else {
@@ -111,14 +121,26 @@ router.post("/products/:product/reviews", (req, res, next) => {
 //DELETE /products/:product
 router.delete("/products/:product", async (req, res, next) => {
   const product = req.product;
-  console.log(product);
 
   if (!product) {
     res.status(404).send("Product not found.");
   } else {
-    await Product.remove({ _id: product });
+    await Product.remove({ _id: product._id });
     //res.deletedCount; // Number of documents removed
     res.send(`${product.name} deleted.`);
+  }
+});
+
+//DELETE /reviews/:review
+router.delete("/reviews/:review", async (req, res, next) => {
+  const review = req.review;
+
+  if (!review) {
+    res.status(404).send("Review not found.");
+  } else {
+    await Review.remove({ _id: review._id });
+    //res.deletedCount; // Number of documents removed
+    res.send(`${review.text} posted by ${review.username} was deleted.`);
   }
 });
 

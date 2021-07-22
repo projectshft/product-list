@@ -60,7 +60,16 @@ router.get("/products/:product", (req, res, next) => {
 
 //GET /products/:product/reviews
 router.get("/products/:product/reviews", (req, res, next) => {
-  res.status(200).send(req.product.reviews);
+  Product.findOne({ _id: req.product._id })
+    .populate("reviews")
+    .exec((err, product) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(200).send(product.reviews);
+      }
+    });
+  //res.status(200).send(req.product.reviews);
 });
 
 //POST /products

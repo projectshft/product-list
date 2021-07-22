@@ -36,7 +36,6 @@ export default function Header() {
   useEffect(() => {
     dispatch(fetchProducts(queryString));
     dispatch(fetchCount(queryString));
-    console.log(queryString);
   }, [dispatch, queryString]);
 
   return (

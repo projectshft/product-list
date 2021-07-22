@@ -10,7 +10,6 @@ export const categoryReducer = function (state = [], action) {
           return acc;
         }
       }, []);
-      console.log(categories);
 
       return categories;
     default:

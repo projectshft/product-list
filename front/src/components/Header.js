@@ -1,10 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Header() {
+  const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [priceSorting, setPriceSorting] = useState("");
+
+  const dispatch = useDispatch();
 
   const categories = useSelector((state) =>
     state.products.reduce((acc, product) => {
@@ -16,17 +19,28 @@ export default function Header() {
     }, [])
   );
 
+  console.log(searchTerm);
+  console.log(category);
+  console.log(priceSorting);
+
   return (
     <div className="container header">
       <div className="row">
         <div className="column col-md-6">
-          <input className="form-control" type="text" placeholder="Search" />
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Search"
+            onChange={(e) => setSearchTerm(() => e.target.value)}
+          />
         </div>
         <div className="column col-md-3">
           <select
             className="form-select"
             aria-label="Filter By Category"
-            onChange={(e) => setCategory(() => e.target.value)}
+            onChange={(e) => {
+              setCategory(() => e.target.value);
+            }}
           >
             <option value={""}>Filter By Category</option>
             {categories.map((category) => {

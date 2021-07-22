@@ -1,14 +1,16 @@
 import ProductCard from "./components/ProductCard";
 import Header from "./components/Header";
+import PageNavigation from "./components/PageNavigation";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts } from "./actions";
+import { fetchProducts, fetchCount } from "./actions";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(""));
+    dispatch(fetchCount(""));
   }, [dispatch]);
 
   const products = useSelector((state) => state.products);
@@ -19,7 +21,7 @@ function App() {
         <div className="row">
           <Header />
         </div>
-        <div className="row">
+        <div className="row justify-content-center">
           {products.map((product) => {
             return (
               <ProductCard
@@ -32,6 +34,7 @@ function App() {
             );
           })}
         </div>
+        <PageNavigation />
       </div>
     </>
   );

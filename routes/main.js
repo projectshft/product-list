@@ -2,20 +2,31 @@ const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
 
-router.get("/generate-fake-data", (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    let product = new Product();
+// router.get("/generate-fake-data", (req, res, next) => {
+//   for (let i = 0; i < 90; i++) {
+//     let product = new Product();
 
-    product.category = faker.commerce.department();
-    product.name = faker.commerce.productName();
-    product.price = faker.commerce.price();
-    product.image = "https://via.placeholder.com/250?text=Product+Image";
+//     product.category = faker.commerce.department();
+//     product.name = faker.commerce.productName();
+//     product.price = faker.commerce.price();
+//     product.image = "https://via.placeholder.com/250?text=Product+Image";
 
-    product.save((err) => {
-      if (err) throw err;
-    });
-  }
-  res.end();
+//     product.save((err) => {
+//       if (err) throw err;
+//     });
+//   }
+//   res.end();
+// });
+
+router.param("product", function (req, res, next, id) {
+  Product.find({ _id: id }, function (err, product) {
+    if (err) {
+      next(err);
+    } else {
+      req.product = product;
+      next();
+    }
+  });
 });
 
 router.get("/products", (req, res, next) => {
@@ -37,13 +48,18 @@ router.get("/products", (req, res, next) => {
 });
 
 router.get("/products/:product", (req, res, next) => {
-  const id = req.params.product;
+  res.status(200).send(req.product);
+  //const id = req.params.product;
 
-  Product.findById(id).exec((err, product) => {
-    if (err) return next(err);
-    res.send(product);
-    res.end();
-  });
+  // Product.findById(id).exec((err, product) => {
+  //   if (err) return next(err);
+  //   res.status(200).send(product);
+  //   res.end();
+  // });
 });
+
+//GET /products/:product/reviews
+
+//POST /products
 
 module.exports = router;

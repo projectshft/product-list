@@ -67,6 +67,17 @@ router.get("/products", (req, res, next) => {
     }
   }
 
+  //searching by string in product??
+  if (req.query.query) {
+    query = {
+      $or: [
+        { category: req.query.query },
+        { name: req.query.query },
+        { image: req.query.query },
+      ],
+    };
+  }
+
   Product.find(query)
     .sort({ price: sortData })
     .skip(perPage * page - perPage)

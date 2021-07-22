@@ -60,8 +60,11 @@ router.get("/products/:product", (req, res, next) => {
 
 //GET /products/:product/reviews
 router.get("/products/:product/reviews", (req, res, next) => {
+  const reviewsPerPage = 4;
+
   Product.findOne({ _id: req.product._id })
     .populate("reviews")
+    .limit(reviewsPerPage)
     .exec((err, product) => {
       if (err) {
         console.log(err);
@@ -89,6 +92,7 @@ router.post("/products", (req, res, next) => {
   }
 });
 
+//POST /products/:product/reviews
 router.post("/products/:product/reviews", (req, res, next) => {
   const product = req.product;
   //add properties validation?
@@ -101,6 +105,20 @@ router.post("/products/:product/reviews", (req, res, next) => {
     product.reviews.push(review);
     product.save();
     res.status(200).send("Product saved");
+  }
+});
+
+//DELETE /products/:product
+router.delete("/products/:product", async (req, res, next) => {
+  const product = req.product;
+  console.log(product);
+
+  if (!product) {
+    res.status(404).send("Product not found.");
+  } else {
+    await Product.remove({ _id: product });
+    //res.deletedCount; // Number of documents removed
+    res.send(`${product.name} deleted.`);
   }
 });
 

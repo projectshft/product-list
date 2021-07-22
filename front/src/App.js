@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import PageNavigation from "./components/PageNavigation";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, fetchCount } from "./actions";
+import { fetchProducts, fetchCount, fetchAllCategories } from "./actions";
 
 function App() {
   const dispatch = useDispatch();
@@ -11,6 +11,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchProducts(""));
     dispatch(fetchCount(""));
+    dispatch(fetchAllCategories());
   }, [dispatch]);
 
   const products = useSelector((state) => state.products);

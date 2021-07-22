@@ -1,27 +1,37 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts, fetchCount } from "../actions";
 
 export default function Header() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("");
-  const [priceSorting, setPriceSorting] = useState("");
+  const [categoryQuery, setCategoryQuery] = useState("");
+  const [priceSortMethod, setPriceSortMethod] = useState("");
+
+  const categories = useSelector((state) => state.categories);
+  const page = useSelector((state) => state.page);
+
+  let queryString = `?page=${page}`;
+
+  if (searchTerm) {
+    queryString += `&search=${searchTerm}`;
+  }
+
+  if (categoryQuery) {
+    queryString += `&category=${categoryQuery}`;
+  }
+
+  if (priceSortMethod) {
+    queryString += `&price=${priceSortMethod}`;
+  }
 
   const dispatch = useDispatch();
 
-  const categories = useSelector((state) =>
-    state.products.reduce((acc, product) => {
-      if (!acc.includes(product.category)) {
-        return [...acc, product.category];
-      } else {
-        return acc;
-      }
-    }, [])
-  );
-
-  console.log(searchTerm);
-  console.log(category);
-  console.log(priceSorting);
+  useEffect(() => {
+    dispatch(fetchProducts(queryString));
+    dispatch(fetchCount(queryString));
+    console.log("searched");
+  }, [dispatch, queryString]);
 
   return (
     <div className="container header">
@@ -31,7 +41,9 @@ export default function Header() {
             className="form-control"
             type="text"
             placeholder="Search"
-            onChange={(e) => setSearchTerm(() => e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(() => e.target.value);
+            }}
           />
         </div>
         <div className="column col-md-3">
@@ -39,7 +51,7 @@ export default function Header() {
             className="form-select"
             aria-label="Filter By Category"
             onChange={(e) => {
-              setCategory(() => e.target.value);
+              setCategoryQuery(() => e.target.value);
             }}
           >
             <option value={""}>Filter By Category</option>
@@ -56,7 +68,9 @@ export default function Header() {
           <select
             className="form-select"
             aria-label="Sort By Price"
-            onChange={(e) => setPriceSorting(() => e.target.value)}
+            onChange={(e) => {
+              setPriceSortMethod(() => e.target.value);
+            }}
           >
             <option value={""}>Sort By Price</option>
             <option value={"lowest"}>Lowest to Highest</option>

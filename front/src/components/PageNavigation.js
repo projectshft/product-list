@@ -8,7 +8,7 @@ export default function PageNavigation() {
 
   for (let i = 1; i <= numOfPages; i++) {
     pageLinks.push(
-      <li className="page-item">
+      <li key={i} className="page-item">
         <a className="page-link" href="#">
           {i}
         </a>
@@ -19,7 +19,7 @@ export default function PageNavigation() {
   return (
     <div className="row">
       <nav aria-label="Page navigation">
-        <ul class="pagination pagination-lg justify-content-center">
+        <ul className="pagination pagination-lg justify-content-center">
           {pageLinks.map((link) => link)}
         </ul>
       </nav>

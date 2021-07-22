@@ -2,15 +2,13 @@ import axios from "axios";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_COUNT = "FETCH_COUNT";
-export const SET_SEARCH_TERM = "SET_SEARCH_TERM";
+export const FETCH_ALL_CATEGORIES = "FETCH_ALL_CATEGORIES";
 export const SET_PAGE_QUERY = "SET_PAGE_QUERY";
-export const SET_CATEGORY_QUERY = "SET_CATEGORY_QUERY";
-export const SET_PRICE_SORT_METHOD = "SET_PRICE_SORT_METHOD";
 
 const ROOT_URL = "http://localhost:8000";
 
-export function fetchProducts(queries) {
-  const request = axios.get(`${ROOT_URL}/products` + queries);
+export function fetchProducts(queryString) {
+  const request = axios.get(`${ROOT_URL}/products` + queryString);
 
   return {
     type: FETCH_PRODUCTS,
@@ -18,8 +16,8 @@ export function fetchProducts(queries) {
   };
 }
 
-export function fetchCount(queries) {
-  const request = axios.get(`${ROOT_URL}/products` + queries);
+export function fetchCount(queryString) {
+  const request = axios.get(`${ROOT_URL}/products` + queryString);
 
   return {
     type: FETCH_COUNT,
@@ -27,10 +25,12 @@ export function fetchCount(queries) {
   };
 }
 
-export function setSearchTerm(searchTerm) {
+export function fetchAllCategories() {
+  const request = axios.get(`${ROOT_URL}/products`);
+
   return {
-    type: SET_SEARCH_TERM,
-    payload: searchTerm,
+    type: FETCH_ALL_CATEGORIES,
+    payload: request,
   };
 }
 
@@ -38,19 +38,5 @@ export function setPageQuery(pageNumber) {
   return {
     type: SET_PAGE_QUERY,
     payload: pageNumber,
-  };
-}
-
-export function setCategoryQuery(category) {
-  return {
-    type: SET_CATEGORY_QUERY,
-    payload: category,
-  };
-}
-
-export function setPriceSortMethod(priceSortMethod) {
-  return {
-    type: SET_PRICE_SORT_METHOD,
-    payload: priceSortMethod,
   };
 }

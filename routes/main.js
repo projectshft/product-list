@@ -89,7 +89,7 @@ router.get("/products/:product/reviews", (req, res) => {
       Review.countDocuments().exec((err, count) => {
         if (err) return next(err);
 
-        res.json(reviews);
+        res.json({ count, reviews });
       });
     });
 });

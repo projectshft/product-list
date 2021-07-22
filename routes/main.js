@@ -44,41 +44,43 @@ router.param("review", function (req, res, next, id) {
 router.get("/products", (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
+
+  let query;
+  let sortData = null;
   let data = {};
 
   //category or empty find
   if (req.query.category) {
-    Product.find({ category: req.query.category.toUpperCase() })
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        Product.countDocuments(
-          { category: req.query.category.toUpperCase() },
-          (err, count) => {
-            if (err) return next(err);
-            data = {
-              products: products,
-              count: count,
-            };
-            res.send(data);
-          }
-        );
-      });
+    query = { category: req.query.category.toUpperCase() };
   } else {
-    Product.find({})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        Product.countDocuments({}, (err, count) => {
-          if (err) return next(err);
-          data = {
-            products: products,
-            count: count,
-          };
-        });
+    query = {};
+  }
+
+  //sort by price
+  if (req.query.price) {
+    if (req.query.price === "highest") {
+      sortData = 1;
+    } else if (req.query.price === "lowest") {
+      sortData = -1;
+    } else {
+      sortData = null;
+    }
+  }
+
+  Product.find(query)
+    .sort({ price: sortData })
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+      Product.countDocuments(query, (err, count) => {
+        if (err) return next(err);
+        data = {
+          products: products,
+          count: count,
+        };
         res.send(data);
       });
-  }
+    });
 });
 
 router.get("/products/:product", (req, res, next) => {

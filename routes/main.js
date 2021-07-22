@@ -3,6 +3,7 @@ const faker = require("faker");
 const Product = require("../models/product");
 const Review = require("../models/review");
 
+//LOAD database with fake data
 // router.get("/generate-fake-data", (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
 //     let product = new Product();
@@ -67,7 +68,8 @@ router.get("/products", (req, res, next) => {
     }
   }
 
-  //searching by string in product??
+  //searching by string in product
+  // only works with exact string match
   if (req.query.query) {
     query = {
       $or: [
@@ -85,11 +87,17 @@ router.get("/products", (req, res, next) => {
     .exec((err, products) => {
       Product.countDocuments(query, (err, count) => {
         if (err) return next(err);
+
         data = {
           products: products,
           count: count,
         };
-        res.send(data);
+
+        if (data.count === 0) {
+          res.status(404).send("Product not found.");
+        } else {
+          res.status(200).send(data);
+        }
       });
     });
 });
@@ -118,12 +126,11 @@ router.get("/products/:product/reviews", (req, res, next) => {
     .limit(reviewsPerPage)
     .exec((err, product) => {
       if (err) {
-        console.log(err);
+        return next(err);
       } else {
         res.status(200).send(product.reviews);
       }
     });
-  //res.status(200).send(req.product.reviews);
 });
 
 //POST /products

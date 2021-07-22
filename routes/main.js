@@ -60,7 +60,12 @@ router.get("/products", (req, res, next) => {
 });
 
 router.get("/products/:product", (req, res, next) => {
-  res.status(200).send(req.product);
+  if (!req.product) {
+    res.status(404).send("Product not found.");
+  } else {
+    res.status(200).send(req.product);
+  }
+
   //const id = req.params.product;
   // Product.findById(id).exec((err, product) => {
   //   if (err) return next(err);
@@ -114,7 +119,7 @@ router.post("/products/:product/reviews", (req, res, next) => {
 
     product.reviews.push(review);
     product.save();
-    res.status(200).send("Product saved");
+    res.status(200).send("Review saved");
   }
 });
 
@@ -135,12 +140,19 @@ router.delete("/products/:product", async (req, res, next) => {
 router.delete("/reviews/:review", async (req, res, next) => {
   const review = req.review;
 
+  const productID = review.product;
+  const update = { $pull: { reviews: review._id } };
+
   if (!review) {
     res.status(404).send("Review not found.");
   } else {
     await Review.remove({ _id: review._id });
-    //res.deletedCount; // Number of documents removed
-    res.send(`${review.text} posted by ${review.username} was deleted.`);
+    await Product.findByIdAndUpdate(productID, update, (err, doc) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+    res.status(200).send(`${review.text} was successfully deleted.`);
   }
 });
 

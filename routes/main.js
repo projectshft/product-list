@@ -47,22 +47,23 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
 
   let query;
-  let sortData = null;
+  let sortData;
   let data = {};
 
-  //category or empty find
+  if (!req.query) {
+    query = {};
+  }
+  //category
   if (req.query.category) {
     query = { category: req.query.category.toUpperCase() };
-  } else {
-    query = {};
   }
 
   //sort by price
   if (req.query.price) {
     if (req.query.price === "highest") {
-      sortData = 1;
+      sortData = { price: -1 };
     } else if (req.query.price === "lowest") {
-      sortData = -1;
+      sortData = { price: 1 };
     } else {
       sortData = null;
     }
@@ -72,8 +73,7 @@ router.get("/products", (req, res, next) => {
     const searchString = req.query.query.toUpperCase();
 
     //checks to see if string = 1 word
-    //if 1 word search all docs for that word
-    //if > 1 do exact match
+    //if 1 word search all docs for that word with or w/o category
     if (searchString.split(/\W+/).length === 1) {
       if (req.query.query && req.query.category) {
         query = {
@@ -83,6 +83,7 @@ router.get("/products", (req, res, next) => {
       } else {
         query = { $text: { $search: searchString } };
       }
+      //if > 1 do exact match w/ or w/o category
     } else {
       if (req.query.query && req.query.category) {
         query = {
@@ -98,7 +99,7 @@ router.get("/products", (req, res, next) => {
   }
 
   Product.find(query)
-    .sort({ price: sortData })
+    .sort(sortData)
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {

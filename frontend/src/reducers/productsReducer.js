@@ -2,7 +2,7 @@
 import { FETCH_PRODUCTS } from "../actions/productsAction";
 
 const initialState = {
-  products: [],
+  products: {},
 };
 
 const productsReducer = (state = initialState, action) => {

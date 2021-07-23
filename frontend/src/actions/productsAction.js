@@ -11,6 +11,6 @@ export const loadProductsData = async () => {
 
   return {
     type: FETCH_PRODUCTS,
-    payload: request,
+    payload: request.data,
   };
 };

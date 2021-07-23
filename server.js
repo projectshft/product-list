@@ -10,12 +10,6 @@ mongoose.connect("mongodb://localhost/products", {
 
 const app = express();
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "Origin, X-Requested-With, Content-Type, Accept, X-Authentication",
-};
-
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

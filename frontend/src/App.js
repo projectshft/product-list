@@ -10,7 +10,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadProductsData);
+    dispatch(loadProductsData());
   }, [dispatch]);
 
   return (

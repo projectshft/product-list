@@ -75,9 +75,25 @@ router.get("/products", (req, res, next) => {
     //if 1 word search all docs for that word
     //if > 1 do exact match
     if (searchString.split(/\W+/).length === 1) {
-      query = { $text: { $search: searchString } };
+      if (req.query.query && req.query.category) {
+        query = {
+          $text: { $search: `${searchString}` },
+          category: req.query.category.toUpperCase(),
+        };
+      } else {
+        query = { $text: { $search: searchString } };
+      }
     } else {
-      query = { $text: { $search: `\"${searchString}\"` } };
+      if (req.query.query && req.query.category) {
+        query = {
+          $text: { $search: `\"${searchString}\"` },
+          category: req.query.category.toUpperCase(),
+        };
+      } else {
+        query = {
+          $text: { $search: `\"${searchString}\"` },
+        };
+      }
     }
   }
 

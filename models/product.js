@@ -9,4 +9,6 @@ const ProductSchema = new Schema({
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 });
 
+ProductSchema.index({ category: "text", name: "text", image: "text" });
+
 module.exports = mongoose.model("Product", ProductSchema);

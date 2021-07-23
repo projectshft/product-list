@@ -68,16 +68,17 @@ router.get("/products", (req, res, next) => {
     }
   }
 
-  //searching by string in product
-  // only works with exact string match
   if (req.query.query) {
-    query = {
-      $or: [
-        { category: req.query.query },
-        { name: req.query.query },
-        { image: req.query.query },
-      ],
-    };
+    const searchString = req.query.query.toUpperCase();
+
+    //checks to see if string = 1 word
+    //if 1 word search all docs for that word
+    //if > 1 do exact match
+    if (searchString.split(/\W+/).length === 1) {
+      query = { $text: { $search: searchString } };
+    } else {
+      query = { $text: { $search: `\"${searchString}\"` } };
+    }
   }
 
   Product.find(query)

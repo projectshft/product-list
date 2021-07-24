@@ -6,16 +6,28 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 
 const Search = () => {
-  const [textInput, setTextInput] = useState("");
+  const [input, setInput] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [query, setQuery] = useState("");
+
   const handleInput = (e) => {
-    setTextInput(e.target.value);
+    setInput(e.target.value);
+  };
+
+  const handlePriceClick = (e) => {
+    setPrice(e.target.value);
+  };
+
+  const handleCategoryClick = (e) => {
+    setCategory(e.targe.value);
   };
 
   return (
     <div>
       <StyledSearch>
         <form className="search">
-          <input type="text" onChange={handleInput} value={textInput}></input>
+          <input type="text" onChange={handleInput} value={input}></input>
           <Button variant="outline-dark">Search</Button>
           <div className="dropdown-buttons">
             <Dropdown>
@@ -28,8 +40,21 @@ const Search = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item as="button">Highest</Dropdown.Item>
-                <Dropdown.Item as="button">Lowest</Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  className="highest"
+                  value="highest"
+                  onClick={handlePriceClick}
+                >
+                  Highest
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  className="lowest"
+                  onClick={handlePriceClick}
+                >
+                  Lowest
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
@@ -43,17 +68,83 @@ const Search = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item as="button">Home</Dropdown.Item>
-                <Dropdown.Item as="button">Automotive</Dropdown.Item>
-                <Dropdown.Item as="button">Grocery</Dropdown.Item>
-                <Dropdown.Item as="button">Games</Dropdown.Item>
-                <Dropdown.Item as="button">Electronics</Dropdown.Item>
-                <Dropdown.Item as="button">Books</Dropdown.Item>
-                <Dropdown.Item as="button">Clothing</Dropdown.Item>
-                <Dropdown.Item as="button">Beauty</Dropdown.Item>
-                <Dropdown.Item as="button">Industrial</Dropdown.Item>
-                <Dropdown.Item as="button">Computers</Dropdown.Item>
-                <Dropdown.Item as="button">Music</Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="home"
+                  onClick={handleCategoryClick}
+                >
+                  Home
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="automotive"
+                  onClick={handleCategoryClick}
+                >
+                  Automotive
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="grocery"
+                  onClick={handleCategoryClick}
+                >
+                  Grocery
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="games"
+                  onClick={handleCategoryClick}
+                >
+                  Games
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="electronics"
+                  onClick={handleCategoryClick}
+                >
+                  Electronics
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="books"
+                  onClick={handleCategoryClick}
+                >
+                  Books
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="clothing"
+                  onClick={handleCategoryClick}
+                >
+                  Clothing
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="beauty"
+                  onClick={handleCategoryClick}
+                >
+                  Beauty
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="industrial"
+                  onClick={handleCategoryClick}
+                >
+                  Industrial
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="computers"
+                  onClick={handleCategoryClick}
+                >
+                  Computers
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value="music"
+                  onClick={handleCategoryClick}
+                >
+                  Music
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>

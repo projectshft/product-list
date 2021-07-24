@@ -20,7 +20,7 @@ const Search = () => {
           <div className="dropdown-buttons">
             <Dropdown>
               <Dropdown.Toggle
-                variant="secondary"
+                variant="dark"
                 id="dropdown-basic"
                 className="price dropdown-btn"
               >
@@ -35,7 +35,7 @@ const Search = () => {
 
             <Dropdown>
               <Dropdown.Toggle
-                variant="secondary"
+                variant="dark"
                 id="dropdown-basic"
                 className="category dropdown-btn"
               >
@@ -43,8 +43,17 @@ const Search = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Highest</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Lowest</Dropdown.Item>
+                <Dropdown.Item as="button">Home</Dropdown.Item>
+                <Dropdown.Item as="button">Automotive</Dropdown.Item>
+                <Dropdown.Item as="button">Grocery</Dropdown.Item>
+                <Dropdown.Item as="button">Games</Dropdown.Item>
+                <Dropdown.Item as="button">Electronics</Dropdown.Item>
+                <Dropdown.Item as="button">Books</Dropdown.Item>
+                <Dropdown.Item as="button">Clothing</Dropdown.Item>
+                <Dropdown.Item as="button">Beauty</Dropdown.Item>
+                <Dropdown.Item as="button">Industrial</Dropdown.Item>
+                <Dropdown.Item as="button">Computers</Dropdown.Item>
+                <Dropdown.Item as="button">Music</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
@@ -60,7 +69,6 @@ const StyledSearch = styled.div`
   padding: 0;
   width: 100%;
   text-align: center;
-  /* display: flex; */
 
   justify-content: space-around;
   input {

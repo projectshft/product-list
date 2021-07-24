@@ -7,7 +7,7 @@ export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const loadProductsData = async (query) => {
   const ROOT_URL = "http://localhost:8000/products";
 
-  const request = await axios.get(`${ROOT_URL}/`);
+  const request = await axios.get(`${ROOT_URL}?query=${query}`);
 
   return {
     type: FETCH_PRODUCTS,

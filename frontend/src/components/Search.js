@@ -2,25 +2,43 @@ import React from "react";
 import { useState } from "react";
 //style
 import styled from "styled-components";
-import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+//redux
+import { useDispatch } from "react-redux";
+import { loadProductsData } from "../actions/productsAction";
 
 const Search = () => {
+  //redux
+  const dispatch = useDispatch();
+  //state
   const [input, setInput] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [query, setQuery] = useState("");
 
+  //event handlers
   const handleInput = (e) => {
     setInput(e.target.value);
   };
 
   const handlePriceClick = (e) => {
     setPrice(e.target.value);
+    if (e.target.value === "Price") {
+      setPrice("");
+    }
   };
 
   const handleCategoryClick = (e) => {
-    setCategory(e.targe.value);
+    setCategory(e.target.value);
+    if (e.target.value === "Category") {
+      setCategory("");
+    }
+  };
+
+  const handleSearchButtonClick = () => {
+    setQuery(input);
+    dispatch(loadProductsData(query));
   };
 
   return (
@@ -28,125 +46,45 @@ const Search = () => {
       <StyledSearch>
         <form className="search">
           <input type="text" onChange={handleInput} value={input}></input>
-          <Button variant="outline-dark">Search</Button>
-          <div className="dropdown-buttons">
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="dark"
-                id="dropdown-basic"
-                className="price dropdown-btn"
-              >
-                Sort by Price
-              </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  as="button"
-                  className="highest"
-                  value="highest"
-                  onClick={handlePriceClick}
-                >
-                  Highest
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  className="lowest"
-                  onClick={handlePriceClick}
-                >
-                  Lowest
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+          <div className="form-select-options">
+            <Form.Select
+              aria-label="Default select example"
+              className="form-select-label"
+              onChange={handlePriceClick}
+            >
+              <option>Price</option>
+              <option value="highest">Highest</option>
+              <option value="lowest">Lowest</option>
+            </Form.Select>
 
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="dark"
-                id="dropdown-basic"
-                className="category dropdown-btn"
-              >
-                Sort by Category
-              </Dropdown.Toggle>
+            <Form.Select
+              aria-label="Default select example"
+              // size="lg"
+              className="form-select-label"
+              onChange={handleCategoryClick}
+            >
+              <option>Category</option>
+              <option value="automotive">Automotive</option>
+              <option value="books">Books</option>
+              <option value="beauty">Beauty</option>
+              <option value="clothing">Clothing</option>
+              <option value="computers">Computers</option>
+              <option value="eletctronics">Electronics</option>
+              <option value="games">Games</option>
+              <option value="grocery">Grocery</option>
+              <option value="home">Home</option>
+              <option value="industrial">Industial</option>
+              <option value="music">Music</option>
+            </Form.Select>
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  as="button"
-                  value="home"
-                  onClick={handleCategoryClick}
-                >
-                  Home
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="automotive"
-                  onClick={handleCategoryClick}
-                >
-                  Automotive
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="grocery"
-                  onClick={handleCategoryClick}
-                >
-                  Grocery
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="games"
-                  onClick={handleCategoryClick}
-                >
-                  Games
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="electronics"
-                  onClick={handleCategoryClick}
-                >
-                  Electronics
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="books"
-                  onClick={handleCategoryClick}
-                >
-                  Books
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="clothing"
-                  onClick={handleCategoryClick}
-                >
-                  Clothing
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="beauty"
-                  onClick={handleCategoryClick}
-                >
-                  Beauty
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="industrial"
-                  onClick={handleCategoryClick}
-                >
-                  Industrial
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="computers"
-                  onClick={handleCategoryClick}
-                >
-                  Computers
-                </Dropdown.Item>
-                <Dropdown.Item
-                  as="button"
-                  value="music"
-                  onClick={handleCategoryClick}
-                >
-                  Music
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <Button
+              variant="outline-dark"
+              className="submit"
+              onClick={handleSearchButtonClick}
+            >
+              Search
+            </Button>
           </div>
         </form>
       </StyledSearch>
@@ -165,32 +103,17 @@ const StyledSearch = styled.div`
   input {
     width: 40%;
     font-size: 1rem;
-    font-weight: bold;
-    font-family: "Monserrat", sans-serif;
-    padding: 0.5rem;
+    font-family: "Source Sans Pro", sans-serif;
     margin-top: 1rem;
     margin-right: 1rem;
   }
-  .submit {
-    font-size: 1rem;
-    padding: 0.5rem 2rem;
-    cursor: pointer;
-    background: white;
-    color: black;
-  }
-  .dropdown-buttons {
+  .form-select-options {
     display: inline-flex;
     border: none;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 0.5rem;
   }
-  .dropdown-btn {
-    background: white;
-    color: black;
+  .form-select-label {
     margin-right: 0.5rem;
-    &:hover {
-      background-color: black;
-      color: white;
-    }
   }
 `;
 

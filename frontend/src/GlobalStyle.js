@@ -6,14 +6,6 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
   }
-  html {
-    &::-webkit-scrollbar {
-      width: 0.5rem;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: darkgray;
-    }
-  }
   body {
     font-family: 'Source Sans Pro', sans-serif;
     width: 100%;

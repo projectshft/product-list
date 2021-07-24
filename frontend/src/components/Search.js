@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 //style
 import styled from "styled-components";
 import Button from "react-bootstrap/Button";
@@ -37,9 +37,25 @@ const Search = () => {
   };
 
   const handleSearchButtonClick = () => {
-    setQuery(input);
-    dispatch(loadProductsData(query));
+    if (input && !price && !category) {
+      setQuery(`?query=${input}`);
+    } else if (input && category) {
+      if (price) {
+        return setQuery(`?query=${input}&category=${category}&price=${price}`);
+      }
+      setQuery(`?query=${input}&category=${category}`);
+    } else if (input && price) {
+      setQuery(`?query=${input}&price=${price}`);
+    } else {
+      setQuery("");
+    }
   };
+
+  useEffect(() => {
+    if (query) {
+      dispatch(loadProductsData(query));
+    }
+  }, [query]);
 
   return (
     <div>

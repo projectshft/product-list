@@ -57,7 +57,6 @@ const Search = () => {
 
   useEffect(() => {
     if (query) {
-      console.log(query);
       dispatch(loadProductsData(query));
       dispatch(loadQuery(query));
     }

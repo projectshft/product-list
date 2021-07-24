@@ -4,17 +4,15 @@ import styled from "styled-components";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { loadProductsData } from "../actions/productsAction";
-import { loadQuery } from "../actions/queryAction";
 
 const PageNav = () => {
+  // //local state
+  const [itemsPerPage] = useState(9);
+  //redux
   const dispatch = useDispatch();
   const { products, query } = useSelector((state) => state.products);
-
-  //local state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(9);
-
   const count = products.count;
+
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(count / itemsPerPage); i++) {
@@ -22,11 +20,11 @@ const PageNav = () => {
   }
 
   const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    console.log(pageNumber);
-    const newQuery = `${query}?page=${currentPage}`;
-    dispatch(loadQuery(newQuery));
-    //dispatch(loadProductsData(newQuery));
+    if (query.length === 0) {
+      dispatch(loadProductsData(`${query}?page=${pageNumber}`));
+    } else {
+      dispatch(loadProductsData(`${query}&page=${pageNumber}`));
+    }
   };
 
   return (

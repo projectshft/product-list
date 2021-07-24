@@ -1,19 +1,22 @@
+import { useEffect, useState } from "react";
 //components
 import Search from "./components/Search";
 import ProductCard from "./components/ProductCard";
+import PageNav from "./components/PageNav";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { loadProductsData } from "./actions/productsAction";
-import { useEffect } from "react";
 //style
 import GlobalStyle from "./GlobalStyle";
 import styled from "styled-components";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
+  //redux
   const dispatch = useDispatch();
   const { products, loaded } = useSelector((state) => state.products);
   const productArray = products.products;
+  const count = products.count;
 
   useEffect(() => {
     dispatch(loadProductsData());
@@ -41,6 +44,7 @@ const App = () => {
       ) : (
         ""
       )}
+      <PageNav />
     </div>
   );
 };

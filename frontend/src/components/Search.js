@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useEffect } from "react";
 //style
 import styled from "styled-components";
@@ -7,6 +6,7 @@ import Form from "react-bootstrap/Form";
 //redux
 import { useDispatch } from "react-redux";
 import { loadProductsData } from "../actions/productsAction";
+import { loadQuery } from "../actions/queryAction";
 
 const Search = () => {
   //redux
@@ -50,14 +50,16 @@ const Search = () => {
       setQuery(`?query=${input}&category=${category}`);
     } else if (input && price) {
       setQuery(`?query=${input}&price=${price}`);
-    } else {
-      setQuery("/");
+    } else if (price && category) {
+      setQuery(`?category=${category}&price=${price}`);
     }
   };
 
   useEffect(() => {
     if (query) {
+      console.log(query);
       dispatch(loadProductsData(query));
+      dispatch(loadQuery(query));
     }
   }, [query]);
 

@@ -15,9 +15,9 @@ const App = () => {
   const { products, loaded } = useSelector((state) => state.products);
   const productArray = products.products;
 
-  // useEffect(() => {
-  //   dispatch(loadProductsData());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(loadProductsData());
+  }, [dispatch]);
 
   return (
     <div className="App">

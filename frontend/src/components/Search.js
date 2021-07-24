@@ -39,6 +39,10 @@ const Search = () => {
   const handleSearchButtonClick = () => {
     if (input && !price && !category) {
       setQuery(`?query=${input}`);
+    } else if (price && !category && !query) {
+      setQuery(`?price=${price}`);
+    } else if (category && !input && !price) {
+      setQuery(`?category=${category}`);
     } else if (input && category) {
       if (price) {
         return setQuery(`?query=${input}&category=${category}&price=${price}`);
@@ -47,7 +51,7 @@ const Search = () => {
     } else if (input && price) {
       setQuery(`?query=${input}&price=${price}`);
     } else {
-      setQuery("");
+      setQuery("/");
     }
   };
 

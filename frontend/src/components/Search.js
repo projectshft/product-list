@@ -15,7 +15,7 @@ const Search = () => {
   const [input, setInput] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("?");
 
   //event handlers
   const handleInput = (e) => {
@@ -36,22 +36,34 @@ const Search = () => {
     }
   };
 
+  // const handleSearchButtonClick = () => {
+  //   if (input && !price && !category) {
+  //     setQuery(`?query=${input}`);
+  //   } else if (price && !category && !query) {
+  //     setQuery(`?price=${price}`);
+  //   } else if (category && !input && !price) {
+  //     setQuery(`?category=${category}`);
+  //   } else if (input && category) {
+  //     if (price) {
+  //       return setQuery(`?query=${input}&category=${category}&price=${price}`);
+  //     }
+  //     setQuery(`?query=${input}&category=${category}`);
+  //   } else if (input && price) {
+  //     setQuery(`?query=${input}&price=${price}`);
+  //   } else if (price && category) {
+  //     setQuery(`?category=${category}&price=${price}`);
+  //   }
+  // };
+
   const handleSearchButtonClick = () => {
-    if (input && !price && !category) {
-      setQuery(`?query=${input}`);
-    } else if (price && !category && !query) {
-      setQuery(`?price=${price}`);
-    } else if (category && !input && !price) {
-      setQuery(`?category=${category}`);
-    } else if (input && category) {
-      if (price) {
-        return setQuery(`?query=${input}&category=${category}&price=${price}`);
-      }
-      setQuery(`?query=${input}&category=${category}`);
-    } else if (input && price) {
-      setQuery(`?query=${input}&price=${price}`);
-    } else if (price && category) {
-      setQuery(`?category=${category}&price=${price}`);
+    if (input) {
+      setQuery(`${query}&query=${input}`);
+    }
+    if (price) {
+      setQuery(`${query}&price=${price}`);
+    }
+    if (category) {
+      setQuery(`${query}&category=${category}`);
     }
   };
 

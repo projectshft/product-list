@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 //components
 import Search from "./components/Search";
 import ProductCard from "./components/ProductCard";
@@ -16,7 +16,6 @@ const App = () => {
   const dispatch = useDispatch();
   const { products, loaded } = useSelector((state) => state.products);
   const productArray = products.products;
-  const count = products.count;
 
   useEffect(() => {
     dispatch(loadProductsData());
@@ -27,7 +26,6 @@ const App = () => {
       <GlobalStyle />
       <h1>Products Eval</h1>
       <Search />
-      <br></br>
       {loaded ? (
         <StyledProducts>
           {productArray.map((product) => (

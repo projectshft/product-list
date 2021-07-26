@@ -9,6 +9,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Source Sans Pro', sans-serif;
     width: 100%;
+    background-color: #EFEFEE;
   }
   h1 {
     font-size: 2rem;

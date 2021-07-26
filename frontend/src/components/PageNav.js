@@ -21,9 +21,10 @@ const PageNav = () => {
 
   const paginate = (pageNumber) => {
     if (query.length === 0) {
-      dispatch(loadProductsData(`${query}page=${pageNumber}`));
+      dispatch(loadProductsData(`?${query}&page=${pageNumber}`));
     } else {
       dispatch(loadProductsData(`${query}&page=${pageNumber}`));
+      console.log("click");
     }
   };
 

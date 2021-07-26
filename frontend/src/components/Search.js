@@ -15,7 +15,7 @@ const Search = () => {
   const [input, setInput] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [query, setQuery] = useState("?");
+  const [query, setQuery] = useState("");
 
   //event handlers
   const handleInput = (e) => {
@@ -24,46 +24,34 @@ const Search = () => {
 
   const handlePriceClick = (e) => {
     setPrice(e.target.value);
-    if (e.target.value === "Price") {
-      setPrice("");
-    }
   };
 
   const handleCategoryClick = (e) => {
     setCategory(e.target.value);
-    if (e.target.value === "Category") {
-      setCategory("");
+  };
+
+  const handleSearchEvent = () => {
+    if (input && !price && !category) {
+      setQuery(`?query=${input}`);
+    } else if (price && !category && !input) {
+      setQuery(`?price=${price}`);
+    } else if (category && !input && !price) {
+      setQuery(`?category=${category}`);
+    } else if (input && category) {
+      if (price) {
+        return setQuery(`?query=${input}&category=${category}&price=${price}`);
+      }
+      setQuery(`?query=${input}&category=${category}`);
+    } else if (input && price) {
+      setQuery(`?query=${input}&price=${price}`);
+    } else if (price && category) {
+      setQuery(`?category=${category}&price=${price}`);
     }
   };
 
-  // const handleSearchButtonClick = () => {
-  //   if (input && !price && !category) {
-  //     setQuery(`?query=${input}`);
-  //   } else if (price && !category && !query) {
-  //     setQuery(`?price=${price}`);
-  //   } else if (category && !input && !price) {
-  //     setQuery(`?category=${category}`);
-  //   } else if (input && category) {
-  //     if (price) {
-  //       return setQuery(`?query=${input}&category=${category}&price=${price}`);
-  //     }
-  //     setQuery(`?query=${input}&category=${category}`);
-  //   } else if (input && price) {
-  //     setQuery(`?query=${input}&price=${price}`);
-  //   } else if (price && category) {
-  //     setQuery(`?category=${category}&price=${price}`);
-  //   }
-  // };
-
-  const handleSearchButtonClick = () => {
-    if (input) {
-      setQuery(`${query}&query=${input}`);
-    }
-    if (price) {
-      setQuery(`${query}&price=${price}`);
-    }
-    if (category) {
-      setQuery(`${query}&category=${category}`);
+  const handleKeyPress = (e) => {
+    if (e.code === "Enter") {
+      handleSearchEvent();
     }
   };
 
@@ -72,13 +60,19 @@ const Search = () => {
       dispatch(loadProductsData(query));
       dispatch(loadQuery(query));
     }
-  }, [query]);
+  }, [query, dispatch]);
 
   return (
     <div>
       <StyledSearch>
         <form className="search">
-          <input type="text" onChange={handleInput} value={input}></input>
+          <input
+            type="text"
+            onChange={handleInput}
+            value={input}
+            placeholder="Search"
+            onKeyPress={handleKeyPress}
+          ></input>
 
           <div className="form-select-options">
             <Form.Select
@@ -86,7 +80,7 @@ const Search = () => {
               className="form-select-label"
               onChange={handlePriceClick}
             >
-              <option>Price</option>
+              <option value="">Price</option>
               <option value="highest">Highest</option>
               <option value="lowest">Lowest</option>
             </Form.Select>
@@ -97,7 +91,7 @@ const Search = () => {
               className="form-select-label"
               onChange={handleCategoryClick}
             >
-              <option>Category</option>
+              <option value="">Category</option>
               <option value="automotive">Automotive</option>
               <option value="books">Books</option>
               <option value="beauty">Beauty</option>
@@ -112,9 +106,9 @@ const Search = () => {
             </Form.Select>
 
             <Button
-              variant="outline-dark"
-              className="submit"
-              onClick={handleSearchButtonClick}
+              variant="dark"
+              className="submit search-button"
+              onClick={handleSearchEvent}
             >
               Search
             </Button>

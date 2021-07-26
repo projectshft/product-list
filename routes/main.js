@@ -69,6 +69,7 @@ router.get("/products", (req, res, next) => {
     }
   }
 
+  //db search based on user search input
   if (req.query.query) {
     const searchString = req.query.query.toUpperCase();
 
@@ -83,7 +84,7 @@ router.get("/products", (req, res, next) => {
       } else {
         query = { $text: { $search: searchString } };
       }
-      //if > 1 do exact match w/ or w/o category
+      //if > 1 word do exact match w/ or w/o category
     } else {
       if (req.query.query && req.query.category) {
         query = {
@@ -191,7 +192,6 @@ router.delete("/products/:product", async (req, res, next) => {
     res.status(404).send("Product not found.");
   } else {
     await Product.remove({ _id: product._id });
-    //res.deletedCount; // Number of documents removed
     res.send(`${product.name} deleted.`);
   }
 });

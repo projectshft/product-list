@@ -101,11 +101,13 @@ const Parent = () => {
   return (
     <div className="bg-light">
       <form class="register-form" onSubmit={handleSubmit}>
+        <br>
+        </br>
         <div className="container">
           <div className="row">
             <div className="col-md-6">
               {/* Search bar with newName as value */}
-              <div className="form-group col-md-10 p-0">
+              <div className="form-group p-0">
                 <input
                   className="form-control"
                   type="text"
@@ -168,6 +170,12 @@ const Parent = () => {
         {/* Products - set to read in the other variables */}
         <div className="container">
           <Products props={values} />
+        </div>
+
+        <div className="container">
+          <div className="row">
+            Page Number 1 2 3 4 5 6 7 8 9 10
+          </div>
         </div>
       </form>
     </div>

@@ -81,7 +81,6 @@ const Parent = () => {
     }
   }
 
-  // this is not being called
   useEffect(() => {
     console.log("In Products - here / urlAdditions: " + urlAdditions);
     dispatch(fetchProduct(urlAdditions));

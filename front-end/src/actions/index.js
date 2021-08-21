@@ -7,7 +7,11 @@ export const FETCH_PRODUCT = "FETCH_PRODUCT";
 export function fetchProduct(urlAdditions) {
   let ROOT_URL = 'http://localhost:8000/products';
 
-  ROOT_URL += urlAdditions;
+  console.log('in fetchProduct, urlAdditions.urlAdditions are: ' + urlAdditions.urlAdditions);
+  if (urlAdditions) {
+    ROOT_URL += urlAdditions.urlAdditions;
+  };
+  
 
   console.log('in fetchProduct, ROOT_URL is this after urlAdditions: ' + ROOT_URL);
 

@@ -1,11 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchProduct } from "../actions";
+import { useSelector } from "react-redux";
 
 const Product = (props) => {
   // select product from the global state
   const product = useSelector((state) => state.products);
-  const dispatch = useDispatch();  // pull in store here!
 
 
   function renderProducts() {

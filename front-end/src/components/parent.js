@@ -81,6 +81,18 @@ const Parent = () => {
     }
   }
 
+  // get collectionLength from db
+  const collectionLength = 90;
+  
+  // do something like https://stackoverflow.com/questions/40232847/how-to-implement-pagination-in-react
+  const pageNumberUI = (cl) => {
+    return ( 1
+      // <span value=
+    )
+  }
+
+  
+
   useEffect(() => {
     console.log("In Products - here / urlAdditions: " + urlAdditions);
     dispatch(fetchProduct(urlAdditions));
@@ -101,8 +113,7 @@ const Parent = () => {
   return (
     <div className="bg-light">
       <form class="register-form" onSubmit={handleSubmit}>
-        <br>
-        </br>
+        <br></br>
         <div className="container">
           <div className="row">
             <div className="col-md-6">
@@ -174,7 +185,7 @@ const Parent = () => {
 
         <div className="container">
           <div className="row">
-            Page Number 1 2 3 4 5 6 7 8 9 10
+            <a href="#" className="text-center">{pageNumberUI(collectionLength)}</a>
           </div>
         </div>
       </form>

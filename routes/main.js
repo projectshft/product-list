@@ -75,8 +75,8 @@ router.get("/products", (req, res, next) => {
       // Note that we're not sending 'count' back at the moment, but in the futuer we may want to know how may are coming back so we can figure out the number of pages
       Product.count().exec((err, count) => {
         if (err) return err;
-
-        res.send(products);
+        
+        res.send({ "products": products, "count": count});
       });
     });
 });

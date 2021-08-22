@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, mapStateToProps } from "react-redux";
 import { fetchProduct } from "../actions";
-import Products from "./products"
+import Products from "./products";
 
 const Parent = () => {
   const dispatch = useDispatch();
@@ -81,18 +81,6 @@ const Parent = () => {
     }
   }
 
-  // get collectionLength from db
-  const collectionLength = 90;
-  
-  // do something like https://stackoverflow.com/questions/40232847/how-to-implement-pagination-in-react
-  const pageNumberUI = (cl) => {
-    return ( 1
-      // <span value=
-    )
-  }
-
-  
-
   useEffect(() => {
     console.log("In Products - here / urlAdditions: " + urlAdditions);
     dispatch(fetchProduct(urlAdditions));
@@ -103,7 +91,7 @@ const Parent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // dispatch event here
-    dispatch( 
+    dispatch(
       fetchProduct({
         urlAdditions,
       })
@@ -113,12 +101,11 @@ const Parent = () => {
   return (
     <div className="bg-light">
       <form class="register-form" onSubmit={handleSubmit}>
-        <br></br>
         <div className="container">
           <div className="row">
             <div className="col-md-6">
               {/* Search bar with newName as value */}
-              <div className="form-group p-0">
+              <div className="form-group col-md-10 p-0">
                 <input
                   className="form-control"
                   type="text"
@@ -182,16 +169,9 @@ const Parent = () => {
         <div className="container">
           <Products props={values} />
         </div>
-
-        <div className="container">
-          <div className="row">
-            <a href="#" className="text-center">{pageNumberUI(collectionLength)}</a>
-          </div>
-        </div>
       </form>
     </div>
   );
 };
 
 export default Parent;
-

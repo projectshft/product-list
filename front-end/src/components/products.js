@@ -1,9 +1,8 @@
-import { useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 
 const Product = (props) => {
   // select product from the global state
   const product = useSelector((state) => state.products);
-
 
   function renderProducts() {
     if (product.length > 0) {
@@ -14,7 +13,10 @@ const Product = (props) => {
               <div>
                 Category: <strong>{p.category}</strong>
               </div>
-              <div> <h4>{p.price}</h4> </div>
+              <div>
+                {" "}
+                <h4>{p.price}</h4>{" "}
+              </div>
             </div>
             <div className="pb-3">
               <img
@@ -37,8 +39,9 @@ const Product = (props) => {
       <div className="container">
         <div className="row">{renderProducts()}</div>
       </div>
+      <div>page number</div>
     </div>
   );
-}
+};
 
 export default Product;

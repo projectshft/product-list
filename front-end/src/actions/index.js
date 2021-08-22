@@ -1,19 +1,22 @@
 import axios from "axios";
 
-
 export const FETCH_PRODUCT = "FETCH_PRODUCT";
 
 // return 9 products from API
 export function fetchProduct(urlAdditions) {
-  let ROOT_URL = 'http://localhost:8000/products';
+  let ROOT_URL = "http://localhost:8000/products";
 
-  console.log('in fetchProduct, urlAdditions.urlAdditions are: ' + urlAdditions.urlAdditions);
+  console.log(
+    "in fetchProduct, urlAdditions.urlAdditions are: " +
+      urlAdditions.urlAdditions
+  );
   if (urlAdditions) {
     ROOT_URL += urlAdditions.urlAdditions;
-  };
-  
+  }
 
-  console.log('in fetchProduct, ROOT_URL is this after urlAdditions: ' + ROOT_URL);
+  console.log(
+    "in fetchProduct, ROOT_URL is this after urlAdditions: " + ROOT_URL
+  );
 
   const request = axios.get(`${ROOT_URL}`);
 
@@ -22,6 +25,3 @@ export function fetchProduct(urlAdditions) {
     payload: request,
   };
 }
-
-
-

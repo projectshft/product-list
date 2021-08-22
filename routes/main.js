@@ -52,7 +52,7 @@ router.get("/products", (req, res, next) => {
   // add optional name query: localhost:8000/products?price=lowest&query=shovel
   // should be added to findQuery if that exists, if no existing, just do it without a comma
   if (JSON.stringify(queryString).includes("query")) {
-    if (findQuery = '{}') {
+    if ((findQuery = "{}")) {
       findQuery =
         findQuery.replace("}", "") +
         '"name" : { "$regex" : "' +
@@ -64,7 +64,7 @@ router.get("/products", (req, res, next) => {
         '"name" : { "$regex" : "' +
         queryString.query.split("'").join("") +
         '" } }';
-    }    
+    }
   }
 
   Product.find(JSON.parse(findQuery))
@@ -75,8 +75,8 @@ router.get("/products", (req, res, next) => {
       // Note that we're not sending 'count' back at the moment, but in the futuer we may want to know how may are coming back so we can figure out the number of pages
       Product.count().exec((err, count) => {
         if (err) return err;
-        
-        res.send({ "products": products, "count": count});
+
+        res.send([{ prod: products, number: count }]);
       });
     });
 });

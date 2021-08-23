@@ -39,7 +39,6 @@ const Product = (props) => {
       <div className="container">
         <div className="row">{renderProducts()}</div>
       </div>
-      <div>page number</div>
     </div>
   );
 };

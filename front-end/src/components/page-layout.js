@@ -24,7 +24,7 @@ const PageLayout = () => {
     }));
   };
 
-  // get categories from data, handle change of category from select
+  // get categories from state, handle change of category from select
   const product = useSelector((state) => state.products.items);
 
   const categories = product.map((c) => c.category);
@@ -32,6 +32,15 @@ const PageLayout = () => {
 
   function UniqueOptions() {
     return uniqueCategories.map((o) => <option id="{o}">{o}</option>);
+  }
+
+  // get number of items from state, set number of pages needed to display
+  const itemsInState = useSelector((state) => state.products.count);  // NOT
+  const pagesNeeded = Math.round(itemsInState / 9);
+  let pagesArr = [];
+
+  for (let i = 1; i < pagesNeeded + 1; i++) {
+    pagesArr.push(i);
   }
 
   const handleCategoryChange = (e) => {
@@ -50,6 +59,11 @@ const PageLayout = () => {
       price: e.target.value,
     }));
   };
+
+  // handle change of page selected at bottom
+  const handlePageChange = (e) => {
+    console.log(e);
+  }
 
   let urlAdditions = "";
 
@@ -82,7 +96,6 @@ const PageLayout = () => {
   }
 
   useEffect(() => {
-    console.log("In Products - here / urlAdditions: " + urlAdditions);
     dispatch(fetchProduct(urlAdditions));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchProduct]);
@@ -170,6 +183,16 @@ const PageLayout = () => {
           <Products props={values} />
         </div>
       </form>
+
+      <div className="container">
+        <div className="row text-center">
+          <span>
+            {pagesArr.map((p) => (
+              <span><a href="#" value={p} onClick={() => handlePageChange(p)}>{p}</a>{" "}</span>
+            ))}
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

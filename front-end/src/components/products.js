@@ -2,7 +2,7 @@ import {  useSelector } from "react-redux";
 
 const Product = (props) => {
   // select product from the global state
-  const product = useSelector((state) => state.products);
+  const product = useSelector((state) => state.products.items);
 
   function renderProducts() {
     if (product.length > 0) {

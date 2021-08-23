@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector, mapStateToProps } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchProduct } from "../actions";
 import Products from "./products";
 
-const Parent = () => {
+const PageLayout = () => {
   const dispatch = useDispatch();
 
   // local state for the input variables
@@ -25,7 +25,7 @@ const Parent = () => {
   };
 
   // get categories from data, handle change of category from select
-  const product = useSelector((state) => state.products);
+  const product = useSelector((state) => state.products.items);
 
   const categories = product.map((c) => c.category);
   const uniqueCategories = [...new Set(categories)];
@@ -174,4 +174,4 @@ const Parent = () => {
   );
 };
 
-export default Parent;
+export default PageLayout;

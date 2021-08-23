@@ -6,7 +6,7 @@ import promise from "redux-promise";
 import './index.css';
 import "bootstrap/dist/css/bootstrap.css";
 import reducers from "./reducers";
-import Parent from "./components/parent";
+import PageLayout from './components/page-layout';
 
 // function createStoreWithMiddleware to dispatch the action FETCH_FORECAST when the promise completes
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
@@ -15,7 +15,7 @@ const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={createStoreWithMiddleware(reducers)}>
-      <Parent />
+      <PageLayout />
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

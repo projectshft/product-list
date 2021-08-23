@@ -1,13 +1,21 @@
 import { FETCH_PRODUCT } from "../actions";
 
+const DEFAULT_STATE = {
+  items: [],
+  count: 0
+}
+
 // FETCH_PRODUCT will be 9 products
-const ProductReducer = function (state = [], action) {
+const ProductsReducer = function (state = DEFAULT_STATE, action) {
   //console.log(action.payload.data[0].prod);
   switch (action.type) {
     case FETCH_PRODUCT:
-      return action.payload.data[0];
+      return {
+        items: action.payload.data[0].prod,
+        count: action.payload.data[0].number,
+      };
     default:
       return state;
 }};
 
-export default ProductReducer;
+export default ProductsReducer;

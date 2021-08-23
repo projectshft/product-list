@@ -61,8 +61,11 @@ const PageLayout = () => {
   };
 
   // handle change of page selected at bottom
-  const handlePageChange = (e) => {
-    console.log(e);
+  const handlePageChange = (p) => {
+    setValues((values) => ({
+      ...values,
+      page: p,
+    }))
   }
 
   let urlAdditions = "";
@@ -93,6 +96,18 @@ const PageLayout = () => {
     } else {
       urlAdditions += "?page=" + values.page;
     }
+
+    // force handleSubmit since page number is separate from other inputs
+    dispatch(
+      fetchProduct({
+        urlAdditions,
+      })
+    )
+
+    setValues((values) => ({
+      ...values,
+      page: 1,
+    }));
   }
 
   useEffect(() => {

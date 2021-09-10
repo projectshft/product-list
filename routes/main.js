@@ -11,6 +11,7 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image";
+    product.reviews = [];
 
     product.save((err) => {
       if (err) throw err;
@@ -27,7 +28,7 @@ router.param("product", (req, res, next, id) => {
     if (err)
       console.log(err);
     else
-      req.product = product;
+      req.product = product[0];
     next();
   })
 })
@@ -69,21 +70,19 @@ router.get("/products/:product/reviews", (req, res, next) => {
 })
 
 router.post("/products/:product/reviews", (req, res) => {
-  const product = req.product;
 
-  // This is for testing 
-  const testReview = new Review({
-    text: 'test review',
-    username: 'me',
-    product: product._id
+  const newReview = new Review({
+    text: req.body.text,
+    username: req.body.username,
+    product: req.product.id
   })
 
-  testReview.save();
+  newReview.save();
 
-  product.reviews.push(testReview);
-  product.save();
+  req.product.reviews.push(newReview);
+  req.product.save();
 
-  res.send(testReview);
+  res.send(newReview);
 })
 
 module.exports = router;

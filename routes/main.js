@@ -36,9 +36,21 @@ router.get("/products", (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
   let category = req.query.category;
+  let options = {}
+
+  //set up optional sort
+  if(req.query.price === "highest"){
+    options.sort = {
+      price: -1
+    }
+  } else if (req.query.price === "lowest") {
+    options.sort = {
+      price: 1
+    }
+  }
 
   if (category) {
-    Product.find({category: category})
+    Product.find({category: category}, {}, options )
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec((err, products) => {
@@ -50,17 +62,17 @@ router.get("/products", (req, res, next) => {
     });
   } else {
 
-  Product.find({})
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
+    Product.find({}, {}, options)
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
 
-        res.send(products)
+          res.send(products)
+        });
       });
-    });
-  }
+    }
 });
 
 router.get("/products/:product", (req, res, next) => {

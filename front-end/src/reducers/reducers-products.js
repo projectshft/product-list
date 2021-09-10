@@ -1,12 +1,13 @@
 import { FETCH_PRODUCTS } from "../actions";
 
-const ProductReducer = function (state = [], action) {
+const productsReducer = function (state = [], action) {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      
-      break;
+      return action.payload.data
   
     default:
       return state;
   }
 }
+
+export default productsReducer

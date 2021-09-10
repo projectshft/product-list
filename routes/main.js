@@ -1,5 +1,3 @@
-const queryString = require("querystring");
-const url = require("url");
 const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
@@ -20,19 +18,37 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-router.get("/products", (req, res, next) => {
-  const queryParams = queryString.parse(url.parse(req.url).query);
+router.param("product", (req, res, next, id) => {
+  Product.findOne({_id: id})
+  .populate("reviews")
+  .exec((err, product) => {
+    if (err)
+      console.log(err);
+    else
+      req.product = product;
+    next();
+  })
+})
 
-  const pageNum = queryParams.page || 1;
+router.get("/products", (req, res, next) => {
+
+  const pageNum = req.query.page || 1;
 
   Product
   .find()
   .skip(9 * (pageNum - 1))
   .limit(9)
-  .exec()
-  .then(product => {
-    res.send(product)
-  })
+  .exec((err, products) => {
+    Product.count().exec((err, count) => {
+      if (err) return next(err);
+
+      res.send(products);
+    });
+  });
 });
+
+router.get("/products/:product", (req, res, next) => {
+  res.send(req.product);
+})
 
 module.exports = router;

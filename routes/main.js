@@ -39,8 +39,9 @@ router.get("/products", (req, res, next) => {
   if(req.query.category) {
     search.category = req.query.category;
   }
+
   if(req.query.query) {
-    search.query =  {$regex: req.query.query, $options: 'i' }
+    search.name = { $regex: req.query.query, $options: 'i' }
   }
 
   Product.find(search)

@@ -6,6 +6,7 @@ const faker = require("faker");
 const Product = require("../models/product");
 const Review = require("../models/review");
 app.use(express.json());
+
 //add function to build out categories to call in queries that ///use categories
 
 //create multiple router files? 
@@ -50,12 +51,12 @@ router.get("/products", (req, res, next) => {
 router.get("/products/:product", (req, res, next) => {
   Product.findById(req.params.product)
     .exec((err, product) => {
-      if (product) {
-        
-       res.send(product) 
+      if (!product) {
+       res.sendStatus(404)        
       } else if (err) {
         next(err)
       }
+      res.send(product) 
     })
 })
 
@@ -63,11 +64,13 @@ router.get("/products/:product/reviews", (req, res, next) => {
   Product.findById(req.params.product)
     .populate("reviews")
     .exec((err, product) => {
-      if (product) {
-       res.send(product.reviews) 
+      if (!product) {
+        res.sendStatus(404)       
       } else if (err) {
         next(err)
       }
+
+      res.send(product.reviews) 
     });    
 });
 
@@ -83,18 +86,54 @@ router.post("/products", (req, res, next) => {
 });
 
 router.post("/products/:product/reviews", (req, res, next) => {
-  let newReview = new Review({
-    userName: req.body.userName,
-    text: req.body.text,
-    product: req.params.product
-  });
+  Product.findById(req.params.product)
+    .exec((err, product) => {
+      if(!product){
+        res.sendStatus(404);
+      }
 
-  newReview.save((err, review) => {
-    if (err){
-      next(err)
-    }
-    res.send(review)
-  });  
+      if (product) {
+        let newReview = new Review({
+          userName: req.body.userName,
+          text: req.body.text,
+          product: req.params.product
+        });  
+        
+      product.reviews.push(newReview);
+      product.save();
+
+      newReview.save((err, review) => {
+        if (err){
+          next(err)
+        }
+        res.send(review)
+      }); 
+      }
+  });   
 });
+
+router.delete("/products/:product", (req, res, next) => {
+  Product.deleteOne({_id: req.params.product})
+    .exec((err, product) => {
+      if(!product) {
+        res.sendStatus(404);
+      } else if (err) {
+        next(err)
+      }
+      res.send("Product deleted")
+    });
+});
+
+router.delete("/reviews/:review", (req, res, next) => {
+  Review.deleteOne({_id: req.params.review})
+    .exec((err, review) => {
+      if(!review) {
+        res.sendStatus(404);
+      } else if (err) {
+        next(err)
+      }
+      res.send("Review deleted")
+    });
+})
 
 module.exports = router;

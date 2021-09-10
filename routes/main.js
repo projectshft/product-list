@@ -35,6 +35,20 @@ router.get("/generate-fake-data", (req, res, next) => {
 router.get("/products", (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
+  let category = req.query.category;
+
+  if (category) {
+    Product.find({category: category})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
+
+          res.send(products)
+        });
+    });
+  } else {
 
   Product.find({})
     .skip(perPage * page - perPage)
@@ -46,6 +60,7 @@ router.get("/products", (req, res, next) => {
         res.send(products)
       });
     });
+  }
 });
 
 router.get("/products/:product", (req, res, next) => {

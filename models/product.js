@@ -3,8 +3,14 @@ const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema({
   category: String,
-  name: String,
-  price: Number,
+  name: {
+    type: String,
+    required: [true, 'Product must have name']
+  },
+  price: {
+    type: Number,
+    required: [true, 'Product must have price']
+  },
   image: String,
   reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}]
 });

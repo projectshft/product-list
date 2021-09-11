@@ -92,12 +92,15 @@ router.post("/products", (req, res) => {
     reviews: []
   })
 
-  newProduct.save((err) => {
-    if (err) throw err;
-  });
-
-  res.writeHead(200, { "Content-Type": "application/json" })
-  return res.end(JSON.stringify(newProduct));
+  newProduct.save()
+  .then(() => {
+    res.writeHead(200, { "Content-Type": "application/json" })
+    return res.end(JSON.stringify(newProduct));  
+  })
+  .catch(() => {
+    res.writeHead(400, "Validation error: Product must have 'name' and 'price' properties")
+    return res.end();
+  })
 })
 
 // DELETE a product by id
@@ -152,13 +155,27 @@ router.post("/products/:product/reviews", (req, res) => {
     product: req.product.id
   })
 
-  newReview.save();
+  newReview
+  .save()
+  .then(() => {
+    req.product.reviews.push(newReview);
 
-  req.product.reviews.push(newReview);
-  req.product.save();
-
-  res.writeHead(200, { "Content-Type": "application/json" })
-  return res.end(JSON.stringify(newReview));
+    req.product
+    .save()
+    .then(() => {
+      res.writeHead(200, { "Content-Type": "application/json" })
+      return res.end(JSON.stringify(newReview));
+    })
+    
+    .catch(() => {
+      res.writeHead(500, "Internal server error")
+      return res.end();
+    })
+  })
+  .catch(() => {
+    res.writeHead(400, "Validation error: Review must have text")
+    return res.end();
+  });    
 })
 
 // DELETE a review by id

@@ -49,10 +49,18 @@ router.param("review", (req, res, next, id) => {
 router.get("/products", (req, res, next) => {
   const pageNum = req.query.page || 1;
 
+  let sortOrder = '';
+
+  if (req.query.price === 'highest')
+    sortOrder = 'desc'
+  else if (req.query.price === 'lowest')
+    sortOrder = 'asc'
+
   Product
   .find({category: {$regex: new RegExp(req.query.category, 'i')}})
   .skip(9 * (pageNum - 1))
   .limit(9)
+  .sort({price: sortOrder})
   .exec((err, products) => {
     Product.count().exec((err, count) => {
       if (err) return next(err);

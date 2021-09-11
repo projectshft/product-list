@@ -33,6 +33,18 @@ router.param("product", (req, res, next, id) => {
   })
 })
 
+router.param("review", (req, res, next, id) => {
+  Review
+  .find({_id: id})
+  .exec((err, review) => {
+    if (err)
+      console.log(err);
+    else
+      req.review = review[0];
+    next();
+  })
+})
+
 router.get("/products", (req, res, next) => {
   const pageNum = req.query.page || 1;
 
@@ -71,10 +83,9 @@ router.post("/products", (req, res) => {
 })
 
 router.delete("/products/:product", (req, res) => {
-  const productToDelete = req.product;
   const productToDeleteJSON = JSON.stringify(req.product);
 
-  Product.deleteOne({_id: productToDelete._id}, (err) => {
+  Product.deleteOne({_id: req.product._id}, (err) => {
     if (err) throw err;
   })
 
@@ -113,6 +124,24 @@ router.post("/products/:product/reviews", (req, res) => {
 
   res.writeHead(200, { "Content-Type": "application/json" })
   return res.end(JSON.stringify(newReview));
+})
+
+router.delete("/reviews/:review", (req, res) => {
+  const reviewToDelete = req.review;
+  const reviewToDeleteJSON = JSON.stringify(reviewToDelete);
+
+  // I don't think this is working?
+  Product.updateOne({_id: reviewToDelete.product}, {$pull: {reviews: {_id: reviewToDelete._id}}}, (err) => {
+    if (err)
+      console.log(err);
+  })
+
+  Review.deleteOne({_id: reviewToDelete._id}, (err) => {
+    if (err) throw err;
+  })
+
+  res.writeHead(200, { "Content-Type": "application/json" })
+  return res.end(reviewToDeleteJSON);
 })
 
 module.exports = router;

@@ -26,7 +26,7 @@ router.param("product", (req, res, next, id) => {
   .populate("reviews")
   .exec((err, product) => {
     if (err)
-      console.log(err);
+      req.error = '404';
     else
       req.product = product[0];
     next();
@@ -38,7 +38,7 @@ router.param("review", (req, res, next, id) => {
   .find({_id: id})
   .exec((err, review) => {
     if (err)
-      console.log(err);
+      req.error = '404';
     else
       req.review = review[0];
     next();
@@ -62,6 +62,7 @@ router.get("/products", (req, res, next) => {
   .limit(9)
   .sort({price: sortOrder})
   .exec((err, products) => {
+    // Change the count!
     Product.count().exec((err, count) => {
       if (err) return next(err);
 
@@ -72,7 +73,13 @@ router.get("/products", (req, res, next) => {
 
 // GET single product by id
 router.get("/products/:product", (req, res) => {
-  res.send(req.product);
+  if (req.error === '404') {
+    res.writeHead(404, 'Product not found')
+    return res.end();
+  }
+
+  res.writeHead(200, { "Content-Type": "application/json" })
+  return res.end(JSON.stringify(req.product));
 })
 
 // POST a new product
@@ -95,6 +102,11 @@ router.post("/products", (req, res) => {
 
 // DELETE a product by id
 router.delete("/products/:product", (req, res) => {
+  if (req.error === '404') {
+    res.writeHead(404, 'Product not found')
+    return res.end();
+  }
+
   const productToDeleteJSON = JSON.stringify(req.product);
 
   Product.deleteOne({_id: req.product._id}, (err) => {
@@ -107,6 +119,11 @@ router.delete("/products/:product", (req, res) => {
 
 // GET a product's reviews
 router.get("/products/:product/reviews", (req, res, next) => {
+  if (req.error === '404') {
+    res.writeHead(404, 'Product not found')
+    return res.end();
+  }
+
   const pageNum = req.query.page || 1;
 
   Review
@@ -124,6 +141,10 @@ router.get("/products/:product/reviews", (req, res, next) => {
 
 // POST a new review for a product
 router.post("/products/:product/reviews", (req, res) => {
+  if (req.error === '404') {
+    res.writeHead(404, 'Product not found')
+    return res.end();
+  }
 
   const newReview = new Review({
     text: req.body.text,
@@ -142,6 +163,11 @@ router.post("/products/:product/reviews", (req, res) => {
 
 // DELETE a review by id
 router.delete("/reviews/:review", (req, res) => {
+  if (req.error === '404') {
+    res.writeHead(404, 'Review not found')
+    return res.end();
+  }
+
   const reviewToDelete = req.review;
   const reviewToDeleteJSON = JSON.stringify(reviewToDelete);
 

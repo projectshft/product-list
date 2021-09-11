@@ -57,7 +57,7 @@ router.get("/products", (req, res, next) => {
     sortOrder = 'asc'
 
   Product
-  .find({category: {$regex: new RegExp(req.query.category, 'i')}})
+  .find({category: {$regex: new RegExp(req.query.category, 'i')}, name: {$regex: new RegExp(req.query.query, 'i')}})
   .skip(9 * (pageNum - 1))
   .limit(9)
   .sort({price: sortOrder})

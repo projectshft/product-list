@@ -166,7 +166,7 @@ router.post("/products/:product/reviews", (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" })
       return res.end(JSON.stringify(newReview));
     })
-    
+
     .catch(() => {
       res.writeHead(500, "Internal server error")
       return res.end();
@@ -187,8 +187,8 @@ router.delete("/reviews/:review", (req, res) => {
 
   const reviewToDelete = req.review;
   const reviewToDeleteJSON = JSON.stringify(reviewToDelete);
-
-  // I don't think this is working?
+  
+  // FIX THIS
   Product.updateOne({_id: reviewToDelete.product}, {$pull: {reviews: {_id: reviewToDelete._id}}}, (err) => {
     if (err)
       console.log(err);

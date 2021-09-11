@@ -82,7 +82,8 @@ router.post("/products/:product/reviews", (req, res) => {
   req.product.reviews.push(newReview);
   req.product.save();
 
-  res.send(newReview);
+  res.writeHead(200, { "Content-Type": "application/json" })
+  return res.end(JSON.stringify(newReview));
 })
 
 module.exports = router;

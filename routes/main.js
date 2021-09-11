@@ -45,11 +45,12 @@ router.param("review", (req, res, next, id) => {
   })
 })
 
+// GET all products w/ pagination
 router.get("/products", (req, res, next) => {
   const pageNum = req.query.page || 1;
 
   Product
-  .find()
+  .find({category: {$regex: new RegExp(req.query.category, 'i')}})
   .skip(9 * (pageNum - 1))
   .limit(9)
   .exec((err, products) => {
@@ -61,10 +62,12 @@ router.get("/products", (req, res, next) => {
   });
 });
 
+// GET single product by id
 router.get("/products/:product", (req, res) => {
   res.send(req.product);
 })
 
+// POST a new product
 router.post("/products", (req, res) => {
   const newProduct = new Product({
     category: req.body.category,
@@ -82,6 +85,7 @@ router.post("/products", (req, res) => {
   return res.end(JSON.stringify(newProduct));
 })
 
+// DELETE a product by id
 router.delete("/products/:product", (req, res) => {
   const productToDeleteJSON = JSON.stringify(req.product);
 
@@ -93,6 +97,7 @@ router.delete("/products/:product", (req, res) => {
   return res.end(productToDeleteJSON);
 })
 
+// GET a product's reviews
 router.get("/products/:product/reviews", (req, res, next) => {
   const pageNum = req.query.page || 1;
 
@@ -109,6 +114,7 @@ router.get("/products/:product/reviews", (req, res, next) => {
   })
 })
 
+// POST a new review for a product
 router.post("/products/:product/reviews", (req, res) => {
 
   const newReview = new Review({
@@ -126,6 +132,7 @@ router.post("/products/:product/reviews", (req, res) => {
   return res.end(JSON.stringify(newReview));
 })
 
+// DELETE a review by id
 router.delete("/reviews/:review", (req, res) => {
   const reviewToDelete = req.review;
   const reviewToDeleteJSON = JSON.stringify(reviewToDelete);

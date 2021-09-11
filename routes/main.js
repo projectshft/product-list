@@ -7,14 +7,6 @@ const Product = require("../models/product");
 const Review = require("../models/review");
 app.use(express.json());
 
-//add function to build out categories to call in queries that ///use categories
-
-//create multiple router files? 
-
-//function to find product and avoid repetition?
-const findProduct = (req) => {
-
-}
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -36,9 +28,18 @@ router.get("/products", (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
   let category = req.query.category;
-  let options = {}
+  let options = {};
+  let filter = {};
 
-  //set up optional sort
+  if (category) {
+   filter.category = category;
+  }
+
+  if (req.query.query) {
+    filter.$text = {$search: req.query.query}
+  }
+
+  //set up optional; sort
   if(req.query.price === "highest"){
     options.sort = {
       price: -1
@@ -48,31 +49,16 @@ router.get("/products", (req, res, next) => {
       price: 1
     }
   }
+  Product.find(filter, {}, options)
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+      Product.count().exec((err, count) => {
+        if (err) return next(err);
 
-  if (category) {
-    Product.find({category: category}, {}, options )
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        Product.count().exec((err, count) => {
-          if (err) return next(err);
-
-          res.send(products)
-        });
+        res.send(products)
     });
-  } else {
-
-    Product.find({}, {}, options)
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        Product.count().exec((err, count) => {
-          if (err) return next(err);
-
-          res.send(products)
-        });
-      });
-    }
+  });
 });
 
 router.get("/products/:product", (req, res, next) => {

@@ -70,6 +70,18 @@ router.post("/products", (req, res) => {
   return res.end(JSON.stringify(newProduct));
 })
 
+router.delete("/products/:product", (req, res) => {
+  const productToDelete = req.product;
+  const productToDeleteJSON = JSON.stringify(req.product);
+
+  Product.deleteOne({_id: productToDelete._id}, (err) => {
+    if (err) throw err;
+  })
+
+  res.writeHead(200, { "Content-Type": "application/json" });
+  return res.end(productToDeleteJSON);
+})
+
 router.get("/products/:product/reviews", (req, res, next) => {
   const pageNum = req.query.page || 1;
 

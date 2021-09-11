@@ -4,7 +4,6 @@ const Product = require("../models/product");
 
 router.get("/products", (req, res, next) => {
   const perPage = 9;
-
   // return the first page by default
   const page = req.query.page || 1;
 
@@ -28,7 +27,25 @@ router.get("/products/:product", (req, res, next) => {
     .exec((err, product) => {
       if (err) return next(err);
 
-      res.send(product);
+      res.send(product[0]);
+    });
+});
+
+router.get("/products/:product/reviews", (req, res, next) => {
+  const perPage = 4;
+  // return the first page by default
+  const page = req.query.page || 1;
+  const {product} = req.params; 
+
+  Product.find({_id: product})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, product) => {
+      Product.count().exec((err, count) => {
+        if (err) return next(err);
+
+        res.send(product[0].reviews);
+      });
     });
 });
 

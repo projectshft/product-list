@@ -53,6 +53,23 @@ router.get("/products/:product", (req, res) => {
   res.send(req.product);
 })
 
+router.post("/products", (req, res) => {
+  const newProduct = new Product({
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+    reviews: []
+  })
+
+  newProduct.save((err) => {
+    if (err) throw err;
+  });
+
+  res.writeHead(200, { "Content-Type": "application/json" })
+  return res.end(JSON.stringify(newProduct));
+})
+
 router.get("/products/:product/reviews", (req, res, next) => {
   const pageNum = req.query.page || 1;
 

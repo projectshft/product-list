@@ -1,4 +1,4 @@
-import { SET_SEARCH_QUERY, SET_CATEGORY_FILTER, SET_SORT_ORDER, SET_PAGE_NUMBER, RESET_QUERY_PARAMS } from "../constants";
+import { SET_SEARCH_QUERY, SET_CATEGORY_FILTER, SET_SORT_ORDER, RESET_QUERY_PARAMS } from "../constants";
 
 const queryParamsReducer = (state = {}, action) => {
   switch(action.type) {
@@ -10,9 +10,6 @@ const queryParamsReducer = (state = {}, action) => {
       return state;
     case SET_SORT_ORDER:
       state.price = action.payload;
-      return state;
-    case SET_PAGE_NUMBER:
-      state.page = action.payload;
       return state;
     case RESET_QUERY_PARAMS:
       return {};

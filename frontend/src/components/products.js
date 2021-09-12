@@ -2,6 +2,7 @@ import { useSelector } from "react-redux"
 
 const Products = () => {
   const products = useSelector((state) => state.products);
+  console.log(products);
 
   const renderProducts = () => {
     return products.map((product) => {

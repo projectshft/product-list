@@ -45,7 +45,8 @@ router.get("/products", (req, res, next) => {
     .limit(perPage)
     .sort(passSort())
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+      if (err) return next(err);
+
       Product.count().and([
         passCategory(),
         passQuery()
@@ -99,7 +100,7 @@ router.post("/products", (req, res, next) => {
   newProduct.reviews = [];
 
   newProduct.save((err) => {
-    if (err) return next (err);
+    if (err) return next(err);
     console.log('Product successfully added.');
   });
   res.end();
@@ -111,11 +112,11 @@ router.post("/products/:product/reviews", (req, res, next) => {
 
   Product.find({_id: product})
   .exec((err, product) => {
-    if (err) return next (err);
+    if (err) return next(err);
 
     product[0].reviews.push(req.body);
     product[0].save((err) => {
-      if (err) return next (err);
+      if (err) return next(err);
       console.log('Review successfully added.');
     });
   });
@@ -128,10 +129,10 @@ router.delete("/products/:product", (req, res, next) => {
 
   Product.find({_id: product})
   .exec((err, product) => {
-    if (err) return next (err);
+    if (err) return next(err);
 
     product[0].remove((err) => {
-      if (err) return next (err);
+      if (err) return next(err);
       console.log('Product successfully deleted.');
     })
   });
@@ -145,12 +146,12 @@ router.delete("/reviews/:review", (req, res, next) => {
 
   Product.find({reviews: {$elemMatch: {_id: review}}})
   .exec((err, product) => {
-    if (err) return next (err);
+    if (err) return next(err);
 
     product[0].reviews.remove({_id: review});
 
     product[0].save((err) => {
-      if (err) return next (err);
+      if (err) return next(err);
       console.log('Review successfully deleted.');
     });
   });

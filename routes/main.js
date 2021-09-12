@@ -37,7 +37,7 @@ router.param("review", (req, res, next, id) => {
   Review
   .find({_id: id})
   .exec((err, review) => {
-    if (err)
+    if (err || review.length === 0)
       req.error = '404';
     else
       req.review = review[0];
@@ -188,7 +188,6 @@ router.delete("/reviews/:review", (req, res) => {
   const reviewToDelete = req.review;
   const reviewToDeleteJSON = JSON.stringify(reviewToDelete);
   
-  // FIX THIS
   Product.updateOne({_id: reviewToDelete.product}, {'$pull': {'reviews': reviewToDelete._id}})
   .then(() => {
     Review.deleteOne({_id: reviewToDelete._id}, (err) => {

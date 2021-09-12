@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Only the text of the review is required
 const ReviewSchema = new Schema({
   text: {
     type: String,

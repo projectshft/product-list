@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Only the name and price of the product are required
 const ProductSchema = new Schema({
   category: String,
   name: {

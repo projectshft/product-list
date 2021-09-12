@@ -2,6 +2,7 @@ const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
 
+//GET all products
 router.get("/products", (req, res, next) => {
   const perPage = 9;
   // return the first page by default
@@ -20,6 +21,7 @@ router.get("/products", (req, res, next) => {
     });
 });
 
+//GET a specific product
 router.get("/products/:product", (req, res, next) => {
   const {product} = req.params; 
 
@@ -31,6 +33,7 @@ router.get("/products/:product", (req, res, next) => {
     });
 });
 
+//GET all reviews for a specific product
 router.get("/products/:product/reviews", (req, res, next) => {
   const perPage = 4;
   // return the first page by default
@@ -47,6 +50,35 @@ router.get("/products/:product/reviews", (req, res, next) => {
         res.send(product[0].reviews);
       });
     });
+});
+
+//POST a new product
+router.post("/products", (req, res, next) => {
+  const newProduct = new Product();
+  newProduct.category = req.body.category;
+  newProduct.name = req.body.name;
+  newProduct.price = req.body.price;
+  newProduct.image = req.body.image;
+  newProduct.reviews = [];
+
+  newProduct.save((err) => {
+    if (err) return next (err);
+  });
+  res.end();
+});
+
+//POST a new review for a specific product
+router.post("/products/:product/reviews", (req, res, next) => {
+  const {product} = req.params;
+
+  Product.find({_id: product})
+  .exec((err, product) => {
+    if (err) return next (err);
+    
+    product[0].reviews.push(req.body);
+    product[0].save();
+  });
+  res.end();
 });
 
 module.exports = router;

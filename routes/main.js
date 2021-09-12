@@ -25,7 +25,7 @@ router.param("product", (req, res, next, id) => {
   .find({_id: id})
   .populate("reviews")
   .exec((err, product) => {
-    if (err)
+    if (err || product.length === 0)
       req.error = '404';
     else
       req.product = product[0];
@@ -62,11 +62,13 @@ router.get("/products", (req, res, next) => {
   .limit(9)
   .sort({price: sortOrder})
   .exec((err, products) => {
-    // Change the count!
-    Product.count().exec((err, count) => {
+    Product
+    .find({category: {$regex: new RegExp(req.query.category, 'i')}, name: {$regex: new RegExp(req.query.query, 'i')}})
+    .count()
+    .exec((err, count) => {
       if (err) return next(err);
 
-      res.send(products);
+      res.send([products, count]);
     });
   });
 });

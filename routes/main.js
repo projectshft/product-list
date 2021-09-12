@@ -9,16 +9,13 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
   const category = req.query.category || null;
   const price = req.query.price || null;
-
-  const toProperCase = (string) => {
-    return string[0].toUpperCase() + string.slice(1).toLowerCase();
-  }
+  const query = req.query.query || null;
 
   const passCategory = () => {
-    if (category) {
-      return {category: toProperCase(category)};
+    if (!category) {
+      return {};
     } 
-    return {};
+    return {category: {$regex: category, $options: 'i'}};
     }
 
   const passSort = () => {
@@ -33,14 +30,30 @@ router.get("/products", (req, res, next) => {
     }
   }
 
-  Product.find(passCategory())
+  const passQuery = () => {
+    if (!query) {
+      return {};
+    }
+  return {name: {$regex: query, $options: 'i'}}
+  }
+
+  Product.find().and([
+    passCategory(),
+    passQuery()
+  ])
     .skip(perPage * page - perPage)
     .limit(perPage)
     .sort(passSort())
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
+      Product.count().and([
+        passCategory(),
+        passQuery()
+      ])
+      .exec((err, count) => {
         if (err) return next(err);
+
+        console.log(`Count: ${count}`);
 
         res.send(products);
       });
@@ -70,11 +83,9 @@ router.get("/products/:product/reviews", (req, res, next) => {
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, product) => {
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
+      if (err) return next(err);
 
-        res.send(product[0].reviews);
-      });
+      res.send(product[0].reviews);
     });
 });
 

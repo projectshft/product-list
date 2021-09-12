@@ -8,6 +8,7 @@ router.get("/products", (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1;
   const category = req.query.category || null;
+  const price = req.query.price || null;
 
   const toProperCase = (string) => {
     return string[0].toUpperCase() + string.slice(1).toLowerCase();
@@ -20,9 +21,22 @@ router.get("/products", (req, res, next) => {
     return {};
     }
 
+  const passSort = () => {
+    if (!price) {
+      return {};    
+    }
+    if (price.toLowerCase() == "highest") {
+      return {price: -1};
+    }
+    if (price.toLowerCase() == "lowest") {
+      return {price: 1};
+    }
+  }
+
   Product.find(passCategory())
     .skip(perPage * page - perPage)
     .limit(perPage)
+    .sort(passSort())
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
       Product.count().exec((err, count) => {

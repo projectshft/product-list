@@ -1,35 +1,30 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux"
 import { fetchProducts } from "../actions";
 
 function SearchBar() {
 const dispatch = useDispatch();
-const [search, setSearch] = useState({
-  query: '',
-  price: '',
-  category: ''
-});
+let search = {};
 
 
 const handleSearchChange = (e) => {
-  setSearch({ query: e.target.value})
+  search = { query: e.target.value}
   if (e.keyCode === 13) {
-    handleSearch()
+    handleSearch(search)
   }
 }
 
-const handleSearch = () => {
+const handleSearch = (search) => {
   dispatch(fetchProducts(search))
 }
 
 const handleCategoryChange = (e) => {
-  setSearch({category: e.target.value})
-  handleSearch()
+  search = { category: e.target.value }
+  handleSearch(search)
 }
 
 const handlePriceSort = (e) => {
-  setSearch({price: e.target.value})
-  handleSearch()
+  search = { price: e.target.value }
+  handleSearch(search)
 }
   return (
   <div className='row'>

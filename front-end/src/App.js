@@ -1,6 +1,7 @@
 import './App.css';
 import SearchBar from './components/search-bar';
 import Products from './components/products';
+import Pagination from './components/pagination';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       </header>
       <SearchBar />
       <Products />
+      <Pagination />
     </div>
   );
 }

@@ -39,7 +39,7 @@ router.get("/products", (req, res, next) => {
     filter.$text = {$search: req.query.query}
   }
 
-  //set up optional; sort
+  //set up optional sort
   if(req.query.price === "highest"){
     options.sort = {
       price: -1

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import ProductListItem from "./product-list-item";
 
 const Products = () => {
-  const products = useSelector((state) => state.products);
+  const products = useSelector(state => state.products);
 
   const renderProducts = () => {
     return products.map((product) => {

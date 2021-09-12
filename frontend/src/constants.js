@@ -1,3 +1,7 @@
 export const ROOT_URL = 'http://localhost:8000/products';
 export const GET_INITIAL_PRODUCTS = 'GET_INITIAL_PRODUCTS';
 export const GET_PRODUCTS_SUCCESS = 'GET_PRODUCTS_SUCCESS';
+export const SET_SEARCH_QUERY = 'SET_SEARCH_QUERY';
+export const SET_CATEGORY_FILTER = 'SET_CATEGORY_FILTER';
+export const SET_SORT_ORDER = 'SET_SORT_ORDER';
+export const RESET_QUERY_PARAMS = 'RESET_QUERY_PARAMS';

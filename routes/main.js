@@ -188,12 +188,19 @@ router.delete("/reviews/:review", (req, res) => {
   const reviewToDelete = req.review;
   const reviewToDeleteJSON = JSON.stringify(reviewToDelete);
   
-  Product.updateOne({_id: reviewToDelete.product}, {'$pull': {'reviews': reviewToDelete._id}})
+  Product
+  .updateOne({_id: reviewToDelete.product}, {'$pull': {'reviews': reviewToDelete._id}})
   .then(() => {
-    Review.deleteOne({_id: reviewToDelete._id}, (err) => {
-      if (err) throw err;
-    })
+    console.log('Review reference removed from product')
+  })
+  .catch(() => {
+    res.writeHead(500, 'Internal server error');
+    return res.end();
+  })
 
+  Review
+  .deleteOne({_id: reviewToDelete._id})
+  .then(() => {
     res.writeHead(200, { "Content-Type": "application/json" })
     return res.end(reviewToDeleteJSON);
   })

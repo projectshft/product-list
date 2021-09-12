@@ -97,24 +97,31 @@ router.delete("/products/:product", (req, res, next) => {
       if (err) return next (err);
       console.log('Product successfully deleted.');
     })
-
   });
   res.end();
 });
 
 // DELETE a specific review
-router.delete("/products/:product", (req, res, next) => {
-  const {product} = req.params;
+router.delete("/reviews/:review", (req, res, next) => {
+  // const {product} = req.params;
+  const {review} = req.params;
 
-  Product.find({_id: product})
+  Product.find({reviews: {$elemMatch: {_id: review}}})
   .exec((err, product) => {
     if (err) return next (err);
 
-    product[0].remove((err) => {
-      if (err) return next (err);
-      console.log('Product successfully deleted.');
-    })
+    // const updatedReviews = product[0].reviews.filter((rev) => {
+    //   (rev._id === review);
+    // });
 
+    // product[0].reviews = updatedReviews;
+
+    product[0].reviews.remove({_id: review});
+
+    product[0].save((err) => {
+      if (err) return next (err);
+      console.log('Review successfully deleted.');
+    });
   });
   res.end();
 });

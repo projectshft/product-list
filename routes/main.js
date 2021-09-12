@@ -63,6 +63,7 @@ router.post("/products", (req, res, next) => {
 
   newProduct.save((err) => {
     if (err) return next (err);
+    console.log('Product successfully added.');
   });
   res.end();
 });
@@ -74,9 +75,46 @@ router.post("/products/:product/reviews", (req, res, next) => {
   Product.find({_id: product})
   .exec((err, product) => {
     if (err) return next (err);
-    
+
     product[0].reviews.push(req.body);
-    product[0].save();
+    product[0].save((err) => {
+      if (err) return next (err);
+      console.log('Review successfully added.');
+    });
+  });
+  res.end();
+});
+
+//DELETE a specific product
+router.delete("/products/:product", (req, res, next) => {
+  const {product} = req.params;
+
+  Product.find({_id: product})
+  .exec((err, product) => {
+    if (err) return next (err);
+
+    product[0].remove((err) => {
+      if (err) return next (err);
+      console.log('Product successfully deleted.');
+    })
+
+  });
+  res.end();
+});
+
+// DELETE a specific review
+router.delete("/products/:product", (req, res, next) => {
+  const {product} = req.params;
+
+  Product.find({_id: product})
+  .exec((err, product) => {
+    if (err) return next (err);
+
+    product[0].remove((err) => {
+      if (err) return next (err);
+      console.log('Product successfully deleted.');
+    })
+
   });
   res.end();
 });

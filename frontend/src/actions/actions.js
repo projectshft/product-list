@@ -1,10 +1,10 @@
 import axios from "axios";
 import { ROOT_URL, GET_PRODUCTS_SUCCESS } from "../constants";
 
-export const getIntialProducts = () => {
+export const getProducts = (queryParams) => {
   return (dispatch) => {
     axios
-    .get(ROOT_URL)
+    .get(ROOT_URL + queryParams)
     .then(res => {
       dispatch(getProductsSuccess(res));
     })

@@ -1,8 +1,12 @@
+import Search from "./components/search";
 import Products from "./components/products";
 
 function App() {
   return (
-    <Products/>
+    <div>
+      <Search/>
+      <Products/>
+    </div>
   )
 }
 

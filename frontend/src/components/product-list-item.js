@@ -1,6 +1,6 @@
 const ProductListItem = ({product}) => {
   return (
-    <div className="product-list-item">
+    <div>
       <p>Category: <strong>{product.category}</strong></p>
       <p>Price: <strong>{product.price}</strong></p>
       <img src={product.image} alt={product.name}></img>

@@ -8,10 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
 import rootReducer from './reducers/root-reducer';
-import { getIntialProducts } from './actions/actions';
+import { getProducts } from './actions/actions';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
-store.dispatch(getIntialProducts());
+store.dispatch(getProducts(''));
 
 ReactDOM.render(
   <Provider store={store}>

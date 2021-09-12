@@ -9,6 +9,7 @@ const Products = () => {
       return (
         <div key={product._id} className="col-md-4">
           <ProductListItem product={product}/>
+          <hr></hr>
         </div>
       )
     })

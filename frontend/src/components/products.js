@@ -1,24 +1,21 @@
 import { useSelector } from "react-redux"
+import ProductListItem from "./product-list-item";
 
 const Products = () => {
   const products = useSelector((state) => state.products);
-  console.log(products);
 
   const renderProducts = () => {
     return products.map((product) => {
       return (
-        <div key={product._id}>
-          <p>Category: {product.category}</p>
-          <p>Price: {product.price}</p>
-          <img src={product.image} alt={product.name}></img>
-          <p>{product.name}</p>
+        <div key={product._id} className="col-md-4">
+          <ProductListItem product={product}/>
         </div>
       )
     })
   }
 
   return (
-    <div>
+    <div className="row">
       {renderProducts()}
     </div>
   )

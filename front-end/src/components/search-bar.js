@@ -4,26 +4,31 @@ import { fetchProducts } from "../actions";
 
 function SearchBar() {
 const dispatch = useDispatch();
-const [search, setSearch] = useState();
-const [price, setPrice] = useState();
+const [search, setSearch] = useState({
+  query: '',
+  price: '',
+  category: ''
+});
+
 
 const handleSearchChange = (e) => {
-  setSearch(e.target.value)
+  setSearch({ query: e.target.value})
   if (e.keyCode === 13) {
     handleSearch()
   }
 }
 
 const handleSearch = () => {
-  dispatch(fetchProducts(search, price))
+  dispatch(fetchProducts(search))
 }
 
-const handleCategoryChange = () => {
-
+const handleCategoryChange = (e) => {
+  setSearch({category: e.target.value})
+  handleSearch()
 }
 
 const handlePriceSort = (e) => {
-  setPrice(e.target.value)
+  setSearch({price: e.target.value})
   handleSearch()
 }
   return (
@@ -35,7 +40,7 @@ const handlePriceSort = (e) => {
     </div>
     <div className='col-md-2'> 
       <select className="form-control" name="category" onChange={handleCategoryChange} >
-        <option>Sort by Category</option>
+        <option value=''>Sort by Category</option>
         <option value="Automotive">Automotive</option>
         <option value="Clothing">Clothing</option>
         <option value="Kids">Kids</option>
@@ -46,7 +51,7 @@ const handlePriceSort = (e) => {
     </div>
     <div className='col-md-2'> 
       <select className="form-control" name="price" onChange={handlePriceSort} >
-        <option>Sort by Price</option>
+        <option value=''>Sort by Price</option>
         <option value="highest">Highest</option>
         <option value="lowest">Lowest</option>         
       </select>

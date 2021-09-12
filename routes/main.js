@@ -7,8 +7,20 @@ router.get("/products", (req, res, next) => {
   const perPage = 9;
   // return the first page by default
   const page = req.query.page || 1;
+  const category = req.query.category || null;
 
-  Product.find({})
+  const toProperCase = (string) => {
+    return string[0].toUpperCase() + string.slice(1).toLowerCase();
+  }
+
+  const passCategory = () => {
+    if (category) {
+      return {category: toProperCase(category)};
+    } 
+    return {};
+    }
+
+  Product.find(passCategory())
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
@@ -109,12 +121,6 @@ router.delete("/reviews/:review", (req, res, next) => {
   Product.find({reviews: {$elemMatch: {_id: review}}})
   .exec((err, product) => {
     if (err) return next (err);
-
-    // const updatedReviews = product[0].reviews.filter((rev) => {
-    //   (rev._id === review);
-    // });
-
-    // product[0].reviews = updatedReviews;
 
     product[0].reviews.remove({_id: review});
 

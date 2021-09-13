@@ -1,28 +1,51 @@
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getProducts } from '../actions/actions';
 
 const App = () => {
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [page, setPage] = useState("");
 
   const dispatch = useDispatch();
 
+  useEffect(()=>{
+    console.log('state is: '+query+", "+category+", "+price+", "+page);
+    dispatch(getProducts(query,category,price,page));
+  },[query,category,price,page])
+
   const catChangeHandler = (e) => {
-    console.log(e.target.value);
-    // dispatch(getProducts());
+    console.log('category: '+e.target.value);
+    if (e.target.value !== 'Filter by Category') {
+      setCategory(e.target.value);
+    }
   }
 
   const priceChangeHandler = (e) => {
-    console.log(e.target.value);
+    console.log('sort: '+e.target.value);
+    if (e.target.value !== 'Sort by Price') {
+      setPrice(e.target.value);
+    }
+  }
+
+  const queryKeyPressHandler = (e) => {
+    if (e.key === 'Enter') {
+      console.log('query: '+e.target.value);
+      setQuery(e.target.value)
+    }
   }
 
   return (
   <div className="container">
     <div className="row">
      <div className="col">
-      <input type="text" className="form-control" placeholder="Search" />
+      <input type="text" className="form-control" placeholder="Search" onKeyPress={queryKeyPressHandler} />
      </div>
      <div className="col">
       <select className="form-select" aria-label="Default select example" onChange={catChangeHandler}>
         <option selected className="fst-italic">Filter by Category</option>
+        <option value="">--</option>
         <option value="automotive">Automotive</option>
         <option value="baby" >Baby</option>
         <option value="beauty">Beauty</option>
@@ -51,6 +74,7 @@ const App = () => {
      <div className="col">
       <select className="form-select" aria-label="Default select example" onChange={priceChangeHandler}>
           <option selected className="fst-italic">Sort by Price</option>
+          <option value="">--</option>
           <option value="lowest">Lowest to Highest</option>
           <option value="highest">Highest to Lowest</option>
         </select>

@@ -69,6 +69,12 @@ const App = () => {
     )
   }
 
+  const renderPagination = () => {
+    return (
+      <div><h3>{searches.length}</h3></div>
+    )
+  }
+
   return (
   <div className="container">
     <div className="row top-row">
@@ -116,6 +122,10 @@ const App = () => {
 
     <div className="row product-row align-items-center">
       {renderSearches()}
+    </div>
+
+    <div className="row page-row">
+      {renderPagination()}
     </div>
   </div>
   )

@@ -2,11 +2,11 @@ const express = require("express");
 const router = require("express").Router();
 const app = express();
 const faker = require("faker");
-
+const cors = require('cors');
 const Product = require("../models/product");
 const Review = require("../models/review");
 app.use(express.json());
-
+app.use(cors())
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {

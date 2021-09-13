@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 
 mongoose.connect("mongodb://localhost/products");
 
+
 const app = express();
 
 app.use(express.json());

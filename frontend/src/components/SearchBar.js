@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from "react"
 import axios from "axios"
-
+import { useDispatch } from "react-redux";
+import { getProductsAsync } from "../redux/productSlice";
 export default function SearchBar () {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('')
   const [price, setPrice] = useState('')
   
+  const dispatch = useDispatch();
   //update search params -- better way to do this?
   const params = {};
   
@@ -35,13 +37,14 @@ export default function SearchBar () {
   
 
   const handleSearch = e => {
-    axios.get(`http://localhost:8000/products`, {
-      params: params
-    })
-    .then(res => {
-      console.log(res)
-      //add res to redux store then call function to populate entries
-    })
+    dispatch(getProductsAsync(params));
+    // axios.get(`http://localhost:8000/products`, {
+    //   params: params
+    // })
+    // .then(res => {
+    //   console.log(res)
+    //   //add res to redux store then call function to populate entries
+    // })
   }
   const handleQuery = e =>{
     setQuery(e.target.value); 

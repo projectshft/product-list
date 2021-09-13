@@ -42,25 +42,27 @@ const App = () => {
     return(
       searches.map((search) => {
         return (
-          <div className="col-4">
+          <div className="col-4 product-outer-col">
+            <div className="col-8 offset-2 product-inner-col">
             
-            <div className="row">
-              <div className="col">
-                Category: {search.category}
+              <div className="row">
+                <div className="col product-cat-text">
+                  Category: <strong>{search.category}</strong>
+                </div>
+                <div className="col-4 product-price-text fs-3 fw-bold">
+                  ${search.price}
+                </div>
               </div>
-              <div className="col">
-                Price: ${search.price}
+
+              <div className="row">
+                <img src={search.image} alt="" className="product-img rounded mx-auto d-block"></img>
               </div>
-            </div>
 
-            <div className="row">
-              <img src={search.image} alt=""></img>
-            </div>
+              <div className="row">
+                <h2 className="product-name-text text-center">{search.name}</h2>
+              </div>
 
-            <div className="row">
-            {search.name}
             </div>
-            
           </div>
         )
       })
@@ -69,11 +71,11 @@ const App = () => {
 
   return (
   <div className="container">
-    <div className="row">
-     <div className="col">
+    <div className="row top-row">
+     <div className="col-6">
       <input type="text" className="form-control" placeholder="Search" onKeyPress={queryKeyPressHandler} />
      </div>
-     <div className="col">
+     <div className="col-3">
       <select className="form-select" aria-label="Default select example" onChange={catChangeHandler}>
         <option selected className="fst-italic">Filter by Category</option>
         <option value="">--</option>
@@ -90,7 +92,7 @@ const App = () => {
         <option value="health">Health</option>
         <option value="home">Home</option>
         <option value="industrial">Industrial</option>
-        <option value="jewelry">Jewelry</option>
+        <option value="jewelery">Jewelery</option>
         <option value="kids">Kids</option>
         <option value="movies">Movies</option>
         <option value="music">Music</option>
@@ -102,7 +104,7 @@ const App = () => {
     
       </select>
      </div>
-     <div className="col">
+     <div className="col-3">
       <select className="form-select" aria-label="Default select example" onChange={priceChangeHandler}>
           <option selected className="fst-italic">Sort by Price</option>
           <option value="">--</option>
@@ -112,7 +114,7 @@ const App = () => {
      </div>
     </div>
 
-    <div className="row">
+    <div className="row product-row align-items-center">
       {renderSearches()}
     </div>
   </div>

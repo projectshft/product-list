@@ -6,7 +6,6 @@ export const GET_PRODUCTS = "GET_PRODUCTS";
 
 export const getProducts = (query,category,price,page) => {
 
-
   const queryUrl = () => {
     if (query) {
       return `query=${query}`;

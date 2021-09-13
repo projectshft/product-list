@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../actions/actions';
 
 const App = () => {
@@ -9,6 +9,8 @@ const App = () => {
   const [page, setPage] = useState("");
 
   const dispatch = useDispatch();
+
+  const searches = useSelector(state => state.searches);
 
   useEffect(()=>{
     console.log('state is: '+query+", "+category+", "+price+", "+page);
@@ -34,6 +36,35 @@ const App = () => {
       console.log('query: '+e.target.value);
       setQuery(e.target.value)
     }
+  }
+
+  const renderSearches = () => {
+    return(
+      searches.map((search) => {
+        return (
+          <div className="col-4">
+            
+            <div className="row">
+              <div className="col">
+                Category: {search.category}
+              </div>
+              <div className="col">
+                Price: ${search.price}
+              </div>
+            </div>
+
+            <div className="row">
+              <img src={search.image} alt=""></img>
+            </div>
+
+            <div className="row">
+            {search.name}
+            </div>
+            
+          </div>
+        )
+      })
+    )
   }
 
   return (
@@ -82,7 +113,7 @@ const App = () => {
     </div>
 
     <div className="row">
-      <h2>Table Here</h2>
+      {renderSearches()}
     </div>
   </div>
   )

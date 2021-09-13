@@ -1,34 +1,72 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
-
 
 export default function SearchBar () {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('')
-  const [sort, setSort] = useState('')
+  const [price, setPrice] = useState('')
+  
+  //update search params -- better way to do this?
+  const params = {};
+  
+  // use useEffect to track query, category, sort and then update params object. It's a subscription
+  useEffect(() => {
+    if (query) {
+      params.query = query
+    }
+
+    if(price) {
+      params.price = price
+    }
+
+    if (category) {
+      params.category = category
+    }
+
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, price, category])
+
+
   //use useEffect to preload categories for extension exercise
   let categories = ['Sports', 'Beauty', 'Music', 'Baby', 'Garden', 'Books', 'Kids', 'Home', 'Jewelry', 'Grocery', 'Electronics'];
   categories = categories.sort();
   
+
   const handleSearch = e => {
     axios.get(`http://localhost:8000/products`, {
-      params: {
-        q: query,
-        category: category,
-        price: sort
-      }
+      params: params
     })
     .then(res => {
       console.log(res)
       //add res to redux store then call function to populate entries
     })
   }
+  const handleQuery = e =>{
+    setQuery(e.target.value); 
+  }
 
+  const handleCategory = e => {
+    setCategory(e.target.text);
+    handleSearch();
+  }
+
+  const categoryReset = () => {
+    setCategory('');
+  }
+
+  const handlePrice = e => {
+    setPrice(e.target.text);
+  }
+
+  const priceReset = () => {
+    setPrice('');
+  }
   return (
     <div className = "container">
       <div className = "input-group">
-        <input type="text" id="query" className="form-control" placeholder="Enter search term" onChange={(e) => setQuery(e.target.value)}></input>
+        <input type="text" id="query" className="form-control" placeholder="Enter search term" onChange={handleQuery}></input>
 
         
         <div className = "dropdown"> 
@@ -36,22 +74,22 @@ export default function SearchBar () {
           <ul className="dropdown-menu" aria-labelledby="category"> 
             
          {categories.map(cat => (
-            <li><a className="dropdown-item" href="#" value={cat} key={cat} onClick={(e) => setCategory(e.target.text)}>
+            <li><a className="dropdown-item" href="#" value={cat} key={cat} onClick={handleCategory}>
               {cat}
             </a></li> 
           ))} 
-            <li><a className="dropdown-item" href="#" onClick={() => setCategory('')}>reset
+            <li><a className="dropdown-item" href="#" onClick={categoryReset}>reset
             </a></li>
           </ul>
        </div>
        <div className = "dropdown"> 
-          <button className="btn btn-secondary dropdown-toggle" type="button" id="sort" data-bs-toggle="dropdown" aria-expanded="false">{sort ? sort: "Sort by Price"}</button>
+          <button className="btn btn-secondary dropdown-toggle" type="button" id="sort" data-bs-toggle="dropdown" aria-expanded="false">{price ? price: "Sort by Price"}</button>
           <ul className="dropdown-menu" aria-labelledby="sort">          
-            <li><a className="dropdown-item" href="#" onClick={(e) => setSort(e.target.text)}>highest
+            <li><a className="dropdown-item" href="#" onClick={handlePrice}>highest
             </a></li>
-            <li><a className="dropdown-item" href="#" onClick={(e) => setSort(e.target.text)}>lowest
+            <li><a className="dropdown-item" href="#" onClick={handlePrice}>lowest
             </a></li>
-            <li><a className="dropdown-item" href="#" onClick={() => setSort('')}>reset
+            <li><a className="dropdown-item" href="#" onClick={priceReset}>reset
             </a></li>
              
         

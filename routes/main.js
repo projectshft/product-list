@@ -53,9 +53,7 @@ router.get("/products", (req, res, next) => {
       ])
       .exec((err, count) => {
         if (err) return next(err);
-
-        console.log(`Count: ${count}`);
-
+      
         res.send([{products:products, count:count}]);
       });
     });

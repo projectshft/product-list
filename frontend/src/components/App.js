@@ -11,22 +11,18 @@ const App = () => {
   const dispatch = useDispatch();
 
   const searches = useSelector(state => state.searches);
-  console.log(searches);
 
   useEffect(()=>{
-    console.log('state is: '+query+", "+category+", "+price+", "+page);
     dispatch(getProducts(query,category,price,page));
   },[query,category,price,page,dispatch],)
 
   const catChangeHandler = (e) => {
-    console.log('category: '+e.target.value);
     if (e.target.value !== 'Filter by Category') {
       setCategory(e.target.value);
     }
   }
 
   const priceChangeHandler = (e) => {
-    console.log('sort: '+e.target.value);
     if (e.target.value !== 'Sort by Price') {
       setPrice(e.target.value);
     }
@@ -34,9 +30,12 @@ const App = () => {
 
   const queryKeyPressHandler = (e) => {
     if (e.key === 'Enter') {
-      console.log('query: '+e.target.value);
       setQuery(e.target.value)
     }
+  }
+
+  const buttonClickHandler = (e) => {
+    setPage(e.target.textContent);
   }
 
   const renderSearches = () => {
@@ -73,12 +72,24 @@ const App = () => {
   }
 
   const renderPagination = () => {
-    // const numResults = searches[0].count;
-    // const numPages = Math.ceil(numResults/9);
-    // console.log('numResults: '+numResults);
-    // console.log('numPages: '+numPages);
+    const numResults = searches.count;
+    const numPages = Math.ceil(numResults/9);
+    const pageArray = []
+
+    for (let i = 0; i < numPages; i++) {
+      pageArray.push(i+1);
+    }
+      
     return (
-      <div><h3>{searches.length}</h3></div>
+      pageArray.map((page)=> {
+        return(
+          <div className="col page-button">
+            <button type="button" className="btn btn-light" onClick={buttonClickHandler}>
+              {page}
+            </button>
+          </div>
+        )
+      })
     )
   }
 
@@ -89,7 +100,7 @@ const App = () => {
       <input type="text" className="form-control" placeholder="Search" onKeyPress={queryKeyPressHandler} />
      </div>
      <div className="col-3">
-      <select className="form-select" aria-label="Default select example" onChange={catChangeHandler}>
+      <select className="form-select" aria-label="Default select example" onChange={catChangeHandler} defaultValue="Filter by Category">
         <option selected className="fst-italic">Filter by Category</option>
         <option value="">--</option>
         <option value="automotive">Automotive</option>
@@ -132,7 +143,12 @@ const App = () => {
     </div>
 
     <div className="row page-row">
-      {renderPagination()}
+      <div className="col-6 text-end page-footer"><strong>Page:</strong></div>
+      <div className="col-6">
+        <div className="row align-items-start">
+          {renderPagination()}
+        </div>
+      </div>
     </div>
   </div>
   )

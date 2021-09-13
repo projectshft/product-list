@@ -11,11 +11,12 @@ const App = () => {
   const dispatch = useDispatch();
 
   const searches = useSelector(state => state.searches);
+  console.log(searches);
 
   useEffect(()=>{
     console.log('state is: '+query+", "+category+", "+price+", "+page);
     dispatch(getProducts(query,category,price,page));
-  },[query,category,price,page])
+  },[query,category,price,page,dispatch],)
 
   const catChangeHandler = (e) => {
     console.log('category: '+e.target.value);
@@ -39,37 +40,43 @@ const App = () => {
   }
 
   const renderSearches = () => {
-    return(
-      searches.map((search) => {
-        return (
-          <div className="col-4 product-outer-col">
-            <div className="col-8 offset-2 product-inner-col">
-            
-              <div className="row">
-                <div className="col product-cat-text">
-                  Category: <strong>{search.category}</strong>
+    if(searches.products) {
+      return(
+        searches.products.map((search) => {
+          return (
+            <div className="col-4 product-outer-col">
+              <div className="col-8 offset-2 product-inner-col">
+              
+                <div className="row">
+                  <div className="col product-cat-text">
+                    Category: <strong>{search.category}</strong>
+                  </div>
+                  <div className="col-4 product-price-text fs-3 fw-bold">
+                    ${search.price}
+                  </div>
                 </div>
-                <div className="col-4 product-price-text fs-3 fw-bold">
-                  ${search.price}
+
+                <div className="row">
+                  <img src={search.image} alt="" className="product-img rounded mx-auto d-block"></img>
                 </div>
-              </div>
 
-              <div className="row">
-                <img src={search.image} alt="" className="product-img rounded mx-auto d-block"></img>
-              </div>
+                <div className="row">
+                  <h2 className="product-name-text text-center">{search.name}</h2>
+                </div>
 
-              <div className="row">
-                <h2 className="product-name-text text-center">{search.name}</h2>
               </div>
-
             </div>
-          </div>
-        )
-      })
-    )
+          )
+        })
+      )
+    }
   }
 
   const renderPagination = () => {
+    // const numResults = searches[0].count;
+    // const numPages = Math.ceil(numResults/9);
+    // console.log('numResults: '+numResults);
+    // console.log('numPages: '+numPages);
     return (
       <div><h3>{searches.length}</h3></div>
     )

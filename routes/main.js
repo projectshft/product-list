@@ -56,7 +56,7 @@ router.get("/products", (req, res, next) => {
 
         console.log(`Count: ${count}`);
 
-        res.send(products);
+        res.send([{products:products, count:count}]);
       });
     });
 });

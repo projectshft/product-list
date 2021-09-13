@@ -1,18 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from "react"
-import axios from "axios"
 import { useDispatch } from "react-redux";
 import { getProductsAsync } from "../redux/productSlice";
+
 export default function SearchBar () {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('')
   const [price, setPrice] = useState('')
   
   const dispatch = useDispatch();
-  //update search params -- better way to do this?
+  
   const params = {};
   
-  // use useEffect to track query, category, sort and then update params object. It's a subscription
+  useEffect(() => {
+    handleSearch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
   useEffect(() => {
     if (query) {
       params.query = query
@@ -24,9 +28,7 @@ export default function SearchBar () {
 
     if (category) {
       params.category = category
-    }
-
-    
+    }    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, price, category])
 
@@ -38,13 +40,6 @@ export default function SearchBar () {
 
   const handleSearch = e => {
     dispatch(getProductsAsync(params));
-    // axios.get(`http://localhost:8000/products`, {
-    //   params: params
-    // })
-    // .then(res => {
-    //   console.log(res)
-    //   //add res to redux store then call function to populate entries
-    // })
   }
   const handleQuery = e =>{
     setQuery(e.target.value); 
@@ -88,19 +83,17 @@ export default function SearchBar () {
        <div className = "dropdown"> 
           <button className="btn btn-secondary dropdown-toggle" type="button" id="sort" data-bs-toggle="dropdown" aria-expanded="false">{price ? price: "Sort by Price"}</button>
           <ul className="dropdown-menu" aria-labelledby="sort">          
-            <li><a className="dropdown-item" href="#" onClick={handlePrice}>highest
+            <li><a className="dropdown-item" href="#" key="h" onClick={handlePrice}>highest
             </a></li>
-            <li><a className="dropdown-item" href="#" onClick={handlePrice}>lowest
+            <li><a className="dropdown-item" href="#" key="l" onClick={handlePrice}>lowest
             </a></li>
             <li><a className="dropdown-item" href="#" onClick={priceReset}>reset
             </a></li>
-             
-        
-
           </ul>
        </div>
         <button className='button btn btn-primary' onClick={handleSearch}>Search</button>
       </div>
+      
     </div>
   )
 }

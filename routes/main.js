@@ -49,16 +49,20 @@ router.get("/products", (req, res, next) => {
       price: 1
     }
   }
+  count = Product.countDocuments((err, c) => {
+    console.log(`Count is ${c}`)
+  });
+  
   Product.find(filter, {}, options)
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
       Product.count().exec((err, count) => {
         if (err) return next(err);
-
-        res.send(products)
-    });
-  });
+        res.send([{products: products, count:count}])
+      })
+     
+    })
 });
 
 router.get("/products/:product", (req, res, next) => {

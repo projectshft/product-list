@@ -1,3 +1,12 @@
 h1 {
   text-align: center;
 }
+
+.card {
+  margin: 10px;
+}
+
+.page.page {
+  font-size: 30px;
+  padding: 5px;
+}

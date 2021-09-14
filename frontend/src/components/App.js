@@ -95,6 +95,23 @@ const App = () => {
     )
   }
 
+  const renderPageTitle = () => {
+    if (searches.count === 0) {
+      if(category === "") {
+        return (
+          <div><strong>No results found for "{query}".</strong></div>
+        )
+      }
+      return (
+        <div><strong>No results found for "{query}" in the <u>{category}</u> category.</strong></div>
+      )
+    }
+
+    return (
+      <strong>Page:</strong>
+    )
+  }
+
   return (
   <div className="container">
     <div className="row top-row">
@@ -145,7 +162,9 @@ const App = () => {
     </div>
 
     <div className="row page-row">
-      <div className="col-6 text-end page-footer"><strong>Page:</strong></div>
+      <div className="col-6 text-end page-footer">
+        {renderPageTitle()}
+      </div>
       <div className="col-6">
         <div className="row align-items-start">
           {renderPagination()}

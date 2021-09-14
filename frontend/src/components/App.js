@@ -19,6 +19,7 @@ const App = () => {
   const catChangeHandler = (e) => {
     if (e.target.value !== 'Filter by Category') {
       setCategory(e.target.value);
+      setPage(1);
     }
   }
 
@@ -31,6 +32,7 @@ const App = () => {
   const queryKeyPressHandler = (e) => {
     if (e.key === 'Enter') {
       setQuery(e.target.value)
+      setPage(1);
     }
   }
 

@@ -14,7 +14,8 @@ const App = () => {
 
   useEffect(()=>{
     dispatch(getProducts(query,category,price,page));
-  },[query,category,price,page,dispatch],)
+    //eslint-disable-next-line
+  },[query,category,price,page],)
 
   const catChangeHandler = (e) => {
     if (e.target.value !== 'Filter by Category') {

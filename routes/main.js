@@ -139,7 +139,6 @@ router.delete("/products/:product", (req, res, next) => {
 
 // DELETE a specific review
 router.delete("/reviews/:review", (req, res, next) => {
-  // const {product} = req.params;
   const {review} = req.params;
 
   Product.find({reviews: {$elemMatch: {_id: review}}})

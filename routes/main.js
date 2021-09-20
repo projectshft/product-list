@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const faker = require("faker");
-const { isValidObjectId } = require("mongoose");
+// const { isValidObjectId } = require("mongoose");
 const Product = require("../models/product");
 const Review = require("../models/reviews")
 
@@ -20,34 +20,34 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-//hardcode some reviews
-const fakeReviews = [
-  {
-    userName: "Peter",
-    text: "Received this as a gift for my 18th birthday. As soon as I touched it, I grew a moustache.",
-    product: "613a801b5ffb141a09d37b1c"
-  },
-  {
-    userName: "Parker",
-    text: "One of the greatest inventions of all time. It saved my marriage.",
-    product: "613a801b5ffb141a09d37b1c"
-  },
-  {
-    userName: "Mary",
-    text: "Great product, but the packaging could be better",
-    product: "613a801b5ffb141a09d37b1c"
-  },
-  {
-    userName: "Jane",
-    text: "Ever since buying this product, I've lived my life in peace and safety.",
-    product: "613a801b5ffb141a09d37b1c"
-  },
-  {
-    userName: "Watson",
-    text: "Worked as described. All you can ask for.",
-    product: "613a801b5ffb141a09d37b1c"
-  }
+ fakeReviews = [
+//   {
+//     userName: "Peter",
+//     text: "Received this as a gift for my 18th birthday. As soon as I touched it, I grew a moustache.",
+//     product: "613a801b5ffb141a09d37b1c"
+//   },
+//   {
+//     userName: "Parker",
+//     text: "One of the greatest inventions of all time. It saved my marriage.",
+//     product: "613a801b5ffb141a09d37b1c"
+//   },
+//   {
+//     userName: "Mary",
+//     text: "Great product, but the packaging could be better",
+//     product: "613a801b5ffb141a09d37b1c"
+//   },
+//   {
+//     userName: "Jane",
+//     text: "Ever since buying this product, I've lived my life in peace and safety.",
+//     product: "613a801b5ffb141a09d37b1c"
+//   },
+//   {
+//     userName: "Watson",
+//     text: "Worked as described. All you can ask for.",
+//     product: "613a801b5ffb141a09d37b1c"
+//   }
 ]
+
 //update a product to have the reviews
 router.post("/generate-fake-reviews/:id", (req, res, next) => {
   Product.findByIdAndUpdate(
@@ -71,74 +71,53 @@ router.get("/products", (req, res, next) => {
   const query = req.query.query || ""
 
   let find = Product;
+  let find2 = Product;
 
   if (category) {
    let formatCategory = category.charAt().toUpperCase() + category.substring(1).toLowerCase();
 
    find = find.find({category: formatCategory})
+   find2 = find2.find({category: formatCategory})
+
   };
 
   if (!category) {
     find = find.find({})
+    find2 = find2.find({})
+
   }
 
   if (prices) {
     if (prices === "highest") { 
       sort = -1
-    } else if (prices === "lowest") {
+    } 
+    if (prices === "lowest") {
       sort = 1
-    } else { 
+    }
+    if (prices === "") { 
       sort = null
     };
     find = find.sort({price: sort})
+    find2 = find2.sort({price: sort})
   }
 
   if (query) {
     find = find.find({name: {$regex: query, $options: "i"}})
+    find2 = find2.find({name: {$regex: query, $options: "i"}})
+
   }
 
   find
     .skip(perPage*page-perPage)
     .limit(perPage)
     .exec((error, products) => {
-      Product.count().exec((err, count) => {
+      if (error) throw err;
+      find2.count().exec((err, count) => {
       if(err) return next(err);
-
-      res.send(products);
+      res.send([count,products]);
     });
   });
 });
-
-
-// if (!category) {
-//   findProduct
-//   .sort({price: sort})
-//   .skip(perPage*page-perPage)
-//   .limit(perPage)
-//   .exec((error, products) => {
-//     Product.count().exec((err, count) => {
-//     if(err) return next(err);
-
-//     res.send(products);
-//   });
-// });
-// } else {
-//   const formatCategory = category.charAt().toUpperCase() + category.substring(1).toLowerCase()
-
-//   Product.find({category: formatCategory})
-//   .sort({price: sort})
-//   .skip(perPage*page-perPage)
-//   .limit(perPage)
-//   .exec((error, products) => {
-//     Product.count().exec((err, count) => {
-//     if(err) return next(err);
-
-//     res.send(products);
-//   });
-//   });
-// }
-// });
-
 
 router.get("/product/:id", (req, res, next) => {
   Product.findById(req.params.id, (err, product) =>{

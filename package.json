@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "cd client && npm install && npm run build"
   },
+  "proxy": "http://localhost:8000",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ninavtan/product-list.git"
@@ -18,10 +20,15 @@
   },
   "homepage": "https://github.com/ninavtan/product-list#readme",
   "dependencies": {
+    "axios": "^0.21.4",
     "body-parser": "^1.19.0",
+    "bootstrap": "^5.1.1",
     "express": "^4.17.1",
     "faker": "^5.5.3",
     "mongoose": "^6.0.5",
-    "mongoose-paginate-v2": "^1.4.2"
+    "mongoose-paginate-v2": "^1.4.2",
+    "react": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "redux": "^4.1.1"
   }
 }

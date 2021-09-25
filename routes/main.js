@@ -35,7 +35,12 @@ router.param("review", (req, res, next, id) => {
   })
 })
 
-// router.param("")
+
+router.get("/api", function(req, res, next) {
+  console.log(req);
+  res.json({message: "API is working properly"});
+});
+
 
 router.get("/products", (req, res, next) => {
   const perPage = 9;
@@ -50,7 +55,6 @@ router.get("/products", (req, res, next) => {
     query.name = {$regex: req.query.query, $options: "i"};
   }
 
-  
   // Grab category (optional)
   const capitalizeFirstLetter = str => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -71,7 +75,7 @@ router.get("/products", (req, res, next) => {
     priceQuery.price = null;
   }
 
-  console.log(query);
+  // console.log(query);
 
   // Find the product matching the params provided
   Product.find(query, null, { sort: priceQuery})
@@ -82,7 +86,10 @@ router.get("/products", (req, res, next) => {
     if (result.length === 0 ){
       res.send(`Your query for ${query.category} did not match anything.`)
     } else {
-      res.send(result);
+      // console.log(result);
+      const resultArray = Object.entries(result);
+      // console.log(resultArray);
+      res.send(resultArray);
     }
   });
 });

@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.productCard {
+  height: 400px;
+  width: 350px;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.product-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 80%;
+  text-align: center;
+  margin: 0 auto;
+  padding: 2em;
+  gap: 2em 2em;
+  justify-content: center;
+}
+
+.links {
+  text-decoration: underline;
+}
+
+.search-container {
+  /* display: flex; */
+  width: 100%;
+  margin: 0 auto;
+}
+#form {
+  /* margin: 0 10em; */
+  width: 100%;
+}
+input {
+  width: 70%;
+  /* margin: 3em auto; */
+  padding: 10px 10px;
+}
+
+#form {
+  width: 100%;
+}
+
+.btn {
+  border: none;
+  text-decoration: none;
+  font-size: 16px;
+  background-color: pink;
+  padding: 10px 10px;
+  margin: 0 2em;
+}
+
+.image {
+  height: 60%;
+  width: 80%;
+  display: block;
+  text-align: center;
+  margin: 1em auto;
+}
+
+.product-name {
+  text-align: left;
+  margin: 0 1em;
+}

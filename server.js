@@ -8,6 +8,15 @@ mongoose.connect("mongodb://localhost/products", {
 });
 
 const app = express();
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.use(bodyParser.json());
 app.use(
@@ -19,6 +28,13 @@ app.use(
 const mainRoutes = require("./routes/main");
 
 app.use(mainRoutes);
+// app.use(express.static(path.resolve(__dirname, '../client/build')));
+
+app.get("/", (req, res) => {
+  console.log('connected');
+  res.json({ message: "Hello from server!" });
+});
+
 
 app.listen(8000, () => {
   console.log("Node.js listening on port " + 8000);

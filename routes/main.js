@@ -37,19 +37,47 @@ router.param("review", (req, res, next, id) => {
 router.get("/products", (req, res, next) => {
   const perPage = 9;
 
-  // return the first page by default
+  // Return the first page by default
   const page = req.query.page || 1;
 
-  Product.find({})
+  // Build query to pass to Product model
+  let query = {};
+
+  if (req.query.category) {
+    query.category = {$regex: req.query.category, $options: "i"}
+  }
+  
+  if (req.query.search) {
+    query.name = {$regex: req.query.search, $options: "i" }
+  }
+
+  const priceQuery = {price: 0}
+  if (req.query.price == "highest") {
+    priceQuery.price = -1
+  } else if (req.query.price == "lowest") {
+    priceQuery.price = 1
+  } else {
+    priceQuery.price = null;
+  }
+
+  Product.find(query, null, { sort: priceQuery })
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      Product.count({}, function(err, count) {
-        console.log("Number of products: ", count);
+      Product.count({query}, function(err, count) {
+        if (err) console.log("There was an error with retrieving /products", err)
+      })
+      if (products.length <= 0) {
+        res.end("No products match.")
+      } else {
+        console.log("Number of products: ", products.length);
+        res.send(products);
+        // TODO MAYBE frontend app will need the 'count' of products based on all the query params.
+        // return products.length;
+
+      }
     });
-    res.send(products);
   });
-});
 
 router.get("/products/:product", (req, res, next) => {
   Product.find({_id: req.params.product}, function(err, result) {

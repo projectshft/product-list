@@ -35,6 +35,7 @@ router.param("review", (req, res, next, id) => {
 })
 
 router.get("/products", (req, res, next) => {
+
   const perPage = 9;
 
   // Return the first page by default
@@ -59,22 +60,26 @@ router.get("/products", (req, res, next) => {
   } else {
     priceQuery.price = null;
   }
+// OK THIS WORKS!
+  // const number = Product.find(query).countDocuments().exec((err, count) => {
+  //   console.log(count);
+  // });
 
   Product.find(query, null, { sort: priceQuery })
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      Product.count({query}, function(err, count) {
-        if (err) console.log("There was an error with retrieving /products", err)
-      })
       if (products.length <= 0) {
         res.end("No products match.")
       } else {
-        console.log("Number of products: ", products.length);
-        res.send(products);
-        // TODO MAYBE frontend app will need the 'count' of products based on all the query params.
-        // return products.length;
-
+        // res.send(products);
+        Product.find(query)
+        .countDocuments()
+        .exec((err, count) => {
+          if (err) return err;
+          console.log("This is the count: " + count);
+          res.send([{products: products}, {count: count}])
+        })
       }
     });
   });

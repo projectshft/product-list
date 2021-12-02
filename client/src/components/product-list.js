@@ -99,6 +99,7 @@ const ProductList = (props) => {
   // Clears the current search term input
   const handledeleteSearchInput = () => {
     setSearchTerm('');
+    document.getElementById('search').value = '';
   };
 
 

@@ -1,12 +1,13 @@
 import { React, useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts, fetchProductCount } from '../actions/actions.js';
+import { fetchProducts, fetchProductCount, fetchCategories } from '../actions/actions.js';
 
 const ProductList = (props) => {
 
   // global redux state
   const products = useSelector(state => state.products);
   const count = useSelector(state => state.count);
+  const categories = useSelector(state => state.categories);
   const dispatch = useDispatch();
 
   // local state
@@ -20,6 +21,7 @@ const ProductList = (props) => {
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchProductCount());
+    dispatch(fetchCategories());
     changePageCount();
   }, []);
 
@@ -62,6 +64,14 @@ const ProductList = (props) => {
       )
     })
   };
+
+  const displayCategories = () => {
+    return categories.map(c => {
+      return (
+        <button className="dropdown-item" value={c} onClick={(e) => setCategory(e.target.value)}>{c}</button>
+      )
+    });
+  }
 
   // Creates the page number buttons
   const displayPagination = () => {
@@ -133,28 +143,7 @@ const ProductList = (props) => {
       
               <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <button className="dropdown-item" value="" onClick={(e) => setCategory(e.target.value)}>Reset</button>
-                <button className="dropdown-item" value="Automotive" onClick={(e) => setCategory(e.target.value)}>Automotive</button>
-                <button className="dropdown-item" value="Baby" onClick={(e) => setCategory(e.target.value)}>Baby</button>
-                <button className="dropdown-item" value="Beauty" onClick={(e) => setCategory(e.target.value)}>Beauty</button>
-                <button className="dropdown-item" value="Books" onClick={(e) => setCategory(e.target.value)}>Books</button>
-                <button className="dropdown-item" value="Clothing" onClick={(e) => setCategory(e.target.value)}>Clothing</button>
-                <button className="dropdown-item" value="Computers" onClick={(e) => setCategory(e.target.value)}>Computers</button>
-                <button className="dropdown-item" value="Electronics" onClick={(e) => setCategory(e.target.value)}>Electronics</button>
-                <button className="dropdown-item" value="Games" onClick={(e) => setCategory(e.target.value)}>Games</button>
-                <button className="dropdown-item" value="Garden" onClick={(e) => setCategory(e.target.value)}>Garden</button>
-                <button className="dropdown-item" value="Grocery" onClick={(e) => setCategory(e.target.value)}>Grocery</button>
-                <button className="dropdown-item" value="Health" onClick={(e) => setCategory(e.target.value)}>Health</button>
-                <button className="dropdown-item" value="Home" onClick={(e) => setCategory(e.target.value)}>Home</button>
-                <button className="dropdown-item" value="Industrial" onClick={(e) => setCategory(e.target.value)}>Industrial</button>
-                <button className="dropdown-item" value="Jewelery" onClick={(e) => setCategory(e.target.value)}>Jewelery</button>
-                <button className="dropdown-item" value="Kids" onClick={(e) => setCategory(e.target.value)}>Kids</button>
-                <button className="dropdown-item" value="Movies" onClick={(e) => setCategory(e.target.value)}>Movies</button>
-                <button className="dropdown-item" value="Music" onClick={(e) => setCategory(e.target.value)}>Music</button>
-                <button className="dropdown-item" value="Outdoors" onClick={(e) => setCategory(e.target.value)}>Outdoors</button>
-                <button className="dropdown-item" value="Shoes" onClick={(e) => setCategory(e.target.value)}>Shoes</button>
-                <button className="dropdown-item" value="Sports" onClick={(e) => setCategory(e.target.value)}>Sports</button>
-                <button className="dropdown-item" value="Tools" onClick={(e) => setCategory(e.target.value)}>Tools</button>
-                <button className="dropdown-item" value="Toys" onClick={(e) => setCategory(e.target.value)}>Toys</button>
+                {displayCategories()}
               </div>
             </div>
           </div>

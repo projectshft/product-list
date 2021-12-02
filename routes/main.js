@@ -60,10 +60,6 @@ router.get("/products", (req, res, next) => {
   } else {
     priceQuery.price = null;
   }
-// OK THIS WORKS!
-  // const number = Product.find(query).countDocuments().exec((err, count) => {
-  //   console.log(count);
-  // });
 
   Product.find(query, null, { sort: priceQuery })
     .skip(perPage * page - perPage)
@@ -83,6 +79,17 @@ router.get("/products", (req, res, next) => {
       }
     });
   });
+
+router.get("/products/categories", (req, res, next) => {
+  Product.find({}).exec((err, products) => {
+    let categories = [];
+    for (var i = 0; i < products.length; i++) 
+      if (!categories.includes(products[i].category)) {
+        categories.push(products[i].category)
+      }
+    res.send(categories.sort());
+  })
+});
 
 router.get("/products/:product", (req, res, next) => {
   Product.find({_id: req.params.product}, function(err, result) {

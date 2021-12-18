@@ -33,14 +33,26 @@ router.get("/generate-fake-data", (req, res, next) => {
 
 router.get("/products", (req, res, next) => {
   
+  let searchTerm = {};
+  let sortTerm = {}
+
+  let categoryFilter = req.query.category;
+  if (categoryFilter) {
+    searchTerm = {category: categoryFilter};
+  }
+  
   const pageNum = req.query.page || 1;
   let numToSkip = (pageNum - 1) * 9;
 
-  Product.find().skip(numToSkip).limit(9).exec((err, products) => {
-    if (err) return next(err);
-    
-    res.send(products);
-  });
+  Product
+    .find(searchTerm)
+    .sort(sortTerm)
+    .skip(numToSkip)
+    .limit(9)
+    .exec((err, products) => {
+      if (err) return next(err);
+      res.send(products);
+    });  
 });
 
 router.get("/products/:product", (req, res, next) => {

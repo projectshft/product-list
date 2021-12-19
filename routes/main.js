@@ -33,19 +33,32 @@ router.get("/generate-fake-data", (req, res, next) => {
 
 router.get("/products", (req, res, next) => {
   
-  let searchTerm = {};
-  let sortTerm = {}
-
-  let categoryFilter = req.query.category;
+  let categoryTerm = {};
+  const categoryFilter = req.query.category;
   if (categoryFilter) {
-    searchTerm = {category: categoryFilter};
+    categoryTerm = {category: categoryFilter};
+  }
+
+  let sortTerm = {};
+  const sortMethod = req.query.price;
+  if (sortMethod == 'highest') {
+    sortTerm = {price: -1}
+  }
+  if (sortMethod == 'lowest') {
+    sortTerm = {price: 1}
   }
   
+  let searchTerm = {};
+  const query = req.query.query;
+  if (query) {
+    searchTerm = {$text : {$search: query}};
+  }
+
   const pageNum = req.query.page || 1;
-  let numToSkip = (pageNum - 1) * 9;
+  const numToSkip = (pageNum - 1) * 9;
 
   Product
-    .find(searchTerm)
+    .find().and([categoryTerm, searchTerm])
     .sort(sortTerm)
     .skip(numToSkip)
     .limit(9)
@@ -56,10 +69,12 @@ router.get("/products", (req, res, next) => {
 });
 
 router.get("/products/:product", (req, res, next) => {
-  Product.findById(req.params.product).exec((err, product) => {
-    if (err) return next(err);
-    res.send(product);
-  });
+  Product
+    .findById(req.params.product)
+    .exec((err, product) => {
+      if (err) return next(err);
+      res.send(product);
+    });
 });
 
 router.get("/products/:product/reviews", (req, res, next) => {

@@ -16,6 +16,8 @@ const ProductSchema = new Schema({
   reviews: [ReviewSchema],
 });
 
+ProductSchema.index({name: 'text'})
+
 const Product = mongoose.model("product", ProductSchema);
 
 module.exports = {

@@ -31,6 +31,13 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
+router.get("/category-list", (req, res, next) => {
+  Product.distinct("category").exec((err, categoryList) => {
+    if (err) return next(err);
+    res.send(categoryList);
+  });  
+});
+
 router.get("/products", (req, res, next) => {
   
   let categoryTerm = {};

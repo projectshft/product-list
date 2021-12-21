@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCategories, setCategory, fetchProducts } from '../actions';
+import {Link} from 'react-router-dom';
+
 
 const CategoriesList = () => {
   const categories = useSelector((state) => state.categories);
@@ -17,16 +19,15 @@ const CategoriesList = () => {
   function renderCategories() {
     if (categories.length > 0) {
       return categories.map((category, i) => (
-        <li  
-          className="list-group-item" 
-          key ={i}
-          onClick={() => {
-            dispatch(setCategory(category));
-            // dispatch(fetchProducts(page, category, sort, query));
-          }
-        }>
+          <li  
+            className="list-group-item" 
+            key ={i}
+            onClick={() => {
+              dispatch(setCategory(category));
+            }
+          }>
           {category}
-        </li>
+          </li>
       ));
     } 
   };

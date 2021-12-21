@@ -13,17 +13,20 @@ const productsReducer = function (state = DEFAULT_STATE, action) {
   switch(action.type) {
     case FETCH_PRODUCTS:
       if (action.payload){
-        state.products = action.payload.data;
-        return state;
+        return {
+          ...state,
+          products: action.payload.data
+        };
       } else {
         return state;
       }
 
     case SET_CATEGORY:
       if (action.payload){
-        state.categorySelected = action.payload;
-        // console.log(state);
-        return state;
+        return {
+          ...state,
+          categorySelected: action.payload
+        };
       } else {
         return state;
       }

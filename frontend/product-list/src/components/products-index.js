@@ -13,10 +13,9 @@ const ProductsIndex = () => {
 
   useEffect(() => {
     dispatch(fetchProducts(page, category, sort, query));
-  }, [fetchProducts]);
+  }, [page, category, sort, query, dispatch]);
 
   function renderProducts() {
-    console.log(products);
     if (products.length > 0) {
       return products.map((product) => (
         <li className="list-group-item" key = {product._id}>

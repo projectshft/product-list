@@ -1,9 +1,9 @@
 import axios from "axios";
-import { STATES } from "mongoose";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_CATEGORY_LIST = "FETCH_CATEGORY_LIST";
 export const SET_CATEGORY = "SET_CATEGORY";
+export const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
 
 const ROOT_URL = "http://localhost:8000";
 
@@ -29,5 +29,12 @@ export function setCategory(category) {
   return {
     type: SET_CATEGORY,
     payload: category
+  };
+}
+
+export function searchProducts(query) {
+  return {
+    type: SEARCH_PRODUCTS,
+    payload: query.query
   };
 }

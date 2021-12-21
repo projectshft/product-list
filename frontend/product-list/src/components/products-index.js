@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Card, Button } from 'react-bootstrap';
 
-import { fetchProducts } from '../actions';
+import { fetchProducts, searchProducts } from '../actions';
 
 const ProductsIndex = () => {
   let products = useSelector((state) => state.products.products);
@@ -23,7 +25,26 @@ const ProductsIndex = () => {
         </li>
       ));
     }
-    return <div>No products to show</div>;
+    return (
+    <>
+      <Card>
+        <Card.Body className="text-center">
+          Sorry, we couldn't find any products matching "{query}". <br />
+          Please try again.
+        </Card.Body>
+        <Button
+            variant="secondary"  
+            onClick={() => {
+              dispatch(searchProducts({query: ' '}));
+            }
+            }
+          >
+          Back
+        </Button>
+
+      </Card>
+    </>
+    )
   }
 
   return (
@@ -31,7 +52,7 @@ const ProductsIndex = () => {
       <div className="text-xs-right">
       </div>
       <br />
-      <h3>Products</h3>
+      <h6 className="text-right"> Sort by</h6>
       <ul className="list-group">{renderProducts()}</ul>    
     </div>
   );

@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from "redux";
@@ -12,13 +12,14 @@ import Header from "./components/header";
 import reducers from "./reducers";
 import ProductsIndex from "./components/products-index"
 import CategoriesList from './components/categories-list';
+import SearchBar from './components/search-bar';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
-    <BrowserRouter>
-      <Header>
+    <Header>
+      <BrowserRouter>
         <Container>
           <Row>
             <Col lg={2}>
@@ -29,8 +30,8 @@ ReactDOM.render(
             </Col>
           </Row>
         </Container>
-      </Header>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Header>
    </Provider>,
   document.getElementById('root')
 );

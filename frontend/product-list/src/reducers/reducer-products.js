@@ -1,4 +1,4 @@
-import { fetchProducts, FETCH_PRODUCTS, SET_CATEGORY } from "../actions";
+import { SEARCH_PRODUCTS, FETCH_PRODUCTS, SET_CATEGORY } from "../actions";
 
 const DEFAULT_STATE = {
   products: [],
@@ -22,10 +22,25 @@ const productsReducer = function (state = DEFAULT_STATE, action) {
       }
 
     case SET_CATEGORY:
-      if (action.payload){
+      if (action.payload=="All Products"){
+        return {
+          ...state,
+          categorySelected: ''
+        };
+      } else if (action.payload){
         return {
           ...state,
           categorySelected: action.payload
+        };
+      } else {
+        return state;
+      }
+
+    case SEARCH_PRODUCTS:
+      if (action.payload){
+        return {
+          ...state,
+          query: action.payload
         };
       } else {
         return state;

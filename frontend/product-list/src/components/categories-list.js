@@ -1,15 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchCategories, setCategory, fetchProducts } from '../actions';
-import {Link} from 'react-router-dom';
-
+import { fetchCategories, setCategory } from '../actions';
+import {Button} from 'react-bootstrap';
 
 const CategoriesList = () => {
   const categories = useSelector((state) => state.categories);
-  // let products = useSelector((state) => state.products.products);
-  // let page = useSelector((state) => state.products.pageSelected);
-  // let sort = useSelector((state) => state.products.sortSelected);
-  // let query = useSelector((state) => state.products.query);
+  categories.unshift("All Products");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,16 +14,17 @@ const CategoriesList = () => {
 
   function renderCategories() {
     if (categories.length > 0) {
-      return categories.map((category, i) => (
-          <li  
-            className="list-group-item" 
+      return categories.map((category, i) => (          
+          <Button
+            variant="outline-secondary"  
             key ={i}
             onClick={() => {
               dispatch(setCategory(category));
             }
-          }>
+            }
+          >
           {category}
-          </li>
+          </Button>
       ));
     } 
   };
@@ -38,7 +35,7 @@ const CategoriesList = () => {
       <div className="text-xs-right">
       </div>
       <br />
-      <h3>Categories</h3>
+      <h6 className="text-center">Shop by Department</h6>
       <ul className="list-group">{renderCategories()}</ul>    
     </div>
   )

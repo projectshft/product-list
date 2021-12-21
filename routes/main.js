@@ -37,43 +37,149 @@ router.get("/generate-fake-data", (req, res, next) => {
 router.get("/products", (req, res, next) => {
     const perPage = 9;
     const page = req.query.page || 1;
+
     searchedCategory = req.query.category;
     searchedQuery = req.query.query;
     searchedSorting = req.query.price;
-
     
+    defaultCategory = '';
+    defaultQuery = '';
+    defaultSorting = 'lowest';
 
-    if (searchedCategory && !searchedQuery && !searchedSorting) {
-        Product.find({category: req.query.category})
+    if (searchedCategory && !searchedQuery && !searchedSorting) {        
+        Product.find({category: searchedCategory})
+        .find({name: {$regex : defaultQuery}})            
+        .sort({ price: 'asc'})
         .skip(perPage * page - perPage)
         .limit(perPage)
         .exec((err, searchedProducts) => {     
             if (err) return next(err);
+            
             res.send(searchedProducts);         
-        });            
-    } else if (!searchedCategory && searchedQuery && !searchedSorting) {
-        Product.find().elemMatch('product', { category: req.query.query, name: req.query.query })  //Can't get this to work
+        });          
+    } else if (!searchedCategory && searchedQuery && !searchedSorting) {         
+        Product.find({name: {$regex : searchedQuery}})
+            .sort({ price: 'asc' })      
             .skip(perPage * page - perPage)
             .limit(perPage)
             .exec((err, searchedProducts) => {     
                 if (err) return next(err);
+                
                 res.send(searchedProducts);         
             });            
-    }
-    
-    
-    else  {
-    Product.find({})
+    } else if (!searchedCategory && !searchedQuery && searchedSorting) {
+        if (searchedSorting == 'highest') {
+            Product.find().sort({ price: 'desc' })
+                .skip(perPage * page - perPage)
+                .limit(perPage)
+                .exec((err, searchedProducts) => {     
+                    if (err) return next(err);
+                    res.send(searchedProducts);         
+                });            
+        } else if (searchedSorting == 'lowest') {
+            Product.find().sort({ price: 'asc' })
+                .skip(perPage * page - perPage)
+                .limit(perPage)
+                .exec((err, searchedProducts) => {     
+                    if (err) return next(err);
+                    res.send(searchedProducts);         
+                });            
+        }
+    } else if (searchedCategory && searchedQuery && !searchedSorting) {  ////Not working
+        Product.find({category: searchedCategory})
+        .find({name: {$regex : searchedQuery}})            
+        .sort({ price: 'asc'})
         .skip(perPage * page - perPage)
         .limit(perPage)
-        .exec((err, products) => {     
-        
-        Product.count().exec((err, count) => {
+        .exec((err, searchedProducts) => {     
             if (err) return next(err);
-            res.send(products);          
-        });
-        });
-    }
+            
+            res.send(searchedProducts);         
+        });  
+    } else if (searchedCategory && !searchedQuery && searchedSorting) { 
+        if (searchedSorting == 'highest') {
+            Product.find({category: searchedCategory})
+            .find({name: {$regex : defaultQuery}})            
+            .sort({ price: 'desc'})
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec((err, searchedProducts) => {     
+                if (err) return next(err);
+                
+                res.send(searchedProducts);         
+            });         
+        } else if (searchedSorting == 'lowest') {
+            Product.find({category: searchedCategory})
+            .find({name: {$regex : defaultQuery}})            
+            .sort({ price: 'desc'})
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec((err, searchedProducts) => {     
+                if (err) return next(err);
+                
+                res.send(searchedProducts);         
+            });               
+        }        
+    } else if (!searchedCategory && searchedQuery && searchedSorting) { 
+        if (searchedSorting == 'highest') {
+            Product.find({category: defaultCategory})
+            .find({name: {$regex : searchedQuery}})            
+            .sort({ price: 'desc'})
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec((err, searchedProducts) => {     
+                if (err) return next(err);
+                
+                res.send(searchedProducts);         
+            });         
+        } else if (searchedSorting == 'lowest') {
+            Product.find({category: defaultCategory})
+            .find({name: {$regex : searchedQuery}})            
+            .sort({ price: 'desc'})
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec((err, searchedProducts) => {     
+                if (err) return next(err);
+                
+                res.send(searchedProducts);         
+            });               
+        } 
+    } else if (searchedCategory && searchedQuery && searchedSorting) {
+        if (searchedSorting == 'highest') {
+            Product.find({category: searchedCategory})
+            .find({name: {$regex : searchedQuery}})            
+            .sort({ price: 'desc'})
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec((err, searchedProducts) => {     
+                if (err) return next(err);
+                
+                res.send(searchedProducts);         
+            });         
+        } else if (searchedSorting == 'lowest') {
+            Product.find({category: searchedCategory})
+            .find({name: {$regex : searchedQuery}})            
+            .sort({ price: 'desc'})
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec((err, searchedProducts) => {     
+                if (err) return next(err);
+                
+                res.send(searchedProducts);         
+            });               
+        }        
+    } else  {
+        Product.find({})
+            .skip(perPage * page - perPage)
+            .limit(perPage)
+            .exec((err, products) => {     
+            
+            Product.count().exec((err, count) => {
+                if (err) return next(err);
+                res.send(products);          
+            });
+            });
+        }
 });
 
 // working but need to add pagination
@@ -156,3 +262,13 @@ router.delete("/reviews/:review", (req, res, next) => {
 
 
 module.exports = router;
+
+/*
+{
+            $or: [
+                { category: defaultCategory },
+                { category: req.query.query },
+                { name: req.query.query },
+            ]
+        }
+        */

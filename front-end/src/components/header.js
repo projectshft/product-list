@@ -5,7 +5,8 @@ const header = (props) => {
           <div className="container">
             <h1 className="jumbotron-heading">Product Search</h1>
           </div>
-        </div>
+                 
+            </div>              
         <div className='container'>
           {props.children}
         </div>

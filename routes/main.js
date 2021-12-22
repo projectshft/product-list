@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const faker = require("faker");
+//const faker = require("faker");
 
 const Product = require("../models/product");
 const Review = require("../models/review");
@@ -44,9 +44,9 @@ router.get("/products", (req, res, next) => {
     
     defaultCategory = '';
     defaultQuery = '';
-    defaultSorting = 'lowest';
+    defaultSorting = 'lowest';    
 
-    if (searchedCategory && !searchedQuery && !searchedSorting) {        
+    if (searchedCategory && !searchedQuery && !searchedSorting) {           
         Product.find({category: searchedCategory})
         .find({name: {$regex : defaultQuery}})            
         .sort({ price: 'asc'})
@@ -85,7 +85,7 @@ router.get("/products", (req, res, next) => {
                     res.send(searchedProducts);         
                 });            
         }
-    } else if (searchedCategory && searchedQuery && !searchedSorting) {  ////Not working
+    } else if (searchedCategory && searchedQuery && !searchedSorting) {        
         Product.find({category: searchedCategory})
         .find({name: {$regex : searchedQuery}})            
         .sort({ price: 'asc'})
@@ -144,7 +144,7 @@ router.get("/products", (req, res, next) => {
                 res.send(searchedProducts);         
             });               
         } 
-    } else if (searchedCategory && searchedQuery && searchedSorting) {
+    } else if (searchedCategory && searchedQuery && searchedSorting) {        
         if (searchedSorting == 'highest') {
             Product.find({category: searchedCategory})
             .find({name: {$regex : searchedQuery}})            

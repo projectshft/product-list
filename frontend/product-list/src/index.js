@@ -25,7 +25,7 @@ ReactDOM.render(
             <Col lg={2}>
               <CategoriesList />
             </Col>
-            <Col lg={10}>
+            <Col lg={8}>
               <ProductsIndex />
             </Col>
           </Row>

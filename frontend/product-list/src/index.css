@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2b3034;
-  background-color: #ecf1f6;
+  background-color: #f3f9ff;
 }
 
 code {
@@ -16,7 +16,7 @@ code {
 
 .btn-outline-secondary {
   /* border-radius: 0px; */
-  border-color: #ecf1f6;
+  border-color: #f3f9ff00;
   /* background-color: white; */
   color: #2b3034;
   margin: 2px;
@@ -29,8 +29,19 @@ code {
 
 form {
   margin-top: 4px;
-  margin-left: 12px;
+  margin-left: 9px;
+  margin-right: 6px;
   color: white;
+}
+
+.search-btn {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.sort-btn {
+  margin-top: 14px;
+  margin-bottom: 16px;
 }
 
 .text-right {
@@ -41,4 +52,31 @@ h2 {
   color: white;
   padding-top: 2px;
   text-align: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  padding: 12px;
+}
+
+.card-img {
+  max-height: 100%;
+  width: auto;
+}
+
+.card-header {
+  text-align: center;
+}
+
+.card-footer {
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.page-buttons {
+  padding: 5px;
 }

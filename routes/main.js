@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const faker = require("faker");
+const Promise = require('bluebird');
 const {Product} = require("../models/product");
 const {Review} = require("../models/product");
+
 
 const fakeReviews = () => {
   const numReviews = Math.floor((Math.random() * 7) + 2);
@@ -21,8 +23,8 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.category = faker.commerce.department();
     product.price = faker.commerce.price();
     product.name = faker.commerce.productName();
-    let imageQuery = product.name.split(' ')[2];
-    product.image = `https://loremflickr.com/g/250/250/${imageQuery}`;
+    let imageQuery = product.name.split(' ')[Math.floor(Math.random() * 2)];
+    product.image = `https://loremflickr.com/250/250/${imageQuery}`;
     product.reviews = fakeReviews();
     product.save((err) => {
       if (err) throw err;
@@ -64,15 +66,16 @@ router.get("/products", (req, res, next) => {
   const pageNum = req.query.page || 1;
   const numToSkip = (pageNum - 1) * 9;
 
-  Product
-    .find().and([categoryTerm, searchTerm])
-    .sort(sortTerm)
-    .skip(numToSkip)
-    .limit(9)
-    .exec((err, products) => {
-      if (err) return next(err);
-      res.send(products);
-    });  
+  
+  Promise.all([
+    Product.find().and([categoryTerm, searchTerm]).sort(sortTerm).skip(numToSkip).limit(9).exec(),
+    Product.count().and([categoryTerm, searchTerm]).sort(sortTerm).exec()
+  ]).spread(function(products, count) {
+    res.send({products: products, totalCount: count});
+  }, function(err) {
+    handleError(res,err);
+  });
+   
 });
 
 router.get("/products/:product", (req, res, next) => {

@@ -5,8 +5,8 @@ export const FETCH_CATEGORIES = "FETCH_CATEGORIES";
 
 const ROOT_URL = "http://localhost:8000";  
 
-export async function fetchProducts() {      
-    const request = await axios.get(`${ROOT_URL}/products`);
+export async function fetchProducts(page, category, query, sorting) {      
+    const request = await axios.get(`${ROOT_URL}/products?page=${page}&category=${category}&query=${query}&price=${sorting}`);
        
     return {
         type: FETCH_PRODUCTS,

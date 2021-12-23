@@ -48,6 +48,10 @@ form {
   text-align: right;
 }
 
+.reviews {
+  text-align: left;
+}
+
 h2 {
   color: white;
   padding-top: 2px;
@@ -79,4 +83,8 @@ img {
 
 .page-buttons {
   padding: 5px;
+}
+
+.card-footer {
+  background-color: rgb(253, 253, 253);
 }

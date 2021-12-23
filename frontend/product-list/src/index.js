@@ -6,13 +6,11 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import promise from "redux-promise";
-import { Row, Col, Card, Navbar, Container, Button, Nav } from 'react-bootstrap';
-
+import { Container } from 'react-bootstrap';
+import Products from "./components/products";
+import ProductDetail from "./components/product-detail"
 import Header from "./components/header";
 import reducers from "./reducers";
-import ProductsIndex from "./components/products-index"
-import CategoriesList from './components/categories-list';
-import SearchBar from './components/search-bar';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -21,14 +19,10 @@ ReactDOM.render(
     <Header>
       <BrowserRouter>
         <Container>
-          <Row>
-            <Col lg={2}>
-              <CategoriesList />
-            </Col>
-            <Col lg={8}>
-              <ProductsIndex />
-            </Col>
-          </Row>
+          <Routes>
+            <Route path="/products" element = {<Products />} />
+            <Route path="/products/:id" element = {<ProductDetail />} />
+          </Routes>
         </Container>
       </BrowserRouter>
     </Header>

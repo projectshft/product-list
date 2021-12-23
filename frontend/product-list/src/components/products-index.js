@@ -2,8 +2,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Row, Col, Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import { fetchProducts, searchProducts, setCategory, setSort, setPage } from '../actions';
+import { fetchProducts, searchProducts, setCategory, setSort, setPage, selectProduct } from '../actions';
 
 const ProductsIndex = () => {
   let products = useSelector((state) => state.products.products);
@@ -18,15 +19,21 @@ const ProductsIndex = () => {
     dispatch(fetchProducts(page, category, sort, query));
   }, [page, category, sort, query, dispatch]);
 
-  function renderProducts() {
+  function renderProducts () {
+
     if (products.length > 0) {
       return (
         <Row xs={1} md={3} className="g-5">
           {Array.from({ length: 1 }).map((_, idx) => (
           <>
             {products.map((product) => (
-              <Col>
-                <Card className="h-100" key = {product._id}>
+              <Link 
+              to={`/products/${product._id}`} 
+              style={{textDecoration:'none'}}
+              key = {product._id}
+              onClick = {() => dispatch(selectProduct(product._id))}
+              >
+                <Card className="h-100">
                   <Card.Img src={product.image} />
                   <Card.Body>
                     <Card.Title>{product.name}</Card.Title>
@@ -38,7 +45,7 @@ const ProductsIndex = () => {
                     <Card.Text className="text-muted">{product.reviews.length} reviews</Card.Text>
                   </Card.Footer>
                 </Card>
-              </Col>
+              </Link>
             ))}
           </>
           ))}
@@ -116,11 +123,10 @@ const ProductsIndex = () => {
   function renderPageLinks () {
     const numPages = Math.ceil(totalProducts/9);
     const pageArray = Array.from({length: numPages}, (_, i) => i + 1);
-    console.log(pageArray);
     if (numPages > 1) {
       return (
         <>
-        {pageArray.map((pageNum,i) => (
+        {pageArray.map((pageNum, i) => (
           <Button
               variant="outline-secondary"
               className="page-buttons"  

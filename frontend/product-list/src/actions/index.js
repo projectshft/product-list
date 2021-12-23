@@ -6,6 +6,8 @@ export const SET_CATEGORY = "SET_CATEGORY";
 export const SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
 export const SET_SORT = "SET_SORT";
 export const SET_PAGE = "SET_PAGE";
+export const SELECT_PRODUCT = "SELECT_PRODUCT";
+export const DELETE_REVIEW = "DELETE_REVIEW";
 
 const ROOT_URL = "http://localhost:8000";
 
@@ -53,3 +55,23 @@ export function setPage(pageNum) {
     payload: pageNum
   };
 }
+
+export function selectProduct(productId) {
+  const request = axios.get(`${ROOT_URL}/products/${productId}`);
+
+  return {
+    type: SELECT_PRODUCT,
+    payload: request
+  }
+}
+
+export function deleteReview(productId, reviewId) {
+  const request = axios.delete(`${ROOT_URL}/products/${productId}/reviews/${reviewId}`);
+
+  return {
+    type: DELETE_REVIEW,
+    payload: request
+  }
+
+}
+

@@ -1,4 +1,4 @@
-import { SEARCH_PRODUCTS, FETCH_PRODUCTS, SET_CATEGORY, SET_SORT ,SET_PAGE} from "../actions";
+import { SEARCH_PRODUCTS, FETCH_PRODUCTS, SET_CATEGORY, SET_SORT ,SET_PAGE, SELECT_PRODUCT, DELETE_REVIEW} from "../actions";
 
 const DEFAULT_STATE = {
   products: [],
@@ -6,7 +6,8 @@ const DEFAULT_STATE = {
   categorySelected: '',
   sortSelected:'',
   query:'',
-  totalProductsReturned:0
+  totalProductsReturned:0,
+  productSelected: {},
 }
 
 const productsReducer = function (state = DEFAULT_STATE, action) {
@@ -67,6 +68,25 @@ const productsReducer = function (state = DEFAULT_STATE, action) {
           ...state,
           pageSelected: action.payload
         };
+      } else {
+        return state;
+      }
+
+    case SELECT_PRODUCT:
+      if (action.payload){
+        return {
+          ...state,
+          productSelected: action.payload.data
+        }
+      } else {
+        return state;
+      }
+
+    case DELETE_REVIEW:
+      if (action.payload){
+        return {
+          state,
+        }
       } else {
         return state;
       }

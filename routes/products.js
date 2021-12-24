@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Product = require("../models/product");
 const Review = require("../models/review");
 
-// Query parameter function to return product given a product id
+// Query parameter function to return product given a product id in the path
 router.param("product", (req, res, next, id) => {
   Product.findById(id).exec((err, product) => {
     if (err) {
@@ -18,15 +18,36 @@ router.param("product", (req, res, next, id) => {
 
 // GET /products Returns products based on input criteria
 router.get("/products", (req, res, next) => {
-  const perPage = 9;
-  const page = req.query.page || 1
-  Product.find().skip((page - 1) * perPage).limit(perPage).exec((err, products) => {
-    Product.count().exec((err, count) => {
+  const perPage = 5;
+  const page = req.query.page || 1;
+  const {category, query, price} = req.query;
+
+  // Include category and/or search term in product query, if included in request
+  const queryOptions = {};
+  if (category) {
+    queryOptions.category = category;
+  };
+  if (query) {
+    queryOptions.$text = { $search: query }
+  };
+
+  // Sort found products by price, if included in request
+  const sortOption = {};
+  switch (price) {
+    case 'lowest':
+      sortOption.price = 'asc';
+      break;
+    case 'highest':
+      sortOption.price = 'desc';
+      break;
+    default:
+  };
+
+  Product.find(queryOptions).skip((page - 1) * perPage).limit(perPage).sort(sortOption).exec((err, products) => {
       if (err) return next(err);
       res.send(products);
-    })
+    });
   });
-});
 
 // GET /products/:product: Returns a specific product by its id
 router.get("/products/:product", (req, res, next) => {

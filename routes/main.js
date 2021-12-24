@@ -35,7 +35,7 @@ router.get("/generate-fake-data", (req, res, next) => {
 */
 
 router.get("/products", (req, res, next) => {
-    const perPage = 9;
+    const perPage = 100;
     const page = req.query.page || 1;
 
     searchedCategory = req.query.category;
@@ -182,7 +182,6 @@ router.get("/products", (req, res, next) => {
         }
 });
 
-// working but need to add pagination
 router.get("/products/:product/reviews", (req, res, next) => {
     const perPage = 4;
     const page = req.query.page || 1;
@@ -260,15 +259,5 @@ router.delete("/reviews/:review", (req, res, next) => {
     });
 });
 
-
 module.exports = router;
 
-/*
-{
-            $or: [
-                { category: defaultCategory },
-                { category: req.query.query },
-                { name: req.query.query },
-            ]
-        }
-        */

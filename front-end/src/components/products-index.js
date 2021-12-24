@@ -1,32 +1,38 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown, DropdownButton, Container, Row, Col, Card } from 'react-bootstrap';
+import { Dropdown, DropdownButton, Container, Row, Col, Card, Pagination} from 'react-bootstrap';
 import { React, useEffect, useState } from 'react';
 import _ from 'lodash';
 
 import { fetchProducts } from '../actions';
-import { fetchCategories } from '../actions';
+
 
 const ProductsIndex = () => {    
-    let products = useSelector(state => state.products)
-    let pageNumber = 1;
+    let products = useSelector(state => state.products)   
+    let [currentPage, setCurrentPage] = useState(1);  
+    let [perPage, setPerPage] = useState(6);
+    let totalProducts = products.length;   
+    let [pageNumber, setPageNumber] = useState();  
     let [category, setCategory] = useState("");
     let [query, setQuery] = useState("");
     let [sorting, setSorting] = useState("");
-
     const dispatch = useDispatch();
+    
+    //Pagination data
+    const indexOfLast = currentPage * perPage;
+    const indexOfFirst = indexOfLast - perPage;
+    const currentProducts = products.slice(indexOfFirst, indexOfLast);
+    //Pagination data    
 
     useEffect(() => {
         dispatch(fetchProducts(pageNumber, category, query, sorting));
-    }, [dispatch, fetchProducts, pageNumber, category, query, sorting])    
+    }, [dispatch, fetchProducts, pageNumber, category, query, sorting]);    
     
-    
-    function renderProducts() {
-        console.log(products)
-        console.log(category)
+    function renderProducts() { 
+        console.log(products)       
         return (
             <div> 
-                <Row md={3}>
-                {products.map((product) => 
+                <Row className='mb-3 mt-3' md={3}>
+                {currentProducts.map((product) => 
                     <Col>
                     <Card style={{ width: '18rem' }}>                        
                         <Card.Body>
@@ -43,6 +49,29 @@ const ProductsIndex = () => {
             </div>
         )
 }
+
+    function pageNumbers() {
+        const pageNumbers = [];
+    
+        for(let i = 1; i <= Math.ceil(totalProducts / perPage); i++) {
+            pageNumbers.push(i);
+        };
+    
+        return (  
+            <nav>          
+                <ul className="pagination">
+                    {pageNumbers.map(number => (
+                        <li key={number} className='page-item'>
+                            <a onClick={(event)=>{setCurrentPage(number)}} className="page-link" >
+                                {number}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>   
+        )    
+    }
+
     return (
         <div>
             <div>
@@ -67,14 +96,17 @@ const ProductsIndex = () => {
                     </Row>
                 </Container> 
             </div>
+
             <div>
                 {renderProducts()}
-            </div>
-            
-            </div>  
-            
+            </div> 
+            <Pagination>
+                {pageNumbers()}                
+            </Pagination>          
+        </div>              
     )
 
 }
 
 export default ProductsIndex;
+

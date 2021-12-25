@@ -6,17 +6,18 @@ const Review = require("../models/review");
 router.param("review", (req, res, next, id) => {
   Review.findById(id).exec((err, review) => {
     if (err) {
-      next(err)
+      console.log(err.message);
+      return res.status(404).send('Review not found');
     } else if (review) {
       req.review = review;
-      next()
+      next();
     } else {
-      next(new Error('failed to load review'))
+      return res.status(404).send('Review not found');
     }
   });
 });
 
-// DELETE /reviews/:review: Deletes a review by id
+// DELETE /reviews/:review route - Deletes a review by id
 router.delete("/reviews/:review", (req, res, next) => {
   // delete review by its ID and delete review from associated product's reviews array
   Review.findByIdAndDelete(req.review._id, (err, review) => {
@@ -24,7 +25,7 @@ router.delete("/reviews/:review", (req, res, next) => {
     Product.findByIdAndUpdate(
       req.review.product,
       { $pull: { reviews: review._id }},
-      (err, product) => {
+      (err) => {
         if (err) throw err;
         res.send(review)
     });

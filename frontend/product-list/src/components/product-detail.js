@@ -71,9 +71,9 @@ const ProductDetail = () => {
                   <h1>${product.price}</h1>
                 </Card.Body>
               </Col>
-          </Row>
+            </Row>
             {renderReviews()}
-      </Card>
+          </Card>
           
           <br />
           <Link to={'/products'}>
@@ -82,6 +82,7 @@ const ProductDetail = () => {
                 <strong>Back</strong>
               </Button>
             </div>
+          <br />
           </Link>
     </Col>
           </Row>

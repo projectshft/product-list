@@ -1,4 +1,4 @@
-import { SEARCH_PRODUCTS, FETCH_PRODUCTS, SET_CATEGORY, SET_SORT ,SET_PAGE, SELECT_PRODUCT, DELETE_REVIEW} from "../actions";
+import { SEARCH_PRODUCTS, FETCH_PRODUCTS, SET_CATEGORY, SET_SORT ,SET_PAGE, SELECT_PRODUCT, DELETE_REVIEW, ADD_PRODUCT} from "../actions";
 
 const DEFAULT_STATE = {
   products: [],
@@ -90,6 +90,13 @@ const productsReducer = function (state = DEFAULT_STATE, action) {
       } else {
         return state;
       }
+
+    case ADD_PRODUCT:
+      return {
+      ...state,
+      productSelected: action.payload.data
+      }
+
 
     default: 
       return state;

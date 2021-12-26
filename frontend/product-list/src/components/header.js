@@ -1,4 +1,6 @@
 import SearchBar from "./search-bar";
+import { Link } from 'react-router-dom';
+
 import {Container, Row, Col, Button} from "react-bootstrap";
 
 const Header = (props) => {
@@ -13,13 +15,10 @@ const Header = (props) => {
             <Col lg={8}>
               <SearchBar />
             </Col>
-            <Col xs={2}>
-            <Button
-              variant="primary"
-              className="add-product"
-            >
-              Add Product
-            </Button>
+            <Col lg={2}>
+              <Link to={'/products/new'}>
+                <Button variant="primary" className="add-product"> Add Product </Button>
+              </Link>
             </Col>   
           </Row>
         </Container>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useCallback } from "react";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_CATEGORY_LIST = "FETCH_CATEGORY_LIST";
@@ -8,7 +9,7 @@ export const SET_SORT = "SET_SORT";
 export const SET_PAGE = "SET_PAGE";
 export const SELECT_PRODUCT = "SELECT_PRODUCT";
 export const DELETE_REVIEW = "DELETE_REVIEW";
-
+export const ADD_PRODUCT = "ADD_PRODUCT"
 const ROOT_URL = "http://localhost:8000";
 
 export function fetchProducts(page, category, sort, query) {
@@ -75,3 +76,12 @@ export function deleteReview(productId, reviewId) {
 
 }
 
+export function addProduct(values, callback) {
+  const request = axios.post(`${ROOT_URL}/products`, values);
+  request.then(() => callback());
+
+  return {
+    type: ADD_PRODUCT,
+    payload: request,
+  };
+}

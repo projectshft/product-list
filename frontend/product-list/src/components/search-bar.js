@@ -29,7 +29,7 @@ const SearchBar = () => {
             className='form-control' name='query' 
             {...register('query', {required:"required"})}></input>
           <span className='input-group-btn'>
-            <button className="btn btn-primary search-btn" type="submit"> Search </button>
+            <button className="btn btn-primary search-btn" type="submit"> <strong> Search </strong> </button>
           </span>
         </div>
       </form>

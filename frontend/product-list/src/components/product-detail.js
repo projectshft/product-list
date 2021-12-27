@@ -1,26 +1,59 @@
 import { useSelector, useDispatch} from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useParams } from "react-router-dom";
-import { selectProduct, deleteReview } from '../actions';
+import { Card, Button, Row, Col, Form, Container } from 'react-bootstrap';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { selectProduct, deleteReview, addReview, deleteProduct } from '../actions';
 
-const ProductDetail = () => {
+const ProductDetail = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const productId = useParams().id;
+  const [userName, setUserName] = useState('');
+  const [reviewText, setReviewText] = useState('');
 
-  const productId = useParams();
-  
+
   useEffect(() => {
-    dispatch(selectProduct(productId.id));
+    dispatch(selectProduct(productId));
   }, [selectProduct]);
 
   const product = useSelector((state) => state.products.productSelected);
-    
-  function handleDeleteReview (productId, reviewId) {
-    dispatch(deleteReview(productId, reviewId));
+
+  function handleDeleteReview (reviewId) {
+    dispatch(deleteReview(product._id, reviewId));
     window.location.reload();
   }
+
+  const handleDeleteProductClick = (e) => {
+    e.preventDefault();
+    dispatch(
+      deleteProduct(
+        product._id,
+        () => {
+          navigate('/products');
+        }
+      )
+    );
+    
+  }
+  
+  const handleAddReview = (e) => {
+    e.preventDefault();
+    dispatch(
+      addReview(
+        product._id,
+        {
+        userName,
+        reviewText,
+        }, 
+        () => {
+          props.history.push('/products');
+        }
+      )
+    );
+    window.location.reload();
+  };
+  
 
   function renderReviews() {
     if (product.reviews) {
@@ -32,7 +65,7 @@ const ProductDetail = () => {
               <Col lg={1}>
                 <Button 
                 variant="outline-danger"
-                onClick = {() => handleDeleteReview(product._id, review._id)}
+                onClick = {() => handleDeleteReview(review._id)}
                 >
                 X
                 </Button>
@@ -50,9 +83,50 @@ const ProductDetail = () => {
     }
   }
 
+  function addReviewForm() {
+    return (
+      <Col lg={{span:10, offset:1}}>
+        <br />
+        <Card>
+          <Container>
+            <br />
+            <h5>Post a Review</h5>
+            <Form onSubmit={handleAddReview}>
+          
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>User Name</Form.Label>
+                <Form.Control required type="name"
+                  onChange={event => setUserName(event.target.value)}
+                  />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Review</Form.Label>
+                <Form.Control required type="name"
+                  onChange={event => setReviewText(event.target.value)}
+                  />
+              </Form.Group>
+
+              <div className="d-grid gap-2" style={{marginBottom:"10px"}}>
+                <Button variant="primary" size="lg"
+                  type="submit"
+                  >
+                  <strong>
+                  Submit
+                  </strong>
+                </Button>
+                <br />
+              </div>
+            </Form>
+          </Container>
+        </Card>
+      </Col>
+)
+  }
+
   if (!product) {
     return (
-      <h1>Product not found</h1>
+      <h1>Loading...</h1>
     )
   }
     return (
@@ -71,21 +145,31 @@ const ProductDetail = () => {
                   <h1>${product.price}</h1>
                 </Card.Body>
               </Col>
-            </Row>
+          </Row>
             {renderReviews()}
-          </Card>
-          
+            {addReviewForm()}
+        <br />
+      </Card>
           <br />
-          <Link to={'/products'}>
+          <Link to={'/products'} style={{textDecoration:'none'}}>
             <div className="d-grid gap-2">
-              <Button variant="primary" size="lg">
+              <Button variant="secondary" size="lg">
                 <strong>Back</strong>
               </Button>
             </div>
-          <br />
           </Link>
-    </Col>
-          </Row>
+          <br />
+            <div className="d-grid gap-2">
+              <Button 
+              variant="danger" size="lg"
+              onClick = {handleDeleteProductClick}
+              >
+                <strong>Delete Product</strong>
+              </Button>
+            </div>
+          <br /> <br />
+        </Col>
+      </Row>
     )
 
 }

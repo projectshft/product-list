@@ -92,7 +92,7 @@ const ProductsIndex = () => {
     return (
       <Dropdown>
         <Dropdown.Toggle variant="primary" id="dropdown-basic">
-          Sort by
+          <strong> Sort by </strong>
         </Dropdown.Toggle>
       
         <Dropdown.Menu>
@@ -152,10 +152,10 @@ const ProductsIndex = () => {
       
       <ul className="list-group">
         {renderProducts()}
-        </ul>
-        <br /> 
-        <div className="center">{renderPageLinks()} {renderResetButton()}</div>
-        <br />
+      </ul>
+      <br /> 
+      <div className="center">{renderPageLinks()} {renderResetButton()}</div>
+      <br />
 
       <br /> <br />
 

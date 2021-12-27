@@ -9,7 +9,9 @@ export const SET_SORT = "SET_SORT";
 export const SET_PAGE = "SET_PAGE";
 export const SELECT_PRODUCT = "SELECT_PRODUCT";
 export const DELETE_REVIEW = "DELETE_REVIEW";
-export const ADD_PRODUCT = "ADD_PRODUCT"
+export const ADD_PRODUCT = "ADD_PRODUCT";
+export const ADD_REVIEW = "ADD_REVIEW";
+export const DELETE_PRODUCT = "DELETE_PRODUCT";
 const ROOT_URL = "http://localhost:8000";
 
 export function fetchProducts(page, category, sort, query) {
@@ -66,8 +68,9 @@ export function selectProduct(productId) {
   }
 }
 
-export function deleteReview(productId, reviewId) {
+export function deleteReview(productId, reviewId, callback) {
   const request = axios.delete(`${ROOT_URL}/products/${productId}/reviews/${reviewId}`);
+  request.then(() => callback());
 
   return {
     type: DELETE_REVIEW,
@@ -84,4 +87,24 @@ export function addProduct(values, callback) {
     type: ADD_PRODUCT,
     payload: request,
   };
+}
+
+export function addReview (productId, values, callback) {
+  const request = axios.post(`${ROOT_URL}/products/${productId}/reviews/`, values);
+  request.then(() => callback());
+
+  return {
+    type: ADD_REVIEW,
+    payload: request,
+  };
+}
+
+export function deleteProduct (productId, callback) {
+  const request = axios.delete(`${ROOT_URL}/products/${productId}`);
+  request.then(() => callback());
+
+  return {
+    type: DELETE_PRODUCT,
+    payload: request
+  }
 }

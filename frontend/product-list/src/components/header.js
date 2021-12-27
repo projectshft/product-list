@@ -10,14 +10,21 @@ const Header = (props) => {
         <Container>
           <Row>
             <Col lg={2}>
-              <h2>rando.com</h2>
+            <Link 
+              to={'/products'} 
+              style={{textDecoration:'none'}}
+              >
+              <h2>
+                rando.com  
+              </h2>
+              </Link>
             </Col>
             <Col lg={8}>
               <SearchBar />
             </Col>
             <Col lg={2}>
               <Link to={'/products/new'}>
-                <Button variant="primary" className="add-product"> Add Product </Button>
+                <Button variant="primary" className="add-product"> <strong> Add Product </strong></Button>
               </Link>
             </Col>   
           </Row>

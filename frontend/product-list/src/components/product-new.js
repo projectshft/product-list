@@ -3,16 +3,15 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addProduct } from '../actions';
 import {Form, Row, Col, Card, Container, Button} from 'react-bootstrap';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-const NewProduct = () => {
+const NewProduct = (props) => {
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState('');
   
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmitClick = (e) => {
@@ -24,7 +23,7 @@ const NewProduct = () => {
         price,
         image,
       }, () => {
-        navigate('/products');
+        props.history.push('/products');
       })
     );
   };

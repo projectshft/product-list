@@ -1,13 +1,16 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-mongoose.connect("mongodb://localhost/products", {
+mongoose.connect('mongodb://localhost/products', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 const app = express();
+
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(
@@ -16,15 +19,18 @@ app.use(
   })
 );
 
-const mainRoutes = require("./routes/main");
+const mainRoutes = require('./routes/main');
+
 app.use(mainRoutes);
 
-const productRoutes = require("./routes/products");
+const productRoutes = require('./routes/products');
+
 app.use(productRoutes);
 
-const reviewRoutes = require("./routes/reviews");
+const reviewRoutes = require('./routes/reviews');
+
 app.use(reviewRoutes);
 
 app.listen(8000, () => {
-  console.log("Node.js listening on port " + 8000);
+  console.log(`Node.js listening on port ${8000}`);
 });

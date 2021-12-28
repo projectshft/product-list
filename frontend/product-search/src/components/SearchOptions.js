@@ -12,7 +12,7 @@ const SearchOptions = () => {
   }; 
 
   return (
-    <div className='container'>
+    <div className='container search-options'>
      <div className='row'>
       <div className='col-md-6'>
         <form className='input-group' onSubmit={handleSubmit}>

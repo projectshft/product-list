@@ -60,13 +60,17 @@ router.get('/products', (req, res, next) => {
           });
         });
       } else {
-        return res.send('There are no products matching your query');
+        return res.send({
+          // return empty productList array with numProducts of 0 if there are no search results
+          productList: [],
+          numProducts: 0,
+        });
       }
     });
 });
 
 // GET /products/:product route - Returns a specific product by its id
-router.get('/products/:product', (req, res, next) => {
+router.get('/products/:product', (req, res) => {
   res.send(req.product);
 });
 
@@ -85,7 +89,8 @@ router.get('/products/:product/reviews', (req, res, next) => {
       if (product.reviews.length > 0) {
         return res.send(product.reviews);
       }
-      return res.send('There are no reviews matching your query');
+      // return empty reviews array if the given product has no reviews
+      return res.send([]);
     });
 });
 
@@ -111,7 +116,7 @@ router.post('/products', (req, res, next) => {
 });
 
 // POST /products/:product/reviews route - Creates a new review in the database by adding it to the correct product's reviews array
-router.post('/products/:product/reviews', (req, res, next) => {
+router.post('/products/:product/reviews', (req, res) => {
   const review = new Review();
   const { userName, text } = req.body;
 
@@ -139,11 +144,9 @@ router.post('/products/:product/reviews', (req, res, next) => {
 });
 
 // DELETE /products/:product route - Deletes a product document by its id and the product's associated review documents
-router.delete('/products/:product', (req, res, next) => {
+router.delete('/products/:product', (req, res) => {
   Product.findByIdAndDelete(req.product._id, (err, product) => {
-    if (err) {
-      return res.status(404).send('Product not found');
-    }
+    if (err) throw err;
     product.reviews.forEach((reviewId) => {
       Review.findByIdAndDelete(reviewId, (err) => {
         if (err) throw err;

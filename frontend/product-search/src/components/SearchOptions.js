@@ -9,6 +9,7 @@ const SearchOptions = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // if not on page 1 when query is submitted, reset to page 1 before searching
     if (page !== 1) {
       dispatch(setPage(1));
     };
@@ -20,7 +21,7 @@ const SearchOptions = () => {
      <div className='row'>
       <div className='col-md-6'>
         <form className='input-group' onSubmit={handleSubmit}>
-          <input className='form-control' placeholder='Search'></input>
+          <input className='form-control' placeholder='Search for a product'></input>
           <span className='input-group-btn'>
               <button className='btn btn-info' type='submit'>
                 Submit

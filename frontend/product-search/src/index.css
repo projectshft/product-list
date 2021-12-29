@@ -17,10 +17,13 @@ code {
 }
 
 .product {
+  box-sizing: border-box;
   text-align: center;
   background-color: white;
   display: inline-block;
   margin: 40px;
+  height: 425px;
+  width: 300px;
 }
 
 .pages {

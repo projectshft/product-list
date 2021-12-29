@@ -10,7 +10,7 @@ const ProductSchema = new Schema({
   reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 });
 
-// add text index for searching
+// add text index for searching products by their name field
 ProductSchema.index({ name: 'text' });
 
 module.exports = mongoose.model('Product', ProductSchema);

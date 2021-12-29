@@ -19,7 +19,7 @@ router.param('review', (req, res, next, id) => {
 });
 
 // DELETE /reviews/:review route - Deletes a review document by its id and its reference from the associated product's reviews array
-router.delete('/reviews/:review', (req, res, next) => {
+router.delete('/reviews/:review', (req, res) => {
   Review.findByIdAndDelete(req.review._id, (err, review) => {
     if (err) throw err;
     Product.findByIdAndUpdate(

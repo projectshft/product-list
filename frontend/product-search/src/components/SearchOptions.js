@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuery, setPage } from '../actions';
 import CategoryFilter from './CategoryFilter';
+import SortPrice from './SortPrice';
 
 const SearchOptions = () => {
   const page = useSelector((state) => state.products.currPage);
@@ -31,7 +32,7 @@ const SearchOptions = () => {
         <CategoryFilter />
       </div>
       <div className='col-md-3'>
-        <h3>Price sort</h3>
+        <SortPrice />
       </div>
       </div>
     </div>

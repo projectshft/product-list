@@ -14,6 +14,8 @@ const CategoryFilter = () => {
       <select className="form-select" onChange={(e) => handleSelect(e)}>
         <option value="">Filter by category</option>
         <option value="Beauty">Beauty</option>
+        <option value="Books">Books</option>
+        <option value="Games">Games</option>
         <option value="Shoes">Shoes</option>
         <option value="Sports">Sports</option>
         <option value="Tools">Tools</option>

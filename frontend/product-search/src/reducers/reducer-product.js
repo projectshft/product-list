@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS, SET_CATEGORY, SET_PAGE, SET_QUERY } from "../actions";
+import { FETCH_PRODUCTS, SET_CATEGORY, SET_PAGE, SET_QUERY, SET_SORT } from "../actions";
 
 const DEFAULT_STATE = {
   currQuery: '',
@@ -18,6 +18,8 @@ const productReducer = (state = DEFAULT_STATE, action) => {
     case SET_PAGE:
       return Object.assign({}, state, action.payload);
     case SET_CATEGORY:
+      return Object.assign({}, state, action.payload);
+    case SET_SORT:
       return Object.assign({}, state, action.payload);
     default:
       return state;

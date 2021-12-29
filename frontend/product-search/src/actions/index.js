@@ -1,18 +1,20 @@
 import axios from 'axios';
 
-export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'
-export const SET_QUERY = 'SET_QUERY'
-export const SET_PAGE = 'SET_PAGE'
-export const SET_CATEGORY = 'SET_CATEGORY'
+export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
+export const SET_QUERY = 'SET_QUERY';
+export const SET_PAGE = 'SET_PAGE';
+export const SET_CATEGORY = 'SET_CATEGORY';
+export const SET_SORT = 'SET_SORT';
 
 const ROOT_URL = 'http://localhost:8000/products/';
 
-export const fetchProducts = (query, page, category) => { 
+export const fetchProducts = (query, page, category, sort) => { 
   const queryUrl = query ? `query=${query}` : '';
   const pageUrl = page ? `page=${page}` : '';
   const categoryUrl = category ? `category=${category}` : '';
+  const sortUrl = sort ? `price=${sort}` : '';
 
-  const url = `${ROOT_URL}?${pageUrl}&${queryUrl}&${categoryUrl}`;
+  const url = `${ROOT_URL}?${pageUrl}&${queryUrl}&${categoryUrl}&${sortUrl}`;
 
   return axios
     .get(url)
@@ -51,3 +53,10 @@ export const setCategory = (category) => {
     payload: {currCategory: category}
   }
 };
+
+export const setSort = (sort) => {
+  return {
+    type: SET_SORT,
+    payload: {currSort: sort}
+  }
+}

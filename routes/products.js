@@ -51,12 +51,17 @@ router.get('/products', (req, res, next) => {
     .sort(sortOption)
     .exec((err, products) => {
       if (err) return next(err);
-      const numProducts = products.length;
-      if (numProducts > 0) {
-        // return numProducts for pagination purposes
-        return res.send(products);
+      if (products.length > 0) {
+        Product.countDocuments(queryOptions, (err, count) => {
+          if (err) return next(err);
+          return res.send({
+            productList: products,
+            numProducts: count,
+          });
+        });
+      } else {
+        return res.send('There are no products matching your query');
       }
-      return res.send('There are no products matching your query');
     });
 });
 

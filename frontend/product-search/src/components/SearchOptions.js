@@ -1,14 +1,16 @@
-import {useState} from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchProducts } from '../actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { setQuery, setPage } from '../actions';
 
 const SearchOptions = () => {
-  const [term, setTerm] = useState('');
+  const page = useSelector((state) => state.products.currPage);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(fetchProducts(term));
+    if (page !== 1) {
+      dispatch(setPage(1));
+    };
+    dispatch(setQuery(e.target[0].value));
   }; 
 
   return (
@@ -16,7 +18,7 @@ const SearchOptions = () => {
      <div className='row'>
       <div className='col-md-6'>
         <form className='input-group' onSubmit={handleSubmit}>
-          <input className='form-control' value={term} placeholder='Search' onChange={(e) => {setTerm(e.target.value)}}></input>
+          <input className='form-control' placeholder='Search'></input>
           <span className='input-group-btn'>
               <button className='btn btn-info' type='submit'>
                 Submit
@@ -25,7 +27,7 @@ const SearchOptions = () => {
          </form>
         </div>
       <div className='col-md-3'>
-        <h3>Category sort</h3>
+        <h3>Category filter</h3>
       </div>
       <div className='col-md-3'>
         <h3>Price sort</h3>

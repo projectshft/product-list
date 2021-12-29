@@ -1,6 +1,10 @@
-import { FETCH_PRODUCTS } from "../actions";
+import { FETCH_PRODUCTS, SET_PAGE, SET_QUERY } from "../actions";
 
 const DEFAULT_STATE = {
+  currQuery: '',
+  currPage: 1,
+  currCategory: '',
+  priceSort: '',
   numProducts: 0,
   productList: [],
 };
@@ -8,8 +12,11 @@ const DEFAULT_STATE = {
 const productReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      const currProducts = {productList: action.payload.data}
-      return Object.assign({}, state, currProducts);
+      return Object.assign({}, state, action.payload.data);
+    case SET_QUERY:
+      return Object.assign({}, state, action.payload);    
+    case SET_PAGE:
+      return Object.assign({}, state, action.payload);
     default:
       return state;
   }

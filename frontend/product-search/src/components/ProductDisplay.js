@@ -6,11 +6,12 @@ const ProductDisplay = () => {
   const productList = useSelector((state) => state.products.productList);
   const query = useSelector((state) => state.products.currQuery);
   const page = useSelector((state) => state.products.currPage);
+  const category = useSelector((state) => state.products.currCategory);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts(query, page));
-  }, [query, page, dispatch]);
+    dispatch(fetchProducts(query, page, category));
+  }, [query, page, category, dispatch]);
 
   return (
     <div className="container">

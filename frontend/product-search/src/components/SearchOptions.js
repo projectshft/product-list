@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setQuery, setPage } from '../actions';
+import CategoryFilter from './CategoryFilter';
 
 const SearchOptions = () => {
   const page = useSelector((state) => state.products.currPage);
@@ -27,7 +28,7 @@ const SearchOptions = () => {
          </form>
         </div>
       <div className='col-md-3'>
-        <h3>Category filter</h3>
+        <CategoryFilter />
       </div>
       <div className='col-md-3'>
         <h3>Price sort</h3>

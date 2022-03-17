@@ -32,18 +32,31 @@ router.get("/products", (req, res, next) => {
 
   const page = req.query.page || 1;
   const category = req.query.category || null;
+  const price = req.query.price || null;
+  const query = req.query.query || null;
+
+  const findObj = {};
+  const priceObj = {};
+  if (category) {
+    findObj.category = category;
+  }
+  if (query) {
+    findObj.name = new RegExp(query, "i");
+  }
+  if (price === 'highest') {
+    priceObj.price = 'desc'
+  }
+  if (price === 'lowest') {
+    priceObj.price = 'asc'
+  } 
   
-  if (category) {Product.find({category:category})
+  Product.find(findObj)
     .skip(perPage * page - perPage)
+    .sort(priceObj)
     .limit(perPage)
     .exec((err, products) => {
       res.send(products);
-    });} else {Product.find({})
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      res.send(products);
-    })}
+    })
 });
 
 router.get('/products/:product', (req, res, next) => {
@@ -85,9 +98,10 @@ router.delete('/products/:product', (req, res, next) => {
 router.delete('/products/:product/reviews/:review', (req, res, next) => { 
   const reviewId = req.params.review;
   const reviewsArray = req.product.reviews;
-
-  Review.deleteOne({_id: reviewId}).exec((err, review) => {
-    res.send(`Review Deleted`);
+  
+  Review.findByIdAndDelete(reviewId).exec((err, review) => {
+    res.send(`deleted`);
+    req.product.save();
   })
 })
 

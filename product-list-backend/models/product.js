@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const ReviewSchema = new Schema ({
+const ReviewSchema = new Schema({
   userName: String,
-  text: String, 
-})
+  text: String,
+});
 
-const Review = mongoose.model("Review", ReviewSchema);
+module.exports = mongoose.model("Review", ReviewSchema);
 
-const ProductSchema = new Schema ({
+const ProductSchema = new Schema({
   category: String,
   name: String,
   price: Number,
@@ -16,6 +16,4 @@ const ProductSchema = new Schema ({
   reviews: [ReviewSchema]
 });
 
-const Product = mongoose.model("Product", ProductSchema);
-module.exports = { Review, Product };
-
+module.exports = mongoose.model("Product", ProductSchema);

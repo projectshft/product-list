@@ -1,4 +1,4 @@
- const productReducer= (products=[], action) => {
+const productReducer= (products=[], action) => {
   switch (action.type) {
     case 'POST':
     return [...products, action.payload];

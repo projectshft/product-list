@@ -1,26 +1,39 @@
-import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { Card } from 'react-bootstrap';
+import { fetchProducts } from '../actions';
 
 const Products = () => {
+  const products = useSelector((state) => state.products);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [fetchProducts]);
+
   function renderProducts() {
-    return (
-      <div className="container">
+    return products.map((product, i) => (
+      <div className="col-md-4 pb-4">
         <Card style={{ width: '18rem' }}>
           <Card.Body>
-            <Card.Text>Category: Fitness</Card.Text>
-            <Card.Text>$1</Card.Text>
+            <Card.Text>Category: {product.category}</Card.Text>
+            <Card.Text>${product.price}</Card.Text>
             <Card.Img
               variant="top"
               src="https://via.placeholder.com/250?text=Product+Image"
             />
-            <Card.Title>Product Title</Card.Title>
+            <Card.Title>{product.name}</Card.Title>
           </Card.Body>
         </Card>
       </div>
-    );
+    ));
   }
 
-  return <div>{renderProducts()}</div>;
+  return (
+    <div className="container">
+      <div className="row">{renderProducts()}</div>
+    </div>
+  );
 };
 
 export default Products;

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import {
   Dropdown,
   Form,
@@ -6,18 +6,31 @@ import {
   InputGroup,
   Button,
 } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchProducts } from '../actions';
 
 const Search = () => {
+  const [query, setQuery] = useState('');
+  const dispatch = useDispatch();
+
+  const handleQuerySearch = (e) => {
+    e.preventDefault();
+    dispatch(fetchProducts(query));
+  };
+
   function renderUserInput() {
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-8">
-            <Form>
+            <Form onSubmit={handleQuerySearch}>
               <Form.Group className="mb-3 mt-3" controlId="formSearch">
                 <InputGroup className="mb-3">
-                  <Form.Control placeholder="Search" />
-                  <Button variant="primary" id="button-addon2">
+                  <Form.Control
+                    placeholder="Search"
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                  <Button variant="primary" type="submit">
                     Search
                   </Button>
                 </InputGroup>

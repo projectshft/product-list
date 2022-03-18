@@ -12,8 +12,8 @@ const Products = () => {
   }, [fetchProducts]);
 
   function renderProducts() {
-    return products.map((product, i) => (
-      <div className="col-md-4 pb-4">
+    return products.map((product) => (
+      <div className="col-md-4 pb-4" key={product.id}>
         <Card style={{ width: '18rem' }}>
           <Card.Body>
             <Card.Text>Category: {product.category}</Card.Text>

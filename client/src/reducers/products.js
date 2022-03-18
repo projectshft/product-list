@@ -1,17 +1,30 @@
-const productReducer= (products=[], action) => {
+
+import { FETCH_PRODUCTS_SUCCESS, SET_ERROR } from "../actions";
+
+const initialState = {
+  products: [],
+};
+
+const productReducer = function (state = initialState, action) {
   switch (action.type) {
-    case 'POST':
-    return [...products, action.payload];
-    case 'GET':
-    return action.payload;
-    // case 'UPDATE':
-    // return products.map(product => product._id === action.payload._id ?   action.payload : post);
-    case 'DELETE':
-    return products.filter(product => product._id !== action.payload);
-    default:
-    return products;
+    case FETCH_PRODUCTS_SUCCESS: {
+      return {
+        ...state,
+        products: [
+          { ...action.payload},
+        ],
+      };
     }
+
+    case SET_ERROR: {
+      alert(action.payload.response.message);
+      break;
+    }
+
+    default:
+      return state;
   }
+};
 
 
 

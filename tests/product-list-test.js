@@ -12,6 +12,22 @@ chai.use(chaiHttp);
 // TODO :// actually query db and use real data to test?? 
 
 describe("Product-List", () => {
+
+  beforeEach(() => {
+
+  });
+
+  afterEach(() => {
+    // delete product
+    Product.deleteOne( { name: "test name" }, function (err, product) {
+      if (err) throw err;
+    })
+
+    // Product.deleteOne( { name: null }, function (err, product) {
+    //   if (err) throw err;
+    // })
+  });
+
   describe("/GET/products", () => {
     it("it should GET 9 of the products", (done) => {
       
@@ -136,7 +152,6 @@ describe("Product-List", () => {
       product.name = "test name";
       product.price = 100
       product.image = "http://www.test.come";
-      product.reviews = []
 
       product.save((err) => {
         if (err) throw err;
@@ -150,17 +165,17 @@ describe("Product-List", () => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('_id');
-          res.body.should.have.property('quantity');
           res.body.should.have.property('category');
           res.body.should.have.property('name');
           res.body.should.have.property('price');
           res.body.should.have.property('image');
+          res.body.should.have.property('reviews');
           done();
         });
     });
 
     
-    it("it should not POST add a product if empty", (done) => {
+    it("it should not POST add a product if no name", (done) => {
       let product = new Product();
 
       chai
@@ -172,6 +187,46 @@ describe("Product-List", () => {
           done();
         });
     });
+
+    // add some other bad data?
   });
+
+  // POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
+  describe("/POST/products/:product/reviews", () => {
+    it("it should POST an item to products review", (done) => {
+      // create post and save
+      // create review and push
+
+      chai
+        .request(server)
+        .post(`/products/${productId}/reviews`)
+        .send(review)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('_id');
+          res.body.should.have.property('userName');
+          res.body.should.have.property('text');
+          done();
+        });
+    });
+
+    
+    it("it should not POST a review if no username or text", (done) => {
+      // create post and save
+      // create review and push
+
+      chai
+        .request(server)
+        .post(`/products/${productId}/reviews`)
+        .send(review)
+        .end((err, res) => {
+          res.should.have.status(400);
+          done();
+        });
+    });
+  });
+
+    
   
 });

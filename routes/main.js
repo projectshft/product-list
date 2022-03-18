@@ -118,16 +118,30 @@ router.get("/products/:product/reviews", (req, res, next) => {
 // POST PRODUCT
 router.post("/products", (req, res, next) => {
   
-  let newProduct = new Product();
-  product.category = "test cat";
-  product.name = "test name";
-  product.price = 100
-  product.image = "http://www.test.come";
-  product.reviews = []
-
-  product.save((err) => {
-    if (err) throw err;
+  let newProduct = new Product({
+    category: req.body.category || null,
+    name: req.body.name || null,
+    price: req.body.price || null,
+    image: req.body.image || null,
+    reviews: []
   });
+  
+ 
+  // is this the best place to handle this?
+  if (newProduct.name == null) {
+    res.writeHead(400, "Need at least name");
+    res.send();
+  } else {
+    newProduct.save((err) => {
+    if (err) throw err;
+    else {
+      res.send(newProduct);
+      }
+    });
+  }
+  
+
+  
 })
 
 module.exports = router;

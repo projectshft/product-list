@@ -10,20 +10,18 @@ function SearchBar(props) {
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch()
 
-  const [category, setSelectCategory]=useState("");
-  const [price, setSelectPrice]=useState("");
- const [query, setQuery]=useState('');
+ const [category, setSelectCategory]=useState("");
+ const [price, setSelectPrice]=useState("");
+//  const [query, setQuery]=useState('');
 
   const handleClear = (e) => {
     setSelectCategory("");
     setSelectPrice("");
  }
+
   const handleSearchSubmit = (data) => {
     let query = data.search;
    //this is for the state variables above
-   query = data.search 
-   setQuery(query);
-
    dispatch(fetchProducts(category, price, query))
   
    //clear search bar and set dropdowns back to default;

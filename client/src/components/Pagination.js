@@ -7,6 +7,7 @@ const Pagination = (props) => {
   const dispatch = useDispatch();
   const pageNumbers = [];
 
+
   const [currentPage, setCurrentPage] = useState(1);
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
@@ -23,8 +24,8 @@ const Pagination = (props) => {
 
   const nextPage = (e) => {
   setCurrentPage(currentPage+1);
+  dispatch(fetchProducts("", "", "", currentPage))
 
-  // pageChange();
   }
 
   const previousPage = (e) => {
@@ -32,7 +33,7 @@ const Pagination = (props) => {
 
   else {
     setCurrentPage(currentPage-1)
-    // dispatch(fetchProducts(category, price, query, currentPage))
+    dispatch(fetchProducts("", "", "", currentPage))
   };
   }
 
@@ -44,24 +45,22 @@ const Pagination = (props) => {
   
   //     dispatch(fetchProducts(category, price, query, currentPage))
     
-  
+  //Below I restrict the page numbers only up to 10 or else just the previous/next is shown
   return (
   <nav className="page-navigation">
       <button onClick={previousPage} disabled={currentPage === 1} className="page-link" aria-label="Previous">
         <span aria-hidden="true"> &laquo; Previous</span>
       </button>
-      {/* {pageNumbers.map(number => (
+      {pageNumbers.length<10 && pageNumbers.map(number => (
           <li key={number} className='page-item'>
             <a onClick={() => paginate(number)} href='!#' className='page-link'>
               {number}
             </a>
           </li>
-        ))} */}
-  
+        ))}
       <button onClick={nextPage} disabled={currentPage === pageCount} className="page-link" aria-label="Next">
         <span aria-hidden="true">Next &raquo;</span>
       </button>
-
   </nav>
 
   );

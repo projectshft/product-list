@@ -14,7 +14,7 @@ function App() {
       <Header />
       <SearchBar />
       <Images /> 
-      {/* <Pagination /> */}
+      <Pagination />
     </React.Fragment>
   );
 }

@@ -7,6 +7,7 @@ import promise from 'redux-promise';
 import { Provider } from 'react-redux';
 import Search from './components/search';
 import Products from './components/products';
+import Pages from './components/pagination';
 import reducers from './reducers';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,6 +18,7 @@ ReactDOM.render(
   <Provider store={createStoreWithMiddleWare(reducers)}>
     <Search />
     <Products />
+    <Pages />
   </Provider>,
   document.getElementById('root')
 );

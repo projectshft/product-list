@@ -13,17 +13,16 @@ const Pagination = (props) => {
 
 
   const [currentPage, setCurrentPage] = useState(1);
-  const paginate = pageNumber => setCurrentPage(pageNumber);
-
-
   
+   
   let params = useSelector((state) => state.query);
-  console.log(params)
+  let price = params.price;
+  let category=params.category;
+  let query=params.query;
 
 
-  
   let pageCount = 0;
-  if(count>0 && count !==undefined) {
+  if(count) {
     pageCount =  Math.ceil(count/9);
   }
   
@@ -32,23 +31,32 @@ const Pagination = (props) => {
     pageNumbers.push(i);
   }
 
+  //NEED TO ADDRESS ISSUE WHERE FIRST PAGE INFO GETS SWITCHED - need to pass in current page to the fetch instead of '1' default!!
   const nextPage = (e) => {
-  if(currentPage !== pageNumbers.length-1) {
+  let newPage = Number(currentPage) + 1;
+  setCurrentPage(newPage)
   setCurrentPage(currentPage+1);
-  dispatch(fetchProducts(params.category, params.price, params.query, currentPage))
+  dispatch(fetchProducts(category, price, query, currentPage))
   }
-  return;
 
-  }
 
   const previousPage = (e) => {
   if(currentPage===1) return;
-
   else {
-    setCurrentPage(currentPage-1)
-    dispatch(fetchProducts(params.category, params.price, params.query, currentPage))
+    let newPage = Number(currentPage) - 1;
+    console.log('prev page', newPage)
+    setCurrentPage(newPage)
+    dispatch(fetchProducts(category, price, query, currentPage))
   };
   }
+
+  const paginate = (pageNumber) => {
+    // console.log('clicked',pageNumber)
+    if(pageNumber !== currentPage) {
+    setCurrentPage(pageNumber);
+    dispatch(fetchProducts(category, price, query, currentPage))
+  }
+}
 
   //Below I restrict the page numbers only up to 10 or else just the previous/next is shown
     return (
@@ -58,9 +66,9 @@ const Pagination = (props) => {
       </button>
       {pageNumbers?.length<10 && pageNumbers?.map(number => (
           <li key={number} className='page-item'>
-            <a onClick={() => paginate(number)} href='!#' className='page-link'>
+            <button onClick={() => paginate(number)} type="submit" className='page-link'>
               {number}
-            </a>
+            </button>
           </li>
         ))}
       <button onClick={nextPage} disabled={currentPage === pageCount} className="page-link" aria-label="Next">

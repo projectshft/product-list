@@ -95,12 +95,14 @@ router.get("/products/:product", (req, res, next) => {
   })
 });
 
-//  GET /products/:product/reviews: Returns ALL the reviews for a product, but  This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
+//  GET /products/:product/reviews
+//Limit to 4 at a time
 router.get("/products/:product/reviews", (req,res,next) => {
   let {product} = req.params
 
    Product.findOne({_id: product})
     .populate("reviews")
+    .limit(4)
     .exec((err, reviews) => {
       if(err) {
         console.log(err)

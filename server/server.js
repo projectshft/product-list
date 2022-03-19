@@ -21,9 +21,3 @@ mongoose.connect("mongodb://localhost/products", {
 .then(() =>app.listen(PORT, () => console.log(`Server running on port: ${PORT}`)))
 .catch((err) => console.log(err.message))
 
-
-
-
-// app.listen(8000, () => {
-//   console.log("Node.js listening on port " + 8000);
-// });

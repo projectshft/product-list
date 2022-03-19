@@ -6,27 +6,38 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useForm } from 'react-hook-form';
 
 
-function SearchBar() {
-  const { register, handleSubmit } = useForm();
+function SearchBar(props) {
+  const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch()
 
   const [category, setSelectCategory]=useState("");
   const [price, setSelectPrice]=useState("");
+ const [query, setQuery]=useState('');
 
-  const handleSearchSubmit = (data, e) => {
-   console.log(data.search, category, price);  
-  
-   let query = data.search;
+  const handleClear = (e) => {
+    setSelectCategory("");
+    setSelectPrice("");
+ }
+  const handleSearchSubmit = (data) => {
+    let query = data.search;
+   //this is for the state variables above
+   query = data.search 
+   setQuery(query);
+
    dispatch(fetchProducts(category, price, query))
-   e.target.reset();
-}
+  
+   //clear search bar and set dropdowns back to default;
+    reset()
+    handleClear();
+  }
+
   return (
-<div className="container search-sort-area">
-  <form className="form" onSubmit={handleSubmit(handleSearchSubmit)}>
+  <div className="search-container">
+  <form className="form search-sort-area" onSubmit={handleSubmit(handleSearchSubmit)}>
   <div className="input-group search-bar">
   <input 
   type="text" 
-  className="form-control mb-3" 
+  className="form-control" 
   placeholder="Search" 
   name="search"
   {...register("search")}
@@ -37,7 +48,7 @@ function SearchBar() {
   <select className="form-select" aria-label="sort by category"  
   value={category}
   onChange={(e) => setSelectCategory(e.target.value)}>
-  <option value="DEFAULT">Sort by Category</option>
+  <option value="DEFAULT" >Sort by Category</option>
   <option value="automotive">Automotive</option>
   <option value="baby">Baby</option>
   <option value="beauty">Beauty</option>
@@ -63,19 +74,20 @@ function SearchBar() {
 </select>
 
 
+
 <select className="form-select" 
 aria-label="sort by price"
 value={price}
 onChange={(e) => setSelectPrice(e.target.value)}
 placeholder="Sort by Price">
-
   <option value="DEFAULT">Sort by Price</option>
   <option value="highest">Highest</option>
   <option value="lowest">Lowest</option>
 </select>
 
+
 <button 
-  className="btn btn-outline-primary mb-3" 
+  className="btn btn-primary " 
   type="submit">Search</button>
 </form>
 </div>

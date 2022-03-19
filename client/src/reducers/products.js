@@ -1,21 +1,12 @@
 
 import { FETCH_PRODUCTS_SUCCESS, SET_ERROR } from "../actions";
 
-const initialState = {
-  products: [],
-};
 
-const productReducer = function (state = initialState, action) {
+const productReducer =  (state = [], action) => {
   switch (action.type) {
-    case FETCH_PRODUCTS_SUCCESS: {
-      return {
-        ...state,
-        products: [
-          { ...action.payload},
-        ],
-      };
-    }
-
+    case FETCH_PRODUCTS_SUCCESS:  {
+    return  action.payload
+  }
     case SET_ERROR: {
       alert(action.payload.response.message);
       break;
@@ -23,8 +14,8 @@ const productReducer = function (state = initialState, action) {
 
     default:
       return state;
-  }
-};
+  };
+}
 
 
 

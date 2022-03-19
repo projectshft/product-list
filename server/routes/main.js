@@ -1,11 +1,12 @@
 
 const router = require("express").Router();
 const faker = require("faker");
+const { db } = require("../models/product");
 const Product = require("../models/product");
 const Review = require("../models/review");
 
 
-//NOTE TO SELF - THESE ROUTES ARE WORKING BUT THE DATA ISN"T YET FOR THE FIELDS WE WANT!
+
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
@@ -56,29 +57,29 @@ router.get("/products", (req, res, next) => {
 
   if(query) {  
     queryR = query[0].toUpperCase() + query.substring(1)
-    queryObj.name = {"$regex": queryR}}
+    queryObj.name = {"$regex": queryR}
+  }
  
-
   let perPage = 9;
 
-  
   Product.find(queryObj)
   .skip((page * perPage) - perPage)
   .limit(perPage)
   .sort(sortObj)
-  .exec( (err, result) => {
-    if (!result.length) {
-     return res.send("Sorry no products match this description")
-       }
-    if(err) {
-     return res.send(err)
-    }
-    else {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      return res.end(JSON.stringify(result));
-    }
-  })
-})
+  .exec((err, products) => {
+    if(err) return next(err);
+    if(products.length>=1) {
+    Product.find(queryObj).countDocuments().exec( (err, count) => {
+      if(err) return next(err);
+    return res.send({
+        products: products, 
+        count: count,
+    })
+    });
+    }}
+)});
+
+
 
 router.get("/products/:product", (req, res, next) => {
   let {product} = req.params;
@@ -105,7 +106,6 @@ router.get("/products/:product/reviews", (req,res,next) => {
         console.log(err)
       }
         else {
-      // res.writeHead(200, { "Content-Type": "application/json" });
       res.send({reviews})
       }
     });

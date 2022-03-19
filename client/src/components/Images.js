@@ -15,7 +15,7 @@ function Images() {
   }, [] )
 
 const products = useSelector((state) => state.products);
- console.log(products);
+ 
 
  const renderProducts = () => {
       if(!products) {

@@ -14,18 +14,17 @@ function SearchBar() {
  const [category, setSelectCategory]=useState("");
  const [price, setSelectPrice]=useState("");
 
- // eslint-disable-next-line no-unused-vars
- 
 
   const handleClear = (e) => {
     setSelectCategory("");
     setSelectPrice("");
- }
-
+ } 
+ 
   const handleSearchSubmit = (data) => {
     let query = data.search;
+
    //this is for the state variables above
-   dispatch(fetchProducts(category, price, query))
+   dispatch(fetchProducts(category, price, query, 1))
    //Save parameters of the search
   dispatch(setPrice(price));
   dispatch(setCategory(category));

@@ -17,13 +17,13 @@ const fetchProductsSuccess = (products) => ({
   payload: { products },
 });
 
-export const fetchProducts = (category, price, query, page=1) => {
+export const fetchProducts = (category, price, query, page) => {
 
 return async(dispatch) => {
   try {
     const request = await axios.get(`${ROOT_URL}page=${page}&category=${category}&price=${price}&query=${query}`);
     dispatch(fetchProductsSuccess(request.data));
-    console.log(request.data)
+    
     dispatch(setCount(request.data.count))
   } catch (e) {
     console.log(e);

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import {
   Dropdown,
-  Form,
+  FormControl,
   DropdownButton,
   InputGroup,
   Button,
 } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchProducts } from '../actions';
 
 const Search = () => {
@@ -15,46 +15,53 @@ const Search = () => {
 
   const handleQuerySearch = (e) => {
     e.preventDefault();
-    dispatch(fetchProducts(query));
+    dispatch(fetchProducts('query', query));
   };
 
   function renderUserInput() {
     return (
       <div className="container">
-        <div className="row">
+        <div className="row mt-3">
           <div className="col-md-8">
-            <Form onSubmit={handleQuerySearch}>
-              <Form.Group className="mb-3 mt-3" controlId="formSearch">
-                <InputGroup className="mb-3">
-                  <Form.Control
-                    placeholder="Search"
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
-                  <Button variant="primary" type="submit">
-                    Search
-                  </Button>
-                </InputGroup>
-              </Form.Group>
-            </Form>
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Search"
+                type="text"
+                value={query}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                }}
+              />
+              <Button onClick={handleQuerySearch} variant="primary">
+                Search
+              </Button>
+            </InputGroup>
           </div>
-          <DropdownButton
-            className="mt-3 col-md-2"
-            id="dropdown-basic-button"
-            title="Category"
-          >
-            <Dropdown.Item href="#/action-1">Beauty</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Music</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Sports</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Tools</Dropdown.Item>
-          </DropdownButton>
-          <DropdownButton
-            className="mt-3 col-md-2"
-            id="dropdown-basic-button"
-            title="Price"
-          >
-            <Dropdown.Item href="#/action-1">Highest</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Lowest</Dropdown.Item>
-          </DropdownButton>
+          <div className="col-md-2">
+            <DropdownButton
+              id="dropdown-basic-button"
+              onSelect={(eventKey) =>
+                dispatch(fetchProducts('category', eventKey))
+              }
+              title="Category"
+            >
+              <Dropdown.Item eventKey="Beauty">Beauty</Dropdown.Item>
+              <Dropdown.Item eventKey="Electronics">Electronics</Dropdown.Item>
+              <Dropdown.Item eventKey="Sports">Sports</Dropdown.Item>
+            </DropdownButton>
+          </div>
+          <div className="col-md-2">
+            <DropdownButton
+              id="dropdown-basic-button"
+              onSelect={(eventKey) =>
+                dispatch(fetchProducts('price', eventKey))
+              }
+              title="Price"
+            >
+              <Dropdown.Item eventKey="highest">highest</Dropdown.Item>
+              <Dropdown.Item eventKey="lowest">lowest</Dropdown.Item>
+            </DropdownButton>
+          </div>
         </div>
       </div>
     );

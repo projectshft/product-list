@@ -4,7 +4,7 @@ import SearchBar from './components/SearchBar'
 import Images from './components/Images'
 import "bootstrap/dist/css/bootstrap.css";
 // import "bootstrap/dist/js/bootstrap.bundle.js";
-import Pagination from './components/Pagination'
+
 import './App.css'
 
 
@@ -14,7 +14,6 @@ function App() {
       <Header />
       <SearchBar />
       <Images /> 
-      <Pagination />
     </React.Fragment>
   );
 }

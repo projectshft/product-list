@@ -1,18 +1,21 @@
 
 import React, {useState} from 'react';
-import { fetchProducts } from '../actions/index';  
+import { fetchProducts, setPrice, setCategory, setQuery } from '../actions/index';  
 import { useDispatch } from 'react-redux';
 import "bootstrap/dist/css/bootstrap.css";
 import { useForm } from 'react-hook-form';
 
 
-function SearchBar(props) {
+
+function SearchBar() {
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch()
 
  const [category, setSelectCategory]=useState("");
  const [price, setSelectPrice]=useState("");
-//  const [query, setQuery]=useState('');
+
+ // eslint-disable-next-line no-unused-vars
+ 
 
   const handleClear = (e) => {
     setSelectCategory("");
@@ -23,6 +26,10 @@ function SearchBar(props) {
     let query = data.search;
    //this is for the state variables above
    dispatch(fetchProducts(category, price, query))
+   //Save parameters of the search
+  dispatch(setPrice(price));
+  dispatch(setCategory(category));
+  dispatch(setQuery(query));
   
    //clear search bar and set dropdowns back to default;
     reset()

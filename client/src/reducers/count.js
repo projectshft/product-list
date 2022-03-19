@@ -1,16 +1,23 @@
-// import { FETCH_PRODUCT_COUNT } from "../actions";
+import { SET_COUNT } from "../actions";
+
+const initialState = {
+  count: null
+}
 
 
-// const countReducer = (state = 0, action) => {
-//   switch (action.type) {
-//    case FETCH_PRODUCT_COUNT: {
-//     return  action.payload.data[1].count;
-//   }
-//     default:
-//       return state;
-//   };
-// }
+const countReducer =  (state = initialState , action) => {
+  switch (action.type) {
+    case SET_COUNT:  
+    return  {
+      ...state,
+      count: action.payload
+  }
+
+    default:
+      return state;
+  };
+}
 
 
 
-// export default countReducer;
+export default countReducer;

@@ -5,6 +5,10 @@ import { fetchProducts } from '../actions/index';
 
 const Pagination = (props) => {
   const dispatch = useDispatch();
+
+  let count = useSelector((state) => state.count.count);
+
+  console.log(count);
   const pageNumbers = [];
 
 
@@ -12,19 +16,28 @@ const Pagination = (props) => {
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
 
-  const count = useSelector((state) => state.products.products.count);
-  console.log(count)
   
+  let params = useSelector((state) => state.query);
+  console.log(params)
 
-  const pageCount = Math.ceil(count/9);
+
+  
+  let pageCount = 0;
+  if(count>0 && count !==undefined) {
+    pageCount =  Math.ceil(count/9);
+  }
+  
 
   for (let i = 1; i <= pageCount; i++) {
     pageNumbers.push(i);
   }
 
   const nextPage = (e) => {
+  if(currentPage !== pageNumbers.length-1) {
   setCurrentPage(currentPage+1);
-  dispatch(fetchProducts("", "", "", currentPage))
+  dispatch(fetchProducts(params.category, params.price, params.query, currentPage))
+  }
+  return;
 
   }
 
@@ -33,25 +46,17 @@ const Pagination = (props) => {
 
   else {
     setCurrentPage(currentPage-1)
-    dispatch(fetchProducts("", "", "", currentPage))
+    dispatch(fetchProducts(params.category, params.price, params.query, currentPage))
   };
   }
 
-  // const queries = useSelector(state => state.queries);
-  // const pageChange = () => {
-  //     const query = queries.query || '';
-  //     const category = queries.category || '';
-  //     const price = queries.price || '';
-  
-  //     dispatch(fetchProducts(category, price, query, currentPage))
-    
   //Below I restrict the page numbers only up to 10 or else just the previous/next is shown
-  return (
+    return (
   <nav className="page-navigation">
       <button onClick={previousPage} disabled={currentPage === 1} className="page-link" aria-label="Previous">
         <span aria-hidden="true"> &laquo; Previous</span>
       </button>
-      {pageNumbers.length<10 && pageNumbers.map(number => (
+      {pageNumbers?.length<10 && pageNumbers?.map(number => (
           <li key={number} className='page-item'>
             <a onClick={() => paginate(number)} href='!#' className='page-link'>
               {number}
@@ -62,9 +67,10 @@ const Pagination = (props) => {
         <span aria-hidden="true">Next &raquo;</span>
       </button>
   </nav>
-
-  );
-      };
+  )
+};
+  
+  
 
 export default Pagination;
 

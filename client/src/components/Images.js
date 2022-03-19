@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../actions'; 
+import Pagination from './Pagination'
 
 
 
@@ -42,6 +43,7 @@ const products = useSelector((state) => state.products);
   <div className="container image-container">
   {renderProducts()}
   </div>
+    <Pagination />
   </div>
     )
   };

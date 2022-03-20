@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { exec } = require("child_process");
 const faker = require("faker");
 const Product = require("../models/product");
 
@@ -16,6 +17,24 @@ router.get("/generate-fake-data", (req, res, next) => {
     });
   }
   res.end();
+}); 
+
+router.get("/products", (req, res, next) => {
+  const productsPerPage = 9;
+
+  const defaultPage = req.query.page || 1;
+
+  Product.find({})
+    .skip(productsPerPage * defaultPage - productsPerPage)
+    .limit(productsPerPage)
+    .exec((err, products) => {
+
+      Product.count().exec((err, count) => {
+        if (err) return next(err);
+
+        res.send(products);
+      });
+    });
 });
 
 module.exports = router;

@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const mainRoutes = require('./routes/main');
+const productRouter = require('./routes/productRouter');
 
 mongoose.connect(
   'mongodb://127.0.0.1/products',
@@ -19,7 +19,6 @@ mongoose.connect(
 const app = express();
 const port = 3001;
 
-app.use(mainRoutes);
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -35,6 +34,13 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+// enables the faker route to populate the db, only needed to be done once
+// const fakerMaker = require('./routes/main');
+// app.use(fakerMaker);
+
+app.use('/products', productRouter);
+app.get('/', (req, res, next) => res.send('Server is running.'));
 
 app.listen(port, () => {
   console.log(`Node.js listening on port ${port}`);

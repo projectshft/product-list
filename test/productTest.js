@@ -69,25 +69,44 @@ describe('Products', () => {
   });
 
   describe('POST /products', () => {
+    // eslint-disable-next-line no-undef
+    after(() => Product.deleteOne({ name: 'super dope thing' }));
     it('should add a product to the database', (done) => {
-      const productToAdd = new Product();
-
-      productToAdd.category = 'things';
-      productToAdd.name = 'super dope thing';
-      productToAdd.price = '350';
-      productToAdd.image = 'https://via.placeholder.com/250?text=Product+Image';
+      const testProduct = {
+        category: 'things',
+        name: 'super dope thing',
+        price: '350',
+        image: 'https://via.placeholder.com/250?text=Product+Image',
+      };
 
       chai
         .request(app)
         .post('/products')
-        .send({ productToAdd })
+        .send({ testProduct })
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('object');
-          response.body.name.should.be.eql(productToAdd.name);
-          Product.deleteOne({ name: 'super dope thing' });
+          response.body.name.should.be.eql(testProduct.name);
           done();
         });
     });
+    it('should return 400 if product already exists', (done) => {
+      const testProduct = {
+        category: 'things',
+        name: 'super dope thing',
+        price: '350',
+        image: 'https://via.placeholder.com/250?text=Product+Image',
+      };
+
+      chai
+        .request(app)
+        .post('/products')
+        .send({ testProduct })
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
+    Product.deleteOne({ name: 'super dope thing' });
   });
 });

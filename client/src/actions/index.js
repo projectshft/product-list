@@ -17,11 +17,13 @@ const fetchProductsSuccess = (products) => ({
   payload: { products },
 });
 
-export const fetchProducts = (category, price, query, page) => {
-
+export const fetchProducts = (category, price, query, page = 1) => {
+let url = "";
 return async(dispatch) => {
+  url = `${ROOT_URL}page=${page}&category=${category}&price=${price}&query=${query}`;
+
   try {
-    const request = await axios.get(`${ROOT_URL}page=${page}&category=${category}&price=${price}&query=${query}`);
+    const request = await axios.get(url);
     dispatch(fetchProductsSuccess(request.data));
     
     dispatch(setCount(request.data.count))

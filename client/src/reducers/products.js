@@ -1,4 +1,3 @@
-
 import { FETCH_PRODUCTS_SUCCESS, SET_ERROR } from "../actions";
 
 
@@ -20,3 +19,5 @@ const productReducer =  (state = [], action) => {
 
 
 export default productReducer;
+
+

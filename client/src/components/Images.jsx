@@ -4,17 +4,17 @@ import { fetchProducts } from '../actions';
 import Pagination from './Pagination'
 
 
-
 function Images() {
   const dispatch = useDispatch();
 
-  //Load all products upon openning
-  useEffect(() => {
-    dispatch(fetchProducts("","",""));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [] )
+   //Load all products upon openning
+ useEffect(() => {
+  dispatch(fetchProducts("","",""));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [dispatch] )
 
 const products = useSelector((state) => state.products);
+
  
 
  const renderProducts = () => {
@@ -31,7 +31,7 @@ const products = useSelector((state) => state.products);
       </div>
       <img src={product.image}className="card-img-top" alt={product.name}/>
       <div className="card-body">
-      <h2 className="card-title">{product.name}</h2>
+      <h3 className="card-title">{product.name}</h3>
       </div>
       </div>
      </div>

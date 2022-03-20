@@ -95,8 +95,7 @@ router.delete('/products/:product', (req, res, next) => {
 
 router.delete('/products/:product/reviews/:review', (req, res, next) => {
   const reviewId = req.params.review;
-  const reviewsArray = req.product.reviews;
-
+  // had a tough time figuring this one out. I assume it has to do with subdocs vs. refs/population
   Review.findByIdAndDelete(reviewId).exec((err, review) => {
     res.send(`deleted`);
     req.product.save();

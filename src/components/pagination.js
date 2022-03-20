@@ -5,6 +5,7 @@ import { fetchProducts } from '../actions';
 const Pages = () => {
   const dispatch = useDispatch();
 
+  // Tried a few things to avoid hard coading but couldnt get anything to work how i wanted...
   const pagination = () => (
     <div className="container">
       <div className="row">

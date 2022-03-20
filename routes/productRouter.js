@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const Product = require('../models/product');
+const reviewRouter = require('./reviewRouter');
+
+router.use('/:productId/reviews', reviewRouter);
 
 router
   .route('/')
@@ -37,21 +40,34 @@ router
       if (err) throw err;
     });
 
-    // const newProduct = Product.find({ name });
-
     res.send(productToAdd);
   });
 
-router.get('/:productId', (req, res, next) => {
-  const { productId } = req.params;
+router
+  .route('/:productId')
+  .get((req, res, next) => {
+    const { productId } = req.params;
 
-  Product.findById(productId, (err, product) => {
-    if (err) {
-      res.status(404).end();
-    } else {
-      res.send(product);
-    }
+    Product.findById(productId, (err, product) => {
+      if (err) {
+        res.status(404).end();
+      } else {
+        res.send(product);
+      }
+    });
+  })
+  .delete(async (req, res, next) => {
+    const idToDelete = req.params.productId;
+
+    const doesProductExistBefore = await Product.exists({ _id: idToDelete });
+
+    if (!doesProductExistBefore) return res.status(400).end();
+
+    await Product.deleteOne({ _id: idToDelete });
+
+    const doesProductExistAfter = await Product.exists({ _id: idToDelete });
+
+    res.send(doesProductExistAfter);
   });
-});
 
 module.exports = router;

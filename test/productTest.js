@@ -1,11 +1,20 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const mongoose = require('mongoose');
+
 const app = require('../server');
 
 chai.should();
 chai.use(chaiHttp);
 
 const Product = require('../models/product');
+
+const testProduct = {
+  category: 'things',
+  name: 'super dope thing',
+  price: '350',
+  image: 'https://via.placeholder.com/250?text=Product+Image',
+};
 
 describe('Products', () => {
   describe('/GET products', () => {
@@ -41,7 +50,7 @@ describe('Products', () => {
     // });
   });
 
-  describe('GET products/productId', () => {
+  describe('GET products/:productId', () => {
     it('should return a single product if given correct productId', (done) => {
       const productId = '62363fd4f3dcee005debc4cf';
 
@@ -69,16 +78,7 @@ describe('Products', () => {
   });
 
   describe('POST /products', () => {
-    // eslint-disable-next-line no-undef
-    after(() => Product.deleteOne({ name: 'super dope thing' }));
     it('should add a product to the database', (done) => {
-      const testProduct = {
-        category: 'things',
-        name: 'super dope thing',
-        price: '350',
-        image: 'https://via.placeholder.com/250?text=Product+Image',
-      };
-
       chai
         .request(app)
         .post('/products')
@@ -87,17 +87,11 @@ describe('Products', () => {
           response.should.have.status(200);
           response.body.should.be.an('object');
           response.body.name.should.be.eql(testProduct.name);
+          testProduct._id = response.body._id;
           done();
         });
     });
     it('should return 400 if product already exists', (done) => {
-      const testProduct = {
-        category: 'things',
-        name: 'super dope thing',
-        price: '350',
-        image: 'https://via.placeholder.com/250?text=Product+Image',
-      };
-
       chai
         .request(app)
         .post('/products')
@@ -107,6 +101,29 @@ describe('Products', () => {
           done();
         });
     });
-    Product.deleteOne({ name: 'super dope thing' });
+  });
+
+  describe('DELETE /products/:productId', () => {
+    it('should delete a product from the database by id', (done) => {
+      const idToDelete = testProduct._id;
+      chai
+        .request(app)
+        .delete(`/products/${idToDelete}`)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.eql({});
+          done();
+        });
+    });
+    it('should return 400 if product does not exist', (done) => {
+      const falseIdToTest = mongoose.Types.ObjectId('51bb793aca2ab77a3200000d');
+      chai
+        .request(app)
+        .delete(`/products/${falseIdToTest}`)
+        .end((error, response) => {
+          response.should.have.status(400);
+          done();
+        });
+    });
   });
 });

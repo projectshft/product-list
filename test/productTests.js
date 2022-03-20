@@ -7,8 +7,6 @@ const app = require('../server');
 chai.should();
 chai.use(chaiHttp);
 
-const Product = require('../models/product');
-
 const testProduct = {
   category: 'things',
   name: 'super dope thing',
@@ -64,6 +62,7 @@ describe('Products', () => {
           done();
         });
     });
+
     it('should return a 404 if given incorrect productId', (done) => {
       const productId = 'hebegebes';
 

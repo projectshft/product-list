@@ -35,7 +35,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// enables the faker route to populate the db, only needed to be done once
+// next two lines enable the faker route to populate the db, only needed to be done once
 // const fakerMaker = require('./routes/main');
 // app.use(fakerMaker);
 

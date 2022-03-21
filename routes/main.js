@@ -5,11 +5,11 @@ const Review = require("../models/review.js");
 
 const buildFilterObject = (categoryString, searchString) => {
   if (categoryString && searchString) {
-    return {category: categoryString.slice(0, 1).toUpperCase() + categoryString.slice(1).toLowerCase(), $text: {$search: searchString.slice(0, 1).toUpperCase() + searchString.slice(1).toLowerCase()}};
+    return {category: categoryString.slice(0, 1).toUpperCase() + categoryString.slice(1).toLowerCase(), name: {$regex: searchString, $options: 'i'}};
   } else if (categoryString) {
     return {category: categoryString.slice(0, 1).toUpperCase() + categoryString.slice(1).toLowerCase()};
   } else if (searchString) {
-    return {$text: {$search: searchString.slice(0, 1).toUpperCase() + searchString.slice(1).toLowerCase()}};
+    return {name: {$regex: searchString, $options: 'i'}};
   } else {
     return {};
   }
@@ -75,23 +75,21 @@ router.get("/generate-fake-data", (req, res, next) => {
 
 router.get("/products", (req, res, next) => {
   const pageNumber = req.query.page || '1';
-  const filter = buildFilterObject(req.query.category, req.query.search);
-  let sortOrder;
+  const filter = buildFilterObject(req.query.category, req.query.query);
+  let sortOrder = {};
   if (['lowest', 'Lowest'].includes(req.query.price)) {
-    sortOrder = 'asc';
+    sortOrder.price = 'asc';
   } else if (['highest', 'Highest'].includes(req.query.price)) {
-    sortOrder = 'desc';
-  } else {
-    sortOrder = undefined;
+    sortOrder.price = 'desc';
   }
 
   const numToSkip = (parseInt(pageNumber) - 1) * 9;
 
   Product.find(filter, (error, products) => {
     Product.count(filter, (err, count) => {
-      res.send({products, page: pageNumber, numOnPage: products.length, count: count});
+      res.send({products, page: pageNumber, numOnPage: products.length, totalFound: count});
     });
-  }).sort({price: sortOrder}).skip(numToSkip).limit(9);
+  }).sort(sortOrder).skip(numToSkip).limit(9);
 });
 
 router.get("/products/:product", (req, res) => {

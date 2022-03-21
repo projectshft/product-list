@@ -36,20 +36,14 @@ router
     });
   })
   .delete((req, res) => {
-    const productId = '62363fd4f3dcee005debc4cf'; // req.params;
+    const { productId } = req.params;
     const { reviewIdToDelete } = req.body;
 
-    Product.findById(productId, (err, product) => {});
-
-    // const doesProductExistBefore = await Product.exists({ _id: idToDelete });
-
-    // if (!doesProductExistBefore) return res.status(400).end();
-
-    // await Product.deleteOne({ _id: idToDelete });
-
-    // const doesProductExistAfter = await Product.exists({ _id: idToDelete });
-
-    // res.send(doesProductExistAfter);
+    Product.findById(productId, (err, product) => {
+      product.reviews.id(reviewIdToDelete).remove();
+      product.save();
+      res.end();
+    });
   });
 
 module.exports = router;

@@ -39,17 +39,6 @@ describe('Reviews', () => {
   });
 
   describe('POST /products/:productId/reviews', () => {
-    it('should return 400 if the review already exists', (done) => {
-      chai
-        .request(app)
-        .post(`/products/${productId}/reviews`)
-        .send({ testReview })
-        .end((error, response) => {
-          response.should.have.status(400);
-          done();
-        });
-    });
-
     it('should add a review to a product specified by productId', (done) => {
       chai
         .request(app)
@@ -67,14 +56,13 @@ describe('Reviews', () => {
 
   describe('DELETE /products/:productId/reviews', () => {
     it('should delete a review from the product doc by id', (done) => {
-      const reviewIdToDelete = '6238a2bc33feb489fa539d17'; // testReview._id;
+      const reviewIdToDelete = testReview._id;
       chai
         .request(app)
         .delete(`/products/${productId}/reviews`)
         .send({ reviewIdToDelete })
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.eql({});
           done();
         });
     });

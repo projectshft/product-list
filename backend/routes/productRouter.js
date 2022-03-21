@@ -22,10 +22,24 @@ router
   .get((req, res, next) => {
     const perPage = 9;
     const page = req.query.page || 1;
+    const { category, price } = req.query;
 
-    Product.find({})
+    const categoryQuery = category
+      ? { category: category.charAt(0).toUpperCase() + category.slice(1) }
+      : {};
+
+    let priceSort;
+    if (price === 'highest') {
+      priceSort = -1;
+    }
+    if (price === 'lowest') {
+      priceSort = 1;
+    }
+
+    Product.find(categoryQuery)
       .skip(perPage * page - perPage)
       .limit(perPage)
+      .sort({ price: priceSort || 1 })
       .exec((err, products) => {
         Product.count().exec((err, count) => {
           if (err) return next(err);

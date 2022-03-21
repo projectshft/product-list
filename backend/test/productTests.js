@@ -38,6 +38,7 @@ describe('Products', () => {
           done();
         });
     });
+
     // it('should return error if page is too high', (done) => {
     //   chai
     //     .request(app)
@@ -46,6 +47,43 @@ describe('Products', () => {
     //       response.should.have.status(404);
     //     });
     // });
+
+    it('should filter results by category if query sent', (done) => {
+      const testCategory = 'Clothing';
+      chai
+        .request(app)
+        .get(`/products?category=${testCategory}`)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('array');
+          response.body[0].category.should.eql(testCategory);
+          done();
+        });
+    });
+
+    it('should sort by price ascending by default', (done) => {
+      chai
+        .request(app)
+        .get(`/products`)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('array');
+          response.body[0].price.should.below(response.body[8].price);
+          done();
+        });
+    });
+
+    it('should sort by price descending if queried', (done) => {
+      chai
+        .request(app)
+        .get(`/products?price=highest`)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('array');
+          response.body[0].price.should.above(response.body[8].price);
+          done();
+        });
+    });
   });
 
   describe('GET products/:productId', () => {
@@ -115,6 +153,7 @@ describe('Products', () => {
           done();
         });
     });
+
     it('should return 400 if product does not exist', (done) => {
       const falseIdToTest = mongoose.Types.ObjectId('51bb793aca2ab77a3200000d');
       chai

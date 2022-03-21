@@ -90,6 +90,7 @@ describe('Products', () => {
           done();
         });
     });
+
     it('should return 400 if product already exists', (done) => {
       chai
         .request(app)

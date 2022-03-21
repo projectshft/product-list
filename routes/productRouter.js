@@ -1,6 +1,19 @@
 const router = require('express').Router();
-const Product = require('../models/product');
+const { Product } = require('../models/product');
 const reviewRouter = require('./reviewRouter');
+
+// was hoping to use this middleware, but couldn't figure it out
+
+// router.param('productId', (req, res, next, productId) => {
+//   Product.findById(productId, (err, product) => {
+//     if (err) {
+//       res.status(404).end();
+//     } else {
+//       req.product = product;
+//     }
+//   });
+//   next();
+// });
 
 router.use('/:productId/reviews', reviewRouter);
 
@@ -45,7 +58,8 @@ router
 
 router
   .route('/:productId')
-  .get((req, res, next) => {
+  .get((req, res) => {
+    // res.send(req.product);
     const { productId } = req.params;
 
     Product.findById(productId, (err, product) => {
@@ -56,7 +70,7 @@ router
       }
     });
   })
-  .delete(async (req, res, next) => {
+  .delete(async (req, res) => {
     const idToDelete = req.params.productId;
 
     const doesProductExistBefore = await Product.exists({ _id: idToDelete });

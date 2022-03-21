@@ -1,5 +1,6 @@
 import SearchBar from './search-bar';
 import ProductList from '../containers/product-list';
+import Paginate from './paginate';
 import Container from 'react-bootstrap/Container';
  
 const app = () => {
@@ -7,6 +8,7 @@ const app = () => {
     <Container>
       <SearchBar />
       <ProductList />
+      <Paginate />
     </Container>
   )
 };

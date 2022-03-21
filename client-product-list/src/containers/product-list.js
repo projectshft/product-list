@@ -2,27 +2,38 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 
-const productList = () => {
-  return (
-    <>
+import { useSelector } from "react-redux";
+
+
+
+const ProductList = () => {
+
+  const products = useSelector(state => state.products);
+
+  const renderProductList = () => {
+    return (
       <Row xs={1} md={3} className="g-4">
-        {Array.from({ length: 9 }).map((_, idx) => (
-          <Col>
-            <Card>
+        {products.map((p, idx) => (
+          <Col key={idx}>
+            <Card style={{ width: '18rem' }}>
               <Card.Header>
-                <Card.Text>Category: Toys</Card.Text>
+                <Card.Text>Category: {p.category}</Card.Text>
               </Card.Header>
-              <Card.Img variant="top" src="holder.js/100px160" />
+              <Card.Img variant="top" src={p.image} />
               <Card.Body>
-                <Card.Title>Product Name</Card.Title>
-                <Card.Title>$</Card.Title>
+                <Card.Title>{p.name}</Card.Title>
+                <Card.Title>{p.price}</Card.Title>
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
-    </>
+    )
+  }
+
+  return (
+    <div>{renderProductList()}</div>
   )
 };
 
-export default productList;
+export default ProductList;

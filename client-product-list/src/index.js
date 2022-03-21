@@ -8,12 +8,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './components/app'
 
+import reducers from './reducers';
+
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={createStoreWithMiddleware(reducers)}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
-

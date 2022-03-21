@@ -2,6 +2,7 @@ const router = require("express").Router();
 const faker = require("faker");
 const Review  = require("../models/review");
 const Product = require("../models/product");
+const { count } = require("../models/review");
 
 const PRODUCTS_PER_PAGE = 9;
 const REVIEWS_PER_PAGE =4;
@@ -71,6 +72,7 @@ router.get("/products", (req, res, next) => {
 
   if (querySearch) {
     query = query.find({ name : new RegExp(querySearch, "i") })
+    
   }
 
   if (priceSort == "highest") {
@@ -79,13 +81,18 @@ router.get("/products", (req, res, next) => {
     query = query.sort({ "price": 1})
   }
 
+  let countQuery = query.clone();
+
   query.skip(PRODUCTS_PER_PAGE * (pageNum - 1))
   .limit(PRODUCTS_PER_PAGE)
   .exec((err, products) => {
-    Product.count().exec((err, count) => {
+    countQuery.count().exec((err, count) => {
       if (err) return next(err);
-      console.log(`COUNT = ${count}`);
-      res.send(products);
+      console.log(count)
+      res.send({
+        total: count,
+        products: products
+      });
     });
   });
    

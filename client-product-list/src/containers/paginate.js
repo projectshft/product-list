@@ -16,7 +16,6 @@ const Paginate = () => {
 
   const handleItemClick = (index) => {
     let page = index + 1;
-    // dispatch(setPageFilter(index + 1));
     dispatch(fetchProducts(query, category, price, page));
     setCurrPage(index + 1)
   }
@@ -30,7 +29,6 @@ const Paginate = () => {
     dispatch(fetchProducts(query, category, price, currPage + 1));
     setCurrPage(currPage + 1)
   }
-
 
   const renderPaginatedPages = () => {
     const numOfPages = Math.ceil(totalCount / 9);
@@ -46,7 +44,6 @@ const Paginate = () => {
           <Pagination.Next onClick={handleNextClick}/>
         </Pagination>
     )
-
   }
 
   return (

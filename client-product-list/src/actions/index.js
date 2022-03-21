@@ -14,19 +14,15 @@ export function fetchProducts(query, category, price, page) {
   if (query || category || price || page) {
     url += `?`
   }
-
   if (query) {
     url += `query=${query}&`;
   }
-
   if (category) {
     url += `category=${category}&`;
   }
-
   if (price) {
     url += `price=${price}&`;
   }
-
   if (page) {
     url += `page=${page}&`;
   }

@@ -4,8 +4,6 @@ import Card from 'react-bootstrap/Card'
 
 import { useSelector } from "react-redux";
 
-
-
 const ProductList = () => {
 
   const products = useSelector(state => state.products);
@@ -30,7 +28,6 @@ const ProductList = () => {
       </Row>
     )
   }
-
   return (
     <div>{renderProductList()}</div>
   )

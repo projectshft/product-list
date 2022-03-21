@@ -5,9 +5,8 @@ import Form  from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, setCategoryFilter, setPriceFilter, setQueryFilter } from "../actions/index";
-import { useSelector } from 'react-redux';
 
 const SearchBar = () => {
 

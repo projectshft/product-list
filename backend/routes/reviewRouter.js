@@ -24,7 +24,12 @@ router
       const reviewToAdd = new Review();
       reviewToAdd.username = username;
       reviewToAdd.text = text;
-
+      const duplicate = product.reviews.filter(
+        (review) => review.text === reviewToAdd.text
+      );
+      if (duplicate.length) {
+        // don't add the thing
+      }
       product.reviews.push(reviewToAdd);
       product.save((err) => {
         if (!err) {

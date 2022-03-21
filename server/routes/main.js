@@ -2,7 +2,6 @@ const router = require("express").Router();
 const faker = require("faker");
 const Review  = require("../models/review");
 const Product = require("../models/product");
-const { count } = require("../models/review");
 
 const PRODUCTS_PER_PAGE = 9;
 const REVIEWS_PER_PAGE =4;
@@ -72,7 +71,6 @@ router.get("/products", (req, res, next) => {
 
   if (querySearch) {
     query = query.find({ name : new RegExp(querySearch, "i") })
-    
   }
 
   if (priceSort == "highest") {
@@ -88,14 +86,12 @@ router.get("/products", (req, res, next) => {
   .exec((err, products) => {
     countQuery.count().exec((err, count) => {
       if (err) return next(err);
-      console.log(count)
       res.send({
         total: count,
         products: products
       });
     });
-  });
-   
+  }); 
 });
 
 // GET PRODUCT
@@ -106,7 +102,6 @@ router.get("/products/:product", (req, res, next) => {
   } else {
     res.send(req.product);
   }
-  
 })
 
 // GET REVIEWS 
@@ -116,7 +111,6 @@ router.get("/products/:product/reviews", (req, res, next) => {
     res.writeHead(404, "Product does not exist")
     res.end();
   } else {
-
     const id = req.params.product
     const page = req.query.page || 1;
 
@@ -144,22 +138,17 @@ router.post("/products", (req, res, next) => {
     reviews: []
   });
   
- 
-  // is this the best place to handle this?
   if (newProduct.name == null) {
     res.writeHead(400, "Need at least name");
     res.send();
   } else {
     newProduct.save((err) => {
-    if (err) throw err;
-    else {
-      res.send(newProduct);
+      if (err) throw err;
+      else {
+        res.send(newProduct);
       }
     });
   }
-  
-
-  
 })
 
 // POST REVIEW

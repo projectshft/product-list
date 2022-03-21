@@ -9,16 +9,10 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-// TODO :// actually query db and use real data to test?? 
 
 describe("Product-List", () => {
 
-  beforeEach(() => {
-
-  });
-
   afterEach(() => {
-    // delete product
     Product.deleteOne( { name: "test name" }, function (err, product) {
       if (err) throw err;
     })
@@ -27,10 +21,6 @@ describe("Product-List", () => {
       if (err) throw err;
       console.log(product);
     })
-
-    // Product.deleteOne( { name: null }, function (err, product) {
-    //   if (err) throw err;
-    // })
   });
 
   describe("/GET/products", () => {

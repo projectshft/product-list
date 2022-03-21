@@ -11,7 +11,8 @@ const reviewSchema = new Schema({
   product: { type: Schema.Types.ObjectId, ref: "Product"},
 });
 
-const Review = mongoose.model("review", reviewSchema);
+const Review = mongoose.model("review", reviewSchema); 
+
 
 // create a Product Schema
 const ProductSchema = new Schema({
@@ -27,4 +28,5 @@ const ProductSchema = new Schema({
 });
 
 // export Product model using ProductSchema
-module.exports = mongoose.model("Product", ProductSchema);
+module.exports = {
+  Product: mongoose.model('Product', ProductSchema), Review: mongoose.model('Review', reviewSchema)} 

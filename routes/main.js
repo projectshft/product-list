@@ -3,6 +3,18 @@ const faker = require("faker");
 const Product = require("../models/product.js");
 const Review = require("../models/review.js");
 
+const buildFilterObject = (categoryString, searchString) => {
+  if (categoryString && searchString) {
+    return {category: categoryString.slice(0, 1).toUpperCase() + categoryString.slice(1).toLowerCase(), $text: {$search: searchString.slice(0, 1).toUpperCase() + searchString.slice(1).toLowerCase()}};
+  } else if (categoryString) {
+    return {category: categoryString.slice(0, 1).toUpperCase() + categoryString.slice(1).toLowerCase()};
+  } else if (searchString) {
+    return {$text: {$search: searchString.slice(0, 1).toUpperCase() + searchString.slice(1).toLowerCase()}};
+  } else {
+    return {};
+  }
+}
+
 router.param('product', (req, res, next, id) => {
   let retrievedProduct;
 
@@ -62,15 +74,24 @@ router.get("/generate-fake-data", (req, res, next) => {
 });
 
 router.get("/products", (req, res, next) => {
-  const pageNumber = req.query['page'] || '1';
+  const pageNumber = req.query.page || '1';
+  const filter = buildFilterObject(req.query.category, req.query.search);
+  let sortOrder;
+  if (['lowest', 'Lowest'].includes(req.query.price)) {
+    sortOrder = 'asc';
+  } else if (['highest', 'Highest'].includes(req.query.price)) {
+    sortOrder = 'desc';
+  } else {
+    sortOrder = undefined;
+  }
 
   const numToSkip = (parseInt(pageNumber) - 1) * 9;
 
-  Product.find((error, products) => {
-    Product.count((err, count) => {
-      res.send(products);
+  Product.find(filter, (error, products) => {
+    Product.count(filter, (err, count) => {
+      res.send({products, page: pageNumber, numOnPage: products.length, count: count});
     });
-  }).skip(numToSkip).limit(9);
+  }).sort({price: sortOrder}).skip(numToSkip).limit(9);
 });
 
 router.get("/products/:product", (req, res) => {

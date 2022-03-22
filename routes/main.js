@@ -24,7 +24,35 @@ router.get("/products", (req, res, next) => {
 
   const page = req.query.page || 1;
 
-  Product.find({})
+  const category = req.query.category || null;
+
+  const price = req.query.price || null;
+
+  const checkCategoryQuery = function() {
+    if (category) {
+      let parsedCategory = req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1);
+      return {category: parsedCategory};
+    } else {
+      return {};
+    }
+  }
+
+  const checkSortQuery = function() {
+    switch(price) {
+      case 'highest':
+        return {price: 1};
+      case 'lowest':
+        return {price: -1};
+      default:
+        return {};
+    }
+  }
+
+
+  let parsedCategory = req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1);
+
+  Product.find(checkCategoryQuery())
+    .sort(checkSortQuery())
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
@@ -35,6 +63,7 @@ router.get("/products", (req, res, next) => {
         
       });
     });
+  
 });
 
 router.get("/products/:product", (req, res, next) => {
@@ -53,46 +82,72 @@ router.get("/products/:product/reviews", (req, res, next) => {
 
   const productId = req.params.product;
 
-  Product.findOne({_id: productId}, 'reviews')
-    .limit(4)
-    .exec((err, product) => {
+  const perPage = 4;
+
+  const page = req.query.page || 1;
+
+  Review.find({product: productId})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, review) => {
       if (err) return next(err);
 
-      res.send(product);
+      res.send(review);
     });
 });
 
 router.post("/products", (req, res, next) => {
-  let product = new Product();
-
-  product.category = faker.commerce.department();
-  product.name = faker.commerce.productName();
-  product.price = faker.commerce.price();
-  product.image = "https://via.placeholder.com/250?text=Product+Image";
+  let product = new Product({
+    category: faker.commerce.department(),
+    name: faker.commerce.productName(),
+    price: faker.commerce.price(),
+    image: "https://via.placeholder.com/250?text=Product+Image"
+  });
 
   product.save((err) => {
     if (err) throw err;
   });
+
+  res.end()
 
 })
 
 router.post("/products/:product/reviews", (req, res, next) => {
   const productId = req.params.product;
 
-  let review = new Review();
-  review.userName = faker.internet.userName();
-  review.text = faker.string();
+  Product.findOne({_id: productId})
+    .exec((err, product) => {
+      if (err) return next(err);
 
-  review.save((err) => {
-    if (err) throw err;
-  });
+      let review = new Review({
+        userName: faker.internet.userName(),
+        text: 'Great product!',
+        product: product._id
+      });
 
-  const product = Product.findOne({_id: productId});
-
-  product.reviews.push(review);
-
-  product.save();
+      review.save((err) => {
+        if (err) throw err;
+      });
+      
+      if(product.reviews) {
+        product.reviews.push(review);
+        res.send(product)
+      } else{
+        res.send('hmmm')
+      }
+      product.save()
+    });
 })
 
+router.delete("/products/:product", (req, res, next) => {
+  const productId = req.params.product;
+
+  Product.remove({_id: productId})
+    .exec((err, product) => {
+      if (err) return next(err);
+
+      res.end()
+    });
+})
 
 module.exports = router;

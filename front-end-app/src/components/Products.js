@@ -19,7 +19,7 @@ const Product = ({data}) => {
 
 const Products = () => {
   const products = useSelector((state) => state.main.products || []);
-
+  const pageNum = useSelector(state => state.main.page);
   const searchSettings = useSelector((state) => state.searchSettings);
 
   const dispatch = useDispatch();
@@ -32,7 +32,12 @@ const Products = () => {
   return (
     <Container>
       <Row>
-        <Col md={4}>
+        <Col className="page-header">
+          <h5>Page {pageNum}</h5>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="test" md={4}>
           <Product data={products[0]}/>
         </Col>
         <Col md={4}>

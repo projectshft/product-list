@@ -11,3 +11,30 @@ body {
 .filter-bar {
   margin-top: 50px;
 }
+
+.page-header {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.product-container {
+  margin: 15px 5px;
+  padding: 10px;
+  background-color: rgb(209, 219, 199);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.product-image {
+  width: 100%;
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-price {
+  font-size: large;
+  font-weight: bold;
+}

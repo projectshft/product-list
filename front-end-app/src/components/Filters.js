@@ -15,15 +15,11 @@ const Filters = () => {
   }
 
   const handleCategoryChange = (e) => {
-    if (e.target.value) {
-      dispatch(setSearchSetting(CATEGORY_SET, e.target.value));
-    }
+    dispatch(setSearchSetting(CATEGORY_SET, e.target.value));
   }
 
   const handlePriceSortChange = (e) => {
-    if (e.target.value) {
-      dispatch(setSearchSetting(PRICE_SORT_SET, e.target.value));
-    }
+    dispatch(setSearchSetting(PRICE_SORT_SET, e.target.value));
   }
 
   return (

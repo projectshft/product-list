@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { Product } = require('./models/product');
 
 const productRouter = require('./routes/productRouter');
 
@@ -19,6 +20,7 @@ mongoose.connect(
 const app = express();
 const port = 8000;
 
+// middleware
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -36,11 +38,24 @@ app.use((req, res, next) => {
 });
 
 // next two lines enable the faker route to populate the db, only needed to be done once
+
 // const fakerMaker = require('./routes/main');
 // app.use(fakerMaker);
 
+// routes
+app.get('/categories', (req, res) => {
+  Product.find({}, 'category', (err, categories) => {
+    if (err) {
+      res.status(404).end();
+    } else {
+      const catArr = categories.map((cat) => cat.category);
+      const uniqueCategories = [...new Set(catArr)];
+      res.send(uniqueCategories);
+    }
+  });
+});
 app.use('/products', productRouter);
-app.get('/', (req, res, next) => res.send('Server is running.'));
+app.get('/', (req, res) => res.send('Server is running.'));
 
 app.listen(port, () => {
   console.log(`Node.js listening on port ${port}`);

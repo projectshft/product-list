@@ -22,18 +22,16 @@ router
   .get((req, res, next) => {
     const perPage = 9;
     const page = req.query.page || 1;
-    const { category, price } = req.query;
+    const { category, price, query } = req.query;
 
-    const categoryQuery = category
-      ? { category: category.charAt(0).toUpperCase() + category.slice(1) }
-      : {};
+    const categoryQuery =
+      category !== 'null'
+        ? { category: category.charAt(0).toUpperCase() + category.slice(1) }
+        : {};
 
     let priceSort;
-    if (price === 'highest') {
+    if (price === 'desc') {
       priceSort = -1;
-    }
-    if (price === 'lowest') {
-      priceSort = 1;
     }
 
     Product.find(categoryQuery)
@@ -47,7 +45,7 @@ router
         });
       });
   })
-  .post(async (req, res, next) => {
+  .post(async (req, res) => {
     const { testProduct } = req.body;
     const { category, name, price, image } = testProduct;
 

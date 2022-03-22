@@ -29,6 +29,7 @@ describe('Products', () => {
           done();
         });
     });
+
     it('should get 1 page of 9 products', (done) => {
       chai
         .request(app)
@@ -78,7 +79,7 @@ describe('Products', () => {
     it('should sort by price descending if queried', (done) => {
       chai
         .request(app)
-        .get(`/products?price=highest`)
+        .get(`/products?price=desc`)
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('array');
@@ -163,6 +164,20 @@ describe('Products', () => {
         .delete(`/products/${falseIdToTest}`)
         .end((error, response) => {
           response.should.have.status(400);
+          done();
+        });
+    });
+  });
+
+  describe('GET /products/categories', () => {
+    it('should return a list of all product categories in the database', (done) => {
+      chai
+        .request(app)
+        .get('/products/categories')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.an('array');
+          response.body.length.should.be.above(0);
           done();
         });
     });

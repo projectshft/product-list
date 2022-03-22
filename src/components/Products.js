@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Table } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
-// import ProductCard from './ProductCard';
+import ProductCard from './ProductCard';
 import { fetchProducts } from '../actions';
 
 const Products = () => {
@@ -18,16 +18,21 @@ const Products = () => {
   }, [fetchProducts]);
 
   const renderProducts = () => {
+    // while promise is pending
     if (loading) {
-      return <h1>Loading...</h1>;
+      return <h1 className="text-center">Loading...</h1>;
     }
+    // once products return
     if (products.length) {
-      return <div>{products[0].name}</div>;
+      return products.map((product) => (
+        <ProductCard key={product._id} product={product} />
+      ));
     }
+    // if products is empty
     return <h1>No products</h1>;
   };
 
-  return <div>{renderProducts()}</div>;
+  return <Row className="g-5">{renderProducts()}</Row>;
 };
 
 export default Products;

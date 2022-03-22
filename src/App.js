@@ -1,4 +1,5 @@
 import { Container, Row, Col } from 'react-bootstrap';
+import { Routes, Route } from 'react-router-dom';
 
 import SearchBar from './components/SearchBar';
 import Products from './components/Products';
@@ -10,7 +11,9 @@ const App = () => (
         <h1 className="display-3 text-center m-4">Express Products</h1>
         <hr />
         <SearchBar />
-        <Products />
+        <Routes>
+          <Route path="/" element={<Products />} />
+        </Routes>
       </Col>
     </Row>
   </Container>

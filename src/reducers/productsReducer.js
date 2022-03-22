@@ -1,6 +1,6 @@
 import { FETCH_PRODUCTS } from '../actions';
 
-const ReducerMain = (state = [], { type, payload } = {}) => {
+const productsReducer = (state = [], { type, payload } = {}) => {
   switch (type) {
     case FETCH_PRODUCTS:
       return payload.data;
@@ -9,4 +9,4 @@ const ReducerMain = (state = [], { type, payload } = {}) => {
   }
 };
 
-export default ReducerMain;
+export default productsReducer;

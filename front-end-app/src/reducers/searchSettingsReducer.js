@@ -15,11 +15,11 @@ const searchSettingsReducer = (state = defaultState, action) => {
     case QUERY_SET:
       return {...state, query: action.payload}
     case CATEGORY_SET:
-      return {...state, query: action.payload}
+      return {...state, category: action.payload}
     case PRICE_SORT_SET:
-      return {...state, query: action.payload}
+      return {...state, priceSort: action.payload}
     default:
-      return defaultState;
+      return state;
   }
 }
 

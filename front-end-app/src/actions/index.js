@@ -20,7 +20,7 @@ export const getProducts = (settings) => {
   const productsData = axios
     .get(`${rootUrl}/products?page=${settings.page}&category=${settings.category}&price=${settings.priceSort}&query=${settings.query}`)
     .then((response) => {
-      return response.body;
+      return response.data;
     })
     .catch((err) => {
       throw err;

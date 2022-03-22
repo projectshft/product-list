@@ -3,7 +3,7 @@ import searchSettingsReducer from './searchSettingsReducer';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
-  products: productReducer,
+  main: productReducer,
   searchSettings: searchSettingsReducer
 });
 

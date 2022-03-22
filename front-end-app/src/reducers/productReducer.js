@@ -12,10 +12,10 @@ const productReducer = (state = defaultState, action) => {
       return {
         products: action.payload.products,
         page: action.payload.page,
-        totalPages: Math.floor(action.payload.totalFound / 9) + 1
+        totalPages: Math.ceil(action.payload.totalFound / 9)
       };
     default:
-      return defaultState;
+      return state;
   }
 };
 

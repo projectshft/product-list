@@ -2,7 +2,7 @@ import {Container, Row, Col, Form} from 'react-bootstrap';
 
 const Filters = () => {
   return (
-    <Container className="filter-bar">
+    <div className="filter-bar">
       <Row>
         <Col md={6}>
           <Form.Group className="mb-3">
@@ -29,7 +29,7 @@ const Filters = () => {
           </Form.Group>
         </Col>
       </Row>
-    </Container>
+    </div>
   )
 };
 

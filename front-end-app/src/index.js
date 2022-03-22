@@ -1,12 +1,22 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { applyMiddleware, createStore } from 'redux';
+import { Provider } from 'react-redux';
+import rootReducer from './reducers';
+import promise from 'redux-promise';
+
+
+const storeWithPromiseMiddleware = applyMiddleware(promise)(createStore)(rootReducer);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={storeWithPromiseMiddleware}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );

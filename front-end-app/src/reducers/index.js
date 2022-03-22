@@ -1,5 +1,5 @@
-import productReducer from 'productReducer.js';
-import searchSettingsReducer from 'searchSettingsReducer.js';
+import productReducer from './productReducer';
+import searchSettingsReducer from './searchSettingsReducer';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({

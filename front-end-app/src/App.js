@@ -1,11 +1,15 @@
-import logo from './logo.svg';
 import Filters from './components/Filters.js';
 import Products from './components/Products.js';
-import Pages from './components/Pages.js';
+import PageLinks from './components/PageLinks.js';
+import { Container } from 'react-bootstrap';
 
 function App() {
   return (
-    <Filters />
+    <Container>
+      <Filters />
+      <Products />
+      <PageLinks />
+    </Container>
   );
 }
 

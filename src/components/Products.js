@@ -7,7 +7,7 @@ import ProductCard from './ProductCard';
 import { fetchProducts } from '../actions';
 
 const Products = () => {
-  const products = useSelector((state) => state.products);
+  const products = useSelector((state) => state.products.products);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 

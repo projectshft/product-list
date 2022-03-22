@@ -16,13 +16,14 @@ import { fetchProducts, fetchCategories } from '../actions';
 
 const SearchBar = () => {
   const categories = useSelector((state) => state.categories);
+  const pageCount = useSelector((state) => state.products.pageCount);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState('asc');
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState('null');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('null');
 
   // fetches list categories for dropdown
   useEffect(() => {
@@ -60,7 +61,7 @@ const SearchBar = () => {
     if (categories.length) {
       return categories.map((cat, i) => (
         <Dropdown.Item
-          key={i}
+          key={i + 1}
           href="#"
           onClick={(e) => {
             handleReOrg(sort, page, e.target.innerHTML);
@@ -75,7 +76,8 @@ const SearchBar = () => {
   };
 
   const renderPageNums = () => {
-    const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const pages = [];
+    for (let i = 1; i <= pageCount; i += 1) pages.push(i);
     return pages.map((pageNum) => (
       <span key={pageNum}>
         <Button
@@ -111,10 +113,19 @@ const SearchBar = () => {
                 </Dropdown.Item>
               </DropdownButton>
               <DropdownButton variant="outline-secondary" title="Category">
+                <Dropdown.Item
+                  key={0}
+                  href="#"
+                  onClick={() => {
+                    handleReOrg(sort, page, 'null');
+                  }}
+                >
+                  All
+                </Dropdown.Item>
                 {renderCategories()}
               </DropdownButton>
               <FormControl
-                placeholder="Search Products"
+                placeholder="This does nothing"
                 value={searchQuery}
                 aria-label="Product Search"
                 aria-describedby="products-search"

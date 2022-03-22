@@ -24,8 +24,8 @@ describe('Products', () => {
         .get('/products')
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.an('array');
-          response.body.length.should.be.above(0);
+          response.body.products.should.be.an('array');
+          response.body.products.length.should.be.above(0);
           done();
         });
     });
@@ -36,8 +36,8 @@ describe('Products', () => {
         .get('/products?page=3')
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.an('array');
-          response.body.length.should.be.eql(9);
+          response.body.products.should.be.an('array');
+          response.body.products.length.should.be.eql(9);
           done();
         });
     });
@@ -58,8 +58,8 @@ describe('Products', () => {
         .get(`/products?category=${testCategory}`)
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.an('array');
-          response.body[0].category.should.eql(testCategory);
+          response.body.products.should.be.an('array');
+          response.body.products[0].category.should.eql(testCategory);
           done();
         });
     });
@@ -70,8 +70,10 @@ describe('Products', () => {
         .get(`/products`)
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.an('array');
-          response.body[0].price.should.below(response.body[8].price);
+          response.body.products.should.be.an('array');
+          response.body.products[0].price.should.below(
+            response.body.products[8].price
+          );
           done();
         });
     });
@@ -82,8 +84,10 @@ describe('Products', () => {
         .get(`/products?price=desc`)
         .end((error, response) => {
           response.should.have.status(200);
-          response.body.should.be.an('array');
-          response.body[0].price.should.above(response.body[8].price);
+          response.body.products.should.be.an('array');
+          response.body.products[0].price.should.above(
+            response.body.products[8].price
+          );
           done();
         });
     });
@@ -169,11 +173,11 @@ describe('Products', () => {
     });
   });
 
-  describe('GET /products/categories', () => {
+  describe('GET /categories', () => {
     it('should return a list of all product categories in the database', (done) => {
       chai
         .request(app)
-        .get('/products/categories')
+        .get('/categories')
         .end((error, response) => {
           response.should.have.status(200);
           response.body.should.be.an('array');

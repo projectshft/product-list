@@ -24,10 +24,12 @@ router
     const page = req.query.page || 1;
     const { category, price, query } = req.query;
 
-    const categoryQuery =
-      category !== 'null'
-        ? { category: category.charAt(0).toUpperCase() + category.slice(1) }
-        : {};
+    let categoryQuery = {};
+    if (category && category !== 'null') {
+      categoryQuery = {
+        category: category.charAt(0).toUpperCase() + category.slice(1),
+      };
+    }
 
     let priceSort;
     if (price === 'desc') {
@@ -39,9 +41,10 @@ router
       .limit(perPage)
       .sort({ price: priceSort || 1 })
       .exec((err, products) => {
-        Product.count().exec((err, count) => {
+        Product.count(categoryQuery).exec((err, count) => {
+          const pageCount = Math.ceil(count / 9);
           if (err) return next(err);
-          res.send(products);
+          res.send({ productCount: count, pageCount, products });
         });
       });
   })

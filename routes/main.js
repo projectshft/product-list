@@ -28,30 +28,52 @@ router.get("/products", (req, res, next) => {
 
   const price = req.query.price || null;
 
+  const search = req.query.query || null;
+
+  const checkSearchQuery = () => {
+    if (search) {
+      let parsedSearch = search.charAt(0).toUpperCase() + search.slice(1);
+      return {name: {$regex: parsedSearch, $options: "i"}};
+    } else {
+      return {};
+    }
+  }
+
   const checkCategoryQuery = function() {
     if (category) {
-      let parsedCategory = req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1);
+      let parsedCategory = category.charAt(0).toUpperCase() + category.slice(1);
       return {category: parsedCategory};
     } else {
       return {};
     }
   }
 
+  const checkFindQueries = () => {
+    let categoryQuery = checkCategoryQuery();
+
+    let searchQuery = checkSearchQuery();
+
+    let queryObject = {
+      ...categoryQuery,
+      ...searchQuery
+    }
+
+    return queryObject;
+
+  }
+
   const checkSortQuery = function() {
     switch(price) {
       case 'highest':
-        return {price: 1};
-      case 'lowest':
         return {price: -1};
+      case 'lowest':
+        return {price: 1};
       default:
         return {};
     }
   }
 
-
-  let parsedCategory = req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1);
-
-  Product.find(checkCategoryQuery())
+  Product.find(checkFindQueries())
     .sort(checkSortQuery())
     .skip(perPage * page - perPage)
     .limit(perPage)

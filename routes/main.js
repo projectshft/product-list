@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const { exec } = require("child_process");
 const faker = require("faker");
+const { Module } = require("module");
 const { Product, Review } = require("../models/product");
 
-router.get("/products", (req, res, next) => {
+router.get("/products/", (req, res, next) => {
+
   const productsPerPage = 9;
 
   const defaultPage = req.query.page || 1;
@@ -16,9 +18,6 @@ router.get("/products", (req, res, next) => {
   if(req.query.category) {
     filters.category = req.query.category;
   } 
-  if(req.query.query) {
-    filters.query = req.query.query;
-  }
 
   const sort = {};
 
@@ -37,6 +36,18 @@ router.get("/products", (req, res, next) => {
         res.send(products);
       });
     });
+}); 
+
+router.get("/products/:query", (req, res) => {
+  let query = req.params.query;
+  
+  Product.find({$text: {$search: query}}, (err, result) => {
+    if (err) {
+      res.status(404).end();
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 router

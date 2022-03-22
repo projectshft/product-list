@@ -13,7 +13,7 @@ const PageLinks = () => {
   }
 
   return (
-    <Container>
+    <Container className="page-links">
       <Row>
         <Col />      
           {[...Array(pages).keys()].map((num) => <Col md={1} key={num}><Button variant='link' value={num + 1} onClick={(e) => {handleButtonClick(e.target.value)}}>Pg {num + 1}</Button></Col>)}

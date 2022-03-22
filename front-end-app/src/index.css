@@ -38,3 +38,7 @@ body {
   font-size: large;
   font-weight: bold;
 }
+
+.page-links {
+  margin: 20px 0;
+}

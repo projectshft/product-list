@@ -78,10 +78,13 @@ router.get("/products", (req, res, next) => {
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      Product.count().exec((err, count) => {
+      Product.count(checkFindQueries()).exec((err, count) => {
         if (err) return next(err);
-
-        res.send(products);
+        const response = {
+          products: products,
+          productCount: JSON.stringify(count)
+        }
+        res.send(response);
         
       });
     });

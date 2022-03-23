@@ -1,70 +1,28 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Image, Button} from "react-bootstrap";
-import { getProducts } from "../actions";
+import { getProducts, setCurrentPage } from "../actions";
 import { useEffect, useState } from "react";
 
 const Products = () => {
 
   
 
-  const productObj = useSelector((state) => state.products);
+  const productResponse = useSelector((state) => state.products);
+  const currentPage = useSelector((state) => state.pages.currentPage);
 
-  let example = [
-    {
-      price: 472,
-      name: "Sleek Fresh Soap",
-      category: "Tools"
-    },
-    {
-      price: 4452,
-      name: "Sleek Fresh Soap",
-      category: "Tools"
-    },
-    {
-      price: 42,
-      name: "Sleek Fresh Soaghjghjhgjghjp",
-      category: "Tools"
-    },
-    {
-      price: 44452,
-      name: "Sleek Fresh Soap",
-      category: "Tools"
-    },
-    {
-      price: 452,
-      name: "Sleek sfds Soap",
-      category: "Tools"
-    },
-    {
-      price: 445,
-      name: "Ssdfs",
-      category: "Tools"
-    },
-    {
-      price: 472,
-      name: "Slsdfssh Soap",
-      category: "Tools"
-    },
-    {
-      price: 472,
-      name: "Sleek Fresh Soap",
-      category: "Tools"
-    }
-  ]
-  
-  const Product = () => {
+  const dispatch = useDispatch();
+
+  const ProductList = () => {
     const rows = [];
-    const products = productObj.products;
+    const productObj = productResponse.products;
 
-    if (!products.data) {
-      console.log('hi')
+    if (!productObj.data) {
       return null
     }
-    console.log('hello')
-    console.log(productObj)
-    const productData = products.data;
+    
+    const productData = productObj.data.products;
 
-    for (let i=0; i < products.data.length; i++) {
+    for (let i=0; i < productObj.data.products.length; i++) {
       rows.push(
         <Col className="mb-5" xs={4} key={i}>
             <Row>
@@ -97,18 +55,63 @@ const Products = () => {
     return rows;
   }
 
-  
+  const PageNumbers = () => {
+
+    const productObj = productResponse.products;
+
+    if (!productObj.data) {
+      return null
+    }
+
+    const count = productObj.data.productCount;
+    const pages = count / 9;
+
+    const pageNumbers = [];
+
+    const handlePageClick = (e) => {
+      const pageNumber = parseInt(e.target.innerHTML.replace(/\s/g, ''));
+      dispatch(setCurrentPage(pageNumber))
+      console.log(currentPage)  
+    }
+
+    for (let i=0; i < pages; i++) {
+      pageNumbers.push(
+        <span key={i} onClick={handlePageClick}> {i+1} </span>
+      )
+    }
+
+    
+    return (
+      <>
+      <Row>
+        <Col className="text-center" xs={{span: 8, offset: 2}}>
+          {pageNumbers}
+        </Col>
+      </Row>
+      <Row>
+        <Col className="text-center" xs={{span: 8, offset: 2}}>
+          Current Page: {currentPage}
+        </Col>
+      </Row>
+      </>
+    )
+
+  }
 
 
   return (
-    <Row className="mt-5">
+    <>
+    <Row className="my-5">
 
       <Col>
         <Row className="mb-5">
-          <Product />
+          <ProductList />
         </Row>
       </Col>
+      <PageNumbers />
     </Row>
+
+    </>
   )
 }
 

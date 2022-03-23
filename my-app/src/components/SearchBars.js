@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap";
-import { getProducts } from "../actions";
-import { useState } from "react";
+import { getProducts, setCurrentPage, setQueryData } from "../actions";
+import { useEffect, useState } from "react";
+
 
 const SearchBars = () => {
 
@@ -9,11 +10,18 @@ const SearchBars = () => {
   const [searchCategory, setSearchCategory] = useState('');
   const [searchSort, setSearchSort] = useState('');
 
+  const currentPage = useSelector((state) => state.pages.currentPage);
+
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getProducts(searchCategory,searchSort, searchQuery,currentPage))
+  }, [currentPage])
+
   const handleclick = () => {
-    console.log([searchCategory, searchQuery, searchSort])
-    dispatch(getProducts(searchCategory,searchSort, searchQuery))
+    dispatch(setCurrentPage(1))
+    dispatch(getProducts(searchCategory, searchSort, searchQuery, currentPage))
+    dispatch(setQueryData(searchCategory,searchSort, searchQuery))
   }
 
   const validateSearch = (e) => {
@@ -29,20 +37,26 @@ const SearchBars = () => {
   }
 
   return (
-    <Form>
+    <>
+    <Form className="form-inline">
       <Row className="mt-5 px-0">
-        <Col xs={8} className="px-1">
+        <Col xs={5} className="px-1">
           <FormControl value={searchQuery} placeholder="Search" className="pr-4" onChange={validateSearch}/>
         </Col>
-        <Col className="px-1">
+        <Col xs={3} className="px-1">
           <FormControl placeholder="Sort by Category" onChange={validateCategory}/>
         </Col>
-        <Col className="px-1">
+        <Col xs={3} className="px-1">
           <FormControl placeholder="Sort by Price" onChange={validateSort}/>
         </Col>
+        <Col className="px-1">
+          <Button className="d-flex" type="button" onClick={handleclick}>Search</Button>
+        </Col>
+        
       </Row>
-      <button type="button" onClick={handleclick}>click</button>
+      
     </Form>
+    </>
   )
 }
 

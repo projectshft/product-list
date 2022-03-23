@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import SearchBars from './components/SearchBars'

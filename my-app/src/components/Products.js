@@ -28,13 +28,13 @@ const Products = () => {
             <Row>
               <Col xs={{span: 8, offset: 2}} style={{backgroundColor: 'white'}}>
                 <Row>
-                  <Col className="mt-3" xs={8} style={{backgroundColor: '#7ECECB'}}>
+                  <Col className="mt-3" xs={8}>
                     <div>
                       <span>Category:</span>
                       <span className="fw-bold"> {productData[i].category}</span>
                     </div>
                   </Col>
-                  <Col xs={4} style={{backgroundColor: '#ECCE66'}}>
+                  <Col xs={4}>
                     <h2 className="text-end">{productData[i].price}</h2>
                   </Col>
                 </Row>

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, InputGroup, FormControl, Button, Dropdown } from "react-bootstrap";
 import { getProducts, setCurrentPage, setQueryData } from "../actions";
 import { useEffect, useState } from "react";
 
@@ -11,6 +11,9 @@ const SearchBars = () => {
   const [searchSort, setSearchSort] = useState('');
 
   const currentPage = useSelector((state) => state.pages.currentPage);
+  const state = useSelector((state) => state);
+  
+
 
   const dispatch = useDispatch();
 
@@ -22,6 +25,7 @@ const SearchBars = () => {
     dispatch(setCurrentPage(1))
     dispatch(getProducts(searchCategory, searchSort, searchQuery, currentPage))
     dispatch(setQueryData(searchCategory,searchSort, searchQuery))
+    console.log(state)
   }
 
   const validateSearch = (e) => {
@@ -44,10 +48,22 @@ const SearchBars = () => {
           <FormControl value={searchQuery} placeholder="Search" className="pr-4" onChange={validateSearch}/>
         </Col>
         <Col xs={3} className="px-1">
-          <FormControl placeholder="Sort by Category" onChange={validateCategory}/>
+          <Form.Select onChange={validateCategory} aria-label="Default select example">
+            <option value="">Sort by Category</option>
+            <option value="tools">Tools</option>
+            <option value="home">Home</option>
+            <option value="baby">Baby</option>
+            <option value="electronics">Electronics</option>
+            <option value="shoes">Shoes</option>
+            <option value="kids">Kids</option>
+          </Form.Select>
         </Col>
         <Col xs={3} className="px-1">
-          <FormControl placeholder="Sort by Price" onChange={validateSort}/>
+          <Form.Select onChange={validateSort} aria-label="Default select example">
+            <option value="">Sort by Price</option>
+            <option value="highest">Highest to Lowest</option>
+            <option value="lowest">Lowest to Highest</option>
+          </Form.Select>
         </Col>
         <Col className="px-1">
           <Button className="d-flex" type="button" onClick={handleclick}>Search</Button>

@@ -4,7 +4,7 @@ const faker = require("faker");
 const { Module } = require("module");
 const { Product, Review } = require("../models/product");
 
-router.get("/products/", (req, res, next) => {
+router.get("/products", (req, res, next) => {
 
   const productsPerPage = 9;
 
@@ -12,8 +12,8 @@ router.get("/products/", (req, res, next) => {
   
   const filters = {};
 
-  if(req.query.name) {
-    filters.name = req.query.name;
+  if(req.query.name && req.query.name !== '') {
+    filters.$text = {$search: req.query.name};
   } 
   if(req.query.category) {
     filters.category = req.query.category;

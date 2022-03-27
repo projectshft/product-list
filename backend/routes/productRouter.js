@@ -1,19 +1,18 @@
 const router = require('express').Router();
-const { Product } = require('../models/product');
 const reviewRouter = require('./reviewRouter');
+const { Product } = require('../models/product');
 
-// was hoping to use this middleware, but couldn't figure it out
-
-// router.param('productId', (req, res, next, productId) => {
-//   Product.findById(productId, (err, product) => {
-//     if (err) {
-//       res.status(404).end();
-//     } else {
-//       req.product = product;
-//     }
-//   });
-//   next();
-// });
+// finds a product by id on any route with the productId parameter
+router.param('productId', (req, res, next, productId) => {
+  Product.findById(productId, (err, product) => {
+    if (err) {
+      res.status(404).end();
+    } else {
+      req.product = product;
+      next();
+    }
+  });
+});
 
 router.use('/:productId/reviews', reviewRouter);
 
@@ -22,7 +21,7 @@ router
   .get((req, res, next) => {
     const perPage = 9;
     const page = req.query.page || 1;
-    const { category, price, query } = req.query;
+    const { category, sort, query } = req.query;
 
     let categoryQuery = {};
     if (category && category !== 'null') {
@@ -32,7 +31,7 @@ router
     }
 
     let priceSort;
-    if (price === 'desc') {
+    if (sort === 'desc') {
       priceSort = -1;
     }
 
@@ -74,16 +73,7 @@ router
 router
   .route('/:productId')
   .get((req, res) => {
-    // res.send(req.product);
-    const { productId } = req.params;
-
-    Product.findById(productId, (err, product) => {
-      if (err) {
-        res.status(404).end();
-      } else {
-        res.send(product);
-      }
-    });
+    res.send(req.product);
   })
   .delete(async (req, res) => {
     const idToDelete = req.params.productId;

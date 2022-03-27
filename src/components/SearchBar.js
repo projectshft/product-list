@@ -22,8 +22,8 @@ const SearchBar = () => {
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState('asc');
   const [page, setPage] = useState(1);
-  const [category, setCategory] = useState('null');
-  const [searchQuery, setSearchQuery] = useState('null');
+  const [category, setCategory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // fetches list categories for dropdown
   useEffect(() => {
@@ -32,25 +32,29 @@ const SearchBar = () => {
     });
   }, [fetchCategories]);
 
+  useEffect(() => {
+    dispatch(fetchProducts({ page, sort, category }));
+  }, [page, sort, category]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(fetchProducts());
     setSearchQuery('');
   };
 
-  const handleReOrg = (sortDir, pageNum, cat) => {
-    setSort(sortDir);
-    setPage(pageNum);
-    setCategory(cat);
+  // const handleReOrg = (sortDir, pageNum, cat) => {
+  //   setSort(sortDir);
+  //   setPage(pageNum);
+  //   setCategory(cat);
 
-    const fetchOptions = {
-      page: pageNum,
-      sort: sortDir,
-      category: cat,
-    };
+  //   const fetchOptions = {
+  //     page: pageNum,
+  //     sort: sortDir,
+  //     category: cat,
+  //   };
 
-    dispatch(fetchProducts(fetchOptions));
-  };
+  //   dispatch(fetchProducts(fetchOptions));
+  // };
 
   const renderCategories = () => {
     // while promise is pending
@@ -63,9 +67,7 @@ const SearchBar = () => {
         <Dropdown.Item
           key={i + 1}
           href="#"
-          onClick={(e) => {
-            handleReOrg(sort, page, e.target.innerHTML);
-          }}
+          onClick={(e) => setCategory(e.target.innerHTML)}
         >
           {cat}
         </Dropdown.Item>
@@ -83,9 +85,7 @@ const SearchBar = () => {
         <Button
           variant="outline-secondary"
           href="#"
-          onClick={(e) => {
-            handleReOrg(sort, e.target.innerHTML, category);
-          }}
+          onClick={(e) => setPage(e.target.innerHTML)}
         >
           {pageNum}
         </Button>{' '}
@@ -100,15 +100,11 @@ const SearchBar = () => {
           <Form onSubmit={handleSubmit}>
             <InputGroup className="pt-2 mb-3">
               <DropdownButton variant="outline-secondary" title="Sort">
-                <Dropdown.Item
-                  onClick={() => handleReOrg('asc', page, category)}
-                >
+                <Dropdown.Item onClick={() => setSort('asc')}>
                   Price $ to $$
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item
-                  onClick={() => handleReOrg('desc', page, category)}
-                >
+                <Dropdown.Item onClick={() => setSort('desc')}>
                   Price $$ to $
                 </Dropdown.Item>
               </DropdownButton>
@@ -116,9 +112,7 @@ const SearchBar = () => {
                 <Dropdown.Item
                   key={0}
                   href="#"
-                  onClick={() => {
-                    handleReOrg(sort, page, 'null');
-                  }}
+                  onClick={() => setCategory(null)}
                 >
                   All
                 </Dropdown.Item>

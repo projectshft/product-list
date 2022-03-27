@@ -21,26 +21,32 @@ router
   .get((req, res, next) => {
     const perPage = 9;
     const page = req.query.page || 1;
-    const { category, sort, query } = req.query;
+    const { category, sort, searchQuery } = req.query;
 
-    let categoryQuery = {};
-    if (category && category !== 'null') {
-      categoryQuery = {
-        category: category.charAt(0).toUpperCase() + category.slice(1),
-      };
-    }
+    const capWords = (str) => {
+      const strArr = str.split(' ');
+      const capArr = [];
+      strArr.forEach((word) =>
+        capArr.push(word.charAt(0).toUpperCase() + word.slice(1))
+      );
+      return capArr.join(' ');
+    };
+
+    const mongoQuery = {};
+    if (category) mongoQuery.category = capWords(category);
+    if (searchQuery) mongoQuery.name = new RegExp(capWords(searchQuery), 'i');
 
     let priceSort;
     if (sort === 'desc') {
       priceSort = -1;
     }
 
-    Product.find(categoryQuery)
+    Product.find(mongoQuery)
       .skip(perPage * page - perPage)
       .limit(perPage)
       .sort({ price: priceSort || 1 })
       .exec((err, products) => {
-        Product.count(categoryQuery).exec((err, count) => {
+        Product.count(mongoQuery).exec((err, count) => {
           const pageCount = Math.ceil(count / 9);
           if (err) return next(err);
           res.send({ productCount: count, pageCount, products });

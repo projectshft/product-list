@@ -10,11 +10,12 @@ export const fetchProducts = async (options = {}) => {
     page: options.page || 1,
     sort: options.sort || 'asc',
     category: options.category || null,
+    searchQuery: options.searchQuery || null,
   };
 
   const queries = [];
   Object.keys(queryParams).forEach((key) => {
-    if (key) queries.push(`${key}=${queryParams[key]}`);
+    if (queryParams[key]) queries.push(`${key}=${queryParams[key]}`);
   });
 
   const url = `${rootUrl}/products?${queries.join('&')}`;

@@ -36,23 +36,16 @@ const SearchBar = () => {
     dispatch(fetchProducts({ page, sort, category }));
   }, [page, sort, category]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(fetchProducts());
-    setSearchQuery('');
-  };
-
   const renderCategories = () => {
     // while promise is pending
     if (loading) {
-      return <Dropdown.Item href="#">Loading...</Dropdown.Item>;
+      return <Dropdown.Item>Loading...</Dropdown.Item>;
     }
     // once products return
     if (categories.length) {
       return categories.map((cat, i) => (
         <Dropdown.Item
           key={i + 1}
-          href="#"
           onClick={(e) => {
             setPage(1);
             setCategory(e.target.innerHTML);
@@ -73,7 +66,6 @@ const SearchBar = () => {
       <span key={pageNum}>
         <Button
           variant="outline-secondary"
-          href="#"
           onClick={(e) => setPage(e.target.innerHTML)}
         >
           {pageNum}
@@ -82,11 +74,23 @@ const SearchBar = () => {
     ));
   };
 
+  const handleSubmit = () => {
+    dispatch(fetchProducts({ page, sort, category, searchQuery }));
+    setSort('asc');
+    setPage(1);
+    setSearchQuery('');
+  };
+
   return (
-    <div>
+    <>
       <Row>
-        <Col md={{ span: 8, offset: 2 }} className="mb-2 mt-2">
-          <Form onSubmit={handleSubmit}>
+        <Col md={{ span: 10, offset: 1 }} className="mb-2 mt-2">
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
             <InputGroup className="pt-2 mb-3">
               <DropdownButton variant="outline-secondary" title="Sort">
                 <Dropdown.Item onClick={() => setSort('asc')}>
@@ -111,18 +115,27 @@ const SearchBar = () => {
                 {renderCategories()}
               </DropdownButton>
               <FormControl
-                placeholder="This does nothing"
+                placeholder="Search Products"
                 value={searchQuery}
                 aria-label="Product Search"
                 aria-describedby="products-search"
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
+              <Button variant="outline-secondary" type="submit">
+                Search
+              </Button>
               <Button
                 variant="outline-secondary"
-                type="submit"
-                id="button-addon2"
+                type="button"
+                onClick={() => {
+                  setSort('asc');
+                  setPage(1);
+                  setCategory(null);
+                  setSearchQuery('');
+                  dispatch(fetchProducts());
+                }}
               >
-                Search
+                Reset
               </Button>
             </InputGroup>
           </Form>
@@ -135,7 +148,7 @@ const SearchBar = () => {
           </h5>
         </Col>
       </Row>
-    </div>
+    </>
   );
 };
 

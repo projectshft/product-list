@@ -9,17 +9,18 @@ export const fetchProducts = async (options = {}) => {
   const queryParams = {
     page: options.page || 1,
     sort: options.sort || 'asc',
-    category: options.category || 'null',
+    category: options.category || null,
   };
-  const { page, sort, category } = queryParams;
-  const query = [];
+
+  const queries = [];
+  // eslint-disable-next-line no-restricted-syntax
   for (const property in queryParams) {
     if (queryParams[property]) {
-      query.push(`${property}=${queryParams[property]}`);
+      queries.push(`${property}=${queryParams[property]}`);
     }
   }
-  query.join('&');
-  const url = `${rootUrl}/products?page=${page}&price=${sort}&category=${category}`;
+
+  const url = `${rootUrl}/products?${queries.join('&')}`;
 
   const request = await axios.get(url).catch((error) => {
     if (error.response) {

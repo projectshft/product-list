@@ -21,7 +21,7 @@ router
   .get((req, res, next) => {
     const perPage = 9;
     const page = req.query.page || 1;
-    const { category, price, query } = req.query;
+    const { category, sort, query } = req.query;
 
     let categoryQuery = {};
     if (category && category !== 'null') {
@@ -31,7 +31,7 @@ router
     }
 
     let priceSort;
-    if (price === 'desc') {
+    if (sort === 'desc') {
       priceSort = -1;
     }
 

@@ -12,7 +12,13 @@ export const fetchProducts = async (options = {}) => {
     category: options.category || 'null',
   };
   const { page, sort, category } = queryParams;
-
+  const query = [];
+  for (const property in queryParams) {
+    if (queryParams[property]) {
+      query.push(`${property}=${queryParams[property]}`);
+    }
+  }
+  query.join('&');
   const url = `${rootUrl}/products?page=${page}&price=${sort}&category=${category}`;
 
   const request = await axios.get(url).catch((error) => {

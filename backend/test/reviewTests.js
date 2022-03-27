@@ -1,13 +1,12 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-// const mongoose = require('mongoose');
 
 const app = require('../server');
 
 chai.should();
 chai.use(chaiHttp);
 
-const productId = '62363fd4f3dcee005debc4cf';
+const productId = '62363fd4f3dcee005debc4d0';
 const badProductId = 'hebegebes';
 const testReview = {
   username: 'Dwigt',
@@ -49,6 +48,17 @@ describe('Reviews', () => {
           response.body.should.be.an('object');
           response.body.text.should.be.eql(testReview.text);
           testReview._id = response.body._id;
+          done();
+        });
+    });
+
+    it('should return a 400 if review already exists', (done) => {
+      chai
+        .request(app)
+        .post(`/products/${productId}/reviews`)
+        .send({ testReview })
+        .end((error, response) => {
+          response.should.have.status(400);
           done();
         });
     });

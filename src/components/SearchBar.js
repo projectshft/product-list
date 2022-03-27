@@ -23,7 +23,7 @@ const SearchBar = () => {
   const [sort, setSort] = useState('asc');
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState('null');
-  const [searchQuery, setSearchQuery] = useState('null');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // fetches list categories for dropdown
   useEffect(() => {
@@ -31,6 +31,10 @@ const SearchBar = () => {
       setLoading(false);
     });
   }, [fetchCategories]);
+
+  useEffect(() => {
+    dispatch(fetchProducts({ page, sort, category }));
+  }, [page, sort, category]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

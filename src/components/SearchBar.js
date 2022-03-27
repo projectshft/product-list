@@ -42,20 +42,6 @@ const SearchBar = () => {
     setSearchQuery('');
   };
 
-  // const handleReOrg = (sortDir, pageNum, cat) => {
-  //   setSort(sortDir);
-  //   setPage(pageNum);
-  //   setCategory(cat);
-
-  //   const fetchOptions = {
-  //     page: pageNum,
-  //     sort: sortDir,
-  //     category: cat,
-  //   };
-
-  //   dispatch(fetchProducts(fetchOptions));
-  // };
-
   const renderCategories = () => {
     // while promise is pending
     if (loading) {
@@ -67,7 +53,10 @@ const SearchBar = () => {
         <Dropdown.Item
           key={i + 1}
           href="#"
-          onClick={(e) => setCategory(e.target.innerHTML)}
+          onClick={(e) => {
+            setPage(1);
+            setCategory(e.target.innerHTML);
+          }}
         >
           {cat}
         </Dropdown.Item>
@@ -112,7 +101,10 @@ const SearchBar = () => {
                 <Dropdown.Item
                   key={0}
                   href="#"
-                  onClick={() => setCategory(null)}
+                  onClick={() => {
+                    setPage(1);
+                    setCategory(null);
+                  }}
                 >
                   All
                 </Dropdown.Item>

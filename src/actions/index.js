@@ -13,12 +13,9 @@ export const fetchProducts = async (options = {}) => {
   };
 
   const queries = [];
-  // eslint-disable-next-line no-restricted-syntax
-  for (const property in queryParams) {
-    if (queryParams[property]) {
-      queries.push(`${property}=${queryParams[property]}`);
-    }
-  }
+  Object.keys(queryParams).forEach((key) => {
+    if (key) queries.push(`${key}=${queryParams[key]}`);
+  });
 
   const url = `${rootUrl}/products?${queries.join('&')}`;
 

@@ -8,4 +8,19 @@ const ProductSchema = new Schema({
   image: String,
 });
 
-module.exports = mongoose.model("Product", ProductSchema);
+//Review schema
+//each review needs:
+  //userName
+  //text
+  //product (represented by id)
+
+const reviewSchema = new Schema({
+  userName: String,
+  text: String,
+  product: [ProductSchema]
+});
+
+const Review = mongoose.model("Review", reviewSchema);
+const Product = mongoose.model("Product", ProductSchema);
+
+module.exports = {Review, Product};

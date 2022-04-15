@@ -6,18 +6,13 @@ const ProductSchema = new Schema({
   name: String,
   price: Number,
   image: String,
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review"}]
 });
-
-//Review schema
-//each review needs:
-  //userName
-  //text
-  //product (represented by id)
 
 const reviewSchema = new Schema({
   userName: String,
   text: String,
-  product: [ProductSchema]
+  product: { type: Schema.Types.ObjectId, ref: "Product" }
 });
 
 const Review = mongoose.model("Review", reviewSchema);

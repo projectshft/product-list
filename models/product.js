@@ -20,4 +20,8 @@ const ReviewSchema = new Schema({
 
 // module.exports = {Review, Product};
 
-module.exports =  mongoose.model("Product", ProductSchema);
+module.exports = {
+  Product: mongoose.model("Product", ProductSchema),
+  Review: mongoose.model("Review", ReviewSchema)
+} 
+

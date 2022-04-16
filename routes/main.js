@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const faker = require("faker");
+const product = require("../models/product");
 const Product = require("../models/product");
 const Review = require("../models/product")
 
@@ -47,6 +48,11 @@ router.get("/products/:product", (req, res) => {
 
 // GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
 
-router.get("/products/:product")
+router.get("/products/:product/reviews", (req, res) => {
+  Product.findById(req.params.product, (err, product) => {
+    if (err) throw err;
+    res.send(product.reviews)
+  })
+})
 
 module.exports = router;

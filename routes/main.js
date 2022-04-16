@@ -38,4 +38,8 @@ router.get("/products", (req, res, next) => {
     });
 });
 
+router.get("/products/:product", (req, res) => {
+  res.send(`hello ${req.params.product}`);
+})
+
 module.exports = router;

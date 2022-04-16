@@ -50,7 +50,8 @@ router.get("/products/:product/reviews", (req, res) => {
   Product.findById(req.params.product, (err, product) => {
     if (err) throw err;
     res.send(product.reviews)
-  })
+      
+  }).limit(4)
 })
 
 module.exports = router;

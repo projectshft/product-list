@@ -47,11 +47,26 @@ router.get("/products/:product", (req, res) => {
 // GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
 
 router.get("/products/:product/reviews", (req, res) => {
+  const perPage = 9;
+
+  const page = req.query.page || 1;
+
+
   Product.findById(req.params.product, (err, product) => {
     if (err) throw err;
     res.send(product.reviews)
       
-  }).limit(4)
+  })
+    .skip(perPage * page - perPage)
+    .limit(4)
+    .exec((err, products) => {
+      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+      Product.count().exec((err, count) => {
+        if (err) return next(err);
+
+        res.send(products);
+      });
+    });
 })
 
 module.exports = router;

@@ -38,8 +38,11 @@ router.get("/products", (req, res, next) => {
     });
 });
 
-router.get("/products/:product", (req, res) => {
-  res.send(`hello ${req.params.product}`);
+router.get("/products/:id", (req, res) => {
+  Product.findById(req.params.id, (err, product) => {
+    if (err) throw err;
+    res.send(product);
+  })
 })
 
 module.exports = router;

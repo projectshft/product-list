@@ -18,13 +18,13 @@ const {Product, Review} = require("../models/product");
 //   res.end();
 // });
 
-router.get("/products", (req, res, next) => {
+router.get("/products", async (req, res, next) => {
   const perPage = 9;
 
   // return the first page by default
   const page = req.query.page || 1;
 
-  Product.find({})
+  await Product.find({})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
@@ -37,8 +37,8 @@ router.get("/products", (req, res, next) => {
     });
 });
 
-router.get("/products/:product", (req, res) => {
-  Product.findById(req.params.product, (err, product) => {
+router.get("/products/:product", async (req, res) => {
+  await Product.findById(req.params.product, (err, product) => {
     if (err) throw err;
     res.send(product);
   })
@@ -46,13 +46,13 @@ router.get("/products/:product", (req, res) => {
 
 // GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
 
-router.get("/products/:product/reviews", (req, res) => {
+router.get("/products/:product/reviews", async (req, res) => {
   const perPage = 9;
 
   const page = req.query.page || 1;
 
 
-  Product.findById(req.params.product, (err, product) => {
+  await Product.findById(req.params.product, (err, product) => {
     if (err) throw err;
     res.send(product.reviews)
       
@@ -68,5 +68,21 @@ router.get("/products/:product/reviews", (req, res) => {
       });
     });
 })
+
+//POST /products: Creates a new product in the database
+
+router.post("/products", async (req, res) => {
+  
+  const product = new Product({
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+    reviews: []
+  })
+  await product.save();
+  res.send(product);
+})
+
 
 module.exports = router;

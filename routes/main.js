@@ -103,8 +103,9 @@ router.post("/products/:product/reviews", async (req, res) => {
   await productReviews.reviews.push(review);
   await console.log(productReviews.reviews)
   await productReviews.save();
-  
 })
+
+// DELETE /products/:product: Deletes a product by id
 
 
 module.exports = router;

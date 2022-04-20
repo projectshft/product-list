@@ -81,7 +81,29 @@ router.post("/products", async (req, res) => {
     reviews: []
   })
   await product.save();
-  res.send(product);
+  await res.send(product);
+})
+
+//POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's review's array
+
+router.post("/products/:product/reviews", async (req, res) => {
+  
+  const product = req.params.product
+
+  const productReviews = await Product.findOne({ _id: product }).populate({path: "reviews"})
+  
+  const review = new Review({
+    userName: req.body.userName,
+    text: req.body.text,
+    product: product
+  })
+  await review.save();
+  await res.send(review);
+  
+  await productReviews.reviews.push(review);
+  await console.log(productReviews.reviews)
+  await productReviews.save();
+  
 })
 
 

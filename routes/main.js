@@ -37,6 +37,25 @@ router.get("/products", async (req, res, next) => {
     });
 });
 
+router.get("/reviews", async (req, res, next) => {
+  const perPage = 9;
+
+  // return the first page by default
+  const page = req.query.page || 1;
+
+  await Review.find({})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, products) => {
+      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+      Review.count().exec((err, count) => {
+        if (err) return next(err);
+
+        res.send(products);
+      });
+    });
+});
+
 router.get("/products/:product", async (req, res) => {
   await Product.findById(req.params.product, (err, product) => {
     if (err) throw err;
@@ -111,6 +130,16 @@ router.delete("/products/:product", (req, res, next) => {
     res.send(prod);
   })
 })
+
+
+
+//DELETE /reviews/:review: Deletes a review by id
+// router.delete("/products/:product", (req, res, next) => {
+//   Product.findByIdAndRemove({_id: req.params.product}).then(function(prod){
+//     res.send(prod);
+//   })
+// })
+
 
 
 module.exports = router;

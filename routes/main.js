@@ -88,7 +88,7 @@ router.post("/products", async (req, res) => {
 
 router.post("/products/:product/reviews", async (req, res) => {
   
-  const product = req.params.product
+  const product = req.params.product;
 
   const productReviews = await Product.findOne({ _id: product }).populate({path: "reviews"})
   
@@ -106,6 +106,11 @@ router.post("/products/:product/reviews", async (req, res) => {
 })
 
 // DELETE /products/:product: Deletes a product by id
+router.delete("/products/:product", (req, res, next) => {
+  Product.findByIdAndRemove({_id: req.params.product}).then(function(prod){
+    res.send(prod);
+  })
+})
 
 
 module.exports = router;

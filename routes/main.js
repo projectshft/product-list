@@ -24,7 +24,7 @@ router.get("/products", async (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1;
 
-  await Product.find({})
+  await Product.find(req.query)
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {

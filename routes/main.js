@@ -141,11 +141,11 @@ router.delete("/products/:product", (req, res, next) => {
 
 
 //DELETE /reviews/:review: Deletes a review by id
-// router.delete("/products/:product", (req, res, next) => {
-//   Product.findByIdAndRemove({_id: req.params.product}).then(function(prod){
-//     res.send(prod);
-//   })
-// })
+router.delete("/reviews/:reviews", (req, res, next) => {
+  Review.findByIdAndRemove({_id: req.params.reviews}).then(function(rev){
+    res.send(rev);
+  })
+})
 
 
 

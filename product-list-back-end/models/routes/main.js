@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const faker = require("faker");
-const {Product, Review} = require("../models/product");
+// const faker = require("faker");
+const {Product, Review} = require("../product");
 
 // router.get("/generate-fake-data", (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {

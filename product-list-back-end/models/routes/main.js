@@ -30,6 +30,7 @@ router.get("/products", async (req, res, next) => {
     .limit(perPage)
     //correct query params are 'sort=price' or 'sort=-price'
     .sort(req.query.sort)
+    //still need to include the ability to add a query
     .exec((err, products) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
       Product.count().exec((err, count) => {
@@ -37,7 +38,6 @@ router.get("/products", async (req, res, next) => {
 
         res.send(products);
       });
-      
     });
 });
 

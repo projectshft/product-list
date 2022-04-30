@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/strider1212/product-list#readme",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
     "body-parser": "^1.20.0",
     "express": "^4.17.3",
     "faker": "^5.5.3",

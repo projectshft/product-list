@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import SearchBar from "./components/SearchBar";
-import ContentDisplay from "./components/ContentDisplay";
+import SearchBar from "./Components/SearchBar";
+import ContentDisplay from "./Components/ContentDisplay";
 
 
 

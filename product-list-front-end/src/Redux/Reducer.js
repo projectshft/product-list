@@ -1,5 +1,13 @@
-const Reducer = () => {
-  return <h1>Testing Reducer</h1>
+
+const reducer = (state = [], action) => {
+  switch (action.type) {
+    case 'FETCH_POSTS':
+      return [
+        ...state,
+        action.payload
+      ];
+    default:
+  }
 }
 
-export default Reducer;
+export default reducer

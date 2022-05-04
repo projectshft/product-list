@@ -23,7 +23,12 @@
     "express": "^4.17.3",
     "faker": "^5.5.3",
     "mongoose": "^6.3.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "react-redux": "^8.0.1",
     "redux": "^4.2.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^4.5.0"
   }
 }

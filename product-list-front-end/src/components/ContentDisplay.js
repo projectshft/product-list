@@ -8,6 +8,8 @@ const ContentDisplay = (props) => {
           <div className='card' key={index}>
             category: {data.category}
             price: {data.price}
+            <img src={data.image} alt="new"/>
+            name: {data.name}
           </div>
         ))}
       </div>

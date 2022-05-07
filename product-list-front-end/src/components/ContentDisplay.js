@@ -1,8 +1,17 @@
 const ContentDisplay = (props) => {
-  console.log(props)
+  const products = props.products
+  console.log(products)
   return (
-    <div>ContentDisplay.js Test</div>
-
+    <div>
+      <div>ContentDisplay.js Test</div>
+      <div>
+      {products.map((prod) => (
+          <div className='card'>
+            {prod.category}
+          </div>
+        ))}
+      </div>
+    </div>
   )
   
   

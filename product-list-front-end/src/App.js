@@ -15,10 +15,7 @@ function App() {
         mode: 'cors'
       })
       .then((res) => {
-        // setProducts(res.data)
-        console.log(res);
         res.json().then((data) => {
-          console.log(data);
           setProducts(data)
         })
       })

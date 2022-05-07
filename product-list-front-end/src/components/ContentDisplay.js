@@ -5,11 +5,11 @@ const ContentDisplay = (props) => {
     <div>
       <div>
       {products.map((data, index) => (
-          <div className='card' key={index}>
-            category: {data.category}
-            price: {data.price}
-            <img src={data.image} alt="new"/>
-            name: {data.name}
+          <div id="product" key={index}>
+            <div id="category" >category: {data.category}</div>
+            <div id="price">price: {data.price}</div>
+            <img id="img" src={data.image} alt="new"/>
+            <div id="name">name: {data.name}</div>
           </div>
         ))}
       </div>

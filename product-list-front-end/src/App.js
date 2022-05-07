@@ -18,7 +18,8 @@ function App() {
         // setProducts(res.data)
         console.log(res);
         res.json().then((data) => {
-          console.log(data)
+          console.log(data);
+          setProducts(data)
         })
       })
     }

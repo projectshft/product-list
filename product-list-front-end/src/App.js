@@ -27,10 +27,11 @@ function App() {
   }, []);
 
 
+
   return (
     <div>
       <SearchBar />
-      <ContentDisplay />
+      <ContentDisplay products={products}/>
     </div>
   );
 }

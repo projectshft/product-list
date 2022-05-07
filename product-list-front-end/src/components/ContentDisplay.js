@@ -3,11 +3,11 @@ const ContentDisplay = (props) => {
   console.log(products)
   return (
     <div>
-      <div>ContentDisplay.js Test</div>
       <div>
-      {products.map((prod) => (
-          <div className='card'>
-            {prod.category}
+      {products.map((data, index) => (
+          <div className='card' key={index}>
+            category: {data.category}
+            price: {data.price}
           </div>
         ))}
       </div>

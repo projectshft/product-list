@@ -7,12 +7,12 @@ const ContentDisplay = (props) => {
         <div className="row">
           
             {products.map((data, index) => (
-              <div className="col-sm-4">
-                <div id="product" key={index}>
-                <div id="category" >category: {data.category}</div>
-                <div id="price">price: {data.price}</div>
-                <img id="img" src={data.image} alt="new"/>
-                <div id="name">name: {data.name}</div>
+              <div className="col-sm-4" key={index}>
+                  <div id="product">
+                  <div id="category" >category: {data.category}</div>
+                  <div id="price">price: {data.price}</div>
+                  <img id="img" src={data.image} alt="new"/>
+                  <div id="name">name: {data.name}</div>
               </div>
               </div>
             ))}

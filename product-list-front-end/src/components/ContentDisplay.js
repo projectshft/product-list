@@ -3,15 +3,19 @@ const ContentDisplay = (props) => {
   console.log(products)
   return (
     <div>
-      <div>
-      {products.map((data, index) => (
-          <div id="product" key={index}>
-            <div id="category" >category: {data.category}</div>
-            <div id="price">price: {data.price}</div>
-            <img id="img" src={data.image} alt="new"/>
-            <div id="name">name: {data.name}</div>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-2">
+            {products.map((data, index) => (
+              <div id="product" key={index}>
+                <div id="category" >category: {data.category}</div>
+                <div id="price">price: {data.price}</div>
+                <img id="img" src={data.image} alt="new"/>
+                <div id="name">name: {data.name}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   )

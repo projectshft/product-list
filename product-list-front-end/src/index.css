@@ -18,4 +18,28 @@ code {
 
 #product {
   text-align: center;
+  border: solid white;
+  background-color: white;
+  height: 250px;
+  width: 250px;
+  margin: 20px;
+}
+
+#category {
+  background-color: white;
+}
+
+#price {
+  background-color: white;
+}
+
+#name {
+  background-color: white;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
 }

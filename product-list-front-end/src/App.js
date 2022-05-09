@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./Components/SearchBar";
 import ContentDisplay from "./Components/ContentDisplay";
+import Pagination from "./Components/Pagination";
 
 
 
@@ -27,8 +28,11 @@ function App() {
 
   return (
     <div>
-      <SearchBar />
-      <ContentDisplay products={products}/>
+      <div>
+        <SearchBar />
+        <ContentDisplay products={products}/>
+        <Pagination />
+      </div>
     </div>
   );
 }

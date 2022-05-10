@@ -1,6 +1,10 @@
-
+import { useSelector } from "react-redux";
 
 const ContentDisplay = (props) => {
+  const productData = useSelector(state => state);
+
+  console.log(productData)
+
   const products = props.products
   return (
     <div>

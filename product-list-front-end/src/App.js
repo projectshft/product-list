@@ -26,8 +26,8 @@ function App() {
       })
       .then((res) => {
         res.json().then((data) => {
-          // setProducts(data)
-          dispatch(fetchProducts(data));
+          setProducts(data)
+          // dispatch(fetchProducts(data));
         })
       })
     }

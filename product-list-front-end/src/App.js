@@ -12,6 +12,10 @@ function App() {
   const [dispatched, setDispatched] = useState(false);
 
   const [page, setPage] = useState(1);
+
+  const pageFive = () => {
+    setPage(5);
+  }
   
   const urlBase = 'http://localhost:8000/products';
 
@@ -45,7 +49,7 @@ function App() {
         {dispatched && <ContentDisplay />}
         {/* <Pagination /> */}
         <div className="right-align">
-          <p>{previous}</p> <p>1</p> <p>2</p> <p>3</p> <p>4</p> <p>5</p> <p>6</p> <p>7</p> <p>8</p> <p>9</p> <p>10</p><p>11</p><p>{next}</p>
+          <p>{previous}</p> <p>1</p> <p>2</p> <p>3</p> <p>4</p> <p onClick={pageFive}>5</p> <p>6</p> <p>7</p> <p>8</p> <p>9</p> <p>10</p><p>11</p><p>{next}</p>
         </div>
       </div>
     </div>

@@ -15,8 +15,13 @@ function App() {
   const dispatch = useDispatch();
 
   const [dispatched, setDispatched] = useState(false);
+
+  const [pageNumber, setPageNumber] = useState(1);
   
   const urlBase = 'http://localhost:8000/products';
+
+  const previous = '<<previous'
+  const next = 'next>>'
 
   useEffect(() => {
 
@@ -43,7 +48,7 @@ function App() {
     // paginatedFetch();
     
     const request = async () =>{
-      const page = 2;
+      const page = pageNumber;
       const paginatedURL = `${urlBase}?page=${page}`
 
       await fetch(paginatedURL, {
@@ -67,7 +72,10 @@ function App() {
       <div>
         <SearchBar />
         {dispatched && <ContentDisplay />}
-        <Pagination />
+        {/* <Pagination /> */}
+        <div className="right-align">
+          <p>{previous}</p> <p>1</p> <p>2</p> <p>3</p> <p>4</p> <p>5</p> <p>6</p> <p>7</p> <p>8</p> <p>9</p> <p>10</p><p>11</p><p>{next}</p>
+        </div>
       </div>
     </div>
   );

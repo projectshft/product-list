@@ -20,41 +20,44 @@ function App() {
 
   useEffect(() => {
 
-    const paginatedFetch = (url = urlBase, page = 1, previousResponse = []) => {
-      return fetch(`${url}?page=${page}`)
-      .then(response => response.json())
-      .then(newResponse => {
-        const response = [...previousResponse, ...newResponse]; 
+    // const paginatedFetch = (url = urlBase, page = 1, previousResponse = []) => {
+    //   return fetch(`${url}?page=${page}`)
+    //   .then(response => response.json())
+    //   .then(newResponse => {
+    //     const response = [...previousResponse, ...newResponse]; 
   
-        if (newResponse.length !== 0) {
-          page++;
+    //     if (newResponse.length !== 0) {
+    //       page++;
   
-          return paginatedFetch(url, page, response);
-        }
+    //       return paginatedFetch(url, page, response);
+    //     }
   
-        return response;
-      })
-      .then((res) => {
-        console.log(res)
-        dispatch(fetchProducts(res));
-        setDispatched(true);
-      })
-    }
-    paginatedFetch();
-    
-    // const request = async () =>{
-    //   await fetch(url, {
-    //     method: 'GET',
-    //     mode: 'cors'
+    //     return response;
     //   })
     //   .then((res) => {
-    //     res.json().then((data) => {
-    //       dispatch(fetchProducts(data));
-    //       setDispatched(true);
-    //     })
+    //     console.log(res)
+    //     dispatch(fetchProducts(res));
+    //     setDispatched(true);
     //   })
     // }
-    // request();
+    // paginatedFetch();
+    
+    const request = async () =>{
+      const page = 2;
+      const paginatedURL = `${urlBase}?page=${page}`
+
+      await fetch(paginatedURL, {
+        method: 'GET',
+        mode: 'cors'
+      })
+      .then((res) => {
+        res.json().then((data) => {
+          dispatch(fetchProducts(data));
+          setDispatched(true);
+        })
+      })
+    }
+    request();
   }, []);
 
 

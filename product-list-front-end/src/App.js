@@ -65,7 +65,24 @@ function App() {
     request();
   }, []);
 
+  const setPageNumber2 = () => {
+    setPageNumber(2)
+    const request = async () =>{
+      const paginatedURL = `${urlBase}?page=${pageNumber}`
 
+      await fetch(paginatedURL, {
+        method: 'GET',
+        mode: 'cors'
+      })
+      .then((res) => {
+        res.json().then((data) => {
+          dispatch(fetchProducts(data));
+          setDispatched(true);
+        })
+      })
+    }
+    request();
+  }
 
   return (
     <div>
@@ -73,9 +90,6 @@ function App() {
         <SearchBar />
         {dispatched && <ContentDisplay />}
         {/* <Pagination /> */}
-        <div className="right-align">
-          <p>{previous}</p> <p>1</p> <p>2</p> <p>3</p> <p>4</p> <p>5</p> <p>6</p> <p>7</p> <p>8</p> <p>9</p> <p>10</p><p>11</p><p>{next}</p>
-        </div>
       </div>
     </div>
   );

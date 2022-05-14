@@ -53,10 +53,10 @@ img {
   float: right;
 }
 
-p:hover {
+.right-align p:hover {
   color: purple;
 }
 
-p:active {
+.right-align p:active {
   background-color: gray;
 }

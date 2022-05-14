@@ -16,21 +16,44 @@ function App() {
 
   const [dispatched, setDispatched] = useState(false);
   
+  const urlBase = 'http://localhost:8000/products';
 
   useEffect(() => {
-    const request = async () =>{
-      await fetch('http://localhost:8000/products', {
-        method: 'GET',
-        mode: 'cors'
+
+    const paginatedFetch = (url = urlBase, page = 1, previousResponse = []) => {
+      return fetch(`${url}?page=${page}`)
+      .then(response => response.json())
+      .then(newResponse => {
+        const response = [...previousResponse, ...newResponse]; 
+  
+        if (newResponse.length !== 0) {
+          page++;
+  
+          return paginatedFetch(url, page, response);
+        }
+  
+        return response;
       })
       .then((res) => {
-        res.json().then((data) => {
-          dispatch(fetchProducts(data));
-          setDispatched(true);
-        })
+        dispatch(fetchProducts(res));
+        setDispatched(true);
       })
     }
-    request();
+    paginatedFetch();
+    
+    // const request = async () =>{
+    //   await fetch(url, {
+    //     method: 'GET',
+    //     mode: 'cors'
+    //   })
+    //   .then((res) => {
+    //     res.json().then((data) => {
+    //       dispatch(fetchProducts(data));
+    //       setDispatched(true);
+    //     })
+    //   })
+    // }
+    // request();
   }, []);
 
 

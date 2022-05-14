@@ -15,13 +15,6 @@ function App() {
   const dispatch = useDispatch();
 
   const [dispatched, setDispatched] = useState(false);
-
-  const [products, setProducts] = useState([]);
-
-
-  //Stack conversatoin about passing search parameters to fetch:
-  //https://stackoverflow.com/questions/35038857/setting-query-string-using-fetch-get-request
-  console.log('app')
   
 
   useEffect(() => {
@@ -49,7 +42,7 @@ function App() {
     <div>
       <div>
         <SearchBar />
-        {dispatched && <ContentDisplay products={products}/>}
+        {dispatched && <ContentDisplay />}
         <Pagination />
       </div>
     </div>

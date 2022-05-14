@@ -1,20 +1,10 @@
 import { useSelector } from "react-redux";
 
-const ContentDisplay = (props) => {
+const ContentDisplay = () => {
   const productData = useSelector(state => state[0]);
-
-  const products = props.products;
 
   console.log(productData);
 
-  //this might be helpful: https://stackoverflow.com/questions/69391989/react-why-is-my-variable-only-defined-on-the-first-render-but-undefined-on-subs 
-   
-  //const returner = async (productData) => {
-  //   const x = await productData.map(y => y)
-  //   return x
-  // }
-
-  // console.log(returner())
 
   return (
     <div>

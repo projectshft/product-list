@@ -5,7 +5,7 @@ const ContentDisplay = (props) => {
 
   const products = props.products;
 
-  console.log(products)
+  console.log(productData)
 
   //this might be helpful: https://stackoverflow.com/questions/69391989/react-why-is-my-variable-only-defined-on-the-first-render-but-undefined-on-subs 
    

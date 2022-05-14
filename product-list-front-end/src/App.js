@@ -9,9 +9,12 @@ import fetchProducts from "./Redux/actions";
 
 
 
+
 function App() {
 
   const dispatch = useDispatch();
+
+  const [dispatched, setDispatched] = useState(false);
 
   const [products, setProducts] = useState([]);
 
@@ -29,10 +32,11 @@ function App() {
       })
       .then((res) => {
         res.json().then((data) => {
-          console.log('ContentDisplay through setProduct:')
-          setProducts(data)
-          // console.log('Content Display through fetchProducts:')
-          // dispatch(fetchProducts(data))
+          // console.log('ContentDisplay through setProduct:')
+          // setProducts(data)
+          console.log('Content Display through fetchProducts:');
+          dispatch(fetchProducts(data));
+          setDispatched(true);
         })
       })
     }
@@ -45,7 +49,7 @@ function App() {
     <div>
       <div>
         <SearchBar />
-        {products.length > 0 && <ContentDisplay products={products}/>}
+        {dispatched && <ContentDisplay products={products}/>}
         <Pagination />
       </div>
     </div>

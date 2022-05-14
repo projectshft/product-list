@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 const ContentDisplay = (props) => {
-  const productData = useSelector(state => state);
+  const productData = useSelector(state => state[0]);
 
   const products = props.products;
 
@@ -20,7 +20,7 @@ const ContentDisplay = (props) => {
     <div>
       <div className="container-fluid">
         <div className="row">
-            {products.map((data, index) => (
+            {productData.map((data, index) => (
               <div className="col-sm-4" key={index}>
                   <div id="product">
                   <div id="category" >Category: {data.category}</div>

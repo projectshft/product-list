@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 const ContentDisplay = () => {
   const productData = useSelector(state => state.products[0]);
 
-
-
   return (
     <div>
       <div className="container-fluid">

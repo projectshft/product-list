@@ -2,7 +2,6 @@ const Pagination = () => {
   const previous = '<<previous'
   const next = 'next>>'
   
-  
 
   return (
     <div className="right-align">

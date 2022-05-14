@@ -1,7 +1,10 @@
 const Pagination = () => {
+  const previous = '<<previous'
+  const next = 'next>>'
+  
   return (
     <div className="right-align">
-      <p>Pages:</p>
+      <p>{previous} {next}</p>
     </div>
   )
 }

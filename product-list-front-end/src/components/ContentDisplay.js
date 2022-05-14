@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const ContentDisplay = () => {
-  const productData = useSelector(state => state[0]);
-
+  const productData = useSelector(state => state.products[0]);
 
 
 

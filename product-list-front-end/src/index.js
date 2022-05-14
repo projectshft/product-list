@@ -7,7 +7,7 @@ import './index.css';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 
 import App from './App';
-import reducer from './Redux/Reducer';
+import reducer from './Redux/Reducers/index';
 
 ReactDOM.render(
   <Provider store={createStore(reducer, devToolsEnhancer())}>

@@ -6,6 +6,7 @@ const page = (state = 1, action) => {
         action.payload
       ];
     default:
+      return state;
   }
 }
 

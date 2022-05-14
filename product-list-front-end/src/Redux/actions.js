@@ -6,10 +6,10 @@ const fetchProducts = (products) => {
   }
 }
 
-const changePages = (products) => {
+const changePages = (num) => {
   return {
     type: 'PAGE_CHANGE',
-    payload: products
+    payload: num
   }
 }
 

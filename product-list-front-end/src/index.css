@@ -51,3 +51,7 @@ img {
 p:hover {
   color: purple;
 }
+
+p:active {
+  background-color: gray;
+}

@@ -1,10 +1,7 @@
-const page = (state = 1, action) => {
+const page = (state = 0, action) => {
   switch (action.type) {
     case 'PAGE_CHANGE':
-      return [
-        ...state,
-        action.payload
-      ];
+      return state = action.payload
     default:
       return state;
   }

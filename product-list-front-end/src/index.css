@@ -47,3 +47,7 @@ img {
 .right-align {
   float: right;
 }
+
+p:hover {
+  color: purple;
+}

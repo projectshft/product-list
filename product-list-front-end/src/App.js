@@ -15,13 +15,8 @@ function App() {
   const dispatch = useDispatch();
 
   const [dispatched, setDispatched] = useState(false);
-
-  const [pageNumber, setPageNumber] = useState(1);
   
   const urlBase = 'http://localhost:8000/products';
-
-  const previous = '<<previous'
-  const next = 'next>>'
 
   useEffect(() => {
 
@@ -48,7 +43,7 @@ function App() {
     // paginatedFetch();
     
     const request = async () =>{
-      const page = pageNumber;
+      const page = 1;
       const paginatedURL = `${urlBase}?page=${page}`
 
       await fetch(paginatedURL, {
@@ -64,25 +59,6 @@ function App() {
     }
     request();
   }, []);
-
-  const setPageNumber2 = () => {
-    setPageNumber(2)
-    const request = async () =>{
-      const paginatedURL = `${urlBase}?page=${pageNumber}`
-
-      await fetch(paginatedURL, {
-        method: 'GET',
-        mode: 'cors'
-      })
-      .then((res) => {
-        res.json().then((data) => {
-          dispatch(fetchProducts(data));
-          setDispatched(true);
-        })
-      })
-    }
-    request();
-  }
 
   return (
     <div>

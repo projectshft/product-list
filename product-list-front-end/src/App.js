@@ -8,6 +8,7 @@ import fetchProducts from "./Redux/actions";
 
 
 
+
 function App() {
 
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ function App() {
 
   //Stack conversatoin about passing search parameters to fetch:
   //https://stackoverflow.com/questions/35038857/setting-query-string-using-fetch-get-request
+  console.log('app')
+  
 
   useEffect(() => {
     const request = async () =>{
@@ -26,8 +29,10 @@ function App() {
       })
       .then((res) => {
         res.json().then((data) => {
+          console.log('ContentDisplay through setProduct:')
           setProducts(data)
-          dispatch(fetchProducts(data));
+          // console.log('Content Display through fetchProducts:')
+          // dispatch(fetchProducts(data))
         })
       })
     }
@@ -40,7 +45,7 @@ function App() {
     <div>
       <div>
         <SearchBar />
-        <ContentDisplay products={products}/>
+        {products.length > 0 && <ContentDisplay products={products}/>}
         <Pagination />
       </div>
     </div>

@@ -35,6 +35,7 @@ function App() {
         return response;
       })
       .then((res) => {
+        console.log(res)
         dispatch(fetchProducts(res));
         setDispatched(true);
       })

@@ -44,6 +44,11 @@ img {
   width: 60%;
 }
 
+p {
+  display: inline-block;
+  margin: 5px;
+}
+
 .right-align {
   float: right;
 }

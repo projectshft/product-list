@@ -1,12 +1,7 @@
-import { changePages } from '../Redux/actions';
-import { useDispatch } from 'react-redux';
 
 const Pagination = () => {
-  const dispatch = useDispatch();
   const previous = '<<previous'
   const next = 'next>>'
-  
-  dispatch(changePages(2))
 
   return (
     <div className="right-align">

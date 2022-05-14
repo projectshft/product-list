@@ -1,7 +1,7 @@
 const Pagination = () => {
   return (
-    <div>
-      <p>Page: </p>
+    <div className="right-align">
+      <p>Pages:</p>
     </div>
   )
 }

@@ -43,3 +43,7 @@ img {
   margin-right: auto;
   width: 60%;
 }
+
+.right-align {
+  float: right;
+}

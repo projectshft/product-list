@@ -65,7 +65,7 @@ function App() {
       <div>
         <SearchBar />
         {dispatched && <ContentDisplay />}
-        {/* <Pagination /> */}
+        <Pagination />
       </div>
     </div>
   );

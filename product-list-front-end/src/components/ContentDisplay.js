@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 const ContentDisplay = () => {
   const productData = useSelector(state => state[0]);
 
-  console.log(productData);
-
 
   return (
     <div>

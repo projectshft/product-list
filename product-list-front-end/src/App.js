@@ -25,9 +25,6 @@ function App() {
       })
       .then((res) => {
         res.json().then((data) => {
-          // console.log('ContentDisplay through setProduct:')
-          // setProducts(data)
-          console.log('Content Display through fetchProducts:');
           dispatch(fetchProducts(data));
           setDispatched(true);
         })

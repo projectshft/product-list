@@ -6,4 +6,14 @@ const fetchProducts = (products) => {
   }
 }
 
-export default fetchProducts;
+const changePages = (products) => {
+  return {
+    type: 'PAGE_CHANGE',
+    payload: products
+  }
+}
+
+export {
+  fetchProducts,
+  changePages
+}

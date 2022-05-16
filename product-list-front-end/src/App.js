@@ -17,19 +17,19 @@ function App() {
   }
 
   
-  // const previousPage = () => {
-  //   if (page > 1) {
-  //     const newNumber = page - 1;
-  //     setPage(newNumber);
-  //   }
-  // }
+  const previousPage = () => {
+    if (page > 1) {
+      const newNumber = page - 1;
+      setPage(newNumber);
+    }
+  }
 
-  // const nextPage = () => {
-  //   if (page < 11) {
-  //     const newNumber = page + 1;
-  //     setPage(newNumber)
-  //   }
-  // }
+  const nextPage = () => {
+    if (page < 11) {
+      const newNumber = page + 1;
+      setPage(newNumber)
+    }
+  }
 
   
   const urlBase = 'http://localhost:8000/products';
@@ -64,9 +64,10 @@ function App() {
       <div>
         <SearchBar />
         {dispatched && <ContentDisplay />}
-        {/* <Pagination /> */}
         <div className="right-align">
+          <p onClick={previousPage}>{previous}</p>
           {pageNumber.map((num) => <p onClick={() => setCurrentPageNumber(num)}>{num}</p>)}
+          <p onClick={nextPage}>{next}</p>
         </div>
       </div>
     </div>

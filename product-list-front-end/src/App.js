@@ -13,8 +13,49 @@ function App() {
 
   const [page, setPage] = useState(1);
 
+  
+  const pageOne = (data) => {
+    setPage(1);
+  }
+
+  const pageTwo = (data) => {
+    setPage(2);
+  }
+
+  const pageThree = (data) => {
+    setPage(3);
+  }
+
+  const pageFour = (data) => {
+    setPage(4);
+  }
+  
   const pageFive = (data) => {
     setPage(5);
+  }
+
+  const pageSix = (data) => {
+    setPage(6);
+  }
+
+  const pageSeven = (data) => {
+    setPage(7);
+  }
+
+  const pageEight = (data) => {
+    setPage(8);
+  }
+
+  const pageNine = (data) => {
+    setPage(9);
+  }
+
+  const pageTen = (data) => {
+    setPage(10);
+  }
+
+  const pageEleven = (data) => {
+    setPage(11);
   }
   
   const urlBase = 'http://localhost:8000/products';
@@ -49,7 +90,7 @@ function App() {
         {dispatched && <ContentDisplay />}
         {/* <Pagination /> */}
         <div className="right-align">
-          <p>{previous}</p> <p>1</p> <p>2</p> <p>3</p> <p>4</p> <p onClick={pageFive}>5</p> <p>6</p> <p>7</p> <p>8</p> <p>9</p> <p>10</p><p>11</p><p>{next}</p>
+          <p>{previous}</p> <p onClick={pageOne}>1</p> <p onClick={pageTwo}>2</p> <p onClick={pageThree}>3</p> <p onClick={pageFour}>4</p> <p onClick={pageFive}>5</p> <p onClick={pageSix}>6</p> <p onClick={pageSeven}>7</p> <p onClick={pageEight}>8</p> <p onClick={pageNine}>9</p> <p onClick={pageTen}>10</p><p onClick={pageEleven}>11</p><p>{next}</p>
         </div>
       </div>
     </div>

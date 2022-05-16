@@ -19,6 +19,13 @@ function App() {
     setPage(newNumber);
   }
 
+  const nextPage = () => {
+    if (page < 11) {
+      const newNumber = page + 1;
+      setPage(newNumber)
+    }
+  }
+
   const pageOne = () => {
     setPage(1);
   }
@@ -95,7 +102,7 @@ function App() {
         {dispatched && <ContentDisplay />}
         {/* <Pagination /> */}
         <div className="right-align">
-          <p onClick={previousPage}>{previous}</p> <p onClick={pageOne}>1</p> <p onClick={pageTwo}>2</p> <p onClick={pageThree}>3</p> <p onClick={pageFour}>4</p> <p onClick={pageFive}>5</p> <p onClick={pageSix}>6</p> <p onClick={pageSeven}>7</p> <p onClick={pageEight}>8</p> <p onClick={pageNine}>9</p> <p onClick={pageTen}>10</p><p onClick={pageEleven}>11</p><p>{next}</p>
+          <p onClick={previousPage}>{previous}</p> <p onClick={pageOne}>1</p> <p onClick={pageTwo}>2</p> <p onClick={pageThree}>3</p> <p onClick={pageFour}>4</p> <p onClick={pageFive}>5</p> <p onClick={pageSix}>6</p> <p onClick={pageSeven}>7</p> <p onClick={pageEight}>8</p> <p onClick={pageNine}>9</p> <p onClick={pageTen}>10</p><p onClick={pageEleven}>11</p><p onClick={nextPage}>{next}</p>
         </div>
       </div>
     </div>

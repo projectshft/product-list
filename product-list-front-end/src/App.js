@@ -15,8 +15,10 @@ function App() {
 
   
   const previousPage = () => {
-    const newNumber = page - 1;
-    setPage(newNumber);
+    if (page > 1) {
+      const newNumber = page - 1;
+      setPage(newNumber);
+    }
   }
 
   const nextPage = () => {

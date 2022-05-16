@@ -14,47 +14,52 @@ function App() {
   const [page, setPage] = useState(1);
 
   
-  const pageOne = (data) => {
+  const previousPage = () => {
+    const newNumber = page - 1;
+    setPage(newNumber);
+  }
+
+  const pageOne = () => {
     setPage(1);
   }
 
-  const pageTwo = (data) => {
+  const pageTwo = () => {
     setPage(2);
   }
 
-  const pageThree = (data) => {
+  const pageThree = () => {
     setPage(3);
   }
 
-  const pageFour = (data) => {
+  const pageFour = () => {
     setPage(4);
   }
   
-  const pageFive = (data) => {
+  const pageFive = () => {
     setPage(5);
   }
 
-  const pageSix = (data) => {
+  const pageSix = () => {
     setPage(6);
   }
 
-  const pageSeven = (data) => {
+  const pageSeven = () => {
     setPage(7);
   }
 
-  const pageEight = (data) => {
+  const pageEight = () => {
     setPage(8);
   }
 
-  const pageNine = (data) => {
+  const pageNine = () => {
     setPage(9);
   }
 
-  const pageTen = (data) => {
+  const pageTen = () => {
     setPage(10);
   }
 
-  const pageEleven = (data) => {
+  const pageEleven = () => {
     setPage(11);
   }
   
@@ -90,7 +95,7 @@ function App() {
         {dispatched && <ContentDisplay />}
         {/* <Pagination /> */}
         <div className="right-align">
-          <p>{previous}</p> <p onClick={pageOne}>1</p> <p onClick={pageTwo}>2</p> <p onClick={pageThree}>3</p> <p onClick={pageFour}>4</p> <p onClick={pageFive}>5</p> <p onClick={pageSix}>6</p> <p onClick={pageSeven}>7</p> <p onClick={pageEight}>8</p> <p onClick={pageNine}>9</p> <p onClick={pageTen}>10</p><p onClick={pageEleven}>11</p><p>{next}</p>
+          <p onClick={previousPage}>{previous}</p> <p onClick={pageOne}>1</p> <p onClick={pageTwo}>2</p> <p onClick={pageThree}>3</p> <p onClick={pageFour}>4</p> <p onClick={pageFive}>5</p> <p onClick={pageSix}>6</p> <p onClick={pageSeven}>7</p> <p onClick={pageEight}>8</p> <p onClick={pageNine}>9</p> <p onClick={pageTen}>10</p><p onClick={pageEleven}>11</p><p>{next}</p>
         </div>
       </div>
     </div>

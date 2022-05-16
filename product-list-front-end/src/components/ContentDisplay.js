@@ -1,7 +1,15 @@
 import { useSelector } from "react-redux";
 
 const ContentDisplay = () => {
-  const productData = useSelector(state => state.products[0]);
+  const productData = useSelector(state => {
+    
+    if (state.products.length <= 1) {
+      return state.products[0]
+    } else {
+      return state.products[state.products.length - 1];
+    }
+    
+  });
 
   return (
     <div>

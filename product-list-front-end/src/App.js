@@ -13,7 +13,7 @@ function App() {
 
   const [page, setPage] = useState(1);
 
-  const pageFive = () => {
+  const pageFive = (data) => {
     setPage(5);
   }
   
@@ -40,7 +40,7 @@ function App() {
       })
     }
     request();
-  }, []);
+  }, [page, dispatch]);
 
   return (
     <div>

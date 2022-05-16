@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import SearchBar from "./Components/SearchBar";
 import ContentDisplay from "./Components/ContentDisplay";
-import Pagination from "./Components/Pagination";
 import { fetchProducts } from './Redux/actions';
 
 function App() {

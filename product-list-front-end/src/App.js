@@ -16,7 +16,6 @@ function App() {
     setPage(val);
   }
 
-  
   const previousPage = () => {
     if (page > 1) {
       const newNumber = page - 1;
@@ -31,7 +30,6 @@ function App() {
     }
   }
 
-  
   const urlBase = 'http://localhost:8000/products';
 
   const previous = '<<previous'
@@ -66,7 +64,7 @@ function App() {
         {dispatched && <ContentDisplay />}
         <div className="right-align">
           <p onClick={previousPage}>{previous}</p>
-          {pageNumber.map((num) => <p onClick={() => setCurrentPageNumber(num)}>{num}</p>)}
+          {pageNumber.map((num, index) => <p onClick={() => setCurrentPageNumber(num)} key={index}>{num}</p>)}
           <p onClick={nextPage}>{next}</p>
         </div>
       </div>

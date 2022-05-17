@@ -60,3 +60,11 @@ img {
 .right-align p:active {
   background-color: gray;
 }
+
+.float-right {
+  float: right;
+}
+
+#categories {
+  width: 100px;
+}

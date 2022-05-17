@@ -30,14 +30,24 @@ const SearchBar = () => {
 
   return (
   <div>
-    <input type="text" placeholder="Search"/>
-    <label htmlFor="categories">Choose a Category: </label>
-    <select id="categories" onChange={searchByCategory}>
-      <option value='' key="0">All</option>
-      {categories.map((cat, index) => {
-        return <option value={`${cat}`} key={index + 1}>{cat}</option>
-      })}
-    </select>
+    <div className="container">
+      <div className="row">
+        <div className="col">
+          <input type="text" placeholder="Search"/>
+        </div>
+        <div className="col">
+          <label id="categories-label" className="float-right" htmlFor="categories">Choose a Category: </label>
+        </div>
+        <div className="col-sm-2">
+          <select className="float-right" id="categories" onChange={searchByCategory}>
+            <option value='' key="0">All</option>
+            {categories.map((cat, index) => {
+              return <option value={`${cat}`} key={index + 1}>{cat}</option>
+            })}
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
   )
 }

@@ -38,7 +38,7 @@ const SearchBar = () => {
     <div className="container">
       <div className="row">
         <div className="col">
-          <input type="text" placeholder="Search" onChange={changeHandler}/>
+          <input type="text" placeholder="Search product name..." onChange={changeHandler}/>
         </div>
         <div className="col">
           <label id="categories-label" className="float-right" htmlFor="categories">Choose a Category: </label>

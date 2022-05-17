@@ -11,6 +11,12 @@ const ContentDisplay = () => {
     
   });
 
+  const searchTerm = useSelector(state => {
+    return state.search;
+  })
+
+  console.log(searchTerm)
+
   return (
     <div>
       <div className="container-fluid">

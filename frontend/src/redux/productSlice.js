@@ -1,16 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const initialState = [{products: [], count: 0}];
+const initialState = [{ products: [], count: 0 }];
 
 export const getProductsAsync = createAsyncThunk(
-  'products/getProductsAsync',
-  async params => {
-    const response = await axios.get('http://localhost:8000/products', {
-      params: params
+  "products/getProductsAsync",
+  async (params) => {
+    const response = await axios.get("http://localhost:8000/products", {
+      params,
     });
-    
-    return {response}
+
+    return { response };
   }
 );
 
@@ -25,11 +25,10 @@ const productSlice = createSlice({
         name: action.payload.name,
         category: action.payload.category,
         price: action.payload.price,
-        image: action.payload.image
+        image: action.payload.image,
       };
-      state.push(newProduct)
+      state.push(newProduct);
     },
-    
   },
   extraReducers: {
     [getProductsAsync.fulfilled]: (state, action) => {

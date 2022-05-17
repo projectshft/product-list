@@ -28,11 +28,13 @@ const ContentDisplay = () => {
 
   const productDataFiltered = productDataMapped.filter(data => data.props.children.props.children[3].props.children[1].includes(searchTerm))
 
-  // const toSearchOrNotToSearch = () => {
-  //   if (searchTerm === '') {
+  let returnedJSX = ''
 
-  //   }
-  // }
+  if (searchTerm === 0 || searchTerm === '') {
+    returnedJSX = productDataMapped
+  } else {
+    return returnedJSX = productDataFiltered
+  }
 
   
 
@@ -40,7 +42,7 @@ const ContentDisplay = () => {
     <div>
       <div className="container-fluid">
         <div className="row">
-            {productDataFiltered}
+            {returnedJSX}
         </div>
       </div>
     </div>

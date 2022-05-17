@@ -6,13 +6,24 @@ const SearchBar = () => {
   
   const searchByCategory = async (e) => {
     const value = e.target.value;
-    const url = `http://localhost:8000/products?category=${value}`
-    await fetch(url, {
-      method: 'GET', 
-      mode: 'cors'
-    })
-    .then((res) => res.json())
-    .then((data) => dispatch(fetchProducts(data)));
+    
+    if (value === '') {
+        const url = `http://localhost:8000/products`
+        await fetch(url, {
+          method: 'GET', 
+          mode: 'cors'
+        })
+        .then((res) => res.json())
+        .then((data) => dispatch(fetchProducts(data)));
+    } else {
+          const url = `http://localhost:8000/products?category=${value}`
+        await fetch(url, {
+          method: 'GET', 
+          mode: 'cors'
+        })
+        .then((res) => res.json())
+        .then((data) => dispatch(fetchProducts(data)));
+    }
   }
 
   const categories = ['Baby', 'Beauty', 'Books', 'Clothing', 'Computers', 'Electronics', 'Games', 'Grocery', 'Home', 'Jewelry', 'Kids', 'Movies', 'Music', 'Outdoors', 'Shoes', 'Sports', 'Tools', 'Toys'];

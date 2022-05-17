@@ -1,10 +1,10 @@
-const page = (state = 0, action) => {
+const search = (state = 0, action) => {
   switch (action.type) {
-    case 'PAGE_CHANGE':
+    case 'SEARCH_TERM':
       return state = action.payload
     default:
       return state;
   }
 }
 
-export default page;
+export default search;

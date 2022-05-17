@@ -6,14 +6,14 @@ const fetchProducts = (products) => {
   }
 }
 
-const changePages = (num) => {
+const searchTerm = (term) => {
   return {
-    type: 'PAGE_CHANGE',
-    payload: num
+    type: 'SEARCH_TERM',
+    payload: term
   }
 }
 
 export {
   fetchProducts,
-  changePages
+  searchTerm
 }

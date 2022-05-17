@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { ReactReduxContext } = require("react-redux");
 // const faker = require("faker");
 const {Product, Review} = require("../product");
 
@@ -73,6 +74,10 @@ router.get("/reviews/:review", async (req, res) => {
     if (err) throw err;
     res.send(review);
   }).clone().catch(function(err){ console.log(err)})
+})
+
+router.get("/products", async (req, res) => {
+  await Product.find({$regex: req.query})
 })
 
 // GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.

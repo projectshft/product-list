@@ -1,5 +1,6 @@
 import { fetchProducts } from "../Redux/actions";
 import { useDispatch } from "react-redux";
+import { searchTerm } from "../Redux/actions";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const SearchBar = () => {
   const categories = ['Baby', 'Beauty', 'Books', 'Clothing', 'Computers', 'Electronics', 'Games', 'Grocery', 'Home', 'Jewelry', 'Kids', 'Movies', 'Music', 'Outdoors', 'Shoes', 'Sports', 'Tools', 'Toys'];
 
   const changeHandler = (e) => {
-    console.log(e.target.value)
+    dispatch(searchTerm(e.target.value))
   };
 
   return (
@@ -43,7 +44,7 @@ const SearchBar = () => {
           <label id="categories-label" className="float-right" htmlFor="categories">Choose a Category: </label>
         </div>
         <div className="col-sm-2">
-          <select className="float-right" id="categories" onChange={changeHandler}>
+          <select className="float-right" id="categories" onChange={searchByCategory}>
             <option value='' key="0">All</option>
             {categories.map((cat, index) => {
               return <option value={`${cat}`} key={index + 1}>{cat}</option>

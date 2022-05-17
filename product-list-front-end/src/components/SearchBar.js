@@ -9,9 +9,11 @@ const SearchBar = () => {
   return (
   <div>
     <input type="text" placeholder="Search"/>
-    <select>
+    <label htmlFor="categories">Choose a Category: </label>
+    <select id="categories">
+      <option value='' key="0">All</option>
       {categories.map((cat, index) => {
-        return <option value={`${cat}`} key={index}>{cat}</option>
+        return <option value={`${cat}`} key={index + 1}>{cat}</option>
       })}
     </select>
   </div>

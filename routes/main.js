@@ -50,6 +50,33 @@ router.get("/products", (req, res, next) => {
           res.send(products);
         });
       });
+  } else if(req.query.price){
+    //sort by highest or lowest price
+    const factor = req.query.price;
+
+    if(factor == "highest" || factor == "lowest"){
+      let order = null;
+      
+      if(factor == "highest"){
+        order = "descending";
+      };
+
+      if(factor == "lowest"){
+        order = "ascending";
+      };
+
+      Product.find({})
+        .sort({ price: order })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .exec((err, products) => {
+          Product.count().exec((err, count) => {
+            if (err) return next(err);
+
+            res.send(products);
+          });
+        });
+    }
   } else {
     //get all products
     Product.find({})

@@ -90,6 +90,23 @@ router.get("/products/:product/reviews", (req, res, next) => {
 /* ===================
   POST new product
   =================== */
+router.post("/products", (req, res, next) => {
+  const info = req.body;
+  if(info.name) {
+    const product = new Product({
+      name: info.name,
+      category: info.category,
+      price: info.price,
+      image: info.image,
+      reviews: []
+    });
+
+    product.save()
+    res.end("Product saved.")
+  } else {
+    res.end("Cannot send empty post request")
+  }
+});
 
 /* ===========================
   POST new review to a product

@@ -36,16 +36,34 @@ router.get("/products", (req, res, next) => {
 
   const page = req.query.page || 1;
 
-  Product.find({})
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
+  //optional category search
+  if(req.query.category){
+    const category = req.query.category[0].toUpperCase() + req.query.category.substring(1);
 
-        res.send(products);
+    Product.find({ category: category })
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
+
+          res.send(products);
+        });
       });
-    });
+  } else {
+    //get all products
+    Product.find({})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
+  
+          res.send(products);
+        });
+      });
+  }
+
 });
 
 /* ===================

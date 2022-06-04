@@ -90,7 +90,7 @@ router.get("/products/:product/reviews", (req, res, next) => {
 /* ===================
   POST new product
   =================== */
-router.post("/products", (req, res, next) => {
+router.post("/products", (req, res) => {
   const info = req.body;
   if(info.name) {
     const product = new Product({
@@ -104,13 +104,37 @@ router.post("/products", (req, res, next) => {
     product.save()
     res.end("Product saved.")
   } else {
-    res.end("Cannot send empty post request")
+    res.end(`Cannot send empty post request. Please provide at least a "name" key.`)
   }
 });
 
 /* ===========================
   POST new review to a product
   ========================== */
+router.post("/products/:product/reviews", (req, res, next) => {
+  const { product } = req.params;
+  const info = req.body;
+  if(info.username && info.text) {
+    const review = new Review({
+      username: info.username,
+      text: info.text,
+      product: product
+    });
+    
+    review.save();
+
+    Product.findOne({ _id: product }, (err, product) => {
+      if (err) return next(err);
+
+      product.reviews.push(review);
+      product.save();
+    });
+
+    res.end("Review saved.")
+  } else {
+    res.end(`Cannot post empty review. Please provide "username" and "text" keys.`);
+  }
+});
 
 /* ===================
   DELETE product by id

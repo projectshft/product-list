@@ -156,5 +156,18 @@ router.delete("/products/:product", (req, res, next) => {
 /* ===================
   DELETE review by id
   =================== */
+router.delete("/reviews/:review", (req, res, next) => {
+  const { review } = req.params;
+
+  Review.findOne({ _id: review }, (err, review) => {
+    if (err) return next(err);
+
+    review.remove((err) => {
+      if (err) return next(err);
+
+      res.end(`Successfully deleted ${review.username}'s review.`)
+    })
+  })
+})
 
 module.exports = router;

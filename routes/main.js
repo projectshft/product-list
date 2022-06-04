@@ -139,6 +139,19 @@ router.post("/products/:product/reviews", (req, res, next) => {
 /* ===================
   DELETE product by id
   =================== */
+router.delete("/products/:product", (req, res, next) => {
+  const { product } = req.params;
+
+  Product.findOne({ _id: product }, (err, product) => {
+    if (err) return next(err);
+
+    product.remove((err) => {
+      if (err) return next(err);
+
+      res.end(`Successfully deleted ${product.name}.`)
+    })
+  })
+});
 
 /* ===================
   DELETE review by id

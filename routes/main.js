@@ -33,14 +33,27 @@ router.get("/generate-fake-data", (req, res, next) => {
 
 router.get("/products", (req, res, next) => {
   const perPage = 9;
-
   const page = req.query.page || 1;
+  let category = req.query.category;
+  const factor = req.query.price;
+  const search = req.query.query;
 
-  //optional category search
-  if(req.query.category){
-    const category = req.query.category[0].toUpperCase() + req.query.category.substring(1);
+  let order = null;
+  if(factor == "highest"){
+    order = "descending";
+  };
 
-    Product.find({ category: category })
+  if(factor == "lowest"){
+    order = "ascending";
+  };
+
+  if(category){
+    category = category.replace(/^./, category[0].toUpperCase())
+  }
+
+  if(category && factor && !search){
+    Product.find({category: category})
+      .sort({price: order})
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec((err, products) => {
@@ -50,45 +63,111 @@ router.get("/products", (req, res, next) => {
           res.send(products);
         });
       });
-  } else if(req.query.price){
-    //sort by highest or lowest price
-    const factor = req.query.price;
+  } else if(category && !factor && !search) {
+    Product.find({category: category})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
 
-    if(factor == "highest" || factor == "lowest"){
-      let order = null;
-      
-      if(factor == "highest"){
-        order = "descending";
-      };
+          res.send(products);
+        });
+      });
+  } else if(factor && !category && !search) {
+    Product.find({})
+      .sort({price: order})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
 
-      if(factor == "lowest"){
-        order = "ascending";
-      };
+          res.send(products);
+        });
+      });
+  } else if(search && !factor && !category){
+    Product.find({ $text: { $search: search, $caseSensitive: false }})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
 
-      Product.find({})
-        .sort({ price: order })
+          res.send(products);
+        });
+      });
+  } else if(category && factor && search) {
+    Product.find({ $and: [
+      {
+        $text: {
+          $search: search,
+          $caseSensitive: false
+        }
+      },
+      {
+        category: category
+      }]
+    })
+      .sort({price: order})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
+
+          res.send(products);
+        });
+      });
+  } else if(category && search && !factor) {
+    Product.find({ $and: [
+        {
+          $text: {
+            $search: search,
+            $caseSensitive: false
+          }
+        },
+        {
+          category: category
+        }]
+      })
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
+
+          res.send(products);
+        });
+      });
+  } else if(factor && search && !category) {
+    Product.find({
+      $text: {
+        $search: search,
+        $caseSensitive: false
+      }
+    })
+      .sort({price: order})
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec((err, products) => {
+        Product.count().exec((err, count) => {
+          if (err) return next(err);
+
+          res.send(products);
+        });
+      });
+  } else {
+    Product.find({})
         .skip(perPage * page - perPage)
         .limit(perPage)
         .exec((err, products) => {
           Product.count().exec((err, count) => {
             if (err) return next(err);
-
+  
             res.send(products);
           });
         });
-    }
-  } else {
-    //get all products
-    Product.find({})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        Product.count().exec((err, count) => {
-          if (err) return next(err);
-  
-          res.send(products);
-        });
-      });
   }
 
 });

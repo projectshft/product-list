@@ -66,6 +66,26 @@ router.get("/products/:product", (req, res, next) => {
 /* =====================================
   GET all reviews for a product (limit 4)
   ===================================== */
+router.get("/products/:product/reviews", (req, res, next) => {
+  const { product } = req.params;
+  const perPage = 4;
+  const page = req.query.page || 1;
+ 
+  Product.findOne({ _id: product })
+    .populate({
+      path: "reviews",
+      options: { skip: perPage * page - perPage, limit: perPage }
+    })
+    .exec((err, returnProduct) => {
+      if (err) return next(err);
+  
+      if(returnProduct.reviews) {
+        res.send(returnProduct.reviews);
+      } else {
+        res.write("No reviews yet.")
+      }
+    });
+});
 
 /* ===================
   POST new product

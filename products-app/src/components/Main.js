@@ -30,9 +30,11 @@ function Main (props) {
     return products[0].map((product) => {
       return (
         <div className="card product-div col-lg-3" key={product._id}>
+          <br/>
           <p>Category: <strong>{product.category}</strong></p>
-          <p>${product.price}</p>
-          <img src={product.image} alt="Product Here" />
+          <p className="price">${product.price}</p>
+          <img className="product-image" src={product.image} alt="Product Here" />
+          <br />
           <h3>{product.name}</h3>
         </div>
       )

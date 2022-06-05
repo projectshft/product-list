@@ -1,17 +1,41 @@
 import Dropdown from 'react-bootstrap/Dropdown'
 import { useDispatch } from 'react-redux';
-import { sortCategory } from '../actions';
+import { sortProducts } from '../actions';
 
 
 const CategoryDrop = (props) => {
   const dispatch = useDispatch();
+  const price = props.price;
 
   const handleClick = (e) => {
     const category = e.target.innerHTML;
 
-    dispatch(sortCategory(category));
-    props.setPages(1);
-    props.setPage(1)
+    if(price !== ""){
+      dispatch(sortProducts(price, category));
+      props.setCat(category)
+      props.setPages(1);
+      props.setPage(1);
+    } else {
+      dispatch(sortProducts(category));
+      props.setCat(category)
+      props.setPages(1);
+      props.setPage(1);
+    }
+
+  };
+
+  const handleNone = () => {
+    if(price !== ""){
+      dispatch(sortProducts(price));
+      props.setCat("")
+      props.setPages(10);
+      props.setPage(1);
+    } else {
+      dispatch(sortProducts());
+      props.setCat("")
+      props.setPages(10);
+      props.setPage(1);
+    }
   }
   return (
     <div>
@@ -21,6 +45,7 @@ const CategoryDrop = (props) => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
+          <Dropdown.Item onClick={handleNone}>None</Dropdown.Item>
           <Dropdown.Item onClick={handleClick}>Electronics</Dropdown.Item>
           <Dropdown.Item onClick={handleClick}>Computers</Dropdown.Item>
           <Dropdown.Item onClick={handleClick}>Automotive</Dropdown.Item>

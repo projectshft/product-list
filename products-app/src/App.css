@@ -64,3 +64,13 @@
   text-decoration: underline;
   color: black;
 }
+
+.price {
+  color: green;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.product-image {
+  outline: 2px black solid;
+}

@@ -1,9 +1,15 @@
 import Dropdown from 'react-bootstrap/Dropdown'
+import { useDispatch } from 'react-redux';
+import { sortCategory } from '../actions';
 
 
 const CategoryDrop = () => {
+  const dispatch = useDispatch();
+
   const handleClick = (e) => {
-    console.log(e)
+    const category = e.target.innerHTML;
+
+    dispatch(sortCategory(category));
   }
   return (
     <div>
@@ -13,9 +19,18 @@ const CategoryDrop = () => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item onClick={handleClick}>Action</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Electronics</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Computers</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Automotive</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Sports</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Clothing</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Jewelery</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Garden</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Home</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Health</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Baby</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Games</Dropdown.Item>
+          <Dropdown.Item onClick={handleClick}>Toys</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </div>

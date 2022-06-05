@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS, SORT_PRODUCTS } from "../actions";
+import { FETCH_PRODUCTS, SORT_CATEGORY, SORT_PRODUCTS } from "../actions";
 import axios from "axios";
 
 const defaultState = [];
@@ -17,7 +17,11 @@ const productsReducer = (state = defaultState, action) => {
     case FETCH_PRODUCTS:
       return state;
     case SORT_PRODUCTS:
-      return [action.payload.data];
+      const count = action.payload.data.length;
+      return [action.payload.data, {count: count}];
+    case SORT_CATEGORY:
+      const newCount = action.payload.data.length;
+      return [action.payload.data, {count: newCount}];
     default:
       return state;
   }

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 function Main () {
   fetchProducts()
   const products = useSelector((state) => state.products);
+  // const count = useSelector((state) => state.products[1].count);
   const loadProducts = () => {
     return products[0].map((product) => {
       return (

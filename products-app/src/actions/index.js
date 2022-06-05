@@ -2,7 +2,8 @@ import axios from "axios";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const SORT_PRODUCTS = "SORT_PRODUCTS";
-export const SORT_CATEGORY = "SORT_CATEGORY"
+export const SORT_CATEGORY = "SORT_CATEGORY";
+export const CHANGE_PAGE = "CHANGE_PAGE";
 
 const ROOT_URL = "http://localhost:8000/products";
 
@@ -30,6 +31,17 @@ export function sortCategory(category) {
 
   return {
     type: SORT_CATEGORY,
+    payload: request
+  }
+}
+
+export function changePage(pageNum) {
+  const request = axios.get(`${ROOT_URL}?page=${pageNum}`).catch(error => {
+    alert(error)
+  });
+
+  return {
+    type: CHANGE_PAGE,
     payload: request
   }
 }

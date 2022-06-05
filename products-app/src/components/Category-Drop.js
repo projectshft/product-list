@@ -3,13 +3,15 @@ import { useDispatch } from 'react-redux';
 import { sortCategory } from '../actions';
 
 
-const CategoryDrop = () => {
+const CategoryDrop = (props) => {
   const dispatch = useDispatch();
 
   const handleClick = (e) => {
     const category = e.target.innerHTML;
 
     dispatch(sortCategory(category));
+    props.setPages(1);
+    props.setPage(1)
   }
   return (
     <div>

@@ -2,14 +2,18 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import { useDispatch } from 'react-redux';
 import { sortProducts } from '../actions';
 
-const PriceDrop = () => {
+const PriceDrop = (props) => {
   const dispatch = useDispatch();
   const highToLow = () => {
     dispatch(sortProducts("highest"));
+    props.setPages(10);
+    props.setPage(1);
   };
 
   const lowToHigh = () => {
     dispatch(sortProducts("lowest"));
+    props.setPages(10);
+    props.setPage(1);
   };
 
   return (

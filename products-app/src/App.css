@@ -49,3 +49,18 @@
 .add-margin {
   margin-left: 30px;
 }
+
+.pages {
+  width: 250px;
+}
+
+.page {
+  margin: 0px;
+  width: 4px;
+  text-decoration: none;
+}
+
+.current-page {
+  text-decoration: underline;
+  color: black;
+}

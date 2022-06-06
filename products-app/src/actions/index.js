@@ -64,4 +64,15 @@ export function changePage(pageNum) {
     type: CHANGE_PAGE,
     payload: request
   }
+};
+
+export function changePageAndPrice(num, price) {
+  const request = axios.get(`${ROOT_URL}?page=${num}&price=${price}`).catch(error => {
+    alert(error);
+  });
+
+  return {
+    type: CHANGE_PAGE,
+    payload: request
+  }
 }

@@ -35,10 +35,9 @@ function App() {
   
   return (
     <div id="products" className="App">
-      <br />
       <Search setPages={handlePagesChange} setPage={handlePageChange} setCat={handleCategoryChange} category={currentCat} setPrice={handlePriceSort} price={priceSort} setQuery={handleQueryChange} query={query} />
       <br />
-      <Main pageNum={pageNum} pagesNum={pagesNum} setPages={handlePagesChange} setPage={handlePageChange} setQuery={handleQueryChange} query={query} />
+      <Main pageNum={pageNum} pagesNum={pagesNum} setPages={handlePagesChange} setPage={handlePageChange} setQuery={handleQueryChange} query={query} category={currentCat} price={priceSort} />
       <br />
     </div>
   );

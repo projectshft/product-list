@@ -40,6 +40,8 @@
 
 .product-div {
   margin: 20px 20px 40px;
+  outline: 1px green solid;
+  padding-bottom: 15px;
 }
 
 .products {

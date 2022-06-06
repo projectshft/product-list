@@ -1,17 +1,24 @@
-import { changePage, fetchProducts, sortProducts } from "../actions/index"
+import { changePage, changePageAndPrice, fetchProducts, sortProducts } from "../actions/index"
 import { useDispatch, useSelector } from "react-redux";
 
 function Main (props) {
   const pageNum = props.pageNum;
   const query = props.query;
+  const price = props.price;
   
   const dispatch = useDispatch();
   let pages = [];
 
   const handleClick = (e) => {
     const num = parseInt(e.target.innerHTML);
-    dispatch(changePage(num));
-    props.setPage(num)
+    
+    if(price !== ""){
+      dispatch(changePageAndPrice(num, price));
+      props.setPage(num)
+    } else {
+      dispatch(changePage(num));
+      props.setPage(num);
+    }
   };
 
   const handleRemoveQuery = () => {

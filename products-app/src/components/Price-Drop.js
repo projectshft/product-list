@@ -5,14 +5,26 @@ import { sortProducts } from '../actions';
 const PriceDrop = (props) => {
   const dispatch = useDispatch();
   const category = props.category;
+  const query = props.query;
+  console.log(query)
 
   const highToLow = () => {
-    if(category !== ""){
+    if(category !== "" && query !== ""){
+      dispatch(sortProducts("highest", category, query));
+      props.setPrice("highest")
+      props.setPages(1);
+      props.setPage(1);
+    } else if(category !== "" && query === ""){
       dispatch(sortProducts("highest", category));
       props.setPrice("highest")
       props.setPages(1);
       props.setPage(1);
-    } else {
+    } else if(category === "" && query !== ""){
+      dispatch(sortProducts("highest", undefined, query));
+      props.setPrice("highest")
+      props.setPages(1);
+      props.setPage(1);
+    } else if(category === "" && query === ""){
       dispatch(sortProducts("highest"));
       props.setPrice("highest")
       props.setPages(10);
@@ -21,12 +33,22 @@ const PriceDrop = (props) => {
   };
 
   const lowToHigh = () => {
-    if(category !== ""){
+    if(category !== "" && query !== ""){
+      dispatch(sortProducts("lowest", category, query));
+      props.setPrice("lowest")
+      props.setPages(1);
+      props.setPage(1);
+    } else if(category === "" && query !== ""){
+      dispatch(sortProducts("lowest", undefined, query));
+      props.setPrice("lowest")
+      props.setPages(1);
+      props.setPage(1);
+    } else if(category !== "" && query === ""){
       dispatch(sortProducts("lowest", category));
       props.setPrice("lowest")
       props.setPages(1);
       props.setPage(1);
-    } else {
+    } else if(category === "" && query === ""){
       dispatch(sortProducts("lowest"));
       props.setPrice("lowest")
       props.setPages(10);
@@ -35,14 +57,24 @@ const PriceDrop = (props) => {
   };
 
   const handleNone = () => {
-    if(category !== ""){
-      dispatch(sortProducts(undefined, category));
-      props.setPrice("")
+    if(category !== "" && query !== ""){
+      dispatch(sortProducts(undefined, category, query));
+      props.setPrice("");
       props.setPages(1);
       props.setPage(1);
-    } else {
+    } else  if(category === "" && query !== ""){
+      dispatch(sortProducts(undefined, undefined, query));
+      props.setPrice("");
+      props.setPages(1);
+      props.setPage(1);
+    } else if(category !== "" && query === ""){
+      dispatch(sortProducts(undefined, category, undefined));
+      props.setPrice("");
+      props.setPages(1);
+      props.setPage(1);
+    } else if(category === "" && query === ""){
       dispatch(sortProducts());
-      props.setPrice("")
+      props.setPrice("");
       props.setPages(10);
       props.setPage(1);
     }

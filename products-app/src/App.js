@@ -11,6 +11,7 @@ function App() {
   const [pagesNum, setPagesNum] = useState(10);
   const [currentCat, setCategory] = useState("");
   const [priceSort, setPrice] = useState("");
+  const [query, setQuery] = useState("");
 
   const handlePagesChange = (num) => {
     setPagesNum(num)
@@ -26,14 +27,18 @@ function App() {
 
   const handlePriceSort = (price) => {
     setPrice(price);
+  };
+
+  const handleQueryChange = (query) => {
+    setQuery(query);
   }
   
   return (
     <div id="products" className="App">
       <br />
-      <Search setPages={handlePagesChange} setPage={handlePageChange} setCat={handleCategoryChange} category={currentCat} setPrice={handlePriceSort} price={priceSort} />
+      <Search setPages={handlePagesChange} setPage={handlePageChange} setCat={handleCategoryChange} category={currentCat} setPrice={handlePriceSort} price={priceSort} setQuery={handleQueryChange} query={query} />
       <br />
-      <Main pageNum={pageNum} pagesNum={pagesNum} setPages={handlePagesChange} setPage={handlePageChange} />
+      <Main pageNum={pageNum} pagesNum={pagesNum} setPages={handlePagesChange} setPage={handlePageChange} setQuery={handleQueryChange} query={query} />
       <br />
     </div>
   );

@@ -12,21 +12,41 @@ export function fetchProducts() {
   }
 }
 
-export function sortProducts(factor, category) {
+export function sortProducts(factor, category, query) {
   let request = null;
 
-  if(factor === undefined && category === undefined) {
+  if(factor === undefined && category === undefined && query === undefined) {
     request = axios.get(`${ROOT_URL}`).catch(error => {
       alert(error);
     });
-  } else if(factor !== undefined && category === undefined) {
+  } else if(factor !== undefined && category === undefined && query === undefined) {
     request = axios.get(`${ROOT_URL}?price=${factor}`).catch(error => {
      alert(error);
     });
-  } else if(factor === undefined && category !== undefined) {
-    request = axios.get(`${ROOT_URL}?category=${category}`)
-  } else if(factor !== undefined && category !== undefined) {
-    request = axios.get(`${ROOT_URL}?price=${factor}&category=${category}`)
+  } else if(factor === undefined && category === undefined && query !== undefined) {
+    request = axios.get(`${ROOT_URL}?query=${query}`).catch(error => {
+      alert(error);
+    })
+  } else if(factor === undefined && category !== undefined && query === undefined) {
+    request = axios.get(`${ROOT_URL}?category=${category}`).catch(error => {
+      alert(error);
+    });
+  } else if(factor !== undefined && category !== undefined && query === undefined) {
+    request = axios.get(`${ROOT_URL}?price=${factor}&category=${category}`).catch(error => {
+      alert(error);
+    })
+  } else if(factor !== undefined && category === undefined && query !== undefined) {
+    request = axios.get(`${ROOT_URL}?price=${factor}&query=${query}`).catch(error => {
+      alert(error);
+    })
+  } else if(factor === undefined && category !== undefined && query !== undefined) {
+    request = axios.get(`${ROOT_URL}?category=${category}&query=${query}`).catch(error => {
+      alert(error);
+    })
+  } else {
+    request = axios.get(`${ROOT_URL}?price=${factor}&category=${category}&query=${query}`).catch(error => {
+      alert(error);
+    })
   }
 
   return {

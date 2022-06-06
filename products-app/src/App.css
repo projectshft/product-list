@@ -74,3 +74,18 @@
 .product-image {
   outline: 2px black solid;
 }
+
+.search-bar {
+  margin-right: 15px;
+}
+
+.no-results {
+  margin-right: 180px;
+  font-style: italic;
+  margin-bottom: 500px;
+}
+
+.query-div {
+  margin-bottom: 40px;
+  padding-right: 190px;
+}

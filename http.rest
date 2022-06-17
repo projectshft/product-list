@@ -1,1 +1,15 @@
-GET http://localhost:8000/products
+DELETE http://localhost:8000/reviews/62abcd962f62eeae0d357c0e
+# Content-Type: application/json
+
+# {
+#   "category": "testing",
+#   "name": "cool product",
+#   "price": 14,
+#   "image": "124jkls"
+# }
+
+# 62ab3186f179eb500ea1eb75
+# 62abcd962f62eeae0d357c0e
+
+# 62ac82bf1abfa97307834d30
+

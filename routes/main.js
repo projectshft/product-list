@@ -22,11 +22,32 @@ router.get("/generate-fake-data", (req, res, next) => {
 router.get("/products", (req, res, next) => {
   const pageNum = req.query.page || 1;
   const amountToSkip = pageNum * 9 - 9;
+  const category = req.query.category;
+  const priceSorting = req.query.sort;
+  let priceParam = "";
   
-    Product.find().skip(amountToSkip).limit(9).exec((err, products) => {
+  if (priceSorting == "highest") {
+    priceParam = "-price";
+   
+  } else if (priceSorting == "lowest") {
+    priceParam = "price";
+  }
+
+  // try to figure out case sensitivity
+  if (category) {
+    Product.find({category: category}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
       if (err) next(err);
       res.send(products);
     });
+    
+  };
+
+  if (!category) {
+    Product.find().skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
+      if (err) next(err);
+      res.send(products);
+    });
+  };  
 });
 
 router.get("/products/:product", (req, res, next) => {

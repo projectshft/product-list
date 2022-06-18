@@ -24,35 +24,36 @@ router.get("/products", (req, res, next) => {
   const amountToSkip = pageNum * 9 - 9;
   
     Product.find().skip(amountToSkip).limit(9).exec((err, products) => {
-      if (err) {
-        next(err)
-      }
-      else {
-        res.send(products)
-      }
+      if (err) next(err);
+      res.send(products);
     });
 });
 
-router.get("/products/:product", (req, res) => {
+router.get("/products/:product", (req, res, next) => {
   const productId = req.params.product;
   Product.findById(productId).exec((err, product) => {
-    if (err) res.status(400).send(err.message);
-
+    if (err) next(err);
     res.send(product);
   });
 });
 
-router.get("/products/:product/reviews", (req, res) => {
+router.get("/products/:product/reviews", (req, res, next) => {
   const productId = req.params.product;
+  const pageNum = req.query.page || 1;
+  const amountToSkip = pageNum * 4 - 4;
+
   Product.findById(productId).exec((err, product) => {
-    if (err) res.status(400).send(err.message);
-    res.send(product.reviews);
+    if (err) next(err);
+
+    const reviews = product.reviews;
+    const reviewsToReturn = reviews.slice(amountToSkip, pageNum * 4);
+
+    res.send(reviewsToReturn);
   });
 });
 
-//ADD PAGINATION
 
-router.post("/products", (req, res) => {
+router.post("/products", (req, res, next) => {
   if (req.body.category && req.body.name && req.body.price && req.body.image) {
     Product.create({
       category: req.body.category,
@@ -62,11 +63,11 @@ router.post("/products", (req, res) => {
       reviews: req.body.reviews
     })
   } else {
-    res.status(400).send('all fields must be filled out')
+    next(err);
   }
 });
 
-router.post("/products/:product/reviews", (req, res) => {
+router.post("/products/:product/reviews", (req, res, next) => {
   const productId = req.params.product;
 
   if (req.body.username && req.body.text) {
@@ -81,22 +82,24 @@ router.post("/products/:product/reviews", (req, res) => {
    
   }
   else {
-    res.status(400).send('all fields must be filled out')
+    next(err);
   }
 });
 
-router.delete("/products/:product", (req, res) => {
+router.delete("/products/:product", (req, res, next) => {
   const productId = req.params.product;
 
   Product.deleteOne({_id: productId}).exec((err, product) => {
+    if (err) next(err);
     res.send("product has been removed");
   });
 })
 
-router.delete("/reviews/:review", (req, res) => {
+router.delete("/reviews/:review", (req, res, next) => {
   const reviewId = req.params.review;
 
   Product.find({'reviews._id': reviewId}).exec((err, product) => {
+    if (err) next(err);
     product[0].reviews.pull(reviewId);
     res.send(product);
   });

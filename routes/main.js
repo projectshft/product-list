@@ -1,7 +1,25 @@
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router(); 
 const faker = require("faker");
 const Product = require("../models/product");
 const Review = require("../models/review");
+
+router.param("product", function(req, res, next, productId) {
+    Product.findById(productId, (err, product) => {
+        if(err) {
+            throw err;
+        };
+        if(!product) {
+            res.status(404);
+            res.send("product not found");
+        } else {
+            console.log(productId);
+            console.log(product);
+            req.product = product;
+            next();
+        };
+    });
+});
 
 router.get("/generate-fake-data", (req, res, next) => {
     for(let i = 0; i < 90; i++) {
@@ -48,21 +66,26 @@ router.get("/products", (req, res, next) => {
 });
 
 router.get("/products/:product", (req, res, next) => {
-    res.send('in /products/:product get route');
-    let productId = req.params.product;
-    if(!productId) {
-        res.status(404);
-        res.send("Product not found");
-    }
+    // res.status(200).send(JSON.stringify(req.product));
+    // res.status(200).send('test');
+    res.status(200).send(req.product.name);
+    // console.log(res.status);
+    // res.send('in /products/:product get route')
+    // let productId = req.params.product;
+    // if(!productId) {
+    //     res.status(404);
+    //     res.send("Product not found");
+    // }
 });
 
 router.get("/products/:product/reviews", (req, res, next) => {
-    res.send('in /products/:product/reviews get route');
+    res.send(`in /products/:product/reviews get route, product is ${req.product}`);
+    res.send(`in /products/:product/reviews get route, product is ${req.product}`);
     let productId = req.params.product;
-    if(!productId) {
-        res.status(404);
-        res.send("Product not found");
-    }
+    // if(!productId) {
+    //     res.status(404);
+    //     res.send("Product not found");
+    // }
 });
 
 router.post("/products", (req, res, next) => {
@@ -70,21 +93,21 @@ router.post("/products", (req, res, next) => {
 });
 
 router.post("/products/:product/reviews", (req, res, next) => {
-    res.send('in /products/:product/reviews Post route');
-    let productId = req.params.product;
-    if(!productId) {
-        res.status(404);
-        res.send("Product not found");
-    }
+    res.send(`in /products/:product/reviews Post route, product is ${req.product}`);
+    // let productId = req.params.product;
+    // if(!productId) {
+    //     res.status(404);
+    //     res.send("Product not found");
+    // }
 });
 
 router.delete("/products/:product", (req, res, next) => {
-    res.send('in /products/:product delete route');
-    let productId = req.params.product;
-    if(!productId) {
-        res.status(404);
-        res.send("Product not found");
-    }
+    res.send(`in /products/:product delete route, product is ${req.product}`);
+    // let productId = req.params.product;
+    // if(!productId) {
+    //     res.status(404);
+    //     res.send("Product not found");
+    // }
 });
 
 router.delete("/reviews/:review", (req, res, next) => {

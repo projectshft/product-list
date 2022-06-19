@@ -1,4 +1,4 @@
-GET  http://localhost:8000/products?category=Beauty
+GET  http://localhost:8000/products?category=Beauty&query=Granite
 # Content-Type: application/json
 
 # {

@@ -23,6 +23,7 @@ router.get("/products", (req, res, next) => {
   const pageNum = req.query.page || 1;
   const amountToSkip = pageNum * 9 - 9;
   const category = req.query.category;
+  const query = req.query.query;
   const priceSorting = req.query.sort;
   let priceParam = "";
   
@@ -34,20 +35,26 @@ router.get("/products", (req, res, next) => {
   }
 
   // try to figure out case sensitivity
-  if (category) {
-    Product.find({category: category}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
+  if (category && query) {
+    Product.find({category: category, "name": {$regex: query}}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
       if (err) next(err);
-      res.send(products);
-    });
-    
+      res.send(products)
+    })
   };
 
-  if (!category) {
-    Product.find().skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
-      if (err) next(err);
+  if (!category && query) {
+    Product.find({"name": {$regex: query}}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => { 
+      if (err) next (err);
       res.send(products);
     });
-  };  
+  }; 
+  
+  if (!category && !query) {
+    Product.find().skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => { 
+      if (err) next (err);
+      res.send(products);
+    });
+  }
 });
 
 router.get("/products/:product", (req, res, next) => {

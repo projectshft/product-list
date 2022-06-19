@@ -7,6 +7,7 @@ const Review = require("../models/review");
 router.param("product", function(req, res, next, productId) {
     Product.findById(productId, (err, product) => {
         if(err) {
+            res.status(500).send('There was an error with the format of your request');
             throw err;
         };
         if(!product) {

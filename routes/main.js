@@ -110,7 +110,18 @@ router.get("/products/:product", (req, res, next) => {
 });
 
 router.get("/products/:product/reviews", (req, res, next) => {
-    res.send(`in /products/:product/reviews get route, product is ${req.product.name}`);
+    const perPage = 4
+    const page = req.query.page || 1;
+    Review.find({product: req.product._id})
+        .skip(page * perPage - perPage)
+        .limit(4)
+        .exec((err, reviews) => {
+            Review.count().exec((err, count) => {
+                if (err) return next(err);
+                res.send(reviews);
+            });
+        });
+    // res.send(`in /products/:product/reviews get route, product is ${req.product.name}`);
 });
 
 router.post("/products", (req, res, next) => {

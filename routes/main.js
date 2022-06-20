@@ -44,8 +44,23 @@ router.get("/generate-fake-data", (req, res, next) => {
         product.category = faker.commerce.department();
         product.name = faker.commerce.productName();
         product.price = faker.commerce.price();
-        product.image = "https://via.placeholder.com/205?text=Product+Image"
+        product.image = "https://via.placeholder.com/205?text=Product+Image";
 
+        let numReviews = Math.ceil(Math.random() * 20);
+        for(let j = 0; j < numReviews; j++) {
+            let review = new Review({
+                userName: faker.name.findName(),
+                text:faker.lorem.lines(1),
+                product: product._id
+            });
+            review.save((err) => {
+                if(err) {
+                    console.error(err);
+                    throw err;
+                }
+            });
+            product.reviews.push(review._id);
+        };
         product.save((err) => {
             if(err) throw err;
         });

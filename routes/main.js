@@ -14,7 +14,7 @@ router.param("product", function(req, res, next, productId) {
             res.status(404);
             res.send("product not found");
         } else {
-            console.log(product);
+            // console.log(product);
             req.product = product;
             next();
         };
@@ -31,42 +31,42 @@ router.param("review", function(req, res, next, reviewId) {
             res.status(404);
             res.send("review not found");
         } else {
-            console.log(review);
+            // console.log(review);
             req.review = review;
             next();
         };
     });
 });
 
-router.get("/generate-fake-data", (req, res, next) => {
-    for(let i = 0; i < 90; i++) {
-        let product = new Product();
-        product.category = faker.commerce.department();
-        product.name = faker.commerce.productName();
-        product.price = faker.commerce.price();
-        product.image = "https://via.placeholder.com/205?text=Product+Image";
+// router.get("/generate-fake-data", (req, res, next) => {
+//     for(let i = 0; i < 90; i++) {
+//         let product = new Product();
+//         product.category = faker.commerce.department();
+//         product.name = faker.commerce.productName();
+//         product.price = faker.commerce.price();
+//         product.image = "https://via.placeholder.com/205?text=Product+Image";
 
-        let numReviews = Math.ceil(Math.random() * 20);
-        for(let j = 0; j < numReviews; j++) {
-            let review = new Review({
-                userName: faker.name.findName(),
-                text:faker.lorem.lines(1),
-                product: product._id
-            });
-            review.save((err) => {
-                if(err) {
-                    console.error(err);
-                    throw err;
-                }
-            });
-            product.reviews.push(review._id);
-        };
-        product.save((err) => {
-            if(err) throw err;
-        });
-    }
-    res.end();
-});
+//         let numReviews = Math.ceil(Math.random() * 20);
+//         for(let j = 0; j < numReviews; j++) {
+//             let review = new Review({
+//                 userName: faker.name.findName(),
+//                 text:faker.lorem.lines(1),
+//                 product: product._id
+//             });
+//             review.save((err) => {
+//                 if(err) {
+//                     console.error(err);
+//                     throw err;
+//                 }
+//             });
+//             product.reviews.push(review._id);
+//         };
+//         product.save((err) => {
+//             if(err) throw err;
+//         });
+//     }
+//     res.end();
+// });
 
 // router.get("/products", (req, res, next) => {
 //     let page = Number(req.query.page);
@@ -98,7 +98,15 @@ router.get("/products", (req, res, next) => {
 });
 
 router.get("/products/:product", (req, res, next) => {
-    res.status(200).send(req.product);
+    req.product.populate("reviews", (err, product) => {
+        if(err) {
+            console.error(err);
+            throw err;
+        } else {
+            res.status(200).send(product);
+        }
+    });
+    // res.status(200).send(req.product);
 });
 
 router.get("/products/:product/reviews", (req, res, next) => {

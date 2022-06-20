@@ -83,7 +83,7 @@ router.get("/products", (req, res, next) => {
 });
 
 router.get("/products/:product", (req, res, next) => {
-    res.status(200).send(req.product.name);
+    res.status(200).send(req.product);
 });
 
 router.get("/products/:product/reviews", (req, res, next) => {

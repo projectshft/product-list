@@ -140,13 +140,36 @@ router.post("/products", (req, res, next) => {
                 console.error(err)
                 throw err;
             }
-        });
+            });
         res.status(200).send(newProduct);
     };
 });
 
 router.post("/products/:product/reviews", (req, res, next) => {
-    res.send(`in /products/:product/reviews Post route, product is ${req.product.name}, review is ${req.query.text}`);
+    let body = req.body;
+    if(!(body.userName && body.text)) {
+        res.status(404).send('Missing either category, name, price, or image url for product');
+    } else {
+        let newReview = new Review({
+            userName: body.userName,
+            text: body.text,
+            product: req.product._id
+        });
+        newReview.save(err => {
+            if(err) {
+                console.error(err);
+                throw err;
+            }
+        });
+        req.product.reviews.push(newReview._id);
+        req.product.save(err => {
+            if(err) {
+                console.error(err);
+                throw err;
+            }
+        });
+        res.status(200).send(newReview);
+    };
 });
 
 router.delete("/products/:product", (req, res, next) => {

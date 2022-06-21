@@ -125,7 +125,24 @@ router.get("/products/:product/reviews", (req, res, next) => {
 });
 
 router.post("/products", (req, res, next) => {
-    res.send('in /products post route');
+    let body = req.body;
+    if(!(body.category && body.name && body.price && body.image)) {
+        res.status(404).send('Missing either category, name, price, or image url for product');
+    } else {
+        let newProduct = new Product({
+            category: body.category,
+            name: body.name,
+            price: body.price,
+            image: body.image
+        });
+        newProduct.save(err => {
+            if(err) {
+                console.error(err)
+                throw err;
+            }
+        });
+        res.status(200).send(newProduct);
+    };
 });
 
 router.post("/products/:product/reviews", (req, res, next) => {

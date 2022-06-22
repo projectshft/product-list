@@ -80,21 +80,43 @@ router.param("review", function(req, res, next, reviewId) {
 
 router.get("/products", (req, res, next) => {
     const perPage = 9;
-
     // return the first page by default
     const page = req.query.page || 1;
-
-    Product.find({})
-        .skip(perPage * page - perPage)
-        .limit(perPage)
-        .exec((err, products) => {
-    // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-        Product.count().exec((err, count) => {
-            if (err) return next(err);
-
-            res.send(products);
-        }); 
+    const query = {};
+    const options = req.query.sort ? {sort: {price: req.query.sort === "lowest" ? "asc" : "desc"}} : {}
+    let regex;
+    if(req.query.category) {
+        query.category = req.query.category
+    };
+    
+    if(req.query.query) {
+        regex = new RegExp(req.query.query, 'i');
+        query.$or = [{category: regex}, {name: regex}]
+    }
+    
+    Product.find(query, {}, options).exec((err, products) => {
+        if(err) {
+            console.error(err);
+            throw(err);
+        } else {
+            Product.count().exec((err, count) => {
+                console.log("request didn't break");
+                if(err) return next(err);
+                res.send(products);
+            });
+        }
     });
+    // Product.find({})
+    //     .skip(perPage * page - perPage)
+    //     .limit(perPage)
+    //     .exec((err, products) => {
+    // // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+    //     Product.count().exec((err, count) => {
+    //         if (err) return next(err);
+
+    //         res.send(products);
+    //     }); 
+    // });
 });
 
 router.get("/products/:product", (req, res, next) => {
@@ -121,7 +143,6 @@ router.get("/products/:product/reviews", (req, res, next) => {
                 res.send(reviews);
             });
         });
-    // res.send(`in /products/:product/reviews get route, product is ${req.product.name}`);
 });
 
 router.post("/products", (req, res, next) => {
@@ -173,7 +194,18 @@ router.post("/products/:product/reviews", (req, res, next) => {
 });
 
 router.delete("/products/:product", (req, res, next) => {
-    res.send(`in /products/:product delete route, product is ${req.product.name}`);
+    Product.findByIdAndDelete(req.product._id, (err, product) => {
+        if(err) {
+            console.error(err);
+            throw err;
+        } else {
+            if(product) {
+                Review.deleteMany({product: req.product_id}).then(res.status(200).send(product));
+            } else {
+                res.status(404).send('product not found');
+            }            
+        }
+    });
 });
 
 router.delete("/reviews/:review", (req, res, next) => {

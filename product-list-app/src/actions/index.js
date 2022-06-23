@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+export const SORT_PREVIOUSLY_FETCHED_PRODUCTS = "SORT_PREVIOUSLY_FETCHED_PRODUCTS";
 
 const generateQueryParamsString = options => {
     let queryParamsString = '';
@@ -34,4 +35,10 @@ export const fetchProducts = options => {
         type: FETCH_PRODUCTS,
         payload: products
     };
+}
+export const sortPreviouslyFetchedProducts = direction => {
+    return {
+        type: SORT_PREVIOUSLY_FETCHED_PRODUCTS,
+        payload: direction
+    }
 }

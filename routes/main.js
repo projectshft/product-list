@@ -30,31 +30,52 @@ router.get("/products", (req, res, next) => {
   if (priceSorting == "highest") {
     priceParam = "-price";
    
-  } else if (priceSorting == "lowest") {
+  } 
+  else if (priceSorting == "lowest") {
     priceParam = "price";
   }
 
-  // try to figure out case sensitivity
   if (category && query) {
     Product.find({category: category, "name": {$regex: query}}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
       if (err) next(err);
-      res.send(products)
+      res.send({
+        products: products,
+        pageNum: pageNum
+      })
     })
   };
+
+  if (category && !query) {
+    Product.find({category: category}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
+      if (err) next(err);
+      res.send({
+        products: products,
+        pageNum: pageNum
+      })
+    })
+  }
 
   if (!category && query) {
     Product.find({"name": {$regex: query}}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => { 
       if (err) next (err);
-      res.send(products);
+
+      res.send({
+        products: products,
+        pageNum: pageNum
+      });
     });
   }; 
   
   if (!category && !query) {
     Product.find().skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => { 
       if (err) next (err);
-      res.send(products);
+      res.send({
+        products: products,
+        pageNum: pageNum,
+      });
     });
   }
+
 });
 
 router.get("/products/:product", (req, res, next) => {
@@ -76,7 +97,10 @@ router.get("/products/:product/reviews", (req, res, next) => {
     const reviews = product.reviews;
     const reviewsToReturn = reviews.slice(amountToSkip, pageNum * 4);
 
-    res.send(reviewsToReturn);
+    res.send({
+      reviews: reviewsToReturn,
+      pageNum: pageNum
+    });
   });
 });
 

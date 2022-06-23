@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
 
 const baseUrl = 'http://localhost:8000/products'
 const initialState = [];

@@ -4,16 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Products = () => {
   const dispatch = useDispatch();
-  const productsState = useSelector(state => state.products)
+  const productsState = useSelector(state => state.products.products)
 
   useEffect(() => {
-    dispatch(loadProducts())
+    dispatch(loadProducts());
   }, [dispatch]);
 
   const renderProducts = () => {
-    return productsState.map((product) => {
+   if (productsState) {
+    return productsState.map((product, index) => {
       return (
-        <div>
+        <div className="cell col-md-4 offset-2" key={index}>
           <div>
             <div>{product.category}</div>
             <div>{product.price}</div>
@@ -21,53 +22,13 @@ const Products = () => {
           <img src={product.image} alt="pic of product"></img>
           <div>{product.name}</div>
         </div>
-       
-       
-      )
-    })
-    
-    // return (
-    //   <div className="products">
-    //   <div className="row">
-    //     <div className="col">1</div>
-    //     <div className="col">2</div>
-    //     <div className="col">3</div>
-    //   </div>
-    //   <div className="row">
-    //     <div className="col">1</div>
-    //     <div className="col">2</div>
-    //     <div className="col">3</div>
-    //   </div>
-    //   <div className="row">
-    //     <div className="col">1</div>
-    //     <div className="col">2</div>
-    //     <div className="col">3</div>
-    //   </div>
-    // </div>
-    // )
-   
+      );
+    });
+   } 
   }
   
   return (
-    // <div className="products">
-    //   <div className="row">
-    //     <div className="col">1</div>
-    //     <div className="col">2</div>
-    //     <div className="col">3</div>
-    //   </div>
-    //   <div className="row">
-    //     <div className="col">1</div>
-    //     <div className="col">2</div>
-    //     <div className="col">3</div>
-    //   </div>
-    //   <div className="row">
-    //     <div className="col">1</div>
-    //     <div className="col">2</div>
-    //     <div className="col">3</div>
-    //   </div>
-    // </div>
-    <div>{renderProducts()}</div>
-    
+    <div className="grid">{renderProducts()}</div>
   )
 };
 

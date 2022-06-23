@@ -1,5 +1,4 @@
-import { FETCH_PRODUCTS} from "../actions";
-import { SORT_PREVIOUSLY_FETCHED_PRODUCTS } from "../actions";
+import { FETCH_PRODUCTS, FILTER_PREVIOUSLY_FETCHED_PRODUCTS, SORT_PREVIOUSLY_FETCHED_PRODUCTS} from "../actions";
 
 const productsReducer = (state, action) => {
     switch (action.type) {
@@ -12,6 +11,8 @@ const productsReducer = (state, action) => {
             } else {
                 return state.slice().sort((a, b) => a.price < b.price);
             }
+        case FILTER_PREVIOUSLY_FETCHED_PRODUCTS:
+            return state.filter(product => product.category === action.payload)
         default:
             return state;
     }

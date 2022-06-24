@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { setSearch } from '../reducers/productsSlice';
+import Dropdowns from './Dropdowns';
 
 
 const SearchBar = () => {
@@ -16,9 +17,12 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="input-group col-md">
-      <input onChange={handleChange} type="search" className="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-      <button onClick={handleClick} type="submit" className="btn btn-outline-primary">search</button>
+    <div className="row">
+      <div className="input-group col">
+        <input onChange={handleChange} type="search" className="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <button onClick={handleClick} type="submit" className="btn btn-outline-primary">search</button>
+        <Dropdowns/>
+     </div>
     </div>
   )
 }

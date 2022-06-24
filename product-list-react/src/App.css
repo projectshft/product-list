@@ -42,3 +42,7 @@
   gap: 1px;
   grid-template-columns: repeat(3, 1fr);
 }
+
+.navbar {
+  display: flex;
+}

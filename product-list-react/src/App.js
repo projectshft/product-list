@@ -9,7 +9,6 @@ function App() {
     <div className="container content">
       <div className="header row">
         <SearchBar/>
-        <Dropdowns/>
       </div>
       <div className ="products row">
         <Products/>

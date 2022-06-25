@@ -1,11 +1,13 @@
-import { useSelector } from 'react-redux';
 import './Product.css';
 
-const Product = () => {
-    // const products = useSelector(state => state.products)
+const Product = (props) => {
     return (
-        <div className="ProductList">
-            <h1>Product</h1>
+        <div className="ProductList card">
+            <div className="card-body">
+                <p className="card=text">Category:<strong>{props.category}</strong><strong>{props.price}</strong></p>
+                <img src={props.image} alt={props.name}/>
+                <h3 className="card-title">{props.name}</h3>
+            </div>
         </div>
     )
 };

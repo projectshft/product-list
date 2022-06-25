@@ -14,7 +14,6 @@ router.param("product", function(req, res, next, productId) {
             res.status(404);
             res.send("product not found");
         } else {
-            // console.log(product);
             req.product = product;
             next();
         };
@@ -31,7 +30,6 @@ router.param("review", function(req, res, next, reviewId) {
             res.status(404);
             res.send("review not found");
         } else {
-            // console.log(review);
             req.review = review;
             next();
         };
@@ -79,6 +77,7 @@ router.param("review", function(req, res, next, reviewId) {
 // });
 
 router.get("/products", (req, res, next) => {
+    console.log('hit the products GET route');
     const perPage = 9;
     // return the first page by default
     const page = req.query.page || 1;
@@ -91,16 +90,18 @@ router.get("/products", (req, res, next) => {
     
     if(req.query.query) {
         regex = new RegExp(req.query.query, 'i');
-        query.$or = [{category: regex}, {name: regex}]
+        //I wasn't sure if we were supposed to have it search for the search keyword in either the name or category of the product but this is how I would have done it if I wanted the user to be able to return products whose name or category contained the search keyword
+        // query.$or = [{category: regex}, {name: regex}]
+        query.name = regex;
+
     }
-    
+
     Product.find(query, {}, options).exec((err, products) => {
         if(err) {
             console.error(err);
             throw(err);
         } else {
             Product.count().exec((err, count) => {
-                console.log("request didn't break");
                 if(err) return next(err);
                 res.send(products);
             });

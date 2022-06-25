@@ -37,16 +37,16 @@ export const fetchProducts = options => {
         payload: products
     };
 }
-export const sortPreviouslyFetchedProducts = direction => {
-    return {
-        type: SORT_PREVIOUSLY_FETCHED_PRODUCTS,
-        payload: direction
-    }
-}
+// export const sortPreviouslyFetchedProducts = direction => {
+//     return {
+//         type: SORT_PREVIOUSLY_FETCHED_PRODUCTS,
+//         payload: direction
+//     }
+// }
 
-export const filterPreviouslyFetchedProductsByCategory = category => {
-    return {
-        type: FILTER_PREVIOUSLY_FETCHED_PRODUCTS,
-        payload: category
-    }
-};
+// export const filterPreviouslyFetchedProductsByCategory = category => {
+//     return {
+//         type: FILTER_PREVIOUSLY_FETCHED_PRODUCTS,
+//         payload: category
+//     }
+// };

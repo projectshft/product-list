@@ -1,4 +1,4 @@
-GET  http://localhost:8000/products?category=Home&query=Steel
+GET  http://localhost:8000/products?sort=highest
 # Content-Type: application/json
 
 # {

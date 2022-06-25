@@ -4,10 +4,9 @@ import { paginate } from "../reducers/productsSlice";
 const Footer = () => {
   const dispatch = useDispatch();
 
-  const params = useSelector(state => state.products.params)
-  const pageQuery = useSelector(state => state.products.pageNum);
+  const params = useSelector(state => state.products.params);
   const numOfDocs = useSelector(state => state.products.numOfDocs);
-  const numOfPages = numOfDocs / 9 - (pageQuery - 1);
+  const numOfPages = numOfDocs / 9;
 
   const renderFooter = () => {
 
@@ -37,11 +36,9 @@ const Footer = () => {
     
     if (numOfPages > 2 && numOfDocs > 9) {
       for (let i = 1; i <= numOfPages; i++) {
-        footer.push(
-  
-              <li key={i} className="page-item"><button className="page-link" onClick={clickPage}>{i}</button></li>
-    
-        )
+      footer.push(
+        <li key={i} className="page-item"><button className="page-link" onClick={clickPage}>{i}</button></li>
+        );
       };
     }
     return footer;

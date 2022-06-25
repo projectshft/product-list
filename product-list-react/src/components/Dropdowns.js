@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { filterByCategory } from "../reducers/productsSlice";
+import { filterByPrice } from "../reducers/productsSlice";
+
 const Dropdowns = () => {
   const dispatch = useDispatch();
+  const params = useSelector(state => state.products.params);
   const [categoryIsOpen, setCategoryIsOpen] = useState(false);
   const [priceSortIsOpen, setPriceSortIsOpen] = useState(false);
+ 
 
   const toggleCategoryOpen = () => {
     setCategoryIsOpen(!categoryIsOpen);
@@ -25,8 +29,14 @@ const Dropdowns = () => {
   const clickOnSortByPrice = (e) => {
     const text = e.target.innerText;
     const sortByPriceArray = text.split(" ");
-    const sortByPrice = sortByPriceArray[0];
-    console.log(sortByPrice)
+    const sortByPrice = sortByPriceArray[0].toLowerCase();
+    const paramsObj = {
+      category: params.category || "",
+      query: params.query || "",
+      sortByPrice: sortByPrice,
+      page: params.page || ""
+    }
+    dispatch(filterByPrice(paramsObj))
   }
 
   return (<div className="row">

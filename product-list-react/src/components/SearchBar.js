@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux'
-import { setSearch } from '../reducers/productsSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchSearch } from '../reducers/productsSlice';
 import Dropdowns from './Dropdowns';
 
 
@@ -13,7 +13,8 @@ const SearchBar = () => {
   }
 
   const handleClick = () => {
-    dispatch(setSearch(searchQuery))
+    // dispatch(setSearch(searchQuery))
+    dispatch(fetchSearch(searchQuery))
   }
 
   return (

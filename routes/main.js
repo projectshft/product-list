@@ -103,7 +103,10 @@ router.get("/products", (req, res, next) => {
         } else {
             Product.count().exec((err, count) => {
                 if(err) return next(err);
-                res.send(products);
+                res.send({
+                    products,
+                    options
+                });
             });
         }
     });

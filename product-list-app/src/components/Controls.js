@@ -7,7 +7,7 @@ import './Controls.css';
 
 const Controls = () => {
     const [query, setQuery] = useState('');
-    const [filter, setFilter] = useState('');
+    const [category, setCategory] = useState('');
     const [sort, setSort] = useState('');
 
     const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const Controls = () => {
     const handleSubmit = evt => {
         evt.preventDefault();
         dispatch(
-            fetchProducts({query, filter, sort})
+            fetchProducts({query, category, sort})
         );
     }
     
@@ -32,8 +32,8 @@ const Controls = () => {
             case "query":
                 setQuery(inputVal);
                 break;
-            case "filter":
-                setFilter(inputVal);
+            case "category":
+                setCategory(inputVal);
                 break;
             case "sort":
                 setSort(inputVal);
@@ -47,7 +47,7 @@ const Controls = () => {
         <form onSubmit={handleSubmit} className="ControlBarForm">
             <div className="row">
                 <input className="form-control" type="text" name="query" value={query} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder="Search Term Here" />
-                <select className="form-control" type="text" name="filter" value={filter} onChange={handleInputChange}>
+                <select className="form-control" type="text" name="category" value={category} onChange={handleInputChange}>
                     <option value="">Filter By Category</option>
                     <option value="Books">Books</option>
                     <option value="Industrial">Industrial</option>

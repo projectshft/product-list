@@ -2,13 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-
+import promise from 'redux-promise';
 import App from './components/App';
 import productsReducer from './reducers';
 
+const createStoreWithPromiseMiddleware = applyMiddleware(promise)(createStore);
+
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={createStore(productsReducer)}>
+        <Provider store={createStoreWithPromiseMiddleware(productsReducer)}>
             <App />
         </Provider>
     </React.StrictMode>,

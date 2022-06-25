@@ -13,15 +13,29 @@ const Footer = () => {
 
     const clickPage = (e) => {
       const pageClicked = e.target.innerHTML;
-      dispatch(paginate(pageClicked));
+      const paramsObj = {
+        category: params.category || "",
+        query: params.query || "",
+        sort: params.sort || "",
+        pageClicked: pageClicked
+      }
+      dispatch(paginate(paramsObj));
     }
 
     let footer = [];
 
-    if (numOfPages < 1) {
-      footer.push(<li key="1" className="page-item"><button className="page-link">1</button></li>)
+    if (numOfDocs <= 9) {
+      footer.push(<li key="1" className="page-item"><button className="page-link" onClick={clickPage}>1</button></li>)
     }
-    else {
+
+    if (numOfPages < 2 && numOfDocs > 9) {
+      footer.push(<li key="1" className="page-item"><button className="page-link" onClick={clickPage}>1</button></li>
+      )
+      footer.push(<li key="1" className="page-item"><button className="page-link" onClick={clickPage}>2</button></li>
+      )
+    }
+    
+    if (numOfPages > 2 && numOfDocs > 9) {
       for (let i = 1; i <= numOfPages; i++) {
         footer.push(
   

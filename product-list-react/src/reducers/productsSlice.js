@@ -25,9 +25,9 @@ export const filterByCategory = createAsyncThunk('products/filterByCategory', as
   }
 })
 
-export const paginate = createAsyncThunk('products/paginate', async (pageClicked) => {
+export const paginate = createAsyncThunk('products/paginate', async (paramsObj) => {
   try {
-    const response = await fetch(baseUrl + "?page=" + pageClicked).then(response => response.json());
+    const response = await fetch(baseUrl + "?page=" + paramsObj.pageClicked + "&category=" + paramsObj.category + "&query=" + paramsObj.query + "&sort=" + paramsObj.sort).then(response => response.json());
     return response;
   }
   catch (err) {

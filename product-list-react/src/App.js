@@ -1,6 +1,5 @@
 import './App.css';
 import SearchBar from './components/SearchBar';
-import Dropdowns from './components/Dropdowns';
 import Products from './components/Products';
 import Footer from './components/Footer';
 

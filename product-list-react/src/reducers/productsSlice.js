@@ -15,6 +15,26 @@ export const loadProducts = createAsyncThunk('products/loadProducts', async () =
   }
 })
 
+export const filterByCategory = createAsyncThunk('products/filterByCategory', async (category) => {
+  try {
+    const response = await fetch(baseUrl + "?category=" + category).then(response => response.json());
+    return response
+  }
+  catch (err) {
+    return err
+  }
+})
+
+export const paginate = createAsyncThunk('products/paginate', async (pageClicked) => {
+  try {
+    const response = await fetch(baseUrl + "?page=" + pageClicked).then(response => response.json());
+    return response;
+  }
+  catch (err) {
+    return err;
+  }
+})
+
 const productsSlice = createSlice({
   name: 'products',
   initialState,
@@ -25,6 +45,12 @@ const productsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loadProducts.fulfilled, (state, action) => {
+      return action.payload
+    })
+    .addCase(filterByCategory.fulfilled, (state, action) => {
+      return action.payload
+    })
+    .addCase(paginate.fulfilled, (state, action) => {
       return action.payload
     })
   }

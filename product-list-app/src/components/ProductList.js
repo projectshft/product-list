@@ -4,15 +4,14 @@ import './ProductList.css';
 
 const displayProducts = productArr => {
     if(productArr.length > 0) {
-        return productArr.map(product => <span>{product.name}</span>)
+        return productArr.map(product => <Product name={product.name} category={product.category} image={product.image} price={product.price}/>)
     }
 }
 
 const ProductList = () => {
-    const products = useSelector(products => products);
+    const products = useSelector(state => state.products);
     return (
         <div className="ProductList">
-            <h1>Product List</h1>
             {displayProducts(products)}
             <Product />
         </div>

@@ -28,7 +28,10 @@ const generateQueryParamsString = options => {
 }
 
 export const fetchProducts = options => {
-    const products = axios.get(`https:localhost:8000/products${generateQueryParamsString(options)}`).catch(error => {
+    console.log('fetching');
+    console.dir(options);
+    const products = axios.get(`http://localhost:8000/products${generateQueryParamsString(options)}`).catch(error => {
+        console.log('there was an error processing the GET request');
         return null;
     });
 
@@ -37,16 +40,3 @@ export const fetchProducts = options => {
         payload: products
     };
 }
-// export const sortPreviouslyFetchedProducts = direction => {
-//     return {
-//         type: SORT_PREVIOUSLY_FETCHED_PRODUCTS,
-//         payload: direction
-//     }
-// }
-
-// export const filterPreviouslyFetchedProductsByCategory = category => {
-//     return {
-//         type: FILTER_PREVIOUSLY_FETCHED_PRODUCTS,
-//         payload: category
-//     }
-// };

@@ -22,7 +22,7 @@ const Controls = () => {
     const handleSubmit = evt => {
         evt.preventDefault();
         dispatch(
-            fetchProducts({query, category, sort})
+            fetchProducts({query, category, sort, page: '1'})
         );
     }
     

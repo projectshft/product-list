@@ -1,0 +1,20 @@
+GET  http://localhost:8000/products?sort=highest
+# Content-Type: application/json
+
+# {
+#   "username": "emilytest",
+#   "text": "test"
+# }
+
+# {
+#   "category": "testing",
+#   "name": "cool product",
+#   "price": 14,
+#   "image": "124jkls"
+# }
+
+# 62ab3186f179eb500ea1eb75
+# 62abcd962f62eeae0d357c0e
+
+# 62ac82bf1abfa97307834d30
+

@@ -2,11 +2,14 @@ import './Product.css';
 
 const Product = (props) => {
     return (
-        <div className="ProductList card">
+        <div className="Product card">
             <div className="card-body">
-                <p className="card=text">Category:<strong>{props.category}</strong><strong>{props.price}</strong></p>
-                <img src={props.image} alt={props.name}/>
-                <h3 className="card-title">{props.name}</h3>
+            <div className="header">
+                <span className="card-text">Category: <strong>{props.category}</strong></span>
+                <span className="card-text"><strong>{props.price}</strong></span>
+            </div>
+            <img src={props.image} alt={props.name}/>
+            <h2 className="card-title">{props.name}</h2>
             </div>
         </div>
     )

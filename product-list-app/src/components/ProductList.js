@@ -12,8 +12,9 @@ const ProductList = () => {
     const products = useSelector(state => state.products);
     return (
         <div className="ProductList">
-            {displayProducts(products)}
-            <Product />
+            <div className='list-container'>
+                {displayProducts(products)}
+            </div>
         </div>
     )
 };

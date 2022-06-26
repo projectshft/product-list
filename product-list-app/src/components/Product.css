@@ -1,0 +1,11 @@
+.Product {
+  width: 18rem;
+  height: 23rem;
+  margin: 2rem;
+}
+
+.Product .header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}

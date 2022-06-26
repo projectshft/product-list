@@ -45,9 +45,8 @@ const Controls = () => {
     
     return (
         <form onSubmit={handleSubmit} className="ControlBarForm">
-            <div className="row">
                 <input className="form-control" type="text" name="query" value={query} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder="Search Term Here" />
-                <select className="form-control" type="text" name="category" value={category} onChange={handleInputChange}>
+                <select className="form-control dropdown" type="text" name="category" value={category} onChange={handleInputChange}>
                     <option value="">Filter By Category</option>
                     <option value="Books">Books</option>
                     <option value="Industrial">Industrial</option>
@@ -75,7 +74,6 @@ const Controls = () => {
                     <option value="lowest">Lowest to Highest</option>
                     <option value="highest">Highest to Lowest</option>
                 </select>
-            </div>
         </form>
     )
 };

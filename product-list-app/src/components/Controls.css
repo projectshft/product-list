@@ -1,0 +1,17 @@
+.ControlBarForm {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.ControlBarForm input {
+  display: inline-block;
+  width: 60%;
+}
+
+.ControlBarForm select,
+.ControlBarForm .dropdown-menu {
+  width: 15%;
+}

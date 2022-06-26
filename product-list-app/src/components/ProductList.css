@@ -1,0 +1,14 @@
+.ProductList {
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: center; */
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+.ProductList .list-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 68rem;
+}

@@ -21,14 +21,14 @@ router.param("product", function(req, res, next, productId) {
 });
 
 router.param("review", function(req, res, next, reviewId) {
-    Product.find({review: reviewId}, (err, review) => {
+    Review.findById(reviewId, (err, review) => {
         if(err) {
             res.status(500).send('There was an error with the format of your request');
             throw err;
         };
         if(!review) {
-            res.status(404);
-            res.send("review not found");
+            console.log('in param router');
+            res.status(404).send("review not found");
         } else {
             req.review = review;
             next();
@@ -36,35 +36,7 @@ router.param("review", function(req, res, next, reviewId) {
     });
 });
 
-// router.get("/generate-fake-data", (req, res, next) => {
-//     for(let i = 0; i < 90; i++) {
-//         let product = new Product();
-//         product.category = faker.commerce.department();
-//         product.name = faker.commerce.productName();
-//         product.price = faker.commerce.price();
-//         product.image = "https://via.placeholder.com/205?text=Product+Image";
 
-//         let numReviews = Math.ceil(Math.random() * 20);
-//         for(let j = 0; j < numReviews; j++) {
-//             let review = new Review({
-//                 userName: faker.name.findName(),
-//                 text:faker.lorem.lines(1),
-//                 product: product._id
-//             });
-//             review.save((err) => {
-//                 if(err) {
-//                     console.error(err);
-//                     throw err;
-//                 }
-//             });
-//             product.reviews.push(review._id);
-//         };
-//         product.save((err) => {
-//             if(err) throw err;
-//         });
-//     }
-//     res.end();
-// });
 
 router.get("/products", (req, res, next) => {
     console.log('hit the products GET route');
@@ -189,7 +161,6 @@ router.delete("/products/:product", (req, res, next) => {
             throw err;
         } else {
             if(product) {
-                console.log(req.product_id)
                 Review.deleteMany({product: req.product._id}).then(res.status(200).send(product));
             } else {
                 res.status(404).send('product not found');
@@ -198,16 +169,26 @@ router.delete("/products/:product", (req, res, next) => {
     });
 });
 
-// router.delete("/reviews/:review", (req, res, next) => {
-//     Review.findByIdAndDelete(req.review._id, (err, review) => {
-//         if(err) {
-//             console.error(err);
-//             throw err;
-//         } else {
-//             res.status(200).send(review);
-//         }
-//     });
-//     res.send(`in /reviews/:review delete route, product is ${req.product.review}`);
-// });
+router.delete("/reviews/:review", (req, res, next) => {
+    Review.findByIdAndDelete(req.review._id, (err, review) => {
+        if(err) {
+            console.error(err);
+            throw err;
+        } else {
+            if(review) {
+                Product.findByIdAndUpdate(review.product, {$pull: {reviews: req.review._id}}, (err, product) => {
+                    if(err) {
+                        console.error(err);
+                        throw err;
+                    }
+                    res.status(200).send(review);
+                });
+            } else {
+                console.log("in delete route");
+                res.status(404).send('review not found');
+            }
+        }
+    });
+});
 
 module.exports = router;

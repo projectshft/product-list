@@ -66,20 +66,9 @@ router.param("review", function(req, res, next, reviewId) {
 //     res.end();
 // });
 
-// router.get("/products", (req, res, next) => {
-//     let page = Number(req.query.page);
-//     console.log(page);
-//     Product.find((error, products) => {
-//         // console.log(products.slice(0, 9));
-//         console.log(products.slice((page - 1) * 10, (page * 10) - 1).length);
-//         res.send(products.slice((page - 1) * 10, (page * 10) - 1));
-//     });
-// });
-
 router.get("/products", (req, res, next) => {
     console.log('hit the products GET route');
     const perPage = 9;
-    // return the first page by default
     const page = req.query.page || 1;
     const query = {};
     const options = req.query.sort ? {sort: {price: req.query.sort === "lowest" ? "asc" : "desc"}} : {}
@@ -118,17 +107,6 @@ router.get("/products", (req, res, next) => {
             });
         }
     });
-    // Product.find({})
-    //     .skip(perPage * page - perPage)
-    //     .limit(perPage)
-    //     .exec((err, products) => {
-    // // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-    //     Product.count().exec((err, count) => {
-    //         if (err) return next(err);
-
-    //         res.send(products);
-    //     }); 
-    // });
 });
 
 router.get("/products/:product", (req, res, next) => {
@@ -140,7 +118,6 @@ router.get("/products/:product", (req, res, next) => {
             res.status(200).send(product);
         }
     });
-    // res.status(200).send(req.product);
 });
 
 router.get("/products/:product/reviews", (req, res, next) => {
@@ -212,7 +189,8 @@ router.delete("/products/:product", (req, res, next) => {
             throw err;
         } else {
             if(product) {
-                Review.deleteMany({product: req.product_id}).then(res.status(200).send(product));
+                console.log(req.product_id)
+                Review.deleteMany({product: req.product._id}).then(res.status(200).send(product));
             } else {
                 res.status(404).send('product not found');
             }            
@@ -220,8 +198,16 @@ router.delete("/products/:product", (req, res, next) => {
     });
 });
 
-router.delete("/reviews/:review", (req, res, next) => {
-    res.send(`in /reviews/:review delete route, product is ${req.product.review}`);
-});
+// router.delete("/reviews/:review", (req, res, next) => {
+//     Review.findByIdAndDelete(req.review._id, (err, review) => {
+//         if(err) {
+//             console.error(err);
+//             throw err;
+//         } else {
+//             res.status(200).send(review);
+//         }
+//     });
+//     res.send(`in /reviews/:review delete route, product is ${req.product.review}`);
+// });
 
 module.exports = router;

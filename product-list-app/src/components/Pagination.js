@@ -1,24 +1,25 @@
+import { useSelector } from 'react-redux';
+import { fetchProducts } from '../actions';
+import { useDispatch } from 'react-redux';
 import './Pagination.css';
 
 const Pagination = () => {
+    const options = useSelector(state => state.options);
+    const highestPage = useSelector(state => Math.ceil(state.products.length));
+    const dispatch = useDispatch();
+
+    const handlePagination = evt => {
+        dispatch(fetchProducts({...options, page: evt.target.name}));
+    }
+
     return (
         <nav aria-label="...">
-            <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Previous</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
+            <ul className="pagination">
+                {Number(options.page) > 1 ? <li className="page-item"><button name={Number(options.page) - 1} onClick={handlePagination} className="page-link">Previous</button></li> : null}
+                {Number(options.page) > 1 ? <li className="page-item"><button name={Number(options.page) - 1} onClick={handlePagination} className="page-link">{Number(options.page) - 1}</button></li> : null}
+                {highestPage > 0 ? <li className="page-item active" aria-current="page"><button name={Number(options.page)}className="page-link">{Number(options.page)}</button></li> : null}
+                {Number(options.page) < highestPage ? <li className="page-item"><button name={Number(options.page) + 1} onClick={handlePagination} className="page-link">{Number(options.page) + 1}</button></li> : null}
+                {Number(options.page) < highestPage ? <li className="page-item"><button name={Number(options.page) + 1} onClick={handlePagination} className="page-link">Next</button></li> : null}
             </ul>
         </nav>
     )

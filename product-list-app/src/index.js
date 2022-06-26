@@ -10,7 +10,7 @@ import { fetchProducts } from './actions';
 
 const createStoreWithPromiseMiddleware = applyMiddleware(promise)(createStore);
 const store = createStoreWithPromiseMiddleware(productsReducer);
-store.dispatch(fetchProducts({}));
+store.dispatch(fetchProducts({page: '1'}));
 
 ReactDOM.render(
     <React.StrictMode>

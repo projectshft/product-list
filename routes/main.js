@@ -96,7 +96,10 @@ router.get("/products", (req, res, next) => {
 
     }
 
-    Product.find(query, {}, options).exec((err, products) => {
+    Product.find(query, {}, options)
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .exec((err, products) => {
         if(err) {
             console.error(err);
             throw(err);
@@ -105,7 +108,12 @@ router.get("/products", (req, res, next) => {
                 if(err) return next(err);
                 res.send({
                     products,
-                    options
+                    options: {
+                        query: req.query.query,
+                        category: req.query.category,
+                        sort: req.query.sort,
+                        page: req.query.page
+                    }
                 });
             });
         }

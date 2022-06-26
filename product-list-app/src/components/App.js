@@ -1,5 +1,6 @@
 import './App.css';
 import Controls from './Controls';
+import Pagination from './Pagination';
 import ProductList from './ProductList';
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <div className="App">
       <Controls />
       <ProductList />
+      <Pagination />
     </div>
   );
 }

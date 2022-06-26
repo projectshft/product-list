@@ -36,7 +36,6 @@ router.get("/products", (req, res, next) => {
   }
 
   if (category && query) {
-   
     Product.find({category: category, "name": {$regex: query}}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
       if (err) next(err);
       Product.count({category: category, "name": {$regex: query}}, (err, count) => {
@@ -47,12 +46,11 @@ router.get("/products", (req, res, next) => {
           numOfDocs: count,
           params: req.query
         });
-      })
-    })
-  };
+      });
+    });
+  }
 
   if (category && !query) {
-  
     Product.find({category: category}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => {
       if (err) next(err);
       Product.count({category: category}, (err, count) => {
@@ -63,15 +61,13 @@ router.get("/products", (req, res, next) => {
           numOfDocs: count,
           params: req.query
         });
-      })
-    })
+      });
+    });
   }
 
   if (!category && query) {
-  
     Product.find({"name": {$regex: query}}).skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => { 
       if (err) next (err);
-
       Product.count({"name": {$regex: query}}, (err, count) => {
         if (err) next (err);
         res.send({
@@ -80,12 +76,11 @@ router.get("/products", (req, res, next) => {
           numOfDocs: count,
           params: req.query
         });
-      })
+      });
     });
-  }; 
+  }
   
   if (!category && !query) {
-
     Product.find().skip(amountToSkip).limit(9).sort(priceParam).exec((err, products) => { 
       if (err) next (err);
       Product.count({}, (err, count) => {
@@ -96,10 +91,9 @@ router.get("/products", (req, res, next) => {
           numOfDocs: count,
           params: req.query
         });
-      })
+      });
     });
-  }
-
+  };
 });
 
 router.get("/products/:product", (req, res, next) => {
@@ -154,8 +148,7 @@ router.post("/products/:product/reviews", (req, res, next) => {
       };
       product.reviews.push(newReview);
       product.save();
-    });
-   
+    }); 
   }
   else {
     next(err);

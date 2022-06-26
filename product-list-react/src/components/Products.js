@@ -14,17 +14,23 @@ const Products = () => {
    if (productsState) {
     return productsState.map((product, index) => {
       return (
-        <div className="cell col-md-4 offset-2" key={index}>
-          <div>
-            <div>{product.category}</div>
-            <div>{product.price}</div>
+        <div className="cell prod col-md-9 offset-2" key={index}>
+          <div className="top-row">
+            <div className="category">Category: {product.category}</div>
+            <div className="price">{product.price}</div>
           </div>
-          <img src={product.image} alt="pic of product"></img>
-          <div>{product.name}</div>
+          <img className="image" src={product.image} alt="pic of product"></img>
+          <div className="product-name">{product.name}</div>
         </div>
       );
     });
    } 
+
+   else {
+     return (
+       <div className="not-found offset-1">Sorry, no products found.</div>
+     )
+   }
   }
   
   return (

@@ -19,18 +19,18 @@ const Footer = () => {
         pageClicked: pageClicked
       }
       dispatch(paginate(paramsObj));
-    }
+    };
 
     let footer = [];
 
     if (numOfDocs <= 9) {
-      footer.push(<li key="1" className="page-item"><button className="page-link" onClick={clickPage}>1</button></li>)
+      footer.push(<li key="0" className="page-item"><button className="page-link" onClick={clickPage}>1</button></li>)
     }
 
     if (numOfPages < 2 && numOfDocs > 9) {
       footer.push(<li key="1" className="page-item"><button className="page-link" onClick={clickPage}>1</button></li>
       )
-      footer.push(<li key="1" className="page-item"><button className="page-link" onClick={clickPage}>2</button></li>
+      footer.push(<li key="-1" className="page-item"><button className="page-link" onClick={clickPage}>2</button></li>
       )
     }
     
@@ -41,14 +41,19 @@ const Footer = () => {
         );
       };
     }
+
+    if (numOfDocs === 0) {
+      footer = []
+    }
     return footer;
     }
     
 
   return (
-    <nav aria-label="Page navigation example">
-      <ul className="pagination">{renderFooter()}</ul></nav>
+    <nav aria-label="pagination footer" className="footer-nav">
+      <ul className="pagination">{renderFooter()}</ul>
+    </nav>
   )
 }
 
-export default Footer
+export default Footer;

@@ -10,11 +10,11 @@ const Dropdowns = () => {
   const [priceSortIsOpen, setPriceSortIsOpen] = useState(false);
  
 
-  const toggleCategoryOpen = () => {
+  const toggleCategory = () => {
     setCategoryIsOpen(!categoryIsOpen);
   };
 
-  const togglePriceSortOpen = () => {
+  const togglePriceSort = () => {
     setPriceSortIsOpen(!priceSortIsOpen);
   }
 
@@ -23,7 +23,8 @@ const Dropdowns = () => {
 
   const clickOnCategory = (e) => {
     const category = e.target.innerText;
-    dispatch(filterByCategory(category))
+    dispatch(filterByCategory(category));
+    toggleCategory();
   }
  
   const clickOnSortByPrice = (e) => {
@@ -36,33 +37,33 @@ const Dropdowns = () => {
       sortByPrice: sortByPrice,
       page: params.page || ""
     }
-    dispatch(filterByPrice(paramsObj))
+    dispatch(filterByPrice(paramsObj));
+    togglePriceSort();
   }
 
-  return (<div className="row">
-    <div className="dropdown col">
-        <button  onClick={toggleCategoryOpen} className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"  data-bs-toggle="dropdown"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  return (
+  <div className="row">
+    <div className="dropdown col-md-2">
+      <button  onClick={toggleCategory} className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"  data-bs-toggle="dropdown"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Sort By Category
-        </button>
-        <div className={categoryMenuClass} aria-labelledby="dropdownMenuButton">
-          <button className="dropdown-item" onClick={clickOnCategory}>Electronics</button>
-          <button className="dropdown-item" onClick={clickOnCategory}>Home</button>
-          <button className="dropdown-item" onClick={clickOnCategory}>Jewelery</button>
-        </div>
+      </button>
+      <div className={categoryMenuClass} aria-labelledby="dropdownMenuButton">
+        <button className="dropdown-item" onClick={clickOnCategory}>Electronics</button>
+        <button className="dropdown-item" onClick={clickOnCategory}>Home</button>
+        <button className="dropdown-item" onClick={clickOnCategory}>Jewelery</button>
       </div>
-      <div className="dropdown col">
-        <button onClick={togglePriceSortOpen} className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    </div>
+    <div className="dropdown col-md-2 offset-4">
+      <button onClick={togglePriceSort} className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Sort By Price
-        </button>
-        <div className={priceMenuClass} aria-labelledby="dropdownMenuButton">
-          <button className="dropdown-item" onClick={clickOnSortByPrice}>Highest to Lowest</button>
-          <button className="dropdown-item" onClick={clickOnSortByPrice}>Lowest to Highest</button>
-        </div>
+      </button>
+      <div className={priceMenuClass} aria-labelledby="dropdownMenuButton">
+        <button className="dropdown-item" onClick={clickOnSortByPrice}>Highest to Lowest</button>
+        <button className="dropdown-item" onClick={clickOnSortByPrice}>Lowest to Highest</button>
       </div>
-  </div>
-     
-  )
-  
+    </div>
+  </div>  
+  ) 
 }
 
 export default Dropdowns;

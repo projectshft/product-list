@@ -7,6 +7,7 @@ function App() {
   return (
     <div className="container content">
       <div className="header row">
+        <h1>PRODUCTS</h1>
         <SearchBar/>
       </div>
       <div className ="products row">

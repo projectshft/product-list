@@ -3,7 +3,7 @@ const faker = require("faker");
 const Product = require("../models/product");
 
 router.get("/generate-fake-data", (req, res, next) => {
-  for (let i = 0; i < 45; i++) {
+  for (let i = 0; i < 90; i++) {
     let product = new Product();
 
     product.category = faker.commerce.department();
@@ -125,7 +125,6 @@ router.post("/products/:product/reviews", (req, res, next) => {
 });
 
 router.delete("/products/:product", (req, res, next) => {
-  console.log(req._id);
   Product.findByID({req})
   .exec((err, product) => {
     Product.count().exec((err, count) => {
@@ -137,6 +136,15 @@ router.delete("/products/:product", (req, res, next) => {
 });
 
 router.delete("/reviews/:reviews", (req, res, next) => {
+  const reviewId = req._id.reviews
+  Product.findByID({reviewId})
+  .exec((err, product) => {
+    Product.count().exec((err, count) => {
+      if (err) return next(err);
+
+      res.send(product);
+    });
+  });
 });
 
 module.exports = router;

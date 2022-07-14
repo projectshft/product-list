@@ -10,7 +10,6 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image";
-    // product.reviews = faker.lorem.paragraphs();
 
     product.save((err) => {
       if (err) throw err;

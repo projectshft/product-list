@@ -1,22 +1,41 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { fetchProducts } from './actions';
-import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
+// import { useForm } from "react-hook-form";
+// import { yupResolver } from '@hookform/resolvers/yup';
+// import * as Yup from 'yup';
 
 function App () {
-  const products = useSelector((state) => state.name);
-  console.log(state);
+  const products = useSelector((state) => state.products);
+  console.log('app' + products);
   const dispatch = useDispatch();
 
   const renderProducts = () => {
     return (
       <table className='products-table'>
-        <tr>Products</tr>
+        <tbody>
+          <tr>Products</tr>
+          <tr>{getProducts()}</tr>
+        </tbody>
       </table>
     )
+  } 
 
+  const getProducts = () => {
+    dispatch(
+      fetchProducts()
+    );
+    if (!products) {
+      return <div>No Products</div>;
+    } else {
+      if (products.length > 0) {
+        const pName = products.map((p) => {return p.productName;})
+        return(<p>{pName}</p>);
+      } else {
+        return <p>None</p>
+      }
+    }
   }
 
   return (
@@ -37,8 +56,8 @@ function App () {
           </tr>
         </tbody>
       </table>
-      <p>&nbsp;</p>
-      <p>{renderProducts()}</p>
+
+      {renderProducts()}
     </div>
   )
 

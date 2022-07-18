@@ -1,0 +1,22 @@
+table {
+  width: 500px;
+  table-layout: auto;
+  border: 5px;
+}
+
+.products-table {
+  width: 1000px;
+  margin: auto;
+  padding: 20%;
+  border: 5px;
+  table-layout: auto;
+}
+
+.product-display {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+li {
+  list-style-type: none;
+}

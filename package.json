@@ -24,6 +24,7 @@
     "create-react-app": "^1.2.1",
     "express": "^4.18.1",
     "faker": "^5.5.3",
+    "lodash": "^4.17.21",
     "mongoose": "^6.4.3",
     "react": "^18.2.0",
     "react-app": "^1.1.2",

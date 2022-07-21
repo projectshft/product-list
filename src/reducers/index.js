@@ -12,17 +12,15 @@ const productsReducer = function(state = [], action) {
 
         const productList = products.map((p) => {
           return {
+            id: p._id,
             productName: p.name,
             productCategory: p.category,
             productImg: p.image,
             productPrice: p.price,
           }
         })
-        console.log({...state, productList});
 
-        // return [...state, productList];
         return {...state, productList};
-        // return [productList, ...state];
 
       default: return state;
     }

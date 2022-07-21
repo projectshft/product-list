@@ -2,42 +2,25 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
 import { fetchProducts } from './actions';
-import _ from 'lodash';
 import './index.css';
-// import { useForm } from "react-hook-form";
-// import { yupResolver } from '@hookform/resolvers/yup';
-// import * as Yup from 'yup';
+
 
 function App () {
   const products = useSelector((state) => state.productList);
-  console.log('app' + products);
   const dispatch = useDispatch();
+  const searchOptions = {
+    searchQuery: '',
+    filterCategory: '',
+    sortPrice: ''
+  }
   
+
   useEffect(() => {
     dispatch(fetchProducts());
+    // eslint-disable-next-line
   }, [fetchProducts]);
 
   function renderProducts() {
-
-    // if(!_.isEmpty(products)) {
-    //   return (
-    //     <table className='products-table'>
-    //       <tbody>
-    //         <tr>Products</tr>
-    //         <tr>{displayProducts()}</tr>
-    //       </tbody>
-    //     </table>
-    //   )
-    // } else {
-    // return (
-    //   <div>No products</div>
-    //   )
-    // }
-    // if(!products) {
-    //   return (
-    //       <div>No products</div>
-    //   )
-    // } else {
     return (
         <table className='products-table'>
           <tbody>
@@ -46,27 +29,25 @@ function App () {
           </tbody>
         </table>
       )
-    // }
   } 
 
   
-  // const getProducts = (data) => {
-  //   console.log(data);
-  //   dispatch(
-  //     fetchProducts(data)
-  //   );
-  // }
-    // if (!products) {
-    //   return <div>No Products</div>;
-    // } else {
-    //   if (products.length > 0) {
-    //     const pName = products.map((p) => {return p.productName;})
-    //     return(<p>{pName}</p>);
-    //   } else {
-    //     return <p>None</p>
-    //   }
-    // }
-  
+  const getProducts = (event) => {    
+    event.preventDefault();
+
+    searchOptions.searchQuery = event.target['query'].value;
+    searchOptions.filterCategory = event.target['category'].value;
+    searchOptions.sortPrice = event.target['sort'].value;
+    
+    if(!event) {
+      console.log('waiting for search');
+    } else {
+      console.log(searchOptions);
+      dispatch(
+        fetchProducts(searchOptions)
+      )
+    }
+  }  
 
   const displayProducts = () => {
     if (!products) {
@@ -74,12 +55,12 @@ function App () {
     } else {
       return products.map((p) => 
           // <tr>
-            <td>
+            <td key={p.id}>
               <div className='product-display'>
                 <ul>
                   <li>{p.productName}</li>
                   <li>{p.productCategory}</li>
-                  <li><img src={p.productImg} /></li>
+                  <li><img src={p.productImg} alt='product-img'/></li>
                   <li>{p.productPrice}</li>
                 </ul>
               </div>
@@ -100,30 +81,31 @@ function App () {
         <tbody>
           <tr>
             <td>
-              {/* <form onSubmit=
-              {getProducts()}
+              <form onSubmit={getProducts}
               >
                 <input className='search'
-                  name='product-search'
-                  // ref={register}
+                  name='query'
                   >
                 </input>
-                <select className='category'
-                  name='category-search'
-                  // ref={register}
+                <select className='form-control'
+                  name='category'
+                  value={searchOptions.category}
                   >
+                  <option value={''}>Choose Category:</option>
                   <option value={'Toys'}>Toys</option>
                   <option value={'Automotive'}>Automotive</option>
                 </select>
                 <select className='price'
-                  name='price-sort'
-                  // ref={register}
+                  name='sort'
+                  value={searchOptions.sort}
                   >
-                  <option value={'Highest'}>Highest</option>
-                  <option value={'Lowest'}>Lowest</option>
+                  <option value={''}>Sort By:</option>
+                  <option value={'highest'}>Highest</option>
+                  <option value={'lowest'}>Lowest</option>
                 </select>
-                <button className='btn btn-primary' type='submit'>Search</button>
-              </form> */}
+                <button 
+              className='btn btn-primary' type='submit'>Search</button>
+              </form>
             </td>
           </tr>
         </tbody>

@@ -23,14 +23,14 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
   const query = req.query.query;
   const category = req.query.category;
-  const sort = req.query.price == 'highest' ? -1 : 1;
+  const sort = req.query.sort == 'highest' ? -1 : 1;
 
   if(!query) {
     if(!category) {
       Product.find({})
         .skip(perPage * page - perPage)
         .limit(perPage)
-        .sort({price: sort})
+        .sort({sort: sort})
         .exec((err, products) => {
           Product.count().exec((err, count) => {
             if (err) return next(err);
@@ -42,7 +42,7 @@ router.get("/products", (req, res, next) => {
       Product.find({category: { "$regex": category, "$options": "i" }})
       .skip(perPage * page - perPage)
       .limit(perPage)
-      .sort({price: sort})
+      .sort({sort: sort})
       .exec((err, products) => {
         Product.count().exec((err, count) => {
           if (err) return next(err);
@@ -57,7 +57,7 @@ router.get("/products", (req, res, next) => {
       // Product.find({name: query})
         .skip(perPage * page - perPage)
         .limit(perPage)
-        .sort({price: sort})
+        .sort({sort: sort})
         .exec((err, products) => {
           Product.count().exec((err, count) => {
             if (err) return next(err);
@@ -69,7 +69,7 @@ router.get("/products", (req, res, next) => {
       Product.find({name: { "$regex": query, "$options": "i" }, category: { "$regex": category, "$options": "i" }})
       .skip(perPage * page - perPage)
       .limit(perPage)
-      .sort({price: sort})
+      .sort({sort: sort})
       .exec((err, products) => {
         Product.count().exec((err, count) => {
           if (err) return next(err);
@@ -83,7 +83,6 @@ router.get("/products", (req, res, next) => {
 });
 
 router.get("/products/:product", (req, res, next) => {
-  console.log(req._id);
   Product.findByID({req})
   .exec((err, product) => {
     Product.count().exec((err, count) => {

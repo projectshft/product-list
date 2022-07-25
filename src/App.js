@@ -13,7 +13,7 @@ function App () {
     filterCategory: '',
     sortPrice: ''
   }
-  
+
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -42,7 +42,6 @@ function App () {
     if(!event) {
       console.log('waiting for search');
     } else {
-      console.log(searchOptions);
       dispatch(
         fetchProducts(searchOptions)
       )
@@ -54,7 +53,7 @@ function App () {
       return <div>No Products</div>;
     } else {
       return products.map((p) => 
-          // <tr>
+          <tr>
             <td key={p.id}>
               <div className='product-display'>
                 <ul>
@@ -65,7 +64,7 @@ function App () {
                 </ul>
               </div>
             </td>
-          // </tr>
+          </tr>
       )
     }
   }
@@ -110,7 +109,7 @@ function App () {
           </tr>
         </tbody>
       </table>
-
+      
       {renderProducts()}
     </div>
   )

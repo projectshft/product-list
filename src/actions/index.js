@@ -2,8 +2,6 @@ import axios from "axios";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
-// const ROOT_URL = "http://localhost:8000/products";
-
 export function fetchProducts(searchOptions) {
   const query = searchOptions || '';
 
@@ -14,8 +12,8 @@ export function fetchProducts(searchOptions) {
     const queryParams = {
       params: params
     };
-  const request = axios.get(`http://localhost:8000/products`, queryParams);
 
+  const request = axios.get(`http://localhost:8000/products`, queryParams);
 
     return {
       type: FETCH_PRODUCTS,

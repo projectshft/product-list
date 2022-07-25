@@ -54,7 +54,6 @@ router.get("/products", (req, res, next) => {
   } else {
     if(!category) {
       Product.find({name: { "$regex": query, "$options": "i" }})
-      // Product.find({name: query})
         .skip(perPage * page - perPage)
         .limit(perPage)
         .sort({sort: sort})

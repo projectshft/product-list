@@ -20,6 +20,8 @@ const productsReducer = function(state = [], action) {
           }
         })
 
+        console.log(productList);
+
         return {...state, productList};
 
       default: return state;

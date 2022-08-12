@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
-export function fetchProducts(searchOptions) {
+export async function fetchProducts(searchOptions) {
   const query = searchOptions || '';
 
   const params = new URLSearchParams();
@@ -13,7 +13,7 @@ export function fetchProducts(searchOptions) {
       params: params
     };
 
-  const request = axios.get(`http://localhost:8000/products`, queryParams);
+  const request = await axios.get(`http://localhost:8000/products`, queryParams);
 
     return {
       type: FETCH_PRODUCTS,

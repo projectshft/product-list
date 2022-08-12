@@ -8,12 +8,15 @@ table {
   margin: auto;
   padding: 10%;
   border: 1px;
-  table-layout: auto;
 }
 
 .product-display {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  grid-template-rows: repeat(3, 150px);
+  grid-gap: 10px;
 }
 
 li {

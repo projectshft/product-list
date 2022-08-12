@@ -19,10 +19,8 @@ const productsReducer = function(state = [], action) {
             productPrice: p.price,
           }
         })
-
-        console.log(productList);
-
-        return {...state, productList};
+        
+        return [...productList];
 
       default: return state;
     }

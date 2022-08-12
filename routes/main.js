@@ -23,14 +23,13 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
   const query = req.query.query;
   const category = req.query.category;
-  const sort = req.query.sort == 'highest' ? -1 : 1;
+  const sort = req.query.sort == 'highest' ? {productPrice: -1} : {productPrice: 1};
 
-  if(!query) {
-    if(!category) {
-      Product.find({})
+  if(!query && !category || query === undefined) {
+    Product.find({})
         .skip(perPage * page - perPage)
         .limit(perPage)
-        .sort({sort: sort})
+        .sort(sort)
         .exec((err, products) => {
           Product.count().exec((err, count) => {
             if (err) return next(err);
@@ -38,47 +37,43 @@ router.get("/products", (req, res, next) => {
             res.send(products);
           });
         });
-    } else {
-      Product.find({category: { "$regex": category, "$options": "i" }})
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .sort({sort: sort})
-      .exec((err, products) => {
-        Product.count().exec((err, count) => {
-          if (err) return next(err);
+  } else if (!category) {
+    Product.find({name: { "$regex": query, "$options": "i" }})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .sort(sort)
+    .exec((err, products) => {
+      Product.count().exec((err, count) => {
+        if (err) return next(err);
 
-          res.send(products);
-        });
-      });   
-    }
+        res.send(products);
+      });
+    });
+  } else if (!query) {
+    Product.find({category: { "$regex": category, "$options": "i" }})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .sort(sort)
+    .exec((err, products) => {
+      Product.count().exec((err, count) => {
+        if (err) return next(err);
+
+        res.send(products);
+      });
+    });
   } else {
-    if(!category) {
-      Product.find({name: { "$regex": query, "$options": "i" }})
-        .skip(perPage * page - perPage)
-        .limit(perPage)
-        .sort({sort: sort})
-        .exec((err, products) => {
-          Product.count().exec((err, count) => {
-            if (err) return next(err);
-
-            res.send(products);
-          });
-        });
-    } else {
-      Product.find({name: { "$regex": query, "$options": "i" }, category: { "$regex": category, "$options": "i" }})
+    Product.find({name: { "$regex": query, "$options": "i" }, category: { "$regex": category, "$options": "i" }})
       .skip(perPage * page - perPage)
       .limit(perPage)
-      .sort({sort: sort})
+      .sort(sort)
       .exec((err, products) => {
         Product.count().exec((err, count) => {
           if (err) return next(err);
 
           res.send(products);
         });
-      });   
-    }
+      });
   }
-
 });
 
 router.get("/products/:product", (req, res, next) => {

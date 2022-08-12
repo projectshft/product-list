@@ -1,36 +1,37 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from "styled-components";
 import React, { useEffect } from 'react';
 import { fetchProducts } from './actions';
 import './index.css';
 
 
 function App () {
-  const products = useSelector((state) => state.productList);
+  const products = useSelector((state) => state);
   const dispatch = useDispatch();
   const searchOptions = {
     searchQuery: '',
     filterCategory: '',
     sortPrice: ''
   }
-
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-    // eslint-disable-next-line
-  }, [fetchProducts]);
-
-  function renderProducts() {
+  const Products = (props) => {
     return (
-        <table className='products-table'>
-          <tbody>
-            <tr>Products</tr>
-            <tr>{displayProducts()}</tr>
-          </tbody>
-        </table>
-      )
-  } 
+      <ProductGrid>
+        <div>
+          <ul>
+            <li>{props.name}</li>
+            <li>{props.category}</li>
+            <li><img src={props.imgSrc} alt='product-img'/></li>
+            <li>{props.price}</li>
+          </ul>
+        </div>
+      </ProductGrid>
+    )
+  };
 
+  const loadProducts = () => {
+    dispatch(fetchProducts(searchOptions))
+  }
   
   const getProducts = (event) => {    
     event.preventDefault();
@@ -48,26 +49,14 @@ function App () {
     }
   }  
 
-  const displayProducts = () => {
-    if (!products) {
-      return <div>No Products</div>;
-    } else {
-      return products.map((p) => 
-          <tr>
-            <td key={p.id}>
-              <div className='product-display'>
-                <ul>
-                  <li>{p.productName}</li>
-                  <li>{p.productCategory}</li>
-                  <li><img src={p.productImg} alt='product-img'/></li>
-                  <li>{p.productPrice}</li>
-                </ul>
-              </div>
-            </td>
-          </tr>
-      )
-    }
-  }
+  const displayProducts = products.map((p) => {
+    return <Products name = {p.productName}
+                category = {p.productCategory}
+                imgSrc={p.productImg}
+                price = {p.productPrice}
+      />
+    });
+  
 
   return (
     <div className='products'>
@@ -109,8 +98,10 @@ function App () {
           </tr>
         </tbody>
       </table>
-      
-      {renderProducts()}
+    <ProductGrid>
+      {loadProducts()}  
+      {displayProducts}
+    </ProductGrid>
     </div>
   )
 
@@ -118,3 +109,12 @@ function App () {
 
 
 export default App;
+
+const ProductGrid = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 2em;
+  margin: 0 auto;
+`;

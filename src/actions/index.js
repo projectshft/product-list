@@ -13,7 +13,10 @@ export async function fetchProducts(searchOptions) {
       params: params
     };
 
-  const request = await axios.get(`http://localhost:8000/products`, queryParams);
+  const request = await axios.get(`http://localhost:8000/products`, queryParams)
+  .catch(error => {
+    console.error(error);
+  });
 
     return {
       type: FETCH_PRODUCTS,

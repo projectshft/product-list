@@ -30,7 +30,10 @@ function App () {
   };
 
   const loadProducts = () => {
-    dispatch(fetchProducts(searchOptions))
+
+    useEffect(() => {
+        dispatch(fetchProducts(searchOptions));
+    }, []);
   }
   
   const getProducts = (event) => {    
@@ -82,6 +85,10 @@ function App () {
                   <option value={''}>Choose Category:</option>
                   <option value={'Toys'}>Toys</option>
                   <option value={'Automotive'}>Automotive</option>
+                  <option value={'Electronics'}>Electronics</option>
+                  <option value={'Tools'}>Tools</option>
+                  <option value={'Home'}>Home</option>
+                  <option value={'Music'}>Music</option>
                 </select>
                 <select className='price'
                   name='sort'

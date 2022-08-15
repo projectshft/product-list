@@ -23,7 +23,7 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
   const query = req.query.query;
   const category = req.query.category;
-  const sort = req.query.sort == 'highest' ? {productPrice: -1} : {productPrice: 1};
+  const sort = req.query.sort == 'highest' ? {price: -1} : {price: 1};
 
   if(!query && !category || query === undefined) {
     Product.find({})

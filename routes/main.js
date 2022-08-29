@@ -37,4 +37,15 @@ router.get("/products", (req, res, next) => {
     });
 });
 
+// GET product by ID
+router.get("/products/:productId", (req, res, next) => {
+  const { productId } = req.params
+  
+  Product.findById(productId)
+    .exec((err, product) => {
+      if (err) return next(err);
+      res.send(product);
+    });
+});
+
 module.exports = router;

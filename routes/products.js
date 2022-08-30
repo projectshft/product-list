@@ -64,4 +64,28 @@ router.get("/:product/reviews", (req, res, next) => {
     });
 });
 
+// GET reviews for a product by ID (four per page)
+router.post("/:product/reviews", async (req, res, next) => {
+  const { userName, text } = req.body;
+  const { product } = req.params;
+  let review = new Review();
+
+  review.userName = userName;
+  review.text = text;
+  review.product = product;
+
+  review.save((err) => {
+    if (err) throw err;
+  });
+
+  Product.findByIdAndUpdate(product._id).exec((err, product) => {
+    if (err) throw err;
+
+    product.reviews.push(review);
+    product.save();
+  });
+
+  res.send(review);
+});
+
 module.exports = router;

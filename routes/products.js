@@ -20,6 +20,24 @@ router.get("/", (req, res, next) => {
     });
 });
 
+// POST new product
+router.post("/", (req, res, next) => {
+  const { name, category, price } = req.body;
+  let product = new Product();
+
+  product.category = category;
+  product.name = name;
+  product.price = price;
+  product.image = "https://via.placeholder.com/250?text=Product+Image";
+  product.reviews = [];
+
+  product.save((err) => {
+    if (err) throw err;
+  });
+
+  res.send(`Successfully added ${product.name}`);
+});
+
 // GET product by ID
 router.get("/:product", (req, res, next) => {
   const { product } = req.params;

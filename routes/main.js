@@ -18,7 +18,7 @@ router.get("/generate-fake-products", (req, res, next) => {
       if (err) throw err;
     });
   }
-  res.end();
+  res.send('Generated products');
 });
 
 // Step 2: Populate DB w/ fake reviews
@@ -49,7 +49,7 @@ router.get("/generate-fake-reviews", async (req, res, next) => {
       product.save();
     });
   }
-  res.end();
+  res.send('Generated reviews');
 });
 
 module.exports = router;

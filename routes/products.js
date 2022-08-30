@@ -78,7 +78,7 @@ router.post("/:product/reviews", async (req, res, next) => {
     if (err) throw err;
   });
 
-  Product.findByIdAndUpdate(product._id).exec((err, product) => {
+  Product.findByIdAndUpdate(product).exec((err, product) => {
     if (err) throw err;
 
     product.reviews.push(review);

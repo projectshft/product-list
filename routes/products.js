@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Product = require("../models/products");
+const Review = require("../models/reviews");
 
 // GET all products (nine per page)
 router.get("/", (req, res, next) => {
@@ -27,6 +28,21 @@ router.get("/:product", (req, res, next) => {
     .exec((err, product) => {
       if (err) return next(err);
       res.send(product);
+    });
+});
+
+// GET reviews for a product by ID (four per page)
+router.get("/:product/reviews", (req, res, next) => {
+  const perPage = 4;
+  const { page } = req.query || 1;
+  const { product } = req.params;
+  
+  Review.find({ product: product })
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, review) => {
+      if (err) return next(err);
+      res.send(review);
     });
 });
 

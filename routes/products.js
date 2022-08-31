@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Product = require("../models/products");
 const Review = require("../models/reviews");
+const ObjectId = require('mongoose').Types.ObjectId;
 
 // GET all products (nine per page)
 router.get("/", (req, res, next) => {
@@ -32,58 +33,55 @@ router.post("/", (req, res, next) => {
   product.reviews = [];
 
   product.save((err) => {
-    if (err) throw err;
+    if (err) return next(err);
   });
 
   res.send(`Successfully added ${product.name}`);
 });
 
 // GET product by ID
-router.get("/:product", (req, res, next) => {
-  const { product } = req.params;
-  
-  Product.findById(product)
+router.get("/:productId", (req, res, next) => {
+  Product.findById(req.params.productId)
     .exec((err, product) => {
       if (err) return next(err);
-      res.send(product);
+      return product ? res.send(product) : res.status(404).end()
     });
 });
 
 // GET reviews for a product by ID (four per page)
-router.get("/:product/reviews", (req, res, next) => {
+router.get("/:productId/reviews", (req, res, next) => {
   const perPage = 4;
   const { page } = req.query || 1;
-  const { product } = req.params;
   
-  Review.find({ product: product })
+  Review.find({ product: req.params.productId })
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, review) => {
       if (err) return next(err);
-      res.send(review);
+      return review && review.length > 0 ? res.send(review) : res.status(404).end()
     });
 });
 
 // GET reviews for a product by ID (four per page)
 router.post("/:product/reviews", async (req, res, next) => {
+  const product = await Product.findById(req.params.product)
+  
+  if (!product) return res.status(404).end()
+  
   const { userName, text } = req.body;
-  const { product } = req.params;
-  let review = new Review();
-
-  review.userName = userName;
-  review.text = text;
-  review.product = product;
+  
+  const review = new Review({
+    userName: userName,
+    text: text,
+    product: product
+  });
 
   review.save((err) => {
-    if (err) throw err;
+    if (err) return next(err);
   });
-
-  Product.findByIdAndUpdate(product).exec((err, product) => {
-    if (err) throw err;
-
-    product.reviews.push(review);
-    product.save();
-  });
+  
+  product.reviews.push(review)
+  product.save()
 
   res.send(review);
 });

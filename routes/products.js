@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const Product = require("../models/products");
 const Review = require("../models/reviews");
-const ObjectId = require('mongoose').Types.ObjectId;
 
 // GET all products (nine per page)
 router.get("/", (req, res, next) => {
@@ -23,23 +22,24 @@ router.get("/", (req, res, next) => {
 
 // POST new product
 router.post("/", (req, res, next) => {
-  const { name, category, price } = req.body;
-  let product = new Product();
-
-  product.category = category;
-  product.name = name;
-  product.price = price;
-  product.image = "https://via.placeholder.com/250?text=Product+Image";
-  product.reviews = [];
+  const product = new Product(
+    {
+      category: req.body.category,
+      name: req.body.name,
+      price: req.body.price,
+      image: "https://via.placeholder.com/250?text=Product+Image",
+      reviews: []
+    }
+  );
 
   product.save((err) => {
     if (err) return next(err);
   });
 
-  res.send(`Successfully added ${product.name}`);
+  res.send(product);
 });
 
-// GET product by ID
+// GET a given product by ID
 router.get("/:productId", (req, res, next) => {
   Product.findById(req.params.productId)
     .exec((err, product) => {
@@ -48,7 +48,7 @@ router.get("/:productId", (req, res, next) => {
     });
 });
 
-// GET reviews for a product by ID (four per page)
+// GET reviews for a given product by ID (four per page)
 router.get("/:productId/reviews", (req, res, next) => {
   const perPage = 4;
   const { page } = req.query || 1;
@@ -62,28 +62,33 @@ router.get("/:productId/reviews", (req, res, next) => {
     });
 });
 
-// GET reviews for a product by ID (four per page)
-router.post("/:product/reviews", async (req, res, next) => {
-  const product = await Product.findById(req.params.product)
-  
-  if (!product) return res.status(404).end()
-  
-  const { userName, text } = req.body;
-  
-  const review = new Review({
-    userName: userName,
-    text: text,
-    product: product
-  });
+// POST review for a given product by ID
+router.post("/:productId/reviews", (req, res, next) => {
+  const review = new Review(
+    {
+      userName: req.body.userName,
+      text: req.body.text,
+      product: req.params.productId
+    }
+  );
 
-  review.save((err) => {
-    if (err) return next(err);
-  });
-  
-  product.reviews.push(review)
-  product.save()
+  Product.findById(req.params.productId)
+    .exec((err, product) => {
+      if (err) return next(err);
 
-  res.send(review);
+      if (product) {
+        review.save((err) => {
+          if (err) return next(err);
+        });
+
+        product.reviews.push(review)
+        product.save()
+
+        res.send(product)
+      } else {
+        res.status(404).end()
+      }
+    });
 });
 
 module.exports = router;

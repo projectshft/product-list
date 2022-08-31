@@ -91,4 +91,12 @@ router.post("/:productId/reviews", (req, res, next) => {
     });
 });
 
+router.delete("/:productId", (req, res, next) => {
+  Product.findByIdAndDelete(req.params.productId)
+  .exec((err, product) => {
+    if (err) return next(err);
+    return product ? res.status(204).send() : res.status(404).end()
+  });
+});
+
 module.exports = router;

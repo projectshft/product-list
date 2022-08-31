@@ -96,7 +96,16 @@ router.delete("/:productId", (req, res, next) => {
   Product.findByIdAndDelete(req.params.productId)
   .exec((err, product) => {
     if (err) return next(err);
-    return product ? res.status(204).send() : res.status(404).end()
+
+    if (product) {
+      Review.deleteMany({ product: req.params.productId })
+      .exec((err, result) => {
+        if (err) return next(err);
+        return result ? res.status(204).send() : res.status(404).end()
+      })
+    } else {
+      res.status(404).end()
+    }
   });
 });
 

@@ -91,6 +91,7 @@ router.post("/:productId/reviews", (req, res, next) => {
     });
 });
 
+// DELETE a given product by ID
 router.delete("/:productId", (req, res, next) => {
   Product.findByIdAndDelete(req.params.productId)
   .exec((err, product) => {

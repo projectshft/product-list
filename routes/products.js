@@ -6,16 +6,26 @@ const Review = require("../models/reviews");
 router.get("/", (req, res, next) => {
   const perPage = 9;
   const { page } = req.query || 1;
+  const { category, query, price } = req.query;
 
-  Product.find({})
+  const sortBy = {
+    highest: { price: -1 },
+    lowest: { price: 1 }
+  }
+
+  const filter = {
+    ...category ? { category: { '$regex': `^${category}$`, '$options': 'i' } } : {},
+    ...query ? { name: { '$regex': query, '$options': 'i' } } : {}
+  };
+
+  Product.find(filter)
     .skip(perPage * page - perPage)
     .limit(perPage)
+    .sort(sortBy[price] || {})
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
+      Product.countDocuments(filter).exec((err, count) => {
         if (err) return next(err);
-
-        res.send(products);
+        return products ? res.send({count, products}) : res.status(404).end()
       });
     });
 });
@@ -58,7 +68,12 @@ router.get("/:productId/reviews", (req, res, next) => {
     .limit(perPage)
     .exec((err, review) => {
       if (err) return next(err);
-      return review && review.length > 0 ? res.send(review) : res.status(404).end()
+
+      Product.findById(req.params.productId)
+        .exec((err, product) => {
+          if (err) return next(err);
+          return product ? res.send(review) : res.status(404).end()
+        });
     });
 });
 

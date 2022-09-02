@@ -18,7 +18,7 @@ const sortByCategoryList = [
 
 const Search = () => {
   return (
-    <div className="row g-2">
+    <div className="row g-2 mb-4">
       <div className="col-md-6">
         <input
           name="searchProducts"

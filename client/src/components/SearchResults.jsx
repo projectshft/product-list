@@ -1,8 +1,9 @@
+import Pagination from "./Pagination";
 import ProductCard from "./ProductCard";
 
 const SearchResults = () => {
   return (
-    <div className="container">
+    <div>
       <div className="row row-cols-md-3 g-3">
         <ProductCard />
         <ProductCard />
@@ -14,6 +15,8 @@ const SearchResults = () => {
         <ProductCard />
         <ProductCard />
       </div>
+      <hr />
+      <Pagination pageCount={9}/>  
     </div>
   );
 };

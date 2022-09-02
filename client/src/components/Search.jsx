@@ -1,8 +1,8 @@
 import SelectList from "./SelectList";
 
-const sortList = ['Highest', 'Lowest', 'Random']
+const sortByPriceList = ['Highest', 'Lowest', 'Random']
 
-const categoryList = [
+const sortByCategoryList = [
   'Automotive',  'Baby',
   'Beauty',      'Books',
   'Clothing',    'Computers',
@@ -18,11 +18,30 @@ const categoryList = [
 
 const Search = () => {
   return (
-    <form>
-      <input type="search" className="form-control" placeholder="Search for a product"></input>
-      <SelectList id="filter" name="filter" list={categoryList} />
-      <SelectList id="sort" name="sort" list={sortList} />
-    </form>
+    <div className="row g-2">
+      <div className="col-md-6">
+        <input
+          name="searchProducts"
+          id="searchProducts"
+          className="form-control"
+          placeholder="Search for a product"
+        ></input>
+      </div>
+      <div className="col-md-3">
+        <SelectList
+          id="sortByCategory"
+          name="sortByCategory"
+          list={sortByCategoryList}
+        />
+      </div>
+      <div className="col-md-3">
+        <SelectList
+          id="sortByPrice"
+          name="sortByPrice"
+          list={sortByPriceList}
+        />
+      </div>
+    </div>
   );
 };
 

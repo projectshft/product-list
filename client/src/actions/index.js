@@ -4,9 +4,12 @@ export const ADD_PRODUCTS = "ADD_PRODUCTS";
 
 const ROOT_URL = "http://localhost:8000";
 
-export async function addProducts() {
+export async function addProducts({ page, category, price, query }) {
     const params = {
-      page: 1,
+      page: page || 1,
+      category: category || '',
+      price: price || '',
+      query: query || ''
     };
   
     const request = await axios

@@ -3,9 +3,11 @@ import Pagination from "./Pagination";
 import ProductCard from "./ProductCard";
 
 const selectProducts = (state) => state.products;
+const selectCount = (state) => state.count;
 
-const SearchResults = () => {
+const SearchResults = ({ state }) => {
   const products = useSelector(selectProducts);
+  const count = Math.ceil(useSelector(selectCount) / 9);
 
   if (!products) return <></>
 
@@ -20,7 +22,7 @@ const SearchResults = () => {
         {productCards}
       </div>
       <hr />
-      <Pagination pageCount={9}/>  
+      <Pagination state={state} pageCount={count}/>  
     </div>
   );
 };

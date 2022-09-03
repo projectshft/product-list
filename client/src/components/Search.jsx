@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import SelectList from "./SelectList";
+import { addProducts } from '../actions';
 
 const sortByPriceList = ['Highest', 'Lowest', 'Random']
 
@@ -17,6 +20,12 @@ const sortByCategoryList = [
 ]
 
 const Search = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(addProducts());
+  }, []);
+  
   return (
     <div className="row g-2 mb-4">
       <div className="col-md-6">

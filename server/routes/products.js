@@ -22,11 +22,11 @@ router.get("/", (req, res, next) => {
     .skip(perPage * page - perPage)
     .limit(perPage)
     .sort(sortBy[price] || {})
-    .exec((err, products) => {
-      Product.countDocuments(filter).exec((err, count) => {
-        if (err) return next(err);
-        return products ? res.send({count, products}) : res.status(404).end()
-      });
+    .exec(async (err, products) => {
+      if (err) return next(err);
+      const count = await Product.countDocuments(filter);
+      const categories = await Product.distinct('category', filter);
+      return products ? res.send({count, categories, products}) : res.status(404).end()
     });
 });
 

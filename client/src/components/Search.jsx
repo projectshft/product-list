@@ -1,18 +1,16 @@
-// import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SelectList from "./SelectList";
-// import { addProducts } from '../actions';
 
-const sortByPriceList = ['Featured', 'Highest', 'Lowest']
+const sortByPriceList = ['Featured', 'Highest', 'Lowest'];
 
 const selectCategories = (state) => state.categories;
 
 const Search = ({ state, updateState, setState }) => {
-  const categories = useSelector(selectCategories)
+  const categories = useSelector(selectCategories);
     
   const onChange = (event) => {
     updateState('query', event.target.value)
-  }
+  };
 
   if (!categories) return <></>
   

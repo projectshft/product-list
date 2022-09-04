@@ -13,13 +13,13 @@ const SelectList = ({ list, field, state, updateState }) => {
     } else {
       updateState(field, event.target.value)
     }
-  }
+  };
 
   return (
     <select value={state} className="form-select" onChange={event => {onChange(event)}}>
       {selectListItems}
     </select>
-  );
+  )
 };
 
 export default SelectList;

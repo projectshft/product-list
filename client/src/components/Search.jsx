@@ -9,7 +9,7 @@ const Search = ({ state, updateState, setState }) => {
   const categories = useSelector(selectCategories);
     
   const onChange = (event) => {
-    updateState('query', event.target.value)
+    updateState('query', event.target.value.replace(/[^a-zA-Z0-9 ]/g, '').replace(/  +/g, ' '))
   };
 
   if (!categories) return <></>

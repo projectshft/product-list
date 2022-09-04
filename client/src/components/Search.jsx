@@ -14,7 +14,7 @@ const Search = ({ state, updateState, setState }) => {
   
   const onChange = (event) => {
     console.log(categories)
-    setState({...state, query: event.target.value, category: ''})
+    setState({...state, query: event.target.value})
   }
   
   useEffect(() => {

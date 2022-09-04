@@ -13,19 +13,23 @@ router.get("/", (req, res, next) => {
     Lowest: { price: 1 }
   }
 
-  const filter = {
+  const filter1 = {
     ...category ? { category: { '$regex': `^${category}$`, '$options': 'i' } } : {},
     ...query ? { name: { '$regex': query, '$options': 'i' } } : {}
   };
+  
+  const filter2 = {
+    ...query ? { name: { '$regex': query, '$options': 'i' } } : {}
+  };
 
-  Product.find(filter)
+  Product.find(filter1)
     .skip(perPage * page - perPage)
     .limit(perPage)
     .sort(sortBy[price] || {})
     .exec(async (err, products) => {
       if (err) return next(err);
-      const count = await Product.countDocuments(filter);
-      const categories = await Product.distinct('category', filter);
+      const count = await Product.countDocuments(filter1);
+      const categories = await Product.distinct('category', filter2);
       return products ? res.send({count, categories, products}) : res.status(404).end()
     });
 });

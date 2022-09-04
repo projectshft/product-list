@@ -20,7 +20,6 @@ const SearchResults = ({ state }) => {
       <div className="row row-cols-md-3 g-3">
         {productCards}
       </div>
-      <hr />
       <Pagination state={state} pageCount={count}/>  
     </div>
   );

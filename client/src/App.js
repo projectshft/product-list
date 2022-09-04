@@ -13,9 +13,6 @@ function App() {
   };
 
   const [ state, setState ] = useState(initialState);
-  
-  const selectCategories = (state) => state.categories;
-  const categories = useSelector(selectCategories)
 
   const updateState = (field, value) => {
     setState({...state, [field]: value});
@@ -24,10 +21,12 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    dispatch(addProducts({}));
+  }, []);
+  
+  useEffect(() => {
     dispatch(addProducts(state));
   }, [dispatch, state])
-
-  if (!categories) return <></>
 
   return (
     <div className="container py-4">

@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import SelectList from "./SelectList";
-import { addProducts } from '../actions';
+// import { addProducts } from '../actions';
 
 const sortByPriceList = ['Featured', 'Highest', 'Lowest']
 
@@ -9,17 +9,10 @@ const selectCategories = (state) => state.categories;
 
 const Search = ({ state, updateState, setState }) => {
   const categories = useSelector(selectCategories)
-  
-  const dispatch = useDispatch()
-  
+    
   const onChange = (event) => {
-    console.log(categories)
-    setState({...state, query: event.target.value})
+    updateState('query', event.target.value)
   }
-  
-  useEffect(() => {
-    dispatch(addProducts({}));
-  }, []);
 
   if (!categories) return <></>
   

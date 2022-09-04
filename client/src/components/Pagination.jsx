@@ -1,16 +1,19 @@
 import { useDispatch } from "react-redux";
 import { addProducts } from '../actions';
 
-
 const Page = ({ state, page }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     dispatch(addProducts({ ...state, page: page }));
-  }
+  };
   
-  return <button onClick={handleClick} className="btn p-1 mx-1 text-primary">{page}</button>
-}
+  return (
+    <li className="page-item">
+      <button onClick={handleClick} className="page-link">{page}</button>
+    </li>
+  )
+};
 
 const Pagination = ({ state, pageCount }) => {
   const pageNumbers = new Array(pageCount).fill(0).map((page, i) => {
@@ -18,9 +21,9 @@ const Pagination = ({ state, pageCount }) => {
   });
 
   return (
-    <div className="row row-cols-auto d-flex justify-content-center">
-      <p>Page {pageNumbers}</p>
-    </div>
+    <ul className="pagination d-flex justify-content-center mt-4">
+      {pageNumbers}
+    </ul>
   )
 };
 

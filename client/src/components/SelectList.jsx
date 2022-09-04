@@ -11,12 +11,12 @@ const SelectList = ({ list, field, state, updateState }) => {
     if (event.target.value === "All") {
       updateState(field, '')
     } else {
-      updateState(field, event.target.value.toLowerCase())
+      updateState(field, event.target.value)
     }
   }
 
   return (
-    <select className="form-select" onChange={event => {onChange(event)}}>
+    <select value={state} className="form-select" onChange={event => {onChange(event)}}>
       {selectListItems}
     </select>
   );

@@ -15,7 +15,6 @@ const SearchResults = ({ state }) => {
     return <ProductCard key={product._id} product={product} />
   });
 
-
   return (
     <div>
       <div className="row row-cols-md-3 g-3">

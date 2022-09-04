@@ -1,59 +1,45 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import SelectList from "./SelectList";
 import { addProducts } from '../actions';
 
 const sortByPriceList = ['Featured', 'Highest', 'Lowest']
 
-const sortByCategoryList = [
-  'All',
-  'Automotive',  'Baby',
-  'Beauty',      'Books',
-  'Clothing',    'Computers',
-  'Electronics', 'Games',
-  'Garden',      'Grocery',
-  'Health',      'Home',
-  'Industrial',  'Jewelery',
-  'Kids',        'Movies',
-  'Music',       'Outdoors',
-  'Shoes',       'Sports',
-  'Tools',       'Toys'
-]
+const selectCategories = (state) => state.categories;
 
-const Search = ({ state, query, updateState }) => {
+const Search = ({ state, updateState, setState }) => {
+  const categories = useSelector(selectCategories)
+  
   const dispatch = useDispatch()
-
-  const onKeyDown = (event) => {
-    // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-      dispatch(addProducts(state));
-    }
+  
+  const onChange = (event) => {
+    console.log(categories)
+    setState({...state, query: event.target.value, category: ''})
   }
-
+  
   useEffect(() => {
     dispatch(addProducts({}));
   }, []);
+
+  if (!categories) return <></>
   
   return (
     <div className="row g-2 mb-4">
       <div className="col-md-6">
         <input
-          onKeyDown={onKeyDown}
           name="searchProducts"
           id="searchProducts"
           className="form-control"
           placeholder="Search for a product"
           value={state.query}
-          onChange={event => {updateState('query', event.target.value)}}
+          onChange={event => {onChange(event)}}
         ></input>
       </div>
       <div className="col-md-3">
         <SelectList
           id="sortByCategory"
           name="sortByCategory"
-          list={sortByCategoryList}
+          list={categories}
           updateState={updateState}
           field="category"
           state={state.category}

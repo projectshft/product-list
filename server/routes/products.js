@@ -9,8 +9,8 @@ router.get("/", (req, res, next) => {
   const { category, query, price } = req.query;
 
   const sortBy = {
-    highest: { price: -1 },
-    lowest: { price: 1 }
+    Highest: { price: -1 },
+    Lowest: { price: 1 }
   }
 
   const filter = {

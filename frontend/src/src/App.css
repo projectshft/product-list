@@ -1,0 +1,14 @@
+.card-deck {
+  margin-top: 70px;
+  margin-bottom: 70px;
+  align-items: start;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(auto-fit, 300px);
+  justify-content: center;
+}
+
+.input-group {
+  width: 80%;
+  margin: 10px auto 10px auto;
+}

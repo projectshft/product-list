@@ -1,22 +1,24 @@
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
 import '../App.css';
 
 const Cards = () => {
-  let firstPageData = useSelector(({ product }) => product);
-  let comboData = useSelector(({ combo }) => combo);
+  const [firstPageData, comboData, countData] = useSelector((state) => [
+    state.product,
+    state.combo.products,
+    state.combo.ProductCount,
+  ]);
 
-  // const productData = priceData.length ? priceData : pageData;
   const productData = comboData ? comboData : firstPageData;
 
-  console.log(productData);
   const renderCards = () => {
     if (productData.length > 0) {
       return productData.map((prod) => (
         <div className='card' key={prod._id}>
-          <div className='card-header'>
-            Category: <strong>{prod.category}</strong>
-            {prod.price}
+          <div className='card-header d-flex justify-content-between align-items-center'>
+            <span className='card-header-category'>
+              Category: <strong>{prod.category}</strong>
+            </span>
+            <span className='card-header-price'>{prod.price}</span>
           </div>
           <img className='card-img-top' src={prod.image} alt='Card image cap' />
           <div className='card-body'>
@@ -27,7 +29,20 @@ const Cards = () => {
     }
   };
 
-  return <div className='card-deck'>{renderCards()}</div>;
+  return (
+    <div>
+      <div className='card-deck'>{renderCards()} </div>
+      <div>
+        {comboData ? (
+          <div style={{ textAlign: 'center' }}>
+            You have {countData} results on this page
+          </div>
+        ) : (
+          <p></p>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Cards;

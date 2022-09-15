@@ -1,28 +1,6 @@
-import { normalize, schema } from 'normalizr';
-import { FETCH_PRODUCT, COMBO_FILTER } from '../action';
-
-// const defaultState = { entries: {}, order: [] };
-// const productSchema = new schema.Entity('products', undefined, {
-//   idAttribute: (value) => value._id,
-// });
+import { COMBO_FILTER, FETCH_PRODUCT } from '../action';
 
 const defaultState = [];
-
-// const ProductReducer = (state = defaultState, action) => {
-//   switch (action.type) {
-//     case FETCH_PRODUCT:
-//       // const normalizedProducts = normalize(action.payload.data.products, [
-//       //   productSchema,
-//       // ]);
-//       return action.payload.data.products;
-//     // return {
-//     //   entries: normalizedProducts.entities.products,
-//     //   order: normalizedProducts.result,
-//     // };
-//     default:
-//       return state;
-//   }
-// };
 
 const ProductReducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -36,15 +14,35 @@ const ProductReducer = (state = defaultState, action) => {
 const ComboReducer = (state = defaultState, action) => {
   switch (action.type) {
     case COMBO_FILTER:
-      return action.payload.data.products;
+      // return action.payload.data.products;
+      return action.payload.data;
     default:
       return state;
   }
 };
 
+// const defaultQueryState = {
+//   currentPage: 0,
+// category: "",
+// price: "",
+// query: ""
+// }
+
+// const QueryReducer = (state = defaultQueryState, action) => {
+//   switch(action.type) {
+//     case "SET_QUERY": {
+//       return {
+//         ...state,
+//         query: action.payload
+//       }
+//     }
+//   }
+// }
+
 const reducers = {
   ProductReducer,
   ComboReducer,
+  // QueryReducer
 };
 
 export default reducers;

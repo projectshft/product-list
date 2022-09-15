@@ -1,19 +1,20 @@
-import React from 'react';
-import { fetchPage, priceFilter, combo } from '../action';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-export const UserContext = React.createContext();
+import { combo } from '../action';
+import { useDispatch } from 'react-redux';
 
-const Pagination = () => {
+const Pagination = ({
+  currentPage,
+  setCurrentPage,
+  price,
+  category,
+  query,
+}) => {
   let nPages = 10;
-  const [currentPage, setCurrentPage] = useState(1);
   const pageNumbers = [...Array(nPages + 1).keys()].slice(1);
 
   const dispatch = useDispatch();
   const displayPage = (pgNumber) => {
-    pgNumber = pgNumber.toString();
     setCurrentPage(pgNumber);
-    dispatch(combo(pgNumber));
+    dispatch(combo(pgNumber, price, category, query));
   };
 
   // const displayPagePrev = () => {

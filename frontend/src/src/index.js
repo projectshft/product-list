@@ -8,12 +8,10 @@ import rootReducer from './reducer';
 import './index.css';
 import App from './App';
 
-// Create store using root reducer
 const createStoreWithMiddleware = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(promise))
 );
-// const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware}>

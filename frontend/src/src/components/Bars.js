@@ -1,33 +1,36 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { combo, fetchProduct } from '../action';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import '../App.css';
 
-const Bars = () => {
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState('');
-  const [query, setQuery] = useState('');
+const Bars = ({
+  currentPage,
+  price,
+  setPrice,
+  category,
+  setCategory,
+  query,
+  setQuery,
+}) => {
   const dispatch = useDispatch();
 
-  window.onload = () => dispatch(fetchProduct());
+  useEffect(() => {
+    dispatch(fetchProduct());
+  }, []);
 
   const handlePriceDropdown = (e) => {
     setPrice(e.target.value);
-    // console.log('!!', price, category);
-    dispatch(combo(null, e.target.value, category, query));
+    dispatch(combo(currentPage, e.target.value, category, query));
   };
 
   const handleCategoryDropdown = (e) => {
     setCategory(e.target.value);
-    console.log('@@', price, category);
-    // console.log('currentPage: ??', currentPage);
-    dispatch(combo(null, price, e.target.value, query));
+    dispatch(combo(currentPage, price, e.target.value, query));
   };
 
   const handleQuerySearch = (e) => {
     setQuery(e.target.value);
-    // console.log('##', price, category, query);
-    dispatch(combo(null, price, category, e.target.value));
+    dispatch(combo(currentPage, price, category, e.target.value));
   };
 
   const categoryOptions = [
@@ -47,6 +50,7 @@ const Bars = () => {
     'Industrial',
     'Kids',
     'Games',
+    'Home',
   ];
 
   return (

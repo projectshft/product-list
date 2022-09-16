@@ -23,9 +23,11 @@ function errorHandler(err, req, res, next) {
   res.render('error', { error: err });
 }
 router.get('/generate-fake-data', (req, res, next) => {
+  // Generates 90 fake products
   for (let i = 0; i < 90; i += 1) {
     const product = new Product();
 
+    // Generates 20 fake reviews for each product
     for (let j = 0; j < 20; j += 1) {
       const review = new Review({
         userName: faker.internet.userName(),
@@ -52,13 +54,25 @@ router.get('/generate-fake-data', (req, res, next) => {
 router
   .route('/products')
   .get((req, res, next) => {
+    // Build query object
+    const query = {};
+    // Optional category query
+    if (req.query.category) {
+      query.category = req.query.category;
+    }
+
     // return the first page by default
     let page = req.query.page || 1;
     const productsPerPage = 9;
-    if (Number.isInteger(page) && page > 0) {
-      page = page * productsPerPage - productsPerPage;
+    if (Number.isInteger(Number(page))) {
+      page = Number(page) * productsPerPage - productsPerPage;
     }
-    Product.find()
+
+    if (Number(page) < 0) {
+      page = 0;
+    }
+
+    Product.find(query)
       .skip(Number(page) || 0)
       .limit(productsPerPage)
       .exec((err, products) => {

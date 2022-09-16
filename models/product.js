@@ -13,7 +13,6 @@ const ProductSchema = new Schema({
   price: Number,
   image: String,
   reviews: [{ type: Schema.Types.ObjectId, ref: 'review' }],
-  // reviews: [ReviewSchema],
 });
 
 // const Review = mongoose.model('review', ReviewSchema);

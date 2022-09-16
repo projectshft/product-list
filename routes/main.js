@@ -1,5 +1,4 @@
 const router = require('express').Router();
-// const faker = require('faker');
 const { faker } = require('@faker-js/faker');
 const { Product, Review } = require('../models/product');
 const qs = require('querystring');
@@ -22,7 +21,6 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
   const perPage = 9;
-  // return the first page by default
   const page = req.query.page || 1;
 
   let priceSort;
@@ -35,7 +33,7 @@ router.get('/products', (req, res, next) => {
 
   let categoryInput;
   const category = req.query.category || null;
-  if (typeof category != 'object' && category != 'null') {
+  if (typeof category != 'object') {
     let categoryTrans =
       category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
     categoryInput = { category: categoryTrans };
@@ -45,16 +43,11 @@ router.get('/products', (req, res, next) => {
 
   let queryInput;
   const query = req.query.query || null;
-  if (typeof query != 'object' && query != 'null') {
+  if (typeof query != 'object') {
     queryInput = { name: { $regex: query, $options: 'i' } };
   } else {
     queryInput = {};
   }
-
-  // if (category != 'null' && price != 'null') {
-  //   categoryInput = { category: categoryTrans };
-  //   priceSort = { price: price == 'highest' ? 'desc' : 'asc' };
-  // }
 
   Product.find({ $and: [categoryInput, queryInput] })
     .skip(perPage * page - perPage)
@@ -88,10 +81,11 @@ router.get('/products/:product/reviews', (req, res) => {
     .populate('reviews')
     .exec((err, product) => {
       if (err) throw err;
-      else
+      else {
         res.send(
           product.reviews.slice(perPage * page - perPage, perPage * page)
         );
+      }
     });
 });
 
@@ -108,6 +102,10 @@ router.post('/products/:product/reviews', (req, res) => {
     if (err) throw err;
     else {
       product.reviews.push(req.body);
+      // product.reviews.update(
+      //   {_id: req.body._id},
+      //   {$push: {}}
+      // )
       res.send('The review has been added');
     }
   });
@@ -116,14 +114,14 @@ router.post('/products/:product/reviews', (req, res) => {
 router.delete('/products/:product', (req, res) => {
   Product.deleteOne({ _id: req.params.product }).exec((err, product) => {
     if (err) throw err;
-    else console.log('Product successfully deleted');
+    else res.send('Product successfully deleted');
   });
 });
 
 router.delete('/reviews/:review', (req, res) => {
   Review.deleteOne({ _id: req.params.review }).exec((err, review) => {
     if (err) throw err;
-    else console.log('Review successfully deleted');
+    else res.send('Review successfully deleted');
   });
 });
 

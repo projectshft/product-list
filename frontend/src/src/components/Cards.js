@@ -2,17 +2,17 @@ import { useSelector } from 'react-redux';
 import '../App.css';
 
 const Cards = () => {
-  const [firstPageData, comboData, countData] = useSelector((state) => [
+  const [firstPageData, productsData, countData] = useSelector((state) => [
     state.product,
-    state.combo.products,
-    state.combo.ProductCount,
+    state.products.products,
+    state.products.ProductCount,
   ]);
 
-  const productData = comboData ? comboData : firstPageData;
+  const presentData = productsData ? productsData : firstPageData;
 
   const renderCards = () => {
-    if (productData.length > 0) {
-      return productData.map((prod) => (
+    if (presentData.length > 0) {
+      return presentData.map((prod) => (
         <div className='card' key={prod._id}>
           <div className='card-header d-flex justify-content-between align-items-center'>
             <span className='card-header-category'>
@@ -32,15 +32,15 @@ const Cards = () => {
   return (
     <div>
       <div className='card-deck'>{renderCards()} </div>
-      <div>
-        {comboData ? (
+      {/* <div>
+        {productsData ? (
           <div style={{ textAlign: 'center' }}>
             You have {countData} results on this page
           </div>
         ) : (
           <p></p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

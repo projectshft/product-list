@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { combo, fetchProduct } from '../action';
+import { fetchProducts, fetchProduct } from '../action';
 import { useEffect } from 'react';
 import '../App.css';
 
@@ -20,17 +20,17 @@ const Bars = ({
 
   const handlePriceDropdown = (e) => {
     setPrice(e.target.value);
-    dispatch(combo(currentPage, e.target.value, category, query));
+    dispatch(fetchProducts(currentPage, e.target.value, category, query));
   };
 
   const handleCategoryDropdown = (e) => {
     setCategory(e.target.value);
-    dispatch(combo(currentPage, price, e.target.value, query));
+    dispatch(fetchProducts(currentPage, price, e.target.value, query));
   };
 
   const handleQuerySearch = (e) => {
     setQuery(e.target.value);
-    dispatch(combo(currentPage, price, category, e.target.value));
+    dispatch(fetchProducts(currentPage, price, category, e.target.value));
   };
 
   const categoryOptions = [

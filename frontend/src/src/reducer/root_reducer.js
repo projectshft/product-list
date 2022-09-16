@@ -1,4 +1,4 @@
-import { COMBO_FILTER, FETCH_PRODUCT } from '../action';
+import { FETCH_PRODUCTs, FETCH_PRODUCT } from '../action';
 
 const defaultState = [];
 
@@ -6,14 +6,15 @@ const ProductReducer = (state = defaultState, action) => {
   switch (action.type) {
     case FETCH_PRODUCT:
       return action.payload.data.products;
+    // return action.payload.data;
     default:
       return state;
   }
 };
 
-const ComboReducer = (state = defaultState, action) => {
+const ProductsReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case COMBO_FILTER:
+    case FETCH_PRODUCTs:
       // return action.payload.data.products;
       return action.payload.data;
     default:
@@ -21,28 +22,9 @@ const ComboReducer = (state = defaultState, action) => {
   }
 };
 
-// const defaultQueryState = {
-//   currentPage: 0,
-// category: "",
-// price: "",
-// query: ""
-// }
-
-// const QueryReducer = (state = defaultQueryState, action) => {
-//   switch(action.type) {
-//     case "SET_QUERY": {
-//       return {
-//         ...state,
-//         query: action.payload
-//       }
-//     }
-//   }
-// }
-
 const reducers = {
   ProductReducer,
-  ComboReducer,
-  // QueryReducer
+  ProductsReducer,
 };
 
 export default reducers;

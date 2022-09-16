@@ -8,14 +8,7 @@ const App = () => {
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
   const [query, setQuery] = useState('');
-  // const productsQuery = useSelector((state) => state.query);
 
-  // useEffect(() => {
-  //   (async () => (
-
-  //   ))()
-
-  // }, [productsQuery.query, productsQuery.category, productsQuery.price]);
   return (
     <div>
       <Bars

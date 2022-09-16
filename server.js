@@ -1,8 +1,8 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-mongoose.connect("mongodb://localhost/products", {
+mongoose.connect('mongodb://localhost/products', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -16,10 +16,10 @@ app.use(
   })
 );
 
-const mainRoutes = require("./routes/main");
+const mainRoutes = require('./routes/main');
 
 app.use(mainRoutes);
 
 app.listen(8000, () => {
-  console.log("Node.js listening on port " + 8000);
+  console.log(`Node.js listening on port ${8000}`);
 });

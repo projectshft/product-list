@@ -18,10 +18,20 @@ function checkIfReviewValid(userName, text, product) {
 
   return true;
 }
+function setPriceQuery(sortBy, query) {
+  const HIGH_TO_LOW = -1;
+  const LOW_TO_HIGH = 1;
+  if (sortBy.toLowerCase() === 'highest') {
+    query.price = HIGH_TO_LOW;
+  } else if (sortBy.toLowerCase() === 'lowest') {
+    query.price = LOW_TO_HIGH;
+  }
+}
 function errorHandler(err, req, res, next) {
   res.status(500);
   res.render('error', { error: err });
 }
+
 router.get('/generate-fake-data', (req, res, next) => {
   // Generates 90 fake products
   for (let i = 0; i < 90; i += 1) {
@@ -60,6 +70,13 @@ router
     if (req.query.category) {
       query.category = req.query.category;
     }
+    if (req.query.query) {
+      query.$text = { $search: req.query.query };
+    }
+    const sortBy = {};
+    if (req.query.price) {
+      setPriceQuery(req.query.price, sortBy);
+    }
 
     // return the first page by default
     let page = req.query.page || 1;
@@ -73,6 +90,8 @@ router
     }
 
     Product.find(query)
+      .collation({ locale: 'en', strength: 2 })
+      .sort(sortBy)
       .skip(Number(page) || 0)
       .limit(productsPerPage)
       .exec((err, products) => {

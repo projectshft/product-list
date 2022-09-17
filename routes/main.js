@@ -84,19 +84,11 @@ router.get('/products/:product/reviews', (req, res) => {
       if (err) {
         console.error(err);
       } else {
-        // console.log(product[0].reviews);
         res.send(
           product[0].reviews.slice(perPage * page - perPage, perPage * page)
         );
       }
     });
-
-  // Product.find({ _id: req.params.product }).exec((err, product) => {
-  //   console.log(req.params.product);
-  //   res.send(
-  //     product[0].reviews.slice(perPage * page - perPage, perPage * page)
-  //   );
-  // });
 });
 
 router.post('/products', (req, res) => {
@@ -110,7 +102,6 @@ router.post('/products/:product/reviews', (req, res) => {
   Product.find({ _id: req.params.product })
     .populate({ path: 'reviews' })
     .exec((err, product) => {
-      // console.log(product);
       product[0].reviews.push(req.body);
       res.send(product[0].reviews);
     });

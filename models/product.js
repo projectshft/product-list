@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// using population to store reviews here
+// subdocs also works in this case
 const ReviewSchema = new Schema({
   userName: String,
   text: String,

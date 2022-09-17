@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ReviewSchema = new Schema({
   userName: String,
   text: String,
-  product: String,
+  product: { type: Schema.Types.ObjectId, ref: 'Product' },
 });
 
 const ProductSchema = new Schema({
@@ -13,10 +13,8 @@ const ProductSchema = new Schema({
   price: Number,
   image: String,
   reviews: [{ type: Schema.Types.ObjectId, ref: 'review' }],
+  // reviews: [ReviewSchema],
 });
-
-// const Review = mongoose.model('review', ReviewSchema);
-// module.exports = mongoose.model('Product', ProductSchema);
 
 module.exports = {
   Product: mongoose.model('Product', ProductSchema),

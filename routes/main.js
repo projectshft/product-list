@@ -66,6 +66,7 @@ router.get('/products', (req, res, next) => {
     });
 });
 
+// _id: 631a4b983ebd7b8aa51462d2
 router.get('/products/:product', (req, res) => {
   Product.find({ _id: req.params.product }).exec((err, product) => {
     if (err) throw err;
@@ -80,35 +81,39 @@ router.get('/products/:product/reviews', (req, res) => {
   Product.find({ _id: req.params.product })
     .populate('reviews')
     .exec((err, product) => {
-      if (err) throw err;
-      else {
+      if (err) {
+        console.error(err);
+      } else {
+        // console.log(product[0].reviews);
         res.send(
-          product.reviews.slice(perPage * page - perPage, perPage * page)
+          product[0].reviews.slice(perPage * page - perPage, perPage * page)
         );
       }
     });
+
+  // Product.find({ _id: req.params.product }).exec((err, product) => {
+  //   console.log(req.params.product);
+  //   res.send(
+  //     product[0].reviews.slice(perPage * page - perPage, perPage * page)
+  //   );
+  // });
 });
 
 router.post('/products', (req, res) => {
   let newProduct = new Product(req.body);
   newProduct.save().then((err, data) => {
-    if (err) throw err;
-    else res.send('This product has been saved to the database');
+    res.send('This product has been saved to the database');
   });
 });
 
 router.post('/products/:product/reviews', (req, res) => {
-  Product.find({ _id: req.params.product }).exec((err, product) => {
-    if (err) throw err;
-    else {
-      product.reviews.push(req.body);
-      // product.reviews.update(
-      //   {_id: req.body._id},
-      //   {$push: {}}
-      // )
-      res.send('The review has been added');
-    }
-  });
+  Product.find({ _id: req.params.product })
+    .populate({ path: 'reviews' })
+    .exec((err, product) => {
+      // console.log(product);
+      product[0].reviews.push(req.body);
+      res.send(product[0].reviews);
+    });
 });
 
 router.delete('/products/:product', (req, res) => {

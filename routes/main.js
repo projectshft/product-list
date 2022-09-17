@@ -40,17 +40,33 @@ const { nextTick } = require("process");
 
 router.get("/products", (req, res) => {
   // GET all products
-  let page = req.query.page;
-  // If no query is passed in, then default to the first page
-  if (!page) {
-    page = 1;
+  // Filters are case-sensitive
+  const query = req.query;
+  let filter = {};
+  let sort = {};
+  let page = 1;
+  if (query.page) {
+    page = query.page;
+  }
+  if (query.category) {
+    filter.category = query.category;
+  }
+  if (query.price) {
+    (query.price == "highest") ? sort = {"price": -1} : sort = {"price": 1}; 
+  }
+  if (query.query) {
+    filter.name = { $regex: query.query, $options: "i"};
   }
   Product
-    .find({})
+    .find(filter)
     .skip((page -1) * 9)
     .limit(9)
+    .sort(sort)
     .populate("reviews")
     .exec((err, products) => {
+      console.log(query);
+      console.log(filter);
+      console.log(sort);
       (err) ? next(err) : res.send(products);
     });
 });

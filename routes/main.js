@@ -98,14 +98,14 @@ router
     //   },
     // ] = await
     Product.aggregate([
+      { $match: query },
       {
         $facet: {
           paginatedResult: [
-            { $match: query },
             { $skip: Number(page) || 0 },
             { $limit: productsPerPage },
           ],
-          totalCount: [{ $match: query }, { $count: 'totalCount' }],
+          totalCount: [{ $count: 'totalCount' }],
         },
       },
     ]).exec((err, data) => {
@@ -120,22 +120,9 @@ router
         products: paginatedResult,
         totalCount,
         page: (Number(page) + productsPerPage) / productsPerPage || 1,
-        lastPage: totalCount / productsPerPage,
+        lastPage: Math.ceil(totalCount / productsPerPage) || 1,
       });
     });
-
-    // console.log(paginatedResult);
-
-    // Product.find(query)
-    //   .collation({ locale: 'en', strength: 2 })
-    //   .sort(sortBy)
-    //   .skip(Number(page) || 0)
-    //   .limit(productsPerPage)
-    //   .exec((err, products) => {
-    //     if (err) return res.send(err);
-
-    //     res.send(products);
-    //   });
   })
   .post((req, res, next) => {
     const { category, name, price, image, reviews = [] } = req.body;
@@ -241,7 +228,7 @@ router
             reviews: data.reviews,
             totalReviews,
             page: (Number(page) + reviewsPerPage) / reviewsPerPage || 1,
-            lastPage: Math.ceil(totalReviews / reviewsPerPage),
+            lastPage: Math.ceil(totalReviews / reviewsPerPage) || 1,
           });
         }
       );

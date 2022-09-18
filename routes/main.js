@@ -135,6 +135,7 @@ router
     };
 
     Product.paginate(query, options, (err, result) => {
+      if (err) next(err);
       res.status(200).json(result);
     });
   })

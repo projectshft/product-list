@@ -1,14 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 mongoose.connect('mongodb://localhost/products', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
 const app = express();
 
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

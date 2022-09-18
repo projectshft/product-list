@@ -12,7 +12,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: true,
+    extended: false,
   })
 );
 
@@ -23,6 +23,6 @@ const mainRoutes = require("./routes/main");
 
 app.use(mainRoutes);
 
-app.listen(8000, () => {
+module.exports = app.listen(8000, () => {
   console.log(`Node.js listening on port 8000 ${current}`);
 });

@@ -65,16 +65,28 @@ router
         }
       }
     };
-    Product.find(searchCategory())
-      .sort(priceSort())
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec((err, products) => {
-        // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-        Product.count().exec((err, count) => {
-          res.send(products);
-        });
-      });
+    const options = {
+      sort: priceSort(),
+      offset: perPage * page - perPage,
+      limit: perPage,
+    };
+
+    Product.paginate(searchCategory(), options, function (err, result) {
+      //console.log(result);
+      res.send(result);
+    });
+
+    // .find(searchCategory())
+    //   .sort(priceSort())
+    //   .skip(perPage * page - perPage)
+    //   .limit(perPage)
+    //   .exec((err, products) => {
+    //     // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+    //     Product.count(searchCategory()).exec((err, count) => {
+    //       res.send(products);
+    //       res.send(count);
+    //     });
+    //   });
   })
   // POST /products: Creates a new product in the database
   .post(async (req, res) => {
@@ -136,6 +148,14 @@ router
   .delete(async (req, res) => {
     let removedReview = await Review.findByIdAndDelete(req.params.review);
     res.status(204).end();
+  });
+router
+  .route("/products/categories")
+  // GET /products/:product: Returns a specific product by its id
+  .get(async (req, res) => {
+    //tested and working
+    let product = await Product.find(req.params.product).exec();
+    res.send(product);
   });
 
 module.exports = router;

@@ -4,44 +4,62 @@ const { default: mongoose } = require("mongoose");
 const product = require("../models/product");
 const Product = require("../models/product");
 const Review = require("../models/review")
+// const paginate = require("mongoose-paginate-v2")
 // let Product = mongoose.model('Product')
 // let Review = mongoose.model('Review')
 
 router
-  .get(`/products`, (req, res, next) => {
-    let searchTerms = {}
-    let itemsPerPage = 9
-    let page = req.query.page || 1
+  .get(`/products`, async (req, res, next) => {
+    const options ={
+      page: req.query.page || 1,
+      limit: 9,
+    }
+    const query = {}
+    const callback = {}
+    // let searchTerms = {}
+//     let sortTerms = {}
+//     let itemsPerPage = 9
+//     let page = req.query.page || 1
     if(req.query.category){
       let searchCategory = req.query.category
-      searchTerms.category = {$regex: searchCategory, $options: "i"}
+      query.category = {$regex: searchCategory, $options: "i"}
     } 
-    if(req.query.highest){}
-      Product.find(searchTerms)
-      .skip(itemsPerPage * page - itemsPerPage)
-      .limit(itemsPerPage)
-      .exec((error, products) => {
-        Product.count().exec((err, count)=> {
-          if(err) return next(err)
-          res.send(products)
-          res.status(200)
-          res.end()
-        })
-      });
+    if(req.query.price == 'highest'){
+      options.sort = {price: 'desc'}
+    }
+    if(req.query.price == 'lowest'){
+      options.sort = {price: 'asc'}
+    }
+    if(req.query.search){
+      let searchTerm = req.query.search
+      query.name = {$regex: searchTerm, $options: "i"}
+    }
+//       await Product.find(searchTerms).sort(sortTerms)
+//       .skip(itemsPerPage * page - itemsPerPage)
+//       .limit(itemsPerPage)
+//       .exec((error, products) => {
+//         // const totalDocs = productsToReturn.length
+//         Product.count().exec((err, count)=> {
+//           if(err) return next(err)
+//           res.send({count: count, products: products})
+//           res.status(200)
+//           res.end()
+//         })
+//       });
+
+const products = await Product.paginate(query, options, callback)
+  console.log(products)
+  res.send(products)
 })
 
   .post("/products", (req,res,next)=> {
   const {category, name, price, image} = req.body
-  let newProduct = new Product({})
-    newProduct.category = category,
-    newProduct.name = name,
-    newProduct.price = price,
-    newProduct.image = image,
-    newProduct.reviews = []
-    let returnProduct = newProduct.save((err)=>{
+  const newProduct = new Product({
+    category, name, price, image, reviews:[]
+  }).save((err)=>{
       if (err) throw err
     })
-    res.json(returnProduct)
+    res.json(newProduct)
     res.end()
 })
 

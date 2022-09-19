@@ -83,7 +83,6 @@ router.get('/products/:product/reviews', (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(product);
         res.send(
           product[0].reviews.slice(perPage * page - perPage, perPage * page)
         );

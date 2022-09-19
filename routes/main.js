@@ -75,18 +75,6 @@ router
       //console.log(result);
       res.send(result);
     });
-
-    // .find(searchCategory())
-    //   .sort(priceSort())
-    //   .skip(perPage * page - perPage)
-    //   .limit(perPage)
-    //   .exec((err, products) => {
-    //     // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-    //     Product.count(searchCategory()).exec((err, count) => {
-    //       res.send(products);
-    //       res.send(count);
-    //     });
-    //   });
   })
   // POST /products: Creates a new product in the database
   .post(async (req, res) => {
@@ -140,10 +128,7 @@ router
   });
 router
   .route("/products/:product/reviews/:review")
-  // .get(async (req, res) => {
-  //   let review = await Review.findById(req.params.review).exec();
-  //   res.send(review);
-  // })
+
   // DELETE /reviews/:review: Deletes a review by id
   .delete(async (req, res) => {
     let removedReview = await Review.findByIdAndDelete(req.params.review);

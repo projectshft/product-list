@@ -92,40 +92,6 @@ router
       page = 1;
     }
 
-    // How to do this operation without pagination plugin
-    // const [
-    //   {
-    //     paginatedResult,
-    //     totalCount: [{ totalCount }],
-    //   },
-    // ] = await
-    // Product.aggregate([
-    //   { $match: query },
-    //   {
-    //     $facet: {
-    //       paginatedResult: [
-    //         { $skip: Number(page) || 0 },
-    //         { $limit: productsPerPage },
-    //       ],
-    //       totalCount: [{ $count: 'totalCount' }],
-    //     },
-    //   },
-    // ]).exec((err, data) => {
-    //   if (err) next(err);
-    //   const [
-    //     {
-    //       paginatedResult,
-    //       totalCount: [{ totalCount }],
-    //     },
-    //   ] = data;
-    //   res.status(200).json({
-    //     products: paginatedResult,
-    //     totalCount,
-    //     page: (Number(page) + productsPerPage) / productsPerPage || 1,
-    //     lastPage: Math.ceil(totalCount / productsPerPage) || 1,
-    //   });
-    // });
-
     const options = {
       page: Number(page) || 1,
       limit: productsPerPage,
@@ -214,9 +180,6 @@ router
     let page = req.query.page || 1;
     const reviewsPerPage = 4;
 
-    // if (Number.isInteger(Number(page))) {
-    //   page = Number(page) * reviewsPerPage - reviewsPerPage;
-    // }
     // negative number query edge case
     if (Number(page) < 0) {
       page = 1;
@@ -225,30 +188,6 @@ router
     if (req.product) {
       const searchedProduct = req.product;
 
-      // const totalReviewsArr = await Review.aggregate().match({
-      //   product: searchedProduct._id,
-      // });
-
-      // const totalReviews = totalReviewsArr.length;
-      // searchedProduct.populate(
-      //   {
-      //     path: 'reviews',
-      //     options: {
-      //       limit: reviewsPerPage,
-      //       skip: Number(page) || 0,
-      //     },
-      //   },
-      //   (err, data) => {
-      //     if (err) next(err);
-      //     res.status(200);
-      //     return res.json({
-      //       reviews: data.reviews,
-      //       totalReviews,
-      //       page: (Number(page) + reviewsPerPage) / reviewsPerPage || 1,
-      //       lastPage: Math.ceil(totalReviews / reviewsPerPage) || 1,
-      //     });
-      //   }
-      // );
       const query = {
         product: searchedProduct._id,
       };

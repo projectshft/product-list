@@ -14,9 +14,4 @@ const ProductReducer = (state = DEFAULT_STATE, action) => {
   }
 };
 
-// const QueryReducer = (state = DEFAULT_STATE, action) => {
-//   switch(action.type) {
-
-//   }
-// }
 export { ProductReducer };

@@ -10,7 +10,18 @@ function createReview(userName, text, product) {
     product: product._id,
   });
 }
+function isInvalidProduct(product) {
+  if (
+    product.name &&
+    product.image &&
+    (product.price || product.price === 0) &&
+    product.category
+  ) {
+    return false;
+  }
 
+  return true;
+}
 function checkIfReviewValid(userName, text, product) {
   if (!product || !text || !userName) {
     return false;
@@ -114,6 +125,14 @@ router
     product.name = name;
     product.price = price;
     product.image = image;
+    if (isInvalidProduct(product)) {
+      return res
+        .status(400)
+        .send(
+          'Error: name, category, price, and image URL required for product creation'
+        );
+    }
+
     reviews.forEach((review) => {
       if (checkIfReviewValid(review.userName, review.text, product)) {
         const newReview = createReview(review.userName, review.text, product);
@@ -124,9 +143,9 @@ router
       }
     });
     product.save((err) => {
-      if (err) throw err;
+      if (err) next(err);
     });
-    res.status(200).json(product);
+    return res.status(200).json(product);
   });
 
 router.param('product', (req, res, next, id) => {
@@ -212,6 +231,10 @@ router
     const { product } = req;
     const { userName, text } = req.body;
 
+    if (!product) {
+      res.status(404);
+      return res.send('Error: No product with that id found');
+    }
     if (checkIfReviewValid(userName, text, product)) {
       const review = createReview(userName, text, product);
       review.save((err, success) => {
@@ -223,7 +246,6 @@ router
       });
       return res.status(200).json(review);
     }
-
     res.status(400);
     return res.send('Must send text and userName with each review');
   });

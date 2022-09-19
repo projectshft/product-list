@@ -9,7 +9,4 @@ const ReviewSchema = new Schema({
 
 ReviewSchema.plugin(mongoosePaginate)
 
-const reviewModel = mongoose.model('Review', ReviewSchema)
-
-// module.exports = mongoose.model("Review", ReviewSchema)
-module.exports = ReviewSchema
+module.exports = mongoose.model("Review", ReviewSchema)

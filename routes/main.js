@@ -1,12 +1,8 @@
 const router = require("express").Router();
 const {faker} = require("@faker-js/faker");
-const { default: mongoose } = require("mongoose");
 const product = require("../models/product");
 const Product = require("../models/product");
 const Review = require("../models/review")
-// const paginate = require("mongoose-paginate-v2")
-// let Product = mongoose.model('Product')
-// let Review = mongoose.model('Review')
 
 router
   .get(`/products`, async (req, res, next) => {
@@ -16,10 +12,6 @@ router
     }
     const query = {}
     const callback = {}
-    // let searchTerms = {}
-//     let sortTerms = {}
-//     let itemsPerPage = 9
-//     let page = req.query.page || 1
     if(req.query.category){
       let searchCategory = req.query.category
       query.category = {$regex: searchCategory, $options: "i"}
@@ -34,21 +26,8 @@ router
       let searchTerm = req.query.search
       query.name = {$regex: searchTerm, $options: "i"}
     }
-//       await Product.find(searchTerms).sort(sortTerms)
-//       .skip(itemsPerPage * page - itemsPerPage)
-//       .limit(itemsPerPage)
-//       .exec((error, products) => {
-//         // const totalDocs = productsToReturn.length
-//         Product.count().exec((err, count)=> {
-//           if(err) return next(err)
-//           res.send({count: count, products: products})
-//           res.status(200)
-//           res.end()
-//         })
-//       });
 
 const products = await Product.paginate(query, options, callback)
-  console.log(products)
   res.send(products)
 })
 
@@ -70,7 +49,6 @@ router
     Product.findById(id).exec((error, product) => {
       if(error) return next(error)
       res.status(200).send(product).end()
-      // console.log(product)
     })
   })
 
@@ -130,9 +108,7 @@ router
     res.end()
   })
 
-  
-
-// Code below is for populating fake data
+  // Code below is for populating fake data
 
 // const reviewAmountGenerator = () => { 
 //   return Math.floor(Math.random() * 10)

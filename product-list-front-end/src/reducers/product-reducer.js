@@ -5,6 +5,7 @@ const DEFAULT_STATE = {};
 const ProductReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
+      debugger;
       return {
         data: action.payload.data,
       };

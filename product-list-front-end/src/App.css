@@ -1,0 +1,20 @@
+/* .card {
+  width: 30%;
+} */
+
+.card__price {
+  font-size: 2rem;
+}
+.card__category {
+  padding-top: 20px;
+}
+.products {
+  padding-top: 3vh;
+}
+.search {
+  padding-top: 3vh;
+}
+
+.product__name {
+  font-size: 2.2rem;
+}

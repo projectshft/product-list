@@ -128,9 +128,10 @@ router
     const options = {
       page: Number(page) || 1,
       limit: productsPerPage,
+      sort: sortBy,
       collation: {
         locale: 'en',
-        strength: 2,
+        strength: 1,
       },
     };
 

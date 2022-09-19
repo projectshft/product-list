@@ -10,6 +10,8 @@ const Pagination = ({
   category,
   query,
 }) => {
+  // since we only use faker-js once (90 product) and each page displays 9,
+  // therefore the number of pages is 10
   let nPages = 10;
 
   const pageNumbers = [...Array(nPages + 1).keys()].slice(1);

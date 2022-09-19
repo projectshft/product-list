@@ -66,7 +66,6 @@ router.get('/products', (req, res, next) => {
     });
 });
 
-// _id: 631a4b983ebd7b8aa51462d2
 router.get('/products/:product', (req, res) => {
   Product.find({ _id: req.params.product }).exec((err, product) => {
     if (err) throw err;
@@ -82,8 +81,9 @@ router.get('/products/:product/reviews', (req, res) => {
     .populate('reviews')
     .exec((err, product) => {
       if (err) {
-        console.error(err);
+        console.log(err);
       } else {
+        console.log(product);
         res.send(
           product[0].reviews.slice(perPage * page - perPage, perPage * page)
         );
@@ -99,12 +99,13 @@ router.post('/products', (req, res) => {
 });
 
 router.post('/products/:product/reviews', (req, res) => {
-  Product.find({ _id: req.params.product })
-    .populate({ path: 'reviews' })
-    .exec((err, product) => {
-      product[0].reviews.push(req.body);
-      res.send(product[0].reviews);
-    });
+  let review = new Review(req.body);
+  review.save();
+  Product.find({ _id: req.params.product }).exec((err, product) => {
+    product[0].reviews.push(review);
+    product[0].save();
+    res.send('Review added successfully!');
+  });
 });
 
 router.delete('/products/:product', (req, res) => {

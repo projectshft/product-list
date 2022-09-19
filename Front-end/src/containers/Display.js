@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 const Display = () => {
   const productObject = useSelector((state) => state.product.prevSearch);
 
-  console.log("product", productObject);
   if (productObject) {
     return (
       <div className="card-group container">

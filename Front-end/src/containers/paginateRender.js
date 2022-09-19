@@ -1,15 +1,11 @@
 import { useSelector } from "react-redux";
 import { fetchProducts } from "../actions";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const PaginateRender = () => {
   const paginateState = useSelector((state) => state.product.prevSearch);
   const oldSearch = useSelector((state) => state.product.data);
   const dispatch = useDispatch();
-
-  console.log("paginate", paginateState);
-  console.log("oldSearch", oldSearch);
 
   function handlePage(e) {
     e.preventDefault();

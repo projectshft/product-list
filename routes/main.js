@@ -125,6 +125,7 @@ router
     //     lastPage: Math.ceil(totalCount / productsPerPage) || 1,
     //   });
     // });
+
     const options = {
       page: Number(page) || 1,
       limit: productsPerPage,

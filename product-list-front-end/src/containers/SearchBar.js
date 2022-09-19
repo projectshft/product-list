@@ -15,11 +15,18 @@ export default function SearchBar() {
     dispatch(fetchProducts(searchQuery));
   }, [searchQuery, dispatch]);
 
+  function handleSearch(e) {
+    e.preventDefault();
+    setSearchQuery({ ...searchQuery, query: e.target.value });
+  }
+
   function handleChangeCategory(e) {
+    e.preventDefault();
     setSearchQuery({ ...searchQuery, category: e.target.value });
   }
 
   function handleChangeSortByPrice(e) {
+    e.preventDefault();
     setSearchQuery({ ...searchQuery, price: e.target.value });
   }
   return (
@@ -30,9 +37,7 @@ export default function SearchBar() {
         id="name"
         className="col-md-5"
         placeholder="Search for a product"
-        onChange={(e) =>
-          setSearchQuery({ ...searchQuery, query: e.target.value })
-        }
+        onChange={(e) => handleSearch(e)}
         value={searchQuery.query}
       />
       <div className="col-md-3">

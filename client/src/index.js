@@ -4,9 +4,6 @@ import { Provider } from "react-redux";
 import store from "./store";
 import App from './App';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { findData } from "./actions/index";
-
-store.dispatch(findData());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

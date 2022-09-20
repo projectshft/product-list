@@ -7,10 +7,11 @@ import { changePage } from "../actions/index";
 
 const Footer = () => {
   const dispatch = useDispatch();
+  const filter = useSelector((state) => state.reducer.filter);
 
   const handleClick = (e) => {
     let page = e.target.innerHTML;
-    dispatch(changePage(page));
+    dispatch(changePage(filter, page));
   };
 
   const count = useSelector((state) => state.reducer.count);

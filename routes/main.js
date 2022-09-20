@@ -64,10 +64,9 @@ router.get("/products", (req, res) => {
     .sort(sort)
     .populate("reviews")
     .exec((err, products) => {
-      console.log(query);
-      console.log(filter);
-      console.log(sort);
-      (err) ? next(err) : res.send(products);
+      Product.count(filter).exec((err, count) => {
+        (err) ? next(err) : res.send({products: products, count: count});
+      });
     });
 });
 

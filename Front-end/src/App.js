@@ -2,6 +2,8 @@ import "./App.css";
 import Home from "./components/Home";
 import SearchBar from "./containers/searchbar";
 
+
+
 function App() {
   return (
     <div className="App">

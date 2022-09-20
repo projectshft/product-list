@@ -2,6 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const bodyParser = require("body-parser");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const cookieSession = require("cookie-session");
+const User = require("../models/user");
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_ID;
 
 mongoose.connect("mongodb://localhost/products", {
   useNewUrlParser: true,
@@ -9,6 +15,44 @@ mongoose.connect("mongodb://localhost/products", {
 });
 
 const app = express();
+
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: ["helloworld"],
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback",
+    },
+    (accessToken, refreshToken, profile, done) => {
+      User.findOne({ googleId: profile.id }).then((existingUser) => {
+        if (existingUser) {
+          // we already have a record with the given profile ID
+          done(null, existingUser);
+        } else {
+          // we don't have a user record with this ID, make a new record!
+          new User({
+            googleId: profile.id,
+            name: profile.displayName,
+            email: profile.emails[0].value,
+          })
+            .save()
+            .then((user) => done(null, user));
+        }
+      });
+    }
+  )
+);
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -18,6 +62,26 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   next();
+});
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, function (err, user) {
+    done(null, user);
+  });
+});
+
+const googleAuth = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
+
+app.get("/auth/google", googleAuth);
+
+app.get("/auth/google/callback", googleAuth, (req, res) => {
+  res.send("You are logged in via Google!");
 });
 
 app.use(bodyParser.json());

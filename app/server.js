@@ -6,8 +6,6 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const cookieSession = require("cookie-session");
 const User = require("../models/user");
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_ID;
 
 mongoose.connect("mongodb://localhost/products", {
   useNewUrlParser: true,
@@ -30,8 +28,9 @@ passport.use(
   "google",
   new GoogleStrategy(
     {
-      clientID: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
+      clientID:
+        "357983179430-boueosuh8v3soug7dmrddhnj42t3i53c.apps.googleusercontent.com",
+      clientSecret: "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",
       callbackURL: "/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
@@ -82,6 +81,15 @@ app.get("/auth/google", googleAuth);
 
 app.get("/auth/google/callback", googleAuth, (req, res) => {
   res.send("You are logged in via Google!");
+});
+
+app.get("/api/current_user", (req, res) => {
+  res.send(req.user);
+});
+
+app.get("/api/logout", (req, res) => {
+  req.logout();
+  res.send(req.user);
 });
 
 app.use(bodyParser.json());

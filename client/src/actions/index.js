@@ -3,6 +3,7 @@ import axios from "axios";
 export const FIND_DATA = "FIND_DATA";
 export const CHANGE_PAGE = "CHANGE_PAGE";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
+export const SORT_BY_PRICE = "SORT_BY_PRICE";
 
 export function findData(filter)  {
   let query=generateQuery(filter);
@@ -32,10 +33,20 @@ export function updateCategory(category) {
   }
 }
 
+export function sortByPrice(direction) {
+  return {
+    type: SORT_BY_PRICE,
+    payload: direction,
+  }
+}
+
 const generateQuery = (filter) => {
   let query = "?";
   if (filter.category) {
     query = `${query}category=${filter.category}&`
+  }
+  if (filter.price) {
+    query = `${query}price=${filter.price}`
   }
   return query;
 }

@@ -31,6 +31,15 @@ const reducer = (state=initialState, action) => {
         }
       }
     }
+    case "SORT_BY_PRICE": {
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          price: action.payload,
+        }
+      }
+    }
     default:
       return state;
   }

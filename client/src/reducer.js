@@ -40,6 +40,15 @@ const reducer = (state=initialState, action) => {
         }
       }
     }
+    case "SEARCH": {
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          query: action.payload,
+        }
+      }
+    }
     default:
       return state;
   }

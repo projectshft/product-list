@@ -57,11 +57,10 @@ router.get('/products', (req, res, next) => {
       // Note that we're not sending `count` back at the moment,
       // but in the future we might want to know how many are coming back
       // so we can figure out the number of pages
-      // count the number of documents in a collection
+      // count the number of documents in a collection  ProductCount: products.length,
       Product.count().exec((err, count) => {
         if (err) return next(err);
-        // res.send(products);
-        res.send({ ProductCount: products.length, products });
+        res.send({ products });
       });
     });
 });
@@ -100,6 +99,7 @@ router.post('/products', (req, res) => {
 router.post('/products/:product/reviews', (req, res) => {
   let review = new Review(req.body);
   review.save();
+  // new Review(req.body).save();
   Product.find({ _id: req.params.product }).exec((err, product) => {
     product[0].reviews.push(review);
     product[0].save();

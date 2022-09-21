@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 
 // using population to store reviews here
@@ -15,8 +16,9 @@ const ProductSchema = new Schema({
   price: Number,
   image: String,
   reviews: [{ type: Schema.Types.ObjectId, ref: 'review' }],
-  // reviews: [ReviewSchema],
 });
+
+// ProductSchema.plugin(mongoosePaginate);
 
 module.exports = {
   Product: mongoose.model('Product', ProductSchema),

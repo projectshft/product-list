@@ -32,15 +32,6 @@ const Cards = () => {
   return (
     <div>
       <div className='card-deck'>{renderCards()} </div>
-      {/* <div>
-        {productsData ? (
-          <div style={{ textAlign: 'center' }}>
-            You have {countData} results on this page
-          </div>
-        ) : (
-          <p></p>
-        )}
-      </div> */}
     </div>
   );
 };

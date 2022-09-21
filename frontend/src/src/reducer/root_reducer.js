@@ -6,7 +6,6 @@ const ProductReducer = (state = defaultState, action) => {
   switch (action.type) {
     case FETCH_PRODUCT:
       return action.payload.data.products;
-    // return action.payload.data;
     default:
       return state;
   }
@@ -15,7 +14,6 @@ const ProductReducer = (state = defaultState, action) => {
 const ProductsReducer = (state = defaultState, action) => {
   switch (action.type) {
     case FETCH_PRODUCTs:
-      // return action.payload.data.products;
       return action.payload.data;
     default:
       return state;

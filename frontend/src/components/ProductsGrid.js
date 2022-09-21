@@ -1,21 +1,31 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Product from './Product'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Pagination from '../util/Pagination';
+import { getProducts } from '../actions/actions';
 
 const ProductsGrid = () => {
+  const dispatch = useDispatch()
   const products = useSelector((state) => state.productState)
   if(products.length > 0){
     const docsArray = products[0].productsArray
     const paginateArray = []
-    const currentPage = products.currentPage
-    const totalPages = products.totalPages
+    const currentPage = products[0].currentPage
+    const totalPages = products[0].totalPages
     const totalDocs = products.totalDocs
-
-    return(
+    const searchTerms = products[0].searchTerm
+    for (let index = 1; index <= totalPages; index++) {
+      paginateArray.push(index)
+      
+    }
+    const pageClickHandler = (e) => {
+      searchTerms.page = e.target.value
+      e.preventDefault()
+      dispatch(getProducts(searchTerms))
+    }
+   return(
       <div>
         <Container>
         <Row>
@@ -29,11 +39,27 @@ const ProductsGrid = () => {
         </Row>
 
         </Container>
+        <div className='paginate-div'>
+          <ul>
+        {
+          paginateArray.map((pag) => {
+            return(
+              <li 
+              className=
+              {
+              pag === currentPage ? "active" : "" }
+              key={pag} 
+              value={pag} 
+              onClick={pageClickHandler}>{pag}</li>
+            )
+          })
+        }
+        </ul>
+          </div>
       </div>
     )
 
   } else {
-    console.log(`nothing`)
     return (
       <div>
         <h2>No products to display</h2>

@@ -1,13 +1,11 @@
 import { SEARCH } from "../actions/actions";
 
-const initialState = {
-  searchTerm: ''
-}
-
-const searchReducer = (state = initialState, action) => {
+const searchReducer = (state = [{searchTerm: '', category:'', priceSort: '', page:''}], action) => {
   switch (action.type){
     case SEARCH:
-      return state
+      const search = action.payload
+      console.log(action.payload)
+      return [search]
     
     default:
       return state

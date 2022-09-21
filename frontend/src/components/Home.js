@@ -1,12 +1,11 @@
 import React from 'react'
-import Header from './Header'
 import ProductsGrid from './ProductsGrid'
+import SearchBar from './SearchBar'
 
 const Home = () => {
   return (
     <div>
-      <Header />
-      <h1>Home</h1>
+      <SearchBar />
       <ProductsGrid />
     </div>
   )

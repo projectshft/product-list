@@ -54,6 +54,9 @@ router.get('/products', (req, res, next) => {
     .limit(perPage)
     .sort(priceSort)
     .exec((err, products) => {
+      // prompt suggests using db.collection.count in Mongo so Product.count here isn't necessary
+
+      // the following comments are from the original project
       // Note that we're not sending `count` back at the moment,
       // but in the future we might want to know how many are coming back
       // so we can figure out the number of pages

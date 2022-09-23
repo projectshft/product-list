@@ -33,7 +33,7 @@ router.get('/products', (req, res, next) => {
 
   let categoryInput;
   const category = req.query.category || null;
-  if (typeof category != 'object') {
+  if (category !== null) {
     let categoryTrans =
       category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
     categoryInput = { category: categoryTrans };
@@ -43,7 +43,7 @@ router.get('/products', (req, res, next) => {
 
   let queryInput;
   const query = req.query.query || null;
-  if (typeof query != 'object') {
+  if (query !== null) {
     queryInput = { name: { $regex: query, $options: 'i' } };
   } else {
     queryInput = {};
@@ -58,10 +58,11 @@ router.get('/products', (req, res, next) => {
       // but in the future we might want to know how many are coming back
       // so we can figure out the number of pages
       // count the number of documents in a collection  ProductCount: products.length,
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
-        res.send({ products });
-      });
+      // Product.count().exec((err, count) => {
+      //   if (err) return next(err);
+      //   res.send({ products });
+      // });
+      res.send({ products });
     });
 });
 

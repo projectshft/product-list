@@ -7,7 +7,6 @@ export function fetchProducts(pgNumber, price, category, query) {
   const request = axios.get(
     `http://localhost:8000/products?page=${pgNumber}&price=${price}&category=${category}&query=${query}`
   );
-  console.log(pgNumber, price, category, query);
   return {
     type: FETCH_PRODUCTs,
     payload: request,

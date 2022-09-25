@@ -10,7 +10,7 @@ const Pagination = ({
   category,
   query,
 }) => {
-  const productCount = useSelector((state) => state.products.count);
+  const productCount = useSelector((state) => state.products.count) || 10;
   let nPages = Math.ceil(parseInt(productCount) / 9);
 
   const pageNumbers = [...Array(nPages + 1).keys()].slice(1);

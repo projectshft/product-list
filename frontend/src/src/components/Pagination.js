@@ -10,6 +10,7 @@ const Pagination = ({
   category,
   query,
 }) => {
+  // set productCount a default value in order to kick off the app when it gets loaded the first time
   const productCount = useSelector((state) => state.products.count) || 10;
   let nPages = Math.ceil(parseInt(productCount) / 9);
 

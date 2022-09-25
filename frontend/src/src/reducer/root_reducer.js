@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTs, FETCH_PRODUCT } from '../action';
+import { FETCH_PRODUCTS, FETCH_PRODUCT } from '../action';
 
 const defaultState = [];
 
@@ -13,7 +13,7 @@ const ProductReducer = (state = defaultState, action) => {
 
 const ProductsReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case FETCH_PRODUCTs:
+    case FETCH_PRODUCTS:
       return action.payload.data;
     default:
       return state;

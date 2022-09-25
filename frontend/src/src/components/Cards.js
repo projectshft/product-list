@@ -2,10 +2,9 @@ import { useSelector } from 'react-redux';
 import '../App.css';
 
 const Cards = () => {
-  const [firstPageData, productsData, countData] = useSelector((state) => [
+  const [firstPageData, productsData] = useSelector((state) => [
     state.product,
     state.products.products,
-    state.products.ProductCount,
   ]);
 
   const presentData = productsData ? productsData : firstPageData;

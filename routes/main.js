@@ -36,7 +36,8 @@ router.get('/products', (req, res, next) => {
   if (category !== null) {
     let categoryTrans =
       category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
-    categoryInput = { category: categoryTrans };
+    // categoryInput = { category: categoryTrans };
+    categoryInput = { category: { $regex: categoryTrans, $options: 'i' } };
   } else {
     categoryInput = {};
   }

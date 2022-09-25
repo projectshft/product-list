@@ -1,5 +1,5 @@
 import { fetchProducts } from '../action';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import '../App.css';
 
@@ -10,9 +10,8 @@ const Pagination = ({
   category,
   query,
 }) => {
-  // since we only use faker-js once (90 product) and each page displays 9,
-  // therefore the number of pages is 10
-  let nPages = 10;
+  const productCount = useSelector((state) => state.products.count) || 10;
+  let nPages = Math.ceil(parseInt(productCount) / 9);
 
   const pageNumbers = [...Array(nPages + 1).keys()].slice(1);
 

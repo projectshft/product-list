@@ -21,23 +21,23 @@ const Product = mongoose.model('product', ProductSchema);
 
 let product1 = new Product({
 	category: 'Electronics',
-	name: 'iPhone 11',
-	price: 699,
+	name: 'Hello World',
+	price: 1144,
 	image: 'https://via.placeholder.com/250?text=Product+Image',
 	reviews: [],
 });
 
 let review1 = new Review({
 	product: product1._id,
-	userName: 'John Doe',
-	text: 'This is a great product!',
+	userName: 'Rewrote',
+	text: 'Fantastic electronic!',
 });
 
-review1.save();
-product1.reviews.push(review1);
+// review1.save();
+// product1.reviews.push(review1);
 
-product1.save();
-console.log(product1);
-console.log(product1.reviews[0]);
+// product1.save();
+// console.log(product1);
+// console.log(product1.reviews[0]);
 
 module.exports = mongoose.model('Product', ProductSchema);

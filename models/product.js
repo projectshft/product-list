@@ -19,6 +19,13 @@ const ProductSchema = new Schema({
 
 const Product = mongoose.model('product', ProductSchema);
 
+Product.findOne({ name: 'Hello World' })
+	.populate('reviews')
+	.exec((err, product) => {
+		console.log(product);
+	});
+
+
 let product1 = new Product({
 	category: 'Electronics',
 	name: 'Hello World',
@@ -33,10 +40,10 @@ let review1 = new Review({
 	text: 'Fantastic electronic!',
 });
 
-// review1.save();
-// product1.reviews.push(review1);
+review1.save();
+product1.reviews.push(review1);
 
-// product1.save();
+product1.save();
 // console.log(product1);
 // console.log(product1.reviews[0]);
 

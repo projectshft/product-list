@@ -47,15 +47,39 @@ router.get('/products/:product', (req, res, next) => {
 	});
 });
 
-//still need to implement 'populate reviews' functionality
+//still need to implement 'populate reviews' functionality. Pagination needs more testing
 router.get('/products/:product/reviews', (req, res, next) => {
 	const perPage = 4;
 	const page = req.query.page || 1;
-
 	Product.find({ _id: req.params.product }, (err, rev) => {
+		if (err) {
+			res.send(err);
+		}
 		const prodRev = rev[0].reviews;
 		res.send(prodRev.slice(perPage * page - perPage, perPage * page));
 	});
 });
+
+router.post('/products', (req, res, next) => {
+	const product = new Product();
+	product.category = req.body.category;
+	product.name = req.body.name;
+	product.price = req.body.price;
+	product.image = req.body.image;
+	product.reviews = [];
+
+	product.save((err) => {
+		if (err) {
+			res.send(err);
+		}
+		console.log(product);
+		res.send(product);
+	});
+});
+
+
+
+
+	
 
 module.exports = router;

@@ -22,7 +22,10 @@ const Product = mongoose.model('product', ProductSchema);
 Product.findOne({ name: 'Hello World' })
 	.populate('reviews')
 	.exec((err, product) => {
-		console.log(product);
+		if (err) {
+			console.log(err);
+		}
+		return product;
 	});
 
 

@@ -43,18 +43,18 @@ router.get('/products/:product', (req, res, next) => {
 		if (err) {
 			res.send(err);
 		}
-		// console.log(product);
 		res.send(product);
 	});
 });
 
+//still need to implement 'populate reviews' functionality
 router.get('/products/:product/reviews', (req, res, next) => {
-	Product.find({ _id: req.params.product}, (err, product) => {
-		if (err) {
-			res.send(err);
-		}
-		res.send(product[0].reviews[0]);
-		res.send(product[0].reviews[1]);
+	const perPage = 4;
+	const page = req.query.page || 1;
+
+	Product.find({ _id: req.params.product }, (err, rev) => {
+		const prodRev = rev[0].reviews;
+		res.send(prodRev.slice(perPage * page - perPage, perPage * page));
 	});
 });
 

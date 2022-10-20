@@ -40,11 +40,38 @@ let review1 = new Review({
 	text: 'Fantastic electronic!',
 });
 
+let review2 = new Review({
+	product: product1._id,
+	userName: 'Jordacai',
+	text: 'This electronic is LIT!',
+});
+
+let review3 = new Review({
+	product: product1._id,
+	userName: 'Tilda',
+	text: 'It\'s Electronic-central in here!',
+});
+
+let review4 = new Review({
+	product: product1._id,
+	userName: 'Cozmo',
+	text: 'I am unimpressed with the nature of this particular electronic.',
+});
+
+let review5 = new Review({
+	product: product1._id,
+	userName:'Frank',
+	text: 'There\'s nothin to it, but to do it.',
+});
+
 review1.save();
-product1.reviews.push(review1);
+review2.save();
+review3.save();
+review4.save();
+review5.save();
+
+product1.reviews.push(review1, review2, review3, review4, review5);
 
 product1.save();
-// console.log(product1);
-// console.log(product1.reviews[0]);
-
+console.log(product1);
 module.exports = mongoose.model('Product', ProductSchema);

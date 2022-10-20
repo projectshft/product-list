@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const router = require('express').Router();
 const { faker } = require('@faker-js/faker');
 const Product = require('../models/product');
@@ -52,8 +53,8 @@ router.get('/products/:product/reviews', (req, res, next) => {
 		if (err) {
 			res.send(err);
 		}
-		console.log(product[0].reviews[0]);
 		res.send(product[0].reviews[0]);
+		res.send(product[0].reviews[1]);
 	});
 });
 

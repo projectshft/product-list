@@ -2,6 +2,8 @@
 const router = require('express').Router();
 const { faker } = require('@faker-js/faker');
 const Product = require('../models/product');
+const Review = require('../models/review');
+
 
 router.get('/generate-fake-data', (req, res, next) => {
 	for (let i = 0; i < 90; i++) {
@@ -72,14 +74,29 @@ router.post('/products', (req, res, next) => {
 		if (err) {
 			res.send(err);
 		}
-		console.log(product);
 		res.send(product);
 	});
 });
 
+router.post('/products/:product/reviews', (req, res, next) => {
+	const review = new Review();
+	review.userName = req.body.userName;
+	review.text = req.body.text;
+	review.product = req.params.product;
+	Product.find({ _id: req.params.product }, (err, prod) => {
+		if (err) {
+			res.send(err);
+		}
+		const product = prod[0];
+		product.reviews.push(review);
+		product.save((err) => {
+			if (err) {
+				res.send(err);
+			}
+			res.send(review);
+		});
+	});
+});
 
-
-
-	
 
 module.exports = router;

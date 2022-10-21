@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Review = require('./review');
 
-const ReviewSchema = new Schema({
-	userName: String,
-	text: String,
-	product: { type: Schema.Types.ObjectId, ref: 'product' },
-});
 
-const Review = mongoose.model('review', ReviewSchema);
+// const ReviewSchema = new Schema({
+// 	userName: String,
+// 	text: String,
+// 	product: { type: Schema.Types.ObjectId, ref: 'product' },
+// });
+
+// const Review = mongoose.model('review', ReviewSchema);
 
 const ProductSchema = new Schema({
 	category: String,

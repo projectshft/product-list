@@ -98,5 +98,37 @@ router.post('/products/:product/reviews', (req, res, next) => {
 	});
 });
 
+router.delete('/products/:product', (req, res, next) => {
+	Product.findOneAndRemove({ _id: req.params.product }, (err, product) => {
+		if (err) {
+			res.send(err);
+		}
+		res.send(product);
+	});
+});
+
+router.delete('/reviews/:review', (req, res, next) => {
+	Review.findOneAndRemove({ _id: req.params.review }, (err, review) => {
+		if (err) {
+			res.send(err);
+		}
+		Product.find({ _id: review.product }, (err, prod) => {
+			if (err) {
+				res.send(err);
+			}
+			const product = prod[0];
+			const index = product.reviews.indexOf(review._id);
+			product.reviews.splice(index, 1);
+			product.save((err) => {
+				if (err) {
+					res.send(err);
+				}
+				res.send(review);
+			});
+		});
+	});
+});
+
+
 
 module.exports = router;

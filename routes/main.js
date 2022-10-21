@@ -22,21 +22,33 @@ router.get('/generate-fake-data', (req, res, next) => {
 
 router.get('/products', (req, res, next) => {
 	const perPage = 9;
-
 	// return the first page by default
 	const page = req.query.page || 1;
 
-	Product.find({})
-		.skip(perPage * page - perPage)
-		.limit(perPage)
-		.exec((err, products) => {
-			// Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-			Product.count().exec((err, count) => {
-				if (err) return next(err);
-
-				res.send(products);
+	// const lowerCategory = req.query.category;
+	// const category = lowerCategory.charAt(0).toUpperCase() + lowerCategory.slice(1);
+	const category = req.query.category;
+	if (category) {
+		Product.find({ category: category })
+			.skip(perPage * page - perPage)
+			.limit(perPage)
+			.exec((err, products) => {
+				Product.count({ category: category }).exec((err, count) => {
+					if (err) return next(err);
+					res.send(products);
+				});
 			});
-		});
+	} else {
+		Product.find({})
+			.skip(perPage * page - perPage)
+			.limit(perPage)
+			.exec((err, products) => {
+				Product.count().exec((err, count) => {
+					if (err) return next(err);
+					res.send(products);
+				});
+			});
+	}
 });
 
 router.get('/products/:product', (req, res, next) => {

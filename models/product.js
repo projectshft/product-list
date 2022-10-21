@@ -2,14 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Review = require('./review');
 
-// const ReviewSchema = new Schema({
-// 	userName: String,
-// 	text: String,
-// 	product: { type: Schema.Types.ObjectId, ref: 'product' },
-// });
-
-// const Review = mongoose.model('review', ReviewSchema);
-
 const ProductSchema = new Schema({
 	category: String,
 	name: String,
@@ -20,14 +12,14 @@ const ProductSchema = new Schema({
 
 const Product = mongoose.model('product', ProductSchema);
 
-Product.findOne({ name: 'Hello World' })
-	.populate('reviews')
-	.exec((err, product) => {
-		if (err) {
-			console.log(err);
-		}
-		return product;
-	});
+// Product.findOne({ name: 'Hello World' })
+// 	.populate('reviews')
+// 	.exec((err, product) => {
+// 		if (err) {
+// 			console.log(err);
+// 		}
+// 		return product;
+// 	});
 
 
 let product1 = new Product({
@@ -76,6 +68,6 @@ review5.save();
 
 product1.reviews.push(review1, review2, review3, review4, review5);
 
-product1.save();
-console.log(product1);
+//ULTIMATELY UNCOMMENT THIS
+// product1.save();
 module.exports = mongoose.model('Product', ProductSchema);

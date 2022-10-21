@@ -4,7 +4,6 @@ const { faker } = require('@faker-js/faker');
 const Product = require('../models/product');
 const Review = require('../models/review');
 
-
 router.get('/generate-fake-data', (req, res, next) => {
 	for (let i = 0; i < 90; i++) {
 		let product = new Product();
@@ -53,12 +52,19 @@ router.get('/products/:product', (req, res, next) => {
 router.get('/products/:product/reviews', (req, res, next) => {
 	const perPage = 4;
 	const page = req.query.page || 1;
-	Product.find({ _id: req.params.product }, (err, rev) => {
+	Product.find({ _id: req.params.product }, (err, prod) => {
 		if (err) {
 			res.send(err);
 		}
-		const prodRev = rev[0].reviews;
-		res.send(prodRev.slice(perPage * page - perPage, perPage * page));
+		const ProdRev = prod[0].reviews;
+
+		// ProdRev.populate('reviews').exec((err, product) => {
+		// 	if (err) {
+		// 		res.send(err);
+		// 	}
+		// 	res.send(product);
+
+		res.send(ProdRev.slice(perPage * page - perPage, perPage * page));
 	});
 });
 
@@ -128,7 +134,5 @@ router.delete('/reviews/:review', (req, res, next) => {
 		});
 	});
 });
-
-
 
 module.exports = router;

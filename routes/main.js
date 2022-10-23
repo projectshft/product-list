@@ -28,8 +28,20 @@ router.get('/products', (req, res, next) => {
 	// const category = lowerCategory.charAt(0).toUpperCase() + lowerCategory.slice(1);
 	const category = req.query.category;
 	const price = req.query.price;
+	const search = req.query.query;
 
-	if (category) {
+	if (search) {
+		Product
+			.find({ $text: { $search: search } })
+			.skip((perPage * page) - perPage)
+			.limit(perPage)
+			.exec((err, products) => {
+				Product.count({ $text: { $search: search } }).exec((err, count) => {
+					if (err) return next(err);
+					res.send(products);
+				});
+			});
+	} else if (category) {
 		Product.find({ category: category })
 			.skip(perPage * page - perPage)
 			.limit(perPage)

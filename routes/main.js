@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { faker } = require('@faker-js/faker');
 const Product = require('../models/product');
 const Review = require('../models/review');
+//adding this just for commit purposes because last commit had questionable processing
 
 router.get('/generate-fake-data', (req, res, next) => {
 	for (let i = 0; i < 90; i++) {

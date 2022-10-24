@@ -7,7 +7,7 @@ const Review = require('./review');
 const ProductSchema = new Schema({
 	category: String,
 	name: String,
-	price: String,
+	price: Number,
 	image: String,
 	reviews: [{ type: Schema.Types.ObjectId, ref: 'review' }],
 });

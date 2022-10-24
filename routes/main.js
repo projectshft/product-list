@@ -5,7 +5,6 @@ const Product = require('../models/product');
 const Review = require('../models/review');
 //adding this just for commit purposes because last commit had questionable processing
 
-
 router.get('/generate-fake-data', (req, res, next) => {
 	for (let i = 0; i < 90; i++) {
 		let product = new Product();
@@ -28,154 +27,45 @@ router.route('/products').get((req, res, next) => {
 	let category = req.query.category;
 	let price = req.query.price;
 	let search = req.query.query;
-	let query = {};
 
-	const searchQuery = () => {
-		if (search) {
-			query.search = search;
-			console.log(query);
-			return query;
+	let optionalFilters = () => {
+		if (category && search) {
+			return {
+				category: category,
+				$text: { $search: search },
+			};
 		}
-	};
-
-	searchQuery();
-
-	// if (search) {
-	// query.search = search;
-	// return { $text: { $search: search } };
-	// 		console.log('hio');
-	// 		return { $text: { $search: search } };
-	// 	} else {
-	// 		return {};
-	// 	}
-	// };
-
-	const categoryQuery = () => {
 		if (category) {
-			query.category = category;
-			console.log(query);
-			return query;
+			return { category: category };
+		}
+		if (search) {
+			return { $text: { $search: search } };
 		}
 	};
 
-	categoryQuery();
-
-	const priceQuery = () => {
+	let priceFilter = () => {
 		if (price) {
-			query.price = price;
-			if (price === 'highest') {
-				query.price === price;
-				console.log(query);
-				return query;
-			} else if (price === 'lowest') {
-				query.price === price;
-				console.log(query);
-				return query;
+			if (price == 'highest') {
+				return { price: -1 };
+			} else if (price == 'lowest') {
+				return { price: 1 };
 			} else {
-				return {};
+				return null;
 			}
 		}
-		else return {};
 	};
 
-	priceQuery();
-
-	const options = {
+	let options = {
+		sort: priceFilter(),
 		offset: perPage * page - perPage,
 		limit: perPage,
 	};
 
-	Product.paginate(query, options, (err, result) => {
-		if (err) next(err);
-		res.send(result);
+	Product.paginate(optionalFilters(), options, function (err, products) {
+		console.log(products);
+		res.send(products);
 	});
 });
-
-// 		.skip(perPage * page - perPage)
-// 		.limit(perPage)
-// 		.exec((err, products) => {
-// 			Product.count(searchQuery()).exec((err, count) => {
-// 				if (err) return next(err);
-// 				res.send(products);
-// 			});
-// 		});
-// });
-
-// let productSearch = () => {
-// 	if (category && price && search) {
-// 		return Product.find({
-// 			category: category,
-// 			price: sortPrice(),
-// 			$text: { $search: search }
-// 		})
-
-// router.get('/products', (req, res, next) => {
-// 	const perPage = 9;
-// 	// return the first page by default
-// 	const page = req.query.page || 1;
-// 	// const lowerCategory = req.query.category;
-// 	// const category = lowerCategory.charAt(0).toUpperCase() + lowerCategory.slice(1);
-// 	const category = req.query.category;
-// 	const price = req.query.price;
-// 	const search = req.query.query;
-
-// 	if (search) {
-// 		Product
-// 			.find({ $text: { $search: search } })
-// 			.skip((perPage * page) - perPage)
-// 			.limit(perPage)
-// 			.exec((err, products) => {
-// 				Product.count({ $text: { $search: search } }).exec((err, count) => {
-// 					if (err) return next(err);
-// 					res.send(products);
-// 				});
-// 			});
-// 	} else if (category) {
-// 		Product.find({ category: category })
-// 			.skip(perPage * page - perPage)
-// 			.limit(perPage)
-// 			.exec((err, products) => {
-// 				Product.count({ category: category }).exec((err, count) => {
-// 					if (err) return next(err);
-// 					res.send(products);
-// 				});
-// 			});
-// 	} else if (price) {
-// 		if (price === 'highest') {
-// 			Product.find({})
-// 				.sort({ price: -1 })
-// 				.skip(perPage * page - perPage)
-// 				.limit(perPage)
-// 				.exec((err, products) => {
-// 					Product.count().exec((err, count) => {
-// 						if (err) return next(err);
-// 						res.send(products);
-// 					});
-// 				});
-// 		} else if (price === 'lowest') {
-// 			Product.find({})
-// 				.sort({ price: 1 })
-// 				.skip(perPage * page - perPage)
-// 				.limit(perPage)
-// 				.exec((err, products) => {
-// 					Product.count().exec((err, count) => {
-// 						if (err) return next(err);
-// 						res.send(products);
-// 					});
-// 				});
-// 		}
-// 	} else {
-// 		Product.find({})
-// 			.skip(perPage * page - perPage)
-// 			.limit(perPage)
-// 			.exec((err, products) => {
-// 				Product.count().exec((err, count) => {
-// 					if (err) return next(err);
-// 					res.send(products);
-// 				});
-// 			});
-// 	}
-// });
 
 router.get('/products/:product', (req, res, next) => {
 	Product.find({ _id: req.params.product }, (err, product) => {

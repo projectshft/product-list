@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
@@ -9,7 +9,17 @@ import { legacy_createStore as createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import promise from "redux-promise";
 
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(promise)));
+//ONCE I IMPORT THE REDUCER, I CAN USE IT IN THE STORE
+// const store = createStore(reducers, composeWithDevTools(applyMiddleware(promise)));
+
+// ReactDOM.render(
+//   <Provider store={store}>
+//     <App />
+//   </Provider>,
+//   document.getElementById('root')
+// );
+
+const store = createStore(composeWithDevTools(applyMiddleware(promise)));
 
 ReactDOM.render(
   <Provider store={store}>
@@ -17,4 +27,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-

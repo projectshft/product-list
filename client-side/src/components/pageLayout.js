@@ -2,6 +2,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React from "react";
 
+
 function BasicExample() {
   return (
     <div>
@@ -29,6 +30,8 @@ function BasicExample() {
           <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
         </DropdownButton>
       </Dropdown>
+      <br></br>
+      <br></br>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 // import Button from 'react-bootstrap/Button';
 // import Container from 'react-bootstrap/Container';
 import { BasicExample } from "./components/pageLayout.js";
+import { CardDeck } from "./components/cardDeck.js";
 
 
 
@@ -9,6 +10,7 @@ const App = () => {
   return (
     <div>
       <BasicExample />
+      <CardDeck />
     </div>
   );
 };

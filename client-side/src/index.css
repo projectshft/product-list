@@ -3,10 +3,28 @@
 }
 
 .searchLine {
-  width: 55%;
+  width: 45%;
   display: inline-flex;
   margin-left: 50px;
   margin-right: 50px;
   margin-top: 50px;
 }
+
+.card {
+  margin-left: 60px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 

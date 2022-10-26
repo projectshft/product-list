@@ -12,6 +12,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import promise from "redux-promise";
 
 
+
 //ONCE I IMPORT THE REDUCER, I CAN USE IT IN THE STORE
 // const store = createStore(reducers, composeWithDevTools(applyMiddleware(promise)));
 

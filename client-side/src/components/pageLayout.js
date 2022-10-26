@@ -1,11 +1,19 @@
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React from "react";
+import { call } from "../actions/call";
 
-function BasicExample() {
+
+
+function PageLayout() {
+  //handle submit to call the call from call.js
+  const handleSubmit = (e) => { 
+    e.preventDefault();
+    call();
+  };
   return (
     <div>
-      <form className="searchLine">
+      <form className="searchLine" onSubmit={handleSubmit}>
         <div className="input-group" id="search">
           <input
             type="text"
@@ -55,4 +63,4 @@ function BasicExample() {
   );
 }
 
-export { BasicExample };
+export { PageLayout };

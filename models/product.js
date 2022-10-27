@@ -15,6 +15,8 @@ const ProductSchema = new Schema({
   rewievs: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 });
 
+ProductSchema.index({name: 'text'})
+
 module.exports = {
   Product: mongoose.model("Product", ProductSchema),
   Review: mongoose.model("Review", ReviewSchema)

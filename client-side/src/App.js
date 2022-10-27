@@ -2,7 +2,9 @@
 // import Button from 'react-bootstrap/Button';
 // import Container from 'react-bootstrap/Container';
 import { PageLayout } from "./components/pageLayout.js";
-import { CardDeck } from "./components/cardDeck.js";
+import { RenderCard } from "./components/RenderCard.js";
+
+
 
 
 
@@ -10,7 +12,7 @@ const App = () => {
   return (
     <div>
       <PageLayout />
-      <CardDeck />
+      <RenderCard />
     </div>
   );
 };

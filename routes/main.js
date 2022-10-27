@@ -62,7 +62,6 @@ router.route('/products').get((req, res, next) => {
 	};
 
 	Product.paginate(optionalFilters(), options, function (err, products) {
-		console.log(products);
 		res.send(products);
 	});
 });

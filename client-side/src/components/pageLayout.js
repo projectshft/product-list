@@ -1,7 +1,7 @@
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React from "react";
-import { call } from "../actions/call";
+import { Call } from "../actions/Call";
 
 
 
@@ -9,7 +9,7 @@ function PageLayout() {
   //handle submit to call the call from call.js
   const handleSubmit = (e) => { 
     e.preventDefault();
-    call();
+    Call();
   };
   return (
     <div>

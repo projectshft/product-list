@@ -2,6 +2,7 @@ import axios from "axios";
 
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+export const FETCH_PRODUCTS_ERROR = "FETCH_PRODUCTS_ERROR";
 
 export async function fetchProducts() {
   const request = await axios.get("http://localhost:8000/products");

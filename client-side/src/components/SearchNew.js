@@ -2,12 +2,12 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React from "react";
 import { useState } from "react";
-import { UseDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchProducts } from "../actions/fetchProducts";
 
 const SearchNew = () => {
   const [product, setProduct] = useState("");
-  const dispatch = UseDispatch();
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (product === "" || product === undefined) {

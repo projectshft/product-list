@@ -1,15 +1,15 @@
 import axios from "axios";
 
+export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
-export async function Call(res) {
+export async function Call() {
   const request = await axios.get("http://localhost:8000/products");
   const data = await request.data;
-  console.log(data);
-  return {
-    type: "CALL",
-    payload: data,
-  };
+  let products = data.docs;
+  console.log(products);
 }
+
+  
 
     // .then((res) => {
     //   let products = res.data.docs;

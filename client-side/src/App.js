@@ -5,9 +5,6 @@ import { PageLayout } from "./components/pageLayout.js";
 import { RenderCard } from "./components/RenderCard.js";
 
 
-
-
-
 const App = () => {
   return (
     <div>

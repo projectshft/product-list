@@ -2,12 +2,11 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React from "react";
 import { Call } from "../actions/Call";
+// import { UseDispatch } from "react-redux";
 
-
-
-function PageLayout() {
-  //handle submit to call the call from call.js
-  const handleSubmit = (e) => { 
+const PageLayout = () => {
+  // const dispatch = UseDispatch();
+  const handleSubmit = (e) => {
     e.preventDefault();
     Call();
   };
@@ -55,12 +54,13 @@ function PageLayout() {
           <Dropdown.Item href="#/action-1">Lowest to Highest</Dropdown.Item>
           <Dropdown.Item href="#/action-2">Highest to Lowest</Dropdown.Item>
         </DropdownButton>
-        <br></br><br></br>
+        <br></br>
+        <br></br>
       </Dropdown>
       <br></br>
       <br></br>
     </div>
   );
-}
+};
 
 export { PageLayout };

@@ -3,12 +3,15 @@
 // import Container from 'react-bootstrap/Container';
 import { PageLayout } from "./components/pageLayout.js";
 import { RenderCard } from "./components/RenderCard.js";
+import { Call } from "./actions/Call.js";
 
 
 const App = () => {
   return (
     <div>
-      <PageLayout />
+      <PageLayout>
+        <Call/>
+      </PageLayout>
       <RenderCard />
     </div>
   );

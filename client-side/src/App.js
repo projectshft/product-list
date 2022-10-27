@@ -4,8 +4,6 @@
 import SearchNew from "./components/SearchNew.js";
 import RenderCard from "./components/RenderCard.js";
 
-
-
 const App = () => {
   return (
     <div>

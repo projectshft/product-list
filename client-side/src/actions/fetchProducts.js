@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_PRODUCTS_ERROR = "FETCH_PRODUCTS_ERROR";
 
@@ -28,15 +27,7 @@ export async function fetchProducts() {
       
    
 
-// .then((res) => {
-//   let products = res.data.docs;
-//   products.map((product) => {
-//     product = {
-//       category: product.category,
-//       name: product.name,
-//       price: product.price,
-//     };
-//     console.log(product);
+
 //     return (
 //       <div>
 //         <div className="row">

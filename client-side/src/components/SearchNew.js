@@ -1,14 +1,14 @@
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React from "react";
-import { Call } from "../actions/Call";
+import { fetchProducts } from "../actions/fetchProducts";
 // import { UseDispatch } from "react-redux";
 
-const PageLayout = () => {
+const SearchNew = () => {
   // const dispatch = UseDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    Call();
+    fetchProducts();
   };
   return (
     <div>
@@ -63,4 +63,4 @@ const PageLayout = () => {
   );
 };
 
-export { PageLayout };
+export { SearchNew };

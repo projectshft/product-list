@@ -3,7 +3,7 @@ import React from "react";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
-export async function Call() {
+export async function fetchProducts() {
   const request = await axios.get("http://localhost:8000/products");
   const data = await request.data;
   let products = data.docs;
@@ -17,7 +17,7 @@ export async function Call() {
     console.log(product);
     return(
       <div>
-        
+        <h5>{product.name}</h5>
       </div>
     );
   });
@@ -70,4 +70,4 @@ export async function Call() {
 //   console.log(err);
 // });
 
-export default Call;
+export default fetchProducts;

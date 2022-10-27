@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { FETCH_PRODUCTS } from "../actions/Call.js";
+import { FETCH_PRODUCTS } from "../actions/fetchProducts.js";
 
 
 const ProductsReducer = (state = {}, action) => {
@@ -13,3 +13,4 @@ const ProductsReducer = (state = {}, action) => {
 };
 
 export default ProductsReducer;
+

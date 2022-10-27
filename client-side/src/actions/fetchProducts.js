@@ -1,31 +1,27 @@
 import axios from "axios";
-import React from "react";
+
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
 export async function fetchProducts() {
   const request = await axios.get("http://localhost:8000/products");
   const data = await request.data;
-  let products = data.docs;
+  const products = data.docs;
   console.log(products);
-  products.map((product) => {
-    product = {
-      category: product.category,
-      name: product.name,
-      price: product.price,
+  
+  if (request) {
+    return {
+      type: FETCH_PRODUCTS,
+      payload: products,
     };
-    console.log(product);
-    return(
-      <div>
-        <h5>{product.name}</h5>
-      </div>
-    );
-  });
-  return {
-    type: FETCH_PRODUCTS,
-    payload: request,
-  };
+  } else {
+    return {
+      type: FETCH_PRODUCTS,
+      payload: products,
+    };
+  }
 }
+
 
       
       

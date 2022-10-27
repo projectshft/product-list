@@ -23,7 +23,8 @@
     "express": "^4.18.2",
     "mongoose": "^6.6.5",
     "mongoose-paginate-v2": "^1.7.1",
-    "mongoose-regex-search": "^0.9.0"
+    "mongoose-regex-search": "^0.9.0",
+    "react-redux": "^8.0.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0"

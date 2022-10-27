@@ -27,4 +27,4 @@ const RenderCard = () => {
   );
 };
 
-export { RenderCard };
+export default RenderCard;

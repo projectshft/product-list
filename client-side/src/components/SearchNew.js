@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { fetchProducts } from "../actions/fetchProducts";
 
 const SearchNew = () => {
-  const [product] = useState('');
+  const [product] = useState([]);
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();

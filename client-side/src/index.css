@@ -10,22 +10,21 @@
   margin-top: 5%;
 }
 
+
 .card {
-  margin-left: 60px;
-  margin-right: 1px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 100%;
+  margin: 10px;
+  width: 600px;
   height: 100%;
+} 
+
+
+
+.try {
+  display: inline-flex;
+  margin-top: 5%;
 }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
+
+
 
 

@@ -3,19 +3,20 @@ import { FETCH_PRODUCTS } from "../actions/fetchProducts.js";
 import { FETCH_PRODUCTS_ERROR } from "../actions/fetchProducts.js";
 
 const ProductsReducer = (state = [], action) => {
-  let arr = [];
+
   switch (action.type) {
     case FETCH_PRODUCTS:
-      let products = action.payload;
+      let data = action.payload;
+      // console.log(data);
 
-      let fetchedProducts = products.map(function (product) {
+      let fetchedProducts = data.map(function (product) {
         product = {
           category: product.category,
           name: product.name,
           price: product.price,
         };
-        arr.push(product);
-        return arr;
+       
+        return product;
       });
       // return {error: '', products: fetchedProducts};
       return { error: '', products: fetchedProducts };

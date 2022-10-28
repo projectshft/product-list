@@ -5,7 +5,7 @@ import React from "react";
 const RenderCard = () => {
   return (
     <div>
-      <div className="row">
+      <div className="makeRow">
         <div className="col-sm-3">
           <div className="card">
             <img

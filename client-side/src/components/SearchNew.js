@@ -28,13 +28,13 @@ const SearchNew = () => {
     });
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (search === "" || search === undefined) {
-      dispatch(fetchProducts());
-    } else {
-      dispatch(fetchProducts());
-    }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // if (search === "" || search === undefined) {
+    //   dispatch(fetchProducts());
+    // } else {
+    //   dispatch(fetchProducts());
+    // }
   };
   return (
     <div>

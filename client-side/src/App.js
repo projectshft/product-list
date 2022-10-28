@@ -2,14 +2,12 @@
 // import Button from 'react-bootstrap/Button';
 // import Container from 'react-bootstrap/Container';
 import SearchNew from "./components/SearchNew.js";
-import RenderCard from "./components/RenderCard.js";
 import DisplayGrid from "./components/DisplayGrid.js";
 
 const App = () => {
   return (
     <div>
       <SearchNew/>
-      <RenderCard />
       <DisplayGrid/>
     </div>
   );

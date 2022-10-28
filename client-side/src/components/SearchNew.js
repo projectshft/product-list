@@ -4,13 +4,33 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "../actions/fetchProducts";
+import { useEffect } from "react";
+
+
+const withoutSearch = {
+  query: "" || undefined,
+  category: "" || undefined,
+  price: "",
+}
 
 const SearchNew = () => {
-  const [product] = useState([]);
+  const [search, setSearch] = useState(withoutSearch);
   const dispatch = useDispatch();
+
+  useEffect (() => {
+    dispatch(fetchProducts(search));
+  }, [search , dispatch]);
+
+  function handleSearch(event) {
+    setSearch({
+      ...search,
+      query: event.target.value,
+    });
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (product === "" || product === undefined) {
+    if (search === "" || search === undefined) {
       dispatch(fetchProducts());
     } else {
       dispatch(fetchProducts());
@@ -21,9 +41,11 @@ const SearchNew = () => {
       <form className="searchLine" onSubmit={handleSubmit}>
         <div className="input-group" id="search">
           <input
-            type="text"
+            type="search"
+            name= "query"
             className="form-control rounded"
             placeholder="Search"
+            onChange = {(event) => handleSearch(event)}
           ></input>
           <button type="submit" className="btn btn-outline-primary">
             Search

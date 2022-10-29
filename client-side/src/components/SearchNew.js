@@ -28,10 +28,10 @@ const SearchNew = () => {
     });
   }
 
-  function handleCategory(e) {
+  function handleCategory(event) {
     setSearch({
       ...search,
-      category: 'Electronics',
+      category: event.target.value
     });
     dispatch(fetchProducts2(search));
   };
@@ -63,10 +63,24 @@ const SearchNew = () => {
           </button>
         </div>
       </form>
-      <Dropdown className="drop">
+      <div className="input-group-append">
+        <select
+          className="dropdown-toggle"
+          data-toggle="dropdown"
+          onChange= {(event) => handleCategory(event)}
+          // value={search.category}
+          value='Electronics'
+        >
+          
+          <option className="dropdown-item" value="Electronics">
+            Electronics
+          </option>
+        </select>
+      </div>
+      {/* <Dropdown className="drop">
         <DropdownButton id="dropdown-basic-button" title="Category">
           <Dropdown.Item
-            onClick= {handleCategory}
+            onSelect={handleCategory}
             value="Electronics"
           >
             Electronics
@@ -78,7 +92,7 @@ const SearchNew = () => {
         </DropdownButton>
         <br></br>
         <br></br>
-      </Dropdown>
+      </Dropdown> */}
       <br></br>
       <br></br>
     </div>

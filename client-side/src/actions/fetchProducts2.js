@@ -11,6 +11,7 @@ export async function fetchProducts2(search) {
   const data = await request.data;
   const products = data.docs;
   
+  
     return {
       type: FETCH_PRODUCTS2,
       payload: { products: products, search: search },

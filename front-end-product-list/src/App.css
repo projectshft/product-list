@@ -1,0 +1,15 @@
+span {
+  font-size: 11px;
+}
+.total {
+  font-size: 15px;
+}
+body {
+  background-color: #eaebe7;
+}
+
+.card {
+  display: table;
+  height: 100%;
+  width: 100%;
+}

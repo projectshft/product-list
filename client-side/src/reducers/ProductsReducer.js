@@ -8,28 +8,16 @@ const ProductsReducer = (state = [], action) => {
       let data = action.payload;
       console.log(data);
 
-      if (data.search.query === '') {
+      if (data.search.query === "") {
         return { ...state, products: data.products };
       } else {
-        console.log("hi");
-
-        function fetchedProducts() {
-          data.products.map(function (product) {
-            product = {
-              category: product.category,
-              name: product.name,
-              price: product.price,
-            };
-            return product;
-          });
-          return fetchedProducts;
-          
-        }
-        // fetchedProducts();
-        // return {error: '', products: fetchedProducts};
-        return { error: "", products: fetchedProducts  };
+        let filteredProducts = data.products.filter((product) => {
+          return product.name
+            .toLowerCase()
+            .includes(data.search.query.toLowerCase());
+        });
+        return { ...state, products: filteredProducts };
       }
-    // eslint-disable-next-line no-fallthrough
     case FETCH_PRODUCTS_ERROR:
       return { ...state, error: action.payload };
     default:
@@ -37,5 +25,7 @@ const ProductsReducer = (state = [], action) => {
       return defaultState;
   }
 };
+
+
 
 export default ProductsReducer;

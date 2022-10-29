@@ -34,6 +34,7 @@ const SearchNew = () => {
       ...search,
       query: event.target.value,
     });
+    console.log(search);
       dispatch(fetchProducts(search));
   };
 
@@ -46,7 +47,7 @@ const SearchNew = () => {
             name= "query"
             className="form-control rounded"
             placeholder="Search"
-            // onChange = {(event) => handleSearch(event)}
+            onChange = {(event) => handleSearch(event)}
           ></input>
           <button type="submit" className="btn btn-outline-primary">
             Search

@@ -8,8 +8,8 @@ import { useEffect } from "react";
 
 
 const withoutSearch = {
-  query: "" || undefined,
-  category: "" || undefined,
+  query: "",
+  category: "",
   price: "",
 }
 
@@ -30,12 +30,13 @@ const SearchNew = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // if (search === "" || search === undefined) {
-    //   dispatch(fetchProducts());
-    // } else {
-    //   dispatch(fetchProducts());
-    // }
+    setSearch ({
+      ...search,
+      query: event.target.value,
+    });
+      dispatch(fetchProducts(search));
   };
+
   return (
     <div>
       <form className="searchLine" onSubmit={handleSubmit}>
@@ -45,7 +46,7 @@ const SearchNew = () => {
             name= "query"
             className="form-control rounded"
             placeholder="Search"
-            onChange = {(event) => handleSearch(event)}
+            // onChange = {(event) => handleSearch(event)}
           ></input>
           <button type="submit" className="btn btn-outline-primary">
             Search

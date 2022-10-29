@@ -8,7 +8,7 @@ const DisplayGrid = () => {
     return temp.map((product) => {
       return (
         <div className="try">
-          <div className="col-lg-3">
+          <div className="col--3">
             <div className="card">
               <img
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR6phDeYUg6EL4uNj6tdRmksE-PI9qjrbgwA&usqp=CAU"

@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-// import Button from 'react-bootstrap/Button';
-// import Container from 'react-bootstrap/Container';
 import SearchProducts from "./components/SearchProducts.js";
 import DisplayGrid from "./components/DisplayGrid.js";
 import React, { useState } from "react";
@@ -11,10 +8,10 @@ const App = () => {
   const [ price, setPrice ] = useState("");
   //to-do: paginate results
 
+  //to-do: add pagination below DisplayGrid
   return (
     <div>
       <SearchProducts
-        {/* to-do: add pagination */}
         query={query}
         category={category}
         price={price}

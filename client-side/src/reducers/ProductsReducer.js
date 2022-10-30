@@ -1,31 +1,18 @@
-// // eslint-disable-next-line no-unused-vars
-// import { FETCH_PRODUCTS } from "../actions/fetchProducts.js";
+import { FETCH_PRODUCTS } from "../actions/fetchProducts.js";
 // import { FETCH_PRODUCTS_ERROR } from "../actions/fetchProducts.js";
 
-// const ProductsReducer = (state = [], action) => {
-//   switch (action.type) {
-//     case FETCH_PRODUCTS:
-//       let data = action.payload;
-//       console.log(data);
+//attempting an empty ARRAY for default state outside of function so that it doesn't get redefined every time the function is called
+const defaultState = [];
 
-//       if (data.search.query === "") {
-//         return { ...state, products: data.products };
-//       } else {
-//         let filteredProducts = data.products.filter((product) => {
-//           return product.name
-//             .toLowerCase()
-//             .includes(data.search.query.toLowerCase());
-//         });
-//         return { ...state, products: filteredProducts };
-//       }
-//     case FETCH_PRODUCTS_ERROR:
-//       return { ...state, error: action.payload };
-//     default:
-//       const defaultState = { data: [], error: "" };
-//       return defaultState;
-//   }
-// };
+const ProductsReducer = (state = defaultState, action) => {
+  switch (action.type) {
+    case FETCH_PRODUCTS:
+      return action.payload.data;
+    default:
+      return state;
+  }
+};
 
 
 
-// export default ProductsReducer;
+export default ProductsReducer;

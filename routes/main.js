@@ -45,6 +45,16 @@ router.param('product', (req, res, next, id) => {
   });
 });
 
+router.get("/categories",(req, res, next) => {
+  Product.find({},'category')
+  .sort({category:'asc'})
+  .exec((err,cat)=>{
+    if (err) return next(err);
+    res.status(200)
+    res.send(cat)
+  })
+})
+
 router.get("/products", (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;

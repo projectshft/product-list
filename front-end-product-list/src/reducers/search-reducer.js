@@ -1,7 +1,9 @@
 const searchReducer = function (state = [], action) {
   switch (action.type) {
+    case 'FETCH_QUERY':
+      return [...action.payload];
     case 'FETCH_DATA':
-      return action.payload;
+      return [];
     default:
       return state;
   }

@@ -1,13 +1,50 @@
 import axios from 'axios';
 // import _ from 'lodash';
 
-export async function fetchData(input) {
+const rootURL='http://localhost:8000/'
 
-  const rootQueryURL = 'http://localhost:8000/products?query=';
-  const request = await axios.get(`${rootQueryURL}${input}`);
+export async function fetchQuery(input,category,sort) {
+
+  const requestQuery = await axios.get(`${rootURL}products?query=${input}&category=${category}&sort=${sort}`);
+  return {
+    type: 'FETCH_QUERY',
+    payload: requestQuery.data,
+  };
+}
+
+export async function fetchCategories() {
+
+  const requestCat = await axios.get(`${rootURL}categories`);
+
+  const categoriesArr = requestCat.data.reduce((acc, obj) => {
+    acc.push(obj.category);
+    return [...new Set(acc)];
+  },[])
 
   return {
-    type: 'FETCH_DATA',
-    payload: request.data,
+    type: 'FETCH_CATEGORIES',
+    payload: categoriesArr,
+  };
+}
+
+export async function fetchCategory(input) {
+
+  const requestCategory = await axios.get(`${rootURL}products?category=${input}`);
+  console.log(requestCategory)
+
+  return {
+    type: 'FETCH_CATEGORY',
+    payload: requestCategory.data,
+  };
+}
+
+export async function fetchSort(input) {
+
+  const requestSort = await axios.get(`${rootURL}products?sort=${input}`);
+  console.log(requestSort)
+
+  return {
+    type: 'FETCH_SORT',
+    payload: requestSort,
   };
 }

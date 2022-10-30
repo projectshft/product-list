@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
+import {Row, Col, Card} from 'react-bootstrap/';
+
 
 
 export default function DisplayProducts() {
-  const products = useSelector((state) => state.search);
+  const products = useSelector((state) => state.search)
+  console.log(products)
 
   const productsMap1 = products.slice(0, 3).map((product) => (
     <Col xs={4} key={product._id}>
@@ -15,18 +15,18 @@ export default function DisplayProducts() {
         <Card style={{ width: '19rem' }}>
           <Card.Header
             style={{
-              'background-color': 'white',
-              'border-color': 'white',
+              'backgroundColor': 'white',
+              'borderColor': 'white',
               float: 'right',
-              'font-size': '25px',
+              'fontSize': '25px',
             }}
           >
             {product.price} $
           </Card.Header>
           <Card.Header
             style={{
-              'background-color': 'white',
-              'border-color': 'white',
+              'backgroundColor': 'white',
+              'borderColor': 'white',
               float: 'left',
               display: 'table',
             }}
@@ -34,11 +34,11 @@ export default function DisplayProducts() {
             Category: <strong>{product.category}</strong>
           </Card.Header>
           <Card.Img
-            style={{ padding: '20px', 'padding-top': '10px' }}
+            style={{ padding: '20px', 'paddingTop': '10px' }}
             src={product.image}
           />
-          <Card.Body style={{ 'background-color': '#008cba' }}>
-            <Card.Title style={{ color: 'white', 'text-align': 'center' }}>
+          <Card.Body style={{ 'backgroundColor': '#008cba' }}>
+            <Card.Title style={{ color: 'white', 'textAlign': 'center' }}>
               {product.name}
             </Card.Title>
           </Card.Body>
@@ -52,18 +52,18 @@ export default function DisplayProducts() {
         <Card style={{ width: '19rem' }}>
           <Card.Header
             style={{
-              'background-color': 'white',
-              'border-color': 'white',
+              'backgroundColor': 'white',
+              'borderColor': 'white',
               float: 'right',
-              'font-size': '25px',
+              'fontSize': '25px',
             }}
           >
             {product.price} $
           </Card.Header>
           <Card.Header
             style={{
-              'background-color': 'white',
-              'border-color': 'white',
+              'backgroundColor': 'white',
+              'borderColor': 'white',
               float: 'left',
               display: 'table',
             }}
@@ -71,11 +71,11 @@ export default function DisplayProducts() {
             Category: <strong>{product.category}</strong>
           </Card.Header>
           <Card.Img
-            style={{ padding: '20px', 'padding-top': '10px' }}
+            style={{ padding: '20px', 'paddingTop': '10px' }}
             src={product.image}
           />
-          <Card.Body style={{ 'background-color': '#008cba' }}>
-            <Card.Title style={{ color: 'white', 'text-align': 'center' }}>
+          <Card.Body style={{ 'backgroundColor': '#008cba' }}>
+            <Card.Title style={{ color: 'white', 'textClign': 'center' }}>
               {product.name}
             </Card.Title>
           </Card.Body>
@@ -89,18 +89,18 @@ export default function DisplayProducts() {
         <Card style={{ width: '19rem' }}>
           <Card.Header
             style={{
-              'background-color': 'white',
-              'border-color': 'white',
+              'backgroundColor': 'white',
+              'borderColor': 'white',
               float: 'right',
-              'font-size': '25px',
+              'fontSize': '25px',
             }}
           >
             {product.price} $
           </Card.Header>
           <Card.Header
             style={{
-              'background-color': 'white',
-              'border-color': 'white',
+              'backgroundColor': 'white',
+              'borderColor': 'white',
               float: 'left',
               display: 'table',
             }}
@@ -108,11 +108,11 @@ export default function DisplayProducts() {
             Category: <strong>{product.category}</strong>
           </Card.Header>
           <Card.Img
-            style={{ padding: '20px', 'padding-top': '10px' }}
+            style={{ padding: '20px', 'paddingTop': '10px' }}
             src={product.image}
           />
-          <Card.Body style={{ 'background-color': '#008cba' }}>
-            <Card.Title style={{ color: 'white', 'text-align': 'center' }}>
+          <Card.Body style={{ 'backgroundColor': '#008cba' }}>
+            <Card.Title style={{ color: 'white', 'textAlign': 'center' }}>
               {product.name}
             </Card.Title>
           </Card.Body>
@@ -122,7 +122,7 @@ export default function DisplayProducts() {
   ));
 
   return (
-    <Container style={{ display: 'table-cell' }}>
+    <Container style={{ display: 'table-cell'}}>
       <Row>{productsMap1}</Row>
       <Row>{productsMap2}</Row>
       <Row>{productsMap3}</Row>

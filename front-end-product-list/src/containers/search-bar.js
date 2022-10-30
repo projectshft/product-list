@@ -1,27 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+// import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { fetchData } from '../actions';
 import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import { fetchQuery, fetchCategories} from '../actions';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
   const [input, setInput] = useState('');
+  const [sort, setSort] = useState('');
+  const [category, setCategory] = useState('');
+  const categories = useSelector((state) => state.categories);
+  useEffect(() => {
+    dispatch(fetchCategories());
+  });
+  const categoriesMap = categories.map((cat,i) => (
+    <Dropdown.Item role='menuitem' key={i+5444} value={cat} onClick={()=>setCategory(cat)}>
+      {cat}
+    </Dropdown.Item>
+  ));
+  
 
   const handleChange = (e) => setInput(e.target.value);
   const handleClick = (e) => {
     e.preventDefault()
-    dispatch(fetchData(input));
+    dispatch(fetchQuery(input,category,sort));
   };
 
-  const handleClickCategory = () => {
-    dispatch();
-  };
+  // const handleClickCategory = () => {
+  //   dispatch(fetchCategory(category));
+  // };
+  // const handleClickSorting = (sort) => {
+  //   dispatch(fetchSort(sort));
+  // };
 
-  const handleClickSorting = () => {
-    dispatch();
-  };
   return (
-    <div className="input-group mb-4">
+    <div className="input-group mb-5">
       <input
         type="text"
         className="form-control"
@@ -39,35 +54,30 @@ const SearchBar = () => {
       >
         Search
       </button>
-      <button
-        onClick={handleClickCategory}
-        type="button"
-        className="btn btn-outline-secondary"
-        id="button-addon"
+
+      <DropdownButton
+        id="dropdown-button-dark-example2"
+        variant="secondary"
+        menuVariant="dark"
+        title="Sort by category"
+        style={{ paddingLeft: '20px', paddingRight: '20px' }}
       >
-        Category
-      </button>
+        {categoriesMap}
+      </DropdownButton>
 
-      <Dropdown>
-      <Dropdown.Toggle variant="danger" id="dropdown-basic">
-        Sort price
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Price low to high</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Price high to low</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-
-
-
-      {/* <button
-        onClick={handleClickSorting}
-        type="button"
-        className="btn btn-outline-secondary"
-        id="button-addon"
+      <DropdownButton
+        id="dropdown-button-dark"
+        variant="secondary"
+        menuVariant="dark"
+        title="Sort by price"
       >
-        Sort
-      </button> */}
+        <Dropdown.Item role='menuitem' onClick={()=>setSort('lowest')} >
+          Price low to high
+        </Dropdown.Item>
+        <Dropdown.Item role='menuitem' onClick={()=>setSort('highest')}>
+          Price high to low
+        </Dropdown.Item>
+      </DropdownButton>
     </div>
   );
 };

@@ -1,25 +1,24 @@
-import axios from "axios";
+// import axios from "axios";
 
-export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
-export const FETCH_PRODUCTS_ERROR = "FETCH_PRODUCTS_ERROR";
+// export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+// export const FETCH_PRODUCTS_ERROR = "FETCH_PRODUCTS_ERROR";
 
-const baseURL = "http://localhost:8000/products";
+// const baseURL = "http://localhost:8000/products";
 
-export async function fetchProducts(search) {
-  let param = `?query=${search.query}`;
-  const request = await axios(`${baseURL}`, { params: param });
-  const data = await request.data;
-  const products = data.docs;
+// export async function fetchProducts(search) {
+//   let param = `?query=${search.query}`;
+//   const request = await axios(`${baseURL}`, { params: param });
+//   const data = await request.data;
+//   const products = data.docs;
   
-    return {
-      type: FETCH_PRODUCTS,
-      payload: { products: products, search: search },
-    };
-  
-}
+//     return {
+//       type: FETCH_PRODUCTS,
+//       payload: { products: products, search: search },
+//     };
+// }
 
 
-export default fetchProducts;
+// export default fetchProducts;
       
       
    

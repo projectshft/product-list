@@ -1,0 +1,373 @@
+index.js
+
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import "bootstrap/dist/css/bootstrap.min.css";
+// import $ from 'jquery';
+// import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import { Provider } from "react-redux";
+import { legacy_createStore as createStore, applyMiddleware } from "redux"; 
+import { composeWithDevTools } from "redux-devtools-extension";
+import promise from "redux-promise";
+import reducers from "./reducers";
+
+
+const store = createStore(reducers, composeWithDevTools(applyMiddleware(promise)));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+
+.........................................
+
+App.js
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
+// import Button from 'react-bootstrap/Button';
+// import Container from 'react-bootstrap/Container';
+import SearchNew from "./components/SearchNew.js";
+import DisplayGrid from "./components/DisplayGrid.js";
+
+const App = () => {
+  return (
+    <div>
+      <SearchNew/>
+      <DisplayGrid/>
+    </div>
+  );
+};
+
+
+export default App;
+
+..............................
+
+index.css
+
+.drop  {
+  display: inline-flex;
+}
+
+.searchLine {
+  width: 45%;
+  display: inline-flex;
+  margin-left: 50px;
+  margin-right: 0px;
+  margin-top: 5%;
+}
+
+.card {
+  margin: 10px;
+  width: 600px;
+  height: 100%;
+} 
+
+.try {
+  display: inline-flex;
+  margin-top: 5%;
+}
+
+
+............................................
+
+actions/fetchProducts 
+
+import axios from "axios";
+
+export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+export const FETCH_PRODUCTS_ERROR = "FETCH_PRODUCTS_ERROR";
+
+const baseURL = "http://localhost:8000/products";
+
+export async function fetchProducts(search) {
+  let param = `?query=${search.query}`;
+  const request = await axios(`${baseURL}`, { params: param });
+  const data = await request.data;
+  const products = data.docs;
+  
+    return {
+      type: FETCH_PRODUCTS,
+      payload: { products: products, search: search },
+    };
+}
+
+
+export default fetchProducts;
+      
+......................................................
+
+actions/fetchProducts2
+
+import axios from "axios";
+
+export const FETCH_PRODUCTS2 = "FETCH_PRODUCTS2";
+export const FETCH_PRODUCTS2_ERROR = "FETCH_PRODUCTS2_ERROR";
+
+const baseURL = "http://localhost:8000/products";
+
+export async function fetchProducts2(search) {
+  let param = `?query=${search.category}`;
+  const request = await axios(`${baseURL}`, { params: param });
+  const data = await request.data;
+  const products = data.docs;
+  
+  
+    return {
+      type: FETCH_PRODUCTS2,
+      payload: { products: products, search: search },
+    };
+  
+}
+
+
+export default fetchProducts2;
+
+..................................................
+
+reducers/index
+
+import { combineReducers } from "redux";
+import ProductsReducer from "./ProductsReducer.js";
+import ProductsReducer2 from "./ProductsReducer2.js";
+
+const rootReducer = combineReducers({
+  products: ProductsReducer,
+  products2: ProductsReducer2,
+});
+
+export default rootReducer;
+
+...................................................
+
+reducers/ProductsReducer
+
+// eslint-disable-next-line no-unused-vars
+import { FETCH_PRODUCTS } from "../actions/fetchProducts.js";
+import { FETCH_PRODUCTS_ERROR } from "../actions/fetchProducts.js";
+
+const ProductsReducer = (state = [], action) => {
+  switch (action.type) {
+    case FETCH_PRODUCTS:
+      let data = action.payload;
+      console.log(data);
+
+      if (data.search.query === "") {
+        return { ...state, products: data.products };
+      } else {
+        let filteredProducts = data.products.filter((product) => {
+          return product.name
+            .toLowerCase()
+            .includes(data.search.query.toLowerCase());
+        });
+        return { ...state, products: filteredProducts };
+      }
+    case FETCH_PRODUCTS_ERROR:
+      return { ...state, error: action.payload };
+    default:
+      const defaultState = { data: [], error: "" };
+      return defaultState;
+  }
+};
+
+
+
+export default ProductsReducer;
+
+.................................................
+
+reducers/ProductsReducer2
+
+import { FETCH_PRODUCTS2 } from "../actions/fetchProducts2.js";
+import { FETCH_PRODUCTS2_ERROR } from "../actions/fetchProducts2.js";
+
+const ProductsReducer2 = (state = [], action) => {
+  switch (action.type) {
+    case FETCH_PRODUCTS2:
+      let data = action.payload;
+      console.log(data);
+
+      if (data.search.category === "") {
+        return { ...state, products: data.products };
+      } else {
+        let filteredProducts = data.products.filter((product) => {
+          return product.category
+            .toLowerCase()
+            .includes(data.search.category.toLowerCase());
+        });
+        return { ...state, products: filteredProducts };
+      }
+    case FETCH_PRODUCTS2_ERROR:
+      return { ...state, error: action.payload };
+    default:
+      const defaultState = { data: [], error: "" };
+      return defaultState;
+  }
+};
+
+
+
+
+export default ProductsReducer2;
+
+.............................................................
+   
+
+
+
+
+
+
+
+
+components/DisplayGrid
+
+import { useSelector } from "react-redux";
+import React from "react";
+
+const DisplayGrid = () => {
+  const temp = useSelector((state) => state.products.products);
+
+  if (temp) {
+    return temp.map((product) => {
+      return (
+        <div className="try">
+          <div className="col--3">
+            <div className="card">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR6phDeYUg6EL4uNj6tdRmksE-PI9qjrbgwA&usqp=CAU"
+                className="card-img-top"
+                alt="your product"
+              ></img>
+              <div className="card-body">
+                <h5 className="card-title">{product.name}</h5>
+                <p className="card-text">category: {product.category}</p>
+              </div>
+              <div className="card-footer">
+                <small className="text-muted">price: ${product.price}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
+  return null;
+};
+
+export default DisplayGrid;
+
+.....................................
+
+components/SearchNew
+
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import React from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchProducts } from "../actions/fetchProducts";
+import { fetchProducts2 } from "../actions/fetchProducts2";
+import { useEffect } from "react";
+
+const withoutSearch = {
+  query: "",
+  category: "",
+  price: "",
+};
+
+const SearchNew = () => {
+  const [search, setSearch] = useState(withoutSearch);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts(search));
+  }, [search, dispatch]);
+
+  function handleSearch(event) {
+    setSearch({
+      ...search,
+      query: event.target.value,
+    });
+  }
+
+  function handleCategory(event) {
+    setSearch({
+      ...search,
+      category: event.target.value
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSearch({
+      ...search,
+      query: event.target.value,
+      category: event.target.value,
+    });
+    // console.log(search);
+    dispatch(fetchProducts(search));
+  };
+
+  return (
+    <div>
+      <form className="searchLine" onSubmit={handleSubmit}>
+        <div className="input-group" id="search">
+          <input
+            type="search"
+            name="query"
+            className="form-control rounded"
+            placeholder="Search"
+            onChange={(event) => handleSearch(event)}
+          ></input>
+          <button type="submit" className="btn btn-outline-primary">
+            Search
+          </button>
+        </div>
+      </form>
+      <div className="input-group-append">
+        <select
+          className="dropdown-toggle"
+          data-toggle="dropdown"
+          onChange= {(event) => handleCategory(event)}
+          value={search.category}
+        >
+          
+          <option className="dropdown-item" value="Electronics">
+            Electronics
+          </option>
+        </select>
+      </div>
+      {/* <Dropdown className="drop">
+        <DropdownButton id="dropdown-basic-button" title="Category">
+          <Dropdown.Item
+            onSelect={handleCategory}
+            value="Electronics"
+          >
+            Electronics
+          </Dropdown.Item>
+        </DropdownButton>
+        <DropdownButton id="dropdown-basic-button" title="Price">
+          <Dropdown.Item href="#/action-24">Lowest to Highest</Dropdown.Item>
+          <Dropdown.Item href="#/action-25">Highest to Lowest</Dropdown.Item>
+        </DropdownButton>
+        <br></br>
+        <br></br>
+      </Dropdown> */}
+      <br></br>
+      <br></br>
+    </div>
+  );
+};
+
+export default SearchNew;
+
+.....................................
+
+
+

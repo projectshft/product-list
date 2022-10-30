@@ -31,13 +31,13 @@ App.js
 /* eslint-disable jsx-a11y/anchor-is-valid */
 // import Button from 'react-bootstrap/Button';
 // import Container from 'react-bootstrap/Container';
-import SearchNew from "./components/SearchNew.js";
+import SearchProducts from "./components/SearchProducts.js";
 import DisplayGrid from "./components/DisplayGrid.js";
 
 const App = () => {
   return (
     <div>
-      <SearchNew/>
+      <SearchProducts/>
       <DisplayGrid/>
     </div>
   );
@@ -264,7 +264,7 @@ export default DisplayGrid;
 
 .....................................
 
-components/SearchNew
+components/SearchProducts
 
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -281,7 +281,7 @@ const withoutSearch = {
   price: "",
 };
 
-const SearchNew = () => {
+const SearchProducts = () => {
   const [search, setSearch] = useState(withoutSearch);
   const dispatch = useDispatch();
 
@@ -365,7 +365,7 @@ const SearchNew = () => {
   );
 };
 
-export default SearchNew;
+export default SearchProducts;
 
 .....................................
 

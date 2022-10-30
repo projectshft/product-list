@@ -13,7 +13,7 @@
 //   price: "",
 // };
 
-// const SearchNew = () => {
+// const SearchProducts = () => {
 //   const [search, setSearch] = useState(withoutSearch);
 //   const dispatch = useDispatch();
 
@@ -97,4 +97,4 @@
 //   );
 // };
 
-// export default SearchNew;
+// export default SearchProducts;

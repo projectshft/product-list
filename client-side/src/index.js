@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import $ from 'jquery';
 // import Popper from 'popper.js';
@@ -10,10 +9,11 @@ import { Provider } from "react-redux";
 import { legacy_createStore as createStore, applyMiddleware } from "redux"; 
 import { composeWithDevTools } from "redux-devtools-extension";
 import promise from "redux-promise";
-import reducers from "./reducers";
+import rootReducer from "./reducers";
+import App from "./App";
 
 
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(promise)));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(promise)));
 
 ReactDOM.render(
   <Provider store={store}>

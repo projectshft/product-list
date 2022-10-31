@@ -1,10 +1,10 @@
-// import { combineReducers } from "redux";
-// import ProductsReducer from "./ProductsReducer.js";
-// import ProductsReducer2 from "./ProductsReducer2.js";
+import { combineReducers } from "redux";
+import reducers from "./prodReducer.js";
 
-// const rootReducer = combineReducers({
-//   products: ProductsReducer,
-//   products2: ProductsReducer2,
-// });
+//to-do: account for pagination
+const rootReducer = combineReducers({
+  first: reducers.FirstReducer,
+  products: reducers.ProductsReducer
+});
 
-// export default rootReducer;
+export default rootReducer;

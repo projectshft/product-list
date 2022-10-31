@@ -1,4 +1,4 @@
-const CategoryItems = [
+export const CategoryItems = [
   "Movies", 
   "Jewelery",
   "Industrial",

@@ -1,13 +1,11 @@
-// import Dropdown from "react-bootstrap/Dropdown";
-// import DropdownButton from "react-bootstrap/DropdownButton";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { fetchProducts, fetchFirst } from "../actions/fetchProducts";
 import { useEffect } from "react";
 import { CategoryItems } from "./CategoryItems";
 
+
 //to-do: account for pagination
-//simplified functions for fetching products by optional parameters...passing three values rather than sending as an object and all that unnecessary work
 const SearchProducts = ({
   price,
   setPrice,
@@ -39,14 +37,15 @@ const SearchProducts = ({
   };
 
   return (
-    <div className="input-group mb-8">
+    <div className="input-group mb-8" id="search-bar">
       <input
         type="text"
         className="form-control"
-        placeholder="Search for a product"
+        id="input-search"
+        placeholder="Search for a product..."
         onChange={handleQuery}
       />
-      <select name="category" id="category-select" onChange={handleCategory}>
+      <select name="category" id="category-dropdown" onChange={handleCategory}>
         <option value="">Filter by Category</option>
         {CategoryItems.map((option, index) => (
           <option value={option} key={index}>
@@ -54,7 +53,7 @@ const SearchProducts = ({
           </option>
         ))}
       </select>
-      <select name="price" id="price-select" onChange={handlePrice}>
+      <select name="price" id="price-dropdown" onChange={handlePrice}>
         <option value="">Filter by Price</option>
         <option value="lowest">Lowest to Highest</option>
         <option value="highest">Highest to Lowest</option>

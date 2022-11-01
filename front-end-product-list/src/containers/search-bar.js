@@ -18,7 +18,7 @@ const SearchBar = () => {
   const [state, setState] = useState({ search: '', category: '', price: '' });
 
   const handleClick = () => {
-    dispatch(fetchQuery(state));
+    dispatch(fetchQuery(state))
   };
 
   const categoriesMap = categories.map((cat, i) => (

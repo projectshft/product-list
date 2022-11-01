@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
-import SearchBar from './containers/search-bar';
-import DisplayProducts from './containers/display-products';
+import SearchBar from './containers/Search-Bar';
+import DisplayProducts from './containers/Display-Products';
 import './App.css';
 
 function App() {

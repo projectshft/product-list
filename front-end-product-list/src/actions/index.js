@@ -1,52 +1,50 @@
 import axios from 'axios';
-// import _ from 'lodash';
 
 const rootURL='http://localhost:8000/'
 
-export async function fetchQuery(obj) {
-  const {search,category,price}=obj
-  console.log(obj)
-  const requestQuery = await axios.get(`${rootURL}products?query=${search}&category=${category}&price=${price}`);
-  console.log(requestQuery)
-  return {
-    type: 'FETCH_QUERY',
-    payload: requestQuery.data
-  };
-}
 
 export async function fetchCategories() {
 
   const requestCat = await axios.get(`${rootURL}categories`);
-
   const categoriesArr = requestCat.data.reduce((acc, obj) => {
     acc.push(obj.category);
     return [...new Set(acc)];
   },[])
-
   return {
     type: 'FETCH_CATEGORIES',
     payload: categoriesArr,
   };
 }
 
-// export async function fetchCategory(input) {
+export async function fetchQuery(stateObj,page=1) {
+  const {search,category,price}=stateObj
+  console.log(stateObj)
+  const requestQuery = await axios.get(`${rootURL}products?query=${search}&category=${category}&price=${price}&page=${page}`);
+    const objtoReturn={
+    products: requestQuery.data.products,
+    count :requestQuery.data.count,
+    currentState: stateObj,
+    currentPage: page,
+  }
+  console.log(objtoReturn)
+  return {
+    type: 'FETCH_QUERY',
+    payload: objtoReturn
+  };
+}
 
-//   const requestCategory = await axios.get(`${rootURL}products?category=${input}`);
-//   console.log(requestCategory)
 
-//   return {
-//     type: 'FETCH_CATEGORY',
-//     payload: requestCategory.data,
-//   };
-// }
+export async function fetchPagination(stateObj, page=1) {
+  const {search,category,price}=stateObj
+  const dataPagination = await axios.get(`${rootURL}products?query=${search}&category=${category}&price=${price}&page=${page}`);
+  const objToReturn={
+    products: dataPagination.data.products,
+    currentPage: page,
+  }
+  console.log(objToReturn)
+  return {
+    type: 'FETCH_PAGINATION',
+    payload: objToReturn
+  };
+}
 
-// export async function fetchSort(input) {
-
-//   const requestSort = await axios.get(`${rootURL}products?sort=${input}`);
-//   console.log(requestSort)
-
-//   return {
-//     type: 'FETCH_SORT',
-//     payload: requestSort,
-//   };
-// }

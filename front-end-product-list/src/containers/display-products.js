@@ -1,25 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Container from 'react-bootstrap/Container';
-import { Row, Col, Card, Pagination } from 'react-bootstrap/';
+import { Row, Col, Card, Container } from 'react-bootstrap/';
+import PaginationContainer from './Pagination';
 
 export default function DisplayProducts() {
   const products = useSelector((state) => state.search.products);
-  const docs = useSelector((state) => state.search.count);
-  console.log(products)
-  console.log(docs)
-  const pages=Math.floor(docs/9)
-  const active = 1;
-  const items = [];
-  for (let number = 1; number <= pages; number++) {
-    items.push(
-      <Pagination.Item key={number} active={number === active}>
-        {number}
-      </Pagination.Item>
-    );
-  }
 
-    if (products.length > 0) {
+  if (products.length > 0) {
       const productsMap1 = products.slice(0, 3).map((product) => (
         <Col xs={4} key={product._id}>
           <Container style={{ height: '400px', margin: '20px' }}>
@@ -133,12 +120,14 @@ export default function DisplayProducts() {
       ));
 
       return (
+        <Row>
           <Container style={{ display: 'table-cell' }}>
             <Row>{productsMap1}</Row>
             <Row>{productsMap2}</Row>
             <Row>{productsMap3}</Row>
-          <Pagination style={{marginLeft:'40%'}}>{items}</Pagination>
           </Container>
+          <PaginationContainer />
+        </Row>
       );
     }
 

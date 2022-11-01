@@ -1,84 +1,79 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-// import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import { fetchQuery, fetchCategories} from '../actions';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  Button,
+  Form,
+  InputGroup,
+} from 'react-bootstrap/';
+import { fetchQuery, fetchCategories } from '../actions/index';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
-  const [input, setInput] = useState('');
-  const [sort, setSort] = useState('');
-  const [category, setCategory] = useState('');
   const categories = useSelector((state) => state.categories);
   useEffect(() => {
+    console.log('Useeffect');
     dispatch(fetchCategories());
-  });
-  const categoriesMap = categories.map((cat,i) => (
-    <Dropdown.Item role='menuitem' key={i+5444} value={cat} onClick={()=>setCategory(cat)}>
-      {cat}
-    </Dropdown.Item>
-  ));
-  
+  }, []);
 
-  const handleChange = (e) => setInput(e.target.value);
-  const handleClick = (e) => {
-    e.preventDefault()
-    dispatch(fetchQuery(input,category,sort));
+  const [state, setState] = useState({ search: '', category: '', price: '' });
+
+  const handleClick = () => {
+    dispatch(fetchQuery(state));
   };
 
-  // const handleClickCategory = () => {
-  //   dispatch(fetchCategory(category));
-  // };
-  // const handleClickSorting = (sort) => {
-  //   dispatch(fetchSort(sort));
-  // };
+  const categoriesMap = categories.map((cat, i) => (
+    <option 
+      role="button" 
+      key={i + 1} 
+      value={cat}>
+      {cat}
+    </option>
+  ));
 
   return (
-    <div className="input-group mb-5">
-      <input
-        type="text"
-        className="form-control"
-        aria-describedby="button-addon2"
-        aria-label="searchBar"
-        placeholder="input for a product you'd like to find"
-        value={input}
-        onChange={handleChange}
+    <InputGroup 
+      style={{ zIndex: '999'}}
+      className="mb-3">
+      <Form.Control
+        style={{ width:'37%'}}
+        aria-label="Search Field"
+        aria-describedby="basic-addon1"
+        onChange={(e) => {
+          setState({ price:'',category:'', search: e.target.value });
+        }}
       />
-      <button
+      <Button
+        variant="outline-secondary"
+        id="button-addon1"
         onClick={handleClick}
-        type="button"
-        className="btn btn-outline-secondary"
-        id="button-addon2"
       >
         Search
-      </button>
+      </Button>
 
-      <DropdownButton
-        id="dropdown-button-dark-example2"
-        variant="secondary"
-        menuVariant="dark"
-        title="Sort by category"
-        style={{ paddingLeft: '20px', paddingRight: '20px' }}
-      >
+      <Form.Select 
+        style={{marginLeft:'20px', marginRight:'20px', width:'20px'}}
+        onChange={(e) => setState({ ...state, category: e.target.value })}>
+        <option 
+        value="">Sort by category
+        </option>
         {categoriesMap}
-      </DropdownButton>
-
-      <DropdownButton
-        id="dropdown-button-dark"
-        variant="secondary"
-        menuVariant="dark"
-        title="Sort by price"
+      </Form.Select>
+      
+      <Form.Select
+        aria-label="Sort by price"
+        onChange={(e) => {
+          setState({ ...state, price: e.target.value });
+        }}
       >
-        <Dropdown.Item role='menuitem' onClick={()=>setSort('lowest')} >
-          Price low to high
-        </Dropdown.Item>
-        <Dropdown.Item role='menuitem' onClick={()=>setSort('highest')}>
-          Price high to low
-        </Dropdown.Item>
-      </DropdownButton>
-    </div>
+        <option>Sort by price</option>
+        <option  value="highest">
+          Price from high to low
+        </option>
+        <option value="lowest">
+          Price from low to high
+        </option>
+      </Form.Select>
+    </InputGroup>
   );
 };
 

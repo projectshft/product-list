@@ -100,15 +100,20 @@ router.get("/products", (req, res, next) => {
     }
   }
 
+
   Product.find(unitingQueryParams())
     .sort(getSorting())
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, products) => {
-      Product.count().exec((err, count) => {
+      Product.count(unitingQueryParams()).exec((err, count) => {
         if(count>0){
           if (err) return next(err);
-          res.send(products); 
+          const productsWithCount={
+            products: products,
+            count: count
+          }
+          res.send(productsWithCount); 
         }else{
           res.status(404);
           res.send('Error. No products within this query was found');

@@ -7,8 +7,8 @@ export default function PaginationContainer() {
   const dispatch = useDispatch();
   const state=useSelector((state) => state.search)
   console.log(state);
-  const currentState=useSelector((state) => state.pagination.currentState);
-  const activePage=useSelector((state)=>state.pagination.currentPage)
+  const currentState=useSelector((state) => state.search.currentState);
+  const activePage=useSelector((state)=>state.search.currentPage)
   const docs = useSelector((state) => state.search.count);
   
   const pages = Math.ceil(docs / 9);

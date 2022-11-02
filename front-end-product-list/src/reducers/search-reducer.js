@@ -1,9 +1,9 @@
-const searchReducer = function (state = {}, action) {
+const searchReducer = function (state = null, action) {
   switch (action.type) {
     case 'FETCH_QUERY':
       return action.payload;
     case 'FETCH_PAGINATION':
-      return {...state,products: action.payload.products, currentPage: action.payload.page};
+      return {...state,...action.payload};
     default:
       return state;
   }

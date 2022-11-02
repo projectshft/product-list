@@ -26,7 +26,7 @@ router.get("/generate-fake-data", (req, res, next) => {
       review.save((err) => {
         if (err) throw err;
       });
-      product.rewievs.push(review)
+      product.reviews.push(review)
   res.end();
 }}})
 //Middleware functions for 'review' and 'product' params

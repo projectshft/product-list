@@ -5,7 +5,6 @@ import PaginationContainer from './Pagination';
 
 export default function DisplayProducts() {
   const products = useSelector((state) => state.search.products);
-
   if (products.length > 0) {
       const productsMap1 = products.slice(0, 3).map((product) => (
         <Col xs={4} key={product._id}>

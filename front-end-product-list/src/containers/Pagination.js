@@ -14,7 +14,7 @@ export default function PaginationContainer() {
   const pages = Math.ceil(docs / 9);
   const items = [];
   const handlePaginationClick=(e)=>{
-    dispatch(fetchPagination(currentState,e.target.value))
+    dispatch(fetchPagination(currentState,e.target.innerText))
   }
   for (let number = 1; number <= pages; number++) {
     items.push(
@@ -29,5 +29,5 @@ export default function PaginationContainer() {
       </Pagination.Item>
     );
   }
-  return <Pagination style={{ marginLeft: '40%' }}>{items}</Pagination>;
+  return <Pagination style={{ marginLeft: '50%' }}>{items}</Pagination>;
 }

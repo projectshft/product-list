@@ -6,5 +6,4 @@ const rootReducer = combineReducers({
   search: searchReducer,
   categories: categoriesReducer,
 });
-
 export default rootReducer;

@@ -22,9 +22,9 @@ export async function fetchQuery(stateObj,page=1) {
   const requestQuery = await axios.get(`${rootURL}products?query=${search}&category=${category}&price=${price}&page=${page}`);
     const objtoReturn={
     products: requestQuery.data.products,
+    currentPage: page,
     count :requestQuery.data.count,
     currentState: stateObj,
-    currentPage: page,
   }
   console.log(objtoReturn)
   return {

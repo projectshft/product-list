@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate-v2');
 const Review = require('./review');
 
-
 const ProductSchema = new Schema({
 	category: String,
 	name: String,
@@ -15,16 +14,6 @@ const ProductSchema = new Schema({
 ProductSchema.plugin(mongoosePaginate);
 
 const Product = mongoose.model('product', ProductSchema);
-
-// Product.findOne({ name: 'Hello World' })
-// 	.populate('reviews')
-// 	.exec((err, product) => {
-// 		if (err) {
-// 			console.log(err);
-// 		}
-// 		return product;
-// 	});
-
 
 let product1 = new Product({
 	category: 'Electronics',
@@ -71,7 +60,6 @@ review4.save();
 review5.save();
 
 product1.reviews.push(review1, review2, review3, review4, review5);
+product1.save();
 
-//ULTIMATELY UNCOMMENT THIS
-// product1.save();
 module.exports = mongoose.model('Product', ProductSchema);

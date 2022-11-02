@@ -3,17 +3,14 @@ const router = require('express').Router();
 const { faker } = require('@faker-js/faker');
 const Product = require('../models/product');
 const Review = require('../models/review');
-//adding this just for commit purposes because last commit had questionable processing
 
 router.get('/generate-fake-data', (req, res, next) => {
 	for (let i = 0; i < 90; i++) {
 		let product = new Product();
-
 		product.category = faker.commerce.department();
 		product.name = faker.commerce.productName();
 		product.price = faker.commerce.price();
 		product.image = 'https://via.placeholder.com/250?text=Product+Image';
-
 		product.save((err) => {
 			if (err) throw err;
 		});
@@ -21,13 +18,13 @@ router.get('/generate-fake-data', (req, res, next) => {
 	res.end();
 });
 
+//using 'router.route' to chain routes
 router.route('/products').get((req, res, next) => {
 	const perPage = 9;
 	const page = req.query.page || 1;
 	let category = req.query.category;
 	let price = req.query.price;
 	let search = req.query.query;
-
 	let optionalFilters = () => {
 		if (category && search) {
 			return {
@@ -42,7 +39,6 @@ router.route('/products').get((req, res, next) => {
 			return { $text: { $search: search } };
 		}
 	};
-
 	let priceFilter = () => {
 		if (price) {
 			if (price == 'highest') {
@@ -54,13 +50,11 @@ router.route('/products').get((req, res, next) => {
 			}
 		}
 	};
-
 	let options = {
 		sort: priceFilter(),
 		offset: perPage * page - perPage,
 		limit: perPage,
 	};
-
 	Product.paginate(optionalFilters(), options, function (err, products) {
 		res.send(products);
 	});
@@ -75,7 +69,6 @@ router.get('/products/:product', (req, res, next) => {
 	});
 });
 
-//still need to implement 'populate reviews' functionality. Pagination needs more testing
 router.get('/products/:product/reviews', (req, res, next) => {
 	const perPage = 4;
 	const page = req.query.page || 1;
@@ -84,13 +77,6 @@ router.get('/products/:product/reviews', (req, res, next) => {
 			res.send(err);
 		}
 		const ProdRev = prod[0].reviews;
-
-		// ProdRev.populate('reviews').exec((err, product) => {
-		// 	if (err) {
-		// 		res.send(err);
-		// 	}
-		// 	res.send(product);
-
 		res.send(ProdRev.slice(perPage * page - perPage, perPage * page));
 	});
 });
@@ -102,7 +88,6 @@ router.post('/products', (req, res, next) => {
 	product.price = req.body.price;
 	product.image = req.body.image;
 	product.reviews = [];
-
 	product.save((err) => {
 		if (err) {
 			res.send(err);

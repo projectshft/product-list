@@ -12,7 +12,6 @@ export function fetchProducts(pageNumber, price, category, query) {
     payload: request,
   };
 }
-
 export function fetchFirst() {
   const request = axios.get("http://localhost:8000/products?page=1");
   return {

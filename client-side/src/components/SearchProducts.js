@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { fetchProducts, fetchFirst } from "../actions/fetchProducts";
 import { useEffect } from "react";
 import { CategoryItems } from "./CategoryItems";
+import '../App.css';
 
-
-//to-do: account for pagination
 const SearchProducts = ({
+  currentPage,
   price,
   setPrice,
   category,
@@ -15,27 +15,21 @@ const SearchProducts = ({
   setQuery,
 }) => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(fetchFirst());
   }, [dispatch]);
-
   const handlePrice = (event) => {
     setPrice(event.target.value);
-    dispatch(fetchProducts(event.target.value, category, query));
+    dispatch(fetchProducts(currentPage, event.target.value, category, query));
   };
-  
   const handleCategory = (event) => {
     setCategory(event.target.value);
-    dispatch(fetchProducts(price, event.target.value, query));
+    dispatch(fetchProducts(currentPage, price, event.target.value, query));
   };
-  
-  
   const handleQuery = (event) => {
     setQuery(event.target.value);
-    dispatch(fetchProducts(price, category, event.target.value));
+    dispatch(fetchProducts(currentPage, price, category, event.target.value));
   };
-
   return (
     <div className="input-group mb-8" id="search-bar">
       <input

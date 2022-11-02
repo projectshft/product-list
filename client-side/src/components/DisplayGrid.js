@@ -1,16 +1,11 @@
 import { useSelector } from "react-redux";
 
-
 const DisplayGrid = () => {
   const [pageOneData, productsData] = useSelector((state) => [
     state.first,
     state.products,
   ]);
-
-  console.log(productsData);
-
   const currentData = productsData ? productsData : pageOneData;
-
   const renderGrid = () => {
     if (currentData.length > 0) {
       return currentData.map((p, index) => {
@@ -24,8 +19,8 @@ const DisplayGrid = () => {
               ></img>
               <div className="card-body">
                 <h5 className="card-title">{p.name}</h5>
-                <p className="card-text">${p.price}</p>
-                <p className="card-text">{p.category}</p>
+                <p className="card-text1">${p.price}</p>
+                <p className="card-text">category: {p.category}</p>
               </div>
             </div>
           </div>

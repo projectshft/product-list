@@ -1,10 +1,7 @@
 import SearchProducts from "./components/SearchProducts.js";
 import DisplayGrid from "./components/DisplayGrid.js";
-import React, { useState, useMemo } from "react";
 import Pagination from "./components/Pagination.js";
-import "./App.css";
-
-let PageSize = 9;
+import React, { useState } from "react";
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,15 +23,14 @@ const App = () => {
       />
       <DisplayGrid />
       <Pagination
-        className="pagination-bar"
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        price={price}
-        setPrice={setPrice}
-        category={category}
-        setCategory={setCategory}
-        query={query}
-        setQuery={setQuery}
+        price = {price}
+        category = {category}
+        query = {query}
+        setPrice = {setPrice}
+        setCategory = {setCategory}
+        setQuery = {setQuery}
       />
     </div>
   );

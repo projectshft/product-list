@@ -33,3 +33,9 @@
   height: 300px;
   margin-left: 5%;
 }
+
+.pagination-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

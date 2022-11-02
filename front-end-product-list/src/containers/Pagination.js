@@ -1,33 +1,30 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Pagination } from 'react-bootstrap/';
-import { fetchQuery,fetchPagination } from '../actions/index';
+import { fetchPagination } from '../actions/index';
 
 export default function PaginationContainer() {
   const dispatch = useDispatch();
-  const state=useSelector((state) => state.search)
-  console.log(state);
-  const currentState=useSelector((state) => state.search.currentState);
-  const activePage=useSelector((state)=>state.search.currentPage)
+  const currentState = useSelector((state) => state.search.currentState);
+  const activePage = useSelector((state) => state.search.currentPage);
   const docs = useSelector((state) => state.search.count);
-  
+
   const pages = Math.ceil(docs / 9);
   const items = [];
-  const handlePaginationClick=(e)=>{
-    dispatch(fetchPagination(currentState,e.target.innerText))
-  }
+  const handlePaginationClick = (e) => {
+    dispatch(fetchPagination(currentState, e.target.innerText));
+  };
   for (let number = 1; number <= pages; number++) {
     items.push(
-      <Pagination.Item 
-      key={number} 
-      value={number}
-      active={number === activePage}
-      as='button'
-      onClick={handlePaginationClick}
+      <Pagination.Item
+        key={number}
+        active={number == activePage}
+        as="button"
+        onClick={handlePaginationClick}
       >
         {number}
       </Pagination.Item>
     );
   }
-  return <Pagination style={{ marginLeft: '50%' }}>{items}</Pagination>;
+  return <Pagination style={{ marginLeft: '48%' }}>{items}</Pagination>;
 }

@@ -26,5 +26,9 @@ export default function PaginationContainer() {
       </Pagination.Item>
     );
   }
-  return <Pagination style={{ marginLeft: '48%' }}>{items}</Pagination>;
+  return (
+    <Pagination size="sm" style={{ marginLeft: '48%' }}>
+      {items}
+    </Pagination>
+  );
 }

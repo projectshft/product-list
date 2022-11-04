@@ -17,10 +17,6 @@ const SearchBar = () => {
     e.preventDefault();
     dispatch(fetchQuery(state));
   };
-  // const handleClickSort = (e) => {
-  //   e.preventDefault()
-  //   dispatch(fetchSort(state))
-  // };
 
   const categoriesMap = categories.map((cat, i) => (
     <option role="button" key={i + 1} value={cat}>

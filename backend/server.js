@@ -20,6 +20,7 @@ app.use(express.urlencoded({extended: true}));
 //routes
 app.use('/api/products', productRoutes)
 
+
 mongoose.connect(process.env.LOCAL_URI)
   .then(() => {
     app.listen(PORT, () => {

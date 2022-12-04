@@ -1,13 +1,32 @@
 const express = require('express')
-const cors = require('cors');
-
-
 const app = express();
+const cors = require('cors');
+const mongoose = require('mongoose');
+require("dotenv").config({path: "./config.env"})
+
+const productRoutes = require('./routes/products')
+
+const PORT = process.env.PORT || 8000;
 
 const corsOptions = {
-  origin: "https://localhost:8000"
+  origin: "https://localhost:8001"
 }
 
+//middleware
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}));
+
+//routes
+app.use('/api/products', productRoutes)
+
+mongoose.connect(process.env.LOCAL_URI)
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on ${PORT}`)
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+

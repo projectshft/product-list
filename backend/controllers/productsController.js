@@ -51,12 +51,12 @@ const createNewProduct = async (req, res) => {
 
 // create a new review for a specific product
 const createNewReviewForProduct = async (req, res) => {
-  
+  res.json({message: "Create New Review for Product"})
 }
 
 // delete a product 
 const deleteProduct = async (req, res) => {
-
+  res.json({message: "Delete Product"})
 } 
 
 

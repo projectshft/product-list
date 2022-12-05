@@ -9,7 +9,7 @@ const productRoutes = require('./routes/products')
 const PORT = process.env.PORT || 8000;
 
 const corsOptions = {
-  origin: "https://localhost:8001"
+  origin: "http://localhost:5173"
 }
 
 //middleware

@@ -1,5 +1,6 @@
 const Product = require('../models/productsModel')
 const mongoose = require('mongoose')
+const {faker} = require('@faker-js/faker');
 
 //get all products
 const getAllProducts = async (req, res) => {
@@ -59,5 +60,22 @@ const deleteProduct = async (req, res) => {
   res.json({message: "Delete Product"})
 } 
 
+// create random data 
+const createRandomData = async (req, res) => {
+  for (let i = 0; i < 90; i++) {
+    let product = new Product();
 
-module.exports = {getAllProducts, getProduct, getReviewsForProduct, createNewProduct, createNewReviewForProduct, deleteProduct}
+    product.category = faker.commerce.department();
+    product.name = faker.commerce.productName();
+    product.price = faker.commerce.price();
+    product.image = "https://via.placeholder.com/250?text=Product+Image";
+
+
+    product.save((err) => {
+      if (err) throw err;
+    })
+    res.end();
+  }
+}
+
+module.exports = {getAllProducts, getProduct, getReviewsForProduct, createNewProduct, createNewReviewForProduct, deleteProduct, createRandomData}

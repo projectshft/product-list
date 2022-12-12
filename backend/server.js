@@ -4,7 +4,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require("dotenv").config({path: "./config.env"})
 
-const productRoutes = require('./routes/products')
+const productsRoutes = require('./routes/products')
+const reviewsRoutes = require('./routes/reviews')
 
 const PORT = process.env.PORT || 8000;
 
@@ -18,7 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 //routes
-app.use('/api/products', productRoutes)
+app.use('/api/products', productsRoutes)
+app.use('/api/reviews', reviewsRoutes)
 
 
 mongoose.connect(process.env.LOCAL_URI)

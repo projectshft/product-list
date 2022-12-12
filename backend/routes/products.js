@@ -1,6 +1,5 @@
 const express = require('express');
-const { getAllProducts, getProduct, getReviewsForProduct, createNewProduct, createNewReviewForProduct, deleteProduct, createRandomData } = require('../controllers/productsController');
-const { deleteReview } = require('../controllers/reviewsController')
+const { getAllProducts, getProduct, getReviewsForProduct, createNewProduct, createNewReviewForProduct, deleteProduct, createRandomData, getAllCategories } = require('../controllers/productsController');
 
 const router = express.Router();
 
@@ -9,6 +8,9 @@ router.get('/get-random-data', createRandomData)
 
 //GET All Products
 router.get('/', getAllProducts)
+
+//GET All Categories
+router.get('/categories', getAllCategories)
 
 //GET Specific Product
 router.get('/:product', getProduct)
@@ -24,10 +26,5 @@ router.post('/:product/reviews', createNewReviewForProduct)
 
 //DELETE a product
 router.delete('/:product', deleteProduct)
-
-//DELETE a review
-router.delete('/reviews/:review', deleteReview)
-
-
 
 module.exports = router;

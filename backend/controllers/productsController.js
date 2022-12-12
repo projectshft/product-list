@@ -4,8 +4,54 @@ const {faker} = require('@faker-js/faker');
 
 //get all products
 const getAllProducts = async (req, res) => {
-  const products = await Product.find({})
-  res.status(200).json(products)
+  
+  const { sort, category, search } = req.query
+
+  const perPage = 9;
+  let page = req.query.page || 1
+  
+  
+  //build query parameter based on incoming queries
+  let query = {};
+
+  (category) ? (query['category'] = category) : '';
+  (search) ? (query['name'] = {$regex: search, $options: "i"}) : '';
+
+  let products;
+
+  if(!sort) {
+    products = await Product.find(query).skip(perPage * page - perPage).limit(perPage)
+  }
+
+  if(sort === 'priceHighest') {
+    products = await Product.find(query).skip(perPage * page - perPage).limit(perPage).sort({price: -1})
+  } else if (sort === 'priceLowest') {
+    products = await Product.find(query).skip(perPage * page - perPage).limit(perPage).sort({price: 1})
+  } else if (sort === 'nameAscending') {
+    products = await Product.find(query).skip(perPage * page - perPage).limit(perPage).sort({name: 1})
+  } else if (sort === 'nameDescending') {
+    products = await Product.find(query).skip(perPage * page - perPage).limit(perPage).sort({name: -1})
+  } 
+
+  //get product count of product query for pagination
+  const productCount = await Product.count(query)
+
+  if(!products) {
+    res.status(400).json({message: 'error'})
+  }
+
+  res.status(200).json({"products": products, "count": productCount})
+
+}
+
+// get all categories
+const getAllCategories = async (req, res) => {
+  const categories = await Product.find().distinct('category')
+
+  if(!categories) {
+    res.status(404).json({error: "No categories found"})
+  }
+  res.status(200).json(categories)
 }
 
 // get a specific product
@@ -78,4 +124,4 @@ const createRandomData = async (req, res) => {
   }
 }
 
-module.exports = {getAllProducts, getProduct, getReviewsForProduct, createNewProduct, createNewReviewForProduct, deleteProduct, createRandomData}
+module.exports = {getAllProducts, getProduct, getReviewsForProduct, createNewProduct, createNewReviewForProduct, deleteProduct, createRandomData, getAllCategories}

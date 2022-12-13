@@ -11,7 +11,7 @@ router.use((req, res, next) => {
 })
 
 router.param('productId', async (req, res, next, id) => {
-  if(mongoose.Types.ObjectId.isValid(id)){
+  if (mongoose.Types.ObjectId.isValid(id)) {
     const product = await Product.findById(id);
     req.product = product;
   } else {
@@ -37,10 +37,26 @@ router.get('/:productId', (req, res, next) => {
   res.send(req.product);
 })
 
-router.get('/:productId/reviews', (req, res) => {
-  req.product.populate('reviews', (err, populated) => {
-    res.send(populated.reviews)
-  })
+router.get('/:productId/reviews', async (req, res) => {
+  try {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 4;
+
+    await req.product
+      .populate(
+        { 
+          path: 'reviews', 
+          options: { 
+            skip: (Number(page) - 1) * limit, 
+            limit 
+          } 
+        })
+
+    res.send(req.product.reviews)
+  } catch (e) {
+    console.error(e)
+  }
 })
+
 
 module.exports = router;

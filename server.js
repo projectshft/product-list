@@ -34,6 +34,9 @@ app.use(mainRoutes);
 const productsRoutes = require('./routes/products')
 app.use('/products', productsRoutes)
 
+const reviewsRoutes = require('./routes/reviews')
+app.use('/reviews', reviewsRoutes)
+
 
 app.listen(8000, () => {
   console.log(`Node.js listening on port ${8000}`);

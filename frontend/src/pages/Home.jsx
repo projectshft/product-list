@@ -6,16 +6,22 @@ import { useLazyGetProductsQuery } from "../services/products";
 import { useState } from "react";
 import { buildURL } from "../helpers/buildURL";
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
   const [category, setCategory] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchParams, setSearchParams] = useSearchParams();
   const [trigger, {data, isLoading, error}] = useLazyGetProductsQuery();
 
+  console.log(data)
+
   useEffect(() => {
-    trigger(buildURL({sort: sort, search: search, category: category, page: currentPage}))
+    trigger(buildURL({page: currentPage, sort: sort, search: search, category: category}))
+    setSearchParams(buildURL({page: currentPage, sort: sort, search: search, category: category}))
   }, [sort, search, category, currentPage])
 
   const onSearchChange = (e) => {
@@ -36,6 +42,7 @@ const Home = () => {
     <div className="flex flex-col mt-10 justify-center items-center w-screen">
       <SearchBar data={data} error={error} isLoading={isLoading} onCategoryChange={onCategoryChange} onSearchChange={onSearchChange}/>
       <div className="mt-11 flex justify-start container w-screen">
+      
         <div className="">
           <SideBar onCategoryChange={onCategoryChange} onSortChange={onSortChange} category={category} sort={sort} />
         </div>
@@ -48,6 +55,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      
     </div>
   )
 }

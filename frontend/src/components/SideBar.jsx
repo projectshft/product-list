@@ -1,5 +1,6 @@
 
 import { useGetCategoriesQuery } from "../services/products";
+import { Link } from "react-router-dom";
 
 const SideBar = ({ onCategoryChange, onSortChange, sort, category }) => {
   const {data, error, isLoading } = useGetCategoriesQuery();
@@ -25,6 +26,7 @@ const SideBar = ({ onCategoryChange, onSortChange, sort, category }) => {
   return (
     <div className='h-full w-64 border'>
       <div className="">
+        
         {/* SORT SECTION */}
         <div className="p-5 border-b">
           <div className="font-semibold">Sort By</div>

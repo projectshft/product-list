@@ -1,10 +1,8 @@
 export function buildURL (params) {
-  console.log(params)
   let url = '';
   let first = true;
   for(let key in params) {
-    params[key] = params[key].toString()
-    // console.log(params[key])
+    params[key] = params[key].toString() //convert any value to string
     if(first && params[key].length > 0) {
       url += '?'
       first = false;
@@ -14,6 +12,5 @@ export function buildURL (params) {
       url += `${key}=${params[key]}`
     }
   }
-  console.log(url)
   return url;
 } 

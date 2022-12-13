@@ -33,11 +33,13 @@ const getAllProducts = async (req, res) => {
     products = await Product.find(query).skip(perPage * page - perPage).limit(perPage).sort({name: -1})
   } 
 
-  //get product count of product query for pagination
+  // get product count of product query for pagination
+  /* This is querying the database twice.  Need to figure out a way to return this within the first query */ 
   const productCount = await Product.count(query)
 
   if(!products) {
     res.status(400).json({message: 'error'})
+    return;
   }
 
   res.status(200).json({"products": products, "count": productCount})
@@ -87,6 +89,9 @@ const getReviewsForProduct = async (req, res) => {
 // create a product
 const createNewProduct = async (req, res) => {
   const {category, name, price, image} = req.body
+
+  //set image to placeholder if image not send from form
+  (image.length === 0) ? image = 'https://via.placeholder.com/250?text=Product+Image' : ''
 
   try {
     const product = await Product.create({category, name, price, image});

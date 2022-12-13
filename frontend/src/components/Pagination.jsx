@@ -9,6 +9,7 @@ const Pagination = ({data, isLoading, error, currentPage, onPageChange}) => {
   let totalCount = data?.count || 0
   const pageSize = 9
   const siblingCount = 1
+  let totalPageCount = Math.ceil(totalCount / pageSize)
   
 
   //dynamically construct range of pagination
@@ -25,12 +26,18 @@ const Pagination = ({data, isLoading, error, currentPage, onPageChange}) => {
     return null;
   }
 
+  console.log(totalPageCount, currentPage)
+
   const onNext = () => {
-    onPageChange(currentPage + 1)
+    if(currentPage < totalPageCount) {
+      onPageChange(currentPage + 1)
+    }
   }
 
   const onPrevious = () => {
-    onPageChange(currentPage - 1)
+    if(currentPage > 1) {
+      onPageChange(currentPage - 1)
+    }
   }
 
   return (
@@ -38,10 +45,10 @@ const Pagination = ({data, isLoading, error, currentPage, onPageChange}) => {
       <li className="px-2" onClick={onPrevious}>{'<'}</li>
       {paginationRange.map((pageNumber) => {
         if (pageNumber === DOTS) {
-          return <li className="px-2" >&#8230;</li>
+          return <li key={pageNumber} className="px-2" >&#8230;</li>
         }
         return(
-          <li value={pageNumber} className="px-2" onClick={() => onPageChange(pageNumber)}>{pageNumber}</li>
+          <li key={pageNumber} className="px-2" onClick={() => onPageChange(pageNumber)}>{pageNumber}</li>
         )
       })}
       <li  className="px-2" onClick={onNext}>{'>'}</li>

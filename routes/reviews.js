@@ -9,12 +9,28 @@ router.get('/', (req, res) => {
   Review.find()
     .skip((Number(page) - 1) * 9)
     .limit(Number(limit))
-    .exec((error, reviews) => {
-      if(error) {
-        res.send({"error": true, 'message': error});
+    .exec((err, reviews) => {
+      if(err) {
+        res.send({"error": true, 'message': err});
       }
       res.send(reviews)
     })
+})
+
+router.delete('/:reviewId', (req, res) => {
+  Review.findByIdAndRemove(req.params.reviewId, (err, review) => {
+    if(err) {
+      res.send({"error": true, 'message': err})
+    }
+    Product.findById(review.product, (err, product) => {
+      if (err) {
+        throw err
+      }
+      product.reviews.remove(req.params.reviewId)
+      product.save()
+    })
+    res.send(review);
+  })
 })
 
 module.exports = router;

@@ -56,6 +56,10 @@ router.post('/', (req, res) => {
 
 
 router.get('/:productId', (req, res, next) => {
+  if(!req.product){
+    res.status(404).send("product not found");
+  }
+  
   res.send(req.product);
 })
 

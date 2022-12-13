@@ -25,13 +25,25 @@ router.get('/', (req, res, next) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 9;
   const category = req.query.category;
+  const priceSort = req.query.price;
 
   let query = {}
   if (category) {
     query = {category};
   }
 
+  let sort = {}
+  if(priceSort) {
+    if(priceSort === 'highest') {
+      sort = {price: -1}
+    } 
+    if(priceSort === 'lowest') {
+      sort = {price: 1};
+    }
+  }
+
   Product.find(query)
+    .sort(sort)
     .skip((Number(page) - 1) * limit)
     .limit(Number(limit))
     .exec((error, products) => {

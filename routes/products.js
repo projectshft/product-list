@@ -24,8 +24,15 @@ router.param('productId', async (req, res, next, id) => {
 router.get('/', (req, res, next) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 9;
-  Product.find()
-    .skip((Number(page) - 1) * 9)
+  const category = req.query.category;
+
+  let query = {}
+  if (category) {
+    query = {category};
+  }
+
+  Product.find(query)
+    .skip((Number(page) - 1) * limit)
     .limit(Number(limit))
     .exec((error, products) => {
       if (error) throw error;

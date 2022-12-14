@@ -40,8 +40,8 @@ router.get('/', (req, res, next) => {
 
   Product.find(findQuery)
     .sort(sort)
-    .skip((Number(page) - 1) * limit)
-    .limit(Number(limit))
+    .skip(page * limit - limit)
+    .limit(limit)
     .exec((error, products) => {
       if (error) throw error;
       Product.count(findQuery).exec((err, count) => {
@@ -103,7 +103,7 @@ router.get('/:productId/reviews', async (req, res) => {
     await req.product.populate({
       path: 'reviews',
       options: {
-        skip: (Number(page) - 1) * limit,
+        skip: page * limit - limit,
         limit,
       },
     });

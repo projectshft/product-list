@@ -1,4 +1,5 @@
 const router = require('express').Router();
+
 const Review = require('../models/review');
 const Product = require('../models/product');
 
@@ -7,8 +8,8 @@ router.get('/', (req, res) => {
   const limit = req.query.limit || 9;
 
   Review.find()
-    .skip((Number(page) - 1) * 9)
-    .limit(Number(limit))
+    .skip(page * limit - limit)
+    .limit(limit)
     .exec((err, reviews) => {
       if (err) {
         res.send({ error: true, message: err });

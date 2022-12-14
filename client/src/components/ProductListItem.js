@@ -1,7 +1,6 @@
 import { Col, Row } from 'react-bootstrap';
 
 const ProductListItem = ({ product }) => {
-  console.log("Product in List Item: ", product)
   return (
     <Col className="p-4" md={4}>
       <Row>

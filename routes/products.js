@@ -24,31 +24,38 @@ router.param('productId', async (req, res, next, id) => {
 router.get('/', (req, res, next) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 9;
-  const category = req.query.category;
-  const priceSort = req.query.price;
+  const {category, price, query} = req.query;
 
-  let query = {}
+  let findQuery = {}
   if (category) {
-    query = {category};
+    findQuery = { category, ...findQuery};
+  }
+  if(query) {
+    findQuery = { name: new RegExp(query, 'i'), ...findQuery}
   }
 
   let sort = {}
-  if(priceSort) {
-    if(priceSort === 'highest') {
+  if(price) {
+    if(price === 'highest') {
       sort = {price: -1}
     } 
-    if(priceSort === 'lowest') {
+    if(price === 'lowest') {
       sort = {price: 1};
     }
   }
 
-  Product.find(query)
+  Product.find(findQuery)
     .sort(sort)
     .skip((Number(page) - 1) * limit)
     .limit(Number(limit))
     .exec((error, products) => {
       if (error) throw error;
-      res.send(products)
+      Product.count(findQuery).exec((err, count) => {
+        if (err) {
+          throw err;
+        }
+        res.send({numProducts: count, products})
+      })
     })
 })
 

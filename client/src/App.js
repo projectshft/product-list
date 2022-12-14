@@ -26,8 +26,8 @@ function App() {
     <div className="App">
       <Container>
         <Search />
-        {/* <ProductList />
-      <PageNumbers /> */}
+        <ProductList />
+      {/* <PageNumbers /> */}
 
       </Container>
     </div>

@@ -7,15 +7,16 @@ import ProductList from './components/ProductList';
 import PageNumbers from './components/PageNumbers';
 
 import {fetchProducts} from './helpers/fetchData'
-import {setProducts} from './actions'
+import {setProducts, setCategories} from './actions'
 
 function App() {
   const dispatch = useDispatch();
 
   const initialLoad = async() => {
-    const products = await fetchProducts();
-
+    const {products, categories} = await fetchProducts();
+    
     dispatch(setProducts(products))
+    dispatch(setCategories(categories))
   }
   
   useEffect(() => {

@@ -1,14 +1,13 @@
 import { Form, Button, Row, Col, InputGroup } from 'react-bootstrap'
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { changeCategoryFilter } from '../actions';
 import { changePriceSortFilter } from '../actions';
 
 const Search = () => {
   const [query, setQuery] = useState('')
-  const [category, setCategory] = useState(null)
-  const [priceSort, setPriceSort] = useState(null)
+  const categories = useSelector(state => state.categories);
 
   const dispatch = useDispatch();
 
@@ -20,8 +19,12 @@ const Search = () => {
   
   const handlePriceSortChange = (e) => {
     dispatch(changePriceSortFilter(e.target.value))
-    // setPriceSort(e.target.value);
-    // console.log(priceSort)
+  }
+
+  const populateCategories = () => {
+    return categories.map((category, index) => {
+      return <option key={index} value={category}>{category}</option>
+    })
   }
 
   return (
@@ -36,11 +39,12 @@ const Search = () => {
         </Form.Group>
         <Form.Group as={Col} md={3}>
           <Form.Select onChange={(e) => handleCategoryChange(e)} as={Col}>
-            <option>Map all categories to these options</option>
+            <option value=''>Sort By Category</option>
+            {populateCategories()}
           </Form.Select>
         </Form.Group>
         <Form.Group as={Col} md={3}>
-          <Form.Select value={priceSort} onChange={(e) => handlePriceSortChange(e)} as={Col}>
+          <Form.Select onChange={(e) => handlePriceSortChange(e)} as={Col}>
             <option value=''>Sort By Price</option>
             <option value='highest'>Highest to lowest</option>
             <option value='lowest'>Lowest to Highest</option>

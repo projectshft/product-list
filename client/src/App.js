@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from 'react-bootstrap'
+// import {  } from 'react-redux';
+import { useEffect } from 'react';
+
+import Search from './components/Search';
+import ProductList from './components/ProductList';
+import PageNumbers from './components/PageNumbers';
+
+import {fetchProducts} from './helpers/fetchData'
 
 function App() {
+  const initialLoad = async() => {
+    fetchProducts();
+  }
+  
+  useEffect(() => {
+    initialLoad();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Container>
+        <Search />
+        {/* <ProductList />
+      <PageNumbers /> */}
+
+      </Container>
     </div>
   );
 }

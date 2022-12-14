@@ -27,8 +27,7 @@ function App() {
       <Container>
         <Search />
         <ProductList />
-      {/* <PageNumbers /> */}
-
+        <PageNumbers />
       </Container>
     </div>
   );

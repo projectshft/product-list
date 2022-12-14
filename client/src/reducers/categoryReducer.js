@@ -1,9 +1,8 @@
-import {SET_CATEGORIES} from '../actions'
+import { SET_CATEGORIES } from '../actions'
 
 const reducer = (state = [], action) => {
-  switch (action) {
+  switch (action.type) {
     case SET_CATEGORIES:
-      debugger;
       return action.payload;
     default:
       return state;

@@ -21,7 +21,7 @@ const PageNumbers = () => {
 
     const page = Number(e.target.id) + 1;
 
-    const products = await fetchProducts(category, priceSort,page);
+    const {products} = await fetchProducts(category, priceSort, page);
 
     dispatch(setProducts(products))
   }

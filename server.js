@@ -40,6 +40,7 @@ const reviewsRoutes = require('./routes/reviews');
 
 app.use('/reviews', reviewsRoutes);
 
-app.listen(8000, () => {
-  console.log(`Node.js listening on port ${8000}`);
+const port = 8000;
+app.listen(port, () => {
+  console.log(`Node.js listening on port ${port}`);
 });

@@ -12,11 +12,11 @@ mongoose.connect('mongodb://localhost/products', {
 const app = express();
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
   res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
   );
   next();
 });
@@ -29,14 +29,16 @@ app.use(
 );
 
 const mainRoutes = require('./routes/main');
+
 app.use(mainRoutes);
 
-const productsRoutes = require('./routes/products')
-app.use('/products', productsRoutes)
+const productsRoutes = require('./routes/products');
 
-const reviewsRoutes = require('./routes/reviews')
-app.use('/reviews', reviewsRoutes)
+app.use('/products', productsRoutes);
 
+const reviewsRoutes = require('./routes/reviews');
+
+app.use('/reviews', reviewsRoutes);
 
 app.listen(8000, () => {
   console.log(`Node.js listening on port ${8000}`);

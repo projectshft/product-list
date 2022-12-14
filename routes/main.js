@@ -1,9 +1,7 @@
 const router = require('express').Router();
 const { faker } = require('@faker-js/faker');
 const Product = require('../models/product');
-const Review = require('../models/review')
-
-
+const Review = require('../models/review');
 
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -14,18 +12,18 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.price = faker.commerce.price();
     product.image = 'https://via.placeholder.com/250?text=Product+Image';
 
-    for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
-      const review = new Review()
+    for (let j = 0; j < Math.floor(Math.random() * 10); j++) {
+      const review = new Review();
 
       review.username = faker.name.firstName();
       review.text = faker.lorem.sentence();
       review.product = product._id;
 
-      review.save(err => {
+      review.save((err) => {
         if (err) {
-          throw err
+          throw err;
         }
-      })
+      });
       product.reviews.push(review);
     }
 

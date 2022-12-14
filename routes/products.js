@@ -1,14 +1,8 @@
-const express = require('express');
-
-const router = express.Router();
+const router = require('express').Router();
 const mongoose = require('mongoose');
+
 const Product = require('../models/product');
 const Review = require('../models/review');
-
-router.use((req, res, next) => {
-  console.log(`The url is ${req.url}`);
-  next();
-});
 
 router.param('productId', async (req, res, next, id) => {
   if (mongoose.Types.ObjectId.isValid(id)) {
@@ -134,12 +128,14 @@ router.post('/:productId/reviews', async (req, res) => {
       throw err;
     }
   });
+
   review.save((err, savedReview) => {
     if (err) {
       const response = {
         error: true,
         message: err,
       };
+
       res.json(response);
     }
     res.send(savedReview);

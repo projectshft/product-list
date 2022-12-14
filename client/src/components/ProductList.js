@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Row } from 'react-bootstrap';
 
 import ProductListItem from './ProductListItem';
 
@@ -13,9 +14,9 @@ const ProductList = () => {
 
   if (products) {
     return (
-      <div>
+      <Row>
         {renderProductListItems()}
-      </div>
+      </Row>
     );
   }
   return <div>Loading...</div>

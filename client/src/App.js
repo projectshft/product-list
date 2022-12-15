@@ -15,7 +15,7 @@ function App() {
   const initialLoad = async() => {
     const { categories } = await fetchProducts();
 
-    dispatch(setCategories(categories))
+    dispatch(setCategories(categories.data))
   }
   
   useEffect(() => {

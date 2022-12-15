@@ -11,22 +11,10 @@ export async function fetchProducts(category, priceSort, page, query, limit = 9)
     }
 
     const products = await axios.get('http://localhost:8000/products', { params })
-    const categories = getCategoriesFromProducts(products.data.products)
+    const categories = await axios.get('http://localhost:8000/products/categories')
 
     return {products, categories}
   } catch(e) {
     throw e;
   }
-}
-
-function getCategoriesFromProducts (products) {
-  return products.reduce((categories, product) => {
-    const category = product.category;
-
-    if (!categories.includes(category)){
-      categories.push(category)
-    }
-
-    return categories;
-  }, [])
 }

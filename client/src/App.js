@@ -13,9 +13,8 @@ function App() {
   const dispatch = useDispatch();
 
   const initialLoad = async() => {
-    const {products, categories} = await fetchProducts();
-    
-    dispatch(setProducts(products))
+    const { categories } = await fetchProducts();
+
     dispatch(setCategories(categories))
   }
   

@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-export async function fetchProducts(category, priceSort, page, limit = 9) {
+export async function fetchProducts(category, priceSort, page, query, limit = 9) {
   try {
     const params = {
       category,
       price: priceSort,
       page,
+      query,
       limit,
     }
 
@@ -25,7 +26,7 @@ function getCategoriesFromProducts (products) {
     if (!categories.includes(category)){
       categories.push(category)
     }
-    
+
     return categories;
   }, [])
 }

@@ -23,7 +23,7 @@ const Search = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const { products } = await fetchProducts(category, priceSort, 1, query)
 
     dispatch(setProducts(products))
@@ -40,7 +40,7 @@ const Search = () => {
       <Row>
         <Form.Group as={Col} className="mb-3">
           <InputGroup>
-            <Form.Control onChange={(e) => handleSearchChange(e)} value={query} type="text" placeholder="Search to find products . . ." />
+            <Form.Control onChange={(e) => handleSearchChange(e)} type="text" placeholder="Search to find products . . ." />
             <InputGroup.Text onClick={handleSubmit} as={Button} type='submit'>
               Search
             </InputGroup.Text>

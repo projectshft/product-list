@@ -8,18 +8,18 @@ import { setProducts } from '../actions';
 
 const ProductList = () => {
   const { products } = useSelector(state => state.products)
-  const filters = useSelector(state => state.filters);
+  const {category, priceSort, query} = useSelector(state => state.filters);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchFilteredProducts = async () => {
-      const { products } = await fetchProducts(filters.category, filters.priceSort);
+      const { products } = await fetchProducts(category, priceSort, 1, query);
       dispatch(setProducts(products))
     }
 
     fetchFilteredProducts();
-  }, [filters]);
+  }, [category, priceSort]);
 
   const renderProductListItems = () => {
     return products.map((product, index) => {

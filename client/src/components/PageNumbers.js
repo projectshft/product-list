@@ -12,7 +12,7 @@ const PageNumbers = () => {
   const perPage = 9;
   const numPages = numProducts / perPage;
 
-  const {category, priceSort} = useSelector(state => state.filters);
+  const {category, priceSort, query} = useSelector(state => state.filters);
 
   const dispatch = useDispatch();
 
@@ -21,7 +21,7 @@ const PageNumbers = () => {
 
     const page = Number(e.target.id) + 1;
 
-    const {products} = await fetchProducts(category, priceSort, page);
+    const {products} = await fetchProducts(category, priceSort, page, query);
 
     dispatch(setProducts(products))
   }

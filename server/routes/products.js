@@ -73,6 +73,14 @@ router.post('/', (req, res) => {
     res.send(savedProduct);
   });
 });
+router.get('/categories', (req, res) => {
+  Product.find({}, 'category')
+    .distinct('category')
+    .exec((err, categories) => {
+      if (err) throw err;
+      res.send(categories);
+    });
+});
 
 router.get('/:productId', (req, res, next) => {
   if (!req.product) {

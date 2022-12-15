@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 
@@ -8,11 +8,16 @@ import { setProducts } from '../actions';
 const PageNumbers = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
+  
   const { numProducts } = useSelector(state => state.products);
   const perPage = 9;
   const numPages = numProducts / perPage;
-
+  
   const {category, priceSort, query} = useSelector(state => state.filters);
+  
+  useEffect(( )=> {
+    setCurrentPage(1);
+  }, [query, category, priceSort])
 
   const dispatch = useDispatch();
 

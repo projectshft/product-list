@@ -1,8 +1,8 @@
-const Review = require('../models/reviewsModel')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const Review = require('../models/reviewsModel');
 
 const deleteReview = async (req, res) => {
-  res.json({message: "Delete Review"})
-}
+  res.json({ message: 'Delete Review' });
+};
 
-module.exports = { deleteReview }
+module.exports = { deleteReview };

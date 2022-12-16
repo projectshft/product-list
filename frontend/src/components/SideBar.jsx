@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useGetCategoriesQuery } from '../services/products';
 
 const SideBar = ({ onCategoryChange, onSortChange, sort, category }) => {
@@ -11,11 +11,11 @@ const SideBar = ({ onCategoryChange, onSortChange, sort, category }) => {
   } else if (isLoading) {
     categoryRadioButtons = <div>Loading...</div>;
   } else if (data) {
-    categoryRadioButtons = data.map((category) => (
-      <div key={category} className="flex">
-        <input type="radio" value={category} name="category" id={category} />
-        <label className="ml-3" htmlFor={category}>
-          {category}
+    categoryRadioButtons = data.map((categoryElement) => (
+      <div key={categoryElement} className="flex">
+        <input type="radio" value={categoryElement} name="category" id={categoryElement} />
+        <label className="ml-3" htmlFor={categoryElement}>
+          {categoryElement}
         </label>
       </div>
     ));
@@ -100,6 +100,13 @@ const SideBar = ({ onCategoryChange, onSortChange, sort, category }) => {
       </div>
     </div>
   );
+};
+
+SideBar.propTypes = {
+  onCategoryChange: PropTypes.func,
+  onSortChange: PropTypes.func,
+  sort: PropTypes.string,
+  category: PropTypes.string,
 };
 
 export default SideBar;

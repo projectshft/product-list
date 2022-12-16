@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
 import NewProduct from './pages/NewProduct';
+import Product from './pages/Product';
 import './index.css';
 import { store } from './store';
 import FormSuccess from './pages/FormSuccess';
@@ -17,6 +18,7 @@ const router = createBrowserRouter(
         <Route index element={<NewProduct />} />
         <Route path="/new-product/success" element={<FormSuccess />} />
       </Route>
+      <Route path="/product/:productId" element={<Product />} />
     </Route>
   )
 );

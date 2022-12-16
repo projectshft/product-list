@@ -1,5 +1,5 @@
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useGetCategoriesQuery } from '../services/products';
 
 const SearchBar = ({ onSearchChange }) => (
   <div className="fixed py-5 top-0 flex justify-center items-center bg-white w-screen border-b drop-shadow-sm">
@@ -13,5 +13,9 @@ const SearchBar = ({ onSearchChange }) => (
     </div>
   </div>
 );
+
+SearchBar.propTypes = {
+  onSearchChange: PropTypes.func,
+};
 
 export default SearchBar;

@@ -1,6 +1,7 @@
 import { Form } from 'react-router-dom';
 import { useState } from 'react';
-import { useAddProductMutation } from '../services/products';
+import { useAddProductMutation, useGetProductsQuery } from '../services/products';
+import { buildURL } from '../helpers/buildURL';
 
 const NewProduct = () => {
   const [name, setName] = useState('');
@@ -8,14 +9,21 @@ const NewProduct = () => {
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
 
-  const onSubmit = () => {
-    useAddProductMutation({ name, category, price, image });
+  const [addProduct, result] = useAddProductMutation();
+  const { data } = useGetProductsQuery();
+
+  if (data) {
+    console.log(data);
+  }
+
+  const handleFormSubmit = () => {
+    addProduct({ name, category, price, image });
   };
 
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <div className="text-xl mb-4">Create New Product</div>
-      <form className="w-96 bg-slate-100 p-8" method="POST" onSubmit={onSubmit}>
+      <div className="w-96 bg-slate-400 p-5 rounded">
         <div className="flex flex-col mb-5">
           <label htmlFor="name">Product name</label>
           <input className="border" name="name" value={name} onChange={(e) => setName(e.target.value)} type="text" />
@@ -44,10 +52,10 @@ const NewProduct = () => {
           <label htmlFor="image">Product Image</label>
           <input className="border" name="image" value={image} onChange={(e) => setImage(e.target.value)} type="text" />
         </div>
-        <button className="self-end bg-slate-400 px-2 py-1 my-3 w-full" type="submit">
+        <button className="self-end bg-slate-400 px-2 py-1 my-3 w-full" type="submit" onClick={handleFormSubmit}>
           Add Product
         </button>
-      </form>
+      </div>
     </div>
   );
 };

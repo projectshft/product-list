@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
-import { buildURL } from '../helpers/buildURL';
-import { useLazyGetProductsQuery } from '../services/products';
+import PropTypes from 'prop-types';
 import { usePagination, DOTS } from '../hooks/usePagination';
 
-const Pagination = ({ data, isLoading, error, currentPage, onPageChange }) => {
+const Pagination = ({ data, currentPage, onPageChange }) => {
   const totalCount = data?.count || 0;
   const pageSize = 9;
   const siblingCount = 1;
@@ -23,8 +21,6 @@ const Pagination = ({ data, isLoading, error, currentPage, onPageChange }) => {
     return null;
   }
 
-  console.log(totalPageCount, currentPage);
-
   const onNext = () => {
     if (currentPage < totalPageCount) {
       onPageChange(currentPage + 1);
@@ -42,16 +38,16 @@ const Pagination = ({ data, isLoading, error, currentPage, onPageChange }) => {
       <li className="px-2" onClick={onPrevious}>
         {'<'}
       </li>
-      {paginationRange.map((pageNumber) => {
+      {paginationRange.map((pageNumber, idx) => {
         if (pageNumber === DOTS) {
           return (
-            <li key={pageNumber} className="px-2">
+            <li key={idx} className="px-2">
               &#8230;
             </li>
           );
         }
         return (
-          <li key={pageNumber} className="px-2" onClick={() => onPageChange(pageNumber)}>
+          <li key={idx} className="px-2" onClick={() => onPageChange(pageNumber)}>
             {pageNumber}
           </li>
         );
@@ -61,6 +57,12 @@ const Pagination = ({ data, isLoading, error, currentPage, onPageChange }) => {
       </li>
     </ul>
   );
+};
+
+Pagination.propTypes = {
+  data: PropTypes.object,
+  currentPage: PropTypes.number,
+  onPageChange: PropTypes.func,
 };
 
 export default Pagination;

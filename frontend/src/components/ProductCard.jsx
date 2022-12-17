@@ -1,19 +1,8 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useLazyGetProductsQuery } from '../services/products';
+import ReviewSnippet from './ReviewSnippet';
 
-const ProductCard = ({ search, category, sort, currentPage }) => {
-  const [trigger, result] = useLazyGetProductsQuery();
-
-  useEffect(() => {
-    // eslint-disable-next-line prettier/prettier, object-shorthand
-    trigger({search: search, category: category, sort: sort, currentPage: currentPage});
-    console.log(search);
-  }, [search, category, sort, currentPage]);
-
-  const { error, isLoading, data } = result;
-
+const ProductCard = ({ data, isLoading, error }) => {
   if (error) {
     return <div>Error</div>;
   }
@@ -21,13 +10,10 @@ const ProductCard = ({ search, category, sort, currentPage }) => {
     return <div>Loading...</div>;
   }
   if (data) {
-    // not sure of another way to avoid nested if/else.
-    if (data.length === 0) {
-      return <div>No Results</div>;
-    }
+    console.log(data);
     return data.products.map((product) => (
       <Link
-        to={product._id}
+        to={`/products/${product._id}`}
         key={product._id}
         className="flex flex-col w-96 h-96 p-2 m-3 justify-center items-center border shadow rounded-md"
       >
@@ -41,16 +27,16 @@ const ProductCard = ({ search, category, sort, currentPage }) => {
             currencyDisplay: 'narrowSymbol',
           }).format(product.price)}
         </div>
+        <ReviewSnippet />
       </Link>
     ));
   }
 };
 
 ProductCard.propTypes = {
-  search: PropTypes.string,
-  category: PropTypes.string,
-  sort: PropTypes.string,
-  currentPage: PropTypes.number,
+  data: PropTypes.object,
+  isLoading: PropTypes.bool,
+  error: PropTypes.bool,
 };
 
 export default ProductCard;

@@ -15,8 +15,6 @@ const Pagination = ({ data, currentPage, onPageChange }) => {
     pageSize,
   });
 
-  // console.log(paginationRange)
-
   if (currentPage === 0 || paginationRange.length < 2) {
     return null;
   }
@@ -60,7 +58,6 @@ const Pagination = ({ data, currentPage, onPageChange }) => {
 };
 
 Pagination.propTypes = {
-  data: PropTypes.object,
   currentPage: PropTypes.number,
   onPageChange: PropTypes.func,
 };

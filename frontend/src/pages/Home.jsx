@@ -11,6 +11,16 @@ const Home = () => {
   const [category, setCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [trigger, result] = useLazyGetProductsQuery(); // trigger API call when props change
+
+  useEffect(() => {
+    // eslint-disable-next-line , object-shorthand
+    trigger({ page: currentPage, category: category, sort: sort, search: search });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, category, sort, currentPage]);
+
+  const { data, error, isLoading } = result;
+
   const onSearchChange = (e) => {
     setSearch(e.target.value);
   };
@@ -34,16 +44,10 @@ const Home = () => {
         </div>
         <div>
           <div className="flex flex-wrap justify-center">
-            <ProductCard search={search} sort={sort} category={category} currentPage={currentPage} />
+            <ProductCard data={data} error={error} isLoading={isLoading} />
           </div>
           <div className="flex justify-center">
-            {/* <Pagination
-              data={data}
-              currentPage={currentPage}
-              error={error}
-              isLoading={isLoading}
-              onPageChange={onPageChange}
-            /> */}
+            <Pagination currentPage={currentPage} onPageChange={onPageChange} data={data} />
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 export function buildURL(params) {
   let url = '';
   let first = true;

@@ -8,17 +8,13 @@ export const productApi = createApi({
   }),
   endpoints: (builder) => ({
     getProducts: builder.query({
-      paramsSerializer: (params) => {
-        queryString.stringify(params, { skipEmptyString: true });
-        console.log(queryString.stringify(params, { skipEmptyString: true }));
-      },
-      query: (args) => ({ url: '', params: args }),
+      query: (args) => ({ url: '', params: queryString.stringify(args, { skipEmptyString: true }) }),
     }),
     getCategories: builder.query({
       query: () => ({ url: '/categories' }),
     }),
     getProductById: builder.query({
-      query: (productId) => ({ url: `/product/${productId}` }),
+      query: (productId) => ({ url: `/${productId}` }),
     }),
     addProduct: builder.mutation({
       query: (product) => ({

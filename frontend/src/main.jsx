@@ -18,7 +18,7 @@ const router = createBrowserRouter(
         <Route index element={<NewProduct />} />
         <Route path="/new-product/success" element={<FormSuccess />} />
       </Route>
-      <Route path="/product/:productId" element={<Product />} />
+      <Route path="/products/:productId" element={<Product />} />
     </Route>
   )
 );

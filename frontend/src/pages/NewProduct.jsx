@@ -1,25 +1,26 @@
-import { Form } from 'react-router-dom';
-import { useState } from 'react';
-import { useAddProductMutation, useGetProductsQuery } from '../services/products';
+import { useState, useEffect } from 'react';
+import { useAddProductMutation } from '../services/products';
 import { buildURL } from '../helpers/buildURL';
 
 const NewProduct = () => {
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
+  let [name, setName] = useState('');
+  let [category, setCategory] = useState('');
+  let [price, setPrice] = useState('');
+  let [image, setImage] = useState('');
 
   const [addProduct, result] = useAddProductMutation();
-  const { data } = useGetProductsQuery();
-
-  if (data) {
-    console.log(data);
-  }
 
   const handleFormSubmit = () => {
     addProduct({ name, category, price, image });
+    name = '';
+    category = '';
+    price = '';
+    image = '';
   };
 
+  useEffect(() => {
+    console.log(result);
+  }, [result]);
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <div className="text-xl mb-4">Create New Product</div>

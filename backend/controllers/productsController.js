@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { faker } = require('@faker-js/faker');
 const Product = require('../models/productsModel');
+const Review = require('../models/reviewsModel');
 
 // get all products
 const getAllProducts = async (req, res) => {
@@ -12,8 +13,13 @@ const getAllProducts = async (req, res) => {
   // build query parameter based on incoming queries
   const query = {};
 
-  category ? (query.category = category) : '';
-  search ? (query.name = { $regex: search, $options: 'i' }) : '';
+  if (category) {
+    query.category = category;
+  }
+
+  if (search) {
+    query.name = { $regex: search, $options: 'i' };
+  }
 
   let products;
 
@@ -69,12 +75,13 @@ const getAllCategories = async (req, res) => {
 
 // get a specific product
 const getProduct = async (req, res) => {
-  const { id } = req.body;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(404).json({ error: 'Product Does Not Exist' });
+  const { productId } = req.params;
+  console.log(productId);
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    res.status(404).json({ error: 'Product Does Not Exist. ID Error.' });
   }
 
-  const product = await Product.findById(id);
+  const product = await Product.findById(productId);
   if (!product) {
     res.status(404).json({ error: 'Product Does Not Exist' });
   }
@@ -84,12 +91,12 @@ const getProduct = async (req, res) => {
 
 // get reviews for a specific product
 const getReviewsForProduct = async (req, res) => {
-  const { id } = req.body;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  const { productId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
     res.status(404).json({ error: 'Product Does Not Exist' });
   }
 
-  const reviews = await Product.findById(id).populate('reviews');
+  const reviews = await Product.findById(productId).populate({ path: 'reviews', perDocumentLimit: 4 });
   if (!reviews) {
     res.status(404).json({ message: 'No Reviews' });
   }
@@ -98,12 +105,7 @@ const getReviewsForProduct = async (req, res) => {
 
 // create a product
 const createNewProduct = async (req, res) => {
-  let { category, name, price, image } = req.body(
-    // set image to placeholder if image not send from form
-    image.length === 0
-  )
-    ? (image = 'https://via.placeholder.com/250?text=Product+Image')
-    : '';
+  const { category, name, price, image } = req.body;
 
   try {
     const product = await Product.create({ category, name, price, image });
@@ -115,7 +117,20 @@ const createNewProduct = async (req, res) => {
 
 // create a new review for a specific product
 const createNewReviewForProduct = async (req, res) => {
-  res.json({ message: 'Create New Review for Product' });
+  const { userName, text, rating, product } = req.body;
+
+  try {
+    const review = await Review.create({ userName, text, rating, product: mongoose.Types.ObjectId(product) });
+
+    // this seems a bit odd? I would think theres a more streamlined way of adding the new review to the product
+    const productToUpdate = await Product.findById(product);
+    productToUpdate.reviews.push(review);
+    productToUpdate.save();
+
+    res.status(200).json(review);
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
 };
 
 // delete a product
@@ -140,6 +155,14 @@ const createRandomData = async (req, res) => {
   }
 };
 
+const deleteAllProducts = async (req, res) => {
+  try {
+    await Product.deleteMany();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProduct,
@@ -149,4 +172,5 @@ module.exports = {
   deleteProduct,
   createRandomData,
   getAllCategories,
+  deleteAllProducts,
 };

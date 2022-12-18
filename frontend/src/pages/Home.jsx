@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
-import SearchBar from '../components/SearchBar';
+import Header from '../components/Header';
 import SideBar from '../components/SideBar';
 import Pagination from '../components/Pagination';
 import { useLazyGetProductsQuery } from '../services/products';
@@ -36,22 +36,31 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col mt-10 justify-center items-center w-screen">
-      <SearchBar onSearchChange={onSearchChange} />
-      <div className="mt-11 flex justify-start container w-screen">
-        <div className="">
-          <SideBar onCategoryChange={onCategoryChange} onSortChange={onSortChange} category={category} sort={sort} />
-        </div>
-        <div>
-          <div className="flex flex-wrap justify-center">
-            <ProductCard data={data} error={error} isLoading={isLoading} />
+    <>
+      <Header />
+      <div className="flex flex-col items-center">
+        <div className="flex justify-start container">
+          <div className="">
+            {/* <SearchBar onSearchChange={onSearchChange} /> */}
+            <SideBar
+              onCategoryChange={onCategoryChange}
+              onSortChange={onSortChange}
+              category={category}
+              sort={sort}
+              onSearchChange={onSearchChange}
+            />
           </div>
-          <div className="flex justify-center">
-            <Pagination currentPage={currentPage} onPageChange={onPageChange} data={data} />
+          <div className="flex flex-col w-full items-center">
+            <div className="flex flex-wrap justify-center w-full">
+              <ProductCard data={data} error={error} isLoading={isLoading} />
+            </div>
+            <div className="flex justify-center">
+              <Pagination currentPage={currentPage} onPageChange={onPageChange} data={data} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ export const productApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:8000/api/products',
   }),
+  tagTypes: ['Review'],
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: (args) => ({ url: '', params: queryString.stringify(args, { skipEmptyString: true }) }),
@@ -16,12 +17,24 @@ export const productApi = createApi({
     getProductById: builder.query({
       query: (productId) => ({ url: `/${productId}` }),
     }),
+    getReviewByProductId: builder.query({
+      query: (productId) => ({ url: `/${productId}/reviews` }),
+      providesTags: ['Review'],
+    }),
     addProduct: builder.mutation({
       query: (product) => ({
         url: '/',
         method: 'POST',
         body: product,
       }),
+    }),
+    addReviewByProductId: builder.mutation({
+      query: (review) => ({
+        url: `/${review.productId}/review`,
+        method: 'POST',
+        body: review,
+      }),
+      invalidatesTags: ['Review'],
     }),
   }),
 });
@@ -31,5 +44,7 @@ export const {
   useLazyGetProductsQuery,
   useGetCategoriesQuery,
   useGetProductByIdQuery,
+  useGetReviewByProductIdQuery,
   useAddProductMutation,
+  useAddReviewByProductIdMutation,
 } = productApi;

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { useGetCategoriesQuery } from '../services/products';
+import SearchBar from './SearchBar';
 
-const SideBar = ({ onCategoryChange, onSortChange, sort, category }) => {
+const SideBar = ({ onCategoryChange, onSortChange, sort, category, onSearchChange }) => {
   const { data, error, isLoading } = useGetCategoriesQuery();
 
   let categoryRadioButtons;
@@ -24,6 +25,9 @@ const SideBar = ({ onCategoryChange, onSortChange, sort, category }) => {
   return (
     <div className="h-full w-64 border">
       <div className="">
+        <div>
+          <SearchBar onSearchChange={onSearchChange} />
+        </div>
         {/* SORT SECTION */}
         <div className="p-5 border-b">
           <div className="font-semibold">Sort By</div>
@@ -84,7 +88,7 @@ const SideBar = ({ onCategoryChange, onSortChange, sort, category }) => {
             </div>
           </div>
         </div>
-        {/* SORT SECTION */}
+        {/* Category Section */}
         <div className="p-5">
           <div className="font-semibold py-3">Category</div>
           <div className="flex flex-col" onChange={onCategoryChange}>

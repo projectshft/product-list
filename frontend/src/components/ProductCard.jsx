@@ -15,7 +15,7 @@ const ProductCard = ({ data, isLoading, error }) => {
       <Link
         to={`/products/${product._id}`}
         key={product._id}
-        className="flex flex-col w-96 h-96 p-2 m-3 justify-center items-center border shadow rounded-md"
+        className="flex flex-col w-80 h-96 p-2 mx-3 mb-3 justify-center items-center border "
       >
         <img src={product.image} alt="product" />
         <div>{product.name}</div>

@@ -8,6 +8,7 @@ const {
   deleteProduct,
   createRandomData,
   getAllCategories,
+  deleteAllProducts,
 } = require('../controllers/productsController');
 
 const router = express.Router();
@@ -22,18 +23,20 @@ router.get('/', getAllProducts);
 router.get('/categories', getAllCategories);
 
 // GET Specific Product
-router.get('/:product', getProduct);
+router.get('/:productId', getProduct);
 
 // GET all reviews for specific product
-router.get('/:product/reviews', getReviewsForProduct);
+router.get('/:productId/reviews', getReviewsForProduct);
 
 // POST a new product
 router.post('/', createNewProduct);
 
 // POST a new review to a specific product
-router.post('/:product/reviews', createNewReviewForProduct);
+router.post('/:productId/review', createNewReviewForProduct);
 
 // DELETE a product
-router.delete('/:product', deleteProduct);
+router.delete('/:productId', deleteProduct);
+
+router.delete('/delete', deleteAllProducts);
 
 module.exports = router;

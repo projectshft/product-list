@@ -38,10 +38,9 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="flex flex-col items-center">
-        <div className="flex justify-start container">
-          <div className="">
-            {/* <SearchBar onSearchChange={onSearchChange} /> */}
+      <div className="flex flex-col justify-center items-center w-screen">
+        <div className="flex justify-center w-full items-center border-b">
+          <div className="container">
             <SideBar
               onCategoryChange={onCategoryChange}
               onSortChange={onSortChange}
@@ -50,13 +49,14 @@ const Home = () => {
               onSearchChange={onSearchChange}
             />
           </div>
-          <div className="flex flex-col w-full items-center">
-            <div className="flex flex-wrap justify-center w-full">
-              <ProductCard data={data} error={error} isLoading={isLoading} />
-            </div>
-            <div className="flex justify-center">
-              <Pagination currentPage={currentPage} onPageChange={onPageChange} data={data} />
-            </div>
+        </div>
+
+        <div className="flex flex-col container items-center">
+          <div className="flex flex-wrap justify-center w-full flex-none p-4">
+            <ProductCard data={data} error={error} isLoading={isLoading} />
+          </div>
+          <div className="flex justify-center">
+            <Pagination currentPage={currentPage} onPageChange={onPageChange} data={data} />
           </div>
         </div>
       </div>

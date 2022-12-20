@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useState } from 'react';
 import * as Yup from 'yup';
+import Header from '../components/Header';
 import { useAddProductMutation } from '../services/products';
 
 const NewProduct = () => {
@@ -27,6 +28,7 @@ const NewProduct = () => {
 
   return (
     <>
+      <Header />
       <Formik
         initialValues={{
           name: '',
@@ -47,25 +49,49 @@ const NewProduct = () => {
           resetForm();
         }}
       >
-        <div className="flex justify-center items-center h-screen">
-          <Form className="flex flex-col w-96 p-5 bg-slate-200">
-            <label htmlFor="name">Product Name</label>
-            <Field name="name" type="text" />
-            <ErrorMessage name="name">{(msg) => <div className="text-red-500">{msg}</div>}</ErrorMessage>
+        <div className="flex justify-center">
+          <Form className="flex flex-col px-16 py-10 bg-stone-600">
+            <div className="flex justify-between my-6 relative">
+              <label className="mr-4 text-stone-50" htmlFor="name">
+                Product Name:
+              </label>
+              <Field className="pl-2" name="name" type="text" />
+              <ErrorMessage name="name">
+                {(msg) => <div className="text-red-500 absolute right-0 top-6">{msg}</div>}
+              </ErrorMessage>
+            </div>
 
-            <label htmlFor="category">Product Category</label>
-            <Field name="category" type="text" />
-            <ErrorMessage name="category">{(msg) => <div className="text-red-500">{msg}</div>}</ErrorMessage>
+            <div className="flex justify-between my-6 relative">
+              <label className="mr-4 text-stone-50" htmlFor="category">
+                Product Category:
+              </label>
+              <Field className="pl-2" name="category" type="text" />
+              <ErrorMessage name="category">
+                {(msg) => <div className="text-red-500 absolute right-0 top-6">{msg}</div>}
+              </ErrorMessage>
+            </div>
 
-            <label htmlFor="price">Product Price</label>
-            <Field name="price" type="number" />
-            <ErrorMessage name="price">{(msg) => <div className="text-red-500">{msg}</div>}</ErrorMessage>
+            <div className="flex justify-between my-6 relative">
+              <label className="mr-4 text-stone-50" htmlFor="price">
+                Product Price:
+              </label>
+              <Field className="pl-2" name="price" type="number" />
+              <ErrorMessage name="price">
+                {(msg) => <div className="text-red-500 absolute right-0 top-6">{msg}</div>}
+              </ErrorMessage>
+            </div>
 
-            <label htmlFor="image">Product Image</label>
-            <Field name="image" type="text" />
-            <ErrorMessage name="image">{(msg) => <div className="text-red-500">{msg}</div>}</ErrorMessage>
+            <div className="flex justify-between my-6 relative">
+              <label className="mr-4 text-stone-50" htmlFor="image">
+                Product Image:
+              </label>
+              <Field className="pl-2" name="image" type="text" />
+              <ErrorMessage name="image">
+                {(msg) => <div className="text-red-500 absolute right-0 top-6">{msg}</div>}
+              </ErrorMessage>
+            </div>
 
-            <button className="w-full bg-green-400 py-1 text-white mt-5" type="submit">
+            <button className="w-full bg-stone-200 py-1 text-stone-900 mt-5" type="submit">
               Add New Product
             </button>
           </Form>

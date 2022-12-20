@@ -4,35 +4,50 @@ import queryString from 'query-string';
 export const productApi = createApi({
   reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/products',
+    baseUrl: 'http://localhost:8000/api',
   }),
   tagTypes: ['Review'],
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: (args) => ({ url: '', params: queryString.stringify(args, { skipEmptyString: true }) }),
+      query: (args) => ({ url: '/products', params: queryString.stringify(args, { skipEmptyString: true }) }),
     }),
     getCategories: builder.query({
-      query: () => ({ url: '/categories' }),
+      query: () => ({ url: '/products/categories' }),
     }),
     getProductById: builder.query({
-      query: (productId) => ({ url: `/${productId}` }),
+      query: (productId) => ({ url: `/products/${productId}` }),
     }),
     getReviewByProductId: builder.query({
-      query: (productId) => ({ url: `/${productId}/reviews` }),
+      query: (productId) => ({ url: `/products/${productId}/reviews` }),
       providesTags: ['Review'],
     }),
     addProduct: builder.mutation({
       query: (product) => ({
-        url: '/',
+        url: '/products',
         method: 'POST',
         body: product,
       }),
     }),
     addReviewByProductId: builder.mutation({
       query: (review) => ({
-        url: `/${review.productId}/review`,
+        url: `/products/${review.productId}/review`,
         method: 'POST',
         body: review,
+      }),
+      invalidatesTags: ['Review'],
+    }),
+    deleteProductById: builder.mutation({
+      query: (productId) => ({
+        url: `products/${productId}`,
+        method: 'DELETE',
+        body: { productId },
+      }),
+    }),
+    deleteReviewById: builder.mutation({
+      query: (reviewId) => ({
+        url: `/reviews/${reviewId}`,
+        method: 'DELETE',
+        body: { reviewId },
       }),
       invalidatesTags: ['Review'],
     }),
@@ -47,4 +62,6 @@ export const {
   useGetReviewByProductIdQuery,
   useAddProductMutation,
   useAddReviewByProductIdMutation,
+  useDeleteProductByIdMutation,
+  useDeleteReviewByIdMutation,
 } = productApi;

@@ -8,7 +8,6 @@ import NewProduct from './pages/NewProduct';
 import Product from './pages/Product';
 import './index.css';
 import { store } from './store';
-import FormSuccess from './pages/FormSuccess';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,7 +15,6 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="/new-product">
         <Route index element={<NewProduct />} />
-        <Route path="/new-product/success" element={<FormSuccess />} />
       </Route>
       <Route path="/products/:productId" element={<Product />} />
     </Route>

@@ -10,24 +10,28 @@ const ProductCard = ({ data, isLoading, error }) => {
     return <div>Loading...</div>;
   }
   if (data) {
-    console.log(data);
     return data.products.map((product) => (
       <Link
         to={`/products/${product._id}`}
         key={product._id}
-        className="flex flex-col w-80 h-96 p-2 mx-3 mb-3 justify-center items-center border "
+        className="flex flex-col basis-1/3 flex-none p-2 mb-5 justify-center items-center border border-white hover:border hover:border-stone-200 transition ease-in-out duration-300 hover:scale-105 hover:shadow-sm"
       >
-        <img src={product.image} alt="product" />
-        <div>{product.name}</div>
-        <div>{product.category}</div>
         <div>
-          {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            currencyDisplay: 'narrowSymbol',
-          }).format(product.price)}
+          <img className="object-contain w-80 h-80" src={product.image} alt="product" />
+          <div className="flex text-sm font-light justify-between w-full">
+            <div className="flex flex-col">
+              <div>{product.name}</div>
+              <div>{product.category}</div>
+            </div>
+            <div>
+              {new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                currencyDisplay: 'narrowSymbol',
+              }).format(product.price)}
+            </div>
+          </div>
         </div>
-        <ReviewSnippet />
       </Link>
     ));
   }

@@ -96,7 +96,10 @@ const getReviewsForProduct = async (req, res) => {
     res.status(404).json({ error: 'Product Does Not Exist' });
   }
 
-  const reviews = await Product.findById(productId).populate({ path: 'reviews', perDocumentLimit: 4 });
+  const reviews = await Product.findById(productId).populate({
+    path: 'reviews',
+    perDocumentLimit: 4,
+  });
   if (!reviews) {
     res.status(404).json({ message: 'No Reviews' });
   }
@@ -134,8 +137,20 @@ const createNewReviewForProduct = async (req, res) => {
 };
 
 // delete a product
-const deleteProduct = async (req, res) => {
-  res.json({ message: 'Delete Product' });
+const deleteProduct = async (req, res, next) => {
+  const { productId } = req.body;
+
+  try {
+    const deletedProduct = await Product.deleteOne({ _id: productId });
+    if (deletedProduct.deletedCount === 0) {
+      res.status(400).json({ message: 'No Product Found to Delete' });
+    } else {
+      res.status(200).send({ 'Product Deleted': productId });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err });
+  }
 };
 
 // create random data

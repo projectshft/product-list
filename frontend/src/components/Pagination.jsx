@@ -33,7 +33,7 @@ const Pagination = ({ data, currentPage, onPageChange }) => {
 
   return (
     <ul className="flex">
-      <li className="px-2" onClick={onPrevious}>
+      <li className="px-2 hover:bg-slate-200 rounded-full cursor-pointer select-none" onClick={onPrevious}>
         {'<'}
       </li>
       {paginationRange.map((pageNumber, idx) => {
@@ -45,12 +45,16 @@ const Pagination = ({ data, currentPage, onPageChange }) => {
           );
         }
         return (
-          <li key={idx} className="px-2" onClick={() => onPageChange(pageNumber)}>
+          <li
+            key={idx}
+            className="px-2 hover:bg-slate-200 rounded-full cursor-pointer select-none"
+            onClick={() => onPageChange(pageNumber)}
+          >
             {pageNumber}
           </li>
         );
       })}
-      <li className="px-2" onClick={onNext}>
+      <li className="px-2 hover:bg-slate-200 rounded-full cursor-pointer select-none" onClick={onNext}>
         {'>'}
       </li>
     </ul>
@@ -60,6 +64,7 @@ const Pagination = ({ data, currentPage, onPageChange }) => {
 Pagination.propTypes = {
   currentPage: PropTypes.number,
   onPageChange: PropTypes.func,
+  data: PropTypes.object,
 };
 
 export default Pagination;

@@ -2,104 +2,49 @@ import PropTypes from 'prop-types';
 import { useGetCategoriesQuery } from '../services/products';
 import SearchBar from './SearchBar';
 
-const SideBar = ({ onCategoryChange, onSortChange, sort, category, onSearchChange }) => {
+const SideBar = ({ onCategoryChange, onSortChange, category, onSearchChange }) => {
   const { data, error, isLoading } = useGetCategoriesQuery();
 
-  let categoryRadioButtons;
+  let categoryOptions;
 
   if (error) {
-    categoryRadioButtons = <div>Error...</div>;
+    categoryOptions = <div>Error...</div>;
   } else if (isLoading) {
-    categoryRadioButtons = <div>Loading...</div>;
+    categoryOptions = <div>Loading...</div>;
   } else if (data) {
-    categoryRadioButtons = data.map((categoryElement) => (
-      <div key={categoryElement} className="flex">
-        <input type="radio" value={categoryElement} name="category" id={categoryElement} />
-        <label className="ml-3" htmlFor={categoryElement}>
-          {categoryElement}
-        </label>
-      </div>
-    ));
+    categoryOptions = data.map((option, idx) => {
+      if (idx === 0) {
+        return <option value="">All</option>;
+      }
+      return (
+        <option value={option} name={category} id={option}>
+          {option}
+        </option>
+      );
+    });
   }
 
   return (
-    <div className="h-full w-64 border">
-      <div className="">
-        <div>
-          <SearchBar onSearchChange={onSearchChange} />
-        </div>
-        {/* SORT SECTION */}
-        <div className="p-5 border-b">
-          <div className="font-semibold">Sort By</div>
-          <div className="flex flex-col" onChange={onSortChange}>
-            <div className="flex">
-              <input type="radio" value="" name="sort" id="featured" defaultChecked={sort === ''} />
-              <label className="pl-3" htmlFor="featured">
-                Featured
-              </label>
-            </div>
-            <div className="flex">
-              <input
-                type="radio"
-                value="nameAscending"
-                name="sort"
-                id="nameAscending"
-                defaultChecked={sort === 'nameAscending'}
-              />
-              <label className="pl-3" htmlFor="nameAscending">
-                Name: Ascending
-              </label>
-            </div>
-            <div className="flex">
-              <input
-                type="radio"
-                value="nameDescending"
-                name="sort"
-                id="nameDescending"
-                defaultChecked={sort === 'nameDescending'}
-              />
-              <label className="pl-3" htmlFor="nameDescending">
-                Name: Descending
-              </label>
-            </div>
-            <div className="flex">
-              <input
-                type="radio"
-                value="priceLowest"
-                name="sort"
-                id="priceLowest"
-                defaultChecked={sort === 'priceLowest'}
-              />
-              <label className="pl-3" htmlFor="priceLowest">
-                Price: Lowest
-              </label>
-            </div>
-            <div className="flex">
-              <input
-                type="radio"
-                value="priceHighest"
-                name="sort"
-                id="priceHighest"
-                defaultChecked={sort === 'priceHighest'}
-              />
-              <label className="pl-3" htmlFor="priceHighest">
-                Price: Highest
-              </label>
-            </div>
-          </div>
+    <div className="flex items-center justify-center mb-4">
+      <SearchBar onSearchChange={onSearchChange} />
+      {/* SORT SECTION */}
+      <div className="flex items-center">
+        <div className=" flex items-center">
+          <div className="mx-2">Sort By:</div>
+          <select className="border px-2 py-1" name="sort" id="sort" onChange={onSortChange}>
+            <option value="">Featured</option>
+            <option value="nameAscending">Name A-Z</option>
+            <option value="nameDescending">Name Z-A</option>
+            <option value="priceLowest">Price Low to High</option>
+            <option value="priceHighest">Price High to Low</option>
+          </select>
         </div>
         {/* Category Section */}
-        <div className="p-5">
-          <div className="font-semibold py-3">Category</div>
-          <div className="flex flex-col" onChange={onCategoryChange}>
-            <div className="flex">
-              <input type="radio" value="" name="category" id="all" defaultChecked={category === ''} />
-              <label className="pl-3" htmlFor="all">
-                All
-              </label>
-            </div>
-            {categoryRadioButtons}
-          </div>
+        <div className="flex items-center">
+          <div className="mx-2">Category:</div>
+          <select className="border px-2 py-1" name="category" id="category" onChange={onCategoryChange}>
+            {categoryOptions}
+          </select>
         </div>
       </div>
     </div>
@@ -109,7 +54,7 @@ const SideBar = ({ onCategoryChange, onSortChange, sort, category, onSearchChang
 SideBar.propTypes = {
   onCategoryChange: PropTypes.func,
   onSortChange: PropTypes.func,
-  sort: PropTypes.string,
+  onSearchChange: PropTypes.func,
   category: PropTypes.string,
 };
 

@@ -4,6 +4,6 @@ const { deleteReview } = require('../controllers/reviewsController');
 const router = express.Router();
 
 // DELETE a review by id
-router.get('/:review', deleteReview);
+router.delete('/:reviewId', deleteReview);
 
 module.exports = router;

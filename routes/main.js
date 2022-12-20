@@ -54,14 +54,14 @@ router.get("/products", (req, res, next) => {
   const item = req.query.item;
 
   let query = {};
-  if (category) {
+  if (category && category !== 'default') {
     query.category = category;
   }
 
   let sortOptions = {};
-  if (sort === "price-high-to-low") {
+  if (sort === "highToLow") {
     sortOptions.price = -1;
-  } else if (sort === "price-low-to-high") {
+  } else if (sort === "lowToHigh") {
     sortOptions.price = 1;
   }
 
@@ -77,7 +77,7 @@ router.get("/products", (req, res, next) => {
     
       Product.count(query).exec((err, count) => {
         if (err) return next(err);
-        res.send(products);
+        res.send({ products, total: count});
       });
     });
 });

@@ -1,0 +1,60 @@
+.flex-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 100px 200px 200px 200px;
+
+}
+
+.flex-item {
+  display: inline-flex;
+  position: relative;
+  flex-direction: column;
+  margin: 10px;
+  padding: 10px;
+  background-color: moccasin;
+  border-radius: 5px;
+}
+
+.item-price {
+  right: 5%;
+  position: absolute;
+  font-size: 20px;
+}
+
+.searchbar-header{
+ display: inline-flex;
+ flex-direction: row;
+}
+
+.pagination-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: -100px;
+}
+
+.page-number-button {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.current {
+  font-weight: bold;
+  color: blue;
+}
+
+.total-results {
+  position: absolute;
+  left: 200px;
+  margin-top: 30px;
+}
+
+.clear-search-results {
+  position: relative;
+  left: 200px;
+}
+
+.search-bar-button {
+  background-color: lightgrey !important;
+
+}

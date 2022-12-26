@@ -75,7 +75,7 @@ router.get("/products", (req, res, next) => {
   let criteria = 1;
 
   if (price) {
-    if (price === "highest") {
+    if (price === "Highest") {
       criteria = -1;
     }
   }

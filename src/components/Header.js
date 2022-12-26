@@ -1,54 +1,42 @@
-import React from 'react'
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
+import React from "react";
+import Form from "react-bootstrap/Form";
 
-const Header = () => {
-  const handleSearch = (event) => {
-    let query = event.target.query.value
-    let category = event.target.category.value;
-    let price = event.target.price.value;
-    console.log(query, category, price)
-  }
+const Header = ({handleSearch}) => {
+
+
+
+  ///////update store
 
   return (
-    <form
-      className="search-header"
-      action=""
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          handleSearch(e);
-        }
-      }}
-    >
+    <form className="search-header" action="" onSubmit={(e) => handleSearch(e)}>
       <input
         type="text"
         className="search-block"
         name="query"
         placeholder="Search Products..."
       />
-
-      <DropdownButton
-        id="dropdown-basic-button"
+      <Form.Select
+        aria-label="Default select example"
         className="dropdown-block"
         name="category"
-        title="Sort by Category"
       >
-        <Dropdown.Item href="#/action-1">Outdoors</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Home</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Shoes</Dropdown.Item>
-      </DropdownButton>
-      <DropdownButton
-        id="dropdown-basic-button"
+        <option value="none">Sort by Category</option>
+        <option>Tools</option>
+        <option>Health</option>
+        <option>Outdoors</option>
+      </Form.Select>
+      <Form.Select
+        aria-label="Default select example"
         className="dropdown-block"
         name="price"
-        title="Sort by Price"
       >
-        <Dropdown.Item href="#/action-1">Highest to Lowest</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Lowest to Highest</Dropdown.Item>
-      </DropdownButton>
-      <input type="submit" />
+        <option value="none">Sort by Price</option>
+        <option>Highest</option>
+        <option>Lowest</option>
+      </Form.Select>
+      <input type="submit" value="Search" />
     </form>
   );
-}
+};
 
-export default Header
+export default Header;

@@ -1,30 +1,28 @@
 import React from "react";
 import Product from "./Product";
-import { useState, useEffect } from "react";
 
-const List = () => {
-  const [logs, setLogs] = useState([]);
+const List = ({items}) => {
 
-  const fetchLogs = async () => {
-    const res = await fetch("http://localhost:8000/products");
-    const data = await res.json();
+  // const fetchLogs = async () => {
+  //   const res = await fetch("http://localhost:8000/products");
+  //   const data = await res.json();
 
-    return data;
-  };
+  //   return data;
+  // };
 
-  useEffect(() => {
-    const getLogs = async () => {
-      const logsFromServer = await fetchLogs();
-      setLogs(logsFromServer);
-    };
+  // useEffect(() => {
+  //   const getLogs = async () => {
+  //     const logsFromServer = await fetchLogs();
+  //     setLogs(logsFromServer);
+  //   };
 
-    getLogs();
-  }, [logs]);
+  //   getLogs();
+  // }, [logs]);
 
   return (
     <div className="grid-container">
-      {logs.map((log) => (
-        <Product key={log.id} log={log} />
+      {items.map((item) => (
+        <Product item={item} />
       ))}
     </div>
   );

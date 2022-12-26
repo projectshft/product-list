@@ -45,15 +45,14 @@
 
 .search-block {
   width: 500px;
-  display: flex;
   flex-direction: column;
   margin: 0px 20px;
 }
 
 .dropdown-block {
-  display: flex;
   flex-direction: column;
   margin: 0px 10px;
+  width: 200px !important;
 }
 
 .grid-container {
@@ -61,11 +60,10 @@
   grid-template-columns: repeat(3, 300px);
   grid-auto-rows: 400px;
   grid-gap: 100px;
-  justify-content: center;
-  align-content: center;
   height: 100vh;
-  margin-top: 300px;
-  margin-bottom: 500px;
+  justify-content: center;
+  margin-top: 100px;
+  margin-bottom: 700px;
 }
 
 .price {

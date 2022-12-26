@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 
-const Product = ({ log }) => {
+const Product = ({ item }) => {
   return (
     <div className="grid-item">
       <Card style={{ width: "18rem" }}>
@@ -9,17 +9,17 @@ const Product = ({ log }) => {
           <Card.Title>
             <div className="card-title">
               <div className="category">
-                Category: <strong>{log.category}</strong>
+                Category: <strong>{item.category}</strong>
               </div>
               <div className="price">
-                <strong>{log.price}</strong>
+                <strong>{item.price}</strong>
               </div>
             </div>
           </Card.Title>
-          <Card.Img variant="top" src={log.image} />
+          <Card.Img variant="top" src={item.image} />
           <Card.Title>
             <div className="product-name">
-              <strong>{log.name}</strong>
+              <strong>{item.name}</strong>
             </div>
           </Card.Title>
         </Card.Body>

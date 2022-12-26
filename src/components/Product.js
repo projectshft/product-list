@@ -1,32 +1,31 @@
-import React from 'react'
+import React from "react";
 import Card from "react-bootstrap/Card";
 
-const Product = () => {
+const Product = ({ log }) => {
   return (
-    <Card style={{ width: "18rem" }}>
-      <Card.Body>
-        <Card.Title>
-          <div className="card-title">
-            <div className="category">
-              Category: <strong>Shoes</strong>
+    <div className="grid-item">
+      <Card style={{ width: "18rem" }}>
+        <Card.Body>
+          <Card.Title>
+            <div className="card-title">
+              <div className="category">
+                Category: <strong>{log.category}</strong>
+              </div>
+              <div className="price">
+                <strong>{log.price}</strong>
+              </div>
             </div>
-            <div className="price">
-              <strong>791</strong>
+          </Card.Title>
+          <Card.Img variant="top" src={log.image} />
+          <Card.Title>
+            <div className="product-name">
+              <strong>{log.name}</strong>
             </div>
-          </div>
-        </Card.Title>
-        <Card.Img
-          variant="top"
-          src="https://via.placeholder.com/250?text=Product+Image"
-        />
-        <Card.Title>
-          <div className="product-name">
-            <strong>Concrete Garden Shoe</strong>
-          </div>
-        </Card.Title>
-      </Card.Body>
-    </Card>
+          </Card.Title>
+        </Card.Body>
+      </Card>
+    </div>
   );
-}
+};
 
-export default Product
+export default Product;

@@ -55,3 +55,33 @@
   flex-direction: column;
   margin: 0px 10px;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  grid-auto-rows: 400px;
+  grid-gap: 100px;
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
+  margin-top: 300px;
+  margin-bottom: 500px;
+}
+
+.price {
+  font-size: 30px;
+}
+
+.category {
+  font-size: 16px;
+}
+
+.card-title {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.product-name {
+  font-size: 30px;
+}

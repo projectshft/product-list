@@ -90,3 +90,27 @@ describe("Products", () => {
     });
   });
 });
+
+// class ProductRepository {
+//   findById(id) {}
+
+//   set(id, value) {}
+// }
+// class Store {
+//   constructor(productRepository, reviewRepository) {
+//     this.productRepository = productRepository;
+//     this.reviewRepository = reviewRepository;
+//   }
+//   addProduct(id, product) {
+//     this.productRepository.set(id, product);
+//   }
+//   addReview() {}
+
+//   removeProduct() {}
+
+//   removeReview() {}
+
+//   listProducts() {}
+
+//   listReviews() {}
+// }

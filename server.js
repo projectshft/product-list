@@ -35,4 +35,4 @@ let server = app.listen(8000, () => {
   console.log("Node.js listening on port " + 8000);
 });
 
-module.exports = server
+module.exports = server;

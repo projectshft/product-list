@@ -1,30 +1,17 @@
 import React from "react";
 import Product from "./Product";
+import Pages from "./Pages";
 
-const List = ({items}) => {
-
-  // const fetchLogs = async () => {
-  //   const res = await fetch("http://localhost:8000/products");
-  //   const data = await res.json();
-
-  //   return data;
-  // };
-
-  // useEffect(() => {
-  //   const getLogs = async () => {
-  //     const logsFromServer = await fetchLogs();
-  //     setLogs(logsFromServer);
-  //   };
-
-  //   getLogs();
-  // }, [logs]);
-
+const List = ({ items, count, fetchLogs, queryParams }) => {
   return (
-    <div className="grid-container">
-      {items.map((item) => (
-        <Product item={item} />
-      ))}
-    </div>
+    <>
+      <div className="grid-container">
+        {items.map((item) => (
+          <Product item={item} />
+        ))}
+      </div>
+      <Pages count={count} fetchLogs={fetchLogs} queryParams={queryParams} />
+    </>
   );
 };
 

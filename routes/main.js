@@ -1,59 +1,23 @@
 const router = require("express").Router();
-// const faker = require("faker");
+const faker = require("faker");
 const Product = require("../models/product.js");
 
+router.get("/generate-fake-data", (req, res) => {
+  for (let i = 0; i < 90; i++) {
+    let product = new Product();
 
-// class ProductRepository {
-//   findById(id) {}
+    product.category = faker.commerce.department();
+    product.name = faker.commerce.productName();
+    product.price = faker.commerce.price();
+    product.image = "https://via.placeholder.com/250?text=Product+Image";
+    product.reviews = [];
 
-//   set(id, value) {}
-// }
-// class Store {
-//   constructor(productRepository, reviewRepository) {
-//     this.productRepository = productRepository;
-//     this.reviewRepository = reviewRepository;
-//   }
-//   addProduct(id, product) {
-//     this.productRepository.set(id, product);
-//   }
-//   addReview() {}
-
-//   removeProduct() {}
-
-//   removeReview() {}
-
-//   listProducts() {}
-
-//   listReviews() {}
-// }
-
-// router.get("/generate-fake-data", (req, res) => {
-//   for (let i = 0; i < 90; i++) {
-//     let product = new Product();
-
-//     product.category = faker.commerce.department();
-//     product.name = faker.commerce.productName();
-//     product.price = faker.commerce.price();
-//     product.image = "https://via.placeholder.com/250?text=Product+Image";
-//     product.reviews = [];
-
-//     product.save((err) => {
-//       if (err) throw err;
-//     });
-//   }
-//   res.end();
-// });
-
-// router.get("/generate-fake-data", (req, res) => {
-//   Product.find({ name: "Unbranded Concrete Soap" }, (err, products) => {
-//     if (err) console.error(err);
-//     products[0].reviews.push({ userName: "boguta", text: "Comment 1" });
-//     products[0].reviews.push({ userName: "boguta", text: "Comment 2" });
-//     products[0].reviews.push({ userName: "boguta", text: "Comment 3" });
-//     products[0].reviews.push({ userName: "boguta", text: "Comment 4" });
-//     products[0].save();
-//   });
-// });
+    product.save((err) => {
+      if (err) throw err;
+    });
+  }
+  res.end();
+});
 
 router.get("/products", (req, res, next) => {
   const perPage = 9;
@@ -85,12 +49,13 @@ router.get("/products", (req, res, next) => {
     .limit(perPage)
     .sort({ price: criteria })
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
+      Product.find(filter)
+        .countDocuments()
+        .exec((err, count) => {
+          if (err) return next(err);
 
-        res.send(products);
-      });
+          res.send({ products, count });
+        });
     });
 });
 
@@ -155,12 +120,12 @@ router.delete("/products/:productID", (req, res) => {
 
 router.delete("/products/:productID/reviews/:reviewID", (req, res) => {
   Product.update(
-    {id: req.params.productID},
+    { id: req.params.productID },
     { $pull: { reviews: { _id: req.params.reviewID } } },
     (err, review) => {
       if (err) {
         console.error(err);
-        return res.status(404).json({})
+        return res.status(404).json({});
       }
       res.send(review);
     }

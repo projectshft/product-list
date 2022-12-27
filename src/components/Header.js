@@ -1,11 +1,12 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 
-const Header = ({handleSearch}) => {
-
-
-
-  ///////update store
+const Header = ({ handleSearch, items }) => {
+  
+  let categories = items.reduce((acc, item) => { acc.push(item.category); return acc }, []);
+  let set = new Set(categories);
+  let arr = Array.from(set);
+  
 
   return (
     <form className="search-header" action="" onSubmit={(e) => handleSearch(e)}>
@@ -21,9 +22,9 @@ const Header = ({handleSearch}) => {
         name="category"
       >
         <option value="none">Sort by Category</option>
-        <option>Tools</option>
-        <option>Health</option>
-        <option>Outdoors</option>
+        {arr.map((category) => (
+          <option>{category}</option>
+        ))}
       </Form.Select>
       <Form.Select
         aria-label="Default select example"

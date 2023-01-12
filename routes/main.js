@@ -36,20 +36,26 @@ router.get("/generate-fake-data", ( req, res, next ) => {
 ///GET products?page=3 when requested...need 
 //req._parsedUrl.page and parse int it to use for skip().limit()... 
 router.get("/products", ( req, res, next ) => {
-  //req.query.page or
-  //require("url").parse(req.url,true)
+  const categoryQued = req.query.category;
+  const upperCaseCategory = categoryQued.charAt(0).toUpperCase() + categoryQued.slice(1).toLowerCase();
   const pageNumber = req.query.page|| 1;
   const perPage = 9;
-
-  //if type mattered...
-  //const pageNumber = parseInt(parsedUrl.query.page);
   const toThisProduct = perPage * pageNumber - perPage;
-  Product.find()
+  if(!upperCaseCategory){
+    Product.find()
     .skip(toThisProduct)
     .limit(perPage)
     .exec((err,products) => {
       res.send(products);
     }); 
+  } else {
+    Product.find({category: upperCaseCategory})
+      .skip(toThisProduct)
+      .limit(perPage)
+      .exec((err,products) => {
+        res.send(products);
+      }); 
+  };
 })
 
 // Returns a specific product by Id

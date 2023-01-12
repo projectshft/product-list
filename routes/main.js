@@ -60,18 +60,36 @@ router.get("/products/:product", ( req, res, next ) => {
     .populate("reviews")
     .exec((err, p) =>{
       if(err) throw err;
-      res.send(p);
+      res.send(p[0]);
     });
 });
 
 // Returns ALL reviews for a product, but limited to 4 at a time. Retrieve out of products. Should pass in an optional page query parameter to paginate
 router.get("/products/:product/reviews", ( req, res, next ) => {
-  console.log(req);
+  const productId = req.params.product;
+  const pageNumber = req.query.page || 1;
+  const perPage = 9;
+
+  Product.find({_id: productId})
+    .populate("reviews")
+    .exec((err,p) => {
+      if(err) throw err;
+      res.send(p[0].reviews)
+    })
 })
 
 //creates a new product in the database
 router.post("/products/", ( req, res, next ) => {
-  
+  const newProduct = new Product ({
+    category: faker.commerce.department(),
+    name: faker.commerce.productName(),
+    price: faker.commerce.price(),
+    image: "https://via.placeholder.com/250?text=Product+Image",
+    reviews: []
+  })
+
+  newProduct.save();
+  res.end();
 })
 
 //Creates a new review in the database by adding it to the correct product's reviews array.

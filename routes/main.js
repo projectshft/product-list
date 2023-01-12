@@ -118,12 +118,20 @@ router.post("/products/:product/reviews", ( req, res, next ) => {
 
 // Deletes a product by id
 router.delete("/products/:product", ( req, res, next ) => {
-  
-})
+  const productId = req.params.product;
+  Product.findByIdAndDelete({_id: productId},(err, data) => {
+    if(err) throw err;
+    res.send(data);
+  });
+});
 
 // Deletes a review by id
 router.delete("/reviews/:review", ( req, res, next ) => {
-  
+  const reviewId = req.params.review;
+  Review.findByIdAndDelete({_id: reviewId},(err, data) => {
+    if(err) throw err;
+    res.send(data);
+  });
 })
 
 module.exports = router;

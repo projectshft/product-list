@@ -94,7 +94,26 @@ router.post("/products/", ( req, res, next ) => {
 
 //Creates a new review in the database by adding it to the correct product's reviews array.
 router.post("/products/:product/reviews", ( req, res, next ) => {
+  const productId = req.params.product;
+  let foundProduct = Product.find({_id: productId}).exec((err,data)=> {console.log(data)});
   
+  let newReview = new Review({
+    userName: "newComment",
+    text: "newComment",
+    product: []
+  });
+
+  Product.findOne({_id: productId}, (err,data)=> {
+    console.log(data)
+    newReview.product.push(data);
+    newReview.save();
+  });
+
+  Product
+    .updateOne({_id: productId}, {$push: {reviews: newReview}},(err, data) => {
+      console.log(data);
+      res.end();
+    })
 })
 
 // Deletes a product by id

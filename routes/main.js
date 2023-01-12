@@ -37,6 +37,34 @@ router.get("/products", ( req, res, next ) => {
     }); 
 })
 
-const url = "http://localhost:8000/products";
+// Returns a specific product by Id
+router.get("/products/:product", ( req, res, next ) => {
+
+})
+
+// Returns ALL reviews for a product, but limited to 4 at a time. Retrieve out of products. Should pass in an optional page query parameter to paginate
+router.get("/products/:product/reviews", ( req, res, next ) => {
+  
+})
+
+//creates a new product in the database
+router.post("/products/", ( req, res, next ) => {
+  
+})
+
+//Creates a new review in the database by adding it to the correct product's reviews array.
+router.post("/products/:product/reviews", ( req, res, next ) => {
+  
+})
+
+// Deletes a product by id
+router.delete("/products/:product", ( req, res, next ) => {
+  
+})
+
+// Deletes a review by id
+router.delete("/reviews/:review", ( req, res, next ) => {
+  
+})
 
 module.exports = router;

@@ -1,17 +1,18 @@
 const router = require("express").Router();
 const {faker} = require("@faker-js/faker");
-const Products = require("../models/products");
+const MyProducts = require("../models/myProducts");
+const Reviews = require('../models/reviews')
 
 // router.get("/generate-fake-data", (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
-//     let products = new Products();
+//     let myProducts = new MyProducts();
 
-//     products.category = faker.commerce.department();
-//     products.name = faker.commerce.productName();
-//     products.price = faker.commerce.price();
-//     products.image = "https://via.placeholder.com/250?text=Product+Image";
+//     myProducts.category = faker.commerce.department();
+//     myProducts.name = faker.commerce.productName();
+//     myProducts.price = faker.commerce.price();
+//     myProducts.image = "https://via.placeholder.com/250?text=Product+Image";
 
-//     products.save((err) => {
+//     myProducts.save((err) => {
 //       if (err) throw err;
 //     });
 //   }
@@ -24,17 +25,17 @@ router.get("/myProducts", (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1;
 
-  Products.find({})
+  MyProducts.find({})
     .skip(perPage * page - perPage)
     .limit(perPage)
-    .exec((err, products) => {
+    .exec((err, myProducts) => {
       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Products.count().exec((err, count) => {
+      MyProducts.count().exec((err, count) => {
         if (err) return next(err);
 
-        res.send(products);
+        res.send(myProducts);
         });
-        console.log(products)
+        console.log(myProducts)
     });
 });
 

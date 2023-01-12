@@ -6,6 +6,14 @@ const ProductSchema = new Schema({
   name: String,
   price: Number,
   image: String,
+  reviews: [{type: Schema.Types.ObjectId, ref: "Review"}]
 });
 
-module.exports = mongoose.model("Product", ProductSchema)
+const ReviewSchema = new Schema({
+  userName: String,
+  text: String,
+  product: [{type: Schema.Types.ObjectId, ref: "Product"}],
+})
+
+
+module.exports = {Product: mongoose.model("Product", ProductSchema), Review: mongoose.model("Review", ReviewSchema)};

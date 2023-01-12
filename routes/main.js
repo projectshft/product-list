@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const faker = require("faker");
-const Product = require("../models/product");
+const {Product, Review} = require("../models/product");
+
 
 router.get("/generate-fake-data", ( req, res, next ) => {
   for(let i = 0; i < 90; i++) {
@@ -10,11 +11,25 @@ router.get("/generate-fake-data", ( req, res, next ) => {
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image"
+    product.reviews = [];
 
+    let review = new Review();
+    review.userName = faker.internet.userName();
+    review.text = faker.lorem.text();
+    review.product = [];
+
+    product.reviews.push(review);
+    review.product.push(product);
+
+    review.save((err) => {
+      if (err) throw err;
+    });
     product.save((err) => {
       if (err) throw err;
     });
   }
+  Product.updateMany()
+
   res.end();
 });
 
@@ -39,12 +54,19 @@ router.get("/products", ( req, res, next ) => {
 
 // Returns a specific product by Id
 router.get("/products/:product", ( req, res, next ) => {
-
-})
+  const productId = req.params.product;
+  
+  Product.find({_id: productId})
+    .populate("reviews")
+    .exec((err, p) =>{
+      if(err) throw err;
+      res.send(p);
+    });
+});
 
 // Returns ALL reviews for a product, but limited to 4 at a time. Retrieve out of products. Should pass in an optional page query parameter to paginate
 router.get("/products/:product/reviews", ( req, res, next ) => {
-  
+  console.log(req);
 })
 
 //creates a new product in the database

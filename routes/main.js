@@ -49,9 +49,29 @@ router.get("/products", ( req, res, next ) => {
   const pageNumber = req.query.page|| 1;
   const perPage = 9;
   const toThisProduct = perPage * pageNumber - perPage;
+
   //go back and figure out the $or operator is used to shorten this******************
-  
-  if(!_category){
+  if(!query && !_category){
+    Product.find()
+    .skip(toThisProduct)
+    .limit(perPage)
+    .sort({price: sortOrder(price)})
+    .exec((err,products) => {
+      res.send(products)
+      res.end()
+    }); 
+  }
+  else if(!query){
+    Product.find({category: _category})
+    .skip(toThisProduct)
+    .limit(perPage)
+    .sort({price: sortOrder(price)})
+    .exec((err,products) => {
+      res.send(products)
+      res.end()
+    }); 
+  }
+  else if(!_category){
     Product.find({$text:{$search: query, $caseSensitive: false}})
     .skip(toThisProduct)
     .limit(perPage)
@@ -60,16 +80,16 @@ router.get("/products", ( req, res, next ) => {
       res.send(products)
       res.end()
     }); 
-  };
-
-  Product.find({$text:{$search: query, $caseSensitive: false}, category: _category})
-  .skip(toThisProduct)
-  .limit(perPage)
-  .sort({price: sortOrder(price)})
-  .exec((err,products) => {
-    res.send(products)
-    res.end();
-  });
+  } else{
+    Product.find({$text:{$search: query, $caseSensitive: false}, category: _category})
+    .skip(toThisProduct)
+    .limit(perPage)
+    .sort({price: sortOrder(price)})
+    .exec((err,products) => {
+      res.send(products)
+      res.end();
+    });
+  }
 });
 
 // Returns a specific product by Id

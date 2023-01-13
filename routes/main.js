@@ -28,35 +28,47 @@ router.get("/generate-fake-data", ( req, res, next ) => {
       if (err) throw err;
     });
   }
-  Product.updateMany()
-
   res.end();
 });
 
+
+
 ///GET products?page=3 when requested...need 
 //req._parsedUrl.page and parse int it to use for skip().limit()... 
+//optional queries: categories, price, and page
 router.get("/products", ( req, res, next ) => {
-  const categoryQued = req.query.category;
-  const upperCaseCategory = categoryQued.charAt(0).toUpperCase() + categoryQued.slice(1).toLowerCase();
+  const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null;
+  const category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
+  const price = req.query.price ? req.query.price.toLowerCase() : "lowest";
+  const sortOrder = (_price = "lowest") => {
+    return _price === "highest"? "desc"
+          :_price === "lowest"? "asc"
+          :null;
+  }; 
+  
   const pageNumber = req.query.page|| 1;
   const perPage = 9;
   const toThisProduct = perPage * pageNumber - perPage;
-  if(!upperCaseCategory){
-    Product.find()
-    .skip(toThisProduct)
-    .limit(perPage)
-    .exec((err,products) => {
-      res.send(products);
-    }); 
-  } else {
-    Product.find({category: upperCaseCategory})
-      .skip(toThisProduct)
-      .limit(perPage)
-      .exec((err,products) => {
-        res.send(products);
-      }); 
-  };
-})
+  //go back and figure out the $or operator is used to shorten this******************
+  
+  Product.find({$text:{$search: query, $caseSensitive: false }})
+  .skip(toThisProduct)
+  .limit(perPage)
+  .sort({price: sortOrder(price)})
+  .exec((err,products) => {
+    res.send(products)
+  }) 
+
+  // Product.find()
+  // .or({category: category, $text:{$search: query}})
+  // .skip(toThisProduct)
+  // .limit(perPage)
+  // .sort({price: sortOrder(price)})
+  // .exec((err,products) => {
+  //   res.send(products);
+  // }); 
+
+});
 
 // Returns a specific product by Id
 router.get("/products/:product", ( req, res, next ) => {

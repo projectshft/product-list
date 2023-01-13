@@ -38,7 +38,7 @@ router.get("/generate-fake-data", ( req, res, next ) => {
 //optional queries: categories, price, and page
 router.get("/products", ( req, res, next ) => {
   const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null;
-  const category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
+  const _category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
   const price = req.query.price ? req.query.price.toLowerCase() : "lowest";
   const sortOrder = (_price = "lowest") => {
     return _price === "highest"? "desc"
@@ -51,23 +51,25 @@ router.get("/products", ( req, res, next ) => {
   const toThisProduct = perPage * pageNumber - perPage;
   //go back and figure out the $or operator is used to shorten this******************
   
-  Product.find({$text:{$search: query, $caseSensitive: false }})
+  if(!_category){
+    Product.find({$text:{$search: query, $caseSensitive: false}})
+    .skip(toThisProduct)
+    .limit(perPage)
+    .sort({price: sortOrder(price)})
+    .exec((err,products) => {
+      res.send(products)
+      res.end()
+    }); 
+  };
+
+  Product.find({$text:{$search: query, $caseSensitive: false}, category: _category})
   .skip(toThisProduct)
   .limit(perPage)
   .sort({price: sortOrder(price)})
   .exec((err,products) => {
     res.send(products)
-  }) 
-
-  // Product.find()
-  // .or({category: category, $text:{$search: query}})
-  // .skip(toThisProduct)
-  // .limit(perPage)
-  // .sort({price: sortOrder(price)})
-  // .exec((err,products) => {
-  //   res.send(products);
-  // }); 
-
+    res.end();
+  });
 });
 
 // Returns a specific product by Id

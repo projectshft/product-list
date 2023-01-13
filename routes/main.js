@@ -44,13 +44,13 @@ router.get("/myProducts", (req, res, next) => {
 
 //CREATE NEW PRODUCT
 // router.post('/myProducts', (req, res) => {
-let newProduct = new MyProducts({
-  category: 'Health',
-  name: 'Cool Purple Medicine Ball',
-  price: 25,
-  image: 'https://via.placeholder.com/250?text=Product+Image',
-  reviews: [],
-})
+// let newProduct = new MyProducts({
+//   category: 'Health',
+//   name: 'Cool Purple Medicine Ball',
+//   price: 25,
+//   image: 'https://via.placeholder.com/250?text=Product+Image',
+//   reviews: [],
+// })
 // res.send((err, myProducts) => {
 //   if (err) throw err {
 
@@ -58,22 +58,25 @@ let newProduct = new MyProducts({
 // })
 
 
-let newProductReview = new Reviews({
-  userName: 'jillannette',
-  reviewText: 'Great medicine ball for the price!',
-  product: newProduct._id,
-});
+// let newProductReview = new Reviews({
+//   userName: 'jillannette',
+//   reviewText: 'Great medicine ball for the price!',
+//   product: newProduct._id,
+// });
 
 // newProduct.save();
 // newProductReview.save();
-newProduct.reviews.push(newProductReview);
-newProduct.save();
+// newProduct.reviews.push(newProductReview);
+// newProduct.save();
 
-MyProducts.findOne({ name: 'Cool Purple Medicine Ball' })
-.populate('reviews')
-.exec((err, myProducts) => {
-  console.log(myProducts);
-});
+// MyProducts.deleteOne({ _id: '63c16a28ab27e346bb0ac991' }, function (err) {
+//   if (err) console.log(err);
+//   console.log('Successfully deleted')
+// })
 
-//newProduct add, review added with newProduct object id
+// MyProducts.deleteOne({_id: '63c16a28ab27e346bb0ac990'}, function (err) {
+//   if (err) console.log(err);
+//   console.log('successfully deleted')
+// })
+
 module.exports = router;

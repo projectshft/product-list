@@ -1,0 +1,43 @@
+{
+  "name": "product-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/projectshft/product-list.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/projectshft/product-list/issues"
+  },
+  "homepage": "https://github.com/projectshft/product-list#readme",
+  "devDependencies": {
+    "@babel/core": "^7.20.5",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/preset-react": "^7.18.6",
+    "@types/node": "^18.11.15",
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
+    "concurrently": "^7.6.0",
+    "eslint": "^8.29.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-wesbos": "^3.1.4",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.1",
+    "typescript": "^4.9.4"
+  }
+}

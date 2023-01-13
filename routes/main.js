@@ -51,11 +51,14 @@ router.get("/myProducts", (req, res, next) => {
 //   image: 'https://via.placeholder.com/250?text=Product+Image',
 //   reviews: [],
 // })
-// res.send((err, myProducts) => {
-//   if (err) throw err {
-
-//   }
+// newProduct.save()
+// .then(product => {
+//   res.send('product saved to db');
 // })
+// .catch(err => {
+//   res.status(400).send('unale to save to database');
+// });
+// });
 
 
 // let newProductReview = new Reviews({

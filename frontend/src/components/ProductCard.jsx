@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import ReviewSnippet from './ReviewSnippet';
 
 const ProductCard = ({ data, isLoading, error }) => {
   if (error) {

@@ -14,7 +14,7 @@ export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentP
 
     const totalPageNumbers = siblingCount + 5;
 
-    // condition 1 - (see bottom)
+    // condition 1 - Total page count is less than the page pills we want to show. In such a case we just return the range from 1 to totalPageCount.
     if (totalPageNumbers >= totalPageCount) {
       return range(1, totalPageCount);
     }
@@ -28,7 +28,7 @@ export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentP
     const firstPageIndex = 1;
     const lastPageIndex = totalPageCount;
 
-    // condition 2 - (see bottom)
+    // condition 2 - Total page count is greater than the page pills but only the right DOTS are visible.
     if (!shouldShowLeftDots && shouldShowRightDots) {
       const leftItemCount = 3 + 2 * siblingCount;
       const leftRange = range(1, leftItemCount);
@@ -36,7 +36,7 @@ export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentP
       return [...leftRange, DOTS, totalPageCount];
     }
 
-    // condition 3 - (see below)
+    // condition 3 - Total page count is greater than the page pills but only the left DOTS are visible.
     if (shouldShowLeftDots && !shouldShowRightDots) {
       const rightItemCount = 3 + 2 * siblingCount;
       const rightRange = range(totalPageCount - rightItemCount + 1, totalPageCount);
@@ -44,7 +44,7 @@ export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentP
       return [firstPageIndex, DOTS, ...rightRange];
     }
 
-    // condition 4 - (see below)
+    // condition 4 - Total page count is greater than the page pills and both the left and the right DOTS are visible.
     if (shouldShowLeftDots && shouldShowRightDots) {
       const middleRange = range(leftSiblingIndex, rightSiblingIndex);
       return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
@@ -54,12 +54,4 @@ export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentP
   return paginationRange;
 };
 
-/* 
-Code inspired from https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/
-
-4 conditions:
-- Total page count is less than the page pills we want to show. In such a case we just return the range from 1 to totalPageCount.
-- Total page count is greater than the page pills but only the right DOTS are visible.
-- Total page count is greater than the page pills but only the left DOTS are visible.
-- Total page count is greater than the page pills and both the left and the right DOTS are visible.
-*/
+// Code inspired from https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/

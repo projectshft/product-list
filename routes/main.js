@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const MyProductsSchema = new Schema({
-  _id: Schema.Types.ObjectId,
   category: String,
   name: String,
   price: Number,
@@ -14,7 +13,6 @@ const MyProductsSchema = new Schema({
 });
 
 ReviewSchema = new Schema({
-  _id: Schema.Types.ObjectId,
   userName: String,
   reviewText: String,
   product: { type: Schema.Types.ObjectId, ref: 'MyProducts'}
@@ -64,14 +62,28 @@ router.get("/myProducts", (req, res, next) => {
 })
 
 //CREATE NEW PRODUCT = DONE
-router.post('/myProducts', (req, res) => {
+//router.post('/myProducts', (req, res) => {
 const newProduct = new MyProducts({
   category: 'Health',
   name: 'Cool Purple Medicine Ball',
   price: 25,
   image: 'https://via.placeholder.com/250?text=Product+Image',
   reviews: [],
+});
+//});
+//newProduct.save();
+
+const newProductReview = new Review({
+  userName: 'Jillannette',
+  reviewText: 'Awesome product for the price!',
+  product: newProduct._id
 })
+
+//newProductReview.save(); //Successfully saved newProductReview WITH newProduct _id in product field
+
+Review.findOneAndDelete({_id: '63c56cd68dcc1aa85172e2c7'}, (err, newProductReview) => {
+  if (err) console.log(err)
+  console.log(newProductReview)
 });
 
 // // newProduct.save()

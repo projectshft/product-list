@@ -5,21 +5,25 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const MyProductsSchema = new Schema({
+  _id: Schema.Types.ObjectId,
   category: String,
   name: String,
   price: Number,
   image: String,
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }]
 });
 
 ReviewSchema = new Schema({
+  _id: Schema.Types.ObjectId,
   userName: String,
   reviewText: String,
-  product: { type: mongoose.Schema.Types.ObjectId, ref: 'MyProducts'}
-})
+  product: { type: Schema.Types.ObjectId, ref: 'MyProducts'}
+});
 
 const MyProducts = mongoose.model('MyProducts', MyProductsSchema);
 const Review = mongoose.model('Review', ReviewSchema);
+
+
 
 //LOAD DB WITH FAKE DATA = DONE
 // router.get("/generate-fake-data", (req, res, next) => {
@@ -69,6 +73,7 @@ const newProduct = new MyProducts({
   reviews: [],
 })
 });
+
 // // newProduct.save()
 // // .then(product => {
 // //   res.send('product saved to db');
@@ -76,7 +81,38 @@ const newProduct = new MyProducts({
 // // .catch(err => {
 // //   res.status(400).send('unale to save to database');
 // // });
-// // });
+// });
+
+//Delete original product so can refactor population changes - successfully deleted newProduct
+// MyProducts.findOneAndDelete({ _id: '63c177565a5cbb2634522d50'}, (err, newProduct) => {
+//   if (err) console.log(err) 
+//   console.log(newProduct)
+// });
+
+//Delete original review so can refactor population changes - successfully deleted newProductReview
+// Review.findOneAndDelete({_id: '63c1d0e6e2159deef5255f51'}, (err, newProductReview) => {
+//   if (err) console.log(err)
+//   console.log(newProductReview)
+// });
+ 
+
+// router.get('myProducts/:product', (req, res) => {
+//   const product = req.query.product;
+//   cnsole.log(req.query.product);
+//   res.send('response send to client::'+req.query.product);
+// });
+
+//Create GET route for product by product ID
+
+// router.get('/myProducts/:product', (req, res) => {
+//   const { product } = req.params;
+//   const myProducts = myProducts.find(myProducts =>myProducts.id == product
+//);
+//   res.json(req.params);
+//   console.log(res.json)
+//   res.end();
+// });
+
 
 //Test finding product - product exists
 // MyProducts.findOne({ _id: '63c177565a5cbb2634522d50'}, function (err, doc) {
@@ -84,32 +120,38 @@ const newProduct = new MyProducts({
 // });
 
 // //CREATE PRODUCT REVIEW = DONE & VERIFIED IN MONGODB COMPASS
-router.post('/myProducts/:product/reviews', (req, res) => {
-const { product } = req.params;   
-const newProductReview = new Review({
-  userName: 'Jillannette',
-  reviewText: 'Awesome product!',
-  product: product._id
+// router.post('/myProducts/:product/reviews', (req, res) => {
+// const { product } = req.params;   
+// const newProductReview = new Review({
+//   userName: 'Jillannette',
+//   reviewText: 'Awesome product!',
+//   reviewedProduct: product._id
   
-})
-console.log(product._id)
+// })
 // newProductReview.save()
 //   res.send('review saved to db');
 //   product.reviews.push(newProductReview)
 //   product.save()
 //   console.log(newProductReview)
-});
+//});
+
+//Check if review exists 
+// Review.findOne({ _id: '63c1d0e6e2159deef5255f51'}, function (err, doc) {
+//   console.log(doc)
+// });
+
+
 
 //***START HERE*** Object Ids are not making it into respective fields:  */
 //review Object Id is not making it into newProduct reviews field
 //product Object Id is not making it into newProductReview product field.  
 //double check the method, something is off.  Code below DOES NOT WORK.
 
-MyProducts.findOne({ name: 'Cool Purple Medicine Ball'})
-.populate('reviews')
-.exec(function (err, myProducts) {
-  if (err) 
-  console.log(myProducts)
-});
+// MyProducts.findOne({ name: 'Cool Purple Medicine Ball'})
+// .populate('reviews')
+// .exec(function (err, myProducts) {
+//   if (err) 
+//   console.log(myProducts)
+// });
 
 module.exports = router;

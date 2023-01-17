@@ -41,25 +41,25 @@ const Review = mongoose.model('review', ReviewSchema);
 // });
 
 //2. IMPLEMENT PAGINATION = DONE
-router.get("/myProducts", (req, res, next) => {
-  const perPage = 9;
+// router.get("/myProducts", (req, res, next) => {
+//   const perPage = 9;
 
-  // return the first page by default
-  const page = req.query.page || 1;
+//   // return the first page by default
+//   const page = req.query.page || 1;
 
-  MyProducts.find({})
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, myProducts) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      MyProducts.count().exec((err, count) => {
-        if (err) return next(err);
+//   MyProducts.find({})
+//     .skip(perPage * page - perPage)
+//     .limit(perPage)
+//     .exec((err, myProducts) => {
+//       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+//       MyProducts.count().exec((err, count) => {
+//         if (err) return next(err);
 
-        res.send(myProducts);
-        });
-        //console.log(myProducts)
-    });
-})
+//         res.send(myProducts);
+//         });
+//         //console.log(myProducts)
+//     });
+// })
 
 //3. CREATE NEW PRODUCT = DONE
 // const newProduct = new MyProducts({
@@ -88,25 +88,41 @@ router.get("/myProducts", (req, res, next) => {
 //****1/15 START HERE!!!!!*****  create dynamic route for adding new product 
 
 //6. CREATE POST ROUTE FOR ADDING A NEW PRODUCT TO DB
+//GET all products (minus pagination)
+// router.get('/myProducts', (req, res) => {
+//   MyProducts.find({})
+//   .then(products => res.json(products));
+// });
+
+//GET product by product ID using path parameter 
+router.get('/myProducts/:product', (req, res, next) => {
+  MyProducts.findById(req.params.product)
+  .then(result => res.status(200).send(result))
+  .catch(err => res.status(500).send(err));
+})
+
+//GET reviews for product by product ID using path parameter 
+// router.get('/myProducts/:id/reviews', (req, res, next) => {
+//   MyProducts.find({ id: req.params.id })
+//   .populate('review')
+//   .exec((err, )), req.params.reviews)
+//   .then(result => res.status(200).send(result))
+//   .catch(err => res.status(500).send(err));
+// })
+
 
 // router.post('/myProducts', (req, res) => {
-//   const newProduct = new MyProducts({   
-//     category: req.param.category,   ???? CHECK THESE 
-//     name: req.param.name,
-//     price: req.param.price,
-//     image: req.param.image,
-//     reviews: [],
+//   const addProduct = new MyProducts({
+//     category: req.body.category,
+//     name: req.body.name,
+//     price: req.body.price,
+//     image: req.body.image,
+//     reviews: []
 //   })
-//   console.log('newProductId ' + newProduct._id);
-//   newProduct.save()
-// .then(newProduct => {
-//   res.send('newProduct saved to DB');
-//   console.log(newProduct)
-// })
-// .catch (err => {
-//   res.status(400).send('unable to save newProduct to DB');
+//   addProduct.save()
+//   .then(product => res.json(product));
+//   res.status(200).json({ addProduct });
 // });
-//});
 
 //7. CREATE ROUTE TO ADD REVIEW TO CERTAIN PRODUCT BY ID
 //router.post('/myProducts/:product/reviews', (req, res) => {

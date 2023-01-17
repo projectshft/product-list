@@ -114,6 +114,7 @@ const Review = mongoose.model('review', ReviewSchema);
 //9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
 router.post('/myProducts:', (req, res, next) => {
   let addProduct = new MyProducts({
+    _id: new mongoose.Types.ObjectId(),
     category: req.body.category,
     name: req.body.name,
     price: req.body.price,
@@ -125,14 +126,21 @@ router.post('/myProducts:', (req, res, next) => {
 });
 
 //10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID
-//router.post('/myProducts/:product/reviews', (req, res) => {
-// router.param(req.param._id, req.param.reviews)  ?????? double check this!!! s/b req.param._id, req.param.reviews??
-//const newProductReview = new Review({
-  //userName: req.param.userName,
-  //reviewText: req.param.reviewText,
-  //product: req.param._id
-//});
-//newProductReview.save();
+router.post('/myProducts/:product/reviews', (req, res, next) => {
+  const product = {_id: req.params.product}
+  let addReview = new Review({
+    _id: mongoose.Types.ObjectId(),
+    userName: req.body.userName,
+    reviewText: req.body.reviewText,
+    product: product
+  })
+  addReview.save((err, review) => {
+    res.send(review)
+  });
+ });
+  
+ 
+
 
 //11. DELETE PRODUCT BY PRODUCT ID
 // MyProducts.findOneAndDelete({ _id: '63c583c700d1ec838197c5d6'}, (err, newProduct) => {

@@ -21,8 +21,6 @@ ReviewSchema = new Schema({
 const MyProducts = mongoose.model('myProducts', MyProductsSchema);
 const Review = mongoose.model('review', ReviewSchema);
 
-
-
 //1. //LOAD DB WITH FAKE DATA = DONE
 // router.get("/generate-fake-data", (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
@@ -61,6 +59,12 @@ const Review = mongoose.model('review', ReviewSchema);
 //     });
 // })
 
+//GET ALL PRODUCTS (minus pagination) (NOT REQUIRED, EXAMPLE ONLY)
+// router.get('/myProducts', (req, res) => {
+//   MyProducts.find({})
+//   .then(products => res.json(products));
+// });
+
 //3. CREATE NEW PRODUCT = DONE
 // const newProduct = new MyProducts({
 //   category: 'Health',
@@ -85,46 +89,42 @@ const Review = mongoose.model('review', ReviewSchema);
 //newProduct.reviews.push(newProductReview)
 //newProduct.save();
 
-//****1/15 START HERE!!!!!*****  create dynamic route for adding new product 
-
-//6. CREATE POST ROUTE FOR ADDING A NEW PRODUCT TO DB
-//GET all products (minus pagination)
-// router.get('/myProducts', (req, res) => {
-//   MyProducts.find({})
-//   .then(products => res.json(products));
-// });
-
-//GET product by product ID using path parameter 
-router.get('/myProducts/:product', (req, res, next) => {
-  MyProducts.findById(req.params.product)
-  .then(result => res.status(200).send(result))
-  .catch(err => res.status(500).send(err));
-})
-
-//GET reviews for product by product ID using path parameter 
-// router.get('/myProducts/:id/reviews', (req, res, next) => {
-//   MyProducts.find({ id: req.params.id })
-//   .populate('review')
-//   .exec((err, )), req.params.reviews)
+//6. CREATE GET ROUTE FOR PRODUCT BY PRODUCT ID (using path parameter) = DONE
+// router.get('/myProducts/:product', (req, res, next) => {
+//   MyProducts.findById(req.params.product)
 //   .then(result => res.status(200).send(result))
 //   .catch(err => res.status(500).send(err));
 // })
 
-
-// router.post('/myProducts', (req, res) => {
-//   const addProduct = new MyProducts({
-//     category: req.body.category,
-//     name: req.body.name,
-//     price: req.body.price,
-//     image: req.body.image,
-//     reviews: []
-//   })
-//   addProduct.save()
-//   .then(product => res.json(product));
-//   res.status(200).json({ addProduct });
+//7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter = *CHECK ROUTE AFTER ADDING MORE REVIEWS
+// router.get('/myProducts/:product/reviews', (req, res, next) => {
+//   const perProduct = 4;
+//   const page = req.query.page || 1;
+//   MyProducts.findById({ _id: req.params.product  })
+//   .skip(perProduct * page - perProduct)
+//   .limit(perProduct)
+//   .populate('reviews')
+//   .exec((err, product) => {
+//   console.log(product);
+//   });
 // });
 
-//7. CREATE ROUTE TO ADD REVIEW TO CERTAIN PRODUCT BY ID
+//8. REFACTOR ABOVE ROUTE TO LIMIT TO 4 REVIEWS AND PASS PAGE QUERY PARAMETER TO PAGINATE
+
+//9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
+router.post('/myProducts:', (req, res, next) => {
+  let addProduct = new MyProducts({
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+    reviews: [],
+  })
+  addProduct.save();
+  res.send(addProduct);
+});
+
+//10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID
 //router.post('/myProducts/:product/reviews', (req, res) => {
 // router.param(req.param._id, req.param.reviews)  ?????? double check this!!! s/b req.param._id, req.param.reviews??
 //const newProductReview = new Review({
@@ -132,48 +132,20 @@ router.get('/myProducts/:product', (req, res, next) => {
   //reviewText: req.param.reviewText,
   //product: req.param._id
 //});
+//newProductReview.save();
 
-//NEED TO WRITE A FUNCTION TO PUSH NEW REVIEWS TO PRODUCT REVIEWS ARRAY???  
-//newProductReview.save() //Successfully saved newProductReview WITH newProduct _id in product field
-// .then(newProductReview => {
-//   res.send('newProductReview saved to DB');
-//   console.log(newProductReview)
-// })
-// .catch (err => {
-//   res.status(400).send('unable to save newProductReview to DB');
-// });
-
-//**SAVE FOR LATER USE  */
-//Delete original product so can refactor population changes - successfully deleted newProduct
+//11. DELETE PRODUCT BY PRODUCT ID
 // MyProducts.findOneAndDelete({ _id: '63c583c700d1ec838197c5d6'}, (err, newProduct) => {
 //   if (err) console.log(err) 
 //   console.log(newProduct)
 // });
 
-//****SAVE FOR LATER USE, CREATE ROUTE FOR DELETING ITEMS FROM DB */
-//Delete original review so can refactor population changes - successfully deleted newProductReview
+//DELETE REVIEW BY PRODUCT ID
 // Review.findOneAndDelete({_id: '63c583c700d1ec838197c5d7'}, (err, newProductReview) => {
 //   if (err) console.log(err)
 //   console.log(newProductReview)
 // });
  
-//*****SAVE FOR LATER USE, GET PRODUCT BY PRODUCT ID */
-// router.get('myProducts/:product', (req, res) => {
-//   const product = req.query.product;
-//   cnsole.log(req.query.product);
-//   res.send('response send to client::'+req.query.product);
-// });
-
-//***SAVE FOR LATER USE  */   ????
-//Create GET route for product by product ID
-// router.get('/myProducts/:product', (req, res) => {
-//   const { product } = req.params;
-//   const myProducts = myProducts.find(myProducts =>myProducts.id == product
-//);
-//   res.json(req.params);
-//   console.log(res.json)
-//   res.end();
-// });
 
 //**SAVE FOR TESTING  */
 //Test finding product - product exists
@@ -181,20 +153,10 @@ router.get('/myProducts/:product', (req, res, next) => {
 //   console.log(doc)
 // });
 
-//**SAVE FOR LATER USE */
-// Review.findOneAndDelete({_id: '3c56cd68dcc1aa85172e2c7'}, (err, newProductReview) => {
-//   if (err) console.log(err)
-//   console.log(newProductReview)
-// });
-
 //***SAVE FOR LATER TESTING  */
 //Check if review exists 
 // Review.findOne({ _id: '63c1d0e6e2159deef5255f51'}, function (err, doc) {
 //   console.log(doc)
 // });
-
-
-
-
 
 module.exports = router;

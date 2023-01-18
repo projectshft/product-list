@@ -36,10 +36,10 @@ router.get("/generate-fake-data", ( req, res, next ) => {
 ///GET products?page=3 when requested...need 
 //req._parsedUrl.page and parse int it to use for skip().limit()... 
 //optional queries: categories, price, and page
-router.get("/products", ( req, res, next ) => {
+router.get("/products", async ( req, res, next ) => {
   const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null;
   const _category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
-  const price = req.query.price ? req.query.price.toLowerCase() : "lowest";
+  const _price = req.query.price ? req.query.price.toLowerCase() : "lowest";
   const sortOrder = (_price = "lowest") => {
     return _price === "highest"? "desc"
           :_price === "lowest"? "asc"
@@ -48,47 +48,58 @@ router.get("/products", ( req, res, next ) => {
   
   const pageNumber = req.query.page|| 1;
   const perPage = 9;
-  const toThisProduct = perPage * pageNumber - perPage;
+  const toThisProductPage = perPage * pageNumber - perPage;
+
 
   //go back and figure out the $or operator is used to shorten this******************
   if(!query && !_category){
-    Product.find()
-    .skip(toThisProduct)
+    console.log("hello");
+
+    let count = await Product.countDocuments({});
+
+    let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
+    
+    let product = await Product.find()
+    .skip(toThisProductPage)
     .limit(perPage)
-    .sort({price: sortOrder(price)})
-    .exec((err,products) => {
-      res.send(products)
-      res.end()
-    }); 
+    .sort({price: sortOrder(_price)})
+
+    res.send({pages: pages, count: count, product: product});
   }
   else if(!query){
-    Product.find({category: _category})
-    .skip(toThisProduct)
+    let count = await Product.countDocuments({category: _category});
+
+    let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
+
+    let product = await Product.find({category: _category})
+    .skip(toThisProductPage)
     .limit(perPage)
-    .sort({price: sortOrder(price)})
-    .exec((err,products) => {
-      res.send(products)
-      res.end()
-    }); 
+    .sort({price: sortOrder(_price)})
+
+    res.send({pages: pages, count: count, product: product});
   }
   else if(!_category){
-    Product.find({$text:{$search: query, $caseSensitive: false}})
-    .skip(toThisProduct)
+    let count = await Product.countDocuments({$text:{$search: query, $caseSensitive: false}});
+
+    let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
+
+    let product = await Product.find({$text:{$search: query, $caseSensitive: false}})
+    .skip(toThisProductPage)
     .limit(perPage)
-    .sort({price: sortOrder(price)})
-    .exec((err,products) => {
-      res.send(products)
-      res.end()
-    }); 
+    .sort({price: sortOrder(_price)})
+
+    res.send({pages: pages, count: count, product: product});
   } else{
-    Product.find({$text:{$search: query, $caseSensitive: false}, category: _category})
-    .skip(toThisProduct)
+    let count = await Product.countDocuments({$text:{$search: query, $caseSensitive: false}, category: _category}) || 0;
+
+    let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
+
+    let product = await Product.find({$text:{$search: query, $caseSensitive: false}, category: _category})
+    .skip(toThisProductPage)
     .limit(perPage)
-    .sort({price: sortOrder(price)})
-    .exec((err,products) => {
-      res.send(products)
-      res.end();
-    });
+    .sort({price: sortOrder(_price)})
+
+    res.send({pages: pages, count: count, product: product});
   }
 });
 

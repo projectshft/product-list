@@ -84,7 +84,6 @@ const Review = mongoose.model('review', ReviewSchema);
 //newProductReview.save();
 // console.log('newProductReview.product ' + newProductReview.product);
 // console.log('newProduct.reviews ' + newProduct.reviews)
-
 //5. PUSH REVIEW TO PRODUCT.REVIEWS ARRAY = DONE (newProduct.reviews id is that of newProductReview._id))
 //newProduct.reviews.push(newProductReview)
 //newProduct.save();
@@ -112,6 +111,19 @@ const Review = mongoose.model('review', ReviewSchema);
 //8. REFACTOR ABOVE ROUTE TO LIMIT TO 4 REVIEWS AND PASS PAGE QUERY PARAMETER TO PAGINATE
 
 //9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
+// router.post('/myProducts', (req, res) => {
+//   const addProduct = new MyProducts({
+//     category: req.body.category,
+//     name: req.body.name,
+//     price: req.body.price,
+//     image: req.body.image,
+//     reviews: []
+//   })
+//   addProduct.save()
+//   .then(product => res.json(product));
+//   res.status(200).json({ addProduct });
+// });
+
 router.post('/myProducts:', (req, res, next) => {
   let addProduct = new MyProducts({
     _id: new mongoose.Types.ObjectId(),
@@ -124,27 +136,44 @@ router.post('/myProducts:', (req, res, next) => {
   addProduct.save();
   res.send(addProduct);
 });
-
 //10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID
-router.post('/myProducts/:product/reviews', (req, res, next) => {
-  const product = {_id: req.params.product}
-  let addReview = new Review({
-    _id: mongoose.Types.ObjectId(),
-    userName: req.body.userName,
-    reviewText: req.body.reviewText,
-    product: product
-  })
-  addReview.save((err, review) => {
-    res.send(review)
-  });
- });
-  
- 
+//COMMITTED THIS BLOCK BUT IT IS NOT SAVING THE REVIEW_ID TO PRODUCT.REVIEWS ARRAY
+// router.post('/myProducts/:product/reviews', (req, res, next) => {
+//   const product = {_id: req.params.product}
+//   let addReview = new Review({
+//     _id: mongoose.Types.ObjectId(),
+//     userName: req.body.userName,
+//     reviewText: req.body.reviewText,
+//     product: product
+//   })
+//   addReview.save((err, review) => {
+//     res.send(review)
+//   });
+//   console.log(product.reviews)
+// });
+
+/////STUCK HERE//////TRYING DIFFERENT WAY TO HANDLE
+// router.post('/myProducts/:product/reviews', (req, res, next) => {
+//   const product = {_id: req.params.product}
+//   let addReview = new Review({
+//     _id: mongoose.Types.ObjectId(),
+//     userName: req.body.userName,
+//     reviewText: req.body.reviewText,
+//     product: product
+//   })
+//   addReview.save();
+//   MyProducts
+//   .find({reviews: []})
+//   .populate("review")
+//   .exec((err, product) => {
+//    res.send(product);
+//   });
+// });
 
 
-//11. DELETE PRODUCT BY PRODUCT ID
-// MyProducts.findOneAndDelete({ _id: '63c583c700d1ec838197c5d6'}, (err, newProduct) => {
-//   if (err) console.log(err) 
+//11. DELETE PRODUCT{} BY PRODUCT ID
+// Review.findOneAndDelete({_id: '63c583c700d1ec838197c5d7'}, (err, newProduct) => {
+//   if (err) console.log(err)
 //   console.log(newProduct)
 // });
 

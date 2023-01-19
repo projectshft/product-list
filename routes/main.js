@@ -96,20 +96,19 @@ router.get("/generate-fake-data", (req, res, next) => {
 //   .catch(err => res.status(500).send(err));
 // })
 
-//7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter = *CHECK ROUTE AFTER ADDING MORE REVIEWS
-// router.get('/myProducts/:product/reviews', (req, res, next) => {
-//   const perProduct = 4;
-//   const page = req.query.page || 1;
-//   MyProducts.findById({ _id: req.params.product  })
-//   .skip(perProduct * page - perProduct)
-//   .limit(perProduct)
-//   .populate('reviews')
-//   .exec((err, product) => {
-//   console.log(product);
-//   });
-// });
-
-//8. REFACTOR ABOVE ROUTE TO LIMIT TO 4 REVIEWS AND PASS PAGE QUERY PARAMETER TO PAGINATE
+//7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter, limited to 4 reviews = DONE **REFACTOR
+//PASS PAGE QUERY PARAMETER TO PAGINATE 
+router.get('/myProducts/:product/reviews', (req, res, next) => {
+  const perProduct = 4;
+  //const page = req.query.page || 1;
+  MyProducts.findById({ _id: req.query.product  })
+  //.skip(perProduct * page - perProduct)
+  .limit(perProduct)
+  .populate('reviews')
+  .exec((err, data) => {
+  console.log(data);
+  });
+});
 
 //9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
 // router.post('/myProducts:', (req, res, next) => {
@@ -127,27 +126,27 @@ router.get("/generate-fake-data", (req, res, next) => {
 // });
 
 //10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID - SUCCESSFUL, NEED TO CLEAN UP
-router.post('/myProducts/:product/reviews', async(req, res, next) => {
-  let addReview = new Review({
-    userName: req.body.userName,
-    reviewText: req.body.reviewText,
-    product: req.body.product
-  })
-  addReview.save();
-  const addReviewId = addReview._id
-  //console.log('addReviewId' + addReviewId)
-  const productId = req.body.product
-  //console.log('productId' + productId)
-  //const productId = '63c85f6b237dbf774bec7132';
+// router.post('/myProducts/:product/reviews', async(req, res, next) => {
+//   let addReview = new Review({
+//     userName: req.body.userName,
+//     reviewText: req.body.reviewText,
+//     product: req.body.product
+//   })
+//   addReview.save();
+//   const addReviewId = addReview._id
+//   //console.log('addReviewId' + addReviewId)
+//   const productId = req.body.product
+//   //console.log('productId' + productId)
+//   //const productId = '63c85f6b237dbf774bec7132';
   
-  const productToUpdate = await MyProducts.findById(productId)
-  productToUpdate.reviews.push(addReviewId)
-  productToUpdate.save((err, data) => {
-    if (err) return next (err);
-    res.send(data)
-  });
-  //console.log('reviews' + productToUpdate.reviews)
- });
+//   const productToUpdate = await MyProducts.findById(productId)
+//   productToUpdate.reviews.push(addReviewId)
+//   productToUpdate.save((err, data) => {
+//     if (err) return next (err);
+//     res.send(data)
+//   });
+//   //console.log('reviews' + productToUpdate.reviews)
+//  });
 
 //11. DELETE PRODUCT{} BY PRODUCT ID
 // Review.findOneAndDelete({_id: '63c583c700d1ec838197c5d7'}, (err, newProduct) => {

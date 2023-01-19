@@ -22,21 +22,22 @@ const MyProducts = mongoose.model('myProducts', MyProductsSchema);
 const Review = mongoose.model('review', ReviewSchema);
 
 //1. //LOAD DB WITH FAKE DATA = DONE
-// router.get("/generate-fake-data", (req, res, next) => {
-//   for (let i = 0; i < 90; i++) {
-//     let myProducts = new MyProducts();
+router.get("/generate-fake-data", (req, res, next) => {
+  for (let i = 0; i < 90; i++) {
+    let myProducts = new MyProducts();
 
-//     myProducts.category = faker.commerce.department();
-//     myProducts.name = faker.commerce.productName();
-//     myProducts.price = faker.commerce.price();
-//     myProducts.image = "https://via.placeholder.com/250?text=Product+Image";
+    myProducts.category = faker.commerce.department();
+    myProducts.name = faker.commerce.productName();
+    myProducts.price = faker.commerce.price();
+    myProducts.image = "https://via.placeholder.com/250?text=Product+Image";
 
-//     myProducts.save((err) => {
-//       if (err) throw err;
-//     });
-//   }
-//   res.end();
-// });
+    //myProducts.save((err) => {
+  //     if (err) throw err;
+  //   });
+  // }
+  // res.end();
+}});
+
 
 //2. IMPLEMENT PAGINATION = DONE
 // router.get("/myProducts", (req, res, next) => {
@@ -66,7 +67,7 @@ const Review = mongoose.model('review', ReviewSchema);
 // });
 
 //3. CREATE NEW PRODUCT = DONE
-// const newProduct = new MyProducts({
+// const newProduct = new MyProducts({     //id = 63c866dd3d0fb78401025d7e
 //   category: 'Health',
 //   name: 'Cool Purple Medicine Ball',
 //   price: 25,
@@ -75,18 +76,18 @@ const Review = mongoose.model('review', ReviewSchema);
 // })
 // console.log('newProductId ' + newProduct._id);
 
-//4. CREATE REVIEW FOR PRODUCT CREATED = DONE - (newProductReview.product matches newProduct._id)
-// const newProductReview = new Review({
+// //4. CREATE REVIEW FOR PRODUCT CREATED = DONE - (newProductReview.product matches newProduct._id)
+// const newProductReview = new Review({         //id = 63c866dd3d0fb78401025d7f
 //   userName: 'Jillannette',
 //   reviewText: 'Awesome product for the price!',
 //   product: newProduct._id
 // })
-//newProductReview.save();
-// console.log('newProductReview.product ' + newProductReview.product);
-// console.log('newProduct.reviews ' + newProduct.reviews)
-//5. PUSH REVIEW TO PRODUCT.REVIEWS ARRAY = DONE (newProduct.reviews id is that of newProductReview._id))
-//newProduct.reviews.push(newProductReview)
-//newProduct.save();
+// newProductReview.save();
+// // console.log('newProductReview.product ' + newProductReview.product);
+// // console.log('newProduct.reviews ' + newProduct.reviews)
+// //5. PUSH REVIEW TO PRODUCT.REVIEWS ARRAY = DONE (newProduct.reviews id is that of newProductReview._id))
+// newProduct.reviews.push(newProductReview)
+// newProduct.save();
 
 //6. CREATE GET ROUTE FOR PRODUCT BY PRODUCT ID (using path parameter) = DONE
 // router.get('/myProducts/:product', (req, res, next) => {
@@ -111,65 +112,42 @@ const Review = mongoose.model('review', ReviewSchema);
 //8. REFACTOR ABOVE ROUTE TO LIMIT TO 4 REVIEWS AND PASS PAGE QUERY PARAMETER TO PAGINATE
 
 //9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
-// router.post('/myProducts', (req, res) => {
-//   const addProduct = new MyProducts({
+// router.post('/myProducts:', (req, res, next) => {
+//   let addProduct = new MyProducts({
+//     _id: new mongoose.Types.ObjectId(),
 //     category: req.body.category,
 //     name: req.body.name,
 //     price: req.body.price,
 //     image: req.body.image,
-//     reviews: []
+//     reviews: [],
+
 //   })
-//   addProduct.save()
-//   .then(product => res.json(product));
-//   res.status(200).json({ addProduct });
+//   // addProduct.save();
+//   // res.send(addProduct);
 // });
 
-router.post('/myProducts:', (req, res, next) => {
-  let addProduct = new MyProducts({
-    _id: new mongoose.Types.ObjectId(),
-    category: req.body.category,
-    name: req.body.name,
-    price: req.body.price,
-    image: req.body.image,
-    reviews: [],
+//10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID - SUCCESSFUL, NEED TO CLEAN UP
+router.post('/myProducts/:product/reviews', async(req, res, next) => {
+  let addReview = new Review({
+    userName: req.body.userName,
+    reviewText: req.body.reviewText,
+    product: req.body.product
   })
-  addProduct.save();
-  res.send(addProduct);
-});
-//10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID
-//COMMITTED THIS BLOCK BUT IT IS NOT SAVING THE REVIEW_ID TO PRODUCT.REVIEWS ARRAY
-// router.post('/myProducts/:product/reviews', (req, res, next) => {
-//   const product = {_id: req.params.product}
-//   let addReview = new Review({
-//     _id: mongoose.Types.ObjectId(),
-//     userName: req.body.userName,
-//     reviewText: req.body.reviewText,
-//     product: product
-//   })
-//   addReview.save((err, review) => {
-//     res.send(review)
-//   });
-//   console.log(product.reviews)
-// });
-
-/////STUCK HERE//////TRYING DIFFERENT WAY TO HANDLE
-// router.post('/myProducts/:product/reviews', (req, res, next) => {
-//   const product = {_id: req.params.product}
-//   let addReview = new Review({
-//     _id: mongoose.Types.ObjectId(),
-//     userName: req.body.userName,
-//     reviewText: req.body.reviewText,
-//     product: product
-//   })
-//   addReview.save();
-//   MyProducts
-//   .find({reviews: []})
-//   .populate("review")
-//   .exec((err, product) => {
-//    res.send(product);
-//   });
-// });
-
+  addReview.save();
+  const addReviewId = addReview._id
+  //console.log('addReviewId' + addReviewId)
+  const productId = req.body.product
+  //console.log('productId' + productId)
+  //const productId = '63c85f6b237dbf774bec7132';
+  
+  const productToUpdate = await MyProducts.findById(productId)
+  productToUpdate.reviews.push(addReviewId)
+  productToUpdate.save((err, data) => {
+    if (err) return next (err);
+    res.send(data)
+  });
+  //console.log('reviews' + productToUpdate.reviews)
+ });
 
 //11. DELETE PRODUCT{} BY PRODUCT ID
 // Review.findOneAndDelete({_id: '63c583c700d1ec838197c5d7'}, (err, newProduct) => {

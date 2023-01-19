@@ -22,21 +22,21 @@ const MyProducts = mongoose.model('myProducts', MyProductsSchema);
 const Review = mongoose.model('review', ReviewSchema);
 
 //1. //LOAD DB WITH FAKE DATA = DONE
-router.get("/generate-fake-data", (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    let myProducts = new MyProducts();
+// router.get("/generate-fake-data", (req, res, next) => {
+//   for (let i = 0; i < 90; i++) {
+//     let myProducts = new MyProducts();
 
-    myProducts.category = faker.commerce.department();
-    myProducts.name = faker.commerce.productName();
-    myProducts.price = faker.commerce.price();
-    myProducts.image = "https://via.placeholder.com/250?text=Product+Image";
+//     myProducts.category = faker.commerce.department();
+//     myProducts.name = faker.commerce.productName();
+//     myProducts.price = faker.commerce.price();
+//     myProducts.image = "https://via.placeholder.com/250?text=Product+Image";
 
     //myProducts.save((err) => {
   //     if (err) throw err;
   //   });
   // }
   // res.end();
-}});
+//}});
 
 
 //2. IMPLEMENT PAGINATION = DONE
@@ -98,17 +98,17 @@ router.get("/generate-fake-data", (req, res, next) => {
 
 //7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter, limited to 4 reviews = DONE **REFACTOR
 //PASS PAGE QUERY PARAMETER TO PAGINATE 
-router.get('/myProducts/:product/reviews', (req, res, next) => {
-  const perProduct = 4;
-  //const page = req.query.page || 1;
-  MyProducts.findById({ _id: req.query.product  })
-  //.skip(perProduct * page - perProduct)
-  .limit(perProduct)
-  .populate('reviews')
-  .exec((err, data) => {
-  console.log(data);
-  });
-});
+// router.get('/myProducts/:product/reviews', (req, res, next) => {
+//   const perProduct = 4;
+//   //const page = req.query.page || 1;
+//   MyProducts.findById({ _id: req.query.product  })
+//   //.skip(perProduct * page - perProduct)
+//   .limit(perProduct)
+//   .populate('reviews')
+//   .exec((err, data) => {
+//   console.log(data);
+//   });
+// });
 
 //9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
 // router.post('/myProducts:', (req, res, next) => {
@@ -148,11 +148,33 @@ router.get('/myProducts/:product/reviews', (req, res, next) => {
 //   //console.log('reviews' + productToUpdate.reviews)
 //  });
 
-//11. DELETE PRODUCT{} BY PRODUCT ID
-// Review.findOneAndDelete({_id: '63c583c700d1ec838197c5d7'}, (err, newProduct) => {
-//   if (err) console.log(err)
-//   console.log(newProduct)
-// });
+//11. DELETE PRODUCT{} BY PRODUCT ID  ***PRODUCT COUNT DID NOT DECREASE, WHY?????
+router.delete('/myProducts/:product', (req, res, next) => {
+  //const productToDelete = req.query._id;
+  //console.log('productToDelete', req.query);
+  
+  MyProducts.findByIdAndDelete(req.query._id)
+  .then((err, data) => {
+    // console.log('err', err)
+    // console.log('res', res.status)
+    //console.log(data)
+    //if (err) return next (err);
+    if (err) {
+      console.log('err', err)  //console.logs the product object??? status of 200 ok
+      //return next (err) 
+    }
+    res.send(data);
+  })
+//method below returned json data in postman, with code above just gave 200 status???
+//even when deleting same product, returns res.send 'Yay'.  
+    // .then(data => {
+    //   res.send('Yay!!')
+    // })
+    // .catch(error => {
+    //   res.send({error: 'there is a problem'})
+    // })
+ });
+
 
 //DELETE REVIEW BY PRODUCT ID
 // Review.findOneAndDelete({_id: '63c583c700d1ec838197c5d7'}, (err, newProductReview) => {

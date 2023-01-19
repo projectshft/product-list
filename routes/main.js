@@ -148,23 +148,24 @@ const Review = mongoose.model('review', ReviewSchema);
 //   //console.log('reviews' + productToUpdate.reviews)
 //  });
 
-//11. DELETE PRODUCT{} BY PRODUCT ID  ***PRODUCT COUNT DID NOT DECREASE, WHY?????
-router.delete('/myProducts/:product', (req, res, next) => {
-  //const productToDelete = req.query._id;
-  //console.log('productToDelete', req.query);
+//11. DELETE PRODUCT{} BY PRODUCT ID = DONE, TRY TO UNDERSTAND WHY ERR WAS LOGGED EVEN THOUGH
+//ROUTE WAS SUCCESSFUL
+// router.delete('/myProducts/:product', (req, res, next) => {
+//   //const productToDelete = req.query._id;
+//   //console.log('productToDelete', req.query);
   
-  MyProducts.findByIdAndDelete(req.query._id)
-  .then((err, data) => {
-    // console.log('err', err)
-    // console.log('res', res.status)
-    //console.log(data)
-    //if (err) return next (err);
-    if (err) {
-      console.log('err', err)  //console.logs the product object??? status of 200 ok
-      //return next (err) 
-    }
-    res.send(data);
-  })
+//   MyProducts.findByIdAndDelete(req.query._id)
+//   .then((err, data) => {
+//     // console.log('err', err)
+//     // console.log('res', res.status)
+//     //console.log(data)
+//     //if (err) return next (err);
+//     if (err) {
+//       console.log('err', err)  //console.logs the product object??? status of 200 ok
+//       //return next (err) 
+//     }
+//     res.send(data);
+//   })
 //method below returned json data in postman, with code above just gave 200 status???
 //even when deleting same product, returns res.send 'Yay'.  
     // .then(data => {
@@ -173,10 +174,17 @@ router.delete('/myProducts/:product', (req, res, next) => {
     // .catch(error => {
     //   res.send({error: 'there is a problem'})
     // })
- });
+ //});
 
 
-//DELETE REVIEW BY PRODUCT ID
+//DELETE REVIEW BY REVIEW ID = DONE, need to understand how to properly handle error and res.send, res.end, etc.
+router.delete('/myProducts/reviews/:reviews', (req, res) => {   //try without next, try myProducts/:review
+  Review.findOneAndDelete({_id: req.query._id}, (err, data) => {
+    if (err) console.log(err)
+    console.log('Successful', data)
+    res.end();
+  })
+});
 // Review.findOneAndDelete({_id: '63c583c700d1ec838197c5d7'}, (err, newProductReview) => {
 //   if (err) console.log(err)
 //   console.log(newProductReview)

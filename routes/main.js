@@ -40,11 +40,11 @@ router.get("/products", async ( req, res, next ) => {
   //Always gives capitalized first letter
   const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null; 
   const _category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
-  const _price = req.query.price === "highest" ? "desc"
-                :req.query.price === "lowest" ? "asc"
-                :req.query.price!==undefined ? req.query.price.toLowerCase():null; //lowecases all price inputs
+  const _priceSortFrom = req.query.price === "highest" ? "desc"
+                :req.query.price === "lowest"  ? "asc"
+                :req.query.price !== undefined ? req.query.price.toLowerCase():null; //lowecases all price inputs
   
-  const querypageNumber = parseInt(req.query.page)|| 1;
+  const querypageNumber = parseInt(req.query.page) || 1;
   const perPage = 9;
   const toThisProductNumber = perPage * querypageNumber - perPage;
   //const toThisPage = toThisProductNumber > count ? 1 : toThisProductNumber
@@ -56,7 +56,7 @@ router.get("/products", async ( req, res, next ) => {
     :{$text:{$search: query, $caseSensitive:false}, category: _category}
   );
 
-  let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
+  let pagesTotal = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
 
   let product = await Product.find(
     !query && !_category ? {}
@@ -68,9 +68,9 @@ router.get("/products", async ( req, res, next ) => {
   //loads a page if page number on frontend is querying at a high page number more than the products available.
   .skip(toThisProductNumber > count ? 1 : toThisProductNumber)
   .limit(perPage)
-  .sort({price: _price})
+  .sort({price: _priceSortFrom})
 
-  res.send({pages: pages, count: count, product: product});
+  res.send({pages: pagesTotal, count: count, product: product});
 });
 
 // Returns a specific product by Id

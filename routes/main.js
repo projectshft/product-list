@@ -37,7 +37,8 @@ router.get("/generate-fake-data", ( req, res, next ) => {
 //req._parsedUrl.page and parse int it to use for skip().limit()... 
 //optional queries: categories, price, and page
 router.get("/products", async ( req, res, next ) => {
-  const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null; //Always gives capitalized first letter
+  //Always gives capitalized first letter
+  const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null; 
   const _category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
   const _price = req.query.price === "highest" ? "desc"
                 :req.query.price === "lowest" ? "asc"

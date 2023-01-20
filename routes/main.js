@@ -39,68 +39,38 @@ router.get("/generate-fake-data", ( req, res, next ) => {
 router.get("/products", async ( req, res, next ) => {
   const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null;
   const _category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
-  const _price = req.query.price ? req.query.price.toLowerCase() : "lowest";
-  const sortOrder = (_price = "lowest") => {
+  const _price = req.query.price!==undefined ? req.query.price.toLowerCase():'';
+  const sortOrder = ( _price ) => {
     return _price === "highest"? "desc"
           :_price === "lowest"? "asc"
           :null;
   }; 
   
-  const pageNumber = req.query.page|| 1;
+  const querypageNumber = parseInt(req.query.page)|| 1;
   const perPage = 9;
-  const toThisProductPage = perPage * pageNumber - perPage;
+  const toThisProductNumber = perPage * querypageNumber - perPage;
+  //const toThisPage = toThisProductNumber > count ? 1 : toThisProductNumber
 
+  let count = await Product.countDocuments( 
+    !query && !_category ? {}
+    :!query?{category:_category} 
+    :!_category? {$text:{$search: query, $caseSensitive: false}}
+    :{$text:{$search: query, $caseSensitive:false}, category: _category}
+  );
 
-  //go back and figure out the $or operator is used to shorten this******************
-  if(!query && !_category){
-    console.log("hello");
+  let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
 
-    let count = await Product.countDocuments({});
+  let product = await Product.find(
+    !query && !_category ? {}
+    :!query?{category:_category} 
+    :!_category? {$text:{$search: query, $caseSensitive: false}}
+    :{$text:{$search: query, $caseSensitive:false}, category: _category}
+  )
+  .skip(toThisProductNumber >count ? 1 : toThisProductNumber)
+  .limit(perPage)
+  .sort({price: sortOrder(_price)})
 
-    let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
-    
-    let product = await Product.find()
-    .skip(toThisProductPage)
-    .limit(perPage)
-    .sort({price: sortOrder(_price)})
-
-    res.send({pages: pages, count: count, product: product});
-  }
-  else if(!query){
-    let count = await Product.countDocuments({category: _category});
-
-    let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
-
-    let product = await Product.find({category: _category})
-    .skip(toThisProductPage)
-    .limit(perPage)
-    .sort({price: sortOrder(_price)})
-
-    res.send({pages: pages, count: count, product: product});
-  }
-  else if(!_category){
-    let count = await Product.countDocuments({$text:{$search: query, $caseSensitive: false}});
-
-    let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
-
-    let product = await Product.find({$text:{$search: query, $caseSensitive: false}})
-    .skip(toThisProductPage)
-    .limit(perPage)
-    .sort({price: sortOrder(_price)})
-
-    res.send({pages: pages, count: count, product: product});
-  } else{
-    let count = await Product.countDocuments({$text:{$search: query, $caseSensitive: false}, category: _category}) || 0;
-
-    let pages = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
-
-    let product = await Product.find({$text:{$search: query, $caseSensitive: false}, category: _category})
-    .skip(toThisProductPage)
-    .limit(perPage)
-    .sort({price: sortOrder(_price)})
-
-    res.send({pages: pages, count: count, product: product});
-  }
+  res.send({pages: pages, count: count, product: product});
 });
 
 // Returns a specific product by Id
@@ -118,7 +88,6 @@ router.get("/products/:product", ( req, res, next ) => {
 // Returns ALL reviews for a product, but limited to 4 at a time. Retrieve out of products. Should pass in an optional page query parameter to paginate
 router.get("/products/:product/reviews", ( req, res, next ) => {
   const productId = req.params.product;
-  const pageNumber = req.query.page || 1;
   const perPage = 9;
 
   Product.find({_id: productId})

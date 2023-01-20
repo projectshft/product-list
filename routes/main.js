@@ -37,14 +37,11 @@ router.get("/generate-fake-data", ( req, res, next ) => {
 //req._parsedUrl.page and parse int it to use for skip().limit()... 
 //optional queries: categories, price, and page
 router.get("/products", async ( req, res, next ) => {
-  const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null;
+  const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null; //Always gives capitalized first letter
   const _category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
-  const _price = req.query.price!==undefined ? req.query.price.toLowerCase():'';
-  const sortOrder = ( _price ) => {
-    return _price === "highest"? "desc"
-          :_price === "lowest"? "asc"
-          :null;
-  }; 
+  const _price = req.query.price === "highest" ? "desc"
+                :req.query.price === "lowest" ? "asc"
+                :req.query.price!==undefined ? req.query.price.toLowerCase():null; //lowecases all price inputs
   
   const querypageNumber = parseInt(req.query.page)|| 1;
   const perPage = 9;
@@ -66,9 +63,11 @@ router.get("/products", async ( req, res, next ) => {
     :!_category? {$text:{$search: query, $caseSensitive: false}}
     :{$text:{$search: query, $caseSensitive:false}, category: _category}
   )
-  .skip(toThisProductNumber >count ? 1 : toThisProductNumber)
+  //if product number greater than count then change skip to product 1.
+  //loads a page if page number on frontend is querying at a high page number more than the products available.
+  .skip(toThisProductNumber > count ? 1 : toThisProductNumber)
   .limit(perPage)
-  .sort({price: sortOrder(_price)})
+  .sort({price: _price})
 
   res.send({pages: pages, count: count, product: product});
 });

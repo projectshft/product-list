@@ -99,11 +99,18 @@ const Review = mongoose.model('review', ReviewSchema);
 // newProduct.save();
 
 //6. CREATE GET ROUTE FOR PRODUCT BY PRODUCT ID (using path parameter) = DONE
-// router.get('/myProducts/:product', (req, res, next) => {
-//   MyProducts.findById(req.params.product)
-//   .then(result => res.status(200).send(result))
-//   .catch(err => res.status(500).send(err));
-// })
+router.get('/myProducts/:product', async (req, res) => {
+  const {selectedProductId} = req.query;
+  
+  try {
+    await MyProducts.findById({_id: selectedProductId})
+    res.status(200).send({'Product received': selectedProductId});
+  } catch (err) {
+    console.log(err)
+      res.status(400).json({ message: err });
+    }
+  });
+  
 
 //7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter, limited to 4 reviews = DONE **REFACTOR
 //PASS PAGE QUERY PARAMETER TO PAGINATE 
@@ -158,17 +165,17 @@ const Review = mongoose.model('review', ReviewSchema);
 //  });
 
 //11. DELETE PRODUCT{} BY PRODUCT ID = DONE, USING PETER'S SUGGESTION (USED PRODUCTID AS KEY IN POSTMAN)
-router.delete('/myProducts/:product', async (req, res) => {
-  const { productId } = req.body; // I sent as query, need to understand sending in body: (assuming you're sending this data in your request...)
+// router.delete('/myProducts/:product', async (req, res) => {
+//   const { productId } = req.body; // I sent as query, need to understand sending in body: (assuming you're sending this data in your request...)
 
-  try {
-    await MyProducts.deleteOne({ _id: productId });
-    res.status(200).send({ 'Product Deleted': productId });
-    } catch (err) {
-    console.log(err);
-    res.status(400).json({ message: err });
-  }
-});
+//   try {
+//     await MyProducts.deleteOne({ _id: productId });
+//     res.status(200).send({ 'Product Deleted': productId });
+//     } catch (err) {
+//     console.log(err);
+//     res.status(400).json({ message: err });
+//   }
+// });
 
 
 

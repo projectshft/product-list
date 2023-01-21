@@ -49,16 +49,25 @@ const Review = mongoose.model('review', ReviewSchema);
 //   MyProducts.find({})
 //     .skip(perPage * page - perPage)
 //     .limit(perPage)
+    
+//   if (req.query.category) {
+//     MyProducts.find({ category: req.query.category })
+//     .skip(perPage * page - perPage)
+//     .limit(perPage)
 //     .exec((err, myProducts) => {
 //       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-//       MyProducts.count().exec((err, count) => {
+          
+//     myProducts.count().exec((err, count) => {
 //         if (err) return next(err);
 
 //         res.send(myProducts);
 //         });
-//         //console.log(myProducts)
+//         console.log(myProducts)
 //     });
-// })
+//   }
+//   res.end();
+// });
+
 
 //GET ALL PRODUCTS (minus pagination) (NOT REQUIRED, EXAMPLE ONLY)
 // router.get('/myProducts', (req, res) => {
@@ -148,7 +157,22 @@ const Review = mongoose.model('review', ReviewSchema);
 //   //console.log('reviews' + productToUpdate.reviews)
 //  });
 
-//11. DELETE PRODUCT{} BY PRODUCT ID = DONE, AWAITING ADVICE FROM PETER 
+//11. DELETE PRODUCT{} BY PRODUCT ID = DONE, USING PETER'S SUGGESTION (USED PRODUCTID AS KEY IN POSTMAN)
+router.delete('/myProducts/:product', async (req, res) => {
+  const { productId } = req.body; // I sent as query, need to understand sending in body: (assuming you're sending this data in your request...)
+
+  try {
+    await MyProducts.deleteOne({ _id: productId });
+    res.status(200).send({ 'Product Deleted': productId });
+    } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err });
+  }
+});
+
+
+
+//TRIED THIS WAY AND IT WORKED NO ERRORS 
 // router.delete('/myProducts/:product', async (req, res, next) => {
 //   const productToDelete = await MyProducts.findByIdAndDelete(req.query._id)
 //   .catch(next);
@@ -186,11 +210,11 @@ const Review = mongoose.model('review', ReviewSchema);
 
 
 //12.DELETE REVIEW BY REVIEW ID = DONE, need to understand how to properly handle error and res.send, res.end, etc.
-router.delete('/myProducts/reviews/:review', async (req, res, next) => {
-  const reviewToDelete = await Review.findByIdAndDelete(req.query._id)
-  .catch(next);
-  return res.json(reviewToDelete)
-});
+// router.delete('/myProducts/reviews/:review', async (req, res, next) => {
+//   const reviewToDelete = await Review.findByIdAndDelete(req.query._id)
+//   .catch(next);
+//   return res.json(reviewToDelete)
+// });
 
 //13. UPDATE GET/MYPRODUCTS ROUTE TO PASS OPTIONAL QUERY BY RETURN ONLY PRODUCTS OF PASSED IN CATEGORY.
 //THIS CODE GETS EMPTY ARRAY;

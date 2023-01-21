@@ -148,12 +148,12 @@ const Review = mongoose.model('review', ReviewSchema);
 //   //console.log('reviews' + productToUpdate.reviews)
 //  });
 
-//11. DELETE PRODUCT{} BY PRODUCT ID = DONE, 
-router.delete('/myProducts/:product', async (req, res, next) => {
-  const productToDelete = await MyProducts.findByIdAndDelete(req.query._id)
-  .catch(next);
-  return res.json(productToDelete)
-});
+//11. DELETE PRODUCT{} BY PRODUCT ID = DONE, AWAITING ADVICE FROM PETER 
+// router.delete('/myProducts/:product', async (req, res, next) => {
+//   const productToDelete = await MyProducts.findByIdAndDelete(req.query._id)
+//   .catch(next);
+//   return res.json(productToDelete)
+// });
 
 // } catch ((err) {
 //   console.error('Error', err)
@@ -186,13 +186,11 @@ router.delete('/myProducts/:product', async (req, res, next) => {
 
 
 //12.DELETE REVIEW BY REVIEW ID = DONE, need to understand how to properly handle error and res.send, res.end, etc.
-// router.delete('/myProducts/reviews/:reviews', async (req, res) => {   
-//   Review.findOneAndDelete({_id: req.query._id}, (err, data) => {
-//     if (err) console.log(err)
-//     console.log('Successful', data)
-//     res.end();
-//   })
-// });
+router.delete('/myProducts/reviews/:review', async (req, res, next) => {
+  const reviewToDelete = await Review.findByIdAndDelete(req.query._id)
+  .catch(next);
+  return res.json(reviewToDelete)
+});
 
 //13. UPDATE GET/MYPRODUCTS ROUTE TO PASS OPTIONAL QUERY BY RETURN ONLY PRODUCTS OF PASSED IN CATEGORY.
 //THIS CODE GETS EMPTY ARRAY;

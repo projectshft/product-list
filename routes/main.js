@@ -68,14 +68,15 @@ const Review = mongoose.model('review', ReviewSchema);
 //   res.end();
 // });
 
-
+//***************** */
 //GET ALL PRODUCTS (minus pagination) (NOT REQUIRED, EXAMPLE ONLY)
 // router.get('/myProducts', (req, res) => {
 //   MyProducts.find({})
 //   .then(products => res.json(products));
 // });
 
-//3. CREATE NEW PRODUCT = DONE
+//***************** */
+//3. CREATE NEW PRODUCT = DONE 
 // const newProduct = new MyProducts({     //id = 63c866dd3d0fb78401025d7e
 //   category: 'Health',
 //   name: 'Cool Purple Medicine Ball',
@@ -85,6 +86,7 @@ const Review = mongoose.model('review', ReviewSchema);
 // })
 // console.log('newProductId ' + newProduct._id);
 
+//**************** */
 // //4. CREATE REVIEW FOR PRODUCT CREATED = DONE - (newProductReview.product matches newProduct._id)
 // const newProductReview = new Review({         //id = 63c866dd3d0fb78401025d7f
 //   userName: 'Jillannette',
@@ -94,24 +96,27 @@ const Review = mongoose.model('review', ReviewSchema);
 // newProductReview.save();
 // // console.log('newProductReview.product ' + newProductReview.product);
 // // console.log('newProduct.reviews ' + newProduct.reviews)
+
+//**************** */
 // //5. PUSH REVIEW TO PRODUCT.REVIEWS ARRAY = DONE (newProduct.reviews id is that of newProductReview._id))
 // newProduct.reviews.push(newProductReview)
 // newProduct.save();
 
-//6. CREATE GET ROUTE FOR PRODUCT BY PRODUCT ID (using path parameter) = DONE
-router.get('/myProducts/:product', async (req, res) => {
-  const {selectedProductId} = req.query;
+//**************** */
+//6. CREATE GET ROUTE FOR PRODUCT BY PRODUCT ID (using req.query) = DONE
+// router.get('/myProducts/:product', async (req, res) => {
+//   const {selectedProductId} = req.query;
   
-  try {
-    await MyProducts.findById({_id: selectedProductId})
-    res.status(200).send({'Product received': selectedProductId});
-  } catch (err) {
-    console.log(err)
-      res.status(400).json({ message: err });
-    }
-  });
+//   try {
+//     await MyProducts.findById({_id: selectedProductId})
+//     res.status(200).send({'Product received': selectedProductId});
+//   } catch (err) {
+//     console.log(err)
+//       res.status(400).json({ message: err });
+//     }
+//   });
   
-
+//**************** */
 //7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter, limited to 4 reviews = DONE **REFACTOR
 //PASS PAGE QUERY PARAMETER TO PAGINATE 
 // router.get('/myProducts/:product/reviews', (req, res, next) => {
@@ -126,6 +131,7 @@ router.get('/myProducts/:product', async (req, res) => {
 //   });
 // });
 
+//******************/
 //9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
 // router.post('/myProducts:', (req, res, next) => {
 //   let addProduct = new MyProducts({
@@ -141,6 +147,7 @@ router.get('/myProducts/:product', async (req, res) => {
 //   // res.send(addProduct);
 // });
 
+//******************/
 //10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID - SUCCESSFUL, NEED TO CLEAN UP
 // router.post('/myProducts/:product/reviews', async(req, res, next) => {
 //   let addReview = new Review({
@@ -164,6 +171,7 @@ router.get('/myProducts/:product', async (req, res) => {
 //   //console.log('reviews' + productToUpdate.reviews)
 //  });
 
+//******************/
 //11. DELETE PRODUCT{} BY PRODUCT ID = DONE, USING PETER'S SUGGESTION (USED PRODUCTID AS KEY IN POSTMAN)
 // router.delete('/myProducts/:product', async (req, res) => {
 //   const { productId } = req.body; // I sent as query, need to understand sending in body: (assuming you're sending this data in your request...)
@@ -177,51 +185,19 @@ router.get('/myProducts/:product', async (req, res) => {
 //   }
 // });
 
+//**************** */
+//12.DELETE REVIEW BY REVIEW ID = DONE, using async/await/try/catch per PE
+router.delete('/myProducts/reviews/:review', async (req, res) => {
+  const { reviewId } = req.body; // I sent as query, need to understand sending in body: (assuming you're sending this data in your request...)
 
-
-//TRIED THIS WAY AND IT WORKED NO ERRORS 
-// router.delete('/myProducts/:product', async (req, res, next) => {
-//   const productToDelete = await MyProducts.findByIdAndDelete(req.query._id)
-//   .catch(next);
-//   return res.json(productToDelete)
-// });
-
-// } catch ((err) {
-//   console.error('Error', err)
-// } finally {
-//   res.end();
-//   console.log('product deleted');
-// }
-// )
-//     // console.log('err', err)
-//     // console.log('res', res.status)
-//     //console.log(data)
-//     //if (err) return next (err);
-// } 
- 
-//     if (err) {
-//       console.log('err', err)  //console.logs the product object??? status of 200 ok
-//       //return next (err) 
-//     }
-//     res.send(data);
-//   })
-// method below returned json data in postman, with code above just gave 200 status???
-// even when deleting same product, returns res.send 'Yay'.  
-//     .then(data => {
-//       res.send('Yay!!')
-//     })
-//     .catch(error => {
-//       res.send({error: 'there is a problem'})
-//     })
-//  });
-
-
-//12.DELETE REVIEW BY REVIEW ID = DONE, need to understand how to properly handle error and res.send, res.end, etc.
-// router.delete('/myProducts/reviews/:review', async (req, res, next) => {
-//   const reviewToDelete = await Review.findByIdAndDelete(req.query._id)
-//   .catch(next);
-//   return res.json(reviewToDelete)
-// });
+  try {
+    await Review.deleteOne({ _id: reviewId });
+    res.status(200).send({ 'Review Deleted': reviewId });
+    } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err });
+  }
+});
 
 //13. UPDATE GET/MYPRODUCTS ROUTE TO PASS OPTIONAL QUERY BY RETURN ONLY PRODUCTS OF PASSED IN CATEGORY.
 //THIS CODE GETS EMPTY ARRAY;

@@ -148,14 +148,11 @@ const Review = mongoose.model('review', ReviewSchema);
 //   //console.log('reviews' + productToUpdate.reviews)
 //  });
 
-//11. DELETE PRODUCT{} BY PRODUCT ID = DONE, TRY TO UNDERSTAND WHY ERR WAS LOGGED EVEN THOUGH
-//ROUTE WAS SUCCESSFUL
+//11. DELETE PRODUCT{} BY PRODUCT ID = DONE, 
 router.delete('/myProducts/:product', async (req, res, next) => {
-  MyProducts.findByIdAndDelete(req.query._id)
-  .exec((err) => {
-    if (err) console.log('Error', err);
-    res.end('Product deleted');
-  });
+  const productToDelete = await MyProducts.findByIdAndDelete(req.query._id)
+  .catch(next);
+  return res.json(productToDelete)
 });
 
 // } catch ((err) {
@@ -189,7 +186,7 @@ router.delete('/myProducts/:product', async (req, res, next) => {
 
 
 //12.DELETE REVIEW BY REVIEW ID = DONE, need to understand how to properly handle error and res.send, res.end, etc.
-// router.delete('/myProducts/reviews/:reviews', (req, res) => {   
+// router.delete('/myProducts/reviews/:reviews', async (req, res) => {   
 //   Review.findOneAndDelete({_id: req.query._id}, (err, data) => {
 //     if (err) console.log(err)
 //     console.log('Successful', data)

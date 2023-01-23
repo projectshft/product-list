@@ -70,10 +70,16 @@ const Review = mongoose.model('review', ReviewSchema);
 
 //***************** */
 //GET ALL PRODUCTS (minus pagination) (NOT REQUIRED, EXAMPLE ONLY)
-// router.get('/myProducts', (req, res) => {
-//   MyProducts.find({})
-//   .then(products => res.json(products));
-// });
+router.get('/myProducts', async (req, res) => {
+  const productCat = req.params.category;
+
+  const categorizedProducts = await MyProducts.find(productCat)
+  .exec((err, myProducts) => {
+    if (err || !myProducts) console.log(err);
+    res.json(myProducts);
+  })
+});  
+
 
 //***************** */
 //3. CREATE NEW PRODUCT = DONE 
@@ -103,7 +109,7 @@ const Review = mongoose.model('review', ReviewSchema);
 // newProduct.save();
 
 //**************** */
-//6. CREATE GET ROUTE FOR PRODUCT BY PRODUCT ID (using req.query) = DONE
+//LOOK AT THIS AGAIN RE: ASYNC/AWAIT 6. CREATE GET ROUTE FOR PRODUCT BY PRODUCT ID (using req.query) = DONE
 // router.get('/myProducts/:product', async (req, res) => {
 //   const {selectedProductId} = req.query;
   
@@ -117,6 +123,7 @@ const Review = mongoose.model('review', ReviewSchema);
 //   });
   
 //**************** */
+//START HERE TO REFACTOR BY ADDING OPTIONAL CATEGORY QUERY 
 //7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter, limited to 4 reviews = DONE **REFACTOR
 //PASS PAGE QUERY PARAMETER TO PAGINATE 
 // router.get('/myProducts/:product/reviews', (req, res, next) => {
@@ -132,7 +139,7 @@ const Review = mongoose.model('review', ReviewSchema);
 // });
 
 //******************/
-//9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
+//REFACTOR USING ASYNC/AWAIT/TRY/CATCH 9. POST ROUTE TO ADD NEW PRODUCT TO DB = DONE
 // router.post('/myProducts:', (req, res, next) => {
 //   let addProduct = new MyProducts({
 //     _id: new mongoose.Types.ObjectId(),
@@ -148,7 +155,7 @@ const Review = mongoose.model('review', ReviewSchema);
 // });
 
 //******************/
-//10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID - SUCCESSFUL, NEED TO CLEAN UP
+//REFACTOR  USING ASYNC/AWAIT/TRY/CATCH   10. CREATE ROUTE TO ADD REVIEW TO PRODUCT BY PRODUCT ID - SUCCESSFUL, NEED TO CLEAN UP
 // router.post('/myProducts/:product/reviews', async(req, res, next) => {
 //   let addReview = new Review({
 //     userName: req.body.userName,
@@ -172,7 +179,7 @@ const Review = mongoose.model('review', ReviewSchema);
 //  });
 
 //******************/
-//11. DELETE PRODUCT{} BY PRODUCT ID = DONE, USING PETER'S SUGGESTION (USED PRODUCTID AS KEY IN POSTMAN)
+//OK 11. DELETE PRODUCT BY PRODUCT ID = DONE, USING PETER'S SUGGESTION (USED PRODUCTID AS KEY IN POSTMAN)
 // router.delete('/myProducts/:product', async (req, res) => {
 //   const { productId } = req.body; // I sent as query, need to understand sending in body: (assuming you're sending this data in your request...)
 
@@ -186,43 +193,18 @@ const Review = mongoose.model('review', ReviewSchema);
 // });
 
 //**************** */
-//12.DELETE REVIEW BY REVIEW ID = DONE, using async/await/try/catch per PE
-router.delete('/myProducts/reviews/:review', async (req, res) => {
-  const { reviewId } = req.body; // I sent as query, need to understand sending in body: (assuming you're sending this data in your request...)
+//OK 12.DELETE REVIEW BY REVIEW ID = DONE, using async/await/try/catch per PE
+// router.delete('/myProducts/reviews/:review', async (req, res) => {
+//   const { reviewId } = req.body; // I sent as query, need to understand sending in body: (assuming you're sending this data in your request...)
 
-  try {
-    await Review.deleteOne({ _id: reviewId });
-    res.status(200).send({ 'Review Deleted': reviewId });
-    } catch (err) {
-    console.log(err);
-    res.status(400).json({ message: err });
-  }
-});
-
-//13. UPDATE GET/MYPRODUCTS ROUTE TO PASS OPTIONAL QUERY BY RETURN ONLY PRODUCTS OF PASSED IN CATEGORY.
-//THIS CODE GETS EMPTY ARRAY;
-// router.get('/myProducts/products', (req, res) => {
-//   MyProducts.find({ category: req.query.category }, (err, docs) => {
-//     if (err) console.log(err)
-//     console.log(docs)
-//     });
-//   });
-
-
-
- 
-  // router.get('/myProducts', (req, res) => {
-//   MyProducts.find({})
-//   .then(products => res.json(products));
+//   try {
+//     await Review.deleteOne({ _id: reviewId });
+//     res.status(200).send({ 'Review Deleted': reviewId });
+//     } catch (err) {
+//     console.log(err);
+//     res.status(400).json({ message: err });
+//   }
 // });
-  //console.log(req.query);
-
-//   .then(result => res.status(200).send(result))
-//   .catch(err => res.status(500).send(err));
-// })
-
-
- 
 
 //**SAVE FOR TESTING  */
 //Test finding product - product exists

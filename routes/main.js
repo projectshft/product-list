@@ -51,36 +51,34 @@ router.get("/products", (req, res, next) => {
     });
   });
 
-
 // PART 1 EVAL: CREATING ROUTES
-
-// (1) Get product by id (works)
-router.get('/products/:id', (req, res) =>{    
-  Product.findById('63be0d90723243f762423c19', (err, data) => {
-    if (err){
-      console.log(err)
-    } else {
-      console.log(data)
-      res.send('Sending:' + data)
-    }
-  })
+// (1) Get a product by id (works)
+router.get('/products/:id', async (req, res) => {
+  const id = req.params.id;
+  // console.log(id);
+  // res.send(id);
+  try {
+    const product = await Product.findById(id);
+    res.send('getting product:' + product)
+  }
+  catch (err) {
+    console.error(err.message);
+  }
 })
 
-// (2) GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
-
+// (2) Returns all reviews for a product, but limited to 4 at a time. 
 router.get('/products/:product/reviews', (req, res) => { 
   Product.findById('63be0d90723243f762423c19', (err, data) => {
     if(err){
       console.log(err)
     } else {
       console.log(data)
-      res.send(data.reviews)
+      res.send(data)
     }
   })
 })
 
-
-// (3) POST /products: Creates a new product in the database (works)
+// (3) Create a new product in the database (works)
 router.post('/products', async (req, res) => {
   const data = new ProductSchema ({ 
       name: req.body.name,
@@ -89,18 +87,57 @@ router.post('/products', async (req, res) => {
       image: req.body.image,
     })
     try{
-      const dataToSave = await data.save();
-      res.status(200).json(dataToSave);
+      const newProduct = await data.save();
+      res.status(200).json('new product created:' + newProduct);
     }
     catch(err){
       res.status(400).json({message: err.message})
     }
   })
 
-// (4) POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
+// (4) Create a new review by adding it to the correct product's reviews array.
 
-// (5) DELETE /products/:product: Deletes a product by id
 
-// (6) DELETE /reviews/:review: Deletes a review by id
+
+// (5) Delete a product by its id (works)
+router.delete('/products/:id', async (req, res) => {
+  const productId = req.params.id
+  try {
+    const deleteProduct = await Product.findByIdAndDelete(productId);
+    // console.log(deleteProduct);
+    res.send('deleting product: ' + deleteProduct);
+  } 
+  catch (err) {
+    // console.log(err.message);
+    res.status(400).json({ message: err.message})
+  }
+})
+
+// (6) Delete a review by product id
+
+
+
+// Task 2 - Filter Category
+router.get('/products?page=1&category=tools', (req, res) => {
+  const filteredProduct = Product.find()
+
+
+})
+
+
+// Task 3 - Sorting by Price
+router.get('/products?page=1&category=tools&price=highest', (req, res) => {
+
+})
+
+
+router.get('/products?page=1&category=tools&price=lowest', (req, res) => {})
+
+
+// Task 4 - Searching
+router.get('/products?query=shovel', (req, res) => {
+
+})
+
 
 module.exports = router;

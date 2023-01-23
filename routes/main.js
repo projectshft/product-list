@@ -31,7 +31,7 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-// Router params will go here.
+// Router params
 router.param("product", function (req, res, next, id) {
   Product.findById({ _id: `${id}` }).exec((err, product) => {
     if (err) {
@@ -40,6 +40,19 @@ router.param("product", function (req, res, next, id) {
     req.product = product;
     next();
   });
+});
+
+// Router param for :review
+router.param("review", function (req, res, next, id) {
+  Review.findById({ _id: `${id}` })
+    .populate("reviews")
+    .exec((err, review) => {
+      if (err) {
+        return next(err);
+      }
+      req.product.review = review;
+      next();
+    });
 });
 
 router.get("/products", (req, res, next) => {
@@ -56,6 +69,25 @@ router.get("/products", (req, res, next) => {
 router.get("/products/:product", (req, res) => {
   const product = req.product;
   res.send(product);
+});
+
+router.get("/products/:product/reviews", (req, res) => {
+  const perReviewPage = 4;
+  page = req.query.page || 1;
+  Product.find({ _id: req.params.product })
+    .populate({
+      path: "reviews",
+      options: {
+        limit: perReviewPage,
+        skip: (page - 1) * perReviewPage,
+      },
+    })
+    .exec((err, review) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(review);
+    });
 });
 
 module.exports = router;

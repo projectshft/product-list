@@ -46,39 +46,54 @@ const Review = mongoose.model('review', ReviewSchema);
 //   // return the first page by default
 //   const page = req.query.page || 1;
 
+// const category = req.query;
+// const myProducts = {};
+
+// if (category) {
+//   myProducts.category = category;
+// }
+  
 //   MyProducts.find({})
-//     .skip(perPage * page - perPage)
-//     .limit(perPage)
-    
-//   if (req.query.category) {
-//     MyProducts.find({ category: req.query.category })
 //     .skip(perPage * page - perPage)
 //     .limit(perPage)
 //     .exec((err, myProducts) => {
 //       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-          
-//     myProducts.count().exec((err, count) => {
-//         if (err) return next(err);
-
-//         res.send(myProducts);
-//         });
-//         console.log(myProducts)
+//     if (err) return next (err);
+//     res.send({category: req.query.category})  //logs, literally 'music'!!  
+    
 //     });
-//   }
-//   res.end();
-// });
+  
+//       MyProducts.count().exec((err, count) => {
+//           if (err) return next(err);
+//     });
+//   });
+//});
+       
+
+router.get('/myProducts', async (req, res, next)  => {
+  
+  const shoes = await MyProducts.find({ category: 'Shoes' })
+  .exec()
+  console.log(shoes)
+  
+});  
 
 //***************** */
 //GET ALL PRODUCTS (minus pagination) (NOT REQUIRED, EXAMPLE ONLY)
-router.get('/myProducts', async (req, res) => {
-  const productCat = req.params.category;
+// router.get('/myProducts', (req, res) => {
+//   const productCat = req.params.category;
+  
+//   if (!productCat) {
+//     return console.log('Must enter a valid product category to complete this search')
+//   }
 
-  const categorizedProducts = await MyProducts.find(productCat)
-  .exec((err, myProducts) => {
-    if (err || !myProducts) console.log(err);
-    res.json(myProducts);
-  })
-});  
+//   MyProducts.find({
+//     if ()
+//   })
+
+//     .exec((err, )
+// });  
+
 
 
 //***************** */

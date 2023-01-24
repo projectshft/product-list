@@ -26,14 +26,11 @@ const Search = () => {
   //if statement that will return component depending on query status
   let content;
   let numberBar;
-  let loadedData;
   let currentPage;
   if(isLoading) {
     content = <p>Loading...</p>
   } 
   else if (isSuccess) {
-    loadedData = queryData;
-    
     //changes local state to 1 if queried page number in RTK Query is too high to
     //render cards since page number not available for loaded products. 
     //This will cause a re-render with query page of 1.
@@ -44,13 +41,13 @@ const Search = () => {
       return(<CardExcerpt key={element.name} element={element}/>)
     });
 
-    //Current page component
+    //Current page component. Displays current page number user is on.
     currentPage = <div>{queryData.product.length === 0 ? "Nothing to Display" : "Current Page:" + pageNumberState}</div>
     
     //creates an array for mapping over
     let numberOfPagesArray = Array.from({length: queryData.pages}, (_, i) => i + 1);
 
-    //map over array to create the numbers in the numberbar
+    //map over array to create the number boxes in the numberbar
     numberBar = numberOfPagesArray.map((number, i) => {
       return(<NumberBarExcerpt key={"n"+i} number={number} setPageNumber = {setPageNumber}/>)
     })
@@ -69,11 +66,11 @@ const Search = () => {
       </div>  
       <div className="row ">
         <hr className="gy-5"/>
-        <div>{currentPage}</div>
+        <div> { currentPage } </div>
         <div className="d-flex justify-content-center">
           <div className="btn-toolbar mx-auto" role="toolbar">
             <div className="btn-group" role="group" aria-label="First group">
-              {numberBar} 
+              { numberBar } 
             </div>
           </div>
         </div>

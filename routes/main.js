@@ -8,15 +8,15 @@ router.get("/generate-fake-data", ( req, res, next ) => {
     let product = new Product();
 
     product.category = faker.commerce.department();
-    product.name = faker.commerce.productName();
-    product.price = faker.commerce.price();
-    product.image = "https://via.placeholder.com/250?text=Product+Image"
-    product.reviews = [];
+    product.name     = faker.commerce.productName();
+    product.price    = faker.commerce.price();
+    product.image    = "https://via.placeholder.com/250?text=Product+Image"
+    product.reviews  = [];
 
-    let review = new Review();
+    let review      = new Review();
     review.userName = faker.internet.userName();
-    review.text = faker.lorem.text();
-    review.product = [];
+    review.text     = faker.lorem.text();
+    review.product  = [];
 
     product.reviews.push(review);
     review.product.push(product);
@@ -41,36 +41,37 @@ router.get("/products", async ( req, res, next ) => {
   const query = req.query.query ? req.query.query.charAt(0).toUpperCase()+req.query.query.slice(1).toLowerCase() : null; 
   const _category = req.query.category ? req.query.category.charAt(0).toUpperCase() + req.query.category.slice(1).toLowerCase() : null;
   const _priceSortFrom = req.query.price === "highest" ? "desc"
-                :req.query.price === "lowest"  ? "asc"
-                :req.query.price !== undefined ? req.query.price.toLowerCase():null; //lowecases all price inputs
+                        :req.query.price === "lowest"  ? "asc"
+                        :req.query.price !== undefined ? req.query.price.toLowerCase():null; //lowecases all price inputs
   
   const querypageNumber = parseInt(req.query.page) || 1;
   const perPage = 9;
   const toThisProductNumber = perPage * querypageNumber - perPage;
   //const toThisPage = toThisProductNumber > count ? 1 : toThisProductNumber
 
+  // count of documents in db
   let count = await Product.countDocuments( 
-    !query && !_category ? {}
-    :!query?{category:_category} 
-    :!_category? {$text:{$search: query, $caseSensitive: false}}
-    :{$text:{$search: query, $caseSensitive:false}, category: _category}
+      !query && !_category ? {}
+    : !query ? { category:_category } 
+    : !_category ? {$text:{$search: query, $caseSensitive: false}}
+    : {$text:{$search: query, $caseSensitive:false}, category : _category}
   );
 
   let pagesTotal = (count % 9 == !0 ? Math.trunc((count / 9) + 1) : count > 0 && count < 9 ? 1 : count / 9) || 0; 
 
   let product = await Product.find(
-    !query && !_category ? {}
-    :!query?{category:_category} 
-    :!_category? {$text:{$search: query, $caseSensitive: false}}
+     !query && !_category ? {}
+    :!query ? { category:_category } 
+    :!_category ? { $text: { $search: query, $caseSensitive: false }}
     :{$text:{$search: query, $caseSensitive:false}, category: _category}
   )
   //if product number greater than count then change skip to product 1.
   //loads a page if page number on frontend is querying at a high page number more than the products available.
-  .skip(toThisProductNumber > count ? 1 : toThisProductNumber)
-  .limit(perPage)
-  .sort({price: _priceSortFrom})
+  .skip( toThisProductNumber > count ? 1 : toThisProductNumber )
+  .limit( perPage )
+  .sort({ price: _priceSortFrom })
 
-  res.send({pages: pagesTotal, count: count, product: product});
+  res.send({ pages: pagesTotal, count: count, product: product });
 });
 
 // Returns a specific product by Id

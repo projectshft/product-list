@@ -31,6 +31,8 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
+// Experimental router params
+
 // Router params
 router.param("product", function (req, res, next, id) {
   Product.findById({ _id: `${id}` }).exec((err, product) => {
@@ -74,7 +76,7 @@ router.get("/products/:product", (req, res) => {
 router.get("/products/:product/reviews", (req, res) => {
   const perReviewPage = 4;
   page = req.query.page || 1;
-  Product.find({ _id: req.params.product })
+  Product.find({ _id: req.product._id })
     .populate({
       path: "reviews",
       options: {
@@ -89,5 +91,45 @@ router.get("/products/:product/reviews", (req, res) => {
       res.send(review);
     });
 });
+
+// Post methods
+
+router.post("/products", (req, res) => {
+  const product = new Product(req.body);
+  product
+    .save()
+    .then(() => res.json("Product added!"))
+    .catch((err) => res.status(400).json("Error " + err));
+});
+
+router.post("/products/:product/reviews", (req, res) => {
+  // First step is to create the review.
+  const review = new Review(req.body);
+  // req.product._id is pointing to the router param and will be saved in the review.product array.
+  review.product = req.product._id;
+
+  // Second step is to save the review to database and then to push the saved review to product array as an objectId.
+  review.save((err) => {
+    if (err) {
+      throw err;
+    }
+    Product.findById({ _id: req.product._id }, (err, product) => {
+      if (err) {
+        throw err;
+      }
+      product.reviews.push(review._id);
+      product.save((err) => {
+        if (err) {
+          throw err;
+        }
+        res.json("Review added to the product!");
+      });
+    });
+  });
+});
+// Sort by category
+// Product.find({ category: "Beauty" }).exec((err, product) => {
+//   console.log(product);
+// });
 
 module.exports = router;

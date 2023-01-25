@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { faker } = require("@faker-js/faker");
+const e = require("express");
 const { Product, Review } = require("../models/product");
 
 router.get("/generate-fake-data", (req, res, next) => {
@@ -31,8 +32,6 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-// Experimental router params
-
 // Router params
 router.param("product", function (req, res, next, id) {
   Product.findById({ _id: `${id}` }).exec((err, product) => {
@@ -59,25 +58,33 @@ router.param("review", function (req, res, next, id) {
 
 router.get("/products", (req, res, next) => {
   const perPage = 9;
-  page = req.query.page || 1;
+  page = req.query.page ? parseInt(req.query.page) : 1;
   category = req.query.category || "";
+  sort = req.query.sort || "";
 
-  if (!category) {
-    Product.find({})
-      .skip((page - 1) * perPage)
-      .limit(perPage)
-      .exec((err, product) => {
-        res.send(product);
-      });
-  } else {
-    page = 1;
-    Product.find({ category: req.query.category })
-      .skip((page - 1) * perPage)
-      .limit(perPage)
-      .exec((err, product) => {
-        res.send(product);
-      });
+  let filterCriteria = {};
+  if (category) {
+    filterCriteria = { category: category };
   }
+  let sortCriteria = {};
+  if (sort === "asc") {
+    sortCriteria = { price: 1 };
+  } else if (sort === "desc") {
+    sortCriteria = { price: -1 };
+  }
+
+  //Standard product list of 9.
+  Product.find(filterCriteria)
+    .sort(sortCriteria)
+    .skip((page - 1) * perPage)
+    .limit(perPage)
+    .exec((err, product) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(product);
+      }
+    });
 });
 
 router.get("/products/:product", (req, res) => {

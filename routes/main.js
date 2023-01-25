@@ -61,13 +61,23 @@ router.get("/products", (req, res, next) => {
   const perPage = 9;
   page = req.query.page || 1;
   category = req.query.category || "";
-  console.log(category);
-  Product.find({})
-    .skip((page - 1) * perPage)
-    .limit(perPage)
-    .exec((err, product) => {
-      res.send(product);
-    });
+
+  if (!category) {
+    Product.find({})
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec((err, product) => {
+        res.send(product);
+      });
+  } else {
+    page = 1;
+    Product.find({ category: req.query.category })
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec((err, product) => {
+        res.send(product);
+      });
+  }
 });
 
 router.get("/products/:product", (req, res) => {

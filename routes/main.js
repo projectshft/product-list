@@ -60,6 +60,8 @@ router.param("review", function (req, res, next, id) {
 router.get("/products", (req, res, next) => {
   const perPage = 9;
   page = req.query.page || 1;
+  category = req.query.category || "";
+  console.log(category);
   Product.find({})
     .skip((page - 1) * perPage)
     .limit(perPage)
@@ -71,6 +73,17 @@ router.get("/products", (req, res, next) => {
 router.get("/products/:product", (req, res) => {
   const product = req.product;
   res.send(product);
+});
+
+router.get("/reviews", (req, res) => {
+  Review.find({})
+    .populate("product")
+    .exec((err, reviews) => {
+      if (err) {
+        throw err;
+      }
+      res.send(reviews);
+    });
 });
 
 router.get("/products/:product/reviews", (req, res) => {
@@ -127,9 +140,38 @@ router.post("/products/:product/reviews", (req, res) => {
     });
   });
 });
-// Sort by category
-// Product.find({ category: "Beauty" }).exec((err, product) => {
-//   console.log(product);
-// });
+
+router.delete("/products/:product", (req, res) => {
+  Product.deleteOne({ _id: req.product._id }).exec((err, product) => {
+    if (err) {
+      throw err;
+    }
+    res.json("Product deleted!");
+  });
+});
+
+// Finish delete review
+router.delete("/reviews/:reviewId", (req, res) => {
+  Review.findByIdAndDelete({ _id: req.params.reviewId }).exec((err, review) => {
+    if (!review) {
+      res.status(404).json("no review with this id.");
+      return;
+    }
+    if (err) {
+      throw err;
+    }
+    // Clean up Objectid references in product
+    Product.updateMany(
+      { reviews: review._id },
+      { $pull: { reviews: review._id } },
+      (err) => {
+        if (err) {
+          throw err;
+        }
+        res.json("Review Deleted!");
+      }
+    );
+  });
+});
 
 module.exports = router;

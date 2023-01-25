@@ -38,66 +38,61 @@ const Review = mongoose.model('review', ReviewSchema);
   // res.end();
 //}});
 
+//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERY OF CATEGORY***
+router.get("/myProducts", async (req, res, next) => {
+  const perPage = 9;
 
-//2. IMPLEMENT PAGINATION = DONE
-// router.get("/myProducts", (req, res, next) => {
-//   const perPage = 9;
+  // return the first page by default
+  const page = req.query.page || 1;     
 
-//   // return the first page by default
-//   const page = req.query.page || 1;
-
-// const category = req.query;
-// const myProducts = {};
-
-// if (category) {
-//   myProducts.category = category;
-// }
-  
-//   MyProducts.find({})
-//     .skip(perPage * page - perPage)
-//     .limit(perPage)
-//     .exec((err, myProducts) => {
-//       // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-//     if (err) return next (err);
-//     res.send({category: req.query.category})  //logs, literally 'music'!!  
+  //define variable for query
+  const queryBody = req.body      
+  console.log(queryBody)  //THIS RETURNS {category: 'shoes'}
+  console.log(req.body)  //THIS RETURNS {category: 'shoes' }
+  console.log(req.body.category)   //THIS RETURNS shoes
     
-//     });
+  if (queryBody) {
+  await MyProducts.find(queryBody)
+    .skip(perPage * page - perPage)       //commented these out made no difference
+    .limit(perPage)
+    .exec((err, data) => {
+      if (err) return next (err);
+    
+      console.log('filtered', data)  //returns empty array 
+    });
+  } else {
+  if (!queryBody) {
+    await MyProducts.find({})
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, data) => {
+      if (err) return next (err);
+           
+      console.log('unfiltered', data)
+    });
+  };
+}
   
-//       MyProducts.count().exec((err, count) => {
-//           if (err) return next(err);
-//     });
-//   });
-//});
+//Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back 
+//so we can figure out the number of pages
+MyProducts.count().exec((err, count) => {
+  if (err) return next(err);
+  });
+});
+  
+//WORKING EXAMPLE ONLY 
+// MyProducts.find({'category': 'Shoes' }, (err, data) => {
+//   if (err) console.log(err);
+//   console.log(data)
+// })
        
-
-router.get('/myProducts', async (req, res, next)  => {
-  
-  const shoes = await MyProducts.find({ category: 'Shoes' })
-  .exec()
-  console.log(shoes)
-  
-});  
-
-//***************** */
-//GET ALL PRODUCTS (minus pagination) (NOT REQUIRED, EXAMPLE ONLY)
-// router.get('/myProducts', (req, res) => {
-//   const productCat = req.params.category;
-  
-//   if (!productCat) {
-//     return console.log('Must enter a valid product category to complete this search')
-//   }
-
-//   MyProducts.find({
-//     if ()
-//   })
-
-//     .exec((err, )
-// });  
-
 
 
 //***************** */
 //3. CREATE NEW PRODUCT = DONE 
+//TRY TO REWRITE WITH PROPER CODE:
+//*******MyProducts.create({ props  })***********;
+
 // const newProduct = new MyProducts({     //id = 63c866dd3d0fb78401025d7e
 //   category: 'Health',
 //   name: 'Cool Purple Medicine Ball',
@@ -109,6 +104,8 @@ router.get('/myProducts', async (req, res, next)  => {
 
 //**************** */
 // //4. CREATE REVIEW FOR PRODUCT CREATED = DONE - (newProductReview.product matches newProduct._id)
+//TRY TO REWRITE WITH PROPER CODE:
+//*******Review.create({ props  })*************;
 // const newProductReview = new Review({         //id = 63c866dd3d0fb78401025d7f
 //   userName: 'Jillannette',
 //   reviewText: 'Awesome product for the price!',

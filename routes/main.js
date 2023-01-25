@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { faker } = require("@faker-js/faker");
+const { query } = require("express");
 const e = require("express");
 const { Product, Review } = require("../models/product");
 
@@ -61,17 +62,33 @@ router.get("/products", (req, res, next) => {
   page = req.query.page ? parseInt(req.query.page) : 1;
   category = req.query.category || "";
   sort = req.query.sort || "";
+  searchQuery = req.query.searchQuery || "";
 
   let filterCriteria = {};
-  if (category) {
+  if (category && !searchQuery) {
     filterCriteria = { category: category };
+  } else if (category && searchQuery) {
+    filterCriteria = {
+      name: { $regex: searchQuery, $options: "i" },
+      category: category,
+    };
+  } else if (searchQuery && !category) {
+    filterCriteria = {
+      name: { $regex: searchQuery, $options: "i" },
+    };
   }
+
   let sortCriteria = {};
   if (sort === "asc") {
     sortCriteria = { price: 1 };
   } else if (sort === "desc") {
     sortCriteria = { price: -1 };
   }
+
+  // let catAndSearch = {
+  //   name: { $regex: /salad/, $options: "i" },
+  //   category: "Grocery",
+  // };
 
   //Standard product list of 9.
   Product.find(filterCriteria)
@@ -190,5 +207,12 @@ router.delete("/reviews/:reviewId", (req, res) => {
     );
   });
 });
+
+// Product.find(catAndSearch).exec((err, product) => {
+//   if (err) {
+//     throw err;
+//   }
+//   console.log(product);
+// });
 
 module.exports = router;

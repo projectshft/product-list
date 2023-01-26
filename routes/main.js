@@ -38,31 +38,33 @@ const Review = mongoose.model('review', ReviewSchema);
   // res.end();
 //}});
 
+// const max = parseInt(req.query.highest, );
+// Models.Collection.find({price: {$lte: max}});
+
 //2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERY OF CATEGORY***
-router.get("/myProducts", async (req, res, next) => {
+router.get("/myProducts", (req, res, next) => {
   const perPage = 9;
 
   // return the first page by default
-  const page = req.query.page || 1;     
-
+  const page = req.query.page || 1;  
+  
   //define variable for query
-  const queryBody = req.body      
-  console.log(queryBody)  //THIS RETURNS {category: 'shoes'}
-  console.log(req.body)  //THIS RETURNS {category: 'shoes' }
-  console.log(req.body.category)   //THIS RETURNS shoes
-    
-  if (queryBody) {
-  await MyProducts.find(queryBody)
-    .skip(perPage * page - perPage)       //commented these out made no difference
-    .limit(perPage)
-    .exec((err, data) => {
+  const categoryQuery = req.query.category 
+  console.log(req.query.category)
+ 
+  if (categoryQuery) {
+    MyProducts.find({category: categoryQuery})
+      .skip(perPage * page - perPage)       //commented these out made no difference
+      .limit(perPage)
+      .exec((err, data) => {
+      
       if (err) return next (err);
     
       console.log('filtered', data)  //returns empty array 
-    });
+    })
   } else {
-  if (!queryBody) {
-    await MyProducts.find({})
+  if (!categoryQuery) {
+    MyProducts.find({})
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, data) => {
@@ -78,15 +80,13 @@ router.get("/myProducts", async (req, res, next) => {
 MyProducts.count().exec((err, count) => {
   if (err) return next(err);
   });
-});
+  });
   
 //WORKING EXAMPLE ONLY 
 // MyProducts.find({'category': 'Shoes' }, (err, data) => {
 //   if (err) console.log(err);
 //   console.log(data)
 // })
-       
-
 
 //***************** */
 //3. CREATE NEW PRODUCT = DONE 
@@ -135,13 +135,12 @@ MyProducts.count().exec((err, count) => {
 //   });
   
 //**************** */
-//START HERE TO REFACTOR BY ADDING OPTIONAL CATEGORY QUERY 
 //7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter, limited to 4 reviews = DONE **REFACTOR
 //PASS PAGE QUERY PARAMETER TO PAGINATE 
 // router.get('/myProducts/:product/reviews', (req, res, next) => {
 //   const perProduct = 4;
-//   //const page = req.query.page || 1;
-//   MyProducts.findById({ _id: req.query.product  })
+//   //const page = req.query.page || 1;     
+//   MyProducts.findById({ _id: req.query.product  })         ****:PRODUCT IS USUALLY REQ.PARAMS
 //   //.skip(perProduct * page - perProduct)
 //   .limit(perProduct)
 //   .populate('reviews')

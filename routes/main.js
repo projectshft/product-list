@@ -58,27 +58,31 @@ router.param("review", function (req, res, next, id) {
 });
 
 router.get("/products", (req, res, next) => {
+  const capitalize = (string) => {
+    string = string.toLowerCase().charAt(0).toUpperCase() + string.slice(1);
+    return string;
+  };
   const perPage = 9;
   page = req.query.page ? parseInt(req.query.page) : 1;
   price = req.query.price || "";
   searchQuery = req.query.searchQuery || "";
+  let query = req.query.query || "";
 
-  // 2. Fix case for category to recognize lowercase
-  category = req.query.category || "";
+  category = capitalize(req.query.category || "");
 
   // logic for optional queries
   let filterCriteria = {};
 
-  if (category && !searchQuery) {
+  if (category && !query) {
     filterCriteria = { category: category };
-  } else if (category && searchQuery) {
+  } else if (category && query) {
     filterCriteria = {
-      name: { $regex: searchQuery, $options: "i" },
+      name: { $regex: query, $options: "i" },
       category: category,
     };
-  } else if (searchQuery && !category) {
+  } else if (query && !category) {
     filterCriteria = {
-      name: { $regex: searchQuery, $options: "i" },
+      name: { $regex: query, $options: "i" },
     };
   }
 

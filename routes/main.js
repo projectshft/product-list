@@ -60,13 +60,11 @@ router.param("review", function (req, res, next, id) {
 router.get("/products", (req, res, next) => {
   const perPage = 9;
   page = req.query.page ? parseInt(req.query.page) : 1;
-  category = req.query.category || "";
-  sort = req.query.sort || "";
+  price = req.query.price || "";
   searchQuery = req.query.searchQuery || "";
 
-  // 1. Change sort from desc -- asc to lowest and highest
   // 2. Fix case for category to recognize lowercase
-  // 3. Refine error catching
+  category = req.query.category || "";
 
   // logic for optional queries
   let filterCriteria = {};
@@ -86,9 +84,9 @@ router.get("/products", (req, res, next) => {
 
   let sortCriteria = {};
 
-  if (sort === "asc") {
+  if (price === "lowest") {
     sortCriteria = { price: 1 };
-  } else if (sort === "desc") {
+  } else if (price === "highest") {
     sortCriteria = { price: -1 };
   }
 

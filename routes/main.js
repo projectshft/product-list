@@ -38,56 +38,94 @@ const Review = mongoose.model('review', ReviewSchema);
   // res.end();
 //}});
 
-// const max = parseInt(req.query.highest, );
-// Models.Collection.find({price: {$lte: max}});
-
-//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERY OF CATEGORY***
+//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIESY***
 router.get("/myProducts", (req, res, next) => {
   const perPage = 9;
-
+  //define variables for query
   // return the first page by default
   const page = req.query.page || 1;  
-  
-  //define variable for query
-  const categoryQuery = req.query.category 
-  console.log(req.query.category)    //returns Shoes
-
-  //FOR SORTING BY PRICE
-  // const highest = {price: -1}
-  // const lowest = {price: 1}
-  // const descendingPriceQuery = req.query.highest
-  // const ascendingPriceQuery = req.query.lowest
- 
-  if (categoryQuery) {
-    MyProducts.find(({category: categoryQuery}, {page: page}))
-      .skip(perPage * page - perPage)       //commented these out made no difference
-      .limit(perPage)
-      .exec((err, data) => {
-      
-      if (err) return next (err);
     
-      console.log('filtered', data)  //returns empty array 
-    })
-  } else {
-  if (!categoryQuery) {
-    MyProducts.find({})
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, data) => {
+  const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
+  //console.log(req.query.category)    //returns Shoes
+
+  //return sort of highest to lowest by default
+  const priceQuery = req.query.price 
+  //console.log(req.query.price)   //returns highest or lowest
+
+  let priceSelection;
+      if (priceQuery === 'highest') {
+        //console.log('highest')  //ok returns highest
+        //console.log({price: -1})   //ok {price: -1} when highest 
+        priceSelection = {price: -1} 
+        console.log('highest price selection', priceSelection)  //ok {price: -1}
+      }
+      if (priceQuery === 'lowest') {
+        //console.log('lowest')  //ok
+        //console.log({price:1})  //ok
+        priceSelection = {price: 1}
+        //console.log('lowest price selection', priceSelection)   //ok
+      }
+      console.log('priceSelection', priceSelection)
+  if ((categoryQuery && priceQuery)) { 
+    
+     MyProducts.find(({category: categoryQuery}, {page: page}, (priceSelection)))
+      .skip(perPage * page - perPage)       
+      .limit(perPage)
+      .sort(priceSelection)
+      .exec((err, data) => {
+         
       if (err) return next (err);
+      
+          
+      console.log('filtered', data)   
+    })
+
+    //} else {
+//     MyProducts.find(({category: categoryQuery}, {page: page}))
+//     .skip(perPage * page - perPage)       
+//     .limit(perPage)
+//     .exec((err, data) => {
+       
+//     if (err) return next (err);
+    
+        
+//     console.log('filtered', data)   
+//     })
+//   }
+  
+//   } else {
+//     if (priceQuery) {
+//       MyProducts.find({})  
+//     .skip(perPage * page - perPage)
+//     .limit(perPage)
+//     .sort(price)
+//     .exec((err, data) => {
+//       if (err) return next (err);
            
-      console.log('unfiltered', data)
-    });
-  };
-}
+//       console.log('unfiltered', data)
+//     });
+//     } else {
+//     MyProducts.find({})  
+//     .skip(perPage * page - perPage)
+//     .limit(perPage)
+//     .exec((err, data) => {
+//       if (err) return next (err);
+           
+//       console.log('unfiltered', data)
+//     })
+ 
+// }
+
+//***SET OPTIONAL QUERY FOR PRODUCT AND ERROR IF NOTHING MATCHES  */
   
 //Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back 
 //so we can figure out the number of pages
 MyProducts.count().exec((err, count) => {
   if (err) return next(err);
   });
-  });
-  
+  //});
+}
+})
 //WORKING EXAMPLE ONLY 
 // MyProducts.find({'category': 'Shoes' }, (err, data) => {
 //   if (err) console.log(err);

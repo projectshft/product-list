@@ -64,7 +64,13 @@ router.get("/products", (req, res, next) => {
   sort = req.query.sort || "";
   searchQuery = req.query.searchQuery || "";
 
+  // 1. Change sort from desc -- asc to lowest and highest
+  // 2. Fix case for category to recognize lowercase
+  // 3. Refine error catching
+
+  // logic for optional queries
   let filterCriteria = {};
+
   if (category && !searchQuery) {
     filterCriteria = { category: category };
   } else if (category && searchQuery) {
@@ -79,6 +85,7 @@ router.get("/products", (req, res, next) => {
   }
 
   let sortCriteria = {};
+
   if (sort === "asc") {
     sortCriteria = { price: 1 };
   } else if (sort === "desc") {
@@ -106,6 +113,9 @@ router.get("/products", (req, res, next) => {
 
 router.get("/products/:product", (req, res) => {
   const product = req.product;
+  if (!product) {
+    return res.status(404).json("Product not found.");
+  }
   res.send(product);
 });
 
@@ -123,6 +133,12 @@ router.get("/reviews", (req, res) => {
 router.get("/products/:product/reviews", (req, res) => {
   const perReviewPage = 4;
   page = req.query.page || 1;
+  const product = req.product;
+
+  if (!product) {
+    return res.status(404).json("Product not found.");
+  }
+
   Product.find({ _id: req.product._id })
     .populate({
       path: "reviews",
@@ -139,8 +155,6 @@ router.get("/products/:product/reviews", (req, res) => {
     });
 });
 
-// Post methods
-
 router.post("/products", (req, res) => {
   const product = new Product(req.body);
   product
@@ -150,11 +164,14 @@ router.post("/products", (req, res) => {
 });
 
 router.post("/products/:product/reviews", (req, res) => {
-  // First step is to create the review.
+  const product = req.product;
+  // First step is to create the new Review.
+  if (!product) {
+    return res.status(404).json("Cannot leave a review. Product not found.");
+  }
   const review = new Review(req.body);
-  // req.product._id is pointing to the router param and will be saved in the review.product array.
+  // In the product part of your review, you are linking the ObjectId of the product creaed.
   review.product = req.product._id;
-
   // Second step is to save the review to database and then to push the saved review to product array as an objectId.
   review.save((err) => {
     if (err) {
@@ -175,8 +192,13 @@ router.post("/products/:product/reviews", (req, res) => {
   });
 });
 
+// Add review cleanup after deleting product.
 router.delete("/products/:product", (req, res) => {
-  Product.deleteOne({ _id: req.product._id }).exec((err, product) => {
+  const product = req.product;
+  if (!product) {
+    return res.status(404).json("Product not found.");
+  }
+  Product.deleteOne({ _id: req.product._id }).exec((err) => {
     if (err) {
       throw err;
     }
@@ -184,11 +206,10 @@ router.delete("/products/:product", (req, res) => {
   });
 });
 
-// Finish delete review
 router.delete("/reviews/:reviewId", (req, res) => {
   Review.findByIdAndDelete({ _id: req.params.reviewId }).exec((err, review) => {
     if (!review) {
-      res.status(404).json("no review with this id.");
+      res.status(404).json("Review not found.");
       return;
     }
     if (err) {

@@ -50,10 +50,16 @@ router.get("/myProducts", (req, res, next) => {
   
   //define variable for query
   const categoryQuery = req.query.category 
-  console.log(req.query.category)
+  console.log(req.query.category)    //returns Shoes
+
+  //FOR SORTING BY PRICE
+  // const highest = {price: -1}
+  // const lowest = {price: 1}
+  // const descendingPriceQuery = req.query.highest
+  // const ascendingPriceQuery = req.query.lowest
  
   if (categoryQuery) {
-    MyProducts.find({category: categoryQuery})
+    MyProducts.find(({category: categoryQuery}, {page: page}))
       .skip(perPage * page - perPage)       //commented these out made no difference
       .limit(perPage)
       .exec((err, data) => {

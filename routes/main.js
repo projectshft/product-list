@@ -50,28 +50,25 @@ router.get("/myProducts", (req, res, next) => {
 
   //return sort of highest to lowest by default
   const priceQuery = req.query.price 
-  //console.log(req.query.price)   //returns highest or lowest
+  console.log(req.query.price)   //returns highest or lowest
+  let price;
+  let highest = {price: -1}
+  let lowest = {price: 1}
+  if (priceQuery === highest) {
+    price = {price: -1}
+  }
+  if (priceQuery === lowest) {
+    price = {price: 1}
+  }
+  console.log('price',price)
 
-  let priceSelection;
-      if (priceQuery === 'highest') {
-        //console.log('highest')  //ok returns highest
-        //console.log({price: -1})   //ok {price: -1} when highest 
-        priceSelection = {price: -1} 
-        console.log('highest price selection', priceSelection)  //ok {price: -1}
-      }
-      if (priceQuery === 'lowest') {
-        //console.log('lowest')  //ok
-        //console.log({price:1})  //ok
-        priceSelection = {price: 1}
-        //console.log('lowest price selection', priceSelection)   //ok
-      }
-      console.log('priceSelection', priceSelection)
-  if ((categoryQuery && priceQuery)) { 
-    
-     MyProducts.find(({category: categoryQuery}, {page: page}, (priceSelection)))
+  if (categoryQuery) { 
+    //if optional query of category is selected
+    if (priceQuery) {          //if optional query of price is selected
+      MyProducts.find(({category: categoryQuery}, {page: page}, {price: price}))
       .skip(perPage * page - perPage)       
       .limit(perPage)
-      .sort(priceSelection)
+      .sort(price)
       .exec((err, data) => {
          
       if (err) return next (err);
@@ -79,8 +76,7 @@ router.get("/myProducts", (req, res, next) => {
           
       console.log('filtered', data)   
     })
-
-    //} else {
+//     } else {
 //     MyProducts.find(({category: categoryQuery}, {page: page}))
 //     .skip(perPage * page - perPage)       
 //     .limit(perPage)
@@ -125,6 +121,7 @@ MyProducts.count().exec((err, count) => {
   });
   //});
 }
+};
 })
 //WORKING EXAMPLE ONLY 
 // MyProducts.find({'category': 'Shoes' }, (err, data) => {

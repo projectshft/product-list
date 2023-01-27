@@ -6,11 +6,9 @@ import Product from './components/Product'
 function App() {
   return (
     <div className="App">
-      <header>
-        <h1>Ecommerce Store</h1>
-        <Dropdown/>
-        <Product/>
-      </header>
+      <h1>Ecommerce Store</h1>
+      <Dropdown/>
+      <Product/> 
     </div>
   );
 }

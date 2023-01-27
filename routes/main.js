@@ -63,19 +63,34 @@ router.get("/myProducts", (req, res, next) => {
   console.log('page', page)
   //const p = {price: -1}
 
-  if (categoryQuery) { 
-    MyProducts.find({category: categoryQuery})
-      .skip(perPage * page - perPage)   
-      .limit(perPage)
-      .exec((err, data) => {
+  const categoryAndPrice = categoryQuery && priceQuery;
+
+
+  // if (categoryQuery) { 
+  //   MyProducts.find({category: categoryQuery})
+  //     .skip(perPage * page - perPage)   
+  //     .limit(perPage)
+  //     .exec((err, data) => {
          
-      if (err) return next (err);
+  //     if (err) return next (err);
       
           
-      console.log('filtered', data) 
-      // TRY RES.SEND???? TO SEE HOW EFFECTS CODE  
-    })
-  }          // NEXT SEARCH FOR INDIVIDUAL PRODUCT 
+  //     console.log('filtered', data) 
+  //     // TRY RES.SEND???? TO SEE HOW EFFECTS CODE  
+  //   })
+  // } 
+  if (categoryAndPrice) {
+    MyProducts.find({category: categoryQuery, priceSort})
+      .skip(perPage * page - perPage)   
+      .limit(perPage)
+      .sort(priceSort)
+      .exec((err, data) => {
+        if (err) return next (err);
+        console.log('filtered', data);
+  });
+}
+
+  // NEXT SEARCH FOR INDIVIDUAL PRODUCT 
   // if (priceQuery && !categoryQuery) { 
   //   MyProducts.find({})
   //     .skip(perPage * page - perPage)   

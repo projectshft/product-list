@@ -38,45 +38,57 @@ const Review = mongoose.model('review', ReviewSchema);
   // res.end();
 //}});
 
-//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIESY***
+//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIES***
 router.get("/myProducts", (req, res, next) => {
-  const perPage = 9;
+  const perPage = 9;        //**************NEED TO INVESTIGATE AN "OR" CONDITION OR CONDITIONAL */
   //define variables for query
   // return the first page by default
-  const page = req.query.page || 1;  
+  const page = req.query.page;    // || 1;  
 
-  const query = req.query;
-    
   const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
   //console.log(req.query.category)    //returns Shoes
 
   //return sort of highest to lowest by default
   const priceQuery = req.query.price 
   console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
-  let price;
+  let priceSort;
   // let highest = {price: -1}
   // let lowest = {price: 1}
   if (priceQuery === 'highest') {                                   
-    price = {price: -1}
+    priceSort = {price: -1}
   }
   if (priceQuery === 'lowest') {
-    price = {price: 1}
+    priceSort = {price: 1}
   }
-  console.log('price',price)
+  console.log('page', page)
+  //const p = {price: -1}
 
-  if (query) { 
-    MyProducts.find({category: categoryQuery, page: page})
-      .skip(perPage * page - perPage)       
+  if (categoryQuery) { 
+    MyProducts.find({category: categoryQuery})
+      .skip(perPage * page - perPage)   
       .limit(perPage)
-      .sort({price: -1})
       .exec((err, data) => {
          
       if (err) return next (err);
       
           
-      console.log('filtered', data)   
+      console.log('filtered', data) 
+      // TRY RES.SEND???? TO SEE HOW EFFECTS CODE  
     })
-  }
+  }          // NEXT SEARCH FOR INDIVIDUAL PRODUCT 
+  // if (priceQuery && !categoryQuery) { 
+  //   MyProducts.find({})
+  //     .skip(perPage * page - perPage)   
+  //     .limit(perPage)
+  //     .sort(priceSort)
+  //     .exec((err, data) => {
+         
+  //     if (err) return next (err);
+      
+          
+  //     console.log('filtered', data)   
+  //   })
+  // }
 //     } else {
 //     MyProducts.find(({category: categoryQuery}, {page: page}))
 //     .skip(perPage * page - perPage)       
@@ -119,6 +131,7 @@ router.get("/myProducts", (req, res, next) => {
 //so we can figure out the number of pages
 MyProducts.count().exec((err, count) => {
   if (err) return next(err);
+  console.log(count)
   
   });
   //});

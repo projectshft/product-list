@@ -38,69 +38,91 @@ const Review = mongoose.model('review', ReviewSchema);
   // res.end();
 //}});
 
-// const max = parseInt(req.query.highest, );
-// Models.Collection.find({price: {$lte: max}});
-
-//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERY OF CATEGORY***
+//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIESY***
 router.get("/myProducts", (req, res, next) => {
   const perPage = 9;
-
-  //KEEP
-  const query = req.query
-  console.log('q', query)   //{ page: 2, category: 'Shoes' } ALL OPTIONAL QUERIES
-
+  //define variables for query
   // return the first page by default
-  const page = query.page || 1;     //GRABS JUST THE NUMBER
-  
+  const page = req.query.page || 1;  
 
-  let numPages = MyProducts.count().exec((err, count) => {
-    if (err) return next(err);
-    console.log(count)
-    });
-  
-  // console.log('query.page', query.page)
-  // console.log('page', page)
-  
-  // //define variable for query
-  const categoryChoice = req.query.category;    //GRABS JUST SELECTED CATEGORY WORD
-  console.log('req.query.category', req.query.category);  //'Shoes' entered in Postman as 'Shoes' return empty array
-  console.log('categoryChoice', categoryChoice)
- 
-  //FOR SORTING BY PRICE
-  // const highest = {price: -1}
-  // const lowest = {price: 1}
-  // const descendingPriceQuery = req.query.highest
-  // const ascendingPriceQuery = req.query.lowest
- 
-  if (query) {
-    MyProducts.find({category: categoryChoice})
-      .skip(page * perPage)       //commented these out made no difference
-      .limit(perPage)
-      .exec((err, data) => {
-      
-      if (err) return next (err);
+  const query = req.query;
     
-      console.log('filtered', data)  //returns empty array n
+  const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
+  //console.log(req.query.category)    //returns Shoes
+
+  //return sort of highest to lowest by default
+  const priceQuery = req.query.price 
+  console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
+  let price;
+  // let highest = {price: -1}
+  // let lowest = {price: 1}
+  if (priceQuery === 'highest') {                                   
+    price = {price: -1}
+  }
+  if (priceQuery === 'lowest') {
+    price = {price: 1}
+  }
+  console.log('price',price)
+
+  if (query) { 
+    MyProducts.find({category: categoryQuery, page: page})
+      .skip(perPage * page - perPage)       
+      .limit(perPage)
+      .sort({price: -1})
+      .exec((err, data) => {
+         
+      if (err) return next (err);
+      
+          
+      console.log('filtered', data)   
     })
   }
-  // } else {
-  // if (!categoryQuery) {
-  //   MyProducts.find({})
-  //   .skip(perPage * page - perPage)
-  //   .limit(perPage)
-  //   .exec((err, data) => {
-  //     if (err) return next (err);
-           
-  //     console.log('unfiltered', data)
-  //   });
+//     } else {
+//     MyProducts.find(({category: categoryQuery}, {page: page}))
+//     .skip(perPage * page - perPage)       
+//     .limit(perPage)
+//     .exec((err, data) => {
+       
+//     if (err) return next (err);
+    
+        
+//     console.log('filtered', data)   
+//     })
+//   }
   
+//   } else {
+//     if (priceQuery) {
+//       MyProducts.find({})  
+//     .skip(perPage * page - perPage)
+//     .limit(perPage)
+//     .sort(price)
+//     .exec((err, data) => {
+//       if (err) return next (err);
+           
+//       console.log('unfiltered', data)
+//     });
+//     } else {
+//     MyProducts.find({})  
+//     .skip(perPage * page - perPage)
+//     .limit(perPage)
+//     .exec((err, data) => {
+//       if (err) return next (err);
+           
+//       console.log('unfiltered', data)
+//     })
+ 
+// }
+
+//***SET OPTIONAL QUERY FOR PRODUCT AND ERROR IF NOTHING MATCHES  */
   
 //Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back 
 //so we can figure out the number of pages
-
-})
-;
+MyProducts.count().exec((err, count) => {
+  if (err) return next(err);
   
+  });
+  //});
+})
 //WORKING EXAMPLE ONLY 
 // MyProducts.find({'category': 'Shoes' }, (err, data) => {
 //   if (err) console.log(err);

@@ -38,91 +38,61 @@ const Review = mongoose.model('review', ReviewSchema);
   // res.end();
 //}});
 
-//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIESY***
+// const max = parseInt(req.query.highest, );
+// Models.Collection.find({price: {$lte: max}});
+
+//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERY OF CATEGORY***
 router.get("/myProducts", (req, res, next) => {
   const perPage = 9;
-  //define variables for query
+
   // return the first page by default
   const page = req.query.page || 1;  
-    
-  const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
-  //console.log(req.query.category)    //returns Shoes
-
-  //return sort of highest to lowest by default
-  const priceQuery = req.query.price 
-  console.log(req.query.price)   //returns highest or lowest
-  let price;
-  let highest = {price: -1}
-  let lowest = {price: 1}
-  if (priceQuery === highest) {
-    price = {price: -1}
-  }
-  if (priceQuery === lowest) {
-    price = {price: 1}
-  }
-  console.log('price',price)
-
-  if (categoryQuery) { 
-    //if optional query of category is selected
-    if (priceQuery) {          //if optional query of price is selected
-      MyProducts.find(({category: categoryQuery}, {page: page}, {price: price}))
-      .skip(perPage * page - perPage)       
-      .limit(perPage)
-      .sort(price)
-      .exec((err, data) => {
-         
-      if (err) return next (err);
-      
-          
-      console.log('filtered', data)   
-    })
-//     } else {
-//     MyProducts.find(({category: categoryQuery}, {page: page}))
-//     .skip(perPage * page - perPage)       
-//     .limit(perPage)
-//     .exec((err, data) => {
-       
-//     if (err) return next (err);
-    
-        
-//     console.log('filtered', data)   
-//     })
-//   }
   
+  //define variable for query
+  // const categorySelection = req.query.category 
+  // console.log(req.query.category)    //returns Shoes
+
+  // const optionalQuery = req.query //GOOD - KEEP.  NEED ONLY TO LOOK FOR ANY OPTIONAL QUERY???
+  // console.log('optionalQuery',optionalQuery)
+
+  //FOR SORTING BY PRICE
+  // const highest = {price: -1}
+  // const lowest = {price: 1}
+  // const descendingPriceQuery = req.query.highest
+  // const ascendingPriceQuery = req.query.lowest
+ 
+   //if (categorySelection) {
+    MyProducts.find({'category': 'Shoes'})
+      .skip(perPage * page - perPage)       //commented these out made no difference
+      .limit(perPage)
+      .exec((err, data) => {
+      
+      if (err) return next (err);
+    
+      console.log('filtered', data)  //returns empty array 
+    })
 //   } else {
-//     if (priceQuery) {
-//       MyProducts.find({})  
+//   if (!categoryQuery) {
+//     MyProducts.find({})
 //     .skip(perPage * page - perPage)
 //     .limit(perPage)
-//     .sort(price)
 //     .exec((err, data) => {
 //       if (err) return next (err);
            
 //       console.log('unfiltered', data)
 //     });
-//     } else {
-//     MyProducts.find({})  
-//     .skip(perPage * page - perPage)
-//     .limit(perPage)
-//     .exec((err, data) => {
-//       if (err) return next (err);
-           
-//       console.log('unfiltered', data)
-//     })
- 
+//   };
 // }
-
-//***SET OPTIONAL QUERY FOR PRODUCT AND ERROR IF NOTHING MATCHES  */
   
 //Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back 
 //so we can figure out the number of pages
-MyProducts.count().exec((err, count) => {
-  if (err) return next(err);
+// MyProducts.count().exec((err, count) => {
+//   if (err) return next(err);
+//   });
+//   }
+// );
   });
-  //});
-}
-};
-})
+  
 //WORKING EXAMPLE ONLY 
 // MyProducts.find({'category': 'Shoes' }, (err, data) => {
 //   if (err) console.log(err);

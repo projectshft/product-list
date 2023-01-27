@@ -45,53 +45,61 @@ const Review = mongoose.model('review', ReviewSchema);
 router.get("/myProducts", (req, res, next) => {
   const perPage = 9;
 
+  //KEEP
+  const query = req.query
+  console.log('q', query)   //{ page: 2, category: 'Shoes' } ALL OPTIONAL QUERIES
+
   // return the first page by default
-  const page = req.query.page || 1;  
+  const page = query.page || 1;     //GRABS JUST THE NUMBER
   
-  //define variable for query
-  // const categorySelection = req.query.category 
-  // console.log(req.query.category)    //returns Shoes
 
-  // const optionalQuery = req.query //GOOD - KEEP.  NEED ONLY TO LOOK FOR ANY OPTIONAL QUERY???
-  // console.log('optionalQuery',optionalQuery)
-
+  let numPages = MyProducts.count().exec((err, count) => {
+    if (err) return next(err);
+    console.log(count)
+    });
+  
+  // console.log('query.page', query.page)
+  // console.log('page', page)
+  
+  // //define variable for query
+  const categoryChoice = req.query.category;    //GRABS JUST SELECTED CATEGORY WORD
+  console.log('req.query.category', req.query.category);  //'Shoes' entered in Postman as 'Shoes' return empty array
+  console.log('categoryChoice', categoryChoice)
+ 
   //FOR SORTING BY PRICE
   // const highest = {price: -1}
   // const lowest = {price: 1}
   // const descendingPriceQuery = req.query.highest
   // const ascendingPriceQuery = req.query.lowest
  
-   //if (categorySelection) {
-    MyProducts.find({'category': 'Shoes'})
-      .skip(perPage * page - perPage)       //commented these out made no difference
+  if (query) {
+    MyProducts.find({category: categoryChoice})
+      .skip(page * perPage)       //commented these out made no difference
       .limit(perPage)
       .exec((err, data) => {
       
       if (err) return next (err);
     
-      console.log('filtered', data)  //returns empty array 
+      console.log('filtered', data)  //returns empty array n
     })
-//   } else {
-//   if (!categoryQuery) {
-//     MyProducts.find({})
-//     .skip(perPage * page - perPage)
-//     .limit(perPage)
-//     .exec((err, data) => {
-//       if (err) return next (err);
+  }
+  // } else {
+  // if (!categoryQuery) {
+  //   MyProducts.find({})
+  //   .skip(perPage * page - perPage)
+  //   .limit(perPage)
+  //   .exec((err, data) => {
+  //     if (err) return next (err);
            
-//       console.log('unfiltered', data)
-//     });
-//   };
-// }
+  //     console.log('unfiltered', data)
+  //   });
+  
   
 //Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back 
 //so we can figure out the number of pages
-// MyProducts.count().exec((err, count) => {
-//   if (err) return next(err);
-//   });
-//   }
-// );
-  });
+
+})
+;
   
 //WORKING EXAMPLE ONLY 
 // MyProducts.find({'category': 'Shoes' }, (err, data) => {

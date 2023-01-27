@@ -194,13 +194,20 @@ router.post("/products/:product/reviews", (req, res) => {
   });
 });
 
-// Add review cleanup after deleting product.
 router.delete("/products/:product", (req, res) => {
   const product = req.product;
   if (!product) {
     return res.status(404).json("Product not found.");
   }
-  Product.deleteOne({ _id: req.product._id }).exec((err) => {
+
+  // look in the Reviews for reference
+  Product.findByIdAndDelete({ _id: req.product._id }).exec((err) => {
+    // This will delete all of the reviews associated with the product and will delete floating reviews clutter.
+    Review.deleteMany({ product: req.product._id }).exec((err) => {
+      if (err) {
+        throw err;
+      }
+    });
     if (err) {
       throw err;
     }
@@ -230,12 +237,5 @@ router.delete("/reviews/:reviewId", (req, res) => {
     );
   });
 });
-
-// Product.find(catAndSearch).exec((err, product) => {
-//   if (err) {
-//     throw err;
-//   }
-//   console.log(product);
-// });
 
 module.exports = router;

@@ -5,12 +5,18 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const MyProductsSchema = new Schema({
-  category: String,
+  category: String,                          //TRY fpr category amd name: {type: String, get: capitalizeFirstLetter}, with capitalizeFirstLetter function below
   name: String,
   price: Number,
   image: String,
   reviews: [{ type: Schema.Types.ObjectId, ref: "review" }]
 });
+
+//POSSIBLE WAY TO SET PAGE DEFAULT??
+// MyProductsSchema.static('pageNum',
+// function(page) {
+//   return this.find({ page: page });
+// })
 
 ReviewSchema = new Schema({
   userName: String,
@@ -40,97 +46,72 @@ const Review = mongoose.model('review', ReviewSchema);
 
 //2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIES***
 router.get("/myProducts", (req, res, next) => {
-  const perPage = 9;        //**************NEED TO INVESTIGATE AN "OR" CONDITION OR CONDITIONAL */
-  //define variables for query
-  // return the first page by default
-  const page = req.query.page;    // || 1;  
+  
+  const perPage = 9 
+  
+  // //define variables for query
+  
+  const pageNum = req.query.page;  
+  //console.log('pageNum', pageNum, req.query.page)
+
+  //RETURN FIRST PAGE ONLY WHEN LESS THAN 9 PRODUCTS TO A PAGE
+  let pageQuery = req.query.page;
+  if(pageNum !== 1) {
+    pageQuery = 1
+  }
+  //console.log('pageNum', pageNum, req.query.page)    //THIS WORKS WHEN PAGE IS NOT SELECTED AND WHEN SELECTED WITH VALUE OTHER THAN '1'
 
   const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
   //console.log(req.query.category)    //returns Shoes
 
   //return sort of highest to lowest by default
   const priceQuery = req.query.price 
-  console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
+  //console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
   let priceSort;
-  // let highest = {price: -1}
-  // let lowest = {price: 1}
-  if (priceQuery === 'highest') {                                   
+   if (priceQuery === 'highest') {                                   
     priceSort = {price: -1}
   }
   if (priceQuery === 'lowest') {
     priceSort = {price: 1}
   }
-  console.log('page', page)
-  //const p = {price: -1}
 
-  const categoryAndPrice = categoryQuery && priceQuery;
+  //WORKING ON A WAY TO MATCH KEYWORD IN PRODUCT NAME
+  // const productQuery = req.query.name;
+  // let productMatch;
+  // if (productQuery.includes(any word in the name?????) {
+  //   productMatch === true
+  // } else {
+  //   console.log('No products match what you are looking for')
+  //   productMatch === false
+  // }
 
+   
+  //SET VARIABLE FOR MULTIPLE CONDITIONS
+  const pageCategoryQuery = pageQuery && categoryQuery;
+  //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
+  //const pageProductQuery = pageQuery && productQuery;
 
-  // if (categoryQuery) { 
-  //   MyProducts.find({category: categoryQuery})
-  //     .skip(perPage * page - perPage)   
-  //     .limit(perPage)
-  //     .exec((err, data) => {
-         
-  //     if (err) return next (err);
-      
-          
-  //     console.log('filtered', data) 
-  //     // TRY RES.SEND???? TO SEE HOW EFFECTS CODE  
-  //   })
-  // } 
-  if (categoryAndPrice) {
-    MyProducts.find({category: categoryQuery, priceSort})
-      .skip(perPage * page - perPage)   
-      .limit(perPage)
-      .sort(priceSort)
+  const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
+  //const pageCategoryProductQuery = pageQuery && categoryQuery && productQuery;
+  //const pageCategoryPriceProductQuery = pageQuery && categoryQuery && priceQuery && productQuery;
+
+  //const pagePriceProductQuery = pageQuery && priceQuery && productQuery;
+
+  
+  if (pageCategoryQuery) {
+    MyProducts.find({page: pageQuery, category: categoryQuery})
       .exec((err, data) => {
         if (err) return next (err);
         console.log('filtered', data);
   });
 }
 
-  // NEXT SEARCH FOR INDIVIDUAL PRODUCT 
-  // if (priceQuery && !categoryQuery) { 
-  //   MyProducts.find({})
-  //     .skip(perPage * page - perPage)   
-  //     .limit(perPage)
-  //     .sort(priceSort)
-  //     .exec((err, data) => {
-         
-  //     if (err) return next (err);
-      
-          
-  //     console.log('filtered', data)   
-  //   })
-  // }
-//     } else {
-//     MyProducts.find(({category: categoryQuery}, {page: page}))
-//     .skip(perPage * page - perPage)       
-//     .limit(perPage)
-//     .exec((err, data) => {
-       
-//     if (err) return next (err);
-    
-        
-//     console.log('filtered', data)   
-//     })
-//   }
-  
-//   } else {
-//     if (priceQuery) {
-//       MyProducts.find({})  
-//     .skip(perPage * page - perPage)
-//     .limit(perPage)
-//     .sort(price)
-//     .exec((err, data) => {
-//       if (err) return next (err);
-           
-//       console.log('unfiltered', data)
-//     });
+
+
+
 //     } else {
 //     MyProducts.find({})  
-//     .skip(perPage * page - perPage)
+//     .skip(perPage * pageNum - perPage)
 //     .limit(perPage)
 //     .exec((err, data) => {
 //       if (err) return next (err);

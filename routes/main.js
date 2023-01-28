@@ -61,7 +61,7 @@ router.get("/myProducts", (req, res, next) => {
 
   //SORT PRODUCT PRICE HIGHEST TO LOWEST BY QUERY VALUE
   const priceQuery = req.query.price   //result of
-  console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
+  //console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
   let priceSort;
   if (priceQuery === 'highest') {                                   
     priceSort = {price: -1}
@@ -69,18 +69,15 @@ router.get("/myProducts", (req, res, next) => {
   if (priceQuery === 'lowest') {
     priceSort = {price: 1}
   }
-  console.log('priceSort', priceSort)
-  console.log('priceQuery', priceQuery)
+  // console.log('priceSort', priceSort)
+  // console.log('priceQuery', priceQuery)
 
   //RETURN PRODUCTS THAT INCLUDE SEARCH TERMS IN THEIR NAME  
   const productQuery = req.query.name
-  const selectedProduct = MyProducts.find({
-    name: { '$regex': 'productQuery', '$options': 'i' }},
-    function (err, docs) {
-      if (err) console.log(err)
-      console.log(docs)
-    }
-  )
+  
+    
+  
+  
 
   //IF OPTIONAL QUERIES = PAGE AND CATEGORY:   (DONE)
 //   const pageCategoryQuery = pageQuery && categoryQuery;
@@ -95,26 +92,25 @@ router.get("/myProducts", (req, res, next) => {
 //   //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
 
 //   //IF OPTIONAL QUERIES = PAGE AND PRODUCT:  (DONE)
-//   const pageProductQuery = pageQuery && productQuery;
-//   if (pageProductQuery) {
-//     MyProducts.find({page: pageQuery, name: selectedProduct})
-//       .count(selectedProduct)
-//       .exec((err, data) => {
-//         if (err) return next (err);
-//         console.log('filtered', data);
-//       })
-//   }
-
-  //IF OPTIONAL QUERIES = PAGE, CATEGORY AND PRICE:
-  const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
-  if (pageCategoryPriceQuery) {
-    MyProducts.find({page: pageQuery, category: categoryQuery, priceSort})
-      .sort(priceSort)
+const pageProductQuery = pageQuery && productQuery;
+  if (pageProductQuery) {
+    MyProducts.find({page: pageQuery, name: { '$regex': productQuery, '$options': 'i' }})
       .exec((err, data) => {
         if (err) return next (err);
         console.log('filtered', data);
       })
   }
+
+  //IF OPTIONAL QUERIES = PAGE, CATEGORY AND PRICE:
+  // const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
+  // if (pageCategoryPriceQuery) {
+  //   MyProducts.find({page: pageQuery, category: categoryQuery, priceSort})
+  //     .sort(priceSort)
+  //     .exec((err, data) => {
+  //       if (err) return next (err);
+  //       console.log('filtered', data);
+  //     })
+  // }
 
   //const pageCategoryProductQuery = pageQuery && categoryQuery && productQuery;
   //const pageCategoryPriceProductQuery = pageQuery && categoryQuery && priceQuery && productQuery;

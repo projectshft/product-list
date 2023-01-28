@@ -44,68 +44,78 @@ router.get("/myProducts", (req, res, next) => {
   const perPage = 9 
   
   //RETURN FIRST PAGE ONLY WHEN LESS THAN 9 PRODUCTS TO A PAGE
+ 
   let pageQuery = req.query.page;
-  let result = MyProducts.find
-  if (result.length >= 9) {
-    pageQuery = pageQuery;
-  }
-  if(result.length < 9) {
-    pageQuery = 1
-  };
+  // if (query.length >= 9) {
+  //   pageQuery = pageQuery;
+  // }
+  // if(query.length < 9) {
+  //   pageQuery = {page: 1}
+  // };
+
   console.log('pageNumber', pageQuery)
-  
+    
+  //DECLARE VARIABLES FOR REQUESTS
   const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
   //console.log(req.query.category)    //returns Shoes
 
   //SORT PRODUCT PRICE HIGHEST TO LOWEST BY QUERY VALUE
-  const priceQuery = req.query.price 
-  //console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
+  const priceQuery = req.query.price   //result of
+  console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
   let priceSort;
-   if (priceQuery === 'highest') {                                   
+  if (priceQuery === 'highest') {                                   
     priceSort = {price: -1}
   }
   if (priceQuery === 'lowest') {
     priceSort = {price: 1}
   }
+  console.log('priceSort', priceSort)
+  console.log('priceQuery', priceQuery)
+
+  //RETURN PRODUCTS THAT INCLUDE SEARCH TERMS IN THEIR NAME  
   const productQuery = req.query.name
   const selectedProduct = MyProducts.find({
-    name: { '$regex': productQuery, '$options': 'i' }},
+    name: { '$regex': 'productQuery', '$options': 'i' }},
     function (err, docs) {
       if (err) console.log(err)
       console.log(docs)
     }
   )
 
-  //SET VARIABLE FOR MULTIPLE CONDITIONS
-
   //IF OPTIONAL QUERIES = PAGE AND CATEGORY:   (DONE)
-  const pageCategoryQuery = pageQuery && categoryQuery;
-  if (pageCategoryQuery) {
-    MyProducts.find({page: pageQuery, category: categoryQuery})
-      .exec((err, data) => {
-        if (err) return next (err);
-        console.log('filtered', data);
-  });
-}
+//   const pageCategoryQuery = pageQuery && categoryQuery;
+//   if (pageCategoryQuery) {
+//     MyProducts.find({page: pageQuery, category: categoryQuery})
+//       .exec((err, data) => {
+//         if (err) return next (err);
+//         console.log('filtered', data);
+//   });
+// }
 
-  //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
+//   //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
 
-  //IF OPTIONAL QUERIES = PAGE AND PRODUCT:  (DONE)
-  const pageProductQuery = pageQuery && productQuery;
-  if (pageProductQuery) {
-    MyProducts.find({page: pageQuery, name: selectedProduct})
-      .count(selectedProduct)
+//   //IF OPTIONAL QUERIES = PAGE AND PRODUCT:  (DONE)
+//   const pageProductQuery = pageQuery && productQuery;
+//   if (pageProductQuery) {
+//     MyProducts.find({page: pageQuery, name: selectedProduct})
+//       .count(selectedProduct)
+//       .exec((err, data) => {
+//         if (err) return next (err);
+//         console.log('filtered', data);
+//       })
+//   }
+
+  //IF OPTIONAL QUERIES = PAGE, CATEGORY AND PRICE:
+  const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
+  if (pageCategoryPriceQuery) {
+    MyProducts.find({page: pageQuery, category: categoryQuery, priceSort})
+      .sort(priceSort)
       .exec((err, data) => {
         if (err) return next (err);
         console.log('filtered', data);
       })
   }
 
-  
-
-
-
-  const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
   //const pageCategoryProductQuery = pageQuery && categoryQuery && productQuery;
   //const pageCategoryPriceProductQuery = pageQuery && categoryQuery && priceQuery && productQuery;
 
@@ -118,7 +128,7 @@ router.get("/myProducts", (req, res, next) => {
 
 //     } else {
 //     MyProducts.find({})  
-//     .skip(perPage * pageNum - perPage)
+//     .skip(perPage * pageQuery - perPage)
 //     .limit(perPage)
 //     .exec((err, data) => {
 //       if (err) return next (err);

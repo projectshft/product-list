@@ -12,12 +12,6 @@ const MyProductsSchema = new Schema({
   reviews: [{ type: Schema.Types.ObjectId, ref: "review" }]
 });
 
-//POSSIBLE WAY TO SET PAGE DEFAULT??
-// MyProductsSchema.static('pageNum',
-// function(page) {
-//   return this.find({ page: page });
-// })
-
 ReviewSchema = new Schema({
   userName: String,
   reviewText: String,
@@ -49,22 +43,21 @@ router.get("/myProducts", (req, res, next) => {
   
   const perPage = 9 
   
-  // //define variables for query
-  
-  const pageNum = req.query.page;  
-  //console.log('pageNum', pageNum, req.query.page)
-
   //RETURN FIRST PAGE ONLY WHEN LESS THAN 9 PRODUCTS TO A PAGE
   let pageQuery = req.query.page;
-  if(pageNum !== 1) {
-    pageQuery = 1
+  let result = MyProducts.find
+  if (result.length >= 9) {
+    pageQuery = pageQuery;
   }
-  //console.log('pageNum', pageNum, req.query.page)    //THIS WORKS WHEN PAGE IS NOT SELECTED AND WHEN SELECTED WITH VALUE OTHER THAN '1'
-
+  if(result.length < 9) {
+    pageQuery = 1
+  };
+  console.log('pageNumber', pageQuery)
+  
   const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
   //console.log(req.query.category)    //returns Shoes
 
-  //return sort of highest to lowest by default
+  //SORT PRODUCT PRICE HIGHEST TO LOWEST BY QUERY VALUE
   const priceQuery = req.query.price 
   //console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
   let priceSort;
@@ -74,30 +67,19 @@ router.get("/myProducts", (req, res, next) => {
   if (priceQuery === 'lowest') {
     priceSort = {price: 1}
   }
+  const productQuery = req.query.name
+  const selectedProduct = MyProducts.find({
+    name: { '$regex': productQuery, '$options': 'i' }},
+    function (err, docs) {
+      if (err) console.log(err)
+      console.log(docs)
+    }
+  )
 
-  //WORKING ON A WAY TO MATCH KEYWORD IN PRODUCT NAME
-  // const productQuery = req.query.name;
-  // let productMatch;
-  // if (productQuery.includes(any word in the name?????) {
-  //   productMatch === true
-  // } else {
-  //   console.log('No products match what you are looking for')
-  //   productMatch === false
-  // }
-
-   
   //SET VARIABLE FOR MULTIPLE CONDITIONS
+
+  //IF OPTIONAL QUERIES = PAGE AND CATEGORY:   (DONE)
   const pageCategoryQuery = pageQuery && categoryQuery;
-  //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
-  //const pageProductQuery = pageQuery && productQuery;
-
-  const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
-  //const pageCategoryProductQuery = pageQuery && categoryQuery && productQuery;
-  //const pageCategoryPriceProductQuery = pageQuery && categoryQuery && priceQuery && productQuery;
-
-  //const pagePriceProductQuery = pageQuery && priceQuery && productQuery;
-
-  
   if (pageCategoryQuery) {
     MyProducts.find({page: pageQuery, category: categoryQuery})
       .exec((err, data) => {
@@ -105,6 +87,31 @@ router.get("/myProducts", (req, res, next) => {
         console.log('filtered', data);
   });
 }
+
+  //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
+
+  //IF OPTIONAL QUERIES = PAGE AND PRODUCT:  (DONE)
+  const pageProductQuery = pageQuery && productQuery;
+  if (pageProductQuery) {
+    MyProducts.find({page: pageQuery, name: selectedProduct})
+      .count(selectedProduct)
+      .exec((err, data) => {
+        if (err) return next (err);
+        console.log('filtered', data);
+      })
+  }
+
+  
+
+
+
+  const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
+  //const pageCategoryProductQuery = pageQuery && categoryQuery && productQuery;
+  //const pageCategoryPriceProductQuery = pageQuery && categoryQuery && priceQuery && productQuery;
+
+  //const pagePriceProductQuery = pageQuery && priceQuery && productQuery;
+
+
 
 
 
@@ -130,8 +137,9 @@ MyProducts.count().exec((err, count) => {
   console.log(count)
   
   });
+});
   //});
-})
+
 //WORKING EXAMPLE ONLY 
 // MyProducts.find({'category': 'Shoes' }, (err, data) => {
 //   if (err) console.log(err);

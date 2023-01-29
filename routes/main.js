@@ -74,20 +74,18 @@ router.get("/myProducts", (req, res, next) => {
 
   //RETURN PRODUCTS THAT INCLUDE SEARCH TERMS IN THEIR NAME  
   const productQuery = req.query.name
-  
-    
-  
-  
 
+  //const optionalQuery = req.query.page || req.query.category || req.query.name
+  
   //IF OPTIONAL QUERIES = PAGE AND CATEGORY:   (DONE)
-//   const pageCategoryQuery = pageQuery && categoryQuery;
-//   if (pageCategoryQuery) {
-//     MyProducts.find({page: pageQuery, category: categoryQuery})
-//       .exec((err, data) => {
-//         if (err) return next (err);
-//         console.log('filtered', data);
-//   });
-// }
+  const pageCategoryQuery = pageQuery && categoryQuery;
+  if (pageCategoryQuery) {
+    MyProducts.find({page: pageQuery, category: categoryQuery})
+      .exec((err, data) => {
+        if (err) return next (err);
+        console.log('filtered', data);
+  });
+}
 
 //   //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
 

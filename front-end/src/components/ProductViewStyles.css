@@ -1,0 +1,40 @@
+.parent {
+  margin-left: 5%;
+  display: grid;
+  grid-gap: 250px;
+  grid-template-columns: 150px 150px 150px;
+  grid-template-rows: 150px 150px 150px;
+}
+
+.parent > div {
+  padding: 100px;
+
+  display: grid;
+  place-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+
+.grid-item {
+  background-color: lightgray;
+  border: 1px solid black;
+  text-align: center;
+}
+.test {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#other-test {
+  margin-top: 20px;
+  margin-right: 50px;
+}
+
+.pages {
+  display: flex;
+  justify-content: space-evenly;
+}

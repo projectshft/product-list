@@ -100,17 +100,23 @@ router.get("/products", (req, res, next) => {
   // };
 
   //Standard product list of 9.
-  Product.find(filterCriteria)
-    .sort(sortCriteria)
-    .skip((page - 1) * perPage)
-    .limit(perPage)
-    .exec((err, product) => {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(product);
-      }
-    });
+  Product.countDocuments(filterCriteria).exec((err, count) => {
+    if (err) {
+      res.send(err);
+    } else {
+      Product.find(filterCriteria)
+        .sort(sortCriteria)
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .exec((err, product) => {
+          if (err) {
+            res.send(err);
+          } else {
+            res.send({ product, count });
+          }
+        });
+    }
+  });
 });
 
 router.get("/products/:product", (req, res) => {

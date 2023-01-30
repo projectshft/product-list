@@ -127,54 +127,57 @@ router.get("/myProducts", (req, res, next) => {
   //   })
   // }
 
-  let query = {};
+  let optionalQueries = req.query;
+  console.log(optionalQueries)
  
-          //THIS WORKS AND SORTS ACCURATELY
-    MyProducts.find({category: categoryQuery, productQuery})
-      .sort(priceSort) 
-      .skip(perPage * pageQuery - perPage)
-      .limit(perPage)
-      .exec((err, data) => {
-        if (pageQuery !== 1) {
-          if (err) console.log(err, 'There are no products to show on the page selected');
-        }
+  if (optionalQueries) {
+     //THIS WORKS AND SORTS ACCURATELY
+     MyProducts.find({category: categoryQuery, productQuery})
+     .sort(priceSort) 
+     .skip(perPage * pageQuery - perPage)
+     .limit(perPage)
+     .exec((err, data) => {
+       if (pageQuery !== 1) {
+         if (err) console.log(err, 'There are no products to show on the page selected');
+       }
+            
+             console.log('filtered', data);
              
-              console.log('filtered', data);
-              
-        });
+       });
+  } else {
+    MyProducts.find({})  
+    .skip(perPage * query.pageQuery - perPage)
+    .limit(perPage)
+    .exec((err, itemCount) => {
+      if (err) return next (err);
+           
+      console.log('unfiltered', itemCount)
+    })
+  }   
  
 
  //******START HERE - NEED TO PRODUCE ERROR IF PAGE DOES NOT YEILD ANY PRODUCTS, BUT STRUGGLING TO GET THIS TO WORK */
 
  
-MyProducts.count(query)
-.exec((err, count) => {
-  if (err) console.log(err);
-  console.log('numItems', count)
-})
+// MyProducts.count(query)
+// .exec((err, count) => {
+//   if (err) console.log(err);
+//   console.log('numItems', count)
+// })
 
 
 
 
 
-MyProducts.count().exec((err, count) => {
-  if (err) console.log(err);
-  console.log('totalNumProducts',count)
-})
+// MyProducts.count().exec((err, count) => {
+//   if (err) console.log(err);
+//   console.log('totalNumProducts',count)
+// })
 
 
 
   
-// else {
-//   MyProducts.find({})  
-//   .skip(perPage * query.pageQuery - perPage)
-//   .limit(perPage)
-//   .exec((err, itemCount) => {
-//     if (err) return next (err);
-         
-//     console.log('unfiltered', itemCount)
-//   })
-// }
+
 
  
 

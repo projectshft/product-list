@@ -1,17 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./SearchBarStyles.css";
 import { getProducts } from "../redux/counter";
 import ProductView from "./ProductView";
 
 function SearchBar() {
-  // const products = useSelector((state) => state.product.products);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
   const [price, setPrice] = useState("");
   const [query, setQuery] = useState("");
+  const count = useSelector((state) => state.product.products.count);
+  const numOfPages = Math.ceil(count / 9);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= numOfPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  const getPage = (value) => {
+    setPage(value);
+  };
+
+  const listedPages = pageNumbers?.map((product, index) => {
+    return (
+      <div key={index} className="page-format">
+        <div>
+          <button
+            onClick={() => {
+              getPage(product);
+            }}
+          >
+            {product}
+          </button>
+        </div>
+      </div>
+    );
+  });
 
   const url = `http://localhost:8000/products?page=${page}&category=${category}&price=${price}&query=${query}`;
 
@@ -92,6 +118,7 @@ function SearchBar() {
         </select>
       </form>
       <ProductView setPageChange={setPageChange} />
+      <div className="page-format">{listedPages}</div>
     </div>
   );
 }

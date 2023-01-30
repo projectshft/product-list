@@ -38,3 +38,8 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+.page-format {
+  display: flex;
+  justify-content: space-evenly;
+}

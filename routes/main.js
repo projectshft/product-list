@@ -21,6 +21,12 @@ ReviewSchema = new Schema({
 const MyProducts = mongoose.model('myProducts', MyProductsSchema);
 const Review = mongoose.model('review', ReviewSchema);
 
+MyProducts.count({}, ((err, count) => {
+  console.log('Num products', count);
+}));
+
+
+
 //1. //LOAD DB WITH FAKE DATA = DONE
 // router.get("/generate-fake-data", (req, res, next) => {
 //   for (let i = 0; i < 90; i++) {
@@ -31,89 +37,185 @@ const Review = mongoose.model('review', ReviewSchema);
 //     myProducts.price = faker.commerce.price();
 //     myProducts.image = "https://via.placeholder.com/250?text=Product+Image";
 
-    //myProducts.save((err) => {
-  //     if (err) throw err;
-  //   });
-  // }
-  // res.end();
-//}});
+//     myProducts.save((err) => {
+//       if (err) throw err;
+//     });
+//   }
+//   res.end();
+// }});
 
 //2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIES***
 router.get("/myProducts", (req, res, next) => {
   
-  const perPage = 9 
+  const perPage = 9;
+   
+  let pageQuery = req.query.page || 1;     // PAGE NUMBER ENTERED 
   
-  //RETURN FIRST PAGE ONLY WHEN LESS THAN 9 PRODUCTS TO A PAGE
- 
-  let pageQuery = req.query.page;
-  // if (query.length >= 9) {
-  //   pageQuery = pageQuery;
-  // }
-  // if(query.length < 9) {
-  //   pageQuery = {page: 1}
-  // };
 
-  console.log('pageNumber', pageQuery)
+  
+  //POSSIBLE SOLUTION FOR CREATING AN ERROR IF A PAGE IS ENTERED THAT CONTAINS NO ITEMS
+  //   let newPageStartingItemNo = (perPage * query.pageQuery - perPage)
+  //     if (newPageStartingItemNo > count) {
+  //       console.log('There are no additional items to display')
+  //     }
+  //     console.log('87', newPageStartingItemNo)
+  // }
+  
     
   //DECLARE VARIABLES FOR REQUESTS
   const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
   //console.log(req.query.category)    //returns Shoes
 
   //SORT PRODUCT PRICE HIGHEST TO LOWEST BY QUERY VALUE
-  const priceQuery = req.query.price   //result of
+  let priceQuery = req.query.price   //result of, priceQuery is word HIGHEST OR LOWEST 
   //console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
   let priceSort;
+  //let priceVal;
   if (priceQuery === 'highest') {                                   
-    priceSort = {price: -1}
+    priceSort = {price: -1};
+    //priceVal = -1;
   }
+  
   if (priceQuery === 'lowest') {
-    priceSort = {price: 1}
+    priceSort = {price: 1};
+    //priceVal = 1;
   }
-  // console.log('priceSort', priceSort)
-  // console.log('priceQuery', priceQuery)
+  console.log('priceQuery, priceSort',priceQuery, priceSort)
+
+  //console.log('priceVal',priceVal)       //THIS WORKS
+  console.log('priceSort', priceSort)
 
   //RETURN PRODUCTS THAT INCLUDE SEARCH TERMS IN THEIR NAME  
-  const productQuery = req.query.name
-
-  //const optionalQuery = req.query.page || req.query.category || req.query.name
-  
-  //IF OPTIONAL QUERIES = PAGE AND CATEGORY:   (DONE)
-  const pageCategoryQuery = pageQuery && categoryQuery;
-  if (pageCategoryQuery) {
-    MyProducts.find({page: pageQuery, category: categoryQuery})
-      .exec((err, data) => {
-        if (err) return next (err);
-        console.log('filtered', data);
-  });
-}
-
-//   //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
-
-//   //IF OPTIONAL QUERIES = PAGE AND PRODUCT:  (DONE)
-const pageProductQuery = pageQuery && productQuery;
-  if (pageProductQuery) {
-    MyProducts.find({page: pageQuery, name: { '$regex': productQuery, '$options': 'i' }})
-      .exec((err, data) => {
-        if (err) return next (err);
-        console.log('filtered', data);
-      })
+  let productQuery = req.query.name
+  if (productQuery) {
+    productQuery = { '$regex': productQuery, '$options': 'i' }
   }
+  console.log('productQuery', productQuery)
 
-  //IF OPTIONAL QUERIES = PAGE, CATEGORY AND PRICE:
-  // const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
-  // if (pageCategoryPriceQuery) {
-  //   MyProducts.find({page: pageQuery, category: categoryQuery, priceSort})
-  //     .sort(priceSort)
-  //     .exec((err, data) => {
-  //       if (err) return next (err);
-  //       console.log('filtered', data);
-  //     })
+ 
+//DO NOT THINK I NEED THIS, SEEMS UNNECESSARY
+  // let query = {};
+  // console.log(query);
+ 
+  
+  // let categoryQuery = req.query.category;
+  // if (categoryQuery) {
+  //   query = {page: query.pageQuery, category: query.categoryQuery}
+  // }
+  // console.log('query.categoryQuery',query.categoryQuery)
+  // if (priceVal) {
+  //   query = {...}.priceVal = priceVal
+  // }
+  // console.log('query.priceVal', query.priceVal)
+
+  // if (productQuery) {
+  //   query.productQuery = productQuery
+  // }
+  // console.log('query.productQuery',query.productQuery)
+
+
+
+  //NOT REQUIRED BUT MAY KEEP IN ANYWAY
+  // if (pageQuery) {
+  //   MyProducts.find({page: query.pageQuery, product: {}})
+  //   .skip(perPage * query.pageQuery - perPage)
+  //   .limit(perPage)
+  //   .exec((err, data) => {
+  //     if (err) return next (err);
+           
+  //     console.log('unfiltered', data)
+  //   })
   // }
 
-  //const pageCategoryProductQuery = pageQuery && categoryQuery && productQuery;
-  //const pageCategoryPriceProductQuery = pageQuery && categoryQuery && priceQuery && productQuery;
+  let query = {};
+ 
+          //THIS WORKS AND SORTS ACCURATELY
+    MyProducts.find({category: categoryQuery, productQuery})
+      .sort(priceSort) 
+      .skip(perPage * pageQuery - perPage)
+      .limit(perPage)
+      .exec((err, data) => {
+        if (pageQuery !== 1) {
+          if (err) console.log(err, 'There are no products to show on the page selected');
+        }
+             
+              console.log('filtered', data);
+              
+        });
+ 
 
-  //const pagePriceProductQuery = pageQuery && priceQuery && productQuery;
+ //******START HERE - NEED TO PRODUCE ERROR IF PAGE DOES NOT YEILD ANY PRODUCTS, BUT STRUGGLING TO GET THIS TO WORK */
+
+ 
+MyProducts.count(query)
+.exec((err, count) => {
+  if (err) console.log(err);
+  console.log('numItems', count)
+})
+
+
+
+
+
+MyProducts.count().exec((err, count) => {
+  if (err) console.log(err);
+  console.log('totalNumProducts',count)
+})
+
+
+
+  
+// else {
+//   MyProducts.find({})  
+//   .skip(perPage * query.pageQuery - perPage)
+//   .limit(perPage)
+//   .exec((err, itemCount) => {
+//     if (err) return next (err);
+         
+//     console.log('unfiltered', itemCount)
+//   })
+// }
+
+ 
+
+
+//   const pageCategoryQuery = pageQuery && categoryQuery;
+//   if (pageCategoryQuery) {
+//     MyProducts.find({page: pageQuery, category: categoryQuery})
+//       .exec((err, data) => {
+//         if (err) return next (err);
+//         console.log('filtered', data);
+//   });
+// }
+});
+// //   //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
+
+// //   //IF OPTIONAL QUERIES = PAGE AND PRODUCT:  (DONE)
+// const pageProductQuery = pageQuery && productQuery;
+//   if (pageProductQuery) {
+//     MyProducts.find({page: pageQuery, name: { '$regex': productQuery, '$options': 'i' }})
+//       .exec((err, data) => {
+//         if (err) return next (err);
+//         console.log('filtered', data);
+//       })
+//   }
+
+//   //IF OPTIONAL QUERIES = PAGE, CATEGORY AND PRICE:
+//   const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
+//   if (pageCategoryPriceQuery) {
+//     MyProducts.find({page: pageQuery, category: categoryQuery, priceSort})
+//       .sort(priceSort)
+//       .select(['-category'])
+//       .exec((err, data) => {
+//         if (err) return next (err);
+//         console.log('filtered', data);
+//       })
+//   }
+
+//   //const pageCategoryProductQuery = pageQuery && categoryQuery && productQuery;
+//   //const pageCategoryPriceProductQuery = pageQuery && categoryQuery && priceQuery && productQuery;
+
+//   //const pagePriceProductQuery = pageQuery && priceQuery && productQuery;
 
 
 
@@ -128,20 +230,18 @@ const pageProductQuery = pageQuery && productQuery;
 //       if (err) return next (err);
            
 //       console.log('unfiltered', data)
-//     })
+//     })node
  
 // }
+
+
+
 
 //***SET OPTIONAL QUERY FOR PRODUCT AND ERROR IF NOTHING MATCHES  */
   
 //Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back 
 //so we can figure out the number of pages
-MyProducts.count().exec((err, count) => {
-  if (err) return next(err);
-  console.log(count)
-  
-  });
-});
+
   //});
 
 //WORKING EXAMPLE ONLY 

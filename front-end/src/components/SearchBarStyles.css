@@ -2,6 +2,8 @@
   margin-top: 25px;
   height: 100%;
   width: 100%;
+  border: 1px solid purple;
+  margin-bottom: 75px;
 }
 
 input {
@@ -18,8 +20,15 @@ select {
   margin-left: 20px;
 }
 
-.page-format {
+/* .page-format {
   margin-top: 10px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+} */
+
+.form-style {
+  /* border: 1px black solid; */
+  margin-bottom: 20px;
+  padding: 15px 20px;
+  background-color: rgb(197, 175, 206);
 }

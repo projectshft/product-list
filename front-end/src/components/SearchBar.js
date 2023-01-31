@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import "./SearchBarStyles.css";
 import { getProducts } from "../redux/counter";
 import ProductView from "./ProductView";
@@ -11,43 +11,49 @@ function SearchBar() {
   const [page, setPage] = useState(1);
   const [price, setPrice] = useState("");
   const [query, setQuery] = useState("");
-  const count = useSelector((state) => state.product.products.count);
-  const numOfPages = Math.ceil(count / 9);
 
-  const pageNumbers = [];
-  for (let i = 1; i <= numOfPages; i++) {
-    pageNumbers.push(i);
-  }
-
-  const getPage = (value) => {
-    setPage(value);
-  };
-
-  const listedPages = pageNumbers?.map((product, index) => {
-    return (
-      <div key={index} className="page-format">
-        <div>
-          <button
-            onClick={() => {
-              getPage(product);
-            }}
-          >
-            {product}
-          </button>
-        </div>
-      </div>
-    );
-  });
-
+  // Redux state
+  // const count = useSelector((state) => state.product.products.count);
+  // const numOfPages = Math.ceil(count / 9);
   const url = `http://localhost:8000/products?page=${page}&category=${category}&price=${price}&query=${query}`;
+
+  // const pageNumbers = [];
+  // for (let i = 1; i <= numOfPages; i++) {
+  //   pageNumbers.push(i);
+  // }
+
+  // const getPage = (value) => {
+  //   setPage(value);
+  // };
+
+  // const listedPages = pageNumbers?.map((product, index) => {
+  //   return (
+  //     <div key={index} className="page-format">
+  //       <div>
+  //         <button
+  //           onClick={() => {
+  //             getPage(product);
+  //           }}
+  //         >
+  //           {product}
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // });
 
   const resetPage = () => {
     setPage(1);
   };
 
-  const handlePageChange = (e) => {
-    setPage(e.target.value);
+  const resetSearch = () => {
+    setQuery("");
+    setSearchTerm("");
   };
+
+  // const handlePageChange = (e) => {
+  //   setPage(e.target.value);
+  // };
 
   const setPageChange = (value) => {
     setPage(value);
@@ -61,6 +67,7 @@ function SearchBar() {
   const handleCategoryChange = (e) => {
     resetPage();
     setCategory(e.target.value);
+    resetSearch();
   };
 
   const handlePriceChange = (e) => {
@@ -76,7 +83,7 @@ function SearchBar() {
 
   return (
     <div className="search-style">
-      <form onSubmit={handleQuery}>
+      <form className="form-style" onSubmit={handleQuery}>
         <input
           type="text"
           value={searchTerm}
@@ -103,22 +110,9 @@ function SearchBar() {
           <option value="lowest">Lowest</option>
           <option value="highest">Highest</option>
         </select>
-        <select value={page} onChange={handlePageChange}>
-          <option value="null">Pages</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-        </select>
       </form>
       <ProductView setPageChange={setPageChange} />
-      <div className="page-format">{listedPages}</div>
+      {/* <div className="page-format">{listedPages}</div> */}
     </div>
   );
 }

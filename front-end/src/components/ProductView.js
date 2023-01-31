@@ -54,8 +54,9 @@ function ProductView(props) {
   return (
     <div>
       <div className="grid">{listedProduct}</div>
-      {/* <div className="pages">{numOfPages ? numOfPages : null}</div> */}
-      <div className="page-format">{listedPages}</div>
+      <div className="page-format">
+        <div class="page-number-format">{listedPages}</div>
+      </div>
     </div>
   );
 }

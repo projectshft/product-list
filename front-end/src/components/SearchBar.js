@@ -90,7 +90,11 @@ function SearchBar() {
           onChange={handleSearchTermChange}
           placeholder="Search..."
         />
-        <select value={category} onChange={handleCategoryChange}>
+        <select
+          className="drop-down"
+          value={category}
+          onChange={handleCategoryChange}
+        >
           <option value="">Sort by Category</option>
           <option value="tools">Tools</option>
           <option value="beauty">Beauty</option>
@@ -105,14 +109,17 @@ function SearchBar() {
           <option value="toys">Toys</option>
           <option value="games">Games</option>
         </select>
-        <select value={price} onChange={handlePriceChange}>
+        <select
+          className="drop-down"
+          value={price}
+          onChange={handlePriceChange}
+        >
           <option value="null">Sort by Price</option>
           <option value="lowest">Lowest</option>
           <option value="highest">Highest</option>
         </select>
       </form>
       <ProductView setPageChange={setPageChange} />
-      {/* <div className="page-format">{listedPages}</div> */}
     </div>
   );
 }

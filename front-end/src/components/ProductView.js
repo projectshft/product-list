@@ -55,7 +55,7 @@ function ProductView(props) {
     <div>
       <div className="grid">{listedProduct}</div>
       <div className="page-format">
-        <div class="page-number-format">{listedPages}</div>
+        <div className="page-number-format">{listedPages}</div>
       </div>
     </div>
   );

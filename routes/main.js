@@ -11,7 +11,7 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
-    product.image = "https://via.placeholder.com/250?text=Product+Image";
+    product.image = faker.image.fashion(250, 200, true);
     product.reviews = [];
 
     for (let j = 0; j < 8; j++) {

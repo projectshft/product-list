@@ -21,11 +21,10 @@ ReviewSchema = new Schema({
 const MyProducts = mongoose.model('myProducts', MyProductsSchema);
 const Review = mongoose.model('review', ReviewSchema);
 
+//COUNT ALL PRODUCTS IN DATABASE 
 MyProducts.count({}, ((err, count) => {
   console.log('Num products', count);
 }));
-
-
 
 //1. //LOAD DB WITH FAKE DATA = DONE
 // router.get("/generate-fake-data", (req, res, next) => {
@@ -44,20 +43,18 @@ MyProducts.count({}, ((err, count) => {
 //   res.end();
 // }});
 
-//2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIES***
+//2. IMPLEMENT PAGINATION = DONE; FILTER CATEGORY DONE; SORTING DONE; SEARCHING DONE;
 router.get("/myProducts", (req, res, next) => {
 const perPage = 9;
 let pageQuery = req.query.page;     // PAGE NUMBER ENTERED 
 if (pageQuery) {
   pageQuery;
 }
-console.log(pageQuery)
-
+//FIGURE OUT HOW TO COUNT PRODUCTS RETURNED AND PRODUCE ERROR IF PAGE SELECTION DOES NOT EXIST
 if (!pageQuery) {
-  pageQuery || 1;
-}
-console.log(pageQuery)
-    
+  pageQuery = 1;
+};
+   
   //POSSIBLE SOLUTION FOR CREATING AN ERROR IF A PAGE IS ENTERED THAT CONTAINS NO ITEMS
   //   let newPageStartingItemNo = (perPage * query.pageQuery - perPage)
   //     if (newPageStartingItemNo > count) {
@@ -67,285 +64,67 @@ console.log(pageQuery)
   // }
   
     
-  //DECLARE VARIABLES FOR REQUESTS
-
-
-  
-
-  //RETURN PRODUCTS THAT INCLUDE SEARCH TERMS IN THEIR NAME  
-//  let productQuery = req.query.name;
-//  let productName;
-//   if (productQuery) {
-//     productFindproductQuery = { '$regex': productQuery, '$options': 'i' }
-//   }
-//   console.log('productQuery', productQuery)
-
- 
-  //NOT REQUIRED BUT MAY KEEP IN ANYWAY
-  // if (pageQuery) {
-  //   MyProducts.find({page: query.pageQuery, product: {}})
-  //   .skip(perPage * query.pageQuery - perPage)
-  //   .limit(perPage)
-  //   .exec((err, data) => {
-  //     if (err) return next (err);
-           
-  //     console.log('unfiltered', data)
-  //   })
-  // }
-
-;    //RAW DATA
-
-  
-  //console.log('starting optional',optionalQuery);           //shows literally what is typed into postman;
-   //SORT PRODUCT PRICE HIGHEST TO LOWEST BY QUERY VALUE  let priceQuery = optionalQuery.price;
-  let priceQuery = req.query.price;
-  console.log('starting price',priceQuery)
-  let priceSort;
-  let priceVal;
-  if (priceQuery === 'highest') {                                   
+//DECLARE VARIABLES FOR REQUESTS
+//DETERMINE PRICE SORT AS ASCENDING OR DESCENDING, AND DEFAULT SORT VALUE IF NONE SELECTED;
+let priceQuery = req.query.price;
+let priceSort;
+if (priceQuery === 'highest') {                                   
     priceQuery = '-1';
     priceSort = {price: -1};
-    priceVal = '-1';
-  }
-  
-  if (priceQuery === 'lowest') {
-    priceQuery = '1';
-    priceSort = {price: 1};
-    priceVal = '1';
-  }
-  if (!priceQuery) {
-    priceQuery = '-1';
-    priceSort = {price: -1}
-    priceVal = '-1';
-  };
-  console.log('ending price', req.priceQuery)
+};
+if (priceQuery === 'lowest') {
+  priceQuery = '1';
+  priceSort = {price: 1};
+};
+if (!priceQuery) {
+  priceQuery = '-1';
+  priceSort = {price: -1}
+};
 
- 
+//DECLARE VARIABLE FOR CATEGORY SEARCH
   let categoryQuery = req.query.category;
   
+//DECLARE VARIABLE FOR PRODUCT SEARCH  
+let productQuery = req.query.name;
  
-  
-  let productQuery = req.query.name;
-  // if (productQuery) {
-  //   productQuery = {name: { '$regex': productQuery, '$options': 'i' }}
-  // }
-  // console.log(productQuery)
-   
-
-
-
-    
-    
-  // }))
-  
-  
- //console.log('ending', productQuery)
-  //console.log('any', anyQuery)
-  // optionalQuery = {page: pageQuery, category: categoryQuery, price: priceQuery, name: productQuery}
-  //console.log('opt', optionalQuery)
-  // if (optionalQuery) {
-  //   optionalQuery = {page: pageQuery, category: categoryQuery, price: priceQuery, name: productQuery}
-  //   console.log('transformed', optionalQuery)
-  // }
-  // if (anyQuery) {
-  //   anyQuery = {page: pageQuery, category: categoryQuery, price: priceVal, name: { '$regex': productQuery, '$options': 'i' }}
-  // }
-  // console.log('transformed any', anyQuery)
- 
-
-  //console.log('priceQuery, priceSort, priceVal',priceQuery, priceSort, priceVal)
-
-  //console.log('priceVal',priceVal)       //THIS WORKS
-// let query = {};
-// if (productQuery) {
-//   query.productQuery = productQuery;
-//   console.log(query.productQuery)
-// }
-
-// if (categoryQuery) {
-//   query.categoryQuery = categoryQuery;
-//   console.log(query.categoryQuery)
-// }
+//SET CATEGORY SEARCH AND SORTING - RETURNS NO DATA IF PAGE SELECTION EXCEEDS #ITEMS RETURNED 
+//DEFAULT SORT IF NONE SELECTED IS DESCENDING; DEFAULT PAGE IS 1 IF NONE SELECTED;
 if(categoryQuery) {
-  MyProducts.find({category: categoryQuery})        //this works          //CAN'T GET PRODUCTS;  //CAN GET COUNT BUT NOT TOGETHER WITH RESPONSE
- .sort(priceSort)                                                          //SORTS ACCURATELY WITH OR WITHOUT PRICE
- .skip(perPage * pageQuery - perPage)                                      //PAGE 1 WITH OR WITHOUT QUERY, NO DATA RETURNED IF PAGE 2
+  MyProducts.find({category: categoryQuery})        
+ .sort(priceSort)                                                          
+ .skip(perPage * pageQuery - perPage)                                      
  .limit(perPage)
  .exec((err, data) => {
   if (err) return next (err);
-  console.log(data)
-  
- });
- 
-}
-if(productQuery) {               //this works 
-  MyProducts.find({name: { '$regex': productQuery, '$options': 'i' }})        //this works          //CAN'T GET PRODUCTS;  //CAN GET COUNT BUT NOT TOGETHER WITH RESPONSE
- .sort(priceSort)                                                          //SORTS ACCURATELY WITH OR WITHOUT PRICE
- .skip(perPage * pageQuery - perPage)                                      //PAGE 1 WITH OR WITHOUT QUERY, NO DATA RETURNED IF PAGE 2
+  res.json(data);   //CHANGED FROM CONSOLE.LOG TO RES.JSON 
+  });
+};
+//SET PRODUCT SEARCH AND SORTING - MATCH SEARCH WORD TO PRODUCTS CONTAINING WORD IN NAME
+//RETURNS NO DATA IF PAGE SELECTION EXCEEDS #ITEMS RETURNED 
+//DEFAULT SORT IF NONE SELECTED IS DESCENDING; DEFAULT PAGE IS 1 IF NONE SELECTED;
+if(productQuery) {              
+  MyProducts.find({name: { '$regex': productQuery, '$options': 'i' }})        
+ .sort(priceSort)                                                          
+ .skip(perPage * pageQuery - perPage)                                      
  .limit(perPage)
  .exec((err, data) => {
   if (err) return next (err);
-  console.log(data)
+  res.json(data)
  });
-
-
-}
+};
+//SET DEFAULT SEARCH IF NO QUERY PARAMETERS. SORTS BY DESCENDING VALUE IF NO PRICE SELECTION; 
+//STARTS AT PAGE 1 IF NO PAGE SELECTION;
 if(!productQuery && !categoryQuery) {
-  MyProducts.find({})        //this works          //CAN'T GET PRODUCTS;  //CAN GET COUNT BUT NOT TOGETHER WITH RESPONSE
-  .sort(priceSort)                                                          //SORTS ACCURATELY WITH OR WITHOUT PRICE
-  .skip(perPage * pageQuery - perPage)                                      //PAGE 1 WITH OR WITHOUT QUERY, NO DATA RETURNED IF PAGE 2
+  MyProducts.find({})        
+  .sort(priceSort)                                                         
+  .skip(perPage * pageQuery - perPage)                                      
   .limit(perPage)
   .exec((err, data) => {
    if (err) return next (err);
-   console.log(data)
+   res.json(data)
   });
- 
- 
- }
-
- 
-//  })
- 
-
-//EXP e1 - PAGE 1, HEALTH ONLY     // RETURNS HEALTH DECREASING VALUE, PG 1
-//EXP 2 - HEALTH ONLY              //RETURNS HEALTH DECREASING VALUE NO PAGE CONSOLE.LOGGED;  
-//exp 3 - page 2, health           //no return which is good, no page 2
-//exp 4 - page 1, product          // returns sausages in desc order
-//exp 5 - no page, product          // returns sausages in desc order
-//exp 6 - category and product      // returns health and sausages  in desc order respectively 
-//exp 7 - if nothing               //returns all products in desc order 
-//exp 8 - if page 3, 4, etc        // returns all products appropriate page 
-//exp 9 - if price lowest          // returns all products asc order 
-  
-  
-
-   //
-     //THIS WORKS AND SORTS ACCURATELY
-    //  MyProducts.find({page: pageQuery, category: categoryQuery, name: productName})
-    //  .sort(priceSort)
-    //  .skip(perPage * pageQuery - perPage)
-    //  .limit(perPage)
-    //  .exec((err, data) => {
-    //    if (err) return next (err);
-            
-    //          console.log('filtered', data);
-             
-    //    });
-      
-      //}
-
-  
-  
-      
-  // } else if (!optionalQuery) {
-  //   MyProducts.find({})  
-  //   .skip(perPage * query.pageQuery - perPage)
-  //   .limit(perPage)
-  //   .exec((err, data) => {
-  //     if (err) return next (err);
-           
-  //     console.log('unfiltered', data)
-  //   })
-  // }   
- 
-
- //******START HERE - NEED TO PRODUCE ERROR IF PAGE DOES NOT YEILD ANY PRODUCTS, BUT STRUGGLING TO GET THIS TO WORK */
-
- 
-// MyProducts.count(query)
-// .exec((err, count) => {
-//   if (err) console.log(err);
-//   console.log('numItems', count)
-// })
-
-
-
-
-
-// MyProducts.count().exec((err, count) => {
-//   if (err) console.log(err);
-//   console.log('totalNumProducts',count)
-// })
-
-
-
-  
-
-
- 
-
-
-//   const pageCategoryQuery = pageQuery && categoryQuery;
-//   if (pageCategoryQuery) {
-//     MyProducts.find({page: pageQuery, category: categoryQuery})
-//       .exec((err, data) => {
-//         if (err) return next (err);
-//         console.log('filtered', data);
-//   });
-// }
-
+};
 });
-// //   //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
-
-// //   //IF OPTIONAL QUERIES = PAGE AND PRODUCT:  (DONE)
-// const pageProductQuery = pageQuery && productQuery;
-//   if (pageProductQuery) {
-//     MyProducts.find({page: pageQuery, name: { '$regex': productQuery, '$options': 'i' }})
-//       .exec((err, data) => {
-//         if (err) return next (err);
-//         console.log('filtered', data);
-//       })
-//   }
-
-//   //IF OPTIONAL QUERIES = PAGE, CATEGORY AND PRICE:
-//   const pageCategoryPriceQuery = pageQuery && categoryQuery && priceQuery;
-//   if (pageCategoryPriceQuery) {
-//     MyProducts.find({page: pageQuery, category: categoryQuery, priceSort})
-//       .sort(priceSort)
-//       .select(['-category'])
-//       .exec((err, data) => {
-//         if (err) return next (err);
-//         console.log('filtered', data);
-//       })
-//   }
-
-//   //const pageCategoryProductQuery = pageQuery && categoryQuery && productQuery;
-//   //const pageCategoryPriceProductQuery = pageQuery && categoryQuery && priceQuery && productQuery;
-
-//   //const pagePriceProductQuery = pageQuery && priceQuery && productQuery;
-
-
-
-
-
-
-//     } else {
-//     MyProducts.find({})  
-//     .skip(perPage * pageQuery - perPage)
-//     .limit(perPage)
-//     .exec((err, data) => {
-//       if (err) return next (err);
-           
-//       console.log('unfiltered', data)
-//     })node
- 
-// }
-
-
-
-
-//***SET OPTIONAL QUERY FOR PRODUCT AND ERROR IF NOTHING MATCHES  */
-  
-//Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back 
-//so we can figure out the number of pages
-
-  //});
-
-//WORKING EXAMPLE ONLY 
-// MyProducts.find({'category': 'Shoes' }, (err, data) => {
-//   if (err) console.log(err);
-//   console.log(data)
-// })
 
 //***************** */
 //3. CREATE NEW PRODUCT = DONE 

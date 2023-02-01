@@ -46,13 +46,18 @@ MyProducts.count({}, ((err, count) => {
 
 //2. IMPLEMENT PAGINATION = DONE, ***WORKING ON OPTIONAL QUERIES***
 router.get("/myProducts", (req, res, next) => {
-  
-  const perPage = 9;
-   
-  let pageQuery = req.query.page || 1;     // PAGE NUMBER ENTERED 
-  
+const perPage = 9;
+let pageQuery = req.query.page;     // PAGE NUMBER ENTERED 
+if (pageQuery) {
+  pageQuery;
+}
+console.log(pageQuery)
 
-  
+if (!pageQuery) {
+  pageQuery || 1;
+}
+console.log(pageQuery)
+    
   //POSSIBLE SOLUTION FOR CREATING AN ERROR IF A PAGE IS ENTERED THAT CONTAINS NO ITEMS
   //   let newPageStartingItemNo = (perPage * query.pageQuery - perPage)
   //     if (newPageStartingItemNo > count) {
@@ -63,58 +68,19 @@ router.get("/myProducts", (req, res, next) => {
   
     
   //DECLARE VARIABLES FOR REQUESTS
-  const categoryQuery = req.query.category   //WILL NEED TO SET FIRST LETTER OF SHOES TO UPPERCASE ON FRONT END 
-  //console.log(req.query.category)    //returns Shoes
 
-  //SORT PRODUCT PRICE HIGHEST TO LOWEST BY QUERY VALUE
-  let priceQuery = req.query.price   //result of, priceQuery is word HIGHEST OR LOWEST 
-  //console.log('priceQuery', priceQuery, req.query.price)   //returns highest or lowest
-  let priceSort;
-  //let priceVal;
-  if (priceQuery === 'highest') {                                   
-    priceSort = {price: -1};
-    //priceVal = -1;
-  }
+
   
-  if (priceQuery === 'lowest') {
-    priceSort = {price: 1};
-    //priceVal = 1;
-  }
-  console.log('priceQuery, priceSort',priceQuery, priceSort)
-
-  //console.log('priceVal',priceVal)       //THIS WORKS
-  console.log('priceSort', priceSort)
 
   //RETURN PRODUCTS THAT INCLUDE SEARCH TERMS IN THEIR NAME  
-  let productQuery = req.query.name
-  if (productQuery) {
-    productQuery = { '$regex': productQuery, '$options': 'i' }
-  }
-  console.log('productQuery', productQuery)
+//  let productQuery = req.query.name;
+//  let productName;
+//   if (productQuery) {
+//     productFindproductQuery = { '$regex': productQuery, '$options': 'i' }
+//   }
+//   console.log('productQuery', productQuery)
 
  
-//DO NOT THINK I NEED THIS, SEEMS UNNECESSARY
-  // let query = {};
-  // console.log(query);
- 
-  
-  // let categoryQuery = req.query.category;
-  // if (categoryQuery) {
-  //   query = {page: query.pageQuery, category: query.categoryQuery}
-  // }
-  // console.log('query.categoryQuery',query.categoryQuery)
-  // if (priceVal) {
-  //   query = {...}.priceVal = priceVal
-  // }
-  // console.log('query.priceVal', query.priceVal)
-
-  // if (productQuery) {
-  //   query.productQuery = productQuery
-  // }
-  // console.log('query.productQuery',query.productQuery)
-
-
-
   //NOT REQUIRED BUT MAY KEEP IN ANYWAY
   // if (pageQuery) {
   //   MyProducts.find({page: query.pageQuery, product: {}})
@@ -127,33 +93,160 @@ router.get("/myProducts", (req, res, next) => {
   //   })
   // }
 
-  let optionalQueries = req.query;
-  console.log(optionalQueries)
+;    //RAW DATA
+
+  
+  //console.log('starting optional',optionalQuery);           //shows literally what is typed into postman;
+   //SORT PRODUCT PRICE HIGHEST TO LOWEST BY QUERY VALUE  let priceQuery = optionalQuery.price;
+  let priceQuery = req.query.price;
+  console.log('starting price',priceQuery)
+  let priceSort;
+  let priceVal;
+  if (priceQuery === 'highest') {                                   
+    priceQuery = '-1';
+    priceSort = {price: -1};
+    priceVal = '-1';
+  }
+  
+  if (priceQuery === 'lowest') {
+    priceQuery = '1';
+    priceSort = {price: 1};
+    priceVal = '1';
+  }
+  if (!priceQuery) {
+    priceQuery = '-1';
+    priceSort = {price: -1}
+    priceVal = '-1';
+  };
+  console.log('ending price', req.priceQuery)
+
  
-  if (optionalQueries) {
+  let categoryQuery = req.query.category;
+  
+ 
+  
+  let productQuery = req.query.name;
+  // if (productQuery) {
+  //   productQuery = {name: { '$regex': productQuery, '$options': 'i' }}
+  // }
+  // console.log(productQuery)
+   
+
+
+
+    
+    
+  // }))
+  
+  
+ //console.log('ending', productQuery)
+  //console.log('any', anyQuery)
+  // optionalQuery = {page: pageQuery, category: categoryQuery, price: priceQuery, name: productQuery}
+  //console.log('opt', optionalQuery)
+  // if (optionalQuery) {
+  //   optionalQuery = {page: pageQuery, category: categoryQuery, price: priceQuery, name: productQuery}
+  //   console.log('transformed', optionalQuery)
+  // }
+  // if (anyQuery) {
+  //   anyQuery = {page: pageQuery, category: categoryQuery, price: priceVal, name: { '$regex': productQuery, '$options': 'i' }}
+  // }
+  // console.log('transformed any', anyQuery)
+ 
+
+  //console.log('priceQuery, priceSort, priceVal',priceQuery, priceSort, priceVal)
+
+  //console.log('priceVal',priceVal)       //THIS WORKS
+// let query = {};
+// if (productQuery) {
+//   query.productQuery = productQuery;
+//   console.log(query.productQuery)
+// }
+
+// if (categoryQuery) {
+//   query.categoryQuery = categoryQuery;
+//   console.log(query.categoryQuery)
+// }
+if(categoryQuery) {
+  MyProducts.find({category: categoryQuery})        //this works          //CAN'T GET PRODUCTS;  //CAN GET COUNT BUT NOT TOGETHER WITH RESPONSE
+ .sort(priceSort)                                                          //SORTS ACCURATELY WITH OR WITHOUT PRICE
+ .skip(perPage * pageQuery - perPage)                                      //PAGE 1 WITH OR WITHOUT QUERY, NO DATA RETURNED IF PAGE 2
+ .limit(perPage)
+ .exec((err, data) => {
+  if (err) return next (err);
+  console.log(data)
+  
+ });
+ 
+}
+if(productQuery) {               //this works 
+  MyProducts.find({name: { '$regex': productQuery, '$options': 'i' }})        //this works          //CAN'T GET PRODUCTS;  //CAN GET COUNT BUT NOT TOGETHER WITH RESPONSE
+ .sort(priceSort)                                                          //SORTS ACCURATELY WITH OR WITHOUT PRICE
+ .skip(perPage * pageQuery - perPage)                                      //PAGE 1 WITH OR WITHOUT QUERY, NO DATA RETURNED IF PAGE 2
+ .limit(perPage)
+ .exec((err, data) => {
+  if (err) return next (err);
+  console.log(data)
+ });
+
+
+}
+if(!productQuery && !categoryQuery) {
+  MyProducts.find({})        //this works          //CAN'T GET PRODUCTS;  //CAN GET COUNT BUT NOT TOGETHER WITH RESPONSE
+  .sort(priceSort)                                                          //SORTS ACCURATELY WITH OR WITHOUT PRICE
+  .skip(perPage * pageQuery - perPage)                                      //PAGE 1 WITH OR WITHOUT QUERY, NO DATA RETURNED IF PAGE 2
+  .limit(perPage)
+  .exec((err, data) => {
+   if (err) return next (err);
+   console.log(data)
+  });
+ 
+ 
+ }
+
+ 
+//  })
+ 
+
+//EXP e1 - PAGE 1, HEALTH ONLY     // RETURNS HEALTH DECREASING VALUE, PG 1
+//EXP 2 - HEALTH ONLY              //RETURNS HEALTH DECREASING VALUE NO PAGE CONSOLE.LOGGED;  
+//exp 3 - page 2, health           //no return which is good, no page 2
+//exp 4 - page 1, product          // returns sausages in desc order
+//exp 5 - no page, product          // returns sausages in desc order
+//exp 6 - category and product      // returns health and sausages  in desc order respectively 
+//exp 7 - if nothing               //returns all products in desc order 
+//exp 8 - if page 3, 4, etc        // returns all products appropriate page 
+//exp 9 - if price lowest          // returns all products asc order 
+  
+  
+
+   //
      //THIS WORKS AND SORTS ACCURATELY
-     MyProducts.find({category: categoryQuery, productQuery})
-     .sort(priceSort) 
-     .skip(perPage * pageQuery - perPage)
-     .limit(perPage)
-     .exec((err, data) => {
-       if (pageQuery !== 1) {
-         if (err) console.log(err, 'There are no products to show on the page selected');
-       }
+    //  MyProducts.find({page: pageQuery, category: categoryQuery, name: productName})
+    //  .sort(priceSort)
+    //  .skip(perPage * pageQuery - perPage)
+    //  .limit(perPage)
+    //  .exec((err, data) => {
+    //    if (err) return next (err);
             
-             console.log('filtered', data);
+    //          console.log('filtered', data);
              
-       });
-  } else {
-    MyProducts.find({})  
-    .skip(perPage * query.pageQuery - perPage)
-    .limit(perPage)
-    .exec((err, itemCount) => {
-      if (err) return next (err);
+    //    });
+      
+      //}
+
+  
+  
+      
+  // } else if (!optionalQuery) {
+  //   MyProducts.find({})  
+  //   .skip(perPage * query.pageQuery - perPage)
+  //   .limit(perPage)
+  //   .exec((err, data) => {
+  //     if (err) return next (err);
            
-      console.log('unfiltered', itemCount)
-    })
-  }   
+  //     console.log('unfiltered', data)
+  //   })
+  // }   
  
 
  //******START HERE - NEED TO PRODUCE ERROR IF PAGE DOES NOT YEILD ANY PRODUCTS, BUT STRUGGLING TO GET THIS TO WORK */
@@ -190,6 +283,7 @@ router.get("/myProducts", (req, res, next) => {
 //         console.log('filtered', data);
 //   });
 // }
+
 });
 // //   //NEEDS WORK // SEE COMMENTS //const pagePriceQuery = pageQuery && priceQuery;          //NOT WORKING BECAUSE NEEDS TO RETURN ALL PRODUCTS!!!!! 
 

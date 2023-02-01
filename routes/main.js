@@ -25,7 +25,7 @@ router.get("/generate-fake-data", (req, res, next) => {
         if (err) throw err;
       });
     }
-    // review.product.push(product);
+
     product.save((err) => {
       if (err) throw err;
     });
@@ -33,7 +33,7 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-// Router params
+// Router param for :product
 router.param("product", function (req, res, next, id) {
   Product.findById({ _id: `${id}` }).exec((err, product) => {
     if (err) {
@@ -94,12 +94,6 @@ router.get("/products", (req, res, next) => {
     sortCriteria = { price: -1 };
   }
 
-  // let catAndSearch = {
-  //   name: { $regex: /salad/, $options: "i" },
-  //   category: "Grocery",
-  // };
-
-  //Standard product list of 9.
   Product.countDocuments(filterCriteria).exec((err, count) => {
     if (err) {
       res.send(err);

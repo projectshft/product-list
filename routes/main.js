@@ -45,7 +45,6 @@ router.get("/products", (req, res, next) => {
         res.send(products);
       });
     });
-    // console.log(mongoose.Types.ObjectId.isValid('63d314c66dc35b7f063121c8'));
 });
 
 
@@ -67,27 +66,34 @@ router.get('/product/:productId', (req, res) => {
 
 
 
-
-
-
-//GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
-router.get('/product/:productId/reviews', (req, res) => {
+//working
+router.get("/products/:productId/reviews", (req, res, next) => {
   const perPage = 4;
   const page = req.query.page || 1;
+
   const id = req.params.productId;
   console.log(id, 'id')
+  
 
-  Product.findById(id)
+  Review.find({productId: { $in: [ 
+
+    mongoose.Types.ObjectId(`${id}`)
+    
+    ]} })
     .skip(perPage * page - perPage)
-    .limit(perPage)  
-    .exec((err, product) => {
-      if (err) throw err;
-      res.send(product.reviews);
-      console.log(product, 'product');
-      console.log(product.reviews, 'product reviews');
-  });
-})
-//not working showing an empty array
+    .limit(perPage)
+    .exec((err, reviews) => {
+      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+      Review.count().exec((err, count) => {
+        if (err) return next(err);
+
+        res.send(reviews);
+        console.log(reviews, 'reviews');
+      });
+    });
+});
+
+
 
 
 
@@ -108,7 +114,11 @@ console.log(newReview.productId, 'new review id');
     newReview.save((err) => {
       if (err) throw err;
     });
-    res.send(newReview)
+    // console.log(product.reviews, 'product reviews');
+    // product.reviews.push(newReview);
+    // console.log(product.reviews, 'product reviews, did it push?');
+    res.send(newReview);
+
   }
 });
 

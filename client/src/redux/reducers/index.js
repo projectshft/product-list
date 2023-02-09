@@ -1,10 +1,16 @@
 import { combineReducers} from 'redux'
+import searchReducer from './searchReducer.js'
+import categoryReducer from './categoryReducer'
+import priceReducer from './priceReducer.js'
 import productsReducer from './productsReducer.js'
-import categoriesReducer from './categoriesReducer.js'
+import pageReducer from './pageReducer.js'
 
 const rootReducer = combineReducers({
-  products: productsReducer,
-  categories: categoriesReducer,
-})
+  price: priceReducer,
+  category: categoryReducer,
+  page: pageReducer,
+  search: searchReducer,
+  products: productsReducer
+});
 
 export default rootReducer

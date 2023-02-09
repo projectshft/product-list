@@ -7,9 +7,12 @@ import reportWebVitals from './reportWebVitals';
 import { createStore, applyMiddleware } from "redux";
 import promise from "redux-promise";
 import rootReducer from './redux/reducers'
+import thunk from "redux-thunk";
+import { composeWithDevTools } from 
+'redux-devtools-extension';
 
-const storeMiddleware = applyMiddleware(promise)(createStore);
-const store = storeMiddleware(rootReducer)
+const storeWithMiddleware = applyMiddleware(thunk, promise)(createStore);
+const store = storeWithMiddleware(rootReducer, {}, composeWithDevTools ())
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

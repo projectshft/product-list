@@ -1,21 +1,21 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Searchbar from './components/Searchbar'
-import Products from './components/Products'
+import Search from './components/Search';
+import Categories from './components/Categories'
+import Prices from './components/Prices'
+import ProductsListing from './components/ProductsListing';
 import Paginate from './components/Paginate'
-import Dropdown from './components/Dropdown';
 
 function App() {
   return (
     <div className="App">
-      <h1>Store</h1>
-      <div className="menus">
-        <Searchbar/>
-        <Dropdown/>
-        <Products/>
-        <Paginate/>
-      </div>
+      <h1>Ecommerce Store</h1>
+      <Search/>
+      <Categories/>
+      <Prices/>
+      <ProductsListing/>
+      <Paginate/>
     </div>
   );
 }

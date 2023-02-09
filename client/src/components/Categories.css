@@ -1,0 +1,11 @@
+.search-icon{
+  border: 1px solid grey;
+  padding: 2px;
+  cursor: pointer;
+  border-left: none;
+}
+.searchbar{
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}

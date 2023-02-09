@@ -5,7 +5,11 @@
   display: flex;
   justify-content: center;
 }
-
+.headers{
+  display: flex;
+  justify-content: center;
+  padding-right: 30px;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

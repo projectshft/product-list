@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { searchProduct } from '../redux/actions'
+import './Search.css';
 
 const Search = () => {
   const [query, setQuery] = useState('');
@@ -29,6 +30,8 @@ const Search = () => {
         />
         <button type="submit">Search</button>
       </form>
+
+      {/* <ProductsListing /> */}
 
     </div>
     );

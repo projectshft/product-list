@@ -1,26 +1,21 @@
 .product-container{
-  display: grid;
-  grid-template-columns: 200px 200px 200px;
-  gap: 15px;
-  align-items: center;
-  justify-items: center;
-  width: 80%;
-  place-items: center;
-  /* border: 10px solid blue; */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 90%;
+  border: 2px solid blueviolet;
+  margin: 40px auto;
 }
 .product-card{
   display: flex;
   flex-direction: column;
   border: 1px solid black;
-  padding: 0.5rem;
-  width: auto;
-  min-width: 200px;
   text-align: center;
   margin: 20px; 
+  gap: 10px 10px;
 }
 .product-top-label{
   display: flex;
-  width: 300px;
   justify-content: space-between;
 }
 .product-item{

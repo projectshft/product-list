@@ -8,10 +8,6 @@ const searchReducer = (state = initialState, action) => {
       return {
         products: action.payload,
       }     
-      // console.log(action.payload);
-      // const test = action.payload
-      // console.log('Test:', test);
-      // return test; 
     default:
       return state;
     }

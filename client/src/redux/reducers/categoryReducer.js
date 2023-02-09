@@ -10,7 +10,10 @@ const categoryReducer = (state = initialState, action) => {
         products: action.payload,
       };
     default:
-      return state;
+      return {
+      // state;
+      products: action.payload,
+      }
     }
   }
 

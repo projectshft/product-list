@@ -1,16 +1,12 @@
 import { combineReducers} from 'redux'
-import searchReducer from './searchReducer.js'
-import categoryReducer from './categoryReducer'
-import priceReducer from './priceReducer.js'
-// import productsReducer from './productsReducer.js'
+import productsReducer from './productsReducer.js'
 import pageReducer from './pageReducer.js'
+import filtersReducer from './filtersReducer.js'
 
 const rootReducer = combineReducers({
-  price: priceReducer,
-  category: categoryReducer,
+  filterItems: filtersReducer,
+  allItems: productsReducer,
   page: pageReducer,
-  search: searchReducer,
-  // products: productsReducer
 });
 
-export default rootReducer
+export default rootReducer;

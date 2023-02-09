@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import './ProductsListing.css'
 
 const ProductsListing = () => {
-  const products = useSelector((state) => state.search.products)
+  const products = useSelector((state) => state.filterItems.products)
     return (    
       <div className="product-container">
         {products?.map((product, idx) => {

@@ -1,4 +1,3 @@
-const { id_ID } = require("faker/lib/locales");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -8,12 +7,7 @@ const ProductSchema = new Schema({
   name: String,
   price: Number,
   image: String,
-  // add array of subdocuments
-  reviews: [{
-    userName: String,
-    text: String,
-    product: String
-  }]
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }]
 });
 
 module.exports = mongoose.model("Product", ProductSchema);

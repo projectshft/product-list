@@ -3,14 +3,13 @@ import axios from 'axios';
 export const SEARCH_PRODUCT = 'SEARCH_PRODUCT';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const SORT_PRICE = 'SORT_PRICE';
-export const SET_QUERY = 'SET_QUERY';
 export const SET_PAGE = 'SET_PAGE';
-// export const GET_PRODUCTS = 'GET_PRODUCTS';
+export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 
 const ROOT_URL = 'http://localhost:3000/products';
 
-export const searchProduct = async (input) => {
-  let request = await axios.get(`${ROOT_URL}?query=${input}`)
+export const searchProduct = async (input, page) => {
+  let request = await axios.get(`${ROOT_URL}?page=${page}&query=${input}`)
     .then((response) => {
       console.log(response.data.products, response.data.count)
       return response.data.products; 
@@ -41,7 +40,6 @@ export const updateCategory = async (category) => {
   }
 }
 
-// export const sortPrice = async (price) => {
 export const sortPrice = async (price, category) => {
   let request = await axios.get(`${ROOT_URL}?category=${category}&price=${price}`)
     .then((response) => {

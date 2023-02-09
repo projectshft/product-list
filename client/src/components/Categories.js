@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateCategory } from '../redux/actions'
 import './Categories.css';
-import ProductsByCategory from './ProductsByCategory';
 
 const Categories = () => {
   const [category, setCategory] = useState('');
@@ -17,8 +16,8 @@ const Categories = () => {
   // Submit button
   const handleSubmit = (e) => {
     e.preventDefault();
+    // is action firing?
     dispatch(updateCategory(category));
-    console.log(e.target.value);
   }
  
   return (
@@ -45,13 +44,10 @@ const Categories = () => {
         </select> 
         <button onClick={handleSubmit} type="submit">Search</button>
       </form>
-      
-      <ProductsByCategory />
- 
+       
     </div>
 
     );
-
   };
 
 export default Categories;

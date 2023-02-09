@@ -10,13 +10,14 @@ const Search = () => {
 
   const handleChange = (e) => {
     setInput(e.target.value);
-  }
 
+  }
   // Submit button
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(searchProduct(input));
     setQuery(input);
+    setInput('');
   };
 
   return (
@@ -30,8 +31,6 @@ const Search = () => {
         />
         <button type="submit">Search</button>
       </form>
-
-      {/* <ProductsListing /> */}
 
     </div>
     );

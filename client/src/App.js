@@ -6,6 +6,7 @@ import Categories from './components/Categories'
 import Prices from './components/Prices'
 import Paginate from './components/Paginate'
 import ProductsListing from './components/ProductsListing';
+import ProductsByCategory from './components/ProductsByCategory';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Prices/>
       </div>
       <ProductsListing/>
+      <ProductsByCategory/>
       <Paginate/>
     </div>
   );

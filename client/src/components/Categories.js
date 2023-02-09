@@ -1,20 +1,51 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updateCategory } from '../redux/actions'
+import { updateCategory, sortPrice, searchProduct } from '../redux/actions'
 import './Categories.css';
+import ProductsListing from './ProductsListing';
 
 const Categories = () => {
   const [category, setCategory] = useState('');
+  const [query, setQuery] = useState('');
+  const [input, setInput] = useState('');
+  const [price, setPrice] = useState('');
+
   const dispatch = useDispatch();
+
+
+  // Handle input change
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  }
+
+  // Search button
+  const handleInputSubmit = (e) => {
+    e.preventDefault();
+    dispatch(searchProduct(input));
+    setQuery(input);
+    setInput('');
+  };
   
-  // Category Dropdown
+  // --------- Price Dropdown ----------//
+  const handlePriceChange = (e) => {
+    setPrice(e.target.value);
+    console.log('Price is: ' + e.target.value);
+  }
+
+  // --------- Price button ----------//
+  const handlePriceSubmit = (e) => {
+    e.preventDefault();
+    dispatch(sortPrice(price));
+  }
+
+  // --------- Category Dropdown -------//
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
     console.log(e.target.value);
   };
 
-  // Submit button
-  const handleSubmit = (e) => {
+  // --------- Category button -------//
+  const handleCategorySubmit = (e) => {
     e.preventDefault();
     // is action firing?
     dispatch(updateCategory(category));
@@ -22,6 +53,20 @@ const Categories = () => {
  
   return (
     <div>
+
+  {/* ---------- Search form ----------*/}
+
+      <form onSubmit={handleInputSubmit}>
+        <input 
+          type="text" 
+          value={input} 
+          onChange={handleInputChange} 
+          placeholder="Search for a product"
+        />
+        <button type="submit">Search</button>
+      </form>
+
+  {/* ---------- Category form ----------*/}
       <form>
         <select value={category} onChange={handleCategoryChange} className="menu-1"> 
           <option value="">Category</option>  
@@ -42,9 +87,23 @@ const Categories = () => {
           <option value="Sports">Sports</option>
           <option value="Tools">Tools</option>
         </select> 
-        <button onClick={handleSubmit} type="submit">Search</button>
+        <button onClick={handleCategorySubmit} type="submit">Search</button>
       </form>
+
+
+{/* --------- Price Form -------------*/}
+      <form>
+      <select value={price} onChange={handlePriceChange} className="menu-2">
+        <option value="">Sort by Price</option>
+        <option value="asc">Lowest to Highest</option>
+        <option value="desc">Highest to Lowest</option>
+      </select>
+
+      <button onClick={handlePriceSubmit} type="submit">Search</button>
+    </form>
        
+      <ProductsListing/>
+
     </div>
 
     );

@@ -44,13 +44,21 @@ router.get("/generate-fake-data", (req, res, next) => {
 router.get('/products', (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
-
   const { query, price, category } = req.query
   const sortPrice = {}
+  // const priceSort = req.query.price;
   const results = {}
 
-  price === 'lowest' ? sortPrice.price = 'asc' : sortPrice.price = 'desc';
+  // if(priceSort == 'highest'){
+  //   query = query.sort({ "price": -1 })
+  // } else if (priceSort == 'lowest'){
+  //   query = query.sort({ "price": 1})
+  // }
 
+  if(price){
+    price === 'lowest' ? sortPrice.price = 'asc' : sortPrice.price = 'desc';
+  }
+ 
   if(category){
     results.category = new RegExp (category, 'i')  
   }

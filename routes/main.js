@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {faker} = require("@faker-js/faker");
 
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
@@ -95,7 +96,7 @@ if(categoryQuery) {
  .skip(perPage * pageQuery - perPage)                                      
  .limit(perPage)
  .exec((err, data) => {
-  if (err) return next (err);
+  if (err) console.log((404).json({message: 'Category not found'}));
   res.json(data);   //CHANGED FROM CONSOLE.LOG TO RES.JSON 
   });
 };

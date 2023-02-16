@@ -1,13 +1,15 @@
-import { Card, Button, Col } from 'react-bootstrap';
+import { Card, Button,  } from 'react-bootstrap';
 
 
 
 
 
-const Product = ({id, name, category, price}) => {
+const Product = ({id, image, name, category, price}) => {
 
   return <Card style={{ width: "18rem" }} className="child">
+     <Card.Img variant="top" src="https://via.placeholder.com/250?text=Product+Image" />
     <Card.Body>
+     
       <Card.Title>{name}</Card.Title>
         <Card.Text>
           Category: '{category}',

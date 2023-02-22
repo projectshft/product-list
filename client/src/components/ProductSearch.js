@@ -1,49 +1,35 @@
-import {useState} from 'react'
-import { useDispatch } from 'react-redux'
-import { getProduct } from '../features/product/productSlice';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button'
-import Row from 'react-bootstrap/Row';
-import InputGroup from 'react-bootstrap/InputGroup'
+import React, {useState} from 'react'
 
 const ProductSearch = () => {
-  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
-  const [productName, setProductName] = useState(inputValue)
+  const [productQuery, setProductQuery] = useState('');
 
-  const onChangeHandler = (event) => {
-    setInputValue(event.target.value)
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
   };
 
-  const fetchProductName = () => {
-   console.log(getProduct(inputValue))
+  const handleClick = () => {
+    setProductQuery(inputValue);
+    setInputValue('');
   };
 
-  
+  console.log({productQuery})
   
   return (
     <div id="search-container">
-    <Form>
-      <Row>
-        
-      <InputGroup className="product-search">
-        <Form.Control
-          placeholder="Product Name"
-          aria-label="Search for product"
-          aria-describedby="basic-addon2"
-          onChange={onChangeHandler}
-          value={inputValue}
-        />
-        <Button onClick={fetchProductName} variant="outline-primary" id="button-addon2">
-          Search
-        </Button>
-      </InputGroup>
-    </Row>
-    </Form>
-    </div>
+   <div>
+      <div>
+        <input type="text" 
+        placeholder="Search for product"
+        value={inputValue}
+        onChange={handleChange} />
+      </div>
     
-  );
-}
-
+      <button onClick={handleClick} >Search</button>
+    </div>
+    </div>
+    );
+  }
+  
 export default ProductSearch;
 

@@ -69,11 +69,11 @@ if (!pageQuery) {
 //DETERMINE PRICE SORT AS ASCENDING OR DESCENDING, AND DEFAULT SORT VALUE IF NONE SELECTED;
 let priceQuery = req.query.price;
 let priceSort;
-if (priceQuery === 'highest') {                                   
+if (priceQuery === 'Highest') {                                   
     priceQuery = '-1';
     priceSort = {price: -1};
 };
-if (priceQuery === 'lowest') {
+if (priceQuery === 'Lowest') {
   priceQuery = '1';
   priceSort = {price: 1};
 };
@@ -96,7 +96,7 @@ if(categoryQuery) {
  .skip(perPage * pageQuery - perPage)                                      
  .limit(perPage)
  .exec((err, data) => {
-  if (err) console.log((404).json({message: 'Category not found'}));
+  if (err) return res.send((404).json({message: 'Category not found'}));
   res.json(data);   //CHANGED FROM CONSOLE.LOG TO RES.JSON 
   });
 };
@@ -113,7 +113,9 @@ if(productQuery) {
   res.json(data)
  });
 };
-//SET DEFAULT SEARCH IF NO QUERY PARAMETERS. SORTS BY DESCENDING VALUE IF NO PRICE SELECTION; 
+
+
+//SET DEFAULT SEARCH IF NO QUERY PARAMETERS.  
 //STARTS AT PAGE 1 IF NO PAGE SELECTION;
 if(!productQuery && !categoryQuery) {
   MyProducts.find({})        

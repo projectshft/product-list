@@ -1,13 +1,20 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+
 import Product from './Product';
 import Container from 'react-bootstrap/Container';
-
 import products from '../products';
 
-const ShowInitialProducts = () => {
+
+//import PageItem from 'react-bootstrap/PageItem'
 
 
+
+
+
+const ShowProducts = () => {
+
+  // const {product} = useSelector((storeState) => storeState.product)
+  // const {category} = useSelector((storeState) => store.category)
   
  
   
@@ -19,20 +26,23 @@ const ShowInitialProducts = () => {
   )
   return <Container className="parent">
     <div> 
+      
           {products.map((product) => {
             return <Product key={product.id} {...product} />
           }
           )}
           </div>  
 
+ 
+
   
 
   
      <br></br>        
      
-  </Container> 
-
+  </Container>
  
+
 } 
-export default ShowInitialProducts;
+export default ShowProducts;
 

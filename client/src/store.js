@@ -1,12 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import categoryReducer from './features/category/categorySlice' 
-import pageReducer from './features/page/pageSlice';
+import productReducer from './features/product/productSlice';
 
 export const store = configureStore({
-  reducer: {
-    category: categoryReducer,
-    page: pageReducer
-  }
-  
-});
+   reducer: productReducer
+})
 
+export default store;
+console.log('Initial state', store.getState())

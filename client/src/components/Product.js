@@ -1,9 +1,5 @@
 import { Card, Button,  } from 'react-bootstrap';
 
-
-
-
-
 const Product = ({id, image, name, category, price}) => {
 
   return <Card style={{ width: "18rem" }} className="child">
@@ -12,21 +8,13 @@ const Product = ({id, image, name, category, price}) => {
      
       <Card.Title>{name}</Card.Title>
         <Card.Text>
-          Category: '{category}',
+          Category: {category},
           Price: {price}
         </Card.Text>
         <Button variant="primary">Add To Cart</Button>
       </Card.Body>
       </Card>
-   
-     
-}
     
-      
-      
-      
-  
-
-
+};
 
 export default Product;

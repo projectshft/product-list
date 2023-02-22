@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { getCategory } from '../features/product/productSlice'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CategorySearch = () => {
-  const dispatch = useDispatch();
-  const [category, setCategory] = useState('')
-  const handleSelect = (e) => {
-    setCategory(e)
-    dispatch(getCategory(e))
-  };
+  
+  const [categoryQuery, setCategoryQuery] = useState('')
 
+  const handleSelect = (e) => {
+    (setCategoryQuery(e))
+  }; 
+
+  console.log({categoryQuery})
+  console.log(categoryQuery)
+  if ({categoryQuery} == null) {
+    console.log('catQuery is null')
+  }
+ 
    return (
       <div id="search-container">
     
@@ -53,7 +58,6 @@ const CategorySearch = () => {
         </Dropdown>
         </Col>
         </Row>
- 
       </div>
     )
 };

@@ -1,33 +1,23 @@
 import './App.css';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import ProductSearch from './components/ProductSearch';
+import CategorySearch from './components/CategorySearch';
+import PriceQuery from './components/PriceQuery';
+import ShowProducts from './components/ShowProducts';
+import PageShow from './components/PageShow';
 
-import ProductContainer from './components/ProductContainer';
 
-
-
-function App() {
+const App = () => {
   return (
-  <BrowserRouter>
-    <div className="App">
-     <h2>Fake Store!</h2>
-     <ProductSearch/> 
-        
-        <ProductContainer />
-         
-          
-          
-          
-       
-     <Routes>
-      <Route>
-        
-      </Route>
-     </Routes>
-     
-    </div>
-    </BrowserRouter>
+  
+  <div className="App" >
+  <h2>Fake Store!</h2>
+  <CategorySearch/>
+  <ProductSearch/>
+  <PriceQuery />
+  <ShowProducts/>
+  <PageShow />
+  </div>
   );
-}
+};
 
 export default App;

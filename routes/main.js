@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const Product = require("../models/product");
 const Review = require("../models/review");
 const bodyParser = require('body-parser');
-const product = require('../models/product');
 const { request } = require('express');
 let query = Product.find();
 
@@ -28,24 +27,57 @@ router.get("/generate-fake-data", (req, res, next) => {
 });
 
 
+
 router.get("/products", (req, res, next) => {
+  //9 products per page
   const perPage = 9;
-
-  // return the first page by default
+  //starts on page 1
   const page = req.query.page || 1;
+  
+  
+  const category = req.query.category;
+  const price = req.query.price;
+  const query = req.query.query;
 
-  Product.find({})
+  let filter = {};
+  let sort = {};
+
+  if (category) {
+    filter.category = category;
+  }
+  // console.log(filter.category, 'filter category');
+  if (query) {
+    filter.name = { $regex: query, $options: "i" };
+  }
+console.log(filter.name, 'query');
+  if (price) {
+    if (price === 'highest') {
+      sort = { price: -1 };
+    }
+    if (price === 'lowest') {
+      sort = { price: 1 };
+    }
+  }
+
+
+  Product.find(filter)
     .skip(perPage * page - perPage)
     .limit(perPage)
+    .sort(sort)
     .exec((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      Product.count().exec((err, count) => {
-        if (err) return next(err);
+      Product.find(filter)
+        .count()
+        .exec((err, count) => {
+          if (err) return next(err);
+          console.log(category,'category query');
 
-        res.send(products);
-      });
+          res.send({ products, count });
+        });
     });
 });
+
+
+
 
 
 
@@ -83,7 +115,6 @@ router.get("/products/:productId/reviews", (req, res, next) => {
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec((err, reviews) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
       Review.count().exec((err, count) => {
         if (err) return next(err);
 
@@ -92,6 +123,10 @@ router.get("/products/:productId/reviews", (req, res, next) => {
       });
     });
 });
+
+
+
+
 
 
 

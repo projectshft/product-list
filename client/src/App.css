@@ -1,0 +1,17 @@
+.Search {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 800px;
+}

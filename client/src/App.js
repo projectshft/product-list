@@ -1,8 +1,11 @@
-import SearchBar from './SearchBar';
+import SearchBar from './components/SearchBar'
 import './App.css';
-import ProductList from './ProductList';
-import FilterDropdown from './FilterDropdown';
+import ProductList from './components/ProductList';
+import FilterDropdown from './components/FilterDropdown';
 import AlexaImage from './images/alexa.png';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProduct } from './actions/index';
 
 const App = () => {
   const productArray = [{
@@ -60,12 +63,24 @@ const App = () => {
     image: AlexaImage,
   }
 ];
+const [array, setArray] = useState([]);
+
+const dispatch = useDispatch();
+const productPiece = useSelector((state) => state.products);
+
+
+useEffect(() => {
+    dispatch(getProduct())
+    console.log(productPiece, 'product piece app')
+  }, [dispatch]);
+
+
   return (
     <div>
       
       <SearchBar/>
       <FilterDropdown title={'title'} options={[]}/>
-      <ProductList productArray={productArray}/>      
+      <ProductList productArray={array}/>      
       
     </div>
   );

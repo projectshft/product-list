@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
-// import { useDispatch } from 'react-redux';
-// import { fetchWeather } from '../actions/index'
+import { useDispatch } from 'react-redux';
+import { getProduct } from '../actions/index'
 
 const SearchBar = () => {
   const [term, setTerm] = useState('');
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const onInputChange = (e) => {
     setTerm( e.target.value );
   }
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    // dispatch(term)
+    console.log(term, 'term')
+    dispatch(getProduct(term))
     setTerm('');
     console.log(term);
   }

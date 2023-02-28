@@ -1,6 +1,10 @@
 import Product from './Product';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProductList = ({productArray}) => {
+  // const dispatch = useDispatch(); //useSelector?
+  const productPiece = useSelector((state) => state.products);
+console.log(productPiece, 'product piece');
   const render = productArray.map((product) => {
     return ( 
       <div key={product.name}>

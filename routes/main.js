@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const {faker} = require("@faker-js/faker");
 
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
@@ -44,103 +43,147 @@ MyProducts.count({}, ((err, count) => {
 //   res.end();
 // });
 
-//2. IMPLEMENT PAGINATION = DONE; FILTER CATEGORY DONE; SORTING DONE; SEARCHING DONE;
-router.get ("/myProducts", (req, res, next) => {
-const perPage = 9;
-let pageQuery = req.query.page    // PAGE NUMBER ENTERED 
+//BEGAN EXPERIMENTING HERE!  LNES 49, 50, 51, 53, 54, 55
+// router.get ("/myProducts", (req, res, next) => {
+// const perPage = 9;
+//let pageQuery = req.query.page    // PAGE NUMBER ENTERED 
 //FIGURE OUT HOW TO COUNT PRODUCTS RETURNED AND PRODUCE ERROR IF PAGE SELECTION DOES NOT EXIST
-if (!pageQuery) {
-  pageQuery = 1;
-};
+// if (!pageQuery) {
+//   pageQuery = 1;
+// };
    
 //DECLARE VARIABLES FOR REQUESTS
 //DETERMINE PRICE SORT AS ASCENDING OR DESCENDING, AND DEFAULT SORT VALUE IF NONE SELECTED;
-let priceQuery = req.query.price;
-let priceSort;
-if (priceQuery === 'Highest') {                                   
-    priceQuery = '-1';
-    priceSort = {price: -1};
-};
-if (priceQuery === 'Lowest') {
-  priceQuery = '1';
-  priceSort = {price: 1};
-};
+//EXPERIMENT 2 COMMENTED OUT LNES 60-69
+// let priceQuery = req.query.price;
+// let priceSort;
+// if (priceQuery === 'Highest') {                                   
+//     priceQuery = '-1';
+//     priceSort = {price: -1};
+// };
+// if (priceQuery === 'Lowest') {
+//   priceQuery = '1';
+//   priceSort = {price: 1};
+// };
 
 //DECLARE VARIABLE FOR CATEGORY SEARCH
-let categoryQuery = req.query.category;
+//EXPERIEMENT 3 - COMMENTED OUT LNS 73 AND 76
+// let categoryQuery = req.query.category;
   
 //DECLARE VARIABLE FOR PRODUCT SEARCH  
-let productQuery = req.query.name;
+// let productQuery = req.query.name;
  
 //SET CATEGORY SEARCH AND SORTING - RETURNS NO DATA IF PAGE SELECTION EXCEEDS #ITEMS RETURNED 
 //DEFAULT SORT IF NONE SELECTED IS DESCENDING; DEFAULT PAGE IS 1 IF NONE SELECTED;
-if (categoryQuery){
-  console.log('Category fetch***************************************', req.query)
-  MyProducts.find({category: categoryQuery})        
- .sort(priceSort)                                                          
- .skip(perPage * pageQuery - perPage)                                      
- .limit(perPage)
- .exec((err, data) => {
-  if (err) {
-    res.send(err);
-  }
-  console.log(data)
-  res.json(data)
-  })
-};
 
-//SET PRODUCT SEARCH AND SORTING - MATCH SEARCH WORD TO PRODUCTS CONTAINING WORD IN NAME
-//RETURNS NO DATA IF PAGE SELECTION EXCEEDS #ITEMS RETURNED 
-//DEFAULT SORT IF NONE SELECTED IS DESCENDING; DEFAULT PAGE IS 1 IF NONE SELECTED;
-if(productQuery) {     
-  console.log('Product name fetch****************************', req.query)         
-  MyProducts.find({name: { '$regex': productQuery, '$options': 'i' }})        
- .sort(priceSort)                                                          
- .skip(perPage * pageQuery - perPage)                                      
- .limit(perPage)
- .exec((err, data) => {
-  if (err) {
-    res.send(err);
-  }
-  console.log(data)
-  res.json(data)          //this is where my error is!!!!
- })
-};
+//EXPERIMENT!!!!! 
+router.get ("/myProducts", async (req, res, next) => {
+  const perPage = 9;
+  const page = req.query.page || 1;
+  const { name, price, category } = req.query
+  const sortPrice = {}
+  let results = {}
 
-if(productQuery && categoryQuery === productQuery.category) {
-  console.log('Cat and Prodfech********************************', req.query)
-  MyProducts.find({category: categoryQuery, name: { '$regex': productQuery, '$options': 'i' } })
-  .sort(priceSort)
-  .skip(perPage * pageQuery - perPage)                                      
- .limit(perPage)
- .exec((err, data) => {
-  if (err) {
-    res.send(err);
-  }
-  console.log(data)
-  res.json(data)
- })
-};
+if (price) {
+  price === 'Lowest' ? sortPrice.price = 'asc' : sortPrice.price = 'desc';
+}
+if (page > results.length) {
+  results.page = 1
+}
+if (category){
+  results.category = category
+}
+
+if(name) {     
+  results.name = new RegExp (name, 'i')
+}
+
+await MyProducts.find(results)
+    .sort(sortPrice)
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .exec((err, data) => {
+        if (err) return next(err);
+        res.send(data);
+    });
+  });
+
+//MY CODE THAT POSSIBLY FIXED HOW DATA IS RENDERING PRIOR TO WORKING WITH ALEX.  
+// if(productQuery && categoryQuery === productQuery.category) {
+//   console.log('Cat and Prodfech********************************', req.query)
+//   MyProducts.find({category: categoryQuery, name: { '$regex': productQuery, '$options': 'i' } })
+//   .sort(priceSort)
+//   .skip(perPage * pageQuery - perPage)                                      
+//  .limit(perPage)
 
 
+// if (categoryQuery){
+//   console.log('Category fetch***************************************', req.query)
+//   MyProducts.find({category: categoryQuery})        
+//  .sort(priceSort)                                                          
+//  .skip(perPage * pageQuery - perPage)                                      
+//  .limit(perPage)
+//  .exec((err, data) => {
+//   if (err) {
+//     res.send(err);
+//   }
+//   console.log(data)
+//   res.json(data)
+//   })
+// };
+
+// //SET PRODUCT SEARCH AND SORTING - MATCH SEARCH WORD TO PRODUCTS CONTAINING WORD IN NAME
+// //RETURNS NO DATA IF PAGE SELECTION EXCEEDS #ITEMS RETURNED 
+// //DEFAULT SORT IF NONE SELECTED IS DESCENDING; DEFAULT PAGE IS 1 IF NONE SELECTED;
+// if(productQuery) {     
+//   console.log('Product name fetch****************************', req.query)         
+//   MyProducts.find({name: { '$regex': productQuery, '$options': 'i' }})        
+//  .sort(priceSort)                                                          
+//  .skip(perPage * pageQuery - perPage)                                      
+//  .limit(perPage)
+//  .exec((err, data) => {
+//   if (err) {
+//     res.send(err);
+//   }
+//   console.log(data)
+//   res.json(data)          //this is where my error is!!!!
+//  })
+// };
+
+// if(productQuery && categoryQuery === productQuery.category) {
+//   console.log('Cat and Prodfech********************************', req.query)
+//   MyProducts.find({category: categoryQuery, name: { '$regex': productQuery, '$options': 'i' } })
+//   .sort(priceSort)
+//   .skip(perPage * pageQuery - perPage)                                      
+//  .limit(perPage)
+//  .exec((err, data) => {
+//   if (err) {
+//     res.send(err);
+//   }
+//   console.log(data)
+//   res.json(data)
+//  })
+// };
 
 
-//SET DEFAULT SEARCH IF NO QUERY PARAMETERS.  
-//STARTS AT PAGE 1 IF NO PAGE SELECTION;
-if(!productQuery && !categoryQuery) {
-  console.log('Default product fetch*******************************', req.query)
-  MyProducts.find({})        
-  .sort(priceSort)                                                         
-  .skip(perPage * pageQuery - perPage)                                      
-  .limit(perPage)
-  .exec((err, data) => {
-    if (err) {
-      res.send(err);
-    }
-    console.log(data)
-    res.json(data)
-   })
-  }
+
+
+// //SET DEFAULT SEARCH IF NO QUERY PARAMETERS.  
+// //STARTS AT PAGE 1 IF NO PAGE SELECTION;
+// if(!productQuery && !categoryQuery) {
+//   console.log('Default product fetch*******************************', req.query)
+//   MyProducts.find({})        
+//   .sort(priceSort)                                                         
+//   .skip(perPage * pageQuery - perPage)                                      
+//   .limit(perPage)
+//   .exec((err, data) => {
+//     if (err) {
+//       res.send(err);
+//     }
+//     console.log(data)
+//     res.json(data)
+//    })
+//   }
 
 //***************** */
 //3. CREATE NEW PRODUCT = DONE 
@@ -282,5 +325,5 @@ const newProductReview = new Review({         //id = 63feb1102781557679a51d6a
 // Review.findOne({ _id: '63c1d0e6e2159deef5255f51'}, function (err, doc) {
 //   console.log(doc)
 // });
-})
+
 module.exports = router;

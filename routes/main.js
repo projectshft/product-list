@@ -45,23 +45,14 @@ MyProducts.count({}, ((err, count) => {
 // });
 
 //2. IMPLEMENT PAGINATION = DONE; FILTER CATEGORY DONE; SORTING DONE; SEARCHING DONE;
-router.get("/myProducts", (req, res, next) => {
+router.get ("/myProducts", (req, res, next) => {
 const perPage = 9;
-let pageQuery = req.query.page;     // PAGE NUMBER ENTERED 
+let pageQuery = req.query.page    // PAGE NUMBER ENTERED 
 //FIGURE OUT HOW TO COUNT PRODUCTS RETURNED AND PRODUCE ERROR IF PAGE SELECTION DOES NOT EXIST
 if (!pageQuery) {
   pageQuery = 1;
 };
    
-  //POSSIBLE SOLUTION FOR CREATING AN ERROR IF A PAGE IS ENTERED THAT CONTAINS NO ITEMS
-  //   let newPageStartingItemNo = (perPage * query.pageQuery - perPage)
-  //     if (newPageStartingItemNo > count) {
-  //       console.log('There are no additional items to display')
-  //     }
-  //     console.log('87', newPageStartingItemNo)
-  // }
-  
-    
 //DECLARE VARIABLES FOR REQUESTS
 //DETERMINE PRICE SORT AS ASCENDING OR DESCENDING, AND DEFAULT SORT VALUE IF NONE SELECTED;
 let priceQuery = req.query.price;
@@ -83,16 +74,18 @@ let productQuery = req.query.name;
  
 //SET CATEGORY SEARCH AND SORTING - RETURNS NO DATA IF PAGE SELECTION EXCEEDS #ITEMS RETURNED 
 //DEFAULT SORT IF NONE SELECTED IS DESCENDING; DEFAULT PAGE IS 1 IF NONE SELECTED;
-if(categoryQuery) {
+if (categoryQuery){
   console.log('Category fetch***************************************', req.query)
   MyProducts.find({category: categoryQuery})        
  .sort(priceSort)                                                          
  .skip(perPage * pageQuery - perPage)                                      
  .limit(perPage)
  .exec((err, data) => {
-  if (err) return next (err)
-  console.log('The category you searched for was not found!')
-  res.json(data);   //CHANGED FROM CONSOLE.LOG TO RES.JSON 
+  if (err) {
+    res.send(err);
+  }
+  console.log(data)
+  res.json(data)
   })
 };
 
@@ -106,11 +99,29 @@ if(productQuery) {
  .skip(perPage * pageQuery - perPage)                                      
  .limit(perPage)
  .exec((err, data) => {
-  if (err) return next (err);
-  console.log('The product you searched for was not found in the database!')
+  if (err) {
+    res.send(err);
+  }
+  console.log(data)
+  res.json(data)          //this is where my error is!!!!
+ })
+};
+
+if(productQuery && categoryQuery === productQuery.category) {
+  console.log('Cat and Prodfech********************************', req.query)
+  MyProducts.find({category: categoryQuery, name: { '$regex': productQuery, '$options': 'i' } })
+  .sort(priceSort)
+  .skip(perPage * pageQuery - perPage)                                      
+ .limit(perPage)
+ .exec((err, data) => {
+  if (err) {
+    res.send(err);
+  }
+  console.log(data)
   res.json(data)
  })
 };
+
 
 
 
@@ -123,8 +134,11 @@ if(!productQuery && !categoryQuery) {
   .skip(perPage * pageQuery - perPage)                                      
   .limit(perPage)
   .exec((err, data) => {
-   if (err) return next (err);
-   res.json(data)
+    if (err) {
+      res.send(err);
+    }
+    console.log(data)
+    res.json(data)
    })
   }
 

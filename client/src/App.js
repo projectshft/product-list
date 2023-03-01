@@ -8,15 +8,22 @@ import PageShow from './components/PageShow';
 
 const App = () => {
   return (
-  
+  <>
   <div className="App" >
   <h2>Fake Store!</h2>
-  <CategorySearch/>
   <ProductSearch/>
-  <PriceQuery />
+  <div className="dropdown-parent">
+    <div className="drop-down-child">
+    <CategorySearch/>
+    </div>
+    <div className="child">
+     <PriceQuery />
+     </div>
+  </div>
   <ShowProducts/>
   <PageShow />
   </div>
+  </>
   );
 };
 

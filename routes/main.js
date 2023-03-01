@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const MyProductsSchema = new Schema({
-  category: String,                          //TRY fpr category amd name: {type: String, get: capitalizeFirstLetter}, with capitalizeFirstLetter function below
+  category: String,                          
   name: String,
   price: Number,
   image: String,
@@ -42,15 +42,12 @@ MyProducts.count({}, ((err, count) => {
 //     });
 //   }
 //   res.end();
-// }});
+// });
 
 //2. IMPLEMENT PAGINATION = DONE; FILTER CATEGORY DONE; SORTING DONE; SEARCHING DONE;
 router.get("/myProducts", (req, res, next) => {
 const perPage = 9;
 let pageQuery = req.query.page;     // PAGE NUMBER ENTERED 
-if (pageQuery) {
-  pageQuery;
-}
 //FIGURE OUT HOW TO COUNT PRODUCTS RETURNED AND PRODUCE ERROR IF PAGE SELECTION DOES NOT EXIST
 if (!pageQuery) {
   pageQuery = 1;
@@ -77,13 +74,9 @@ if (priceQuery === 'Lowest') {
   priceQuery = '1';
   priceSort = {price: 1};
 };
-if (!priceQuery) {
-  priceQuery = '-1';
-  priceSort = {price: -1}
-};
 
 //DECLARE VARIABLE FOR CATEGORY SEARCH
-  let categoryQuery = req.query.category;
+let categoryQuery = req.query.category;
   
 //DECLARE VARIABLE FOR PRODUCT SEARCH  
 let productQuery = req.query.name;
@@ -91,33 +84,40 @@ let productQuery = req.query.name;
 //SET CATEGORY SEARCH AND SORTING - RETURNS NO DATA IF PAGE SELECTION EXCEEDS #ITEMS RETURNED 
 //DEFAULT SORT IF NONE SELECTED IS DESCENDING; DEFAULT PAGE IS 1 IF NONE SELECTED;
 if(categoryQuery) {
+  console.log('Category fetch***************************************', req.query)
   MyProducts.find({category: categoryQuery})        
  .sort(priceSort)                                                          
  .skip(perPage * pageQuery - perPage)                                      
  .limit(perPage)
  .exec((err, data) => {
-  if (err) return res.send((404).json({message: 'Category not found'}));
+  if (err) return next (err)
+  console.log('The category you searched for was not found!')
   res.json(data);   //CHANGED FROM CONSOLE.LOG TO RES.JSON 
-  });
+  })
 };
+
 //SET PRODUCT SEARCH AND SORTING - MATCH SEARCH WORD TO PRODUCTS CONTAINING WORD IN NAME
 //RETURNS NO DATA IF PAGE SELECTION EXCEEDS #ITEMS RETURNED 
 //DEFAULT SORT IF NONE SELECTED IS DESCENDING; DEFAULT PAGE IS 1 IF NONE SELECTED;
-if(productQuery) {              
+if(productQuery) {     
+  console.log('Product name fetch****************************', req.query)         
   MyProducts.find({name: { '$regex': productQuery, '$options': 'i' }})        
  .sort(priceSort)                                                          
  .skip(perPage * pageQuery - perPage)                                      
  .limit(perPage)
  .exec((err, data) => {
   if (err) return next (err);
+  console.log('The product you searched for was not found in the database!')
   res.json(data)
- });
+ })
 };
+
 
 
 //SET DEFAULT SEARCH IF NO QUERY PARAMETERS.  
 //STARTS AT PAGE 1 IF NO PAGE SELECTION;
 if(!productQuery && !categoryQuery) {
+  console.log('Default product fetch*******************************', req.query)
   MyProducts.find({})        
   .sort(priceSort)                                                         
   .skip(perPage * pageQuery - perPage)                                      
@@ -125,43 +125,42 @@ if(!productQuery && !categoryQuery) {
   .exec((err, data) => {
    if (err) return next (err);
    res.json(data)
-  });
-};
-});
+   })
+  }
 
 //***************** */
 //3. CREATE NEW PRODUCT = DONE 
 //TRY TO REWRITE WITH PROPER CODE:
 //*******MyProducts.create({ props  })***********;
 
-// const newProduct = new MyProducts({     //id = 63c866dd3d0fb78401025d7e
-//   category: 'Health',
-//   name: 'Cool Purple Medicine Ball',
-//   price: 25,
-//   image: 'https://via.placeholder.com/250?text=Product+Image',
-//   reviews: [],
-// })
-// console.log('newProductId ' + newProduct._id);
+const newProduct = new MyProducts({     //id = 63feb1102781557679a51d69
+  category: 'Health',
+  name: 'Cool Purple Medicine Ball',
+  price: 25,
+  image: 'https://via.placeholder.com/250?text=Product+Image',
+  reviews: [],
+});
+  //newProduct.save();
 
-//**************** */
+//console.log('newProductId ' + newProduct._id);
+
 // //4. CREATE REVIEW FOR PRODUCT CREATED = DONE - (newProductReview.product matches newProduct._id)
 //TRY TO REWRITE WITH PROPER CODE:
 //*******Review.create({ props  })*************;
-// const newProductReview = new Review({         //id = 63c866dd3d0fb78401025d7f
-//   userName: 'Jillannette',
-//   reviewText: 'Awesome product for the price!',
-//   product: newProduct._id
-// })
-// newProductReview.save();
-// // console.log('newProductReview.product ' + newProductReview.product);
-// // console.log('newProduct.reviews ' + newProduct.reviews)
+const newProductReview = new Review({         //id = 63feb1102781557679a51d6a
+  userName: 'Jillannette',
+  reviewText: 'Awesome product for the price!',
+  product: newProduct._id
+})
+//newProductReview.save();
+// console.log('newProductReview.product ' + newProductReview.product);
+// console.log('newProduct.reviews ' + newProduct.reviews)
 
 //**************** */
 // //5. PUSH REVIEW TO PRODUCT.REVIEWS ARRAY = DONE (newProduct.reviews id is that of newProductReview._id))
 // newProduct.reviews.push(newProductReview)
 // newProduct.save();
 
-//**************** */
 //LOOK AT THIS AGAIN RE: ASYNC/AWAIT 6. CREATE GET ROUTE FOR PRODUCT BY PRODUCT ID (using req.query) = DONE
 // router.get('/myProducts/:product', async (req, res) => {
 //   const {selectedProductId} = req.query;
@@ -269,5 +268,5 @@ if(!productQuery && !categoryQuery) {
 // Review.findOne({ _id: '63c1d0e6e2159deef5255f51'}, function (err, doc) {
 //   console.log(doc)
 // });
-
+})
 module.exports = router;

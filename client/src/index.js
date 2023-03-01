@@ -13,7 +13,3 @@ root.render(
     <App />
   </Provider>,
 );
-
-
-
-

@@ -3,60 +3,44 @@
 }
 
 .search-container {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  
+
+  
+  
   justify-content: space-around;
   
  
 
 }
 
-.product-search {
-  display: flex;
-  justify-content: flex-start;
-  margin-left: 30px;
-  width: 70%;
-  
-
+.drop-down-parent {
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  text-align: center;
 }
 
-.category {
-  display: flex;
-  margin-left: 80px;
-  width: 20%;
-  
-  
+.drop-down-child {
+  display: inline-block;
+  padding: 1rem 1rem;
+  vertical-align: middle;
 }
 
-.price {
-  display: flex;
-  flex-wrap: nowrap;
+.image {
+  object-fit: scale-down;
 }
-
-
-
 
 .parent {
-
-
- display: flexbox;
- justify-content: space-between;
-
+ display: flex;
+ justify-content: center;
+ align-content: center;
  flex-wrap: wrap;
- 
- 
 }
 
-.child {
+/* .child {
   display: inline-block;
-  margin: 30px 0 0 30px;
   flex-basis: 33.333333%;
- 
-  
-  
-}
+}  */
 
 .pagination {
   justify-content: center;

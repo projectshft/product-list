@@ -7,13 +7,21 @@ import thunk from "redux-thunk";
 import rootReducer from './reducers';
 import { configureStore } from '@reduxjs/toolkit';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import { createRoot } from 'react-dom/client';
+import { store } from './store'
 
 
-const store = configureStore({ 
-  reducer: rootReducer, 
-  middleware: [promise, thunk],
-});
+//  PREVIOUSN ATTEMPT BELOW
+
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// const store = configureStore({ 
+//   reducer: rootReducer, 
+//   middleware: [promise, thunk],
+// });
+
+const el = document.getElementById('root');
+const root = createRoot(el);
 
 root.render(
   <Provider store={store} >

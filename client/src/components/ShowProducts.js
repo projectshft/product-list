@@ -18,7 +18,7 @@ const ShowProducts = () => {
         {productDetails.resultsCount !== 'None' ? data.map((product) => {
           return <Product key={product.id} {...product} />
         }
-        ) : <p>Oops, something went wrong!  Start by going back to page one, and if there are still no products, check your query request...</p>}
+        ) : <p>Oops, something went wrong!  Start by going back to page one, and if there are still no products preset Reset and try again...</p>}
       </div>  
     <br></br>        
   </Container> 

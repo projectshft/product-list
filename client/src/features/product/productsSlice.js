@@ -8,6 +8,7 @@ const initialState = {
   price: 'Highest',
   page: '',
   name: '',
+  reset: '',
   resultsCount: 'n/a'
 };
 
@@ -36,6 +37,9 @@ export const productsSlice = createSlice({
     updatePage: (state, action) => {
       state.page = action.payload;
     },
+    resetData: (state) => {
+      return initialState
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -50,5 +54,5 @@ export const productsSlice = createSlice({
   }
 });  
   
-export const { updateCategory, updateName, updatePrice,  updatePage } = productsSlice.actions;
+export const { updateCategory, updateName, updatePrice,  updatePage, resetData } = productsSlice.actions;
 export default productsSlice.reducer;

@@ -10,20 +10,20 @@ const App = () => {
   return (
   <>
   <div className="App" >
-  <h2>Fake Store!</h2>
-  <ProductSearch/>
+    <h2>Fake Store!</h2>
+    <ProductSearch/>
   <div className="dropdown-parent">
-    <div className="drop-down-child">
+  <div className="drop-down-child">
     <CategorySearch/>
-    </div>
-    <div className="drop-down-child">
-     <PriceQuery />
-     </div>
-     <div className="drop-down-child">
+  </div>
+  <div className="drop-down-child">
+    <PriceQuery />
+  </div>
+  <div className="drop-down-child">
     <ResetButton/>
-    </div>
-   <ShowProducts/>
-  <PageShow />
+  </div>
+    <ShowProducts/>
+    <PageShow />
   </div>
   </div>
   </>

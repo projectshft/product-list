@@ -16,12 +16,12 @@ const App = () => {
     <div className="drop-down-child">
     <CategorySearch/>
     </div>
-    <div className="child">
+    <div className="drop-down-child">
      <PriceQuery />
      </div>
-  </div>
-  <ShowProducts/>
+   <ShowProducts/>
   <PageShow />
+  </div>
   </div>
   </>
   );

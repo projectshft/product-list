@@ -12,17 +12,13 @@ const initialState = {
 };
 
 export const fetchProductsAsync = createAsyncThunk('productsSlice/fetchProducts', async (queryData) => {
-  const {category, name, price, page} = queryData;
-  console.log('fetchProductsAsync', name)
-  const { data } = await fetchProducts(category, name, price, page)
-  console.log('data', data)
-  console.log('data.length', data.length)
-  return data 
-  
-       //whatever data returns is payload
+  const {category, name, price, page, reset} = queryData;
+  //console.log('fetchProductsAsync', name)
+  const { data } = await fetchProducts(category, name, price, page, reset)
+  //console.log('data', data)
+  //console.log('data.length', data.length)
+  return data    //whatever data returns is payload
 })
-
- 
 
 export const productsSlice = createSlice({
   name: 'productsSlice',

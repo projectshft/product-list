@@ -14,11 +14,13 @@ const handleSelect = (e) => {
 };
 
   return (
-    <div id="search-container">
-      <Row>
-        <Col>
-        <Dropdown className="price"  >
+    
+    <div>
+      
+        
+        <Dropdown className="drop-down-child"  >
         <DropdownButton 
+        className="drop-down-child"
         title="Price"
         id="dropdown-autoclose-true"
         onSelect={handleSelect}
@@ -27,9 +29,10 @@ const handleSelect = (e) => {
         <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
         </DropdownButton>
         </Dropdown>
-        </Col>
-      </Row>
+       
+    
     </div>
+  
   )
 };
 

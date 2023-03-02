@@ -19,7 +19,7 @@ const ShowProducts = () => {
         {productDetails.resultsCount !== 'None' ? data.map((product) => {
           return <Product key={product.id} {...product} />
         }
-        ) : <p>No products match your search!</p>}
+        ) : <p>Hmmm, something went wrong!  Start by going back to page one, and if there are still no products, check your query request...</p>}
        </div>  
       
      <br></br>        

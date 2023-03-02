@@ -1,7 +1,5 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,11 +15,9 @@ const CategorySearch = () => {
   }; 
 
   return (
-    <div id="search-container">
-    
-  <Row>
-  <Col>
-  <Dropdown className="category"  >
+    <div>
+      
+  <Dropdown className="drop-down-child"  >
   <DropdownButton 
   title="Category"
   id="dropdown-autoclose-true"
@@ -51,9 +47,9 @@ const CategorySearch = () => {
     <Dropdown.Item eventKey="Toys">Toys</Dropdown.Item>
     </DropdownButton>  
   </Dropdown>
-  </Col>
-  </Row>
-  </div>   
+ 
+  </div>
+   
   )
 };
 

@@ -4,7 +4,7 @@ import CategorySearch from './components/CategorySearch';
 import PriceQuery from './components/PriceQuery';
 import ShowProducts from './components/ShowProducts';
 import PageShow from './components/PageShow';
-
+import ResetButton from './components/ResetButton';
 
 const App = () => {
   return (
@@ -19,6 +19,9 @@ const App = () => {
     <div className="drop-down-child">
      <PriceQuery />
      </div>
+     <div className="drop-down-child">
+    <ResetButton/>
+    </div>
    <ShowProducts/>
   <PageShow />
   </div>

@@ -55,8 +55,7 @@ MyProducts.count({}, ((err, count) => {
 // }
 // });
 
-//7. CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter    //ROUTE SUCCESSFUL 
- 
+//CREATE GET ROUTE FOR REVIEWS BY PRODUCT ID using path parameter    //ROUTE SUCCESSFUL 
 // router.get('/myProducts/:product/reviews', async (req, res, next) => {         
 //   const perProduct = 4;
 //   const page = req.query.page || 1;  
@@ -70,7 +69,6 @@ MyProducts.count({}, ((err, count) => {
 //     res.send(data);
 //   });
 // });
-
 
 //POST ROUTE TO ADD NEW PRODUCT TO DB   //ROUTE SUCCESSFUL
 // router.post('/myProducts:', async (req, res) => {
@@ -109,7 +107,6 @@ MyProducts.count({}, ((err, count) => {
 //   //console.log('reviews' + productToUpdate.reviews)
 //  });
 
-
 //DELETE PRODUCT BY PRODUCT ID  //ROUTE SUCCESSFUL
 // router.delete('/myProducts/:product', (req, res, next) => {
 //   MyProducts.findOneAndDelete({ _id: req.params.product })
@@ -125,13 +122,12 @@ MyProducts.count({}, ((err, count) => {
 //   .then(() => res.status(200).json({ message: 'Review deleted' }))
 //   .catch(err => res.status(500).json(err));
 // });
-  
 
 //GET PRODUCTS BY QUERY & RENDER ALL IF NO QUERIES
 router.get ("/myProducts", async (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
-  const { name, price, category } = req.query
+  const { name, price, category, reset } = req.query
   const sortPrice = {}
   let results = {}
 
@@ -144,9 +140,11 @@ if (page > results.length) {
 if (category){
   results.category = category
 }
-
 if(name) {     
   results.name = new RegExp (name, 'i')
+}
+if(reset) {
+  results.reset = reset
 }
 
 await MyProducts.find(results)
@@ -158,20 +156,6 @@ await MyProducts.find(results)
         res.send(data);
     });
   });
-
-
-
-  
-
-
-
-
-
-
-    
-
-
-
 
 //FOR REFERENCE PURPOSES ONLY NOT REQUIRED BY EVAL 
 // const newProduct = new MyProducts({     //id = 63feb1102781557679a51d69
@@ -211,6 +195,7 @@ await MyProducts.find(results)
 //PUSH REVIEW TO PRODUCT.REVIEWS ARRAY (commented out so code will not run)(newProduct.reviews id is that of newProductReview._id))
 //   result.reviews.push(newProductReview)
 //   newProduct.save();
+
 //**SAVE FOR TESTING  */
 //Test finding product - product exists
 // MyProducts.findOne({ _id: '63c177565a5cbb2634522d50'}, function (err, doc) {

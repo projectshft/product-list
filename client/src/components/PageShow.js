@@ -9,6 +9,7 @@ const dispatch = useDispatch();
 const handleClick = (e) => {
   dispatch(updatePage(e.target.value))
 }; 
+
   return (
     <div>
       <Button variant="warning" type="submit" value="1" onClick={handleClick}>1</Button>{''}
@@ -21,7 +22,6 @@ const handleClick = (e) => {
       <Button variant="warning" type="submit" value="8" onClick={handleClick}>8</Button>{''}
       <Button variant="warning" type="submit" value="9" onClick={handleClick}>9</Button>{''}
       <Button variant="warning" type="submit" value="10" onClick={handleClick}>10</Button>{''}
-      
     </div>  
   )
 };

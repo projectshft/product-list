@@ -30,3 +30,11 @@ client/src/components/PriceSort.js
 client/package-lock.json
 client/package.json
 product-list-client/.gitignore
+client/src/features/page/pageSlice.js
+client/src/features/page/pageSlice.js
+client/src/features/product/productSlice.js
+client/src/components/PriceSort.js
+client/src/features/page/pageSlice.js
+client/src/features/product/productSlice.js
+models/myProducts.js
+models/review.js

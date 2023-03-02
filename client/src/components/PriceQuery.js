@@ -1,7 +1,5 @@
 import { useDispatch } from 'react-redux';
 import React from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { updatePrice } from '../features/product/productsSlice';
@@ -14,11 +12,8 @@ const handleSelect = (e) => {
 };
 
   return (
-    
     <div>
-      
-        
-        <Dropdown className="drop-down-child"  >
+      <Dropdown className="drop-down-child"  >
         <DropdownButton 
         className="drop-down-child"
         title="Price"
@@ -29,13 +24,8 @@ const handleSelect = (e) => {
         <Dropdown.Item eventKey="Lowest">Lowest</Dropdown.Item>
         </DropdownButton>
         </Dropdown>
-       
-    
     </div>
-  
   )
 };
 
 export default PriceQuery;
-
-     

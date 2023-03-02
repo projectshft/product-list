@@ -5,7 +5,6 @@ export const store = configureStore({
    reducer: {
    products: productsReducer,
    }
-})
+});
 
 export default store;
-console.log('Initial state', store.getState())

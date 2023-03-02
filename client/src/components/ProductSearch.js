@@ -9,13 +9,16 @@ const ProductSearch = () => {
 const dispatch = useDispatch();
 const [productQuery, setProductQuery] = useState('');
 const productDetails = useSelector((state) => state.products)
+
 const handleChange = (event) => {
   setProductQuery(event.target.value);
-};  
+}; 
+
 const handleClick = () => {
   dispatch(updateName(productQuery))
   dispatch(fetchProductsAsync({category: productDetails.category, name: productQuery, 
   price: productDetails.price, page: productDetails.page})) 
+  setProductQuery('');
 };
 
   return (
@@ -31,8 +34,7 @@ const handleClick = () => {
       onClick={handleClick}>Search
       </Button>
       </InputGroup>
-  )
+    )
 };
   
 export default ProductSearch;
-

@@ -27,11 +27,6 @@
  flex-wrap: wrap;
 }
 
-/* .child {
-  display: inline-block;
-  flex-basis: 33.333333%;
-}  */
-
 .pagination {
   justify-content: center;
 }

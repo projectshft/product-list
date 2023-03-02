@@ -12,7 +12,7 @@ mongoose.connect(mongoDB, {
 const app = express();
 
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/index.html'));  //rendered 'I'm working'
+  res.sendFile(path.join(__dirname, '/index.html'));  
 });
 
 app.use((req, res, next) => {

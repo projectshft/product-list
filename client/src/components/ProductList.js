@@ -1,4 +1,4 @@
-// import Product from './Product';
+import Product from './Product';
 // import { useDispatch, useSelector } from 'react-redux';
 
 // const ProductList = ({array}) => {
@@ -46,19 +46,21 @@ console.log(state.products, 'state of products')
   if (error){
     return <div>Error fetching data</div>
   }
-  // data = data.products;
-  console.log(data, 'data check before render');
 
 
-  const renderedUsers = data.map((product) => {
-    return <div key={product._id}>
-      {product.name}
-
-    </div>
+  const renderedProducts = data.map((product) => {
+    console.log(product,'product render check')
+    return (
+      <div key={product._id}>
+        <Product price={product.price} category={product.category} image={product.image} name={product.name}/>
+      </div>
+    )
   })
 
-  return <div>
-    {renderedUsers}
-  </div>
+  return (
+    <div className='list-container'>
+      {renderedProducts}
+    </div>
+  )
 };
 export default ProductList;

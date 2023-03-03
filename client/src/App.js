@@ -1,8 +1,8 @@
-// import SearchBar from './components/SearchBar'
-// import './App.css';
+import SearchBar from './components/SearchBar'
+import './App.css';
 // import ProductList from './components/ProductList';
-// import FilterDropdown from './components/FilterDropdown';
-// import AlexaImage from './images/alexa.png';
+import FilterDropdown from './components/FilterDropdown';
+import AlexaImage from './images/alexa.png';
 // import { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { getProduct } from './actions/index';
@@ -96,8 +96,15 @@
 import ProductList from "./components/ProductList";
 
 function App () {
-  return <div className='container mx-auto'>
-    <ProductList />
-  </div>
+  return (
+    <div className="app-container">
+      <div className='header'>
+        <SearchBar />
+        <FilterDropdown />
+      </div>
+
+      <ProductList />
+    </div>
+  );
 };
 export default App;

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchProducts } from '../thunks/fetchProducts';
 
 const productsSlice = createSlice({
-  name: 'users',
+  name: 'products',
   initialState: {
     data: [],
     isLoading: false,
@@ -16,6 +16,7 @@ const productsSlice = createSlice({
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
+      console.log(action.payload, 'action payload')
     });
     builder.addCase(fetchProducts.rejected, (state, action) => {
       state.isLoading = false;

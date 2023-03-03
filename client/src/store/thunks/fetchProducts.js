@@ -6,7 +6,7 @@ const fetchProducts = createAsyncThunk('users/fetch', async () => {
 
   await pause(1000);
   console.log(response.data,'reponse data thunk');
-  return response.data
+  return response.data.products
 });
 
 //DEV ONLY!!!!

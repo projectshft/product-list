@@ -20,11 +20,18 @@ router.get("/products", (req, res, next) => {
   run()
   async function run() {
     try {
-      let products = await Product.find().limit(9);
-      res.send(products);
-    } catch (e) {
-      console.log(e.message);
-    }
+      const perPage = 9;
+      const page = req.query.page || 1;
+
+      let products = await Product
+        .find()
+        .skip(perPage * page)
+        .limit(perPage)
+        .exec()
+          res.status(200).send(products)
+      } catch (e) {
+          console.log(e.message);
+      }
   }  
 });
 

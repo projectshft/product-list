@@ -1,7 +1,9 @@
 const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
+const Reviews = require("../models/reviews");
 
+// Populate Product Database with "dummy data"
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
@@ -16,23 +18,44 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-router.get("/products", (req, res, next) => {
-  run()
-  async function run() {
-    try {
-      const perPage = 9;
-      const page = req.query.page || 1;
+ 
+// /GET list of 9 products per page 
+router.get("/products", async (req, res, next) => {
+  const perPage = 9;
+  const page = req.query.page || 1;
+  const { name, price, category, query }  = req.query;
+  const sortByPrice = {};
+  const results = {}
 
-      let products = await Product
-        .find()
+  if (name) {
+    results.name = new RegExp(name, "i");
+  }
+  
+  if (price) {
+    if (price === "lowest"){
+      sortByPrice.price = 1;
+    } else {
+      sortByPrice.price = -1;
+    }
+  };
+  
+  if (category) {
+    results.category = category;
+  }
+  console.log(results);
+  // if (query) {
+  //   results.query = query;
+  // }
+  
+  const products = await Product.find(results)
+        .sort(sortByPrice)
         .skip(perPage * page)
         .limit(perPage)
-        .exec()
-          res.status(200).send(products)
-      } catch (e) {
-          console.log(e.message);
-      }
-  }  
+        .exec();
+        
+  res.writeHead(200, { 'Content-Type': 'application/json' })
+  res.end(JSON.stringify(products));
+  next();
 });
 
 

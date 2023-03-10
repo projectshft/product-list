@@ -48,6 +48,7 @@ router.get("/products", async (req, res, next) => {
     pathParameters.category = createRegExp(category);
   }
   
+  // NEED TO FIGURE OUT HOW TO CREATE AN "OR" SEARCH FOR QUERY.
   if (query) {
     pathParameters.category = createRegExp(query);
     pathParameters.name = createRegExp(query);
@@ -57,8 +58,7 @@ router.get("/products", async (req, res, next) => {
     const products = await Product.find(pathParameters)
           .sort(sortByPrice)
           .skip(perPage * page - perPage)
-          // .limit(perPage)
-          // .exec();
+          .limit(perPage);
           
     res.writeHead(200, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify(products));
@@ -68,5 +68,21 @@ router.get("/products", async (req, res, next) => {
   next();
 });
 
-
+router.post("/products", async (req, res) => {
+  try {
+    console.log(req.body);
+    const newProduct = await Product.create({
+      category: req.body.category,
+      name: req.body.name,
+      price: req.body.price,
+      image: req.body.image
+    });
+    console.log(newProduct);
+    res.writeHead(201, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(newProduct));
+  } catch (e) {
+    console.log(e.message);
+  }
+  
+})
 module.exports = router;

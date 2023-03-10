@@ -19,21 +19,25 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-const createRegExp = (string) => {
+const createRegEx = (string) => {
   const splitString = string.split("_");
   const regExp = new RegExp(splitString.join("|"), "i");
   return regExp;
 }
-// /GET list of 9 products per page 
+// /GET List of Products. Can include search parameters. Response limited to 9 products per page.
 router.get("/products", async (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
   const { name, price, category, query }  = req.query;
   const sortByPrice = {};
-  const pathParameters = {}
-
+  const pathParameters = {};
+  
   if (name) {
-    pathParameters.name = createRegExp(name);
+    pathParameters.name = createRegEx(name);
+  }
+  
+  if (category) {
+    pathParameters.category = createRegEx(category);
   }
   
   if (price) {
@@ -43,31 +47,44 @@ router.get("/products", async (req, res, next) => {
       sortByPrice.price = -1;
     }
   };
-  
-  if (category) {
-    pathParameters.category = createRegExp(category);
-  }
-  
-  // NEED TO FIGURE OUT HOW TO CREATE AN "OR" SEARCH FOR QUERY.
-  if (query) {
-    pathParameters.category = createRegExp(query);
-    pathParameters.name = createRegExp(query);
-  }
 
-  try {
-    const products = await Product.find(pathParameters)
-          .sort(sortByPrice)
-          .skip(perPage * page - perPage)
-          .limit(perPage);
+  // Logic for if query keyword exists, perform search only with keyword. Otherwise, use pathParameters.
+  if (query) {
+    const queryPathCategory = {
+      category: createRegEx(query)
+    };
+    const queryPathName = {
+      name: createRegEx(query)
+    };
+    try {
+      const products = await Product
+      .find({$or: [queryPathCategory, queryPathName]})
+      .sort(sortByPrice)
+      .skip(perPage * page - perPage)
+      .limit(perPage);
           
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify(products));
-  } catch (e) {
-    console.log(e.message);
-  }
-  next();
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(products));
+    } catch (e) {
+      res.end(e.message);
+    } 
+  } else {
+    try {
+      const products = await Product
+        .find(pathParameters)
+        .sort(sortByPrice)
+        .skip(perPage * page - perPage)
+        .limit(perPage);
+              
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(products));
+    } catch (e) {
+      res.end(e.message);
+    }  
+  }  
 });
 
+// /POST Access a product by id
 router.post("/products", async (req, res) => {
   try {
     const newProduct = await Product.create({

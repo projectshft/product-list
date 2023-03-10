@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   title: Products API
   description: An API to support the Sunglasses Store platform
@@ -39,16 +39,16 @@ paths:
           required: false
           type: string
       responses:
-        '200':
+        "200":
           description: Display of nine products per page
           schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
+              $ref: "#/definitions/Product"
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
     post:
       summary: Add a Product
       description: |
@@ -61,7 +61,7 @@ paths:
           description: The product to create
           schema:
             type: object
-            required: 
+            required:
               - category
               - name
               - price
@@ -76,17 +76,17 @@ paths:
               image:
                 type: string
       responses:
-        '201':
+        "201":
           description: Product succesfully created and added to the database
           schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
+              $ref: "#/definitions/Product"
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
-  /product/{productId}:
+            $ref: "#/definitions/Error"
+  /products/{productId}:
     get:
       summary: Access a product by id
       description: |
@@ -99,14 +99,14 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: Product successfully retrieved.
           schema:
-            $ref: '#/definitions/Product'
+            $ref: "#/definitions/Product"
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
     delete:
       summary: Delete a product by id
       description: |
@@ -119,14 +119,14 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: Product successfully deleted.
           schema:
-            $ref: '#/definitions/Product'
+            $ref: "#/definitions/Product"
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
   /products/{productId}/reviews:
     get:
       summary: Access reviews for a specific product.
@@ -140,14 +140,14 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: Reviews accessed.
           schema:
-            $ref: '#/definitions/Reviews'
+            $ref: "#/definitions/Reviews"
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
     post:
       summary: Create review for a specific product.
       description: |
@@ -164,7 +164,7 @@ paths:
           description: The review to create
           schema:
             type: object
-            required: 
+            required:
               - userName
               - text
             properties:
@@ -173,14 +173,14 @@ paths:
               text:
                 type: string
       responses:
-        '201':
+        "201":
           description: Review succesfully created.
           schema:
-            $ref: '#/definitions/Review'
+            $ref: "#/definitions/Review"
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
   /reviews/{reviewId}:
     delete:
       summary: Delete a review by id.
@@ -194,14 +194,14 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: Review succesfully deleted.
           schema:
-            $ref: '#/definitions/Review'
+            $ref: "#/definitions/Review"
         default:
           description: Unexpected error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
 definitions:
   Product:
     type: object
@@ -224,7 +224,7 @@ definitions:
   Reviews:
     type: array
     items:
-      $ref: '#/definitions/Review'
+      $ref: "#/definitions/Review"
   Review:
     type: object
     properties:

@@ -70,7 +70,6 @@ router.get("/products", async (req, res, next) => {
 
 router.post("/products", async (req, res) => {
   try {
-    console.log(req.body);
     const newProduct = await Product.create({
       category: req.body.category,
       name: req.body.name,
@@ -80,6 +79,18 @@ router.post("/products", async (req, res) => {
     console.log(newProduct);
     res.writeHead(201, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(newProduct));
+  } catch (e) {
+    console.log(e.message);
+  }
+  
+})
+
+router.get("/products/:productId", async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    const product = await Product.find({ _id: productId});
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(product));
   } catch (e) {
     console.log(e.message);
   }

@@ -50,7 +50,7 @@ paths:
           schema:
             $ref: "#/definitions/Error"
     post:
-      summary: Add a Product
+      summary: Add a Product to database
       description: |
         The Add a Product endpoint allows the user to input a new product to the database.
       tags:

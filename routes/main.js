@@ -19,6 +19,7 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
+// Helper function to create RegExp from user queries to allow more flexibility with searches.
 const createRegEx = (string) => {
   const splitString = string.split("_");
   const regExp = new RegExp(splitString.join("|"), "i");
@@ -58,15 +59,13 @@ router.get("/products", async (req, res, next) => {
     };
     try {
       const products = await Product
-      .find({$or: [queryPathCategory, queryPathName]})
-      .sort(sortByPrice)
-      .skip(perPage * page - perPage)
-      .limit(perPage);
-          
-      res.writeHead(200, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify(products));
-    } catch (e) {
-      res.end(e.message);
+        .find({$or: [queryPathCategory, queryPathName]})
+        .sort(sortByPrice)
+        .skip(perPage * page - perPage)
+        .limit(perPage);   
+      res.status(200).json(products).end();
+    } catch {
+      res.status(404).end();
     } 
   } else {
     try {
@@ -74,17 +73,15 @@ router.get("/products", async (req, res, next) => {
         .find(pathParameters)
         .sort(sortByPrice)
         .skip(perPage * page - perPage)
-        .limit(perPage);
-              
-      res.writeHead(200, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify(products));
-    } catch (e) {
-      res.end(e.message);
+        .limit(perPage);   
+      res.status(200).json(products).end();
+    } catch {
+      res.status(404).end();
     }  
   }  
 });
 
-// /POST Access a product by id
+// /POST Add a product to database.
 router.post("/products", async (req, res) => {
   try {
     const newProduct = await Product.create({
@@ -93,24 +90,35 @@ router.post("/products", async (req, res) => {
       price: req.body.price,
       image: req.body.image
     });
-    console.log(newProduct);
-    res.writeHead(201, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(newProduct));
-  } catch (e) {
-    console.log(e.message);
+    res.status(201).json(newProduct).end();
+  } catch {
+    res.status(418).end();
   }
   
-})
+});
 
+// /GET Access a product by id.
 router.get("/products/:productId", async (req, res) => {
   const productId = req.params.productId;
   try {
     const product = await Product.find({ _id: productId});
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(product));
-  } catch (e) {
-    console.log(e.message);
+    res.status(200).json(product).end(); 
+  } catch {
+    res.status(404).end();
   }
   
-})
+});
+
+// /DELETE Delete a product by id
+router.delete("/products/:productId", async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    const product = await Product.findByIdAndDelete(productId);
+    res.status(200).json(product).end(); 
+  } catch {
+    res.status(404).end();
+  }
+});
+
+
 module.exports = router;

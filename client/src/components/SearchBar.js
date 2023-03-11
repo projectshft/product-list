@@ -18,7 +18,7 @@ const SearchBar = () => {
   }
 
   return (
-    <div>
+    <div className='navbar'>
       <form className='input-group' onSubmit={(e)=>onFormSubmit(e)}>
         <input
           placeholder='Search'

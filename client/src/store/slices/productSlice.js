@@ -1,26 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchProducts } from '../thunks/fetchProducts';
+import { getProducts } from '../thunks/fetchProducts';
 
 const productsSlice = createSlice({
   name: 'products',
   initialState: {
-    data: [],
-    isLoading: false,
-    error: null,
+    data: []
   },
   extraReducers(builder) {
-    builder.addCase(fetchProducts.pending, (state, action) => {
-      state.isLoading = true;
-      
-    });
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.isLoading = false;
+    builder.addCase(getProducts.fulfilled, (state, action) => {
       state.data = action.payload;
       console.log(action.payload, 'action payload')
-    });
-    builder.addCase(fetchProducts.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
     });
   }
 });

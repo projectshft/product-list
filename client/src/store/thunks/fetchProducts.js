@@ -1,19 +1,20 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const fetchProducts = createAsyncThunk('users/fetch', async () => {
-  const response = await axios.get('http://localhost:8000/products');
+export const getProducts = createAsyncThunk(
+  'products/getProducts',
+  async () => {
+    const response = await axios.get('http://localhost:8000/products');
+    console.log(response.data.products, 'response data products 1st fetch');
+    return response.data.products;
+  }
+);
 
-  await pause(1000);
-  console.log(response.data,'reponse data thunk');
-  return response.data.products
-});
-
-//DEV ONLY!!!!
-const pause = (duration) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, duration);
-  });
-};
-
-export { fetchProducts };
+export const getCount = createAsyncThunk(
+  'products/getCount',
+  async () => {
+    const response = await axios.get('http://localhost:8000/products');
+    console.log(response.data.count, 'response data count 2nd fetch');
+    return response.data.count;
+  }
+);

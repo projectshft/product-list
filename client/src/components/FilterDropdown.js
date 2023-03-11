@@ -14,7 +14,7 @@ const FilterDropdown = () => {
     setCategory(event.target.value);
   };
   return (
-    <div className='overall div'>
+    <div className='navbar'>
       <label>
         Sort By Price:
         <select value={value} onChange={handleChange}>

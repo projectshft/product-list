@@ -2,21 +2,13 @@ import { Navbar, Nav, Container, Form, Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css';
 import { useDispatch } from "react-redux";
 import KeywordSearch from "./KeywordSearch";
+import CategorySearch from "./CategorySearch";
 
 
 
 const NavigationBar = () => {
   // component that renders navbar
-  const dispatch = useDispatch;
 
-  // retrieves users query in input and puts into local state
-
-
-  // function that dispatches query results to the redux store on submit
-
-
-  // function that dispatches random recipes to the redux store on click
- 
  
  
 
@@ -27,6 +19,7 @@ const NavigationBar = () => {
       <Nav className="me-auto">
          
       </Nav>
+      <CategorySearch />
       <KeywordSearch />
     </Container>
   </Navbar>

@@ -32,13 +32,13 @@ router.get("/products", async (req, res) => {
   const { name, price, category, query }  = req.query;
   const sortByPrice = {};
   const pathParameters = {};
-  
+  // transform user input into RegExp for search flexibility
   if (name) {
     pathParameters.name = createRegExp(name);
   }
-  
+  // Hard coded categories
   if (category) {
-    pathParameters.category = createRegExp(category);
+    pathParameters.category = category;
   }
   
   if (price) {

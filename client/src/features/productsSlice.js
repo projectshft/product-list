@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8000/products';
-
 //action
 export const fetchProductsAction = createAsyncThunk("products/fetch", async(queryInput, rejectWithValue) => {
   const { keyword, name, category, price } = queryInput;
+
   try {
-    const { data } = await axios.get(`${BASE_URL}?query=${keyword}&name=${name}&category=${category}&price=${price}`);
-    console.log(data)
+    const { data } = await axios.get(`http://localhost:8000/products?query=${keyword}&name=${name}&category=${category}&price=${price}`);
+
     return data
   } catch (error) {
     if(!error?.response){
@@ -20,29 +19,13 @@ export const fetchProductsAction = createAsyncThunk("products/fetch", async(quer
 
 const initialState = {
   products: [],
-  keyword: '',
-  name: '',
-  category: '',
-  price: null,
+
 }
 
 const productsSlice = createSlice({
-  name: "products",
-  initialState: initialState,
-  reducers:{
-    keywordSearch: (state, action) => {
-      state.keyword = action.payload;
-    },
-    nameSearch: (state, action) => {
-      state.name = action.payload;
-    },
-    categorySearch: (state, action) => {
-      state.category = action.payload;
-    },
-    priceSort: (state, action) => {
-      state.category = action.payload;
-    }
-  },
+  name: "productStore",
+  initialState,
+  reducers:{},
   extraReducers: (builder) => {
     builder.addCase(fetchProductsAction.pending, (state, action) => {
       state.loading = true;
@@ -61,4 +44,3 @@ const productsSlice = createSlice({
 });
 
 export default productsSlice.reducer
-export const { keywordSearch, nameSearch, categorySearch, priceSort } = productsSlice.actions;

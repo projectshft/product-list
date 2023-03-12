@@ -4,16 +4,17 @@ import { Button, Form } from 'react-bootstrap';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { keywordSearch } from '../features/productsSlice';
+import { keywordSearch } from '../features/queryInputSlice';
 
 const keywordSearchSchema = yup.object({
   keyword: yup.string().required('You must provide a keyword').max(20)
 });
 
 const KeywordSearch = (props) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({resolverer: yupResolver(keywordSearchSchema)});
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({resolver: yupResolver(keywordSearchSchema)});
   const dispatch = useDispatch();
   
+
   const handleKeywordSubmit = (data) => {
     dispatch(keywordSearch(data.keyword));
     reset();

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const faker = require("faker");
 const path = require("path");
 const Product = require("../models/product");
-const Reviews = require("../models/reviews");
+const Review = require("../models/reviews");
 
 // Populate Product Database with "dummy data"
 router.get("/generate-fake-data", (req, res, next) => {
@@ -20,13 +20,13 @@ router.get("/generate-fake-data", (req, res, next) => {
 });
 
 // Helper function to create RegExp from user queries to allow more flexibility with searches.
-const createRegEx = (string) => {
+const createRegExp = (string) => {
   const splitString = string.split("_");
   const regExp = new RegExp(splitString.join("|"), "i");
   return regExp;
 }
 // /GET List of Products. Can include search parameters. Response limited to 9 products per page.
-router.get("/products", async (req, res, next) => {
+router.get("/products", async (req, res) => {
   const perPage = 9;
   const page = req.query.page || 1;
   const { name, price, category, query }  = req.query;
@@ -34,11 +34,11 @@ router.get("/products", async (req, res, next) => {
   const pathParameters = {};
   
   if (name) {
-    pathParameters.name = createRegEx(name);
+    pathParameters.name = createRegExp(name);
   }
   
   if (category) {
-    pathParameters.category = createRegEx(category);
+    pathParameters.category = createRegExp(category);
   }
   
   if (price) {
@@ -52,10 +52,10 @@ router.get("/products", async (req, res, next) => {
   // Logic for if query keyword exists, perform search only with keyword. Otherwise, use pathParameters.
   if (query) {
     const queryPathCategory = {
-      category: createRegEx(query)
+      category: createRegExp(query)
     };
     const queryPathName = {
-      name: createRegEx(query)
+      name: createRegExp(query)
     };
     try {
       const products = await Product
@@ -99,7 +99,7 @@ router.post("/products", async (req, res) => {
 
 // /GET Access a product by id.
 router.get("/products/:productId", async (req, res) => {
-  const productId = req.params.productId;
+  const { productId } = req.params;
   try {
     const product = await Product.find({ _id: productId});
     res.status(200).json(product).end(); 
@@ -111,7 +111,7 @@ router.get("/products/:productId", async (req, res) => {
 
 // /DELETE Delete a product by id
 router.delete("/products/:productId", async (req, res) => {
-  const productId = req.params.productId;
+  const { productId } = req.params;
   try {
     const product = await Product.findByIdAndDelete(productId);
     res.status(200).json(product).end(); 
@@ -120,5 +120,55 @@ router.delete("/products/:productId", async (req, res) => {
   }
 });
 
+// /GET Access reviews for a specific product. CURRENTLY RETURNS ARRAY OF ALL REVIEWS. FIGURING OUT PAGINATION.
+router.get("/products/:productId/reviews", async (req, res) => {
+  const { productId } = req.params;
+  const perPage = 4;
+  const page = req.query.page || 1;
 
+  try {
+    const reviews = await Product
+      .findById(productId, {'reviews': 1})
+      .populate('reviews')
+      // .slice((perPage * page - perPage), perPage)
+    res.status(200).json(reviews.reviews).end();
+        
+  } catch {
+    res.status(404).end();
+  }
+})
+
+// /POST Create review for a specific product.
+router.post("/products/:productId/reviews", async (req, res) => {
+  const { productId } = req.params;
+
+  const newReview = await new Reviews({
+    userName: req.body.userName,
+    text: req.body.text,
+    product: productId
+  });
+  newReview.save();
+
+  try { 
+    const productToAddReview = await Product.findById(productId)
+    productToAddReview.reviews.push(newReview);
+    productToAddReview.save();
+    res.status(200).json(newReview).end();
+  } catch (e) {
+    console.log(e.message)
+    res.status(404).end();
+  }
+});
+
+// /DELETE Delete a review by id.
+router.delete("/reviews/:reviewId", async (req, res) => {
+  const { reviewId } = req.params;
+  
+  try {
+    const reviewDeleted = await Review.findByIdAndDelete(reviewId);
+    res.status(200).json(reviewDeleted).end(); 
+  } catch {
+    res.status(404).end();
+  }
+})
 module.exports = router;

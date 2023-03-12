@@ -8,7 +8,7 @@ const ProductSchema = new Schema({
   name: String,
   price: Number,
   image: String,
-  reviews: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Review" }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 });
 
 module.exports = mongoose.model("Product", ProductSchema);

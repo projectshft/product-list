@@ -2,18 +2,20 @@ import SearchBar from './components/SearchBar'
 import './App.css';
 import FilterDropdown from './components/FilterDropdown';
 import ProductList from "./components/ProductList";
-// import Paginate from './components/Paginate';
+
 
 function App () {
   return (
     <div>
       <div className='header'>
         <SearchBar />
-        <FilterDropdown />
+        <FilterDropdown /> 
       </div>
       <ProductList />
-      {/* <Paginate /> */}
+
     </div>
   );
 };
 export default App;
+
+//filter drop down needs to take in product category as props

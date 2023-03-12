@@ -70,7 +70,6 @@ console.log(filter.name, 'query');
         .exec((err, count) => {
           if (err) return next(err);
           console.log(category,'category query');
-
           res.send({ products, count });
         });
     });

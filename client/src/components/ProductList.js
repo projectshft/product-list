@@ -2,6 +2,7 @@ import Product from './Product';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts, getCount } from "../store"
+import Page from './Page';
 
 
 function ProductList() {
@@ -21,10 +22,24 @@ function ProductList() {
     dispatch(getCount());
   }, [dispatch]);
 
+  const pages = [];
+  for (let i = 0; i < Math.ceil(count / 9); i++) {
+    pages.push(i + 1);
+  }
 
+  const handlePageChange = (pageNumber) => {
+    //fetch products if they existed???
+    //kick off a request to a different url for each page 
+    console.log(`page: ${pageNumber}`);
+  }
 
-  console.log(data, 'data after dispatch before map');
-  console.log(count, 'count after dispatch');
+  const renderedPages = pages.map((page) => {
+    return (
+      <div className='pageList' key={page}>
+        <Page number={page} onPageChange={handlePageChange}></Page>
+      </div>
+    );
+  });
   
   const renderedProducts = data.map((product) => {
     return (
@@ -42,7 +57,11 @@ function ProductList() {
       <div className='count-container'>
         Products: {count}
       </div>
+      <div className='pagination-container'>
+        {renderedPages}
+      </div>
     </div>
   )
 };
+
 export default ProductList;

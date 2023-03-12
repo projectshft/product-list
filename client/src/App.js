@@ -6,7 +6,9 @@ import ProductDisplay from './containers/ProductDisplay';
 const App = () => {
   return (
   <>
-    <NavBar />
+    <Container fluid>
+      <NavBar />
+    </Container>
     <Container className="md-4">
       <ProductDisplay />
     </Container>

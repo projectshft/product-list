@@ -25,7 +25,7 @@ const queryInputSlice = createSlice({
       state.keyword = '';
     },
     priceSort: (state, action) => {
-      state.category = action.payload;
+      state.price = action.payload;
     }
   },
 });

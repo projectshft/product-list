@@ -1,8 +1,9 @@
-import { Navbar, Nav, Container, Form, Button } from "react-bootstrap";
+import { Navbar, Nav, Container, } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css';
-import { useDispatch } from "react-redux";
 import KeywordSearch from "./KeywordSearch";
 import CategorySearch from "./CategorySearch";
+import SortByPrice from "./SortByPrice";
+import NameSearch from "./NameSearch";
 
 
 
@@ -15,11 +16,12 @@ const NavigationBar = () => {
   return (
   <Navbar bg="secondary" variant="dark" fixed="top">
     <Container>
-      <Navbar.Brand href="/">Product Store</Navbar.Brand>
+      <Navbar.Brand>Product Store</Navbar.Brand>
       <Nav className="me-auto">
-         
+         <NameSearch />
       </Nav>
       <CategorySearch />
+      <SortByPrice />
       <KeywordSearch />
     </Container>
   </Navbar>

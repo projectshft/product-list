@@ -4,7 +4,7 @@ import { getProducts } from '../thunks/fetchProducts';
 const productsSlice = createSlice({
   name: 'products',
   initialState: {
-    data: []
+    data: [],
   },
   extraReducers(builder) {
     builder.addCase(getProducts.fulfilled, (state, action) => {
@@ -13,5 +13,6 @@ const productsSlice = createSlice({
     });
   }
 });
+
 
 export const productsReducer = productsSlice.reducer;

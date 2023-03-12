@@ -3,8 +3,8 @@ import axios from 'axios';
 
 export const getProducts = createAsyncThunk(
   'products/getProducts',
-  async () => {
-    const response = await axios.get('http://localhost:8000/products');
+  async (page = 1) => {
+    const response = await axios.get(`http://localhost:8000/products?page=${page}`);
     console.log(response.data.products, 'response data products 1st fetch');
     return response.data.products;
   }

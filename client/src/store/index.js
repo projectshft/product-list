@@ -6,7 +6,7 @@ export const store = configureStore({
   reducer: {
     products: productsReducer,
     count: countReducer,
-  } 
+  },
 });
 
 export * from './thunks/fetchProducts';

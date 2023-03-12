@@ -1,20 +1,24 @@
 import Product from './Product';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts, getCount } from "../store"
 import Page from './Page';
 
-
 function ProductList() {
   const dispatch = useDispatch();
-  let { data } = useSelector((state) => {
+
+  // const [sortPrice, setSortPrice] = useState('highest');
+  // const [sortCategory, setSortCategory] = useState('all');
+
+  let { data, page } = useSelector((state) => {
     console.log(state.products,'state.products')
     return state.products
-  })
+  });
   let { count } = useSelector((state) => {
     console.log(state.count,'state.count')
     return state.count
-  })
+  });
+
   //state.data = action.payload in reducer
 
   useEffect(() => {
@@ -28,9 +32,8 @@ function ProductList() {
   }
 
   const handlePageChange = (pageNumber) => {
-    //fetch products if they existed???
-    //kick off a request to a different url for each page 
     console.log(`page: ${pageNumber}`);
+    dispatch(getProducts(pageNumber));
   }
 
   const renderedPages = pages.map((page) => {

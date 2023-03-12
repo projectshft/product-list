@@ -12,7 +12,6 @@ function App () {
         <FilterDropdown /> 
       </div>
       <ProductList />
-
     </div>
   );
 };

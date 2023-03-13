@@ -1,10 +1,13 @@
 import SearchBar from './components/SearchBar'
+
 import './App.css';
 import FilterDropdown from './components/FilterDropdown';
 import ProductList from "./components/ProductList";
 
 
 function App () {
+
+
   return (
     <div>
       <div className='header'>

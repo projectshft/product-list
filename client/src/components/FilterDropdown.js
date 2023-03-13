@@ -3,7 +3,7 @@ import{ useState } from 'react';
 
 
 const FilterDropdown = () => {
-  const [value, setValue] = useState('Highest');
+  const [value, setValue] = useState('highest');
   const [cat, setCategory] = useState('tools');
 
   const handleChange = (event) => {
@@ -26,29 +26,29 @@ const FilterDropdown = () => {
       <label>
         Sort By Category:
         <select value={cat} onChange={handleChng}>
-          <option value="tools">Tools</option>
-          <option value="toys">Toys</option>
-          <option value="food">Food</option>
-          <option value="home">Home</option>
-          <option value="beauty">Beauty</option>
-          <option value="kids">Kids</option>
-          <option value="health">Health</option>
-          <option value="shoes">Shoes</option>
-          <option value="outdoors">Outdoors</option>
-          <option value="garden">Garden</option>
-          <option value="games">Games</option>
-          <option value="music">Music</option>
-          <option value="books">Books</option>
-          <option value="movies">Movies</option>
-          <option value="automotive">Automotive</option>
-          <option value="clothing">Clothing</option>
-          <option value="electronics">Electronics</option>
-          <option value="computer">Computer</option>
-          <option value="baby">Baby</option>
-          <option value="industrial">Industrial</option>
-          <option value="jewelery">Jewelery</option>
-          <option value="grocery">Grocery</option>
-          <option value="sports">Sports</option>
+          <option value="Tools">Tools</option>
+          <option value="Toys">Toys</option>
+          <option value="Food">Food</option>
+          <option value="Home">Home</option>
+          <option value="Beauty">Beauty</option>
+          <option value="Kids">Kids</option>
+          <option value="Health">Health</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Outdoors">Outdoors</option>
+          <option value="Garden">Garden</option>
+          <option value="Games">Games</option>
+          <option value="Music">Music</option>
+          <option value="Books">Books</option>
+          <option value="Movies">Movies</option>
+          <option value="Automotive">Automotive</option>
+          <option value="Clothing">Clothing</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Computer">Computer</option>
+          <option value="Baby">Baby</option>
+          <option value="Industrial">Industrial</option>
+          <option value="Jewelery">Jewelery</option>
+          <option value="Grocery">Grocery</option>
+          <option value="Sports">Sports</option>
         </select>
       </label>
     </div>

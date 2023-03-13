@@ -3,10 +3,17 @@ import axios from 'axios';
 
 export const getProducts = createAsyncThunk(
   'products/getProducts',
-  async ({ page = 1, category = 'All' }) => {
-    const url = category === 'All'
-      ? `http://localhost:8000/products?page=${page}`
-      : `http://localhost:8000/products?page=${page}&category=${category}`;
+  async ({ page = 1, category = 'All', price = '' }) => {
+    let url = `http://localhost:8000/products?page=${page}`;
+    
+    if (category !== 'All') {
+      url += `&category=${category}`;
+    }
+    if (price === 'lowest') {
+      url += '&sort=price&order=asc';
+    } else if (price === 'highest') {
+      url += '&sort=price&order=desc';
+    }
 
     const response = await axios.get(url);
 

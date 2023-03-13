@@ -7,24 +7,20 @@ import Page from './Page';
 function ProductList() {
   const dispatch = useDispatch();
 
-
-  // const [sortPrice, setSortPrice] = useState('highest');
   const [sortCategory, setSortCategory] = useState('All');
+  const [sortPrice, setSortPrice] = useState('');
 
   let { data } = useSelector((state) => {
-    console.log(state.products,'state.products')
     return state.products
   });
   let { count } = useSelector((state) => {
-    console.log(state.count,'state.count')
     return state.count
   });
 
-
   useEffect(() => {
-    dispatch(getProducts({ page: 1, category: sortCategory }));
+    dispatch(getProducts({ page: 1, category: sortCategory, price: sortPrice }));
     dispatch(getCount());
-  }, [dispatch, sortCategory]);
+  }, [dispatch, sortCategory, sortPrice]);
 
   const pages = [];
   for (let i = 0; i < Math.ceil(count / 9); i++) {
@@ -32,13 +28,16 @@ function ProductList() {
   }
 
   const handlePageChange = (pageNumber) => {
-    console.log(`page: ${pageNumber}`);
-    dispatch(getProducts({ page: pageNumber, category: sortCategory }));
+    dispatch(getProducts({ page: pageNumber, category: sortCategory, price: sortPrice }));
   }
 
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.value;
     setSortCategory(selectedCategory === 'All' ? '' : selectedCategory);
+  }
+
+  const handlePriceChange = (event) => {
+    setSortPrice(event.target.value);
   }
 
 
@@ -50,14 +49,23 @@ function ProductList() {
     );
   });
   
-  const renderedProducts = data.map((product) => {
-    console.log(product, 'testing rendered products')
+  const sortProductsPrice = () => {
+    const sortedProducts = [...data];
+    if (sortPrice === 'highest') {
+      sortedProducts.sort((a, b) => b.price - a.price);
+    } else if (sortPrice === 'lowest') {
+      sortedProducts.sort((a, b) => a.price - b.price);
+    }
+    return sortedProducts;
+  }
+
+  const renderedProducts = sortProductsPrice().map((product) => {
     return (
       <div className='list-container' key={product._id}>
         <Product price={product.price} category={product.category} image={product.image} name={product.name}/>
       </div>
-    )
-  })
+    );
+  });
 
   return (
     <div className='product-list-container'>
@@ -88,6 +96,12 @@ function ProductList() {
           <option value="Jewelery">Jewelery</option>
           <option value="Grocery">Grocery</option>
           <option value="Sports">Sports</option>
+        </select>
+        <label htmlFor="price">Sort by price:</label>
+        <select id="price" value={sortPrice} onChange={handlePriceChange}>
+          <option value="">None</option>
+          <option value="highest">Highest to lowest</option>
+          <option value="lowest">Lowest to highest</option>
         </select>
       </div>
       <div className='list-container'>

@@ -3,10 +3,10 @@ import axios from 'axios';
 
 //action
 export const fetchProductsAction = createAsyncThunk("products/fetch", async(queryInput, rejectWithValue) => {
-  const { keyword, name, category, price } = queryInput;
+  const { keyword, name, category, price, page } = queryInput;
 
   try {
-    const { data } = await axios.get(`http://localhost:8000/products?query=${keyword}&name=${name}&category=${category}&price=${price}`);
+    const { data } = await axios.get(`http://localhost:8000/products?query=${keyword}&name=${name}&category=${category}&price=${price}&page=${page}`);
 
     return data
   } catch (error) {
@@ -19,7 +19,6 @@ export const fetchProductsAction = createAsyncThunk("products/fetch", async(quer
 
 const initialState = {
   products: [],
-
 }
 
 const productsSlice = createSlice({

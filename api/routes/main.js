@@ -58,23 +58,34 @@ router.get("/products", async (req, res) => {
       name: createRegExp(query)
     };
     try {
+      const total = await Product.countDocuments({$or: [queryPathCategory, queryPathName]});
       const products = await Product
         .find({$or: [queryPathCategory, queryPathName]})
         .sort(sortByPrice)
         .skip(perPage * page - perPage)
         .limit(perPage);   
-      res.status(200).json(products).end();
+      res.status(200)
+        .json({
+          totalPages: (total / perPage), 
+          items: products})
+        .end();
     } catch {
       res.status(404).end();
     } 
   } else {
     try {
+      const total = await Product.countDocuments(pathParameters)
       const products = await Product
         .find(pathParameters)
         .sort(sortByPrice)
         .skip(perPage * page - perPage)
         .limit(perPage);   
-      res.status(200).json(products).end();
+      res.status(200)
+        .json({
+          totalPages: Math.ceil(total / perPage),
+          items: products
+        })
+        .end();
     } catch {
       res.status(404).end();
     }  

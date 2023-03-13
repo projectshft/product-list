@@ -16,14 +16,15 @@ const NameSearch = (props) => {
   const dispatch = useDispatch();
 
   const handleNameSearch = (data) => {
-    dispatch(nameSearch(data.name));
+    const multipleWordName = data.name.split(' ').join('_');
+    dispatch(nameSearch(multipleWordName));
   };
 
   return (<Form className="d-flex" onChange={handleSubmit(handleNameSearch)}>
             <Form.Control 
               className="input-group w-100"
               type="search" 
-              placeholder="Enter Product Name Here"
+              placeholder="Enter Product Name"
               {...register("name")}
             />
             {errors.name?.message}

@@ -9,6 +9,7 @@ function ProductList() {
 
   const [sortCategory, setSortCategory] = useState('All');
   const [sortPrice, setSortPrice] = useState('');
+  const [search, setSearch] = useState('');
 
   let { data } = useSelector((state) => {
     return state.products
@@ -18,9 +19,9 @@ function ProductList() {
   });
 
   useEffect(() => {
-    dispatch(getProducts({ page: 1, category: sortCategory, price: sortPrice }));
+    dispatch(getProducts({ page: 1, category: sortCategory, price: sortPrice, query: search }));
     dispatch(getCount());
-  }, [dispatch, sortCategory, sortPrice]);
+  }, [dispatch, sortCategory, sortPrice, search]);
 
   const pages = [];
   for (let i = 0; i < Math.ceil(count / 9); i++) {
@@ -28,7 +29,7 @@ function ProductList() {
   }
 
   const handlePageChange = (pageNumber) => {
-    dispatch(getProducts({ page: pageNumber, category: sortCategory, price: sortPrice }));
+    dispatch(getProducts({ page: pageNumber, category: sortCategory, price: sortPrice, query: 'search term' }));
   }
 
   const handleCategoryChange = (event) => {
@@ -59,7 +60,8 @@ function ProductList() {
     return sortedProducts;
   }
 
-  const renderedProducts = sortProductsPrice().map((product) => {
+  const filteredProducts = sortProductsPrice().filter(product => product.name.toLowerCase().includes(search.toLowerCase()));
+  const renderedProducts = filteredProducts.map((product) => {
     return (
       <div className='list-container' key={product._id}>
         <Product price={product.price} category={product.category} image={product.image} name={product.name}/>
@@ -70,7 +72,14 @@ function ProductList() {
   return (
     <div className='product-list-container'>
       <div className='sort-container'>
-        <label htmlFor="category">Sort by category:</label>
+      <input
+          type="text"
+          placeholder="Search Products..."
+          className="searchbar"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <label htmlFor="category">Sort by category: </label>
         <select id="category" value={sortCategory} onChange={handleCategoryChange}>
           <option value="All">All</option>
           <option value="Tools">Tools</option>
@@ -97,7 +106,7 @@ function ProductList() {
           <option value="Grocery">Grocery</option>
           <option value="Sports">Sports</option>
         </select>
-        <label htmlFor="price">Sort by price:</label>
+        <label htmlFor="price">Sort by price: </label>
         <select id="price" value={sortPrice} onChange={handlePriceChange}>
           <option value="">None</option>
           <option value="highest">Highest to lowest</option>

@@ -46,11 +46,9 @@ router.get("/products", (req, res, next) => {
   if (category) {
     filter.category = category;
   }
-  // console.log(filter.category, 'filter category');
   if (query) {
     filter.name = { $regex: query, $options: "i" };
   }
-console.log(filter.name, 'query');
   if (price) {
     if (price === 'highest') {
       sort = { price: -1 };

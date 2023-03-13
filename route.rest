@@ -1,0 +1,32 @@
+GET http://localhost:9000/products?category=Baby
+
+###
+
+GET http://localhost:9000/products/640cab1cc0b0c801423f25d1
+
+###
+
+POST http://localhost:9000/products
+Content-Type: application/json
+
+{
+  "category": "Baby",
+  "name": "Smelly Fish Feet",
+  "price": 500,
+  "image": "https://via.placeholder.com/250?text=Product+Image",
+  "review": []
+}
+
+###
+
+POST http://localhost:9000/products/640cab1cc0b0c801423f25d1/reviews
+Content-Type: application/json
+
+{
+  "username": "Mike",
+  "text": "The very best! Amazing"
+}
+
+###
+
+DELETE http://localhost:9000/reviews/640cddff5230d5a5dd6dde08

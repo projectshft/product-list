@@ -65,6 +65,7 @@ router.get("/products/:product", (req, res, next) => {
   
   Product.find({ _id: productId })
     .then((result) => {
+      console.log(result);
       res.send(result);
     })
     .catch((err) => {
@@ -91,6 +92,34 @@ router.post("/products", (req, res, next) => {
 })
 
 // TODO: POST create a new review
+router.post("/products/:product/reviews", (req, res, next) => {
+  let productId = req.params.product;
+  let review = new Review();
+
+  Product.findById(productId)
+    .then((product) => {
+      review.userName = req.body.userName;
+      review.text = req.body.text;
+      review.product = product._id;
+
+      product.reviews.push(review);
+      console.log(product.reviews)
+
+      product.save()
+      .catch((err) => {
+        throw err;
+      })
+
+      review.save()
+      .catch((err) => {
+        throw err;
+      })
+
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+})
 
 // TODO: DELETE a product by id
 

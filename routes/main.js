@@ -74,7 +74,21 @@ router.get("/products/:product", (req, res, next) => {
 
 // TODO: GET all the reviews for a product but limited to 4 at a time
 
+
 // TODO: POST create a new product in the DB
+router.post("/products", (req, res, next) => {
+  let product = new Product({
+    category: req.body.category,
+    name: req.body.name,
+    price: req.body.price,
+    image: req.body.image,
+    reviews: []
+  })
+
+  product.save();
+  res.writeHead(200, "Product successfully added.")
+  return res.end();
+})
 
 // TODO: POST create a new review
 

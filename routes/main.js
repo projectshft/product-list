@@ -59,4 +59,27 @@ router.get("/products", (req, res, next) => {
     })
 });
 
+// TODO: GET product by id
+router.get("/products/:product", (req, res, next) => {
+  const productId = req.params.product;
+  
+  Product.find({ _id: productId })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+})
+
+// TODO: GET all the reviews for a product but limited to 4 at a time
+
+// TODO: POST create a new product in the DB
+
+// TODO: POST create a new review
+
+// TODO: DELETE a product by id
+
+// TODO: DELETE a review by id
+
 module.exports = router;

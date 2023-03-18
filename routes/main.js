@@ -122,7 +122,7 @@ router.post("/products/:product/reviews", (req, res, next) => {
 // TODO: DELETE a product by id
 router.delete("/products/:product", (req, res, next) => {
   const productId = req.params.product;
-  
+
   Product.deleteOne({ _id: productId })
     .exec()
     .then((result) => {
@@ -135,5 +135,18 @@ router.delete("/products/:product", (req, res, next) => {
 })
 
 // TODO: DELETE a review by id
+router.delete("/reviews/:review", (req, res, next) => {
+  const reviewId = req.params.review;
+
+  Review.deleteOne({ _id: reviewId })
+    .exec()
+    .then((result) => {
+      res.writeHead(200, "Review successfully deleted.")
+      res.send()
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+})
 
 module.exports = router;

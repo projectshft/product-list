@@ -35,24 +35,39 @@ router.get("/generate-fake-data", (req, res, next) => {
 
 router.get("/products", (req, res, next) => {
   const perPage = 9;
-
   const page = req.query.page || 1;
+  const { category, price, query } = req.query;
 
-  Product.find()
+  // TODO: deal with category and query
+  let queryObject = {};
+  if (category) {
+    queryObject.category = new RegExp(category, 'i');
+  }
+  if (query) {
+    queryObject.name = new RegExp(query, 'i');
+  }
+
+  // TODO: deal with price sorting
+  let priceSort = {};
+  if (price === 'highest') {
+    priceSort.price = -1;
+  } else {
+    priceSort.price = 1;
+  }
+
+  Product.find(queryObject)
     .skip(perPage * page - perPage)
     .limit(perPage)
+    .sort(priceSort)
     .exec()
     .then((products) => {
-      Product.count().exec()
+      Product.count(queryObject).exec()
       .then((count) => {
         res.send({
-          products,
+          products, 
           count
-        })
+        });
       })
-      .catch((err => {
-        res.send(err);
-      }))
     })
     .catch((err) => {
       res.send(err);

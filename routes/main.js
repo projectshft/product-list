@@ -39,7 +39,7 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
 
   Product.find()
-    .skip( perPage * page - perPage)
+    .skip(perPage * page - perPage)
     .limit(perPage)
     .exec()
     .then((products) => {
@@ -73,6 +73,27 @@ router.get("/products/:product", (req, res, next) => {
 })
 
 // TODO: GET all the reviews for a product but limited to 4 at a time
+router.get("/products/:product/reviews", (req, res, next) => {
+  const perPage = 4;
+  const page = req.query.page || 1;
+  const productId = req.params.product;
+  
+  Product.findById(productId)
+    .populate({
+      path: "reviews",
+      options: {
+        limit: perPage,
+        skip: perPage * (page - 1)
+      }
+    })
+    .exec()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+})
 
 
 // TODO: POST create a new product in the DB
@@ -113,6 +134,8 @@ router.post("/products/:product/reviews", (req, res, next) => {
         throw err;
       })
 
+      res.writeHead(200, "Review successfully deleted.")
+      res.send()
     })
     .catch((err) => {
       res.send(err);

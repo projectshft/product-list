@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Products API",
-      "program": "${workspaceRoot}/server.js"
+      "program": "${workspaceRoot}/backend/server.js"
     }
   ]
 }

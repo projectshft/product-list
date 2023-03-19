@@ -34,6 +34,7 @@ router.get("/products",async (req, res, next) => {
       skip: (page -1) * resultsPerPage,
       limit: resultsPerPage
     };
+    
     const products = await Product.find({}, null, options);
     const totalResults = await Product.countDocuments();
     //Response Obj with pagination details
@@ -167,7 +168,7 @@ router.delete("/products/:product", async (req, res, next) => {
     if (!prodById) {
       return res.status(404).send({error: "404 Not Found No Product with that ID"});
     }
-    res.status(200);
+    res.status(200).send({message: "Deleted"});
 
   } catch (err) {
     console.log(err);

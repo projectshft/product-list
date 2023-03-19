@@ -114,7 +114,7 @@ router.post("/products", async (req,res, next) => {
   }
 })
 
-//Post Review NOT OK
+//Post Review POSTING review but not name needs to be Manipulated either in the model or something here******
 router.post("/products/:product/reviews", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
@@ -143,15 +143,17 @@ router.post("/products/:product/reviews", async (req, res, next) => {
     console.log("Review to POST", reviewToPost);
     console.log("Author", authorToPost);
     reviewToPost.save();
+    authorToPost.save();
 
     prodById.reviews.push(reviewToPost);
     authorToPost.review.push(reviewToPost);
-    
-    prodById.save();
-    authorToPost.save();
-    console.log("product aftersave", prodById);
 
-    res.status(201).send({review: reviewToPost});
+    console.log("product aftersave", prodById);
+    await prodById.save();
+
+    const getName = await Review.findById(reviewToPost._id).populate('name');
+
+    res.status(201).send({review: getName, author: authorToPost});
   } catch (err) {
     console.log(err);
     res.status(500).send({error: "Error Occured"})

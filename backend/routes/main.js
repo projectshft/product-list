@@ -51,8 +51,10 @@ router.get("/products", (req, res, next) => {
   let priceSort = {};
   if (price === 'highest') {
     priceSort.price = -1;
+  } else if (price === 'lowest') {
+    priceSort.price = 1
   } else {
-    priceSort.price = 1;
+    priceSort = {};
   }
 
   Product.find(queryObject)

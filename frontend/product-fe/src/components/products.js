@@ -1,4 +1,14 @@
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "../actions";
+
 export default function Products() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   return (
     <div>
       <div class="container px-6 py-10 mx-auto">

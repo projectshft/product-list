@@ -6,8 +6,9 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import reducers from "./reducers";
 import promise from "redux-promise";
+import thunk from "redux-thunk";
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

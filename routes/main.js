@@ -21,4 +21,15 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
+router.get("/products",async (req, res, next) => {
+  try {
+    const articles = await Product.find({});
+    res.send(articles);
+    console.log(articles);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
 module.exports = router;

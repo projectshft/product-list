@@ -34,16 +34,28 @@ export default function Products() {
           </div>
 
           <div class="items-center gap-4 lg:flex">
-            <input
-              class="h-10 rounded-lg border-gray-200 pr-10 text-sm placeholder-gray-300 focus:z-10"
-              placeholder="Search..."
-              type="search"
-            />
-            <input
-              class="h-10 rounded-lg border-gray-200 pr-10 text-sm placeholder-gray-300 focus:z-10"
-              placeholder="Search..."
-              type="search"
-            />
+            <div class="relative">
+              <select class="h-10 rounded-lg border-gray-200 pr-10 text-sm placeholder-gray-300 focus:z-10">
+                <option>Sort by Category</option>
+                <option>Beauty</option>
+                <option>Books</option>
+                <option>Clothing</option>
+                <option>Electronics</option>
+                <option>Garden</option>
+                <option>Grocery</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+            </div>
+
+            <div class="relative">
+              <select
+                class="h-10 rounded-lg border-gray-200 pr-10 text-sm placeholder-gray-300 focus:z-10">
+                <option>Sort by Price</option>
+                <option>Price: Lowest to Highest</option>
+                <option>Price: Highest to Lowest</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+            </div>
           </div>
         </div>
       </header>

@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
+const Author = require("../models/product")
+const Review = require("../models/product")
+
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -10,12 +13,13 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image";
-    product.reviews = [];
+    // product.reviews = [];
 
     const result = product.save();
     console.log(result)
-  }
+
   res.end();
+  }
 });
 
 //New way to fix no longer accepts a callback()
@@ -91,14 +95,17 @@ router.get("/products/:product/reviews", async (req, res, next) => {
   }
 })
 
-//Post Product
+//Post Product OK
 router.post("/products", async (req,res, next) => {
   try {
+    console.log("body", req.body)
     //From page to Post
     const toPost = req.body;
+    console.log("ToPost:", toPost);
     const product = new Product(toPost);
     //Save product to DB
     product.save();
+    console.log(product);
 
     res.status(201).send(product);
   }  catch (err) {
@@ -114,13 +121,30 @@ router.post("/products/:product/reviews", async (req, res, next) => {
     if (!prodById) {
       return res.status(404).send({error: "404 Not Found No Product with that ID"});
     }
+    console.log("ProductBefore", prodById);
     //Review from body
-    const review = req.body;
+    const toPost = req.body;
+
+    const author = new Author({
+      name: toPost.name,
+      reviews: []
+    });
+    const review = new Review({
+      product: prodById,
+      name: author,
+      review: toPost.review
+    })
+    console.log("body", req.body);
     // let product = new Product();
 
     //Push save and send OK
     prodById.reviews.push(review);
+    author.reviews.push(review);
+    console.log("afterpush", prodById.reviews);
     prodById.save();
+    console.log("product aftersave", prodById);
+    author.save();
+    console.log("Author afterSave", author);
     res.status(201).send(review);
 
     res.send(result);

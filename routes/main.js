@@ -14,16 +14,12 @@ router.get("/generate-fake-data", (req, res, next) => {
 
     const result = product.save();
     console.log(result)
-
-    // product.save((err) => {
-    //   if (err) throw err;
-    // });
   }
   res.end();
 });
 
 //New way to fix no longer accepts a callback()
-//Gets 9 products per page
+//Gets 9 products per page OK
 router.get("/products",async (req, res, next) => {
   try {
     //Default val for page and result per page
@@ -52,7 +48,7 @@ router.get("/products",async (req, res, next) => {
   }
 });
 
-//Gets Product by ID
+//Gets Product by ID OK
 router.get("/products/:product", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
@@ -69,7 +65,7 @@ router.get("/products/:product", async (req, res, next) => {
   }
 });
 
-//Get Product Reviews by Product ID
+//Get Product Reviews by Product ID OK
 router.get("/products/:product/reviews", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
@@ -95,6 +91,23 @@ router.get("/products/:product/reviews", async (req, res, next) => {
   }
 })
 
+//Post Product
+router.post("/products", async (req,res, next) => {
+  try {
+    //From page to Post
+    const toPost = req.body;
+    const product = new Product(toPost);
+    //Save product to DB
+    product.save();
+
+    res.status(201).send(product);
+  }  catch (err) {
+    console.log(err)
+    res.status(500).send({error: "Error"})
+  }
+})
+
+//Post Review NOT OK
 router.post("/products/:product/reviews", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
@@ -103,11 +116,11 @@ router.post("/products/:product/reviews", async (req, res, next) => {
     }
     //Review from body
     const review = req.body;
-    let product = new Product();
+    // let product = new Product();
 
     //Push save and send OK
-    product.reviews.push(review);
-    product.save();
+    prodById.reviews.push(review);
+    prodById.save();
     res.status(201).send(review);
 
     res.send(result);

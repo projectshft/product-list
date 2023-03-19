@@ -1,4 +1,4 @@
-export default function Products() {
+export default function Nav() {
   return (
     <div>
       <header className="shadow-sm">

@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors")
 
 mongoose.connect("mongodb://localhost/products", {
   useNewUrlParser: true,
@@ -8,7 +9,9 @@ mongoose.connect("mongodb://localhost/products", {
 });
 
 const app = express();
-
+//Cors for all endpoints
+app.use(cors());
+//Body parser middleware
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

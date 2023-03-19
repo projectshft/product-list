@@ -7,7 +7,6 @@ const DEFAULT_STATE = {
 const productReducer = function (state = DEFAULT_STATE, action) {
   switch (action.type) {
     case FETCH_DATA_SUCCESS:
-      console.log(action.payload.products)
       return {
         products: action.payload.products
       }

@@ -95,5 +95,27 @@ router.get("/products/:product/reviews", async (req, res, next) => {
   }
 })
 
+router.post("/products/:product/reviews", async (req, res, next) => {
+  try {
+    const prodById = await Product.findById(req.params.product);
+    if (!prodById) {
+      return res.status(404).send({error: "404 Not Found No Product with that ID"});
+    }
+    //Review from body
+    const review = req.body;
+    let product = new Product();
+
+    //Push save and send OK
+    product.reviews.push(review);
+    product.save();
+    res.status(201).send(review);
+
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({error: "Error Occured"})
+  }
+})
+
 
 module.exports = router;

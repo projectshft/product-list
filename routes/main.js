@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const faker = require("faker");
-const Product = require("../models/product");
-const Author = require("../models/product")
-const Review = require("../models/product")
+const {Product, Author, Review} = require("../models/product");
+// const Author = require("../models/product")
+// const Review = require("../models/product")
 
 
 router.get("/generate-fake-data", (req, res, next) => {
@@ -118,36 +118,40 @@ router.post("/products", async (req,res, next) => {
 router.post("/products/:product/reviews", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
+    const {review, author} = req.body;
+
     if (!prodById) {
       return res.status(404).send({error: "404 Not Found No Product with that ID"});
     }
     console.log("ProductBefore", prodById);
     //Review from body
-    const toPost = req.body;
-
-    const author = new Author({
-      name: toPost.name,
-      reviews: []
-    });
-    const review = new Review({
-      product: prodById,
-      name: author,
-      review: toPost.review
-    })
+    // const reviewBody = req.body;
+    // const authorBody = req.body;
     console.log("body", req.body);
-    // let product = new Product();
 
-    //Push save and send OK
-    prodById.reviews.push(review);
-    author.reviews.push(review);
-    console.log("afterpush", prodById.reviews);
+    const authorToPost = new Author ({
+      name: author,
+      review: []
+    });
+
+    const reviewToPost = new Review({
+      review,
+      name: authorToPost,
+      product: prodById
+    });
+
+    console.log("Review to POST", reviewToPost);
+    console.log("Author", authorToPost);
+    reviewToPost.save();
+
+    prodById.reviews.push(reviewToPost);
+    authorToPost.review.push(reviewToPost);
+    
     prodById.save();
+    authorToPost.save();
     console.log("product aftersave", prodById);
-    author.save();
-    console.log("Author afterSave", author);
-    res.status(201).send(review);
 
-    res.send(result);
+    res.status(201).send({review: reviewToPost});
   } catch (err) {
     console.log(err);
     res.status(500).send({error: "Error Occured"})

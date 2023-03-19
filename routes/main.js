@@ -114,7 +114,7 @@ router.post("/products", async (req,res, next) => {
   }
 })
 
-//Post Review POSTING review but not name needs to be Manipulated either in the model or something here******
+//Post Review POSTING review but not name needs to be Manipulated either in the model or something here******NO GOOD!!
 router.post("/products/:product/reviews", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
@@ -158,7 +158,23 @@ router.post("/products/:product/reviews", async (req, res, next) => {
     console.log(err);
     res.status(500).send({error: "Error Occured"})
   }
+});
+
+//Delete Product by ID OK but POSTMAN took some time
+router.delete("/products/:product", async (req, res, next) => {
+  try {
+    const prodById = await Product.findByIdAndRemove(req.params.product);
+    if (!prodById) {
+      return res.status(404).send({error: "404 Not Found No Product with that ID"});
+    }
+    res.status(200);
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({error: "Error Occured"})
+  }
 })
+
 
 
 module.exports = router;

@@ -1,25 +1,29 @@
 import { useDispatch } from "react-redux";
-import { fetchProducts} from "../actions";
+import { fetchProducts } from "../actions";
 
 export default function Nav() {
-
   const dispatch = useDispatch();
 
   const handleQuery = (event) => {
-    let query = event.target.value
-    dispatch(fetchProducts("", query, "", ""))
-  }
+    let query = event.target.value;
+    dispatch(fetchProducts("", query, "", ""));
+  };
 
   const handleCategory = (event) => {
-    let category = event.target.value
+    let category = event.target.value;
     localStorage.setItem("selectedCategory", category);
-    dispatch(fetchProducts("", "", category, ""))
-  }
+    dispatch(fetchProducts("", "", category, ""));
+  };
 
   const handlePrice = (event) => {
-    let price = event.target.value
+    let price = event.target.value;
     localStorage.setItem("selectedPrice", price);
-    dispatch(fetchProducts("", "", "", price))
+    dispatch(fetchProducts("", "", "", price));
+  };
+
+  const handleReset = (event) => {
+    localStorage.clear();
+    dispatch(fetchProducts("", "", "", ""));
   }
 
   return (
@@ -59,7 +63,10 @@ export default function Nav() {
 
           <div className="items-center gap-4 lg:flex">
             <div className="relative">
-              <select className="h-10 rounded-lg border-gray-200 pr-10 text-sm placeholder-gray-300 focus:z-10" onChange={handleCategory}>
+              <select
+                className="h-10 rounded-lg border-gray-200 pr-10 text-sm placeholder-gray-300 focus:z-10"
+                onChange={handleCategory}
+              >
                 <option>Sort by Category</option>
                 <option>Beauty</option>
                 <option>Books</option>
@@ -73,12 +80,23 @@ export default function Nav() {
 
             <div className="relative">
               <select
-                className="h-10 rounded-lg border-gray-200 pr-10 text-sm placeholder-gray-300 focus:z-10" onChange={handlePrice}>
+                className="h-10 rounded-lg border-gray-200 pr-10 text-sm placeholder-gray-300 focus:z-10"
+                onChange={handlePrice}
+              >
                 <option>Sort by Price</option>
                 <option>Lowest</option>
                 <option>Highest</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+            </div>
+
+            <div className="relative">
+              <button
+                className="inline-flex h-10 items-center justify-center rounded border border-gray-200 px-3"
+                onClick={handleReset}
+              >
+                Reset Filters
+              </button>
             </div>
           </div>
         </div>

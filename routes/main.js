@@ -1,9 +1,8 @@
 const router = require("express").Router();
 const faker = require("faker");
-const {Product, Author, Review} = require("../models/product");
+const { Product, Author, Review } = require("../models/product");
 // const Author = require("../models/product")
 // const Review = require("../models/product")
-
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -16,89 +15,90 @@ router.get("/generate-fake-data", (req, res, next) => {
     // product.reviews = [];
 
     const result = product.save();
-    console.log(result)
+    console.log(result);
 
-  res.end();
+    res.end();
   }
 });
 
 //Just by name Get
-// router.get("/products", async (req, res, next) => {
-//   try {
-//     const {category, sort, query, page = 1} = req.query;
-//     const resultPerPage = 9;
-//     const skip = (page - 1) * resultPerPage;
-//     console.log(query);
-//     const productFilter = {};
-//     const sortPrice = {};
-//     if (category) {
-//       const catRegex = new RegExp(category, "i");
-//       productFilter.category = catRegex;
-//       console.log(catRegex);
-//     }
+router.get("/products", async (req, res, next) => {
+  try {
+    const {category, sort, query, page = 1} = req.query;
+    const resultPerPage = 9;
+    const skip = (page - 1) * resultPerPage;
+    console.log(query);
+    const productFilter = {};
+    const sortPrice = {};
+    if (category) {
+      const catRegex = new RegExp(category, "i");
+      productFilter.category = catRegex;
+      console.log(catRegex);
+    }
 
-//     if (query) {
-//       const regex = new RegExp(query, "i");
-//       productFilter.name = regex;
-//       console.log(regex);
-//         }
-    
-//     if (sort) {
-//       sortPrice.price = sort === "lowest" ? 1 : -1;
-//     }
-    
-//     console.log(productFilter);
+    if (query) {
+      const regex = new RegExp(query, "i");
+      productFilter.name = regex;
+      console.log(regex);
+        }
 
+    if (sort) {
+      sortPrice.price = sort === "lowest" ? 1 : -1;
+    }
 
-//     const products = await Product.find(productFilter).sort(sortPrice)
-//     .skip(skip)
-//     .limit(resultPerPage)
-//     .exec();
+    console.log(productFilter);
 
-//     const totalRes = await Product.countDocuments(productFilter);
+const products = await Product.find(productFilter, {}, null).sort(sortPrice)
+.skip(skip)
+.limit(resultPerPage)
+.exec();
 
-//     const response = {
-//       results: resultPerPage,
-//       products: products
-//     };
-//     console.log(response)
-//     res.send(response);
-//   } catch (err) {
-//     console.log(err)
-//     res.status(500).send({error: "Error occured during search"});
-//   }
-// })
+const totalRes = await Product.countDocuments(productFilter);
+
+const response = {
+  results: resultPerPage,
+  products: products
+};
+console.log(response)
+res.send(response);
+  } catch (err) {
+    console.log(err)
+    res.status(500).send({error: "Error occured during search"});
+  }
+})
 
 //New way to fix no longer accepts a callback()
 //Gets 9 products per page OK
-router.get("/products",async (req, res, next) => {
-  try {
-    //Default val for page and result per page
-    const page = parseInt(req.query.page) || 1;
-    const resultsPerPage = 9;
-    //Skip and limit opt for pagination the results
-    const options = {
-      skip: (page -1) * resultsPerPage,
-      limit: resultsPerPage
-    };
-    
-    const products = await Product.find({}, null, options);
-    const totalResults = await Product.countDocuments();
-    //Response Obj with pagination details
-    const response = {
-      total: totalResults,
-      page: page,
-      resultsPerPage: resultsPerPage,
-      totalPages: Math.ceil(totalResults / resultsPerPage),
-      data: products
-    };
-    res.send(response);
-    console.log(response);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({error: "An unable to GET data"})
-  }
-});
+//WORKS WITH ONLY ALL PRODUCTS
+// router.get("/products",async (req, res, next) => {
+//   try {
+//     //Default val for page and result per page
+//     const page = parseInt(req.query.page) || 1;
+//     const resultsPerPage = 9;
+//     //Skip and limit opt for pagination the results
+//     const options = {
+//       skip: (page -1) * resultsPerPage,
+//       limit: resultsPerPage
+//     };
+
+//     const products = await Product.find({}, null, options);
+//     const totalResults = await Product.countDocuments();
+//     //Response Obj with pagination details
+//     const response = {
+//       total: totalResults,
+//       page: page,
+//       resultsPerPage: resultsPerPage,
+//       totalPages: Math.ceil(totalResults / resultsPerPage),
+//       data: products
+//     };
+//     res.send(response);
+//     console.log(response);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).send({error: "An unable to GET data"})
+//   }
+// });
+
 
 //Gets Product by ID OK
 router.get("/products/:product", async (req, res, next) => {
@@ -106,14 +106,15 @@ router.get("/products/:product", async (req, res, next) => {
     const prodById = await Product.findById(req.params.product);
 
     if (!prodById) {
-      return res.status(404).send({error: "404 Not Found No Product with that ID"});
+      return res
+        .status(404)
+        .send({ error: "404 Not Found No Product with that ID" });
     }
     res.send(prodById);
     console.log(prodById);
-
   } catch (err) {
-    console.log (err);
-    res.status(500).send({error: "error has occured"});
+    console.log(err);
+    res.status(500).send({ error: "error has occured" });
   }
 });
 
@@ -122,7 +123,9 @@ router.get("/products/:product/reviews", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
     if (!prodById) {
-      return res.status(404).send({error: "404 Not Found No Product with that ID"});
+      return res
+        .status(404)
+        .send({ error: "404 Not Found No Product with that ID" });
     }
     //Data for Result Obj
     const pageNumber = parseInt(req.query.page) || 1;
@@ -134,19 +137,19 @@ router.get("/products/:product/reviews", async (req, res, next) => {
     const result = {
       page: pageNumber,
       onPage: reviewNumber,
-      reviews: allReviews
-    }
+      reviews: allReviews,
+    };
     res.send(result);
   } catch (err) {
     console.log(err);
-    res.status(500).send({error: "Error Occured"})
+    res.status(500).send({ error: "Error Occured" });
   }
-})
+});
 
 //Post Product OK
-router.post("/products", async (req,res, next) => {
+router.post("/products", async (req, res, next) => {
   try {
-    console.log("body", req.body)
+    console.log("body", req.body);
     //From page to Post
     const toPost = req.body;
     console.log("ToPost:", toPost);
@@ -156,20 +159,22 @@ router.post("/products", async (req,res, next) => {
     console.log(product);
 
     res.status(201).send(product);
-  }  catch (err) {
-    console.log(err)
-    res.status(500).send({error: "Error"})
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "Error" });
   }
-})
+});
 
 //Post Review POSTING review but not name needs to be Manipulated either in the model or something here******NO GOOD!!
 router.post("/products/:product/reviews", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
-    const {review, author} = req.body;
+    const { review, author } = req.body;
 
     if (!prodById) {
-      return res.status(404).send({error: "404 Not Found No Product with that ID"});
+      return res
+        .status(404)
+        .send({ error: "404 Not Found No Product with that ID" });
     }
     console.log("ProductBefore", prodById);
     //Review from body
@@ -177,15 +182,15 @@ router.post("/products/:product/reviews", async (req, res, next) => {
     // const authorBody = req.body;
     console.log("body", req.body);
 
-    const authorToPost = new Author ({
+    const authorToPost = new Author({
       name: author,
-      review: []
+      review: [],
     });
 
     const reviewToPost = new Review({
       review,
       name: authorToPost,
-      product: prodById
+      product: prodById,
     });
 
     console.log("Review to POST", reviewToPost);
@@ -199,12 +204,12 @@ router.post("/products/:product/reviews", async (req, res, next) => {
     console.log("product aftersave", prodById);
     await prodById.save();
 
-    const getName = await Review.findById(reviewToPost._id).populate('name');
+    const getName = await Review.findById(reviewToPost._id).populate("name");
 
-    res.status(201).send({review: getName, author: authorToPost});
+    res.status(201).send({ review: getName, author: authorToPost });
   } catch (err) {
     console.log(err);
-    res.status(500).send({error: "Error Occured"})
+    res.status(500).send({ error: "Error Occured" });
   }
 });
 
@@ -213,16 +218,15 @@ router.delete("/products/:product", async (req, res, next) => {
   try {
     const prodById = await Product.findByIdAndRemove(req.params.product);
     if (!prodById) {
-      return res.status(404).send({error: "404 Not Found No Product with that ID"});
+      return res
+        .status(404)
+        .send({ error: "404 Not Found No Product with that ID" });
     }
-    res.status(200).send({message: "Deleted"});
-
+    res.status(200).send({ message: "Deleted" });
   } catch (err) {
     console.log(err);
-    res.status(500).send({error: "Error Occured"})
+    res.status(500).send({ error: "Error Occured" });
   }
-})
-
-
+});
 
 module.exports = router;

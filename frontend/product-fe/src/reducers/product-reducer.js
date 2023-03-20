@@ -1,4 +1,4 @@
-import { FETCH_DATA_SUCCESS, FETCH_DATA_ERROR } from "../actions";
+import { FETCH_DATA_SUCCESS } from "../actions";
 
 const DEFAULT_STATE = {
   products: []

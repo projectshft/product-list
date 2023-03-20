@@ -19,14 +19,16 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-// GET all products, paginated. Optional pages param.
+// GET all products, paginated. Optional params: page, category, sort, query.
 router.get("/products", (req, res, next) => {
-  // sets default to page 1 if not provided
+  // set default to page 1 if not provided
   const page = req.query.page || 1;
   const productsPerPage = 9;
   const startIndex = (page - 1) * productsPerPage;
 
   const category = req.query.category; // get the category query parameter
+  const price = req.query.price; // get the price query parameter
+  const query = req.query.query // get the search query paramater
 
   Product.find({})
     .skip(startIndex)
@@ -38,6 +40,24 @@ router.get("/products", (req, res, next) => {
         const lowerCaseCategory = category.toLowerCase();
         products = products.filter((product) => product.category.toLowerCase() === lowerCaseCategory);
       }
+
+      // Sort products by price if the price query parameter is provided
+      if (price) {
+        if (price === "highest") {
+          products.sort((a, b) => b.price - a.price); // Sort from high to low
+        } else if (price === "lowest") {
+          products.sort((a, b) => a.price - b.price); // Sort from low to high
+        }
+      }
+
+      // Return products matching search query paramater if provided
+      if (query) {
+        // NEW CODE HERE
+        const queryResults = products.filter((product) => product.name.toLowerCase().includes(query.toLowerCase()));
+        products = queryResults;
+
+      }
+
       res.send(products);
     })
     .catch((error) => {

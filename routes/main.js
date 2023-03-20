@@ -22,6 +22,53 @@ router.get("/generate-fake-data", (req, res, next) => {
   }
 });
 
+//Just by name Get
+// router.get("/products", async (req, res, next) => {
+//   try {
+//     const {category, sort, query, page = 1} = req.query;
+//     const resultPerPage = 9;
+//     const skip = (page - 1) * resultPerPage;
+//     console.log(query);
+//     const productFilter = {};
+//     const sortPrice = {};
+//     if (category) {
+//       const catRegex = new RegExp(category, "i");
+//       productFilter.category = catRegex;
+//       console.log(catRegex);
+//     }
+
+//     if (query) {
+//       const regex = new RegExp(query, "i");
+//       productFilter.name = regex;
+//       console.log(regex);
+//         }
+    
+//     if (sort) {
+//       sortPrice.price = sort === "lowest" ? 1 : -1;
+//     }
+    
+//     console.log(productFilter);
+
+
+//     const products = await Product.find(productFilter).sort(sortPrice)
+//     .skip(skip)
+//     .limit(resultPerPage)
+//     .exec();
+
+//     const totalRes = await Product.countDocuments(productFilter);
+
+//     const response = {
+//       results: resultPerPage,
+//       products: products
+//     };
+//     console.log(response)
+//     res.send(response);
+//   } catch (err) {
+//     console.log(err)
+//     res.status(500).send({error: "Error occured during search"});
+//   }
+// })
+
 //New way to fix no longer accepts a callback()
 //Gets 9 products per page OK
 router.get("/products",async (req, res, next) => {

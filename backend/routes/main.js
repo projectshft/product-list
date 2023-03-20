@@ -49,9 +49,9 @@ router.get("/products", (req, res, next) => {
 
   // TODO: deal with price sorting
   let priceSort = {};
-  if (price.toLowerCase() === 'highest') {
+  if (price === 'Highest') {
     priceSort.price = -1;
-  } else if (price.toLowerCase() === 'lowest') {
+  } else if (price === 'Lowest') {
     priceSort.price = 1
   } else {
     priceSort = {};

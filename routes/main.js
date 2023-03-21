@@ -1,8 +1,7 @@
 const router = require("express").Router();
 const faker = require("faker");
 const { Product, Author, Review } = require("../models/product");
-// const Author = require("../models/product")
-// const Review = require("../models/product")
+
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -21,7 +20,7 @@ router.get("/generate-fake-data", (req, res, next) => {
   }
 });
 
-//Just by name Get
+//Gets by name and Category NOT PRICE
 router.get("/products", async (req, res, next) => {
   try {
     const {category, sort, query, page = 1} = req.query;
@@ -66,38 +65,6 @@ res.send(response);
     res.status(500).send({error: "Error occured during search"});
   }
 })
-
-//New way to fix no longer accepts a callback()
-//Gets 9 products per page OK
-//WORKS WITH ONLY ALL PRODUCTS
-// router.get("/products",async (req, res, next) => {
-//   try {
-//     //Default val for page and result per page
-//     const page = parseInt(req.query.page) || 1;
-//     const resultsPerPage = 9;
-//     //Skip and limit opt for pagination the results
-//     const options = {
-//       skip: (page -1) * resultsPerPage,
-//       limit: resultsPerPage
-//     };
-
-//     const products = await Product.find({}, null, options);
-//     const totalResults = await Product.countDocuments();
-//     //Response Obj with pagination details
-//     const response = {
-//       total: totalResults,
-//       page: page,
-//       resultsPerPage: resultsPerPage,
-//       totalPages: Math.ceil(totalResults / resultsPerPage),
-//       data: products
-//     };
-//     res.send(response);
-//     console.log(response);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).send({error: "An unable to GET data"})
-//   }
-// });
 
 
 //Gets Product by ID OK

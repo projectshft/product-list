@@ -11,24 +11,25 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image";
-    // product.reviews = [];
 
     const result = product.save();
     console.log(result);
-
     res.end();
   }
 });
 
-//Gets by name and Category NOT PRICE
+//Get by Price, Category, and Name
 router.get("/products", async (req, res, next) => {
   try {
-    const {category, sort, query, page = 1} = req.query;
+    const {category, price, query} = req.query;
     const resultPerPage = 9;
-    const skip = (page - 1) * resultPerPage;
+
     console.log(query);
-    const productFilter = {};
-    const sortPrice = {};
+    console.log(category)
+
+    let productFilter = {};
+    let priceFilter = {};
+
     if (category) {
       const catRegex = new RegExp(category, "i");
       productFilter.category = catRegex;
@@ -36,30 +37,32 @@ router.get("/products", async (req, res, next) => {
     }
 
     if (query) {
-      const regex = new RegExp(query, "i");
-      productFilter.name = regex;
-      console.log(regex);
+      const queryRegex = new RegExp(query, "i");
+      productFilter.name = queryRegex;
+      console.log(queryRegex);
         }
 
-    if (sort) {
-      sortPrice.price = sort === "lowest" ? 1 : -1;
+    if (price === "lowest") {
+      priceFilter.price = 1;
+    } else if (price === "highest") {
+      priceFilter.price = -1;
     }
 
     console.log(productFilter);
+    console.log(priceFilter);
 
-const products = await Product.find(productFilter, {}, null).sort(sortPrice)
-.skip(skip)
-.limit(resultPerPage)
-.exec();
+productFilter.price = {$gte: 1};
 
-const totalRes = await Product.countDocuments(productFilter);
+const products = await Product.find(productFilter, {}, null).sort(priceFilter).limit(resultPerPage).exec();
 
 const response = {
   results: resultPerPage,
   products: products
 };
-console.log(response)
+console.log(response.products);
+console.log(response.results);
 res.send(response);
+
   } catch (err) {
     console.log(err)
     res.status(500).send({error: "Error occured during search"});
@@ -132,7 +135,7 @@ router.post("/products", async (req, res, next) => {
   }
 });
 
-//Post Review POSTING review but not name needs to be Manipulated either in the model or something here******NO GOOD!!
+//Post Review POSTING review having a hard time getting name
 router.post("/products/:product/reviews", async (req, res, next) => {
   try {
     const prodById = await Product.findById(req.params.product);
@@ -144,9 +147,6 @@ router.post("/products/:product/reviews", async (req, res, next) => {
         .send({ error: "404 Not Found No Product with that ID" });
     }
     console.log("ProductBefore", prodById);
-    //Review from body
-    // const reviewBody = req.body;
-    // const authorBody = req.body;
     console.log("body", req.body);
 
     const authorToPost = new Author({
@@ -180,7 +180,7 @@ router.post("/products/:product/reviews", async (req, res, next) => {
   }
 });
 
-//Delete Product by ID OK but POSTMAN took some time
+//Delete Product by ID OK but POSTMAN took time
 router.delete("/products/:product", async (req, res, next) => {
   try {
     const prodById = await Product.findByIdAndRemove(req.params.product);

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { GET_PRODUCTS, GET_PRODUCT } from '../actions/index'
+import { GET_PRODUCTS } from '../actions/index'
 
 const DEFAULT_STATE = {
   products: [],
@@ -9,16 +9,11 @@ const DEFAULT_STATE = {
 const productsReducer = function(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case GET_PRODUCTS:
-      console.log(action.payload);
-      return {
-        products: action.payload,
-        order: []
-      }
+      return action.payload
     default:
       return state;
   }
 };
-
 
 const rootReducer = combineReducers({
   products: productsReducer

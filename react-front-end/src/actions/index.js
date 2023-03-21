@@ -1,14 +1,11 @@
 import axios from "axios";
 
 export const GET_PRODUCTS = "GET_PRODUCTS";
-export const GET_PRODUCT = "GET_PRODUCT";
 
-const ROOT_URL = "http://localhost:8000";
-
-export function getProducts() {
+export function getProducts(endpoint) {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${ROOT_URL}/products`);
+      const response = await axios.get(endpoint);
       dispatch({
         type: GET_PRODUCTS,
         payload: response.data,
@@ -18,13 +15,3 @@ export function getProducts() {
     }
   };
 }
-
-// export function getProduct(id) {
-//   const request = axios.get(`${ROOT_URL}/products/${id}`);
-
-//   return {
-//     type: GET_PRODUCT,
-//     payload: request
-//   }
-// }
-

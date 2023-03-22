@@ -71,7 +71,7 @@ const Nav = ({ onSearch, chooseCategory, handlePrice  }) => {
             <li>
               <button
                 value="books"
-                onClick={(e) => setCategoies(e.target.value)}
+                onClick={() => setCategoies(e.target.value)}
                 className="dropdown-item"
               >
                 Books

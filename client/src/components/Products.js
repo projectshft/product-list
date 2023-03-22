@@ -6,7 +6,7 @@ const Products = () => {
   return (
     <div className="products container text-center pt-4">
       <div className="row">
-      {productData && productData.map(product => (
+      {productData && productData.data.map(product => (
           <div className="col-4 border" key={product._id}>
             <p>Category: <strong>{product.category}</strong></p>
             <p>Price: <strong>{product.price}</strong></p>

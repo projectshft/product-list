@@ -2,18 +2,18 @@ import Products from './components/Products';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from './actions/productActions';
-// import Pagination from './components/Pagination';
+import Pagination from './components/Pagination';
 
 const App = () => {
   const [price, setPrice] = useState(null)
   const [category, setCategory] = useState(null)
   const [query, setQuery] = useState(null)
 
-  const dispatch = useDispatch(price, category, query);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProducts())
-  }, [price, category, query])
+  }, [dispatch])
 
   const handleCategoryClick = (e) => {
     setCategory(e.target.innerHTML)
@@ -21,11 +21,13 @@ const App = () => {
   }
   
   const handlePriceClick = (e) => {
+    e.preventDefault()
     setPrice(e.target.innerHTML)
     dispatch(fetchProducts(e.target.innerHTML, category, query));
   }
 
   const handleInputChange = (e) => {
+    e.preventDefault()
     setQuery(e.target.value);
   }
 
@@ -90,7 +92,7 @@ const App = () => {
       </div>
     </div>
       <Products/>
-      {/* <Pagination/> */}
+      <Pagination/>
     </div>
   );
 }

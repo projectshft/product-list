@@ -19,6 +19,7 @@ export const fetchProducts =  async (priceFilter, category, query)  => {
       return result ? `${base}${result}` : base;
     };
     const request = await axios.get(getString());
+
     return {
       type: FETCH_PRODUCTS, 
       payload: request

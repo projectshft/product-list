@@ -15,56 +15,46 @@ router.get("/generate-fake-data", (req, res) => {
 });
 
 router.get('/products', async (req, res) => {
-  try {
-    const page  = parseInt(req.query.page) || 1;
-    const perPage = parseInt(req.query.limit) || 9;
-    const skip = (page - 1) * perPage
-    const count = await Product.countDocuments()
+  const page  = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.limit) || 9;
+  const skip = (page - 1) * perPage
+  const count = await Product.countDocuments()
+  const pageCount = Math.ceil(count / perPage);
+  
+  const { query, price, category } = req.query
+  const sortPrice = {}
+  const results = {}
 
-    if (page > perPage) {
-      return res.status(404).json({message: 'Page Not Found'})
+  if (price) {
+    if (price === 'Highest') {
+      sortPrice.price = 'desc'
+    } else if (price === 'Lowest') {
+      sortPrice.price = 'asc';
     }
-  
-    const pageCount = Math.ceil(count / perPage);
-    
-    const { query, price, category } = req.query
-    const sortPrice = {}
-    const results = {}
-  
-    if (price) {
-      if (price === 'Highest') {
-        sortPrice.price = 'desc'
-      } else if (price === 'Lowest') {
-        sortPrice.price = 'asc';
-      }
-    } 
-  
-    if (category) {
-      results.category = new RegExp (category, 'i')  
-    }
-  
-    if (query) {
-      results.name = new RegExp (query, 'i')  
-    }
-  
-   const products = await Product.find(results)
-    .sort(sortPrice)
-    .skip(skip)
-    .limit(perPage)
-    .exec()
-  
-    res.json({
-      pagination: {
-        count, 
-        pageCount, 
-        perPage
-      },
-      data: products, 
-    })
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({message: err})
+  } 
+
+  if (category) {
+    results.category = new RegExp (category, 'i')  
   }
+
+  if (query) {
+    results.name = new RegExp (query, 'i')  
+  }
+
+ const products = await Product.find(results)
+  .sort(sortPrice)
+  .skip(skip)
+  .limit(perPage)
+  .exec()
+
+  res.json({
+    pagination: {
+      count, 
+      pageCount, 
+      perPage
+    },
+    data: products, 
+  })
 });
 
 // get one product by id

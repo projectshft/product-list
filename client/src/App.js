@@ -1,97 +1,38 @@
-import './App.css';
-import PriceProducts from './DropdownProducts';
-import Products from './Products';
-import { useEffect, useState } from "react"
-import axios from 'axios'
+import Products from './components/Products';
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchProducts } from './actions/productActions';
+// import Pagination from './components/Pagination';
 
-function App() {
-  const [products, setProducts] = useState([])
-  const [priceProducts, setPriceProducts] = useState([])
-  const [pageNumber, setPageNumber] = useState(1)
-  const [numberOfPages, setNumberOfPages] = useState(0)
+const App = () => {
+  const [price, setPrice] = useState(null)
+  const [category, setCategory] = useState(null)
+  const [query, setQuery] = useState(null)
 
-  const pages = new Array(numberOfPages).fill(null).map((v, i) => i)
+  const dispatch = useDispatch(price, category, query);
 
   useEffect(() => {
-    getProducts()
-  }, [pageNumber])
+    dispatch(fetchProducts())
+  }, [price, category, query])
+
+  const handleCategoryClick = (e) => {
+    setCategory(e.target.innerHTML)
+    dispatch(fetchProducts(price, e.target.innerHTML, query));
+  }
   
-  async function getProducts() {
-    try {
-      const res = await axios.get(`http://localhost:3001/products?page=${pageNumber}`)
-        const totalPages = res.data.totalPages
-        setProducts(res.data.products)
-        setNumberOfPages(totalPages)
-    } catch (error) {
-      alert(error.message)
-    }
+  const handlePriceClick = (e) => {
+    setPrice(e.target.innerHTML)
+    dispatch(fetchProducts(e.target.innerHTML, category, query));
   }
 
-  async function handlePriceClick(e) {
-    if (e.target.innerHTML
-      === 'Highest') {
-      try {
-        const res = await axios.get('http://localhost:3001/products?price=highest')
-          setPriceProducts(res.data)
-          setProducts(null)
-      } catch (error) {
-        alert(error.message)
-      }
-    } else if (e.target.innerHTML
-      === 'Lowest') {
-      try {
-        const res = await axios.get('http://localhost:3001/products?price=lowest')
-          setPriceProducts(res.data)
-          setProducts(null)
-      } catch (error) {
-        alert(error.message)
-      }
-    }
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
   }
 
-  async function handleCategoryClick(e) {
-    if (e.target.innerHTML
-      === 'Baby') {
-      try {
-        const res = await axios.get('http://localhost:3001/products?category=Baby')
-          setPriceProducts(res.data)
-          setProducts(null)
-      } catch (error) {
-        alert(error.message)
-      }
-    } else if (e.target.innerHTML === 'Music') {
-      try {
-        const res = await axios.get('http://localhost:3001/products?category=Music')
-          setPriceProducts(res.data)
-          setProducts(null)
-      } catch (error) {
-        alert(error.message)
-      }
-    } else if (e.target.innerHTML === 'Sports') {
-      try {
-        const res = await axios.get('http://localhost:3001/products?category=Sports')
-          setPriceProducts(res.data)
-          setProducts(null)
-      } catch (error) {
-        alert(error.message)
-      }
-    } else if (e.target.innerHTML === 'Shoes') {
-      try {
-        const res = await axios.get('http://localhost:3001/products?category=Shoes')
-          setPriceProducts(res.data)
-          setProducts(null)
-      } catch (error) {
-        alert(error.message)
-      }
-    } else if (e.target.innerHTML === 'Garden') {
-      try {
-        const res = await axios.get('http://localhost:3001/products?category=Garden')
-          setPriceProducts(res.data)
-          setProducts(null)
-      } catch (error) {
-        alert(error.message)
-      }
-    }
+  const handleQuerySubmit = (e) => {
+    e.preventDefault()
+    setQuery(query);
+    dispatch(fetchProducts(price, category, query));
   }
 
   return (
@@ -99,11 +40,15 @@ function App() {
       <div className="navbar container-fluid justify-content-center">
         <div className="row">
           <div className="col-12 pe-4">
-            <form>
+            <form onSubmit={handleQuerySubmit}>
               <div className="input-group">
-                <input type="text" className="form-control" />
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  onChange={handleInputChange}
+                  required/>
                 <div className="input-group-append">
-                  <button className="btn btn-outline-secondary" type="button">Search</button>
+                  <button className="btn btn-outline-secondary" type="submit">Search</button>
                 </div>
               </div>
             </form>
@@ -144,14 +89,8 @@ function App() {
         </div>
       </div>
     </div>
-      <Products products={products}/>
-      <PriceProducts newProducts={priceProducts}/>
-      <div className='text-center mt-4'>
-        {pages.map((pageIndex) => (
-          <button className="btn justify-content-center" key={pageIndex} onClick={() => setPageNumber(pageIndex)}>{pageIndex + 1}</button>
-        ))}
-      </div>
-      
+      <Products/>
+      {/* <Pagination/> */}
     </div>
   );
 }

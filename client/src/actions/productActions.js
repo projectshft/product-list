@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
-export const fetchProducts =  async (priceFilter, category, query)  => {
+export const fetchProducts =  async (priceFilter, category, query, page)  => {
   try {
     const getString = () => {
       let result = '';
@@ -16,6 +16,10 @@ export const fetchProducts =  async (priceFilter, category, query)  => {
       if (query) {
         result += `${result ? '&' : ''}query=${query}`;
       }
+      if (page) {
+        result += `${result ? '&' : ''}page=${page}`;
+      }
+
       return result ? `${base}${result}` : base;
     };
     const request = await axios.get(getString());

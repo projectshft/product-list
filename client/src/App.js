@@ -8,6 +8,7 @@ const App = () => {
   const [price, setPrice] = useState(null)
   const [category, setCategory] = useState(null)
   const [query, setQuery] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const dispatch = useDispatch();
 
@@ -17,13 +18,13 @@ const App = () => {
 
   const handleCategoryClick = (e) => {
     setCategory(e.target.innerHTML)
-    dispatch(fetchProducts(price, e.target.innerHTML, query));
+    dispatch(fetchProducts(price, e.target.innerHTML, query, currentPage));
   }
   
   const handlePriceClick = (e) => {
     e.preventDefault()
     setPrice(e.target.innerHTML)
-    dispatch(fetchProducts(e.target.innerHTML, category, query));
+    dispatch(fetchProducts(e.target.innerHTML, category, query, currentPage));
   }
 
   const handleInputChange = (e) => {
@@ -34,7 +35,12 @@ const App = () => {
   const handleQuerySubmit = (e) => {
     e.preventDefault()
     setQuery(query);
-    dispatch(fetchProducts(price, category, query));
+    dispatch(fetchProducts(price, category, query, currentPage));
+  }
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    dispatch(fetchProducts(price, category, query, page));
   }
 
   return (
@@ -92,7 +98,7 @@ const App = () => {
       </div>
     </div>
       <Products/>
-      <Pagination/>
+      <Pagination onChange={handlePageChange} page={currentPage}/>
     </div>
   );
 }

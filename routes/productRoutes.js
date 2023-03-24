@@ -15,8 +15,8 @@ router.get("/generate-fake-data", (req, res) => {
 });
 
 router.get('/products', async (req, res) => {
-  const page  = parseInt(req.query.page) || 1;
-  const perPage = parseInt(req.query.limit) || 9;
+  const page  = req.query.page || 1;
+  const perPage = req.query.limit || 9;
   const skip = (page - 1) * perPage
   const count = await Product.countDocuments()
   const pageCount = Math.ceil(count / perPage);
@@ -51,7 +51,8 @@ router.get('/products', async (req, res) => {
     pagination: {
       count, 
       pageCount, 
-      perPage
+      perPage,
+      page
     },
     data: products, 
   })

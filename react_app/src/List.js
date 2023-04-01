@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchAllProducts } from "./actions";
 import Nav from "./NavBar";
 import ProductDetails from "./ProductDetail";
 
 
 const ProductPage = () => {
-  
+
   const dispatch = useDispatch();
 
   const products = useSelector((state) => state.products)
@@ -50,15 +51,15 @@ const ProductPage = () => {
   };
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
 
   return (
     <div>
       <Nav
-        onSearch={fetchProducts}
-        chooseCategory={filterByCategory}
-        handlePrice={filterByPrice}
+        onSearch={fetchAllProducts}
+        // chooseCategory={filterByCategory}
+        // handlePrice={filterByPrice}
       />
       <ProductDetails products={products}/>
     </div>

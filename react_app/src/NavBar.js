@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Nav = ({ onSearch, chooseCategory, handlePrice  }) => {
+const Nav = () => {
   const [search, setSearch] = useState("");
   const [category, setCategoies] = useState("");
 

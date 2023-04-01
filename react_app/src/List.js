@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Nav from "./NavBar";
 import ProductDetails from "./ProductDetail";
 
+
 const ProductPage = () => {
-  const [products, setProducts] = useState([]);
+  
+  const dispatch = useDispatch();
+
+  const products = useSelector((state) => state.products)
 
   async function fetchProducts(query, price, category) {
     try {

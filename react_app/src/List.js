@@ -1,66 +1,23 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllProducts } from "./actions";
+import { fetchTest } from "./actions";
 import Nav from "./NavBar";
 import ProductDetails from "./ProductDetail";
 
 
 const ProductPage = () => {
-
   const dispatch = useDispatch();
-
-  const products = useSelector((state) => state.products)
-
-  async function fetchProducts(query, price, category) {
-    try {
-      const filter = [];
-
-      if (query) filter.push(`?query=${query}`);
-      if (category) filter.push(`?category=${category}`);
-      if (price) filter.push(`?price=${price}`);
-      //**Having a hard time making all of them work in sync */
-      const allFilters = filter.length > 0 ? `${filter.join("&")}` : "";
-      const response = await fetch(
-        `http://localhost:8000/products${allFilters}`
-      );
-
-      console.log("Search and Query", allFilters);
-      console.log("All Data", response);
-
-      const productsData = await response.json();
-      const dataArray = productsData.products;
-      console.log("AllData", dataArray);
-
-      setProducts(dataArray);
-    } catch (error) {
-      console.error("Data Error", error);
-    }
-  }
-
-  const filterByPrice = (price) => {
-    if (price === "highest") {
-      fetchProducts(null, "highest", null);
-    }
-    if (price === "lowest") {
-      fetchProducts(null, "lowest", null);
-    }
-  };
-
-  const filterByCategory = (category) => {
-    fetchProducts(null, null, category);
-  };
+  const products = useSelector((state) => state.products.products);
+  const [page, setPage] = useState(0);
+  const items = 9;
 
   useEffect(() => {
-    dispatch(fetchAllProducts());
+    dispatch(fetchTest());
   }, [dispatch]);
 
   return (
     <div>
-      <Nav
-        onSearch={fetchAllProducts}
-        // chooseCategory={filterByCategory}
-        // handlePrice={filterByPrice}
-      />
+      <Nav />
       <ProductDetails products={products}/>
     </div>
   );

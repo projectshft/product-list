@@ -30,7 +30,7 @@ router.get("/generate-fake-data", async (req, res, next) => {
   }
 });
 
-router.get("/products", (req, res, next) => {
+router.get("/products", async (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
   const category = req.query.category;
@@ -51,28 +51,31 @@ router.get("/products", (req, res, next) => {
 
   const sort = {};
 
-  if (price === "highest") {
+  if (price === "desc") {
     sort.price = -1;
-  } else if (price === "lowest") {
+  } else if (price === "asc") {
     sort.price = 1;
   }
 
-  Product.find(query)
-    .sort(sort)
-    .skip(perPage * page - perPage)
-    .limit(perPage)
-    .exec((err, products) => {
-      Product.countDocuments(query).exec((err, count) => {
-        if (err) return next(err);
+  try {
+    const products = await Product.find(query)
+      .sort(sort)
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+      
+    const count = await Product.countDocuments(query).exec();
 
-        res.send({
-          products,
-          total: count,
-          pages: Math.ceil(count / perPage),
-        });
-      });
+    res.send({
+      products,
+      total: count,
+      pages: Math.ceil(count / perPage),
     });
+  } catch (err) {
+    next(err);
+  }
 });
+
 
 router.get("/products/:product/reviews", (req, res) => {
   const perPage = 4;
@@ -131,6 +134,16 @@ router.delete("/reviews/:review", (req, res) => {
       res.send({ message: "Review deleted" });
     }
   );
+});
+
+router.get("/categories", async (req, res) => {
+  try {
+    const categories = await Product.distinct("category");
+    res.json({ categories });
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    res.status(500).send("Error fetching categories");
+  }
 });
 
 module.exports = router;

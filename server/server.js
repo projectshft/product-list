@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require('cors');
 
 mongoose.connect("mongodb://127.0.0.1:27017/products", {
   useNewUrlParser: true,
@@ -15,6 +16,8 @@ app.use(
     extended: true,
   })
 );
+
+app.use(cors());
 
 const mainRoutes = require("./routes/main");
 

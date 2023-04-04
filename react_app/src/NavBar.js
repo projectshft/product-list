@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Nav = ({ onRefresh, onSearch, onCategory, onPrice }) => {
+const NavBar = ({ onRefresh, onSearch, onCategory, onPrice }) => {
   const [search, setSearch] = useState("");
 
   const handleCategory = (e) => {
@@ -267,4 +267,4 @@ const Nav = ({ onRefresh, onSearch, onCategory, onPrice }) => {
   );
 };
 
-export default Nav;
+export default NavBar;

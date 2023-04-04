@@ -1,17 +1,6 @@
 import { FETCH_PRODUCTS } from "./types";
 import axios from "axios";
 
-export const fetchTest = () => async (dispatch) => {
-  try {
-    const response = await axios.get("http://localhost:8000/products")
-    const result = await response.data.products
-    console.log("result", result)
-    dispatch ({type: FETCH_PRODUCTS, payload: {products: result}})
-  } catch (error) {
-    console.error("data error", error)
-  }
-}
-
 export const fetchProducts = (query, category, price) => async (dispatch) => {
   try {
     const response = await axios.get(

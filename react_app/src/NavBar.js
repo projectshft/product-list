@@ -1,33 +1,44 @@
 import { useState } from "react";
 
-const Nav = ({onSearch}) => {
-  const [categories, setCategoies] = useState("");
+const Nav = ({ onRefresh, onSearch, onCategory, onPrice }) => {
   const [search, setSearch] = useState("");
 
-
   const handleCategory = (e) => {
-    console.log("Hello")
-    e = ""
-  }
+    onCategory(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     setSearch(e.target.value);
     onSearch(e.target.value);
-  }
+  };
 
-  const priceBtn = (e) => {
-    console.log("e")
-  }
+  const handlePrice = (e) => {
+    onPrice(e.target.value);
+  };
 
-  
+  const handleRefresh = () => {
+    onRefresh();
+    setSearch("");
+  };
 
   return (
     <nav className="navbar bg-dark" data-bs-theme="dark">
       <div className="container-fluid">
         <h1 className="navtitle navbar-brand">Mongo Store</h1>
-        <button type="button" className="btn btn-success">
+        <button
+          value="highest"
+          onClick={handlePrice}
+          type="button"
+          className="btn btn-success"
+        >
           High-Low
         </button>
-        <button  type="button" className="btn btn-danger">
+        <button
+          value="lowest"
+          onClick={handlePrice}
+          type="button"
+          className="btn btn-danger"
+        >
           Low-High
         </button>
 
@@ -45,7 +56,8 @@ const Nav = ({onSearch}) => {
           <ul className="dropdown-menu">
             <li>
               <button
-                onClick={() => handleCategory("Animals")}
+                value="Animals"
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Animals
@@ -53,7 +65,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Automotive")}
+                value="Automotive"
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Automotive
@@ -61,7 +74,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Baby")}
+                value={"Baby"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Baby
@@ -69,8 +83,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                value="books"
-                onClick={() => setCategoies("Books")}
+                value={"Books"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Books
@@ -78,7 +92,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Clothing")}
+                value={"Clothing"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Clothing
@@ -86,7 +101,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Computers")}
+                value={"Computers"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Computers
@@ -94,7 +110,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Electronics")}
+                value={"Electronics"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Electronics
@@ -102,7 +119,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Garden")}
+                value={"Garden"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Garden
@@ -110,7 +128,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Grocery")}
+                value={"Grocery"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Grocery
@@ -118,7 +137,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Health")}
+                value={"Health"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Health
@@ -126,7 +146,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Home")}
+                value={"Home"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Home
@@ -134,7 +155,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Industrial")}
+                value={"Industrial"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Industrial
@@ -142,7 +164,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Jewelery")}
+                value={"Jewelery"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Jewelery
@@ -150,7 +173,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Kids")}
+                value={"Kids"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Kids
@@ -158,7 +182,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Movies")}
+                value={"Movies"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Movies
@@ -166,7 +191,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Music")}
+                value={"Music"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Music
@@ -174,7 +200,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Outdoors")}
+                value={"Outdoors"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Outdoors
@@ -182,7 +209,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Shoes")}
+                value={"Shoes"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Shoes
@@ -190,7 +218,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Sports")}
+                value={"Sports"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Sports
@@ -198,7 +227,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Tools")}
+                value={"Tools"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Tools
@@ -206,7 +236,8 @@ const Nav = ({onSearch}) => {
             </li>
             <li>
               <button
-                onClick={() => handleCategory("Toys")}
+                value={"Toys"}
+                onClick={handleCategory}
                 className="dropdown-item"
               >
                 Toys
@@ -222,8 +253,13 @@ const Nav = ({onSearch}) => {
             value={search}
             onChange={handleSubmit}
           ></input>
-          <button type="submit" className="btn btn-outline-primary">
-            Search
+          <button
+            value={""}
+            onClick={handleRefresh}
+            type="submit"
+            className="btn btn-primary"
+          >
+            Refresh
           </button>
         </form>
       </div>

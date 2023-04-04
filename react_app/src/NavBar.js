@@ -1,34 +1,33 @@
 import { useState } from "react";
 
-const Nav = () => {
+const Nav = ({onSearch}) => {
+  const [categories, setCategoies] = useState("");
   const [search, setSearch] = useState("");
-  const [category, setCategoies] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSearch(search);
-    console.log(search);
-    setSearch("");
-  };
-
-  const priceBtn = (e) => {
-    handlePrice(e)
-    console.log(e)
-  };
 
   const handleCategory = (e) => {
-    chooseCategory(e);
-    console.log(e);
-  };
+    console.log("Hello")
+    e = ""
+  }
+  const handleSubmit = (e) => {
+    setSearch(e.target.value);
+    onSearch(e.target.value);
+  }
+
+  const priceBtn = (e) => {
+    console.log("e")
+  }
+
+  
 
   return (
     <nav className="navbar bg-dark" data-bs-theme="dark">
       <div className="container-fluid">
         <h1 className="navtitle navbar-brand">Mongo Store</h1>
-        <button onClick={() => priceBtn("highest")} type="button" className="btn btn-success">
+        <button type="button" className="btn btn-success">
           High-Low
         </button>
-        <button onClick={() => priceBtn("lowest")} type="button" className="btn btn-danger">
+        <button  type="button" className="btn btn-danger">
           Low-High
         </button>
 
@@ -71,7 +70,7 @@ const Nav = () => {
             <li>
               <button
                 value="books"
-                onClick={() => setCategoies(e.target.value)}
+                onClick={() => setCategoies("Books")}
                 className="dropdown-item"
               >
                 Books
@@ -215,13 +214,13 @@ const Nav = () => {
             </li>
           </ul>
         </div>
-        <form onSubmit={handleSubmit} className="d-flex" role="search">
+        <form className="d-flex" role="search">
           <input
             className="form-control me-2"
             type="text"
             placeholder="Product Name"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSubmit}
           ></input>
           <button type="submit" className="btn btn-outline-primary">
             Search

@@ -11,7 +11,7 @@ export const fetchProducts = (query, category, price) => async (dispatch) => {
           price: price
         }
       });
-      const products = response.data;
+      const products = response.data.products;
       console.log("products", products)
       console.log("response", response)
 
@@ -19,8 +19,7 @@ export const fetchProducts = (query, category, price) => async (dispatch) => {
   } catch (error) {
     console.error("Data Error", error);
   }
-}
-
+};
 
 
 

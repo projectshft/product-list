@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NavBar from "./NavBar";
-import { fetchProducts } from "../actions/products";
+import { fetchProducts } from "./actions/products";
 import ProductInfo from './ProductInfo';
 
 // ProductList component

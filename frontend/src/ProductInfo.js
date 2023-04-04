@@ -1,4 +1,10 @@
-const ProductDetails = ({products}) => {
+const ProductInfo = ({products}) => {
+
+  const NoProducts = () => {
+    if (products.length === 0) {
+      return <h1><strong>No Products With That Name!!!!</strong></h1>
+    }
+  }
 
   const ProductDetail = ({prod}) => (
     <div className="col-md-4">
@@ -16,6 +22,7 @@ const ProductDetails = ({products}) => {
   return (
     <div className="container">
       <div className="row">
+        <NoProducts />
         {products.map((product) => (
           <ProductDetail key={product._id} prod = {product} />
         ))}
@@ -24,4 +31,4 @@ const ProductDetails = ({products}) => {
     );
 }
  
-export default ProductDetails;
+export default ProductInfo;

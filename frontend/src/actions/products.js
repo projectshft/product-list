@@ -1,4 +1,4 @@
-import { FETCH_PRODUCTS } from "./types";
+import { FETCH_PAGES, FETCH_PRODUCTS, } from "./types";
 import axios from "axios";
 
 export const fetchProducts = (query, category, price) => async (dispatch) => {
@@ -12,10 +12,11 @@ export const fetchProducts = (query, category, price) => async (dispatch) => {
         }
       });
       const products = response.data.products;
-      console.log("products", products)
-      console.log("response", response)
-
+      // const pages = response.data.pages
+      // console.log("pages", pages)
+      // console.log("response", response)
       dispatch({type: FETCH_PRODUCTS, payload: { products: products}});
+      // dispatch({type: FETCH_PAGES, payload: {pages: pages}})
   } catch (error) {
     console.error("Data Error", error);
   }

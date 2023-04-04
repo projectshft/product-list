@@ -21,8 +21,11 @@ router.get("/generate-fake-data", (req, res, next) => {
 //Get by Price, Category, and Name
 router.get("/products", async (req, res, next) => {
   try {
-    const {category, price, query} = req.query;
+    const {category, price, query, page = 0} = req.query;
     const resultPerPage = 9;
+    const skip = page * resultPerPage
+
+
 
     console.log(query);
     console.log(category)
@@ -53,11 +56,17 @@ router.get("/products", async (req, res, next) => {
 
 productFilter.price = {$gte: 1};
 
-const products = await Product.find(productFilter, {}, null).sort(priceFilter).limit(resultPerPage).exec();
+
+
+const products = await Product.find(productFilter, {}, null).sort(priceFilter).skip(skip).limit(resultPerPage).exec();
+
+// const totalProducts = await Product.countDocuments(productFilter).exec();
+// const totalPages = Match.ceil(totalProducts / resultPerPage);
 
 const response = {
   results: resultPerPage,
-  products: products
+  products: products,
+
 };
 console.log(response.products);
 console.log(response.results);

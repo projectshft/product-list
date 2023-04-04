@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const NavBar = ({ onRefresh, onSearch, onCategory, onPrice }) => {
+  const onPage = useSelector((state) => state.products.page);
   const [search, setSearch] = useState("");
+  const realPage = onPage + 1;
 
   const handleCategory = (e) => {
     onCategory(e.target.value);
@@ -24,7 +27,8 @@ const NavBar = ({ onRefresh, onSearch, onCategory, onPrice }) => {
   return (
     <nav className="navbar bg-dark" data-bs-theme="dark">
       <div className="container-fluid">
-        <h1 className="navtitle navbar-brand">Mongo Store</h1>
+        <h1 className="navtitle navbar-brand">Ben's Crazy Store</h1>
+        <h1 className="navtitle navbar-brand">Page {realPage}</h1>
         <button
           value="highest"
           onClick={handlePrice}

@@ -1,17 +1,16 @@
-import { FETCH_PRODUCTS, FETCH_PAGES } from "../actions/types";
+import { FETCH_PRODUCTS, FETCH_PAGE } from "../actions/types";
 
 const initialState = {
   products: [],
-  pages: "",
-  allProducts: [],
+  page: "",
 };
 
 const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
       return {...state, products: action.payload.products}
-    case FETCH_PAGES:
-      return {...state, pages: action.payload.pages}
+    case FETCH_PAGE: 
+      return {...state, page: action.payload.page}
     default:
       return state
   }

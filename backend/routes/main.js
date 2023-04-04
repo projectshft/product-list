@@ -2,7 +2,6 @@ const router = require("express").Router();
 const faker = require("faker");
 const { Product, Author, Review } = require("../models/product");
 
-
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
@@ -21,14 +20,12 @@ router.get("/generate-fake-data", (req, res, next) => {
 //Get by Price, Category, and Name
 router.get("/products", async (req, res, next) => {
   try {
-    const {category, price, query, page = 0} = req.query;
+    const { category, price, query, page = 0 } = req.query;
     const resultPerPage = 9;
-    const skip = page * resultPerPage
-
-
+    const skip = page * resultPerPage;
 
     console.log(query);
-    console.log(category)
+    console.log(category);
 
     let productFilter = {};
     let priceFilter = {};
@@ -43,7 +40,7 @@ router.get("/products", async (req, res, next) => {
       const queryRegex = new RegExp(query, "i");
       productFilter.name = queryRegex;
       console.log(queryRegex);
-        }
+    }
 
     if (price === "lowest") {
       priceFilter.price = 1;
@@ -54,30 +51,27 @@ router.get("/products", async (req, res, next) => {
     console.log(productFilter);
     console.log(priceFilter);
 
-productFilter.price = {$gte: 1};
+    productFilter.price = { $gte: 1 };
 
+    const products = await Product.find(productFilter, {}, null)
+      .sort(priceFilter)
+      .skip(skip)
+      .limit(resultPerPage)
+      .exec();
 
-
-const products = await Product.find(productFilter, {}, null).sort(priceFilter).skip(skip).limit(resultPerPage).exec();
-
-// const totalProducts = await Product.countDocuments(productFilter).exec();
-// const totalPages = Match.ceil(totalProducts / resultPerPage);
-
-const response = {
-  results: resultPerPage,
-  products: products,
-
-};
-console.log(response.products);
-console.log(response.results);
-res.send(response);
-
+    const response = {
+      results: resultPerPage,
+      products: products,
+      page: parseInt(page),
+    };
+    console.log(response.products);
+    console.log(response.results);
+    res.send(response);
   } catch (err) {
-    console.log(err)
-    res.status(500).send({error: "Error occured during search"});
+    console.log(err);
+    res.status(500).send({ error: "Error occured during search" });
   }
-})
-
+});
 
 //Gets Product by ID OK
 router.get("/products/:product", async (req, res, next) => {

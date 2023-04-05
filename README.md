@@ -1,5 +1,4 @@
-## Product List
-
+# Product-List
 
 This project has been created by a student at Parsity, an online software engineering course. The work in this repository is wholly of the student based on a sample starter project that can be accessed by looking at the repository that this project forks.
 

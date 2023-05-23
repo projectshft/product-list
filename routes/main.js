@@ -23,7 +23,7 @@ router.get("/generate-fake-data", (req, res, next) => {
   res.end();
 });
 
-//gets all products, with optional params like sorting or a specific page
+//GET all products, with optional params like sorting or a specific page
 router.get('/products', (req, res, next) => {
   const perPage = 9;
 
@@ -41,10 +41,42 @@ router.get('/products', (req, res, next) => {
       })
     .then((products) => {
       res.send(products);
-      
-
     })
     .catch((err) => {if (err) console.log(err)})
+})
+
+//GET specific product by its id, use model.find()
+router.get('/products/:product', (req, res, next) => {
+  res.end()
+})
+
+//GET all reviews (limit to 4 at a time with pagination) for a 
+//specific product by its id. Use model.find() and paginate with optional 'page' 
+//query param
+router.get('/products/:product/reviews', (req, res, next) => {
+  res.end()
+})
+
+//POST to create a new product in the database, use Model.save()
+router.post('/products', (req, res, next) => {
+  res.end();
+})
+
+//POST to create a new review in the database, maybe first use model.find() to get 
+//the product and specific review array, then use push to add to the product's 
+//reviews array then maybe use Model.save() to update the product document
+router.post('/products', (req, res, next) => {
+  res.end();
+})
+
+//DELETE a product by id
+router.delete('/products/:product', (req, res, next) => {
+  //use model.remove() and model.find() maybe
+})
+
+//DELETE a review by id
+router.delete('/reviews/:review', (req, res, next) => {
+  //use model.remove() and model.find() maybe
 })
 
 module.exports = router;

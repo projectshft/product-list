@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
-const Review = require("../models/review");
+
+
 
 //generates 90 random products in the products DB, no need to run again
 router.get("/generate-fake-data", (req, res, next) => {
@@ -47,8 +48,28 @@ router.get('/products', (req, res, next) => {
 
 //GET specific product by its id, use model.find()
 router.get('/products/:product', (req, res, next) => {
-  res.end()
+  const id = req.params.product
+  // res.end(console.log(res.body));
+  Product.findById(id)
+    .then((product) => {
+      res.send(product);
+      // console.log('response: ', product)
+      console.log(res)
+      // res.json(product);
+      // res.send(product);
+      //either will work!!
+      
+      })
+    .catch((err) => {
+      res.json(err);
+    })
 })
+// const id = '646b8d4bfb1058bcb97d796b';
+// Product.findById(id)
+// .exec()
+// .then((err, product) => {
+//   console.log('response: ', product);
+//   })
 
 //GET all reviews (limit to 4 at a time with pagination) for a 
 //specific product by its id. Use model.find() and paginate with optional 'page' 
@@ -71,12 +92,12 @@ router.post('/products', (req, res, next) => {
 
 //DELETE a product by id
 router.delete('/products/:product', (req, res, next) => {
-  //use model.remove() and model.find() maybe
+  //use model.remove() and model.find() maybe OR use model.findOneAndRemove()
 })
 
 //DELETE a review by id
 router.delete('/reviews/:review', (req, res, next) => {
-  //use model.remove() and model.find() maybe
+  //use model.remove() and model.find() maybe OR use model.findOneAndRemove() or findByIDAndRemove();
 })
 
 module.exports = router;

@@ -46,7 +46,7 @@ router.get('/products', (req, res, next) => {
     .catch((err) => {if (err) console.log(err)})
 })
 
-//GET specific product by its id, use model.find()
+//GET specific product by its id
 router.get('/products/:product', (req, res, next) => {
   const id = req.params.product
   // res.end(console.log(res.body));
@@ -64,29 +64,64 @@ router.get('/products/:product', (req, res, next) => {
       res.json(err);
     })
 })
-// const id = '646b8d4bfb1058bcb97d796b';
-// Product.findById(id)
-// .exec()
-// .then((err, product) => {
-//   console.log('response: ', product);
-//   })
 
 //GET all reviews (limit to 4 at a time with pagination) for a 
 //specific product by its id. Use model.find() and paginate with optional 'page' 
 //query param
 router.get('/products/:product/reviews', (req, res, next) => {
-  res.end()
+  const id = req.params.product
+  const perPage = 4;
+  // return the first page by default
+  const page = req.query.page || 1;
+  // res.end(console.log(res.body));
+  Product.findById(id)
+    .skip(perPage*page - perPage)
+    .limit(perPage)
+    .then((product) => {
+      res.send(product.reviews);
+      // console.log('response: ', product)
+      console.log(product.reviews);
+      // res.json(product);
+      // res.send(product);
+      //either will work!!
+      
+    })
+    .catch((err) => {
+      res.json(err);
+    }
+  )
 })
 
 //POST to create a new product in the database, use Model.save()
 router.post('/products', (req, res, next) => {
-  res.end();
+  console.log('hello world');
+  // res.status(201).end();
+  // const prod = {
+  //   category: req.body.category,
+  //   name: req.body.name,
+  //   price: req.body.price,
+  //   image: req.body.image,
+  //   reviews: []
+  // }
+  
+  const prodDoc = new Product();
+  prodDoc.category = req.body.category;
+  prodDoc.name = req.body.name;
+  prodDoc.price = req.body.price;
+  prodDoc.image = req.body.image;
+  console.log(prodDoc);
+  // console.log('yo', req.body);
+
+  res.json(prodDoc);
+  
+  // res.status(200).send(prod);
+  // console.log(prod);
 })
 
 //POST to create a new review in the database, maybe first use model.find() to get 
 //the product and specific review array, then use push to add to the product's 
 //reviews array then maybe use Model.save() to update the product document
-router.post('/products', (req, res, next) => {
+router.post('/products/:product/reviews', (req, res, next) => {
   res.end();
 })
 

@@ -28,19 +28,26 @@ router.get("/generate-fake-data", (req, res, next) => {
 //GET all products, with optional params like sorting or a specific page
 router.get('/products', (req, res, next) => {
   const perPage = 9;
-
   // return the first page by default
   const page = req.query.page || 1;
-  console.log(req.query);
+  const paramCategory = req.query.category;
+  console.log('paramCategory: ', paramCategory);
+
+  let paramCategoryObj = {category: paramCategory}
+  if(paramCategory === undefined) {
+    paramCategoryObj = {};
+  }
+  console.log('req query: ', req.query);
+  console.log('category param object: ', paramCategoryObj);
   
-  Product.find({})
+  Product.find(paramCategoryObj)
     .skip(perPage*page - perPage)
     .limit(perPage)
-    .then((err, products) => {
-      // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-      if (err) return next(err);
-      Product.count()
-      })
+    // .then((err, products) => {
+    //   // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
+    //   if (err) return next(err);
+    //   Product.count()
+    //   })
     .then((products) => {
       res.send(products);
     })

@@ -3,27 +3,37 @@ const faker = require("faker");
 const Product = require("../models/product");
 const Review = require("../models/review")
 
-
-
 //generates 90 random products in the products DB, no need to run again
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     let product = new Product();
-
     product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image";
-
-    // product.save((err) => {
-    //   if (err) throw err;
-    // });
     product.save()
-      .then((result) => {console.log('Result: ', result)})
-      .catch((e) => {console.log(e)});
+    .then((result) => {console.log('Result: ', result)})
+    .catch((e) => {console.log(e)});
   }
   res.end();
 });
+
+//this function allows to take the price query string and insert as an argument in the .sort() function
+const handleQuerySort = (query) => {
+    try{
+      if (query === 'highest') {
+        const highestObj = {price: -1};
+        return highestObj
+      }
+      if (query === 'lowest') {
+        const lowestObj = {price: 1};
+        return lowestObj;
+      }
+    }catch(err){
+      const emptyObj = {}
+      return emptyObj; 
+    }
+}
 
 //GET all products, with optional params like sorting or a specific page
 router.get('/products', (req, res, next) => {
@@ -31,9 +41,17 @@ router.get('/products', (req, res, next) => {
   // return the first page by default
   const page = req.query.page || 1;
   const paramCategory = req.query.category;
+  const sortByPrice = handleQuerySort(req.query.price);
+  const paramQuery = req.query.query;
   console.log('paramCategory: ', paramCategory);
 
-  let paramCategoryObj = {category: paramCategory}
+  const word = paramCategory;
+  const firstLetter = word.charAt(0)
+  const firstLetterCap = firstLetter.toUpperCase()
+  const remainingLetters = word.slice(1)
+  const capitalizedWord = firstLetterCap + remainingLetters
+
+  let paramCategoryObj = {category: capitalizedWord}
   if(paramCategory === undefined) {
     paramCategoryObj = {};
   }
@@ -41,6 +59,7 @@ router.get('/products', (req, res, next) => {
   console.log('category param object: ', paramCategoryObj);
   
   Product.find(paramCategoryObj)
+    .sort(sortByPrice)
     .skip(perPage*page - perPage)
     .limit(perPage)
     // .then((err, products) => {
@@ -48,10 +67,18 @@ router.get('/products', (req, res, next) => {
     //   if (err) return next(err);
     //   Product.count()
     //   })
-    .then((products) => {
-      res.send(products);
+    .then(async (products) => {
+      const productCount = await Product.find(paramCategoryObj).countDocuments();
+      
+      res.send({
+        products: products,
+        productCount: productCount
+      });
     })
-    .catch((err) => {if (err) console.log(err)})
+    .catch((err) => {if (err) {
+      console.log(err)
+      res.end();
+    }})
 })
 
 //GET specific product by its id

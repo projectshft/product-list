@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const faker = require("faker");
 const Product = require("../models/product");
+const Review = require("../models/review")
 
 
 
@@ -49,16 +50,11 @@ router.get('/products', (req, res, next) => {
 //GET specific product by its id
 router.get('/products/:product', (req, res, next) => {
   const id = req.params.product
-  // res.end(console.log(res.body));
+  
   Product.findById(id)
     .then((product) => {
       res.send(product);
-      // console.log('response: ', product)
-      console.log(res)
-      // res.json(product);
-      // res.send(product);
-      //either will work!!
-      
+      console.log('product found: ', product);     
       })
     .catch((err) => {
       res.json(err);
@@ -66,73 +62,96 @@ router.get('/products/:product', (req, res, next) => {
 })
 
 //GET all reviews (limit to 4 at a time with pagination) for a 
-//specific product by its id. Use model.find() and paginate with optional 'page' 
+//specific product by its id. Use model.findById() and paginate with optional 'page' 
 //query param
 router.get('/products/:product/reviews', (req, res, next) => {
   const id = req.params.product
   const perPage = 4;
   // return the first page by default
   const page = req.query.page || 1;
-  // res.end(console.log(res.body));
+
   Product.findById(id)
     .skip(perPage*page - perPage)
     .limit(perPage)
     .then((product) => {
       res.send(product.reviews);
-      // console.log('response: ', product)
       console.log(product.reviews);
-      // res.json(product);
-      // res.send(product);
-      //either will work!!
-      
     })
     .catch((err) => {
       res.json(err);
-    }
-  )
+    })
 })
 
-//POST to create a new product in the database, use Model.save()
+//POST to create a new product
 router.post('/products', (req, res, next) => {
-  console.log('hello world');
-  // res.status(201).end();
-  // const prod = {
-  //   category: req.body.category,
-  //   name: req.body.name,
-  //   price: req.body.price,
-  //   image: req.body.image,
-  //   reviews: []
-  // }
   
   const prodDoc = new Product();
   prodDoc.category = req.body.category;
   prodDoc.name = req.body.name;
   prodDoc.price = req.body.price;
   prodDoc.image = req.body.image;
-  console.log(prodDoc);
-  // console.log('yo', req.body);
 
-  res.json(prodDoc);
-  
-  // res.status(200).send(prod);
-  // console.log(prod);
+  prodDoc.save()
+  .then((result) => {
+    console.log('Result: ', result)
+    res.json(prodDoc);
+  })
+  .catch((e) => {console.log(e)});
 })
 
-//POST to create a new review in the database, maybe first use model.find() to get 
-//the product and specific review array, then use push to add to the product's 
-//reviews array then maybe use Model.save() to update the product document
+//POST to create a new review
 router.post('/products/:product/reviews', (req, res, next) => {
-  res.end();
+  const id = req.params.product
+  console.log('req.body', req.body);
+  let prodId = Product.findById(id)
+  .then((result) => {
+    console.log('product query: ', result);
+
+    let review = new Review({
+      userName: req.body.userName,
+      text: req.body.text,
+      product: result._id
+    });
+    review.save();
+    result.reviews.push(review);
+    result.save();
+    console.log('review saved: ', review);
+    res.send(result);
+    console.log('product query after adding review: ', result);
+  })
+  .catch((err) => {
+    res.json(err)
+  });
 })
 
 //DELETE a product by id
 router.delete('/products/:product', (req, res, next) => {
-  //use model.remove() and model.find() maybe OR use model.findOneAndRemove()
+  //product param is the product document's objectID
+  const id = req.params.product
+  
+  Product.findByIdAndRemove(id)
+    .then((result) => {
+      res.send(result);
+      console.log('product removed: ', result);
+    })
+    .catch((err) => {
+      res.json(err);
+    })
 })
 
 //DELETE a review by id
 router.delete('/reviews/:review', (req, res, next) => {
-  //use model.remove() and model.find() maybe OR use model.findOneAndRemove() or findByIDAndRemove();
+  //review param is the review document's objectID
+  const id = req.params.review
+  
+  Review.findByIdAndRemove(id)
+    .then((result) => {
+      res.send(result);
+      console.log('review removed: ', result);      
+    })
+    .catch((err) => {
+      res.json(err);
+    })
 })
 
 module.exports = router;

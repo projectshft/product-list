@@ -34,51 +34,56 @@ const handleQuerySort = (query) => {
       return emptyObj; 
     }
 }
+//handles lower case queries since categories have 1st letter upper-cased
+const handleQueryCategory = (query) => {
+  try{
+    const word = query;
+    const firstLetter = word.charAt(0);
+    const firstLetterCap = firstLetter.toUpperCase();
+    const remainingLetters = word.slice(1);
+    const capitalizedWord = firstLetterCap + remainingLetters;
+    return capitalizedWord;
+  }catch(err){
+    const emptyCategoryParam = undefined;
+    return emptyCategoryParam;
+  }
+}
 
 //GET all products, with optional params like sorting or a specific page
 router.get('/products', (req, res, next) => {
   const perPage = 9;
   // return the first page by default
   const page = req.query.page || 1;
-  const paramCategory = req.query.category;
+  let paramCategory = handleQueryCategory(req.query.category);
   const sortByPrice = handleQuerySort(req.query.price);
   const paramQuery = req.query.query;
   console.log('paramCategory: ', paramCategory);
 
-  const word = paramCategory;
-  const firstLetter = word.charAt(0)
-  const firstLetterCap = firstLetter.toUpperCase()
-  const remainingLetters = word.slice(1)
-  const capitalizedWord = firstLetterCap + remainingLetters
-
-  let paramCategoryObj = {category: capitalizedWord}
+  let paramCategoryObj = {category: paramCategory};
+  let paramQueryObj = { $text: { $search: paramQuery } };
   if(paramCategory === undefined) {
     paramCategoryObj = {};
   }
-  console.log('req query: ', req.query);
-  console.log('category param object: ', paramCategoryObj);
-  
-  Product.find(paramCategoryObj)
-    .sort(sortByPrice)
-    .skip(perPage*page - perPage)
-    .limit(perPage)
-    // .then((err, products) => {
-    //   // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-    //   if (err) return next(err);
-    //   Product.count()
-    //   })
-    .then(async (products) => {
-      const productCount = await Product.find(paramCategoryObj).countDocuments();
-      
-      res.send({
-        products: products,
-        productCount: productCount
-      });
-    })
-    .catch((err) => {if (err) {
-      console.log(err)
-      res.end();
-    }})
+  if(paramQuery === undefined) {
+    paramQueryObj = {};
+  }
+
+  Product.find()
+  .and([paramCategoryObj, paramQueryObj])
+  .sort(sortByPrice)
+  .skip(perPage*page - perPage)
+  .limit(perPage)
+  .then(async (products) => {
+    const productCount = await Product.find().and([paramCategoryObj, paramQueryObj]).countDocuments();
+    res.send({
+      products: products,
+      productCount: productCount
+    });
+  })
+  .catch((err) => {if (err) {
+    console.log(err)
+    res.end();
+  }})
 })
 
 //GET specific product by its id

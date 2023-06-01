@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const faker = require("faker");
-const Product = require("../models/product");
+const ProductModel = require("../models/product");
 
 router.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -20,11 +20,10 @@ router.get("/products", (req, res, next) => {
   const page = req.query.page || 1;
   const limit = 10;
 
-  Product.find({})
+  ProductModel.find({})
     .skip(page * limit - limit)
     .limit(limit)
-    .exec().then((error, products) => {
-      if(error) return next(error);
+    .exec().then((products) => {
       res.send(products);
     });
 

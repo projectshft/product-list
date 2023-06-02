@@ -11,6 +11,7 @@ router.get("/generate-fake-data", (req, res, next) => {
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image";
+    product.reviews = [];
 
     product.save();
   }
@@ -30,23 +31,34 @@ router.get('/generate-fake-reviews', (req, res) => {
   });
 
   
-  const createReviews = (arr) => {
+  const createReviews = async (arr) => {
     let productIds = arr;
 
     for (let i = 0; i < 180; i++) {
       const review = new Review();
 
-      let randomIndex = Math.floor(Math.random() * 90)
+      let randomIndex = Math.floor(Math.random() * 90);
+      let productId = productIds[randomIndex];
 
-      review.username = 'connor';
+      review.username = faker.lorem.word();
       review.text = faker.lorem.sentence();
-      review.product = productIds[randomIndex];
+      review.product = productId
 
-      review.save();
+      await review.save();
+
+      await Product.updateOne({_id: productId}, {$push: {reviews: review._id}});
     }
 
     res.end();
 }
+
+});
+
+router.get("/reviews", (req, res, next) => {
+  Review.find({})
+    .exec().then((reviews) => {
+      res.send(reviews);
+    });
 
 });
 
@@ -57,21 +69,15 @@ router.get("/products", (req, res, next) => {
   Product.find({})
     .skip(page * limit - limit)
     .limit(limit)
-    .exec().then((products) => {
+    .then((products) => {
+      if (products.length === 0) {
+        return res.status(404).send('No Products Found');
+      }
       res.send(products);
-    });
-
-});
-
-router.get("/reviews", (req, res, next) => {
-  const page = req.query.page || 1;
-  const limit = 10;
-
-  Review.find({})
-    .skip(page * limit - limit)
-    .limit(limit)
-    .exec().then((reviews) => {
-      res.send(reviews);
+    })
+    .catch((error) => {
+      console.log('Error:', error);
+      res.status(500).send('An error occurred');
     });
 
 });
@@ -80,17 +86,55 @@ router.get('/products/:product', (req, res) => {
 
   const productId = req.params.product;
 
+  if(!productId) {
+    res.status(400).send('Bad Request: Id is Invalid')
+  }
+
   Product.findOne({_id: productId})
-    .exec().then((products) => {
-      let productsResult;
+    .then((product) => {
+      let productResult;
 
-      productsResult = products;
+      productResult = product;
 
-      if(!productsResult) {
-        return res.status(404).send("Invalid product ID");
+      if(!productResult) {
+        return res.status(404).send("Product Not Found");
       }
-      res.send(productsResult)
+      res.send(productResult)
+    })
+    .catch((error) => {
+      console.log('Error:', error);
+      res.status(500).send('Server is having trouble with your request');
     });
 });
+
+router.get('/products/:product/reviews', (req, res) => {
+  const page = req.query.page || 1;
+  const perPage = 4;
+  const productId = req.params.product;
+
+  if(!productId) {
+    res.status(400).send('Bad Request: Id is Invalid')
+  }
+
+  Product.findOne({ _id: productId })
+  .populate({path: 'reviews', options: {skip: page * perPage - perPage, limit: perPage}})
+  .then((product) => {
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+
+    res.status(200).send(product.reviews);
+  })
+  .catch((error) => {
+    console.log('Error:', error);
+    res.status(500).send('Server is having trouble with your request');
+  });
+
+ 
+});
+
+
+
+
 
 module.exports = router;

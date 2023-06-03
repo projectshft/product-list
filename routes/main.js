@@ -133,7 +133,32 @@ router.get('/products/:product/reviews', (req, res) => {
  
 });
 
+router.post('/products', (req, res) => {
+  // set up a request body to get the info we need for the new product
+  // create a variable that references a new product
+  //fill in the new product
+  // sign off
 
+  const newProductInfo = req.body;
+
+  const productToAdd = new Product();
+
+  productToAdd.category = faker.commerce.department();
+  productToAdd.name = "Connor's Product"
+  productToAdd.price = faker.commerce.price();
+  productToAdd.image = "https://via.placeholder.com/250?text=Product+Image";
+  productToAdd.reviews = [];
+  
+  productToAdd.save()
+    .then((savedProduct) => {
+      res.status(201).json(savedProduct)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      res.status(500).send('An error occurred while saving the product');
+    });
+
+});
 
 
 

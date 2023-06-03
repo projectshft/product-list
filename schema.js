@@ -14,7 +14,39 @@ const productSchema = new Schema ({
 
 }); 
 
-let Product = mongoose.model('product', productSchema); 
+const Product = mongoose.model('product', productSchema); 
+
+const reviewSchema = new Schema ({
+    username : String, 
+    text : String, 
+    productId : {type: Schema.Types.ObjectId, ref:'product'}
+}); 
+
+const Review = mongoose.model('review', reviewSchema); 
+
+let hat = new Product ({
+    name : 'sun hat', 
+    price : 10, 
+    category : 'acessory',
+    reviews : [],
+    //_id: String,
+});
+
+let hatReview = new Review ({
+    username : 'Lisa', 
+    text : 'The hat is great', 
+    productId: []
+})
+
+//hatReview.save(); 
+//hat.reviews.push(hatReview)
+//hat.save(); 
+
+module.exports = {
+    Product: Product,
+    Review: Review
+  };
+  
 
 // Product.findOne({ name : 'sun hat' })
 //   .populate("reviews")
@@ -25,34 +57,3 @@ let Product = mongoose.model('product', productSchema);
 //   .catch(error => {
 //     console.error('Error querying product:', error);
 //   })
-
-const reviewSchema = new Schema ({
-    username : String, 
-    text : String, 
-    productId : [{type: Schema.Types.ObjectId, ref:'review'}]
-}); 
-
-let Review = mongoose.model('review', reviewSchema); 
-
-let hat = new Product ({
-    name : 'sun hat', 
-    price : 10, 
-    category : 'acessory',
-    reviews : [],
-    //_id: String,
-    
-});
-
-let hatReview = new Review ({
-    username : 'Lisa', 
-    text : 'The hat is great', 
-})
-
-//hatReview.save(); 
-
-hat.reviews.push(hatReview)
-
-//hat.save(); 
-
-module.exports = Product; 
-module.exports = Review; 

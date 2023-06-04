@@ -9,6 +9,7 @@ const productSchema = new Schema ({
     name : String, 
     price : Number, 
     category : String, 
+    image : String,
     //refers to the Review model, does not store the reviews themselves just the ids
     reviews : [{type: Schema.Types.ObjectId, ref:'review'}], 
 
@@ -28,6 +29,7 @@ let hat = new Product ({
     name : 'sun hat', 
     price : 10, 
     category : 'acessory',
+    image : '',
     reviews : [],
     //_id: String,
 });

@@ -1,16 +1,32 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-// const Product = require("./schema.js");
-// const Review = require("./schema.js");
+const faker = require("faker");
+
 const { Product, Review } = require("./schema.js");
 
 const PORT = process.env.PORT || 9000;
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get("/generate-fake-data", (req, res, next) => {
+  for (let i = 0; i < 90; i++) {
+    let product = new Product();
+
+    product.category = faker.commerce.department();
+    product.name = faker.commerce.productName();
+    product.price = faker.commerce.price();
+    product.image = "https://via.placeholder.com/250?text=Product+Image";
+
+    product.save((err) => {
+      if (err) throw err;
+    });
+  }
+  res.end();
+});
 
 // GET /products/:product: Returns a specific product by its id
 app.get("/products/:product", function (request, response) {
@@ -34,7 +50,6 @@ app.get("/products/:product", function (request, response) {
     });
 });
 
-//not working
 // GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time. This one will be a little tricky as you'll have to retrieve them out of the products. You should be able to pass in an optional page query parameter to paginate.
 app.get("/products/:product/reviews", function (request, response) {
   const productId = request.params.product;
@@ -78,14 +93,9 @@ app.post("/products", function (request, response) {
       console.error("Error creating a product");
     });
 });
-// {
-//     "name": "shirt",
-//     "price": "15",
-//     "category": "clothing"
-// }
 
 // POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
-app.post("/products/:product/post/reviews", function (request, response) {
+app.post("/products/:product/reviews", function (request, response) {
   const productId = request.params.product;
   const { username, text } = request.body;
 
@@ -122,11 +132,6 @@ app.post("/products/:product/post/reviews", function (request, response) {
       response.status(500).send("An error occurred while finding the product.");
     });
 });
-// {
-//     "username": "beck",
-//     "text": "the hat is good",
-//     "productId": [] 
-// }
 
 // DELETE /products/:product: Deletes a product by id
 app.delete("/products/:product", function (request, response) {
@@ -155,10 +160,65 @@ app.delete("/products/:product", function (request, response) {
 // DELETE /reviews/:review: Deletes a review by id
 app.delete("/reviews/:review", function (request, response) {
   const reviewId = request.params.review;
+
+  Review.findByIdAndDelete(reviewId)
+    .then((deletedReview) => {
+      if (!deletedReview) {
+        response.status(404).send("Product not found.");
+      } else {
+        response.status(200).send("Review deleted successfully.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error deleting product:", error);
+      response
+        .status(500)
+        .send("An error occurred while deleting the product.");
+    });
+});
+
+//GET /products - optional query to return only the products of the passed in category.
+//localhost:8000/products?page=1&category=tools
+app.get("/products", async (request, response, next) => {
+  const perPage = 4;
+  const page = request.query.page || 1;
+  const category = request.query.category;
+  const priceSort = request.query.price;
+  const itemName = request.query.query;
+
+  try {
+    let query = {};
+
+    //if a category was in the url
+    if (category) {
+      query.category = category;
+    }
+
+    if (itemName) {
+        query.name = itemName; 
+    }
+    
+    let sortOptions = {};
+    if (priceSort === "highest") {
+      sortOptions.price = -1; // Sort by price in descending order (highest to lowest)
+    } else if (priceSort === "lowest") {
+      sortOptions.price = 1; // Sort by price in ascending order (lowest to highest)
+    }
+
+    const products = await Product.find(query)
+      .sort(sortOptions)
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+
+    const count = await Product.countDocuments(query).exec();
+
+    response.send(products);
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.listen(PORT, () => {
   console.log(`listening on ${PORT}`);
 });
-
-//module.exports = app;

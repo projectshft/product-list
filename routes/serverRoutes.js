@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const faker = require("faker");
 
-const { Product, Review } = require("./schema.js");
+const { Product, Review } = require("../models/schema.js");
 
 const PORT = process.env.PORT || 9000;
 
@@ -189,7 +189,6 @@ app.get("/products", async (request, response, next) => {
   try {
     let query = {};
 
-    //if a category was in the url
     if (category) {
       query.category = category;
     }
@@ -197,8 +196,9 @@ app.get("/products", async (request, response, next) => {
     if (itemName) {
         query.name = itemName; 
     }
-    
+
     let sortOptions = {};
+    
     if (priceSort === "highest") {
       sortOptions.price = -1; // Sort by price in descending order (highest to lowest)
     } else if (priceSort === "lowest") {

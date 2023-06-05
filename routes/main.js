@@ -134,19 +134,14 @@ router.get('/products/:product/reviews', (req, res) => {
 });
 
 router.post('/products', (req, res) => {
-  // set up a request body to get the info we need for the new product
-  // create a variable that references a new product
-  //fill in the new product
-  // sign off
-
   const newProductInfo = req.body;
 
   const productToAdd = new Product();
 
-  productToAdd.category = faker.commerce.department();
-  productToAdd.name = "Connor's Product"
-  productToAdd.price = faker.commerce.price();
-  productToAdd.image = "https://via.placeholder.com/250?text=Product+Image";
+  productToAdd.category = newProductInfo.category
+  productToAdd.name = newProductInfo.name
+  productToAdd.price = newProductInfo.price
+  productToAdd.image = newProductInfo.image
   productToAdd.reviews = [];
   
   productToAdd.save()
@@ -158,6 +153,60 @@ router.post('/products', (req, res) => {
       res.status(500).send('An error occurred while saving the product');
     });
 
+});
+
+router.post('/products/:product/reviews', (req, res) => {
+  //create a new review from the request body
+  // When it comes to the product put in the objectID
+  //Send the review ObjectId to the Product which has been reviewed
+
+  const newReviewInfo = req.body;
+  const productId = req.params.product;
+
+  let reviewToAdd = new Review();
+
+  reviewToAdd.username = newReviewInfo.username;
+  reviewToAdd.text = newReviewInfo.text;
+  reviewToAdd.product = productId;
+
+  reviewToAdd.save()
+    .then((savedRev) => {
+      Product.updateOne({_id: productId}, {$push: {reviews: savedRev._id}});
+      res.status(201).json(savedRev);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      res.status(500).send('An error occurred while saving the product');
+    });
+
+});
+
+router.delete('/products/:product', (req, res) => {
+  const productId = req.params.product;
+
+  Product.findOneAndDelete({_id: productId})
+    .then((deletedProduct) => {
+      if(!deletedProduct) {
+        return res.status(404).send('Could not Find product to delete')
+      }
+
+    console.log('Document deleted:', deletedProduct);
+      res.status(204).send(`${productId}, has been deleted`)
+    })
+});
+
+router.delete('/reviews/:review', (req, res) => {
+  const reviewId = req.params.product;
+
+  Review.findOneAndDelete({_id: reviewId})
+    .then((deletedReview) => {
+      if(!deletedReview) {
+        return res.status(404).send('Could not Find review to delete')
+      }
+
+    console.log('Document deleted:', deletedReview);
+      res.status(204).send(`${reviewId}, has been deleted`)
+    })
 });
 
 

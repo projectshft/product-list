@@ -27,6 +27,7 @@
     "mongoose": "^7.2.2"
   },
   "devDependencies": {
+    "esm": "^3.2.25",
     "mocha": "^10.2.0"
   }
 }

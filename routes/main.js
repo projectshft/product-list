@@ -62,151 +62,176 @@ router.get("/reviews", (req, res, next) => {
 
 });
 
-router.get("/products", (req, res, next) => {
-  const page = req.query.page || 1;
-  const limit = 10;
+router.get("/products", async (req, res, next) => {
 
-  Product.find({})
-    .skip(page * limit - limit)
-    .limit(limit)
-    .then((products) => {
+  try{
+    const page = req.query.page || 1;
+    const limit = 10;
+
+    const products = await Product.find({})
+      .skip(page * limit - limit)
+      .limit(limit)
+
       if (products.length === 0) {
         return res.status(404).send('No Products Found');
       }
-      res.send(products);
-    })
-    .catch((error) => {
-      console.log('Error:', error);
-      res.status(500).send('An error occurred');
-    });
-
+      
+      res.status(200).send(products);
+      
+  } catch(error) {
+    console.log('Error:', error);
+    res.status(500).send('An error occurred');
+  };
 });
 
-router.get('/products/:product', (req, res) => {
+router.get('/products/:product', async (req, res) => {
+  try{
+    const productId = req.params.product;
 
-  const productId = req.params.product;
-
-  if(!productId) {
-    res.status(400).send('Bad Request: Id is Invalid')
-  }
-
-  Product.findOne({_id: productId})
-    .then((product) => {
-      let productResult;
-
-      productResult = product;
-
-      if(!productResult) {
-        return res.status(404).send("Product Not Found");
-      }
-      res.send(productResult)
-    })
-    .catch((error) => {
-      console.log('Error:', error);
-      res.status(500).send('Server is having trouble with your request');
-    });
-});
-
-router.get('/products/:product/reviews', (req, res) => {
-  const page = req.query.page || 1;
-  const perPage = 4;
-  const productId = req.params.product;
-
-  if(!productId) {
-    res.status(400).send('Bad Request: Id is Invalid')
-  }
-
-  Product.findOne({ _id: productId })
-  .populate({path: 'reviews', options: {skip: page * perPage - perPage, limit: perPage}})
-  .then((product) => {
-    if (!product) {
-      return res.status(404).send('Product not found');
+    if(!productId) {
+      res.status(400).send('Bad Request: Id is Invalid')
     }
 
-    res.status(200).send(product.reviews);
-  })
-  .catch((error) => {
+    const product = await Product.findOne({_id: productId});
+      
+    if(!product) {
+      return res.status(404).send("Product Not Found");
+    }
+
+    res.status(200).send(product);
+
+  } catch(error) {
+    res.status(500).send('Server is having trouble with your request');
+  };    
+});
+
+router.get('/products/:product/reviews', async (req, res) => {
+  try{
+    const page = req.query.page || 1;
+    const perPage = 4;
+    const productId = req.params.product;
+
+    if(!productId) {
+      res.status(400).send('Bad Request: Id is Invalid')
+    }
+
+    const populateProductRev = await Product.findOne({ _id: productId })
+    .populate({path: 'reviews', options: {skip: page * perPage - perPage, limit: perPage}})
+
+    if (!populateProductRev) {
+      return res.status(404).send('Product not found');
+    } 
+
+    res.status(200).send(populateProductRev.reviews);
+  } catch (error) {
     console.log('Error:', error);
     res.status(500).send('Server is having trouble with your request');
-  });
-
- 
+  };
 });
 
-router.post('/products', (req, res) => {
-  const newProductInfo = req.body;
+router.post('/products', async (req, res) => {
+  try{
+    const newProductInfo = req.body;
 
-  const productToAdd = new Product();
+    Object.getOwnPropertyNames(newProductInfo).forEach((property) => {
+      if(!newProductInfo[property]) {
+        res.status(400).send('All fields are required when making a new product');
+      }
+    });
 
-  productToAdd.category = newProductInfo.category
-  productToAdd.name = newProductInfo.name
-  productToAdd.price = newProductInfo.price
-  productToAdd.image = newProductInfo.image
-  productToAdd.reviews = [];
+    const productToAdd = new Product({
+      category: newProductInfo.category,
+      name: newProductInfo.name,
+      price: newProductInfo.price,
+      image: newProductInfo.image,
+      reviews: []
+    });
+    
+    const savedProduct = await productToAdd.save();
+    
+    res.status(201).json(savedProduct);
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('An error occurred while saving the review');
+  }
   
-  productToAdd.save()
-    .then((savedProduct) => {
-      res.status(201).json(savedProduct)
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      res.status(500).send('An error occurred while saving the product');
+
+});
+
+router.post('/products/:product/reviews', async (req, res) => {
+
+  try{
+    const newReviewInfo = req.body;
+    const productId = req.params.product;
+  
+    Object.getOwnPropertyNames(newReviewInfo).forEach((property) => {
+      if(!newReviewInfo[property]) {
+        res.status(400).send('All fields are required when making a new Review');
+      }
     });
 
-});
+    
+    const verifyProductId = await Product.findOne({_id: productId});
 
-router.post('/products/:product/reviews', (req, res) => {
-  //create a new review from the request body
-  // When it comes to the product put in the objectID
-  //Send the review ObjectId to the Product which has been reviewed
+    if (!verifyProductId) {
+      return res.status(404).send('Product not found, unable to attach review');
+    }
 
-  const newReviewInfo = req.body;
-  const productId = req.params.product;
-
-  let reviewToAdd = new Review();
-
-  reviewToAdd.username = newReviewInfo.username;
-  reviewToAdd.text = newReviewInfo.text;
-  reviewToAdd.product = productId;
-
-  reviewToAdd.save()
-    .then((savedRev) => {
-      Product.updateOne({_id: productId}, {$push: {reviews: savedRev._id}});
-      res.status(201).json(savedRev);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      res.status(500).send('An error occurred while saving the product');
+    let reviewToAdd = new Review({
+      username: newReviewInfo.username,
+      text: newReviewInfo.text,
+      product: productId
     });
 
+    const savedRev = await reviewToAdd.save();
+
+    await Product.updateOne({_id: productId}, {$push: {reviews: savedRev._id}});
+    res.status(201).json(savedRev);
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('An error occurred while saving the review');
+  }
+   
+        
 });
 
-router.delete('/products/:product', (req, res) => {
-  const productId = req.params.product;
+router.delete('/products/:product', async (req, res) => {
+  try {
+    const productId = req.params.product;
 
-  Product.findOneAndDelete({_id: productId})
-    .then((deletedProduct) => {
-      if(!deletedProduct) {
-        return res.status(404).send('Could not Find product to delete')
-      }
+    const deletedProduct = await Product.findOneAndDelete({_id: productId});
 
-    console.log('Document deleted:', deletedProduct);
-      res.status(204).send(`${productId}, has been deleted`)
-    })
+    if(!deletedProduct) {
+      return res.status(404).send('Could not Find product to delete');
+    }
+
+    res.status(204).send(`${productId}, has been deleted`);
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('An error occurred while saving the review');
+  }
+  
 });
 
-router.delete('/reviews/:review', (req, res) => {
-  const reviewId = req.params.product;
+router.delete('/reviews/:review', async (req, res) => {
+  try {
+    const reviewId = req.params.review;
 
-  Review.findOneAndDelete({_id: reviewId})
-    .then((deletedReview) => {
-      if(!deletedReview) {
-        return res.status(404).send('Could not Find review to delete')
-      }
+    const deletedReview = await Product.findOneAndDelete({_id: reviewId});
 
-    console.log('Document deleted:', deletedReview);
-      res.status(204).send(`${reviewId}, has been deleted`)
-    })
+    if(!deletedReview) {
+      return res.status(404).send('Could not Find product to delete');
+    }
+
+    res.status(204).send(`${reviewId}, has been deleted`);
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('An error occurred while saving the review');
+  }
 });
 
 

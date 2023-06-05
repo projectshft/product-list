@@ -1,6 +1,6 @@
 import "./App.css";
-import SearchBar from "./components.js/SearchBar";
-import ProductList from "./components.js/ProductList";
+import SearchBar from "./components/SearchBar";
+import ProductList from "./components/ProductList";
 function App() {
   return (
     <div >

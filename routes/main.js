@@ -66,12 +66,16 @@ router.get("/products", async (req, res, next) => {
   try{
     const page = req.query.page || 1;
     const queryCategory = req.query.category
+    const queryPriceSort= req.query.price.toUpperCase();
     const perPage = 10;
 
     const category = queryCategory.charAt(0).toUpperCase() + queryCategory.slice(1);
     const query = category ? { category } : {}
 
+    const priceSortingMethod = queryPriceSort === 'HIGHEST' ? -1 : 1;
+
     const products = await Product.find(query)
+      .sort({ price: priceSortingMethod })
       .skip((page-1) * perPage)
       .limit(perPage)
 

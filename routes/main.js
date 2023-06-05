@@ -63,14 +63,17 @@ router.get("/reviews", (req, res, next) => {
 });
 
 router.get("/products", async (req, res, next) => {
-
   try{
     const page = req.query.page || 1;
-    const limit = 10;
+    const queryCategory = req.query.category
+    const perPage = 10;
 
-    const products = await Product.find({})
-      .skip(page * limit - limit)
-      .limit(limit)
+    const category = queryCategory.charAt(0).toUpperCase() + queryCategory.slice(1);
+    const query = category ? { category } : {}
+
+    const products = await Product.find(query)
+      .skip((page-1) * perPage)
+      .limit(perPage)
 
       if (products.length === 0) {
         return res.status(404).send('No Products Found');

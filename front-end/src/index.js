@@ -6,8 +6,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {configureStore} from "@reduxjs/toolkit";
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-
+// import promise from 'redux-promise';
+import { fetchProducts } from './actions';
 
 import rootReducer from './reducers';
 import Header from './components/Header';
@@ -16,9 +16,10 @@ import './index.css';
 
 
 const store = configureStore({
-  reducer: rootReducer,
-  middleware:[thunk]
+  reducer: rootReducer
 })
+
+store.dispatch(fetchProducts);
 
 ReactDOM.render(
   <Provider store={store}>

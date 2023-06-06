@@ -19,3 +19,12 @@ code {
 .me-auto {
   margin-right: 50px;
 }
+.card-price {
+  text-align: right;
+}
+.card {
+  width: 250px;
+}
+#products-container {
+  align-items: center;
+}

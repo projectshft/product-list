@@ -1,14 +1,18 @@
 import React from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
 //import Block from "react-blocks";
 function ProductList() {
   return (
-    <div>
-      {/* <Block layout centered>
-        <Block>Block 1</Block>
-        <Block>Block 2</Block>
-        <Block>Block 3</Block>
-      </Block> */}
-    </div>
+    <Container>
+      <Row>
+        <Col>1 of 3</Col>
+        <Col>2 of 3</Col>
+        <Col>3 of 3</Col>
+      </Row>
+    </Container>
   );
 }
 export default ProductList;

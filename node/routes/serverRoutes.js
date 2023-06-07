@@ -13,15 +13,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //CORS
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.get("/generate-fake-data", (req, res, next) => {
   for (let i = 0; i < 90; i++) {
@@ -83,7 +83,6 @@ app.get("/products/:product/reviews", function (request, response) {
     });
 });
 
-//for some reason this is saving it to review instead products
 // POST /products: Creates a new product in the database
 app.post("/products", function (request, response) {
   const { name, price, category } = request.body;
@@ -191,7 +190,7 @@ app.delete("/reviews/:review", function (request, response) {
 //GET /products - optional query to return only the products of the passed in category.
 //localhost:8000/products?page=1&category=tools
 app.get("/products", async (request, response, next) => {
-  const perPage = 4;
+  const perPage = 9;
   const page = request.query.page || 1;
   const category = request.query.category;
   const priceSort = request.query.price;

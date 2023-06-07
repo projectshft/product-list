@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
 import { useDispatch } from "react-redux";
 import { fetchProduct } from "../actions";
 
@@ -7,11 +7,17 @@ function SearchBar(){
   const [item, setItem] = useState('');
   
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProduct());
+  }, [dispatch]);
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    dispatch(fetchProduct());
+    dispatch(fetchProduct(item || '/products'));
     
   };
+
   return (
      <div>
       <form className="input-group" onSubmit={handleFormSubmit}>
@@ -38,7 +44,7 @@ function SearchBar(){
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Sort by :
+          Sort by:
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <div class="dropdown-divider"></div>

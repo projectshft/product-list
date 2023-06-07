@@ -1,15 +1,30 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import { fetchProduct } from "../actions";
+import Col from "react-bootstrap/Col";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function ProductList() {
   const products = useSelector((state) => state.product);
+  const dispatch = useDispatch(); 
 
-  console.log("product @ productlist: ", products);
+  const [sortOption, setSortOption] = useState('');
+  const [filter, setFilter] = useState(''); 
+
+  const handleSortOptionChange = (option) => {
+    setSortOption(option);
+    dispatch(fetchProduct({priceSort: option }));
+  };
+
+  const handleFilter = (category) => {
+    setFilter(category); 
+    dispatch(fetchProduct({filter: category}))
+  }
 
   const renderProduct = (productData) => {
     try {
@@ -45,7 +60,25 @@ function ProductList() {
   };
 
   return (
-    <Container>
+    <Container> 
+      <Row>
+        <Col>
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Sort By:
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => handleSortOptionChange("highest")}>
+                Highest Price
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleSortOptionChange("lowest")}>
+                Lowest Price
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Col>
+      </Row>
+      <Row></Row>
       <Row>{products.map(renderProduct)}</Row>
     </Container>
   );

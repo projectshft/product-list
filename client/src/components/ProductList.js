@@ -15,6 +15,10 @@ function ProductList() {
   //debugger;
 
   const renderProduct = (productData) => {
+    if (!productData) {
+      return null; // Return null or handle the case when productData is undefined
+    }
+  
     const { name, price, category, reviews } = productData;
 
     return (

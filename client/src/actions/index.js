@@ -1,4 +1,4 @@
-import axios, { all } from "axios";
+import axios from "axios";
 export const FETCH_PRODUCT = "FETCH_PRODUCT";
 const ROOT_URL = `http://localhost:9000`;
 
@@ -7,12 +7,13 @@ export function fetchProduct(item) {
 
   const allProducts = axios.get(`${ROOT_URL}/products`);
 
-  if (!item) {
-    const request = axios.get(allProducts);
+  if (item == null) {
+    const request1 = allProducts;
+    console.log("request", request1);
 
     return {
       type: FETCH_PRODUCT,
-      payload: request,
+      payload: request1,
     };
   } else {
     return allProducts.then((response) => {

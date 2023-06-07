@@ -3,43 +3,52 @@ import { useSelector } from "react-redux";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { render } from "react-dom";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
-//import Block from "react-blocks";
 function ProductList() {
-  const product = useSelector((state) => state.product);
+  const products = useSelector((state) => state.product);
 
-  console.log("product: ", product);
-  //debugger;
+  console.log("product @ productlist: ", products);
 
   const renderProduct = (productData) => {
-    if (!productData) {
-      return null; // Return null or handle the case when productData is undefined
-    }
-  
-    const { name, price, category, reviews } = productData;
+    try {
+      if (!productData) {
+        return null;
+      }
 
-    return (
-      <Card.Text key={productData.id}>
-        Product: {name} <br></br>
-        Price: {price} <br></br>
-        category: {category} <br></br>
-        Reviews: {reviews} <br></br>
-      </Card.Text>
-    );
+      if (Array.isArray(productData)) {
+        return productData.map((product) => renderProduct(product));
+      }
+
+      const { id, name, price, category, reviews } = productData;
+
+      return (
+        <Card key={id} style={{ width: "18rem" }}>
+          <Card.Img variant="top" src="holder.js/100px180" />
+          <Card.Body>
+            <Card.Title>Product Info</Card.Title>
+            <Card.Text>
+              Product: {name} <br />
+              Price: {price} <br />
+              Category: {category} <br />
+              Reviews: {reviews} <br />
+            </Card.Text>
+            <Button variant="primary">Reviews</Button>
+          </Card.Body>
+        </Card>
+      );
+    } catch (error) {
+      console.error("Error rendering product:", error);
+      return null;
+    }
   };
 
   return (
-    <Card style={{ width: "18rem" }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
-      <Card.Body>
-        <Card.Title>Product Info</Card.Title>
-        <Button variant="primary">Reviews</Button>
-        {product.map(renderProduct)}
-      </Card.Body>
-    </Card>
+    <Container>
+      <Row>{products.map(renderProduct)}</Row>
+    </Container>
   );
 }
+
 export default ProductList;

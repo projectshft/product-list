@@ -81,6 +81,17 @@ router.get("/products", async (req, res, next) => {
 
     const keyword = queryKeyWord ? { $text: { $search: queryKeyWord } } : {}
 
+    const count = await Product.countDocuments({
+      $and: [
+        query,
+        keyword
+      ]
+    });
+
+    if (count === 0) {
+      return res.status(404).send('No Products Found');
+    }
+
     const products = await Product.find({
       $and: [
         query,
@@ -95,7 +106,10 @@ router.get("/products", async (req, res, next) => {
         return res.status(404).send('No Products Found');
       }
       
-      res.status(200).send(products);
+      res.status(200).send({
+        products: products,
+        count: count,
+      });
       
   } catch(error) {
     console.log('Error:', error);

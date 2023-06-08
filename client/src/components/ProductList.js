@@ -11,20 +11,20 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 function ProductList() {
   const products = useSelector((state) => state.product);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
-  const [sortOption, setSortOption] = useState('');
-  const [filter, setFilter] = useState(''); 
+  const [sortOption, setSortOption] = useState("");
+  const [filter, setFilter] = useState("");
 
   const handleSortOptionChange = (option) => {
     setSortOption(option);
-    dispatch(fetchProduct({priceSort: option }));
+    dispatch(fetchProduct( null,{ priceSort: option }));
   };
 
-  const handleFilter = (category) => {
-    setFilter(category); 
-    dispatch(fetchProduct({filter: category}))
-  }
+  const handleFilter = (typeOfItem) => {
+    setFilter(typeOfItem);
+    dispatch(fetchProduct({item:null},{ category: typeOfItem }));
+  };
 
   const renderProduct = (productData) => {
     try {
@@ -60,7 +60,7 @@ function ProductList() {
   };
 
   return (
-    <Container> 
+    <Container>
       <Row>
         <Col>
           <Dropdown>

@@ -23,27 +23,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/generate-fake-data", (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    let product = new Product();
-
-    product.category = faker.commerce.department();
-    product.name = faker.commerce.productName();
-    product.price = faker.commerce.price();
-    product.image = "https://via.placeholder.com/250?text=Product+Image";
-
-    product.save((err) => {
-      if (err) throw err;
-    });
-  }
-  res.end();
-});
-
 // GET /products/:product: Returns a specific product by its id
 app.get("/products/:product", function (request, response) {
   const productId = request.params.product;
 
-  //not sure why it wasnt working before. degged for a long time maybe it didnt like the .populate? not able to findbyid?
   Product.findById(productId)
     .exec()
     .then((product) => {
@@ -188,7 +171,7 @@ app.delete("/reviews/:review", function (request, response) {
 });
 
 //GET /products - optional query to return only the products of the passed in category.
-//localhost:8000/products?page=1&category=tools
+//localhost:9000/products?page=1&category=tools
 app.get("/products", async (request, response, next) => {
   const perPage = 9;
   const page = request.query.page || 1;
@@ -221,13 +204,23 @@ app.get("/products", async (request, response, next) => {
       .limit(perPage)
       .exec();
 
-    const count = await Product.countDocuments(query).exec();
+
+      const count = await Product.countDocuments(query).exec();
+
+      const totalPages = Math.ceil(count / perPage);
+  
+      // response.json({ products, count, totalPages });
 
     response.send(products);
   } catch (err) {
     next(err);
   }
 });
+
+
+const mainRoutes = require("./main");
+
+app.use(mainRoutes);
 
 app.listen(PORT, () => {
   console.log(`listening on ${PORT}`);

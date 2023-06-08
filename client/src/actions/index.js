@@ -2,19 +2,32 @@ import axios from "axios";
 export const FETCH_PRODUCT = "FETCH_PRODUCT";
 const ROOT_URL = `http://localhost:9000`;
 
-export function fetchProduct(item) {
-  //alert("fetching")
+export function fetchProduct(item, sortOption, typeOfItem) {
+  //
+  debugger; 
+  const allProducts = axios.get(`${ROOT_URL}/products`, {
+      params: {
+        sort: sortOption,
+        category: typeOfItem,
+      },
+  });
 
-  const allProducts = axios.get(`${ROOT_URL}/products`);
-
-  if (item == null) {
+  if (!item && (sortOption || typeOfItem)) {
     const request1 = allProducts;
-    console.log("request", request1);
 
     return {
       type: FETCH_PRODUCT,
       payload: request1,
     };
+
+  }else if(!item){
+    const request2 = allProducts;
+
+    return {
+      type: FETCH_PRODUCT,
+      payload: request2,
+    };
+
   } else {
     return allProducts.then((response) => {
       const foundItem = Object.values(response.data).find((product) => {

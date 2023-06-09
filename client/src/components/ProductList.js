@@ -13,7 +13,6 @@ import Pagination from "react-bootstrap/Pagination";
 function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
-  console.log('prodicts',products); 
 
   const [sortOption, setSortOption] = useState("");
   const [filter, setFilter] = useState("");
@@ -28,20 +27,26 @@ function ProductList() {
     dispatch(fetchProduct(null, null, typeOfItem));
   };
 
-  const handlePagination = () => {};
-  //   let active = 2;
-  //   let items = [];
-  //   for (let number = 1; number <= 5; number++) {
-  //     items.push(
-  //       <Pagination.Item key={number} active={number === active}>
-  //         {number}
-  //       </Pagination.Item>
-  //     );
-  //   }
-  //   const pagination = () => {
-
-  // };
-
+  const handlePagination = (productData) => {  
+    const { totalPages, page } = productData;
+    let active = page;
+    let items = [];
+    
+    for (let number = 1; number <= totalPages; number++) {
+      items.push(
+        <Pagination.Item key={number} active={number === active}>
+          {number}
+        </Pagination.Item>
+      );
+    }
+  
+    return (
+      <div>
+        <Pagination>{items}</Pagination>
+      </div>
+    );
+  };
+  
   const renderProduct = (productData) => {
     try {
       if (!productData) {
@@ -50,12 +55,10 @@ function ProductList() {
 
       if (Array.isArray(productData.products)) {
         return productData.products.map((product) => renderProduct(product));
-      } 
+      }
 
       const { id, name, price, category, reviews } = productData;
-      const { count, totalPages } = productData;
-      console.log(count, totalPages); 
-
+    
       return (
         <>
           <Card key={id} style={{ width: "18rem" }}>
@@ -114,6 +117,8 @@ function ProductList() {
       </Row>
       <Row></Row>
       <Row>{products.map(renderProduct)}</Row>
+      <br />
+      <Row>{handlePagination(products)}</Row>
     </Container>
   );
 }

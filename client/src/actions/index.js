@@ -3,22 +3,22 @@ export const FETCH_PRODUCT = "FETCH_PRODUCT";
 const ROOT_URL = `http://localhost:9000`;
 
 export function fetchProduct(item, sortOption, typeOfItem, pages) {
-  //debugger;
   const allProducts = axios.get(`${ROOT_URL}/products`);
 
   if (item) {
-    return allProducts.then((response) => {
+    allProducts.then((response) => {
       //find the item by name, then return the id to url to fetch the item from API
       const foundItem = Object.values(response.data).find((product) => {
+        debugger;
         return product.name.toLowerCase() === item.toLowerCase();
       });
 
       if (foundItem) {
+        debugger;
         const itemId = foundItem._id;
         const url = `${ROOT_URL}/products/${itemId}`;
         const request = axios.get(url);
-        console.log("url", url); 
-        console.log('req', request); 
+
         return {
           type: FETCH_PRODUCT,
           payload: request,
@@ -26,7 +26,6 @@ export function fetchProduct(item, sortOption, typeOfItem, pages) {
       }
     });
   } else if (!item || sortOption || typeOfItem) {
-    //debugger; 
     const productWithFilter = axios.get(`${ROOT_URL}/products`, {
       params: {
         price: sortOption,
@@ -35,18 +34,10 @@ export function fetchProduct(item, sortOption, typeOfItem, pages) {
       },
     });
 
-    if (sortOption){
-
-    } else if(typeOfItem){
-
-    }
-
     const request = productWithFilter;
-    console.log('productwithfilter:', productWithFilter); 
-    console.log('request:', request); 
-      return {
-        type: FETCH_PRODUCT,
-        payload: request,
-      };
+    return {
+      type: FETCH_PRODUCT,
+      payload: request,
+    };
   }
 }

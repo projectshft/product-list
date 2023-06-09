@@ -209,7 +209,7 @@ app.get("/products", async (request, response, next) => {
 
       const totalPages = Math.ceil(count / perPage);
   
-      response.json({ products, count, totalPages });
+      response.json({ products, count, totalPages, page });
 
     response.send(products);
   } catch (err) {

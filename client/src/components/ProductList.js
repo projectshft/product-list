@@ -8,23 +8,40 @@ import Button from "react-bootstrap/Button";
 import { fetchProduct } from "../actions";
 import Col from "react-bootstrap/Col";
 import Dropdown from "react-bootstrap/Dropdown";
+import Pagination from "react-bootstrap/Pagination";
 
 function ProductList() {
-  const products = useSelector((state) => state.product);
   const dispatch = useDispatch();
+  const products = useSelector((state) => state.product);
 
   const [sortOption, setSortOption] = useState("");
   const [filter, setFilter] = useState("");
 
   const handleSortOptionChange = (option) => {
     setSortOption(option);
-    dispatch(fetchProduct( null,{ priceSort: option }));
+    dispatch(fetchProduct(null, option));
   };
 
   const handleFilter = (typeOfItem) => {
     setFilter(typeOfItem);
-    dispatch(fetchProduct({item:null},{ category: typeOfItem }));
+    dispatch(fetchProduct(null, null, typeOfItem));
   };
+
+  const handlePagination = () => {
+    
+  }
+  //   let active = 2;
+  //   let items = [];
+  //   for (let number = 1; number <= 5; number++) {
+  //     items.push(
+  //       <Pagination.Item key={number} active={number === active}>
+  //         {number}
+  //       </Pagination.Item>
+  //     );
+  //   }
+  //   const pagination = () => {
+
+  // };
 
   const renderProduct = (productData) => {
     try {
@@ -76,10 +93,27 @@ function ProductList() {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+
+          <Dropdown className="filter">
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Category:
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => handleFilter("Garden")}>
+                Garden
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleFilter("Sports")}>
+                Sports
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Col>
       </Row>
       <Row></Row>
       <Row>{products.map(renderProduct)}</Row>
+      <div>
+        <Pagination>{2}</Pagination>
+      </div>
     </Container>
   );
 }

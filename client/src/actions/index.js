@@ -26,7 +26,7 @@ export function fetchProduct(item, sortOption, typeOfItem, pages) {
       }
     });
   } else if (!item || sortOption || typeOfItem) {
-    debugger; 
+    //debugger; 
     const productWithFilter = axios.get(`${ROOT_URL}/products`, {
       params: {
         price: sortOption,

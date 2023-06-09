@@ -13,6 +13,7 @@ import Pagination from "react-bootstrap/Pagination";
 function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
+  console.log('prodicts',products); 
 
   const [sortOption, setSortOption] = useState("");
   const [filter, setFilter] = useState("");
@@ -27,9 +28,7 @@ function ProductList() {
     dispatch(fetchProduct(null, null, typeOfItem));
   };
 
-  const handlePagination = () => {
-    
-  }
+  const handlePagination = () => {};
   //   let active = 2;
   //   let items = [];
   //   for (let number = 1; number <= 5; number++) {
@@ -49,26 +48,30 @@ function ProductList() {
         return null;
       }
 
-      if (Array.isArray(productData)) {
-        return productData.map((product) => renderProduct(product));
-      }
+      if (Array.isArray(productData.products)) {
+        return productData.products.map((product) => renderProduct(product));
+      } 
 
       const { id, name, price, category, reviews } = productData;
+      const { count, totalPages } = productData;
+      console.log(count, totalPages); 
 
       return (
-        <Card key={id} style={{ width: "18rem" }}>
-          <Card.Img variant="top" src="holder.js/100px180" />
-          <Card.Body>
-            <Card.Title>Product Info</Card.Title>
-            <Card.Text>
-              Product: {name} <br />
-              Price: {price} <br />
-              Category: {category} <br />
-              Reviews: {reviews} <br />
-            </Card.Text>
-            <Button variant="primary">Reviews</Button>
-          </Card.Body>
-        </Card>
+        <>
+          <Card key={id} style={{ width: "18rem" }}>
+            <Card.Img variant="top" src="holder.js/100px180" />
+            <Card.Body>
+              <Card.Title>Product Info</Card.Title>
+              <Card.Text>
+                Product: {name} <br />
+                Price: {price} <br />
+                Category: {category} <br />
+                Reviews: {reviews} <br />
+              </Card.Text>
+              <Button variant="primary">Reviews</Button>
+            </Card.Body>
+          </Card>
+        </>
       );
     } catch (error) {
       console.error("Error rendering product:", error);
@@ -111,9 +114,6 @@ function ProductList() {
       </Row>
       <Row></Row>
       <Row>{products.map(renderProduct)}</Row>
-      <div>
-        <Pagination>{2}</Pagination>
-      </div>
     </Container>
   );
 }

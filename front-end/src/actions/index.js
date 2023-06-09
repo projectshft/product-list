@@ -1,19 +1,30 @@
 // import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+export const FETCH_PRODUCTS_SUCCESS = "FETCH_PRODUCTS_SUCCESS";
 export const FILTER_CATEGORY = "FILTER_CATEGORY";
 
+//Synchronous action creator
+const fetchProductsSuccess = products => ({
+  type: 'FETCH_PRODUCTS_SUCCESS',
+  payload: { products }
+})
 
 //thunk action to request the first 9 of all 90 products from the db
-export async function fetchProducts(dispatch, getState) {
+export const fetchProducts = () => {
+  return async (dispatch, getState) => {
   try {
-    const response =  await axios.get('http://localhost:8000/products')
-    console.log('response: ', response);
-    dispatch({type: FETCH_PRODUCTS, payload: response.data})
+    let response =  await axios.get('http://localhost:8000/products')
+    const stateBefore = getState()
+    console.log('StateBefore: ', stateBefore);
+    dispatch(fetchProductsSuccess(response.data));
+    // dispatch({type: FETCH_PRODUCTS, payload: response.data})
+    const stateAfter = getState();
+    console.log('StateAfter, ', stateAfter);
   }catch (error) {
     console.log(error);
   }
+}
 }
 
 export async function filterByCategory (category) {

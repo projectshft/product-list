@@ -10,6 +10,8 @@ function App() {
 
   const productList = useSelector(state => state.products);
 
+  // console.log('productList: ', productList);
+
   // useEffect(() => {
   //   dispatch(fetchProducts())
   // }, [dispatch])
@@ -20,12 +22,6 @@ function App() {
     //after the app loads, it first returns error: cannot read properties Undefined for 'map'. If you comment the below console.log function in or out after the initial React load, then let the React re-render, this App component will render in with the expected products.
     // console.log('currentProducts: ', currentProducts)
   }
-
-  // if (productList === undefined) {
-  //   return (
-  //     <div>Loading</div>
-  //   )
-  // }
 
 
   // console.log('app products: ', 'state.products: ', productList.products.products);

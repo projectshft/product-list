@@ -5,9 +5,9 @@ export const FETCH_PRODUCTS_SUCCESS = "FETCH_PRODUCTS_SUCCESS";
 export const FILTER_CATEGORY = "FILTER_CATEGORY";
 
 //Synchronous action creator
-const fetchProductsSuccess = products => ({
+const fetchProductsSuccess = (products, productCount) => ({
   type: 'FETCH_PRODUCTS_SUCCESS',
-  payload: { products }
+  payload: { products, productCount }
 })
 
 //thunk action to request the first 9 of all 90 products from the db
@@ -17,7 +17,8 @@ export const fetchProducts = () => {
     let response =  await axios.get('http://localhost:8000/products')
     const stateBefore = getState()
     console.log('StateBefore: ', stateBefore);
-    dispatch(fetchProductsSuccess(response.data));
+    console.log('response: ', response);
+    dispatch(fetchProductsSuccess(response.data.products, response.data.productCount));
     // dispatch({type: FETCH_PRODUCTS, payload: response.data})
     const stateAfter = getState();
     console.log('StateAfter, ', stateAfter);

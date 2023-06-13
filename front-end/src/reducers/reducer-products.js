@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { FETCH_PRODUCTS_SUCCESS } from '../actions';
+import { FETCH_PRODUCTS_SUCCESS, FILTER_CATEGORY_SUCCESS, SORT_BY_PRICE_SUCCESS } from '../actions';
 
 
 
@@ -9,7 +9,9 @@ import { FETCH_PRODUCTS_SUCCESS } from '../actions';
 // }
 const DEFAULT_STATE = {
   products: [],
-  productCount: ''
+  productCount: '',
+  // categoryParam: '',
+  // sortParam: '',
 };
 
 const productsReducer = function(state = DEFAULT_STATE, action) {
@@ -19,8 +21,20 @@ const productsReducer = function(state = DEFAULT_STATE, action) {
       return {
         products: action.payload.products,
         productCount: action.payload.productCount
-      }    
-    
+      }
+    case FILTER_CATEGORY_SUCCESS:
+      console.log('action.payload from reducer: ', action.payload);
+      return {
+        products: action.payload.products,
+        productCount: action.payload.productCount
+      };
+    case SORT_BY_PRICE_SUCCESS:
+      console.log('action.payload from reducer: ', action.payload);
+      return {
+        products: action.payload.products,
+        productCount: action.payload.productCount
+      };
+
 
 
     default:

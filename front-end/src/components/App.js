@@ -10,7 +10,7 @@ function App() {
 
   const productList = useSelector(state => state.products);
 
-  // console.log('productList: ', productList);
+  // console.log('productCount: ', productList.productCount);
 
   // useEffect(() => {
   //   dispatch(fetchProducts())
@@ -19,8 +19,6 @@ function App() {
   let currentProducts = [];
   if(productList) {
     currentProducts = productList.products;
-    //after the app loads, it first returns error: cannot read properties Undefined for 'map'. If you comment the below console.log function in or out after the initial React load, then let the React re-render, this App component will render in with the expected products.
-    // console.log('currentProducts: ', currentProducts)
   }
 
 
@@ -101,66 +99,6 @@ function App() {
                 <p className="card-text">Category: (category name)</p>
               </div>
             </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="https://via.placeholder.com/250?text=Product+Image" className="card-img-top" alt="..."/>
-              <div className="card-body">
-                <h3 className="card-title">Product Name</h3>
-                <h5 className="card-title">Price: (price)</h5>
-                <p className="card-text">Category: (category name)</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="https://via.placeholder.com/250?text=Product+Image" className="card-img-top" alt="..."/>
-              <div className="card-body">
-                <h3 className="card-title">Product Name</h3>
-                <h5 className="card-title">Price: (price)</h5>
-                <p className="card-text">Category: (category name)</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="https://via.placeholder.com/250?text=Product+Image" className="card-img-top" alt="..."/>
-              <div className="card-body">
-                <h3 className="card-title">Product Name</h3>
-                <h5 className="card-title">Price: (price)</h5>
-                <p className="card-text">Category: (category name)</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="https://via.placeholder.com/250?text=Product+Image" className="card-img-top" alt="..."/>
-              <div className="card-body">
-                <h3 className="card-title">Product Name</h3>
-                <h5 className="card-title">Price: (price)</h5>
-                <p className="card-text">Category: (category name)</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="https://via.placeholder.com/250?text=Product+Image" className="card-img-top" alt="..."/>
-              <div className="card-body">
-                <h3 className="card-title">Product Name</h3>
-                <h5 className="card-title">Price: (price)</h5>
-                <p className="card-text">Category: (category name)</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="https://via.placeholder.com/250?text=Product+Image" className="card-img-top" alt="..."/>
-              <div className="card-body">
-                <h3 className="card-title">Product Name</h3>
-                <h5 className="card-title">Price: (price)</h5>
-                <p className="card-text">Category: (category name)</p>
-              </div>
-            </div>
           </div> */}
         </div>
       </div>
@@ -176,7 +114,5 @@ function App() {
     </div>
   );
 }
-// return(<div>Loading</div>)
-// }
 
 export default App;

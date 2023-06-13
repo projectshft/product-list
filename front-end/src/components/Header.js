@@ -1,85 +1,118 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../actions";
+import { fetchProducts, filterByCategory, sortByPrice } from "../actions";
 
 
 function Header () {
   const dispatch = useDispatch();
   
-  
   const [query, setQuery] = useState('');
-  
-    
-    
-    const handleQuery = (e) => {
-      e.preventDefault();
-      setQuery(e.target.value)
+  const [category, setCategory] = useState('');
+  const [sort, setSort] = useState('');
+
+  useEffect(() => {
+    if (category !== undefined) {
+      console.log('Category is now: ', category)
     }
-    const handleFormSubmit = (e) => {
-      e.preventDefault()
-      dispatch(fetchProducts(query))
-    
+    if (sort !== undefined) {
+      console.log('Sort is now: ', sort)
     }
-    // const handleDropdownClick = () => {
-    //   return false;
-    // }
+  }, [category, sort])
+    
+  const handleQuery = (e) => {
+    e.preventDefault();
+    setQuery(e.target.value)
+  }
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    dispatch(fetchProducts(query))
+  }
+
+  const handleCategoryClick = (e) => {
+    if(sort !== undefined) {
+      console.log('event.target.innerText: ', e.target.innerText);
+      setCategory(e.target.innerText);
+      // console.log('category is now: ', category);
+      dispatch(filterByCategory(e.target.innerText, sort));
+      // console.log('category: ', category);
+    } else {
+      console.log('event.target.innerText: ', e.target.innerText);
+      setCategory(e.target.innerText);
+      // console.log('category is now: ', category);
+      dispatch(filterByCategory(e.target.innerText));
+      // console.log('category: ', category);
+    }
+  }
+
+  const handleSortClick = (e) => {
+    if (e.target.innerText === 'Highest to lowest') {
+      setSort('highest');
+      console.log('highest? ', e.target.innerText)
+      dispatch(sortByPrice('highest', category))
+    }
+    if (e.target.innerText === 'Lowest to highest') {
+      setSort('lowest');
+      console.log('lowest? ', e.target.innerText)
+      dispatch(sortByPrice('lowest', category))
+    }
+  }
   
-    return (
-      <nav className="navbar navbar-expand-lg bg-light">
-        <div className="container-fluid">
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <form className="d-flex" role="search" onSubmit={handleFormSubmit}>
-              <input className="form-control me-2" type="search" onChange={handleQuery} placeholder="Search" aria-label="Search"/>
-              <button className="btn btn-outline-secondary" type="submit">Search</button>
-            </form>
-            <div className="container-align">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Category
-                </a>
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Automotive</a></li>
-                  <li><a className="dropdown-item" href="#">Baby</a></li>
-                  <li><a className="dropdown-item" href="#">Beauty</a></li>
-                  <li><a className="dropdown-item" href="#">Books</a></li>
-                  <li><a className="dropdown-item" href="#">Clothing</a></li>
-                  <li><a className="dropdown-item" href="#">Computers</a></li>
-                  <li><a className="dropdown-item" href="#">Electronics</a></li>
-                  <li><a className="dropdown-item" href="#">Games</a></li>
-                  <li><a className="dropdown-item" href="#">Garden</a></li>
-                  <li><a className="dropdown-item" href="#">Grocery</a></li>
-                  <li><a className="dropdown-item" href="#">Home</a></li>
-                  <li><a className="dropdown-item" href="#">Industrial</a></li>
-                  <li><a className="dropdown-item" href="#">Jewelery</a></li>
-                  <li><a className="dropdown-item" href="#">Kids</a></li>
-                  <li><a className="dropdown-item" href="#">Movies</a></li>
-                  <li><a className="dropdown-item" href="#">Music</a></li>
-                  <li><a className="dropdown-item" href="#">Outdoors</a></li>
-                  <li><a className="dropdown-item" href="#">Shoes</a></li>
-                  <li><a className="dropdown-item" href="#">Sports</a></li>
-                  <li><a className="dropdown-item" href="#">Tools</a></li>
-                  <li><a className="dropdown-item" href="#">Toys</a></li>
-                  <li><a className="dropdown-item" href="#">hiking</a></li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Price
-                </a>
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Highest to lowest</a></li>
-                  <li><hr className="dropdown-divider"/></li>
-                  <li><a className="dropdown-item" href="#">Lowest to highest</a></li>
-                </ul>
-              </li>
-            </ul>
-            </div>
+  return (
+    <nav className="navbar navbar-expand-lg bg-light">
+      <div className="container-fluid">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <form className="d-flex" role="search" onSubmit={handleFormSubmit}>
+            <input className="form-control me-2" type="search" onChange={handleQuery} placeholder="Search" aria-label="Search"/>
+            <button className="btn btn-outline-secondary" type="submit">Search</button>
+          </form>
+          <div className="container-align">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Category
+              </a>
+              <ul className="dropdown-menu">
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Automotive</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Baby</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Beauty</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Books</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Clothing</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Computers</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Electronics</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Games</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Garden</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Grocery</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick}href="#">Home</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick}href="#">Industrial</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Jewelery</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Kids</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Movies</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Music</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Outdoors</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Shoes</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Sports</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Tools</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Toys</a></li>
+                <li><a className="dropdown-item" onClick={handleCategoryClick} href="#">Hiking</a></li>
+              </ul> 
+            </li>
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Price
+              </a>
+              <ul className="dropdown-menu">
+                <li><a className="dropdown-item" onClick={handleSortClick} href="#">Highest to lowest</a></li>
+                <li><hr className="dropdown-divider"/></li>
+                <li><a className="dropdown-item" onClick={handleSortClick} href="#">Lowest to highest</a></li>
+              </ul>
+            </li>
+          </ul>
           </div>
         </div>
-      </nav>
-    )
+      </div>
+    </nav>
+  )
     
-  }
+}
 
 export default Header;

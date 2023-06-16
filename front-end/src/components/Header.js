@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, filterByCategory, sortByPrice } from "../actions";
+import { fetchQuery, filterByCategory, sortByPrice } from "../actions";
 
 
 function Header () {
   const dispatch = useDispatch();
-  
+  const productData = useSelector(state => state.products)
+
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
   const [sort, setSort] = useState('');
@@ -25,35 +26,23 @@ function Header () {
   }
   const handleFormSubmit = (e) => {
     e.preventDefault()
-    dispatch(fetchProducts(query))
+    dispatch(fetchQuery(query, category, sort))
   }
 
   const handleCategoryClick = (e) => {
-    if(sort !== undefined) {
-      console.log('event.target.innerText: ', e.target.innerText);
-      setCategory(e.target.innerText);
-      // console.log('category is now: ', category);
-      dispatch(filterByCategory(e.target.innerText, sort));
-      // console.log('category: ', category);
-    } else {
-      console.log('event.target.innerText: ', e.target.innerText);
-      setCategory(e.target.innerText);
-      // console.log('category is now: ', category);
-      dispatch(filterByCategory(e.target.innerText));
-      // console.log('category: ', category);
-    }
+    setCategory(e.target.innerText)
+    dispatch(filterByCategory(e.target.innerText, productData.sortParam, productData.queryParam))
   }
 
   const handleSortClick = (e) => {
     if (e.target.innerText === 'Highest to lowest') {
       setSort('highest');
       console.log('highest? ', e.target.innerText)
-      dispatch(sortByPrice('highest', category))
+      dispatch(sortByPrice('highest', category, productData.queryParam))
     }
     if (e.target.innerText === 'Lowest to highest') {
       setSort('lowest');
-      console.log('lowest? ', e.target.innerText)
-      dispatch(sortByPrice('lowest', category))
+      dispatch(sortByPrice('lowest', category, productData.queryParam))
     }
   }
   

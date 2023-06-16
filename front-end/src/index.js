@@ -18,7 +18,7 @@ import { fetchProducts } from './actions';
 const store = configureStore({
   reducer: rootReducer
 })
-
+//initial api call is made here before the DOM renders
 store.dispatch(fetchProducts());
 
 ReactDOM.render(

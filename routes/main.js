@@ -32,6 +32,11 @@ router.get("/products", async (req, res, next) => {
   } catch (err) {
     if (err) return next(err);
   };
+
+  res.end();
 });
+
+// GET Specific product by its ID
+router.get("/products/:product", async (req, res, next) => {})
 
 module.exports = router;

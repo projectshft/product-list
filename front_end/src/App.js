@@ -16,7 +16,7 @@ const App = () => {
     dispatch(fetchProducts())
   }, [dispatch])
 
-  const handleCategory = (e) => {
+  const handleCategoryClick = (e) => {
     e.preventDefault()
     console.log('Ctg')
     setCategory(e.target.value)
@@ -73,7 +73,7 @@ const App = () => {
           <div className="col-6">
             <div className="input-group">
               <button className="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
-              <div className="dropdown-menu" onClick={handleCategory}>
+              <div className="dropdown-menu" onClick={handleCategoryClick}>
                 <p className="dropdown-item">Baby</p>
                 <p className="dropdown-item">Sports</p>
                 <p  className="dropdown-item">Music</p>

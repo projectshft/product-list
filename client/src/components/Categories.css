@@ -1,18 +1,22 @@
-.searchbar{
-  display: flex; 
+.searchbar {
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 80%;
   margin: 40px auto;
 }
-form{
- display: flex;
- flex-direction: row;
- margin-left: 100px;
- height: 40px;
- padding-bottom: 20px;
+input,
+select {
+  margin-right: 20px;
 }
-button{
+form {
+  display: flex;
+  flex-direction: row;
+  margin-left: 100px;
+  height: 40px;
+  padding-bottom: 20px;
+}
+button {
   height: 40px;
   outline: none;
 }

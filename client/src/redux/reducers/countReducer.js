@@ -1,6 +1,6 @@
 import { SET_PAGE } from "../actions/index";
 
-const pageReducer = (state = {}, action) => {
+const countReducer = (state = 0, action) => {
   switch (action.type) {
     case SET_PAGE:
       return {
@@ -11,7 +11,7 @@ const pageReducer = (state = {}, action) => {
     }
   }
 
-export default pageReducer;
+export default countReducer;
 
 
 

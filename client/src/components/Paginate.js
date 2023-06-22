@@ -1,33 +1,35 @@
 import React from 'react'
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { searchProduct, updateCategory, setPage } from '../redux/actions';
 import './Paginate.css';
-import { getProducts } from '../redux/actions';
 
 const Paginate = () => {
-  // const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
+  const [category, setCategory] = useState(''); 
+
+  const totalCount = useSelector(state => state.count);
+  const dispatch = useDispatch();
 
   // Handle Page Pagination
-  const handlePrevious = () => {
-    setPage((p) => {
-      if (p === 1) return p;
-      return p - 1;
-    })
-  } 
+  const handlePreviousPage = () => {
+    dispatch(searchProduct);
+    dispatch(setPage(currentPage - 1))
+    console.log('View previous page');
+    }
   
-  const handleNext = () => {
-    setPage((p) => {
-      if (p === pageCount) return p;
-      return p + 1;
-    })
+  const handleNextPage = () => {
+    console.log('View next page')
+    dispatch(setPage(currentPage + 1))
+    dispatch(updateCategory(category));
   }
 
   return (
     <div>
       <footer>
-        <button disabled={page === 1} onClick={handlePrevious}>Previous</button>
-        <button disabled={page === pageCount} onClick={handleNext}>Next</button>
+        <button disabled={currentPage === 1} onClick={handlePreviousPage}>Previous</button>
+        <button disabled={currentPage === pageCount} onClick={handleNextPage}>Next</button>
       </footer>
 
       </div>

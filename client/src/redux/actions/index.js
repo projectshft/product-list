@@ -42,8 +42,6 @@ export const updateCategory = async (category) => {
 
 export const sortPrice = async (price, category) => {
   let request = await axios.get(`${ROOT_URL}?category=${category}&price=${price}`)
-// export const sortPrice = async (price) => {
-//   let request = await axios.get(`${ROOT_URL}?price=${price}`)
     .then((response) => {
       console.log('Sorting products', response.data.products, response.data.count)
       return response.data.products;
@@ -58,10 +56,19 @@ export const sortPrice = async (price, category) => {
   }
 }
 
-export const setPage = (page) => {
+export const setPage = async (page) => {
+  let request = await axios.get(`${ROOT_URL}?page=${page}`)
+  .then((response) => {
+    console.log('Sorting products', response.data.products, response.data.count)
+    return response.data.products;
+  })
+  .catch((error) => {
+    console.log(error)
+  })
+
   return {
     type: SET_PAGE,
-    payload: page    
+    payload: request   
   }
 }
 

@@ -7,7 +7,7 @@ import Paginate from './components/Paginate'
 function App() {
   return (
     <div className="App">
-      <h1>Ecommerce Store</h1>
+      <h1>Eval: Fake Store</h1>
       <Categories/>
       <Paginate/>
     </div>

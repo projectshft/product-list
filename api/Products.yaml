@@ -1,0 +1,252 @@
+swagger: "2.0"
+info:
+  title: Products API
+  description: An API to support the Sunglasses Store platform
+  version: 1.0.0
+host: api.productsapi.com
+schemes:
+  - https
+basePath: /api
+produces:
+  - application/json
+paths:
+  /products:
+    get:
+      summary: List of Products
+      description: |
+        The Products endpoint returns a list of all products in the database and allows the user to search for products using different parameters.
+      tags:
+        - Products
+      parameters:
+        - name: page
+          in: query
+          description: Page number of products to view
+          required: false
+          type: string
+        - name: category
+          in: query
+          description: category of products to view
+          required: false
+          type: string
+        - name: price
+          in: query
+          description: Sort the products by price from highest to lowest or lowest to highest
+          required: false
+          type: string
+        - name: query
+          in: query
+          description: Search term to find a related product
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Display of nine products per page
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Product"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: Add a Product to database
+      description: |
+        The Add a Product endpoint allows the user to input a new product to the database.
+      tags:
+        - Products
+      parameters:
+        - in: body
+          name: product
+          description: The product to create
+          schema:
+            type: object
+            required:
+              - category
+              - name
+              - price
+              - image
+            properties:
+              category:
+                type: string
+              name:
+                type: string
+              price:
+                type: number
+              image:
+                type: string
+      responses:
+        "201":
+          description: Product succesfully created and added to the database
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Product"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+  /products/{productId}:
+    get:
+      summary: Access a product by id
+      description: |
+        The Access a product by id endpoint allows a user to access a specific product in the database.
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Product successfully retrieved.
+          schema:
+            $ref: "#/definitions/Product"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: Delete a product by id
+      description: |
+        The Delete a product by id endpoint allows a user to delete a specific product from the database.
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Product successfully deleted.
+          schema:
+            $ref: "#/definitions/Product"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+  /products/{productId}/reviews:
+    get:
+      summary: Access reviews for a specific product.
+      description: |
+        The access reviews endpoint allows a user to access the reviews of a specific product from the database.
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Reviews accessed.
+          schema:
+            $ref: "#/definitions/Reviews"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: Create review for a specific product.
+      description: |
+        The create review endpoint allows a user to create a new review for a specific product from the database.
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: review
+          description: The review to create
+          schema:
+            type: object
+            required:
+              - userName
+              - text
+            properties:
+              userName:
+                type: string
+              text:
+                type: string
+      responses:
+        "201":
+          description: Review succesfully created.
+          schema:
+            $ref: "#/definitions/Review"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+  /reviews/{reviewId}:
+    delete:
+      summary: Delete a review by id.
+      description: |
+        The delete a review endpoint allows a user to delete a specific review.
+      tags:
+        - Reviews
+      parameters:
+        - name: reviewId
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Review succesfully deleted.
+          schema:
+            $ref: "#/definitions/Review"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier for a product.
+      category:
+        type: string
+        description: Category of the product.
+      name:
+        type: string
+        description: Name of product.
+      price:
+        type: number
+        description: The price of the product
+      imageURL:
+        type: string
+        description: URL for image of the product
+  Reviews:
+    type: array
+    items:
+      $ref: "#/definitions/Review"
+  Review:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier for a review.
+      userName:
+        type: string
+        description: username of the reviewer.
+      text:
+        type: string
+        description: text of the review.
+      product:
+        type: string
+        description: id number of the product the review is referencing.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string

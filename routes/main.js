@@ -24,20 +24,49 @@ router.get("/products", async (req, res, next) => {
 
   // return the first page by default
   const page = req.query.page || 1;
-
   const category = req.query.category || null;
+  const query = req.query.query || null;
+  const price = req.query.price || null;
 
-  const setCategory = () =>{
+  const setCategory = () => {
+    if (category) {
 
-  }
+      return { category: { $regex: category, $options: "i" }};
+    } else {
+      return {};
+    };
+  };
+
+  const setQuery = () => {
+    if (query) {
+      return { name: { $regex: query, $options: "i" }};
+    } else {
+      return {};
+    };
+  };
+
+  const setPrice = () => {
+    if (!price) {
+      return {};
+    } else if (price.toLowerCase() == "highest") {
+      return { price: "desc" };
+    } else if (price.toLowerCase() == "lowest") {
+      return { price: "asc" }
+    } else {
+      console.log("Something has gone terribly wrong!")
+    };
+  };
 
   try {
     const products = await Product.find()
+      .and([setCategory(), setQuery()])
+      .sort(setPrice())
       .skip(perPage * page - perPage)
       .limit(perPage)
       .exec();
 
     res.send(products);
+    
   } catch (err) {
     if (err) return next(err);
   };

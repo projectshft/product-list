@@ -20,12 +20,12 @@ router.get("/generate-fake-data", (req, res, next) => {
       });
 
       product.reviews.push(review);
-      // comment out since database has enough fake data reviews
-      // review.save();
+      // comment out the code below when database has enough fake data reviews
+      review.save();
     }
 
-    // comment out since database has enough fake data products
-    // product.save();
+    // comment out the code below when database has enough fake data products
+    product.save();
   }
   res.end();
 });

@@ -1,8 +1,11 @@
 import { useDispatch } from "react-redux";
+import { useForm } from 'react-hook-form';
+import { fetchProducts } from "../actions";
 
 
 const SearchBar = () => {
 
+  const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
 
   //dispatches action when form is submitted

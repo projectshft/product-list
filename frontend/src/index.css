@@ -12,6 +12,23 @@ code {
     monospace;
 }
 
+#root {
+  background-color: #e9ecef;
+}
+
+.product {
+  margin-left: 4.15%;
+  background-color: white;
+}
+
+.category {
+  padding-top: 5px;
+}
+
+.price {
+  padding-top: 3px;
+}
+
 .jumbotron {
   padding: 30px 20px;
   margin-bottom: 2rem;

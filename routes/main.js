@@ -36,18 +36,49 @@ router.get("/products", async (req, res, next) => {
   const page = req.query.page || 1; 
   const productsPerPage = 9;
   const startIndex = (page - 1) * productsPerPage;
-  const count = await Product.countDocuments();
-  const pageCount = Math.ceil(count / productsPerPage);
 
-  const category = req.query.category;
-  const price = req.query.price;
-  const query = req.query.query;
+  const category = req.query.category || null;
+  const query = req.query.query || null;
+  const price = req.query.price || null;
+
+  const filterByCategory = () => {
+    if (category) {
+      return { category: { $regex: category, $options: "i" } };
+    } else {
+      return {};
+    };
+  };
+
+  const filterByQuery = () => {
+    if (query) {
+      return { name: { $regex: query, $options: "i" } };
+    } else {
+      return {};
+    };
+  };
+
+  const filterByPrice = () => {
+    if (!price) {
+      return {};
+    } else if (price.toLowerCase() === "highest") {
+        return { price: "desc" };
+    } else if (price.toLowerCase() === "lowest") {
+        return { price: "asc" };
+    } 
+  };
 
   try {
     const products = await Product.find()
+      .sort(filterByPrice())
+      .and([filterByCategory(), filterByQuery()])
       .skip(startIndex)
       .limit(productsPerPage)
       .exec();
+
+      const count = await Product.find()
+        .and([filterByCategory(), filterByQuery()])
+        .countDocuments();
+      const pageCount = Math.ceil(count / productsPerPage);
 
     res.send({
       products,

@@ -20,9 +20,8 @@ const mainRoutes = require("./routes/main");
 
 app.use(mainRoutes);
 
-const port = 8000;
-app.listen(port, () => {
-  console.log(`Node.js listening at http://localhost:${port}`);
+app.listen(8000, () => {
+  console.log("Node.js listening on port " + 8000);
 });
 
 module.exports = app;

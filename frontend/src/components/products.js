@@ -1,22 +1,12 @@
 import { useSelector } from "react-redux";
-import { fetchProducts } from "../actions";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 
 const Products = () => {
 
-  const dispatch = useDispatch();
-
   const products = useSelector((state) => state.products);
   
-  useEffect(() => {
-    dispatch(fetchProducts());
-  });
-  
-
   const renderProductList = () => {
-    
     if (products) {
+      
       return products.map((product, i) => {
 
         return (

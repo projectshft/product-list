@@ -65,13 +65,16 @@ router.get("/products", async (req, res, next) => {
       .limit(perPage)
       .exec();
 
-    res.send(products);
+    const count = await Product.find()
+      .and([setCategory(), setQuery()])
+      .estimatedDocumentCount()
+      .exec();
+
+    res.send({products: products, count: count});
     
   } catch (err) {
     if (err) return next(err);
   };
-
-  res.end();
 });
 
 // GET Specific product by its ID

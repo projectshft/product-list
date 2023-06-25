@@ -67,7 +67,7 @@ router.get("/products", async (req, res, next) => {
 
     const count = await Product.find()
       .and([setCategory(), setQuery()])
-      .estimatedDocumentCount()
+      .countDocuments()
       .exec();
 
     res.send({products: products, count: count});

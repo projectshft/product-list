@@ -9,12 +9,8 @@ import searchReducer from './reducers/search-reducer';
 import Header from './components/header';
 import SearchBar from './components/searchbar';
 import Products from './components/products';
-import Pagination from './components/pagination';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -22,8 +18,7 @@ root.render(
     <React.StrictMode>
       <Header>
         <SearchBar />
-        <Products />
-        <Pagination />
+        <Products />        
       </Header>
     </React.StrictMode>
   </Provider>

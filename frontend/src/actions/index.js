@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
-
+// Action builds out the url string and includes the specific page, query, category, and/or price filter if present
 export function fetchProducts (page, query, category, price) {
   const url = "http://localhost:8000/products?";
 
@@ -43,5 +43,5 @@ export function fetchProducts (page, query, category, price) {
   return {
     type: FETCH_PRODUCTS,
     payload: request
-  }
-}
+  };
+};

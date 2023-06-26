@@ -1,12 +1,21 @@
 import { useSelector } from "react-redux";
 
+// Set up products jsx to display the products that are present
 const Products = () => {
 
   const products = useSelector((state) => state.products);
   
+  
   const renderProductList = () => {
+    // If no products found, display that none were found
+    if (products && products.length === 0) {
+      return (
+        <h4>No Products Found</h4>
+      );
+    };
+
+    // If there are products, render the product info onto the page
     if (products) {
-      
       return products.map((product, i) => {
 
         return (

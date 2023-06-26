@@ -105,7 +105,6 @@ router.get("/products/:product/reviews", async (req, res, next) => {
   } catch (err) {
     if (err) return next(err);
   };
-  res.end();
 });
 
 // GET all reviews and limit them to 9 reviews per page
@@ -122,8 +121,6 @@ router.get("/reviews", async (req, res, next) => {
   } catch (err) {
     if (err) return next(err);
   };
-
-  res.end();
 });
 
 // GET Specific review by its ID
@@ -153,7 +150,6 @@ router.post("/products", async (req, res, next) => {
   } catch (err) {
     if (err) return next(err);
   };
-  res.end();
 });
 
 // POST Creates a new review in the database by adding it to the correct product's 'reviews' array
@@ -182,7 +178,6 @@ router.post("/products/:product/reviews", async (req, res, next) => {
   } catch (err) {
     if (err) return next(err);
   };
-  res.end();
 });
 
 // DELETE A product by ID
@@ -194,7 +189,6 @@ router.delete("/products/:product", async (req, res, next) => {
   } catch (err) {
     if (err) return next(err);
   };
-  res.end();
 });
 
 // DELETE A review by ID
@@ -218,14 +212,11 @@ router.delete("/reviews/:review", async (req, res, next) => {
       reviewedProduct[0].save();
     };
 
-    
-
     res.send(deletedReview);
    
   } catch (err) {
     if (err) return next(err);
   };
-  res.end();
 });
 
 

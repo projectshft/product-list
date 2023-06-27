@@ -24,7 +24,7 @@ export const fetchProducts =  async (page, query, category, price)  => {
       return result ? `${base}${result}` : base;
     };
     const request = await axios.get(stringTogetherUrl());
-    console.log(stringTogetherUrl());
+    // console.log(stringTogetherUrl());
 
     return {
       type: FETCH_PRODUCTS, 

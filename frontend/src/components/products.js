@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 const Products = () => {
   
   const productData = useSelector((state) => state.productData);
-  console.log(productData);
+  // console.log(productData);
 
   const renderProductDisplayList = () => {
     if (productData.products) {

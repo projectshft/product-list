@@ -21,11 +21,11 @@ router.get("/generate-fake-data", (req, res, next) => {
 
       product.reviews.push(review);
       // comment out the code below when database has enough fake data reviews
-      review.save();
+      // review.save();
     }
 
     // comment out the code below when database has enough fake data products
-    product.save();
+    // product.save();
   }
   res.end();
 });
@@ -41,7 +41,7 @@ router.get("/products", async (req, res, next) => {
   const query = req.query.query || null;
   const price = req.query.price || null;
 
-  const filterByCategory = () => {
+  const searchByCategory = () => {
     if (category) {
       return { category: { $regex: category, $options: "i" } };
     } else {
@@ -49,7 +49,7 @@ router.get("/products", async (req, res, next) => {
     };
   };
 
-  const filterByQuery = () => {
+  const searchByQueryTerm = () => {
     if (query) {
       return { name: { $regex: query, $options: "i" } };
     } else {
@@ -57,7 +57,7 @@ router.get("/products", async (req, res, next) => {
     };
   };
 
-  const filterByPrice = () => {
+  const sortByPrice = () => {
     if (!price) {
       return {};
     } else if (price.toLowerCase() === "highest") {
@@ -69,15 +69,16 @@ router.get("/products", async (req, res, next) => {
 
   try {
     const products = await Product.find()
-      .sort(filterByPrice())
-      .and([filterByCategory(), filterByQuery()])
+      .sort(sortByPrice())
+      .and([searchByCategory(), searchByQueryTerm()])
       .skip(startIndex)
       .limit(productsPerPage)
       .exec();
 
       const count = await Product.find()
-        .and([filterByCategory(), filterByQuery()])
-        .countDocuments();
+        .and([searchByCategory(), searchByQueryTerm()])
+        .countDocuments()
+        .exec();
       const pageCount = Math.ceil(count / productsPerPage);
 
     res.send({

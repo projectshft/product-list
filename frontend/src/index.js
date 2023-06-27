@@ -1,17 +1,27 @@
+import 'bootstrap/dist/css/bootstrap.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import promise from 'redux-promise';
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from './reducers';
+import Header from './components/header';
+import SearchNav from './components/searchNav';
+import Products from './components/products';
+
+const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Provider store={createStoreWithMiddleware(rootReducer)}>
+    <React.StrictMode>
+      <Header>
+        <SearchNav />
+        <Products />
+      </Header>
+    </React.StrictMode>
+  </Provider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

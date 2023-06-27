@@ -8,8 +8,7 @@ import promise from 'redux-promise';
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers';
 import Header from './components/header';
-import SearchNav from './components/searchNav';
-import Products from './components/products';
+import App from './App';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -18,8 +17,7 @@ root.render(
   <Provider store={createStoreWithMiddleware(rootReducer)}>
     <React.StrictMode>
       <Header>
-        <SearchNav />
-        <Products />
+        <App />
       </Header>
     </React.StrictMode>
   </Provider>

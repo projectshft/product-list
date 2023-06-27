@@ -2,15 +2,16 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 
 const Pagination = ({onChange, page}) => {
-  const [pageCount, setPageCount] = useState(0)
-  const productData = useSelector(state => state.productData.products);
+  const [pages, setPage] = useState(0)
+  const productData = useSelector(state => state.productData.pageCount);
 
   useEffect(() => {
     if(productData) {
-      setPageCount( productData.products && productData.pagination.pageCount)
+      setPage( productData.products && productData.pagination.pageCount)
     }
   }, [productData])
-  console.log(productData);
+  // console.log(productData);
+  // console.log(pages);
 
   function handlePrevious() {
     onChange(page -= 1)
@@ -20,13 +21,12 @@ const Pagination = ({onChange, page}) => {
     onChange(page += 1)
     
   }
-
+  
   return (
-    <div className='text-center mt-4'>
-      <div>Page {page} of {pageCount}</div>
-      <br/>
-      <button className="btn btn-outline-secondary" disabled={page === 1} onClick={handlePrevious}>Prev</button>
-      <button className="btn btn-outline-secondary" disabled={page === pageCount}onClick={handleNext}>Next</button>
+    <div className="text-center mt-4">
+      <div className="h5">Page {page} of {productData}</div>
+      <button className="btn btn-outline-secondary page-button" disabled={page === 1} onClick={handlePrevious}>Prev</button>
+      <button className="btn btn-outline-secondary page-button" disabled={page === productData}onClick={handleNext}>Next</button>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "../actions";
+import Products from "./products";
+import Pagination from "./pagination";
 
 const SearchNav = () => {
   const [page, setPage] = useState(1);
@@ -51,64 +53,76 @@ const SearchNav = () => {
     dispatch(fetchProducts(page, query, category, e.currentTarget.value));
   }
 
-  return (
-    <div className="SearchNav container d-flex mb-5 pt-3">
-      <div className="leftSide flex-grow-1">
-          <form onSubmit={handleQuerySubmit}>
-            <div className="input-group">
-              <input 
-                type="text" 
-                className="form-control" 
-                placeholder="Search"
-                onChange={handleInputChange}
-                />
-              <div className="input-group-append">
-                <button className="btn btn-outline-secondary" type="submit">Search</button>
-              </div>
-            </div>
-          </form>
-      </div>
+  // setup pagination
+  const handlePageChange = (page) => {
+    setPage(page);
+    dispatch(fetchProducts(page, query, category, price));
+  }
 
-      <div className="rightSide col-4 d-flex ms-5">
-        <div className="col input-group">
-          <div className="input-group-append">
-            <select className='form-select' defaultValue="Sort By Category" onChange={handleCategorySelect}>
-              <option>Sort By Category</option>
-              <option>Automotive</option>
-              <option>Baby</option>
-              <option>Beauty</option>
-              <option>Books</option>
-              <option>Clothing</option>
-              <option>Computers</option>
-              <option>Electronics</option>
-              <option>Games</option>
-              <option>Garden</option>
-              <option>Grocery</option>
-              <option>Home</option>
-              <option>Industrial</option>
-              <option>Jewelery</option>
-              <option>Kids</option>
-              <option>Movies</option>
-              <option>Music</option>
-              <option>Outdoors</option>
-              <option>Shoes</option>
-              <option>Sports</option>
-              <option>Tools</option>
-              <option>Toys</option>
-            </select>
-          </div>
+  return (
+    <div className="App">
+      <div className="container-fluid">
+      <div className="SearchNav container d-flex mb-5 pt-3">
+        <div className="leftSide flex-grow-1">
+            <form onSubmit={handleQuerySubmit}>
+              <div className="input-group">
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Search"
+                  onChange={handleInputChange}
+                  />
+                <div className="input-group-append">
+                  <button className="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+              </div>
+            </form>
         </div>
-        
-        <div className="col input-group d-flex">
-          <div className="input-group-append">
-            <select className='form-select' defaultValue="Sort By Price" onChange={handlePriceSelect}>
-              <option>Sort By Price</option>
-              <option>Highest</option>
-              <option>Lowest</option>
-            </select>
+
+        <div className="rightSide col-4 d-flex ms-5">
+          <div className="col input-group">
+            <div className="input-group-append">
+              <select className='form-select' defaultValue="Sort By Category" onChange={handleCategorySelect}>
+                <option>Sort By Category</option>
+                <option>Automotive</option>
+                <option>Baby</option>
+                <option>Beauty</option>
+                <option>Books</option>
+                <option>Clothing</option>
+                <option>Computers</option>
+                <option>Electronics</option>
+                <option>Games</option>
+                <option>Garden</option>
+                <option>Grocery</option>
+                <option>Home</option>
+                <option>Industrial</option>
+                <option>Jewelery</option>
+                <option>Kids</option>
+                <option>Movies</option>
+                <option>Music</option>
+                <option>Outdoors</option>
+                <option>Shoes</option>
+                <option>Sports</option>
+                <option>Tools</option>
+                <option>Toys</option>
+              </select>
+            </div>
+          </div>
+          
+          <div className="col input-group d-flex">
+            <div className="input-group-append">
+              <select className='form-select' defaultValue="Sort By Price" onChange={handlePriceSelect}>
+                <option>Sort By Price</option>
+                <option>Highest</option>
+                <option>Lowest</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+      <Products />
+      <Pagination onChange={handlePageChange} page={page} />
     </div>
   );
 };

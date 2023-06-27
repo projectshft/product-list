@@ -28,13 +28,16 @@ const App = () => {
   // Searching based on query input
   const handleQuerySubmit = (e) => {
     e.preventDefault();
+    resetPage();
     setQuery(query);
-    setPage(1);
+    resetSearch();
     dispatch(fetchProducts(page, query, category, price));
   }
 
   const handleInputChange = (e) => {
     e.preventDefault()
+    resetPage();
+    resetSearch();
     setQuery(e.target.value);
   }
 
@@ -49,7 +52,9 @@ const App = () => {
   // search based on price sort 
   const handlePriceSelect = (e) => {
     e.preventDefault()
+    resetPage();
     setPrice(e.currentTarget.value)
+    resetSearch();
     dispatch(fetchProducts(page, query, category, e.currentTarget.value));
   }
 

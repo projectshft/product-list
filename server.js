@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
-mongoose.connect("mongodb://localhost/products", {
+mongoose.connect("mongodb://127.0.0.1/products", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -28,7 +28,7 @@ app.use(mainRoutes);
 
 const port = 8000;
 app.listen(port, () => {
-  console.log(`Node.js listening at http://localhost:${port}`);
+  console.log(`Node.js listening at http://127.0.0.1/${port}`);
 });
 
 module.exports = app;

@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+import thunk from 'redux-thunk';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -14,7 +15,7 @@ const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={createStoreWithMiddleware(reducers, applyMiddleware(thunk))}>
     <React.StrictMode>
       <App />
     </React.StrictMode>,

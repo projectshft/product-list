@@ -2,11 +2,11 @@ import axios from "axios";
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 
-export const fetchProducts =  async (priceFilter, category, query, page)  => {
+export const fetchProducts = async (priceFilter, category, query, page)  => {
   try {
     const getString = () => {
       let result = '';
-      const base = 'http://localhost:8000/products?';
+      const ROOT = 'http://localhost:8000/products?';
       if (priceFilter) {
         result += `price=${priceFilter}`;
       }
@@ -20,7 +20,7 @@ export const fetchProducts =  async (priceFilter, category, query, page)  => {
         result += `${result ? '&' : ''}page=${page}`;
       }
 
-      return result ? `${base}${result}` : base;
+      return result ? `${ROOT}${result}` : ROOT;
     };
     const request = await axios.get(getString());
 

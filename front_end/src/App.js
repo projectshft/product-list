@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from './actions/productActions';
 import Pagination from './components/Pagination';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const App = () => {
   const [price, setPrice] = useState('')
@@ -70,9 +73,9 @@ const App = () => {
         </div>
 
         <div className="row">
-          <div className="col-6">
+          <div className="col-6 ">
             <div className="input-group">
-              <button className="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
+            <button type="button" className="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Category</button>
               <div className="dropdown-menu" onClick={handleCategoryClick}>
                 <p className="dropdown-item">Baby</p>
                 <p className="dropdown-item">Sports</p>
@@ -85,12 +88,7 @@ const App = () => {
 
           <div className="col-6">
             <div className="input-group">
-              <button 
-               className="btn btn-dark dropdown-toggle" 
-              type="button" 
-              data-toggle="dropdown" 
-              aria-haspopup="true" 
-              aria-expanded="false">Price</button>
+            <button type="button" className="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Price</button>
               <div className="dropdown-menu" onClick={handlePrice}>
                 <p className="dropdown-item">Highest</p>
                 <p className="dropdown-item">Lowest</p>

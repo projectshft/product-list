@@ -25,7 +25,7 @@ const Pagination = ({onChange, page}) => {
       <div>Page {page} of {pageCount}</div>
       <br/>
       <button className="btn btn-dark" disabled={page === 1} onClick={handlePrevious}>Prev</button>
-      <button className="btn btn-dark" disabled={page === pageCount}onClick={handleNext}>Next</button>
+      <button className="btn btn-dark" disabled={page === pageCount} onClick={handleNext}>Next</button>
     </div>
   );
 }

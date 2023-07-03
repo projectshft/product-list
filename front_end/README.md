@@ -1,4 +1,16 @@
-# Getting Started with Create React App
+HOW TO START UP APPLICATION:
+
+1. In your terminal run mongod and mongosh in separate tabs.
+
+2. In a third tab, cd into 'product-list' and npm start to run the backend server on port 8000.
+
+3. In a final forth tab, cd into 'front_end' and npm start to run the front end react server on port 3000.
+
+4. Go to 'localhost:8000/generate-fake-data' to load the dummy data in the store front.
+
+5. Finally, go to 'localhost:3000' to view the client app.
+
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -67,4 +79,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->

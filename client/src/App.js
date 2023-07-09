@@ -1,11 +1,10 @@
 import "./App.css";
 import SearchBar from "./components/SearchBar";
 import ProductList from "./components/ProductList";
-//import Pagination from "./components/Pagination";
-
+//july 9th 2023
 function App() {
   return (
-    <div >
+    <div>
       <SearchBar />
       <ProductList />
     </div>

@@ -60,7 +60,6 @@ function ProductList() {
       const { id, name, price, category, reviews } = productData;
     
       return (
-        <>
           <Card key={id} style={{ width: "18rem" }}>
             <Card.Img variant="top" src="holder.js/100px180" />
             <Card.Body>
@@ -74,7 +73,6 @@ function ProductList() {
               <Button variant="primary">Reviews</Button>
             </Card.Body>
           </Card>
-        </>
       );
     } catch (error) {
       console.error("Error rendering product:", error);

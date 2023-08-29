@@ -21,11 +21,20 @@ router.get('/generate-fake-data', async (req, res, next) => {
 })
 
 // Pagination: 9 products per page
+// We'll want to be able to pass in an optional query to return only the products of the passed in category.
+// The url will look like this: localhost:8000/products?page=1&category=tools
 router.get('/products', (req, res, next) => {
     // return the first page by default
-    const page = req.query.page || 1
+    const page = req.query.page || 1 // Set the page number
+    const category = req.query.category // Get the category if it exists
+    let query = {} // start w/ an empty object
 
-    Product.find({})
+    if (category) {
+        // If there is a category, include it in the query
+        query.category = category
+    }
+
+    Product.find(query)
         .skip(9 * page - 9)
         .limit(9)
         .exec((err, products) => {

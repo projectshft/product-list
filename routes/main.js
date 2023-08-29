@@ -23,10 +23,12 @@ router.get('/generate-fake-data', async (req, res, next) => {
 // Pagination: 9 products per page
 // We'll want to be able to pass in an optional query to return only the products of the passed in category.
 // The url will look like this: localhost:8000/products?page=1&category=tools
-router.get('/products', (req, res, next) => {
+router.get('/products', (req, res) => {
     // return the first page by default
     const page = req.query.page || 1 // Set the page number
     const category = req.query.category // Get the category if it exists
+    const SortByPrice = req.query.price // Get the price sorting order if it exists
+
     let query = {} // start w/ an empty object
 
     if (category) {
@@ -34,16 +36,20 @@ router.get('/products', (req, res, next) => {
         query.category = category
     }
 
-    Product.find(query)
+    let productsQuery = Product.find(query)
+
+    if (SortByPrice === 'highest') {
+        productsQuery = productsQuery.sort({ price: -1 }) // Sort highest to lowest
+    } else if (SortByPrice === 'lowest') {
+        productsQuery = productsQuery.sort({ price: 1 }) // Sort lowest to highest
+    }
+
+    const products = productsQuery
         .skip(9 * page - 9)
         .limit(9)
-        .exec((err, products) => {
-            Product.countDocuments().exec((err, count) => {
-                if (err) return next(err)
+        .exec()
 
-                res.send(products)
-            })
-        })
+    res.status(200).send(products)
 })
 
 //GET /products/:product: Returns a specific product by its id
@@ -59,7 +65,7 @@ router.get('/products/:product', (req, res) => {
 // GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time.
 // This one will be a little tricky as you'll have to retrieve them out of the products.
 // You should be able to pass in an optional page query parameter to paginate.
-router.get('/products/:product/reviews', (req, res, next) => {
+router.get('/products/:product/reviews', (req, res) => {
     // return the first page by default
     const page = req.query.page || 1
 
@@ -67,17 +73,13 @@ router.get('/products/:product/reviews', (req, res, next) => {
     if (!productInReq) {
         res.status(404).send({ error: 'No product found' }) // Return an error is the variable is empty
     } else {
-        productInReq.reviews
+        const reviews = productInReq.reviews
             .find({})
             .skip(4 * page - 4)
             .limit(4)
-            .exec((err, reviews) => {
-                Product.countDocuments().exec((err, count) => {
-                    if (err) return next(err)
+            .exec()
 
-                    res.status(200).send(reviews)
-                })
-            })
+        res.status(200).send(reviews)
     }
 })
 
@@ -143,7 +145,7 @@ router.delete('/products/:product', (req, res) => {
 
 //DELETE /reviews/:review: Deletes a review by id
 router.delete('/reviews/:review', (req, res) => {
-    const deletedReview = Reviews.findByIdAndDelete(req.params.review) //Find the review and delete it
+    const deletedReview = Review.findByIdAndDelete(req.params.review) //Find the review and delete it
 
     if (!deletedReview) {
         return res.status(400).send({ error: 'Review not found' })

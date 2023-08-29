@@ -20,18 +20,16 @@ router.get('/generate-fake-data', async (req, res, next) => {
     }
 })
 
+// Pagination: 9 products per page
 router.get('/products', (req, res, next) => {
-    const perPage = 9
-
     // return the first page by default
     const page = req.query.page || 1
 
     Product.find({})
-        .skip(perPage * page - perPage)
-        .limit(perPage)
+        .skip(9 * page - 9)
+        .limit(9)
         .exec((err, products) => {
-            // Note that we're not sending `count` back at the moment, but in the future we might want to know how many are coming back so we can figure out the number of pages
-            Product.count().exec((err, count) => {
+            Product.countDocuments().exec((err, count) => {
                 if (err) return next(err)
 
                 res.send(products)
@@ -39,4 +37,109 @@ router.get('/products', (req, res, next) => {
         })
 })
 
+//GET /products/:product: Returns a specific product by its id
+router.get('/products/:product', (req, res) => {
+    const productInReq = Product.findById(req.params.product) //Find the product by the product ID in the request
+    if (!productInReq) {
+        res.status(404).send({ error: 'No product found' }) // Return an error is the variable is empty
+    } else {
+        res.status(200).send(productInReq) // Send the product if its found
+    }
+})
+
+// GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time.
+// This one will be a little tricky as you'll have to retrieve them out of the products.
+// You should be able to pass in an optional page query parameter to paginate.
+router.get('/products/:product/reviews', (req, res, next) => {
+    // return the first page by default
+    const page = req.query.page || 1
+
+    const productInReq = Product.findById(req.params.product) //Find the product by the product ID in the request
+    if (!productInReq) {
+        res.status(404).send({ error: 'No product found' }) // Return an error is the variable is empty
+    } else {
+        productInReq.reviews
+            .find({})
+            .skip(4 * page - 4)
+            .limit(4)
+            .exec((err, reviews) => {
+                Product.countDocuments().exec((err, count) => {
+                    if (err) return next(err)
+
+                    res.status(200).send(reviews)
+                })
+            })
+    }
+})
+
+// POST /products: Creates a new product in the database
+router.post('/products', (req, res) => {
+    const { category, name, price, image, reviews } = req.body
+
+    if (!category || !name || !price || !image) {
+        return res.status(400).send({ error: 'Missing required fields' })
+    } else {
+        const product = new Product({
+            // Make the new product
+            category,
+            name,
+            price,
+            image,
+            reviews: reviews || [], // Pass reviews as an array or leave it empty
+        })
+
+        product.save() // Save the new product to the collection
+
+        res.status(200).send(product)
+    }
+})
+
+// POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
+router.post('/products/:products/reviews', (req, res) => {
+    const productInReq = Product.findById(req.params.product) //Find the product by the product ID in the request
+    const { username, text } = req.body // Get the review content
+
+    // Make sure a review is actually there
+    if (!username || !text) {
+        return res
+            .status(400)
+            .send({ error: 'Username and text are required for the review' })
+    } else if (!productInReq) {
+        return res.status(400).send({ error: 'Product not found' })
+    } else {
+        const newReview = new reviews({
+            username,
+            text,
+            product: productId, // Associate the review with the product
+        })
+        newReview.save() // Save the new review
+
+        productInReq.reviews.push(newReview._id)
+        productInReq.save() // Add the new review to the product
+
+        res.status(200).send(newReview) //Send success code and new review
+    }
+})
+
+// DELETE /products/:product: Deletes a product by id
+router.delete('/products/:product', (req, res) => {
+    const deletedProduct = Product.findByIdAndDelete(req.params.product) // Find the product and delete it
+
+    if (!deletedProduct) {
+        return res.status(400).send({ error: 'Product not found' })
+    } else {
+        res.status(200)
+    }
+})
+
+//DELETE /reviews/:review: Deletes a review by id
+router.delete('/reviews/:review', (req, res) => {
+    const deletedReview = Reviews.findByIdAndDelete(req.params.review) //Find the review and delete it
+
+    if (!deletedReview) {
+        return res.status(400).send({ error: 'Review not found' })
+    } else {
+        res.status(200)
+    }
+})
 module.exports = router

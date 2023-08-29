@@ -23,17 +23,30 @@ router.get('/generate-fake-data', async (req, res, next) => {
 // Pagination: 9 products per page
 // We'll want to be able to pass in an optional query to return only the products of the passed in category.
 // The url will look like this: localhost:8000/products?page=1&category=tools
+
+// We'll want to be able to pass in another optional query to return the products, but sorted by price -
+// either from highest to lowest, or vice versa.
+//The url will look like this:localhost:8000/products?page=1&category=tools&price=highest
+
+// We'll want to be able to pass in another optional query to return the products that match a certain string.
+// For simplicity sake, the string should only need to occur within the product itself (not the reviews).
+// The url could look like this: localhost:8000/products?query=shovel
 router.get('/products', (req, res) => {
     // return the first page by default
     const page = req.query.page || 1 // Set the page number
     const category = req.query.category // Get the category if it exists
     const SortByPrice = req.query.price // Get the price sorting order if it exists
+    const searchQuery = req.query.query // Get the search string if it exists
 
     let query = {} // start w/ an empty object
 
     if (category) {
         // If there is a category, include it in the query
         query.category = category
+    }
+
+    if (searchQuery) {
+        query.$or = [{ name: searchQuery }, { category: searchQuery }]
     }
 
     let productsQuery = Product.find(query)

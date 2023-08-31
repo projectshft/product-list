@@ -31,17 +31,16 @@ router.get('/generate-fake-data', async (req, res, next) => {
 // We'll want to be able to pass in another optional query to return the products that match a certain string.
 // For simplicity sake, the string should only need to occur within the product itself (not the reviews).
 // The url could look like this: localhost:8000/products?query=shovel
-router.get('/products', (req, res) => {
-    // return the first page by default
-    const page = req.query.page || 1 // Set the page number
-    const category = req.query.category // Get the category if it exists
-    const SortByPrice = req.query.price // Get the price sorting order if it exists
-    const searchQuery = req.query.query // Get the search string if it exists
+router.get('/products', async (req, res) => {
+    const perPage = 9
+    const page = parseInt(req.query.page) || 1
+    const category = req.query.category
+    const sortByPrice = req.query.price
+    const searchQuery = req.query.query
 
-    let query = {} // start w/ an empty object
+    let query = {}
 
     if (category) {
-        // If there is a category, include it in the query
         query.category = category
     }
 
@@ -49,20 +48,36 @@ router.get('/products', (req, res) => {
         query.$or = [{ name: searchQuery }, { category: searchQuery }]
     }
 
-    let productsQuery = Product.find(query)
+    let countQuery = Product.countDocuments(query) // Count total matching products
 
-    if (SortByPrice === 'highest') {
-        productsQuery = productsQuery.sort({ price: -1 }) // Sort highest to lowest
-    } else if (SortByPrice === 'lowest') {
-        productsQuery = productsQuery.sort({ price: 1 }) // Sort lowest to highest
+    if (sortByPrice === 'highest') {
+        countQuery = countQuery.sort({ price: -1 })
+    } else if (sortByPrice === 'lowest') {
+        countQuery = countQuery.sort({ price: 1 })
     }
 
-    const products = productsQuery
-        .skip(9 * page - 9)
-        .limit(9)
+    const totalProducts = await countQuery.exec()
+
+    const totalPages = Math.ceil(totalProducts / perPage)
+
+    let productsQuery = Product.find(query)
+
+    if (sortByPrice === 'highest') {
+        productsQuery = productsQuery.sort({ price: -1 })
+    } else if (sortByPrice === 'lowest') {
+        productsQuery = productsQuery.sort({ price: 1 })
+    }
+
+    const products = await productsQuery
+        .skip(perPage * (page - 1))
+        .limit(perPage)
         .exec()
 
-    res.status(200).send(products)
+    res.status(200).send({
+        products,
+        totalPages,
+        currentPage: page,
+    })
 })
 
 //GET /products/:product: Returns a specific product by its id

@@ -1,13 +1,16 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const cors = require('cors') // Import the cors package
 
-mongoose.connect('mongodb://localhost/products', {
+mongoose.connect('mongodb://127.0.0.1/products', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
 
 const app = express()
+
+app.use(cors()) // Use the cors middleware
 
 app.use(bodyParser.json())
 app.use(

@@ -32,55 +32,65 @@ router.get('/generate-fake-data', async (req, res, next) => {
 // For simplicity sake, the string should only need to occur within the product itself (not the reviews).
 // The url could look like this: localhost:8000/products?query=shovel
 router.get('/products', async (req, res) => {
-    const perPage = 9
-    const page = parseInt(req.query.page) || 1
-    const category = req.query.category
-    const sortByPrice = req.query.price
-    const searchQuery = req.query.query
+    try {
+        const perPage = 9
+        const page = parseInt(req.query.page) || 1
+        const category = req.query.category
+        const price = req.query.price // Correct the query parameter name
+        const searchQuery = req.query.query
 
-    let query = {}
+        let query = {}
 
-    if (category) {
-        query.category = category
+        if (category) {
+            query.category = category
+        }
+
+        if (searchQuery) {
+            query.$or = [
+                { name: { $regex: searchQuery, $options: 'i' } },
+                { category: { $regex: searchQuery, $options: 'i' } },
+            ]
+        }
+
+        let productsQuery = Product.find(query)
+
+        if (price === 'highest') {
+            productsQuery = productsQuery.sort({ price: -1 })
+        } else if (price === 'lowest') {
+            productsQuery = productsQuery.sort({ price: 1 })
+        }
+
+        // Calculate the total number of matching products without executing the query
+        const countQuery = productsQuery.clone().count()
+
+        // Execute the count query to get the total count
+        const totalProducts = await countQuery.exec()
+
+        // Calculate the total number of pages based on the perPage value
+        const totalPages = Math.ceil(totalProducts / perPage)
+
+        // Apply skip and limit to fetch the products for the current page
+        const products = await productsQuery
+            .skip(perPage * (page - 1))
+            .limit(perPage)
+            .exec()
+
+        // Retrieve the list of unique categories
+        const categories = await Product.distinct('category').exec()
+
+        res.status(200).send({
+            products,
+            totalPages,
+            currentPage: page,
+            categories, // Include the categories in the response
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).send({ error: 'Internal server error' })
     }
-
-    if (searchQuery) {
-        query.$or = [{ name: searchQuery }, { category: searchQuery }]
-    }
-
-    let countQuery = Product.countDocuments(query) // Count total matching products
-
-    if (sortByPrice === 'highest') {
-        countQuery = countQuery.sort({ price: -1 })
-    } else if (sortByPrice === 'lowest') {
-        countQuery = countQuery.sort({ price: 1 })
-    }
-
-    const totalProducts = await countQuery.exec()
-
-    const totalPages = Math.ceil(totalProducts / perPage)
-
-    let productsQuery = Product.find(query)
-
-    if (sortByPrice === 'highest') {
-        productsQuery = productsQuery.sort({ price: -1 })
-    } else if (sortByPrice === 'lowest') {
-        productsQuery = productsQuery.sort({ price: 1 })
-    }
-
-    const products = await productsQuery
-        .skip(perPage * (page - 1))
-        .limit(perPage)
-        .exec()
-
-    res.status(200).send({
-        products,
-        totalPages,
-        currentPage: page,
-    })
 })
 
-//GET /products/:product: Returns a specific product by its id
+// //GET /products/:product: Returns a specific product by its id
 router.get('/products/:product', (req, res) => {
     const productInReq = Product.findById(req.params.product) //Find the product by the product ID in the request
     if (!productInReq) {
@@ -90,9 +100,9 @@ router.get('/products/:product', (req, res) => {
     }
 })
 
-// GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time.
-// This one will be a little tricky as you'll have to retrieve them out of the products.
-// You should be able to pass in an optional page query parameter to paginate.
+// // GET /products/:product/reviews: Returns ALL the reviews for a product, but limited to 4 at a time.
+// // This one will be a little tricky as you'll have to retrieve them out of the products.
+// // You should be able to pass in an optional page query parameter to paginate.
 router.get('/products/:product/reviews', (req, res) => {
     // return the first page by default
     const page = req.query.page || 1
@@ -111,7 +121,7 @@ router.get('/products/:product/reviews', (req, res) => {
     }
 })
 
-// POST /products: Creates a new product in the database
+// // POST /products: Creates a new product in the database
 router.post('/products', (req, res) => {
     const { category, name, price, image, reviews } = req.body
 
@@ -133,7 +143,7 @@ router.post('/products', (req, res) => {
     }
 })
 
-// POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
+// // POST /products/:product/reviews: Creates a new review in the database by adding it to the correct product's reviews array.
 router.post('/products/:products/reviews', (req, res) => {
     const productInReq = Product.findById(req.params.product) //Find the product by the product ID in the request
     const { username, text } = req.body // Get the review content
@@ -149,7 +159,7 @@ router.post('/products/:products/reviews', (req, res) => {
         const newReview = new reviews({
             username,
             text,
-            product: productId, // Associate the review with the product
+            product: product, // Associate the review with the product
         })
         newReview.save() // Save the new review
 
@@ -160,7 +170,7 @@ router.post('/products/:products/reviews', (req, res) => {
     }
 })
 
-// DELETE /products/:product: Deletes a product by id
+// // DELETE /products/:product: Deletes a product by id
 router.delete('/products/:product', (req, res) => {
     const deletedProduct = Product.findByIdAndDelete(req.params.product) // Find the product and delete it
 
@@ -171,7 +181,7 @@ router.delete('/products/:product', (req, res) => {
     }
 })
 
-//DELETE /reviews/:review: Deletes a review by id
+// //DELETE /reviews/:review: Deletes a review by id
 router.delete('/reviews/:review', (req, res) => {
     const deletedReview = Review.findByIdAndDelete(req.params.review) //Find the review and delete it
 
@@ -181,4 +191,5 @@ router.delete('/reviews/:review', (req, res) => {
         res.status(200)
     }
 })
+
 module.exports = router

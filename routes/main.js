@@ -55,7 +55,7 @@ router.get('/products/:productId', async (req, res, next) => {
   const { productId } = req.params;
 
   try {
-    const product = await Product.find({ _id: productId });
+    const product = await Product.findOne({ _id: productId });
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify(product));
   } catch (error) {
@@ -84,6 +84,44 @@ router.get('/products/:productId/reviews', async (req, res, next) => {
     return return400Error(res);
   }
 });
+
+// POST /products
+router.post('/products', async (req, res, next) => {
+  try {
+    const product = new Product(req.body);
+    product.save();
+    res.writeHead(200);
+    return res.end('Product added successfully');
+  } catch (error) {
+    return return400Error(res);
+  }
+});
+
+// POST /products/:productId/reviews
+router.post('/products/:productId/reviews', async (req, res, next) => {
+  const { productId } = req.params;
+
+  try {
+    const review = new Review(req.body);
+
+    const { reviews } = await Product.findOne({ _id: productId });
+    reviews.push(review);
+
+    await Product.findOneAndUpdate(
+      { _id: productId },
+      { reviews },
+      { new: true }
+    );
+
+    res.writeHead(200);
+    return res.end('Review added successfully');
+  } catch (error) {
+    console.log(error);
+    return return400Error(res);
+  }
+});
+
+// Helper functions
 
 const return400Error = (res) => {
   res.writeHead(400);

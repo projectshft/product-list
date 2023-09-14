@@ -1,3 +1,4 @@
+import SearchBar from './SearchBar';
 import Results from './Results';
 
 const sampleProducts = [
@@ -42,6 +43,11 @@ const sampleProducts = [
   }
 ];
 
-const App = () => <Results products={sampleProducts} />;
+const App = () => (
+  <>
+    <SearchBar />
+    <Results products={sampleProducts} />
+  </>
+);
 
 export default App;

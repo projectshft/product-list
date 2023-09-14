@@ -17,9 +17,27 @@ router.get("/generate-fake-data", (req, res, next) => {
 });
 
 router.get("/products", (req, res, next) => {
-  Product.find((error, products) => {
-    res.send(products);
-  });
+  const perPage = 9;
+  const page = req.query.page || 1;
+
+  if (!parseInt(page)) {
+    return return400Error(res);
+  }
+
+  Product
+    .find()
+    .skip((page * perPage) - perPage)
+    .limit(perPage)
+    .exec()
+    .then((products) => {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify(products));
+    });
 });
+
+const return400Error = (res) => {
+  res.writeHead(400);
+  return res.end('Bad request. Parameter must be an integer and larger than 0');
+};
 
 module.exports = router;

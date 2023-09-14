@@ -1,18 +1,22 @@
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Product from './Product';
 
-const Results = ({ products }) => (
-  <Container>
-    <Row>
-      {products.map((product) => (
-        <Product key={product._id.$oid} product={product} />
-      ))}
-      ;
-    </Row>
-  </Container>
-);
+const Results = ({ products }) => {
+  const content = products.map((product) => (
+    <Col className="d-flex justify-content-center" key={product._id.$oid}>
+      <Product product={product} />
+    </Col>
+  ));
+
+  return (
+    <Container>
+      <Row className="justify-items-center">{content}</Row>
+    </Container>
+  );
+};
 
 Results.propTypes = {
   products: PropTypes.arrayOf(

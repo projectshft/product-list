@@ -1,17 +1,34 @@
+/* eslint-disable no-plusplus */
 const router = require('express').Router();
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { faker } = require('@faker-js/faker');
 const Product = require('../models/product');
+const Review = require('../models/review');
 
 router.get('/generate-fake-data', (req, res, next) => {
-  for (let i = 0; i < 90; i + 1) {
+  for (let i = 0; i < 90; i++) {
     const product = new Product();
 
     product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = 'https://via.placeholder.com/250?text=Product+Image';
+    product.reviews = [];
 
+    const numReviews = Math.floor(Math.random() * 12);
+
+    for (let k = 0; k <= numReviews; k++) {
+      const numWords = Math.random() * (10 - 3) + 3;
+      const review = new Review();
+
+      review.username = faker.internet.userName();
+      review.text = faker.word.words(numWords);
+      review.product = product;
+
+      review.save();
+
+      product.reviews.push(review);
+    }
     product.save();
   }
   res.end();

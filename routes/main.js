@@ -50,7 +50,7 @@ router.get('/products', async (req, res, next) => {
   }
 });
 
-// GET /products/:productid
+// GET /products/:productId
 router.get('/products/:productId', async (req, res, next) => {
   const { productId } = req.params;
 
@@ -59,6 +59,28 @@ router.get('/products/:productId', async (req, res, next) => {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify(product));
   } catch (error) {
+    return return400Error(res);
+  }
+});
+
+// GET /products/:productId/reviews with pagination
+router.get('/products/:productId/reviews', async (req, res, next) => {
+  const perPage = 4;
+  const page = req.query.page || 1;
+  const { productId } = req.params;
+
+  try {
+    const { reviews } = await Product.findOne({ _id: productId }).populate({
+      path: 'reviews',
+      options: {
+        limit: perPage,
+        skip: page * perPage - perPage
+      }
+    });
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify(reviews));
+  } catch (error) {
+    console.log(error);
     return return400Error(res);
   }
 });

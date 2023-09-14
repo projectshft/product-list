@@ -9,7 +9,7 @@ router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     const product = new Product();
 
-    product.category = faker.commerce.department();
+    product.category = faker.commerce.department().toLowerCase();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = 'https://via.placeholder.com/250?text=Product+Image';
@@ -38,9 +38,34 @@ router.get('/generate-fake-data', (req, res, next) => {
 router.get('/products', async (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
+  const { category, price, query } = req.query;
+
+  const searchParameters = {};
+
+  if (category) {
+    searchParameters.category = category.toLowerCase();
+  }
+
+  if (query) {
+    const searchTerm = new RegExp(query, 'i');
+    searchParameters.name = { $regex: searchTerm };
+  }
+
+  if (price) {
+    try {
+      const products = await Product.find(searchParameters)
+        .sort({ price: price.toLowerCase() === 'lowest' ? 1 : -1 })
+        .skip(page * perPage - perPage)
+        .limit(perPage);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify(products));
+    } catch (error) {
+      return return400Error(res);
+    }
+  }
 
   try {
-    const products = await Product.find()
+    const products = await Product.find(searchParameters)
       .skip(page * perPage - perPage)
       .limit(perPage);
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -115,6 +140,33 @@ router.post('/products/:productId/reviews', async (req, res, next) => {
 
     res.writeHead(200);
     return res.end('Review added successfully');
+  } catch (error) {
+    console.log(error);
+    return return400Error(res);
+  }
+});
+
+// DELETE /products/:productId
+router.delete('/products/:productId', async (req, res, next) => {
+  const { productId } = req.params;
+
+  try {
+    await Product.deleteOne({ _id: productId });
+    res.writeHead(200);
+    return res.end('Product deleted successfully');
+  } catch (error) {
+    return return400Error(res);
+  }
+});
+
+// DELETE /reviews/:reviewId
+router.delete('/reviews/:reviewId', async (req, res, next) => {
+  const { reviewId } = req.params;
+
+  try {
+    await Review.deleteOne({ _id: reviewId });
+    res.writeHead(200);
+    return res.end('Review deleted successfully');
   } catch (error) {
     console.log(error);
     return return400Error(res);

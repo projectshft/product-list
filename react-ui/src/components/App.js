@@ -40,6 +40,54 @@ const sampleProducts = [
     price: 518,
     image: 'https://via.placeholder.com/250?text=Product+Image',
     __v: 0
+  },
+  {
+    _id: {
+      $oid: '6503273cbf9241d7ce10138b'
+    },
+    reviews: [
+      {
+        $oid: '6503273cbf9241d7ce10138c'
+      },
+      {
+        $oid: '6503273cbf9241d7ce10138e'
+      },
+      {
+        $oid: '6503273cbf9241d7ce101390'
+      },
+      {
+        $oid: '6503273cbf9241d7ce101392'
+      },
+      {
+        $oid: '6503273cbf9241d7ce101394'
+      },
+      {
+        $oid: '6503273cbf9241d7ce101396'
+      },
+      {
+        $oid: '6503273cbf9241d7ce101398'
+      },
+      {
+        $oid: '6503273cbf9241d7ce10139a'
+      },
+      {
+        $oid: '6503273cbf9241d7ce10139c'
+      },
+      {
+        $oid: '6503273cbf9241d7ce10139e'
+      },
+      {
+        $oid: '6503273cbf9241d7ce1013a0'
+      },
+      {
+        $oid: '6503273cbf9241d7ce1013a2'
+      }
+    ],
+    category: 'clothing',
+    name: 'Awesome Rubber Sausages',
+    price: 605,
+    image: 'https://via.placeholder.com/250?text=Product+Image',
+    __v: 0
   }
 ];
 

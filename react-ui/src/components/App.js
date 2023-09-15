@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import SearchBar from './SearchBar';
 import Results from './Results';
+import PageNavigation from './PageNavigation';
 import { fetchProducts } from '../slices/resultsSlice';
 
 // const sampleProducts = [
@@ -105,6 +106,7 @@ const App = () => {
     <>
       <SearchBar />
       <Results />
+      <PageNavigation />
     </>
   );
 };

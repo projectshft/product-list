@@ -8,8 +8,8 @@ import axios from 'axios';
  */
 export const fetchProducts = createAsyncThunk(
   'results/fetchProducts',
-  async () => {
-    const url = 'http://localhost:8000/products';
+  async (page = 1) => {
+    const url = `http://localhost:8000/products?page=${page}`;
     const response = await axios.get(url);
     return response.data;
   }
@@ -20,6 +20,7 @@ export const resultsSlice = createSlice({
   initialState: {
     status: 'idle',
     error: null,
+    numResults: null,
     results: []
   },
   reducers: {},
@@ -30,7 +31,8 @@ export const resultsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.results = action.payload;
+        state.numResults = action.payload.numResults;
+        state.results = action.payload.products;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed';

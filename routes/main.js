@@ -57,8 +57,9 @@ router.get('/products', async (req, res, next) => {
         .sort({ price: price.toLowerCase() === 'lowest' ? 1 : -1 })
         .skip(page * perPage - perPage)
         .limit(perPage);
+      const numResults = await Product.countDocuments(searchParameters);
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify(products));
+      return res.end(JSON.stringify({ numResults, products }));
     } catch (error) {
       return return400Error(res);
     }
@@ -68,8 +69,9 @@ router.get('/products', async (req, res, next) => {
     const products = await Product.find(searchParameters)
       .skip(page * perPage - perPage)
       .limit(perPage);
+    const numResults = await Product.countDocuments(searchParameters);
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify(products));
+    return res.end(JSON.stringify({ numResults, products }));
   } catch (error) {
     return return400Error(res);
   }

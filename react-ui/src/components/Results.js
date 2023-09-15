@@ -1,12 +1,14 @@
-import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useSelector } from 'react-redux';
 import Product from './Product';
 
-const Results = ({ products }) => {
+const Results = () => {
+  const products = useSelector((state) => state.results.results);
+
   const content = products.map((product) => (
-    <Col className="d-flex justify-content-center" key={product._id.$oid}>
+    <Col className="d-flex justify-content-center" key={product._id}>
       <Product product={product} />
     </Col>
   ));
@@ -16,18 +18,6 @@ const Results = ({ products }) => {
       <Row className="justify-items-center">{content}</Row>
     </Container>
   );
-};
-
-Results.propTypes = {
-  products: PropTypes.arrayOf(
-    PropTypes.shape({
-      category: PropTypes.string,
-      name: PropTypes.string,
-      price: PropTypes.number,
-      image: PropTypes.string,
-      reviews: PropTypes.array
-    })
-  )
 };
 
 export default Results;

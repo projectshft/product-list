@@ -6,8 +6,6 @@ const Product = ({ product }) => (
     <Card.Img variant="top" src={product.image} />
     <Card.Body>
       <Card.Title>{product.name}</Card.Title>
-    </Card.Body>
-    <Card.Body>
       <Card.Text>Category: {product.category}</Card.Text>
       <Card.Text>${product.price}</Card.Text>
     </Card.Body>

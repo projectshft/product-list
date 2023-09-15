@@ -4,13 +4,16 @@ import { fetchProducts } from '../slices/resultsSlice';
 
 const PageNavigation = () => {
   const dispatch = useDispatch();
+  const query = useSelector((state) => state.search.query);
+  const category = useSelector((state) => state.search.category);
+  const price = useSelector((state) => state.search.price);
   const numResults = useSelector((state) => state.results.numResults);
   const perPage = 9;
   const numPages = Math.ceil(numResults / perPage);
 
   const handlePageClick = (event) => {
     const page = event.selected + 1;
-    dispatch(fetchProducts({ page }));
+    dispatch(fetchProducts({ query, category, price, page }));
   };
 
   return (

@@ -10,7 +10,7 @@ const PageNavigation = () => {
 
   const handlePageClick = (event) => {
     const page = event.selected + 1;
-    dispatch(fetchProducts(page));
+    dispatch(fetchProducts({ page }));
   };
 
   return (

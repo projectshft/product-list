@@ -4,12 +4,24 @@ import axios from 'axios';
 /**
  * Makes an API request for all products when page initially loads
  *
- * @return {array} Array of unique person objects
+ * @return {object} Object containing number of products and array
+ * of product objects
  */
 export const fetchProducts = createAsyncThunk(
   'results/fetchProducts',
-  async (page = 1) => {
-    const url = `http://localhost:8000/products?page=${page}`;
+  async (searchParameters) => {
+    let url = `http://localhost:8000/products?page=${searchParameters.page}`;
+
+    if (searchParameters.query) {
+      url += `&query=${searchParameters.query}`;
+    }
+    if (searchParameters.category) {
+      url += `&category=${searchParameters.category}`;
+    }
+    if (searchParameters.price) {
+      url += `&price=${searchParameters.price}`;
+    }
+
     const response = await axios.get(url);
     return response.data;
   }

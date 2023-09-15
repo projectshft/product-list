@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import SearchBar from './SearchBar';
 import Results from './Results';
@@ -7,10 +7,13 @@ import { fetchProducts } from '../slices/resultsSlice';
 
 const App = () => {
   const dispatch = useDispatch();
+  const query = useSelector((state) => state.search.query);
+  const category = useSelector((state) => state.search.category);
+  const price = useSelector((state) => state.search.price);
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
+    dispatch(fetchProducts({ query, category, price, page: 1 }));
+  }, [dispatch, query, category, price]);
 
   return (
     <>

@@ -86,7 +86,7 @@ router.get('/products/:productId', async (req, res, next) => {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify(product));
   } catch (error) {
-    return return400Error(res);
+    return return404Error(res);
   }
 });
 
@@ -108,7 +108,7 @@ router.get('/products/:productId/reviews', async (req, res, next) => {
     return res.end(JSON.stringify(reviews));
   } catch (error) {
     console.log(error);
-    return return400Error(res);
+    return return404Error(res);
   }
 });
 
@@ -157,7 +157,7 @@ router.delete('/products/:productId', async (req, res, next) => {
     res.writeHead(200);
     return res.end('Product deleted successfully');
   } catch (error) {
-    return return400Error(res);
+    return return404Error(res);
   }
 });
 
@@ -171,7 +171,7 @@ router.delete('/reviews/:reviewId', async (req, res, next) => {
     return res.end('Review deleted successfully');
   } catch (error) {
     console.log(error);
-    return return400Error(res);
+    return return404Error(res);
   }
 });
 
@@ -184,7 +184,7 @@ const return400Error = (res) => {
 
 const return404Error = (res) => {
   res.writeHead(404);
-  return res.end('Parameter not found');
+  return res.end('Not found');
 };
 
 module.exports = router;

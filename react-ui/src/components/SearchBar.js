@@ -3,11 +3,24 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSearchParameters } from '../slices/searchSlice';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const url = 'http://localhost:8000/categories';
+      const response = await axios.get(url);
+      setCategories(response.data);
+    };
+
+    getCategories();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -38,9 +51,11 @@ const SearchBar = () => {
             <Form.Group className="me-4" controlId="filterByCategory">
               <Form.Select aria-label="Category">
                 <option>Filter by category</option>
-                <option value="clothing">Clothing</option>
-                <option value="electronics">Electronics</option>
-                <option value="home">Home</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
               </Form.Select>
             </Form.Group>
             <Form.Group className="me-4" controlId="sortByPrice">

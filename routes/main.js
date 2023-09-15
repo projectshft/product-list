@@ -175,6 +175,20 @@ router.delete('/reviews/:reviewId', async (req, res, next) => {
   }
 });
 
+// GET /categories
+router.get('/categories', async (req, res, next) => {
+  try {
+    const products = await Product.find({});
+    const categories = products.map((product) => product.category);
+    const uniqueCategories = [...new Set(categories)];
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify(uniqueCategories));
+  } catch (error) {
+    console.log(error);
+    return return400Error(res);
+  }
+});
+
 // Helper functions
 
 const return400Error = (res) => {

@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const mainRoutes = require('./routes/main');
 
 mongoose.connect('mongodb://localhost/products', {
@@ -16,6 +17,7 @@ app.use(
     extended: true
   })
 );
+app.use(cors());
 app.use(mainRoutes);
 
 const PORT = 8000;

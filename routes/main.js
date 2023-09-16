@@ -2,9 +2,17 @@
 const router = require('express').Router();
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { faker } = require('@faker-js/faker');
+const {
+  findProducts,
+  getUniqueAlphabeticalCategories,
+  return400Error,
+  return404Error
+} = require('../utils/utils');
 const Product = require('../models/product');
 const Review = require('../models/review');
 
+// GET /generate-fake-data
+// save 90 randomly generated items and reviews to db each time accessed
 router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     const product = new Product();
@@ -42,6 +50,12 @@ router.get('/products', async (req, res, next) => {
 
   const searchParameters = {};
 
+  const pageParameters = {
+    price,
+    page,
+    perPage
+  };
+
   if (category) {
     searchParameters.category = category;
   }
@@ -53,25 +67,14 @@ router.get('/products', async (req, res, next) => {
 
   if (price) {
     try {
-      const products = await Product.find(searchParameters)
-        .sort({ price: price.toLowerCase() === 'lowest' ? 1 : -1 })
-        .skip(page * perPage - perPage)
-        .limit(perPage);
-      const numResults = await Product.countDocuments(searchParameters);
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify({ numResults, products }));
+      return findProducts(searchParameters, pageParameters, res, true);
     } catch (error) {
       return return400Error(res);
     }
   }
 
   try {
-    const products = await Product.find(searchParameters)
-      .skip(page * perPage - perPage)
-      .limit(perPage);
-    const numResults = await Product.countDocuments(searchParameters);
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ numResults, products }));
+    return findProducts(searchParameters, pageParameters, res);
   } catch (error) {
     return return400Error(res);
   }
@@ -143,7 +146,6 @@ router.post('/products/:productId/reviews', async (req, res, next) => {
     res.writeHead(200);
     return res.end('Review added successfully');
   } catch (error) {
-    console.log(error);
     return return400Error(res);
   }
 });
@@ -170,7 +172,6 @@ router.delete('/reviews/:reviewId', async (req, res, next) => {
     res.writeHead(200);
     return res.end('Review deleted successfully');
   } catch (error) {
-    console.log(error);
     return return404Error(res);
   }
 });
@@ -179,26 +180,12 @@ router.delete('/reviews/:reviewId', async (req, res, next) => {
 router.get('/categories', async (req, res, next) => {
   try {
     const products = await Product.find({});
-    const categories = products.map((product) => product.category);
-    const uniqueCategories = [...new Set(categories)];
+    const categories = getUniqueAlphabeticalCategories(products);
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify(uniqueCategories));
+    return res.end(JSON.stringify(categories));
   } catch (error) {
-    console.log(error);
     return return400Error(res);
   }
 });
-
-// Helper functions
-
-const return400Error = (res) => {
-  res.writeHead(400);
-  return res.end('Bad request');
-};
-
-const return404Error = (res) => {
-  res.writeHead(404);
-  return res.end('Not found');
-};
 
 module.exports = router;

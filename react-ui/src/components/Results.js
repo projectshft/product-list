@@ -5,13 +5,23 @@ import { useSelector } from 'react-redux';
 import Product from './Product';
 
 const Results = () => {
+  const status = useSelector((state) => state.results.status);
+  const error = useSelector((state) => state.results.error);
   const products = useSelector((state) => state.results.results);
 
-  const content = products.map((product) => (
-    <Col className="d-flex justify-content-center" key={product._id}>
-      <Product product={product} />
-    </Col>
-  ));
+  let content;
+
+  if (status === 'loading') {
+    content = <p>Loading...</p>;
+  } else if (status === 'succeeded') {
+    content = products.map((product) => (
+      <Col className="d-flex justify-content-center" key={product._id}>
+        <Product product={product} />
+      </Col>
+    ));
+  } else if (status === 'failed') {
+    content = <div>{error}</div>;
+  }
 
   return (
     <Container>

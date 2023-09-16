@@ -44,7 +44,6 @@ const SearchBar = () => {
             : null
       })
     );
-    event.target.elements.searchInput.value = '';
   };
 
   // Also update state whenever a dropdown option is changed

@@ -15,9 +15,15 @@ export const searchSlice = createSlice({
     },
     changeDropdown: (state, action) => {
       if (action.payload.type === 'filterByCategory') {
-        state.category = action.payload.value;
+        state.category =
+          action.payload.value !== 'Filter by category'
+            ? action.payload.value
+            : null;
       } else {
-        state.price = action.payload.value;
+        state.price =
+          action.payload.value !== 'Sort by price'
+            ? action.payload.value
+            : null;
       }
     }
   }

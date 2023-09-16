@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSearchParameters } from '../slices/searchSlice';
+import { setSearchParameters, changeDropdown } from '../slices/searchSlice';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -40,16 +40,25 @@ const SearchBar = () => {
     event.target.elements.searchInput.value = '';
   };
 
+  const handleChange = (event) => {
+    dispatch(
+      changeDropdown({ type: event.target.id, value: event.target.value })
+    );
+  };
+
   return (
     <Container className="p-5">
       <Row>
         <Col>
           <Form className="d-flex" onSubmit={handleSubmit}>
-            <Form.Group className="flex-grow-1 me-4" controlId="searchInput">
+            <Form.Group className="flex-grow-1 me-2" controlId="searchInput">
               <Form.Control type="text" placeholder="Search" />
             </Form.Group>
+            <Button variant="primary" type="submit" className="me-4">
+              Submit
+            </Button>
             <Form.Group className="me-4" controlId="filterByCategory">
-              <Form.Select aria-label="Category">
+              <Form.Select aria-label="Category" onChange={handleChange}>
                 <option>Filter by category</option>
                 {categories.map((category) => (
                   <option key={category} value={category}>
@@ -59,15 +68,12 @@ const SearchBar = () => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="me-4" controlId="sortByPrice">
-              <Form.Select aria-label="Sort by price">
+              <Form.Select aria-label="Sort by price" onChange={handleChange}>
                 <option>Sort by price</option>
                 <option value="lowest">Low to High</option>
                 <option value="highest">High to Low</option>
               </Form.Select>
             </Form.Group>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
           </Form>
         </Col>
       </Row>

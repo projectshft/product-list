@@ -9,7 +9,7 @@ router.get('/generate-fake-data', (req, res, next) => {
   for (let i = 0; i < 90; i++) {
     const product = new Product();
 
-    product.category = faker.commerce.department().toLowerCase();
+    product.category = faker.commerce.department();
     product.name = faker.commerce.productName();
     product.price = faker.commerce.price();
     product.image = 'https://via.placeholder.com/250?text=Product+Image';
@@ -43,7 +43,7 @@ router.get('/products', async (req, res, next) => {
   const searchParameters = {};
 
   if (category) {
-    searchParameters.category = category.toLowerCase();
+    searchParameters.category = category;
   }
 
   if (query) {

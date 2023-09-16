@@ -20,11 +20,17 @@ const Results = () => {
   if (status === 'loading') {
     content = <p>Loading...</p>;
   } else if (status === 'succeeded') {
-    content = products.map((product) => (
-      <Col className="d-flex justify-content-center" key={product._id}>
-        <Product product={product} />
-      </Col>
-    ));
+    // Display if no results found
+    if (products.length === 0) {
+      content = <p>No results found</p>;
+      // Otherwise display product cards
+    } else {
+      content = products.map((product) => (
+        <Col className="d-flex justify-content-center" key={product._id}>
+          <Product product={product} />
+        </Col>
+      ));
+    }
   } else if (status === 'failed') {
     content = <div>{error}</div>;
   }

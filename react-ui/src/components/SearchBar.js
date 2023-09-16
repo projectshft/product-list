@@ -1,3 +1,8 @@
+/**
+ * @component
+ * Component for rendering search bar
+ */
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -12,6 +17,7 @@ const SearchBar = () => {
   const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
 
+  // Get existing product categories when component loads
   useEffect(() => {
     const getCategories = async () => {
       const url = 'http://localhost:8000/categories';
@@ -22,6 +28,7 @@ const SearchBar = () => {
     getCategories();
   }, []);
 
+  // Update state when search form is submitted
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(
@@ -40,6 +47,7 @@ const SearchBar = () => {
     event.target.elements.searchInput.value = '';
   };
 
+  // Also update state whenever a dropdown option is changed
   const handleChange = (event) => {
     dispatch(
       changeDropdown({ type: event.target.id, value: event.target.value })

@@ -1,3 +1,8 @@
+/**
+ * @component
+ * Component for rendering app
+ */
+
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import SearchBar from './SearchBar';
@@ -11,6 +16,7 @@ const App = () => {
   const category = useSelector((state) => state.search.category);
   const price = useSelector((state) => state.search.price);
 
+  // Render new results whenever search parameters change
   useEffect(() => {
     dispatch(fetchProducts({ query, category, price, page: 1 }));
   }, [dispatch, query, category, price]);

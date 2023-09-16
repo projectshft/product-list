@@ -1,3 +1,8 @@
+/**
+ * @component
+ * Component for rendering product card/information
+ */
+
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 

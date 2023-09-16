@@ -1,3 +1,6 @@
+/** @module product */
+/** Create model for product data */
+
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;

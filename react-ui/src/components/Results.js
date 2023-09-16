@@ -1,3 +1,8 @@
+/**
+ * @component
+ * Component for rendering search results
+ */
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,6 +16,7 @@ const Results = () => {
 
   let content;
 
+  // Render content based on request status
   if (status === 'loading') {
     content = <p>Loading...</p>;
   } else if (status === 'succeeded') {

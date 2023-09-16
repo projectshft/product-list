@@ -1,3 +1,6 @@
+/** @module router */
+/** Create API router */
+
 /* eslint-disable no-plusplus */
 const router = require('express').Router();
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -12,8 +15,9 @@ const Product = require('../models/product');
 const Review = require('../models/review');
 
 // GET /generate-fake-data
-// save 90 randomly generated items and reviews to db each time accessed
+// Save 90 randomly generated items and reviews to db each time accessed
 router.get('/generate-fake-data', (req, res, next) => {
+  // first generate new product
   for (let i = 0; i < 90; i++) {
     const product = new Product();
 
@@ -23,6 +27,7 @@ router.get('/generate-fake-data', (req, res, next) => {
     product.image = 'https://via.placeholder.com/250?text=Product+Image';
     product.reviews = [];
 
+    // randomly generate between 0-12 reviews per product
     const numReviews = Math.floor(Math.random() * 12);
 
     for (let k = 0; k <= numReviews; k++) {
@@ -43,6 +48,8 @@ router.get('/generate-fake-data', (req, res, next) => {
 });
 
 // GET /products with pagination
+// Get all products matching search parameters
+// 9 per page
 router.get('/products', async (req, res, next) => {
   const perPage = 9;
   const page = req.query.page || 1;
@@ -56,15 +63,18 @@ router.get('/products', async (req, res, next) => {
     perPage
   };
 
+  // if a category filter is applied, add to search parameters
   if (category) {
     searchParameters.category = category;
   }
 
+  // if a search query is entered, add to search parameters
   if (query) {
     const searchTerm = new RegExp(query, 'i');
     searchParameters.name = { $regex: searchTerm };
   }
 
+  // return products matching search parameters if price sorting is applied
   if (price) {
     try {
       return findProducts(searchParameters, pageParameters, res, true);
@@ -73,6 +83,7 @@ router.get('/products', async (req, res, next) => {
     }
   }
 
+  // otherwise return products matching search parameters without sorting
   try {
     return findProducts(searchParameters, pageParameters, res);
   } catch (error) {
@@ -81,6 +92,7 @@ router.get('/products', async (req, res, next) => {
 });
 
 // GET /products/:productId
+// Get product by ID
 router.get('/products/:productId', async (req, res, next) => {
   const { productId } = req.params;
 
@@ -94,6 +106,8 @@ router.get('/products/:productId', async (req, res, next) => {
 });
 
 // GET /products/:productId/reviews with pagination
+// get all reviews for a given product ID
+// 4 per page
 router.get('/products/:productId/reviews', async (req, res, next) => {
   const perPage = 4;
   const page = req.query.page || 1;
@@ -116,6 +130,7 @@ router.get('/products/:productId/reviews', async (req, res, next) => {
 });
 
 // POST /products
+// Add a product
 router.post('/products', async (req, res, next) => {
   try {
     const product = new Product(req.body);
@@ -128,6 +143,7 @@ router.post('/products', async (req, res, next) => {
 });
 
 // POST /products/:productId/reviews
+// Add a review to a given product
 router.post('/products/:productId/reviews', async (req, res, next) => {
   const { productId } = req.params;
 
@@ -151,6 +167,7 @@ router.post('/products/:productId/reviews', async (req, res, next) => {
 });
 
 // DELETE /products/:productId
+// Delete a given product
 router.delete('/products/:productId', async (req, res, next) => {
   const { productId } = req.params;
 
@@ -164,6 +181,7 @@ router.delete('/products/:productId', async (req, res, next) => {
 });
 
 // DELETE /reviews/:reviewId
+// Delete a given review
 router.delete('/reviews/:reviewId', async (req, res, next) => {
   const { reviewId } = req.params;
 
@@ -177,6 +195,7 @@ router.delete('/reviews/:reviewId', async (req, res, next) => {
 });
 
 // GET /categories
+// Get all existing product categories
 router.get('/categories', async (req, res, next) => {
   try {
     const products = await Product.find({});

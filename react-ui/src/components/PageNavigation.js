@@ -1,3 +1,8 @@
+/**
+ * @component
+ * Component for showing result pagination
+ */
+
 import ReactPaginate from 'react-paginate';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '../slices/resultsSlice';
@@ -11,6 +16,7 @@ const PageNavigation = () => {
   const perPage = 9;
   const numPages = Math.ceil(numResults / perPage);
 
+  // Render new results when new page is selected
   const handlePageClick = (event) => {
     const page = event.selected + 1;
     dispatch(fetchProducts({ query, category, price, page }));

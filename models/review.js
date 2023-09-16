@@ -1,3 +1,6 @@
+/** @module review */
+/** Create model for review data */
+
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;

@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 /**
- * Makes an API request for all products when page initially loads
+ * Makes an API request for products matching search parameters
+ * @param {object} Object containing search parameteers
  *
  * @return {object} Object containing number of products and array
  * of product objects

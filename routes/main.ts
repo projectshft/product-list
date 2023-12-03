@@ -2,6 +2,7 @@ import { Router } from "express";
 import { faker } from "@faker-js/faker";
 import _ from "lodash";
 import Product from "../models/product.js";
+import { getProducts } from "../controllers/products.js";
 
 const router = Router();
 
@@ -24,24 +25,6 @@ router.get("/generate-fake-data", async (req, res, next) => {
   res.end();
 });
 
-router.get("/products", async (req, res, next) => {
-  let page = 0;
-
-  if (req.query.page) {
-    page = Number(req.query.page)
-  }
-
-  const numToSkip = page * 9;
-
-  try {
-    const products = await Product.find().skip(numToSkip).limit(9);
-    res.send(products);
-    console.log(req.query);
-  } catch (err) {
-    throw err;
-  }
-
-  res.end();
-});
+router.get("/products", (req, res) => getProducts(req, res));
 
 export default router;

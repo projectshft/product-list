@@ -35,7 +35,7 @@ const createProductData = async (
 };
 
 /**
- * Adds between 0 and 5 fake reviews per product in database
+ * Adds 0 to 5 fake reviews per product in database. Replaces current product.reviews array so that review list will never start out greater than 5 reviews.
  * @param req Client request to server
  * @param resp Server response to client
  * @returns Promise<void>
@@ -59,8 +59,12 @@ const createReviews = async (req: Request, res: Response): Promise<void> => {
       reviewsList.push(newReview);
     }
 
-    product.reviews = reviewsList.map((review) => review._id);
-    await product.save();
+    try {
+      product.reviews = reviewsList.map((review) => review._id);
+      await product.save();
+    } catch (err) {
+      throw err;
+    }
   });
 
   res.end();

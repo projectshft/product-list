@@ -1,31 +1,14 @@
 import { Router } from "express";
-import { faker } from "@faker-js/faker";
-import _ from "lodash";
-import Product from "../models/product.js";
 import { getProducts } from "../controllers/products.js";
+import { createProductData, createReviews } from "../controllers/faker.js";
 
 const router = Router();
 
-router.get("/generate-fake-data", async (req, res, next) => {
-  for (let i = 0; i < 90; i++) {
-    const product = new Product();
+// Fake data generation routes
+router.get("/generate-fake-data", (req, res) => createProductData(req, res));
+router.get("/generate-fake-reviews", (req, res) => createReviews(req, res));
 
-    product.category = faker.commerce.department();
-    product.name = faker.commerce.productName();
-    product.price = Number(faker.commerce.price());
-    product.image = "https://via.placeholder.com/250?text=Product+Image";
-    product.reviews = [];
-
-    try {
-      await product.save();
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  res.end();
-});
-
+// Product routes
 router.get("/products", (req, res) => getProducts(req, res));
 
 export default router;

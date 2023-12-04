@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import Product from "../models/product.js";
 import { Request, Response } from "express";
 

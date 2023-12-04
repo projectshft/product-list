@@ -8,9 +8,9 @@ const ProductSchema = new Schema({
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 });
 
-type ProductType = InferSchemaType<typeof ProductSchema>; // not sure if this is needed
+//type ProductType = InferSchemaType<typeof ProductSchema>; // not sure if this is needed
 
 const Product = mongoose.model("Product", ProductSchema);
 
-export { ProductType };
+//export { ProductType };
 export default Product;

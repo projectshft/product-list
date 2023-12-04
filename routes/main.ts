@@ -11,6 +11,7 @@ router.get("/generate-fake-reviews", (req, res) => createReviews(req, res));
 
 // Product routes
 router.get("/products", (req, res) => getProducts(req, res));
+
 // POST products
 router.post("/products", (req, res) => createNewProduct(req, res));
 // GET products/:productId

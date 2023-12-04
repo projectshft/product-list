@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import joi from "joi";
 
 // Helper methods
-// Validate product schema
+
 const validateProductSchema = (req: Request) => {
   const productSchema = joi.object({
     category: joi.string().required(),
@@ -48,10 +48,9 @@ const getProducts = async (req: Request, res: Response): Promise<void> => {
  * Creates a new product and adds it to the database
  * @param req Client request to server
  * @param resp Server response to client
- * @returns Promise<void>
+ * @returns Promise<Response>
  */
 const createNewProduct = async (req: Request, res: Response) => {
-  // if missing product object from body or any properties, return 400 error
   const validationResult = validateProductSchema(req);
 
   if (validationResult.error) {
@@ -62,6 +61,9 @@ const createNewProduct = async (req: Request, res: Response) => {
         responseMessage: validationResult.error.details[0].message,
       });
   }
+
+  // Add product to database
+  // Return added product in response
 
   return res.send("Good!");
 };

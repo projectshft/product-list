@@ -19,7 +19,7 @@ const getProducts = async (req: Request, res: Response): Promise<void> => {
   const numToSkip = page * 9;
 
   try {
-    const products = await Product.find().skip(numToSkip).limit(9);
+    const products = await Product.find({}, { __v: 0 }).skip(numToSkip).limit(9);
     res.send(products);
   } catch (err) {
     throw err;

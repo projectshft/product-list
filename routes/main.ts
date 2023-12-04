@@ -14,6 +14,7 @@ router.get("/generate-fake-data", async (req, res, next) => {
     product.name = faker.commerce.productName();
     product.price = Number(faker.commerce.price());
     product.image = "https://via.placeholder.com/250?text=Product+Image";
+    product.reviews = [];
 
     try {
       await product.save();

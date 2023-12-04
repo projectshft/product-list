@@ -1,10 +1,11 @@
-import mongoose, { Schema, InferSchemaType } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const ProductSchema = new Schema({
   category: String,
   name: String,
   price: Number,
   image: String,
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 });
 
 //type ProductType = InferSchemaType<typeof ProductSchema>; // not sure if this is needed

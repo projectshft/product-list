@@ -1,6 +1,20 @@
-import Product, { ProductType } from "../models/product.js";
+import Product from "../models/product.js";
 import { Request, Response } from "express";
 import joi from "joi";
+
+// Helper methods
+// Validate product schema
+const validateProductSchema = (req: Request) => {
+  const productSchema = joi.object({
+    category: joi.string().required(),
+    name: joi.string().required(),
+    price: joi.number().required(),
+    image: joi.string().uri().required(),
+    reviews: joi.array().items(joi.string()).required(),
+  });
+
+  return productSchema.validate(req.body);
+};
 
 /**
  * Retrieves list of products in groups of 9
@@ -38,15 +52,7 @@ const getProducts = async (req: Request, res: Response): Promise<void> => {
  */
 const createNewProduct = async (req: Request, res: Response) => {
   // if missing product object from body or any properties, return 400 error
-  const productSchema = joi.object({
-    category: joi.string().required(),
-    name: joi.string().required(),
-    price: joi.number().required(),
-    image: joi.string().uri().required(),
-    reviews: joi.array().items(joi.string()).required(),
-  });
-
-  const validationResult = productSchema.validate(req.body);
+  const validationResult = validateProductSchema(req);
 
   if (validationResult.error) {
     return res

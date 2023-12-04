@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProducts } from "../controllers/products.js";
+import { getProducts, createNewProduct } from "../controllers/products.js";
 import { createProductData, createReviews } from "../controllers/faker.js";
 import Product from "../models/product.js";
 
@@ -11,6 +11,13 @@ router.get("/generate-fake-reviews", (req, res) => createReviews(req, res));
 
 // Product routes
 router.get("/products", (req, res) => getProducts(req, res));
+// POST products
+router.post("/products", (req, res) => createNewProduct(req, res));
+// GET products/:productId
+// DELETE products/:productId
+// GET products/:productId/reviews
+// POST products/:productId/reviews
+// DELETE reviews/:reviewId
 
 // example products with populated reviews route
 router.get("/reviews", async (req, res) => {

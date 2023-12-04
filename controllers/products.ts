@@ -1,6 +1,6 @@
 import Product, { ProductType } from "../models/product.js";
 import { Request, Response } from "express";
-import joi from 'joi';
+import joi from "joi";
 
 /**
  * Retrieves list of products in groups of 9
@@ -43,13 +43,18 @@ const createNewProduct = async (req: Request, res: Response) => {
     name: joi.string().required(),
     price: joi.number().required(),
     image: joi.string().uri().required(),
-    reviews: joi.array().items(joi.string()).required()
+    reviews: joi.array().items(joi.string()).required(),
   });
 
   const validationResult = productSchema.validate(req.body);
 
   if (validationResult.error) {
-    return res.status(400).send(validationResult.error.details[0].message);
+    return res
+      .status(400)
+      .send({
+        responseStatus: res.statusCode,
+        responseMessage: validationResult.error.details[0].message,
+      });
   }
 
   return res.send("Good!");

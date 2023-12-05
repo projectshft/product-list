@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { getProducts, createNewProduct, getProductById } from "../controllers/products.js";
+import {
+  getProducts,
+  createNewProduct,
+  getProductById,
+  deleteProductById,
+} from "../controllers/products.js";
 import { createProductData, createReviews } from "../controllers/faker.js";
 import Product from "../models/product.js";
 
@@ -18,6 +23,9 @@ router.post("/products", (req, res) => createNewProduct(req, res));
 // GET products/:productId
 router.get("/products/:productId", (req, res) => getProductById(req, res));
 // DELETE products/:productId
+router.delete("/products/:productId", (req, res) =>
+  deleteProductById(req, res)
+);
 // GET products/:productId/reviews
 // POST products/:productId/reviews
 // DELETE reviews/:reviewId

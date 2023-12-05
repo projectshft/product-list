@@ -9,7 +9,7 @@ import {
 /**
  * Retrieves list of products in groups of 9
  * @param req Client request to server
- * @param resp Server response to client
+ * @param res Server response to client
  * @returns Promise<void>
  */
 const getProducts = async (req: Request, res: Response): Promise<void> => {
@@ -37,7 +37,7 @@ const getProducts = async (req: Request, res: Response): Promise<void> => {
 /**
  * Creates a new product and adds it to the database
  * @param req Client request to server
- * @param resp Server response to client
+ * @param res Server response to client
  * @returns Promise<Response> || void
  */
 const createNewProduct = async (req: Request, res: Response) => {
@@ -67,7 +67,7 @@ const createNewProduct = async (req: Request, res: Response) => {
 /**
  * Retrieves a single product by its id
  * @param req Client request to server
- * @param resp Server response to client
+ * @param res Server response to client
  * @returns Promise<Response> || void
  */
 const getProductById = async (req: Request, res: Response) => {
@@ -100,7 +100,7 @@ const getProductById = async (req: Request, res: Response) => {
 /**
  * Deletes a single product by its id
  * @param req Client request to server
- * @param resp Server response to client
+ * @param res Server response to client
  * @returns Promise<Response> || void
  */
 const deleteProductById = async (req: Request, res: Response) => {

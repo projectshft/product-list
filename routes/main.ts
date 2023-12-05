@@ -7,6 +7,7 @@ import {
 } from "../controllers/products.js";
 import { createProductData, createReviews } from "../controllers/faker.js";
 import Product from "../models/product.js";
+import { getReviews } from "../controllers/reviews.js";
 
 const router = Router();
 
@@ -27,6 +28,7 @@ router.delete("/products/:productId", (req, res) =>
   deleteProductById(req, res)
 );
 // GET products/:productId/reviews
+router.get("/products/:productId/reviews", (req, res) => getReviews(req, res));
 // POST products/:productId/reviews
 // DELETE reviews/:reviewId
 

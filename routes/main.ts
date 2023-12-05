@@ -5,9 +5,9 @@ import {
   getProductById,
   deleteProductById,
 } from "../controllers/products.js";
+import { getReviews, createNewReview } from "../controllers/reviews.js";
 import { createProductData, createReviews } from "../controllers/faker.js";
 import Product from "../models/product.js";
-import { getReviews } from "../controllers/reviews.js";
 
 const router = Router();
 
@@ -30,6 +30,9 @@ router.delete("/products/:productId", (req, res) =>
 // GET products/:productId/reviews
 router.get("/products/:productId/reviews", (req, res) => getReviews(req, res));
 // POST products/:productId/reviews
+router.post("/products/:productId/reviews", (req, res) =>
+  createNewReview(req, res)
+);
 // DELETE reviews/:reviewId
 
 // example products with populated reviews route

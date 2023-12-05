@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import {
   validateProductSchema,
   validateId,
+  validateReviewSchema,
 } from "../models/model_validations.js";
 
 /**
@@ -44,4 +45,51 @@ const getReviews = async (req: Request, res: Response) => {
   });
 };
 
-export { getReviews };
+const createNewReview = async (req: Request, res: Response) => {
+  // Validate request body to ensure it matches review schema
+  const validationResult = validateReviewSchema(req);
+
+  if (validationResult.error) {
+    return res.status(400).send({
+      responseStatus: res.statusCode,
+      responseMessage: validationResult.error.details[0].message,
+    });
+  }
+
+  // Validate id matches schema
+  const id = req.params.productId;
+
+  const idValidationResult = validateId(id);
+
+  if (idValidationResult.error) {
+    return res.status(400).send({
+      responseStatus: res.statusCode,
+      responseMessage: idValidationResult.error.details[0].message,
+    });
+  }
+
+  // Validate product exists
+  const product = await Product.findById(id);
+
+  if (!product) {
+    return res.status(404).send({
+      responseStatus: res.statusCode,
+      responseMessage: "No product found matching id",
+    });
+  }
+
+  const review = new Review(req.body);
+
+  const newReview = (await review.save()) as mongoose.Document;
+
+  // Clone review to remove version key __v from response
+  const { __v, ...otherProps } = newReview.toObject();
+  const reviewClone = { ...otherProps };
+
+  res.status(200).send({
+    responseStatus: res.statusCode,
+    responseMessage: reviewClone,
+  });
+};
+
+export { getReviews, createNewReview };

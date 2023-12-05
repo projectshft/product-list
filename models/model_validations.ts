@@ -21,7 +21,22 @@ const validateProductSchema = (req: Request) => {
 };
 
 /**
- * Validates id is a 24-character hex string 
+ * Validates request bodies containing review data
+ * @param req Client request to server
+ * @returns joi.ObjectSchema
+ */
+const validateReviewSchema = (req: Request) => {
+  const reviewSchema = joi.object({
+    userName: joi.string().required(),
+    text: joi.string().required(),
+    product: joi.string().hex().length(24).required(),
+  });
+
+  return reviewSchema.validate(req.body);
+};
+
+/**
+ * Validates id is a 24-character hex string
  * @param id Id passed in params of client request
  * @returns joi.ObjectSchema
  */
@@ -31,4 +46,4 @@ const validateId = (id: string) => {
   return idSchema.validate(id);
 };
 
-export { validateProductSchema, validateId };
+export { validateProductSchema, validateReviewSchema, validateId };

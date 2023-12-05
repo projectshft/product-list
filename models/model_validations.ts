@@ -20,4 +20,15 @@ const validateProductSchema = (req: Request) => {
   return productSchema.validate(req.body);
 };
 
-export { validateProductSchema };
+/**
+ * Validates id is a 24-character hex string 
+ * @param id Id passed in params of client request
+ * @returns joi.ObjectSchema
+ */
+const validateId = (id: string) => {
+  const idSchema = joi.string().hex().length(24);
+
+  return idSchema.validate(id);
+};
+
+export { validateProductSchema, validateId };

@@ -1,6 +1,6 @@
 import Product from "../models/product.js";
 import { Request, Response } from "express";
-import { validateProductSchema } from "../models/model_validations.js";
+import { validateProductSchema, validateId } from "../models/model_validations.js";
 
 /**
  * Retrieves list of products in groups of 9
@@ -62,6 +62,28 @@ const createNewProduct = async (req: Request, res: Response) => {
  * @param resp Server response to client
  * @returns Promise<Response>
  */
-const getProductById = async (req: Request, res: Response) => {};
+const getProductById = async (req: Request, res: Response) => {
+  const id = req.params.productId;
+
+  const validationResult = validateId(id);
+
+  if (validationResult.error) {
+    return res.status(400).send({
+      responseStatus: res.statusCode,
+      responseMessage: validationResult.error.details[0].message,
+    });
+  }
+
+  const product = await Product.findById(id, { __v: 0 });
+
+  if (!product) {
+    return res.status(404).send({
+      responseStatus: res.statusCode,
+      responseMessage: "No product found matching id",
+    });
+  }
+
+  res.status(200).send(product);
+};
 
 export { getProducts, createNewProduct, getProductById };

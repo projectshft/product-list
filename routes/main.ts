@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProducts, createNewProduct } from "../controllers/products.js";
+import { getProducts, createNewProduct, getProductById } from "../controllers/products.js";
 import { createProductData, createReviews } from "../controllers/faker.js";
 import Product from "../models/product.js";
 
@@ -10,11 +10,13 @@ router.get("/generate-fake-data", (req, res) => createProductData(req, res));
 router.get("/generate-fake-reviews", (req, res) => createReviews(req, res));
 
 // Product routes
-router.get("/products", (req, res) => getProducts(req, res));
 
+// GET products
+router.get("/products", (req, res) => getProducts(req, res));
 // POST products
 router.post("/products", (req, res) => createNewProduct(req, res));
 // GET products/:productId
+router.get("/products/:productId", (req, res) => getProductById(req, res));
 // DELETE products/:productId
 // GET products/:productId/reviews
 // POST products/:productId/reviews

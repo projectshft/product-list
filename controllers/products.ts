@@ -1,20 +1,6 @@
 import Product from "../models/product.js";
 import { Request, Response } from "express";
-import joi from "joi";
-
-// Helper methods
-
-const validateProductSchema = (req: Request) => {
-  const productSchema = joi.object({
-    category: joi.string().required(),
-    name: joi.string().required(),
-    price: joi.number().required(),
-    image: joi.string().uri().required(),
-    reviews: joi.array().items(joi.string()).required(),
-  });
-
-  return productSchema.validate(req.body);
-};
+import { validateProductSchema } from "../models/model_validations.js";
 
 /**
  * Retrieves list of products in groups of 9
@@ -48,24 +34,34 @@ const getProducts = async (req: Request, res: Response): Promise<void> => {
  * Creates a new product and adds it to the database
  * @param req Client request to server
  * @param resp Server response to client
- * @returns Promise<Response>
+ * @returns Promise<Response> || void
  */
 const createNewProduct = async (req: Request, res: Response) => {
   const validationResult = validateProductSchema(req);
 
   if (validationResult.error) {
-    return res
-      .status(400)
-      .send({
-        responseStatus: res.statusCode,
-        responseMessage: validationResult.error.details[0].message,
-      });
+    return res.status(400).send({
+      responseStatus: res.statusCode,
+      responseMessage: validationResult.error.details[0].message,
+    });
   }
 
-  // Add product to database
-  // Return added product in response
+  const product = new Product(req.body);
 
-  return res.send("Good!");
+  const newProduct = await product.save();
+
+  res.status(200).send({
+    responseStatus: res.statusCode,
+    responseMessage: newProduct,
+  });
 };
 
-export { getProducts, createNewProduct };
+/**
+ * Retrieves a single product by its id
+ * @param req Client request to server
+ * @param resp Server response to client
+ * @returns Promise<Response>
+ */
+const getProductById = async (req: Request, res: Response) => {};
+
+export { getProducts, createNewProduct, getProductById };

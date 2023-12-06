@@ -1,9 +1,9 @@
-// Create fake data for API testing
-
 import { faker } from "@faker-js/faker";
 import Product from "../models/product.js";
 import Review from "../models/review.js";
 import { Request, Response } from "express";
+
+// Create fake data for API testing
 
 /**
  * Creates 90 fake products

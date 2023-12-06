@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 
 import mainRoutes from "./routes/main.js";
 
+// Entry point for server connection
+
 mongoose.connect("mongodb://localhost/products");
 
 const app = express();

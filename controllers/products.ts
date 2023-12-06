@@ -5,14 +5,19 @@ import {
   validateProductSchema,
   validateId,
 } from "../models/model_validations.js";
+import {
+  AggregationMatch,
+  AggregationSort,
+  SearchFields,
+} from "../types/types.js";
 
 /**
- * Retrieves list of products in groups of 9
+ * Retrieves list of products in groups of 9. Optional query, category, and price queries can be used to filter and sort results.
  * @param req Client request to server
  * @param res Server response to client
- * @returns Promise<void>
+ * @returns void || Promise<Response>
  */
-const getProducts = async (req: Request, res: Response): Promise<void> => {
+const getProducts = async (req: Request, res: Response) => {
   let page = 0;
 
   // Set page number if included in query params
@@ -22,16 +27,65 @@ const getProducts = async (req: Request, res: Response): Promise<void> => {
 
   const numToSkip = page * 9;
 
-  try {
-    const products = await Product.find({}, { __v: 0 })
-      .skip(numToSkip)
-      .limit(9);
-    res.send(products);
-  } catch (err) {
-    throw err;
+  const aggMatch: AggregationMatch = { $match: {} };
+  const aggSort: AggregationSort = { $sort: {} };
+
+  // Filter by category
+  const category = req.query.category;
+  if (typeof category === "string") {
+    aggMatch.$match.category = new RegExp(category, "gi");
+  }
+  // Sort by price
+  const price = req.query.price;
+  if (typeof price === "string") {
+    switch (price) {
+      case "lowest":
+        aggSort.$sort.price = 1;
+        break;
+      case "highest":
+        aggSort.$sort.price = -1;
+        break;
+      default:
+        return res.status(400).send({
+          responseStatus: res.statusCode,
+          responseMessage:
+            "The price field must be either 'lowest' or 'highest'",
+        });
+    }
   }
 
-  res.end();
+  // Search term
+  const search = req.query.query;
+  if (typeof search === "string") {
+    aggMatch.$match.name = new RegExp(search, "gi");
+  }
+
+  if (aggSort.$sort.price) {
+    const sortedProducts = await Product.aggregate(
+      [aggMatch, aggSort as any],
+      {
+        __v: 0,
+      }
+    )
+      .skip(numToSkip)
+      .limit(9);
+
+    return res.status(200).send({
+      responseStatus: res.statusCode,
+      responseMessage: sortedProducts,
+    });
+  }
+
+  const filteredProducts = await Product.aggregate([aggMatch], {
+    __v: 0,
+  })
+    .skip(numToSkip)
+    .limit(9);
+
+  res.status(200).send({
+    responseStatus: res.statusCode,
+    responseMessage: filteredProducts,
+  });
 };
 
 /**

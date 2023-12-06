@@ -5,7 +5,11 @@ import {
   getProductById,
   deleteProductById,
 } from "../controllers/products.js";
-import { getReviews, createNewReview, deleteReviewById } from "../controllers/reviews.js";
+import {
+  getReviews,
+  createNewReview,
+  deleteReviewById,
+} from "../controllers/reviews.js";
 import { createProductData, createReviews } from "../controllers/faker.js";
 import Product from "../models/product.js";
 
@@ -17,25 +21,19 @@ router.get("/generate-fake-reviews", (req, res) => createReviews(req, res));
 
 // Product routes
 
-// GET products
 router.get("/products", (req, res) => getProducts(req, res));
-// POST products
 router.post("/products", (req, res) => createNewProduct(req, res));
-// GET products/:productId
 router.get("/products/:productId", (req, res) => getProductById(req, res));
-// DELETE products/:productId
 router.delete("/products/:productId", (req, res) =>
   deleteProductById(req, res)
 );
-// GET products/:productId/reviews
 router.get("/products/:productId/reviews", (req, res) => getReviews(req, res));
-// POST products/:productId/reviews
 router.post("/products/:productId/reviews", (req, res) =>
   createNewReview(req, res)
 );
-// DELETE reviews/:reviewId
 router.delete("/reviews/:reviewId", (req, res) => deleteReviewById(req, res));
-// example products with populated reviews route
+
+// Products with populated reviews route
 router.get("/reviews", async (req, res) => {
   try {
     const products = await Product.find({}, { __v: 0 })

@@ -72,6 +72,7 @@ const getProducts = async (req: Request, res: Response) => {
     });
   }
 
+  // Send products unsorted by default
   const filteredProducts = await Product.aggregate([aggMatch], {
     __v: 0,
   })

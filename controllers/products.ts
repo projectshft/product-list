@@ -35,6 +35,13 @@ const getProducts = async (req: Request, res: Response) => {
   if (typeof category === "string") {
     aggMatch.$match.category = new RegExp(category, "gi");
   }
+
+  // Search term
+  const search = req.query.query;
+  if (typeof search === "string") {
+    aggMatch.$match.name = new RegExp(search, "gi");
+  }
+
   // Sort by price
   const price = req.query.price;
   if (typeof price === "string") {
@@ -52,21 +59,10 @@ const getProducts = async (req: Request, res: Response) => {
             "The price field must be either 'lowest' or 'highest'",
         });
     }
-  }
 
-  // Search term
-  const search = req.query.query;
-  if (typeof search === "string") {
-    aggMatch.$match.name = new RegExp(search, "gi");
-  }
-
-  if (aggSort.$sort.price) {
-    const sortedProducts = await Product.aggregate(
-      [aggMatch, aggSort as any],
-      {
-        __v: 0,
-      }
-    )
+    const sortedProducts = await Product.aggregate([aggMatch, aggSort as any], {
+      __v: 0,
+    })
       .skip(numToSkip)
       .limit(9);
 

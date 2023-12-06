@@ -1,4 +1,4 @@
-import mongoose, { Schema, InferSchemaType } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const ProductSchema = new Schema({
   category: { type: String, required: true },
@@ -8,9 +8,6 @@ const ProductSchema = new Schema({
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 });
 
-//type ProductType = InferSchemaType<typeof ProductSchema>; // not sure if this is needed
-
 const Product = mongoose.model("Product", ProductSchema);
 
-//export { ProductType };
 export default Product;

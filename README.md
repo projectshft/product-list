@@ -4,13 +4,13 @@ This is an API built for an evaluation for [Parsity Coding School](https://parsi
 
 This project was built with TypeScript, Node.js, Express, and MongoDB.
 
-### Run Locally
+### Run API Locally
 
 1. To run locally, you will need to set up a MongoDB database on your computer. This project was created with MongoDB 5.0, but it should be compatible with later versions as well. Follow [this link](https://www.mongodb.com/docs/manual/installation/) for installation instructions on your operating system of choice. Ensure that as a part of your installation, you specify a data directory. Test that your database is working using the [MongoDB Shell](https://www.mongodb.com/docs/mongodb-shell/). Once you know the database is set up correctly, move on to the next step.
 
 2. Fork and clone this repo.
 
-3. `cd` into the repo on your local computer, then `npm install` to install dependencies.
+3. `cd` into the repo on your local computer, then `cd` into `backend` and `npm install` to install dependencies.
 
 4. `npm start` to launch the development server on `localhost:8000`.
 

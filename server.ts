@@ -6,7 +6,7 @@ import mainRoutes from "./routes/main.js";
 
 // Entry point for server connection
 
-mongoose.connect("mongodb://127.0.0.1/products");
+mongoose.connect("mongodb://localhost/products");
 
 const app = express();
 

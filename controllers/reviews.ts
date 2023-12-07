@@ -3,7 +3,6 @@ import Review from "../models/review.js";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import {
-  validateProductSchema,
   validateId,
   validateReviewSchema,
 } from "../models/model_validations.js";

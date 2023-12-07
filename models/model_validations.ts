@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import joi from "joi";
 
 // Functions for validating client requests

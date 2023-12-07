@@ -9,7 +9,6 @@ import {
 import {
   AggregationMatch,
   AggregationSort,
-  SearchFields,
 } from "../types/types.js";
 
 /**

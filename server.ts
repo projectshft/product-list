@@ -1,5 +1,5 @@
 import express from "express";
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 import bodyParser from "body-parser";
 
 import mainRoutes from "./routes/main.js";

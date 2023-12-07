@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import {
   validateProductSchema,
   validateId,
+  validateQuery,
 } from "../models/model_validations.js";
 import {
   AggregationMatch,
@@ -21,7 +22,7 @@ const getProducts = async (req: Request, res: Response) => {
   let page = 0;
 
   // Set page number if included in query params
-  if (req.query.page) {
+  if (!isNaN(Number(req.query.page))) {
     page = Number(req.query.page);
   }
 
@@ -33,12 +34,26 @@ const getProducts = async (req: Request, res: Response) => {
   // Filter by category
   const category = req.query.category;
   if (typeof category === "string") {
+    const isValidCategory = validateQuery(category);
+    if (isValidCategory.error) {
+      return res.status(400).send({
+        responseStatus: 400,
+        responseMessage: isValidCategory.error.details[0].message,
+      });
+    }
     aggMatch.$match.category = new RegExp(category, "gi");
   }
 
   // Search term
   const search = req.query.query;
   if (typeof search === "string") {
+    const isValidSearch = validateQuery(search);
+    if (isValidSearch.error) {
+      return res.status(400).send({
+        responseStatus: 400,
+        responseMessage: isValidSearch.error.details[0].message,
+      });
+    }
     aggMatch.$match.name = new RegExp(search, "gi");
   }
 
@@ -60,9 +75,11 @@ const getProducts = async (req: Request, res: Response) => {
         });
     }
 
-    const sortedProducts = await Product.aggregate([aggMatch, aggSort as any], {
-      __v: 0,
-    })
+    const sortedProducts = await Product.aggregate([
+      aggMatch,
+      aggSort as any,
+      { $unset: "__v" },
+    ])
       .skip(numToSkip)
       .limit(9);
 
@@ -73,9 +90,10 @@ const getProducts = async (req: Request, res: Response) => {
   }
 
   // Send products unsorted by default
-  const filteredProducts = await Product.aggregate([aggMatch], {
-    __v: 0,
-  })
+  const filteredProducts = await Product.aggregate([
+    aggMatch,
+    { $unset: "__v" },
+  ])
     .skip(numToSkip)
     .limit(9);
 

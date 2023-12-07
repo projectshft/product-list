@@ -29,7 +29,7 @@ const getReviews = async (req: Request, res: Response) => {
   let page = 0;
 
   // Set page number if included in query params
-  if (req.query.page) {
+  if (!isNaN(Number(req.query.page))) {
     page = Number(req.query.page);
   }
 
@@ -52,16 +52,6 @@ const getReviews = async (req: Request, res: Response) => {
  * @returns Promise<Response> || void
  */
 const createNewReview = async (req: Request, res: Response) => {
-  // Validate request body to ensure it matches review schema
-  const validationResult = validateReviewSchema(req);
-
-  if (validationResult.error) {
-    return res.status(400).send({
-      responseStatus: res.statusCode,
-      responseMessage: validationResult.error.details[0].message,
-    });
-  }
-
   // Validate id matches schema
   const id = req.params.productId;
 
@@ -81,6 +71,18 @@ const createNewReview = async (req: Request, res: Response) => {
     return res.status(404).send({
       responseStatus: res.statusCode,
       responseMessage: "No product found matching id",
+    });
+  }
+
+  // Validate request body to ensure it matches review schema
+  const idRegEx = new RegExp(id)
+
+  const validationResult = validateReviewSchema(req, idRegEx);
+
+  if (validationResult.error) {
+    return res.status(400).send({
+      responseStatus: res.statusCode,
+      responseMessage: validationResult.error.details[0].message,
     });
   }
 

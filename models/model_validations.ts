@@ -6,7 +6,7 @@ import joi from "joi";
 /**
  * Validates request bodies containing product data
  * @param req Client request to server
- * @returns joi.ObjectSchema
+ * @returns joi.ValidationResult
  */
 const validateProductSchema = (req: Request) => {
   const productSchema = joi.object({
@@ -23,7 +23,7 @@ const validateProductSchema = (req: Request) => {
 /**
  * Validates request bodies containing review data
  * @param req Client request to server
- * @returns joi.ObjectSchema
+ * @returns joi.ValidationResult
  */
 const validateReviewSchema = (req: Request) => {
   const reviewSchema = joi.object({

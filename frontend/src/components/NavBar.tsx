@@ -70,6 +70,12 @@ function NavBar() {
                   className="text-black ps-3 pe-4 block hover:bg-slate-300"
                   href="#"
                 >
+                  Music2
+                </a>
+                <a
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
+                  href="#"
+                >
                   Movies
                 </a>
                 <a

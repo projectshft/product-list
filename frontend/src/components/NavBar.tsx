@@ -17,7 +17,7 @@ function NavBar() {
     <nav className="sticky bg-gray-300 p-3 border border-gray-400 flex flex-wrap w-full px-4">
       <input
         type="text"
-        className="px-1 rounded border-2 border-slate-500 bg-slate-100 w-1/3"
+        className="px-1 rounded border-2 border-slate-500 bg-slate-100 w-1/3 focus:outline-none focus:border-blue-900"
         placeholder="Search for a product"
         id="search"
         onKeyDown={() => console.log("key press")}

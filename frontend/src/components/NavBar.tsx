@@ -2,6 +2,8 @@ import { useState } from "react";
 
 function NavBar() {
   const [hidden, setHidden] = useState("hidden");
+  const [displayBlock, setDisplayBlock] = useState("hidden");
+  const [priceDisplayBlock, setPriceDisplayBlock] = useState("hidden");
 
   const showNavItems = () => {
     if (hidden === "hidden") {
@@ -43,16 +45,76 @@ function NavBar() {
       </svg>
 
       <div className={`${hidden} w-full sm:flex sm:items-center sm:w-auto`}>
-        <ul className="sm:flex sm:justify-between mt-3">
+        <ul className="sm:flex sm:justify-between sm:mt-0 mt-3 sm:mx-5">
           <li>
-            <a className="block sm:mx-4" href="#">
-              Category
-            </a>
+            <div className="relative inline-block">
+              <button
+                className="rounded px-2 bg-slate-400 hover:bg-slate-500"
+                onMouseOver={() => setDisplayBlock("block")}
+                onMouseLeave={() => setDisplayBlock("hidden")}
+              >
+                Category
+              </button>
+              <div
+                className={`${displayBlock} absolute rounded bg-slate-200 min-w-min z-10`}
+                onMouseOver={() => setDisplayBlock("block")}
+                onMouseLeave={() => setDisplayBlock("hidden")}
+              >
+                <a
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
+                  href="#"
+                >
+                  Music
+                </a>
+                <a
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
+                  href="#"
+                >
+                  Movies
+                </a>
+                <a
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
+                  href="#"
+                >
+                  Kids
+                </a>
+                <a
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
+                  href="#"
+                >
+                  Baby
+                </a>
+              </div>
+            </div>
           </li>
           <li>
-            <a className="block sm:ms-4" href="#">
-              Price
-            </a>
+            <div className="relative inline-block sm:mx-4 mt-3 sm:mt-0">
+              <button
+                className="rounded px-2 bg-slate-400 hover:bg-slate-500"
+                onMouseOver={() => setPriceDisplayBlock("block")}
+                onMouseLeave={() => setPriceDisplayBlock("hidden")}
+              >
+                Price
+              </button>
+              <div
+                className={`${priceDisplayBlock} absolute rounded bg-slate-200 min-w-min z-10`}
+                onMouseOver={() => setPriceDisplayBlock("block")}
+                onMouseLeave={() => setPriceDisplayBlock("hidden")}
+              >
+                <a
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
+                  href="#"
+                >
+                  Lowest
+                </a>
+                <a
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
+                  href="#"
+                >
+                  Highest
+                </a>
+              </div>
+            </div>
           </li>
         </ul>
       </div>

@@ -1,17 +1,19 @@
 function SearchResultsItem() {
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg mb-8 m-auto">
-      <img className="w-2/3 m-auto" src="https://via.placeholder.com/250?text=Product+Image" alt="product-img" />
+    <div className="max-w-sm rounded overflow-hidden shadow-lg mb-8 m-auto bg-slate-100 pb-4">
+      <span className="inline-block text-2xl bg-orange-400 py-2 px-3 mt-4 mx-4 rounded-full">
+        $400
+      </span>
+      <img
+        className="w-3/4 m-auto pt-4"
+        src="https://via.placeholder.com/250?text=Product+Image"
+        alt="product-img"
+      />
       <div className="px-6 py-4">
-      <div className="font-bold text-xl mb-2 text-center">The Coldest Sunset</div>
-        <p className="text-gray-700 text-base text-center">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+        <div className="font-bold text-xl mb-2 text-center">Product Name</div>
+        <p className="text-gray-700 text-lg">
+          <b>Category:</b> Movies
         </p>
-      </div>
-      <div className="px-6 pt-4 pb-2 m-auto">
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
       </div>
     </div>
   );

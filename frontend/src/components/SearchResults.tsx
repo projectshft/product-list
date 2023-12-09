@@ -7,15 +7,15 @@ import { Product } from "../../types/types.ts";
 function SearchResults(props: {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  totalPages: number;
-  setTotalPages: React.Dispatch<React.SetStateAction<number>>;
+  totalResults: number;
+  setTotalResults: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const page = props.page;
 
   const fetchProducts = async (page = 0) => {
     const res = await fetch(`http://localhost:8000/products?page=${page}`);
     const data = await res.json();
-    props.setTotalPages(data.resultsFound);
+    props.setTotalResults(data.resultsFound);
     return data;
   };
 

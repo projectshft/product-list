@@ -6,17 +6,17 @@ import Footer from "./Footer";
 function Layout({
   page,
   setPage,
-  totalPages,
+  totalResults,
 }: {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  totalPages: number;
+  totalResults: number;
 }) {
   return (
     <div className="mx-auto relative min-h-screen">
       <NavBar />
       <Outlet />
-      <Footer page={page} setPage={setPage} totalPages={totalPages} />
+      <Footer page={page} setPage={setPage} totalResults={totalResults} />
     </div>
   );
 }

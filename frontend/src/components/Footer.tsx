@@ -1,4 +1,4 @@
-function Footer() {
+function Footer({ page, setPage}: {page: number, setPage: React.Dispatch<React.SetStateAction<number>>}) {
   return (
     <footer className="absolute bottom-0 w-full  bg-orange-200 mt-8 py-4 border border-orange-400">
       <div className="inset-x-0 bottom-0 text-center overflow-hidden mx-10 ">

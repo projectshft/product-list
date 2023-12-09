@@ -4,8 +4,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 import { Product } from "../../types/types.ts";
 
-function SearchResults() {
-  const [page, setPage] = useState(0);
+function SearchResults( { page, setPage }: { page: number, setPage: React.Dispatch<React.SetStateAction<number>> }) {
 
   const fetchProducts = async (page = 0) => {
     const res = await fetch(`http://localhost:8000/products?page=${page}`);
@@ -19,6 +18,8 @@ function SearchResults() {
       queryFn: () => fetchProducts(page),
       placeholderData: keepPreviousData,
     });
+
+    console.log(data);
 
   return (
     <div className="columns-1 sm:columns-3 mx-auto mt-8 pb-20">

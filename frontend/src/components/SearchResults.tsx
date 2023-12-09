@@ -8,30 +8,30 @@ function SearchResults() {
   const [page, setPage] = useState(0);
 
   const fetchProducts = async (page = 0) => {
-    const res = await fetch(`http://localhost:8000/products?page=${page}`); 
+    const res = await fetch(`http://localhost:8000/products?page=${page}`);
     const data = await res.json();
-    return data.responseMessage;
+    return data;
   };
 
   const { isPending, isError, error, data, isFetching, isPlaceholderData } =
     useQuery({
-      queryKey: ["products", page],
+      queryKey: ["responseMessage", page],
       queryFn: () => fetchProducts(page),
       placeholderData: keepPreviousData,
     });
 
   return (
-    <div className="columns-1 sm:columns-3 mx-auto mt-8">
-      { isPending ? (
-        <div>Loading...</div>
+    <div className="columns-1 sm:columns-3 mx-auto mt-8 pb-20">
+      {isPending ? (
+        <div className="ms-4">Loading...</div>
       ) : isError ? (
         <div>Error: {error.message}</div>
       ) : (
-        <div>
-          {data.map((product: Product) => {
-            return <SearchResultsItem key={product._id} product={product} />
+        <>
+          {data.responseMessage.map((product: Product) => {
+            return <SearchResultsItem key={product._id} product={product} />;
           })}
-        </div>
+        </>
       )}
     </div>
   );

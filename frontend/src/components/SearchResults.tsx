@@ -1,4 +1,3 @@
-import { useState } from "react";
 import SearchResultsItem from "./SearchResultsItem";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
@@ -27,7 +26,7 @@ function SearchResults(props: {
     });
 
   return (
-    <div className="columns-1 sm:columns-3 mx-auto mt-8 pb-20">
+    <div className="columns-1 sm:columns-3 mx-auto mt-8 pb-24">
       {isPending ? (
         <div className="ms-4">Loading...</div>
       ) : isError ? (

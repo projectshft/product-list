@@ -1,13 +1,16 @@
-import NavBar from "./components/NavBar";
+import { Route, Routes } from "react-router-dom";
+
 import SearchResults from "./components/SearchResults";
-import Footer from "./components/Footer";
+import Layout from "./components/Layout";
 
 function App() {
   return (
-    <div className="contaner mx-auto">
-      <NavBar />
-      <SearchResults />
-      <Footer />
+    <div className="mx-auto">
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<SearchResults />} />
+        </Route>
+      </Routes>
     </div>
   );
 }

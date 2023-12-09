@@ -2,7 +2,7 @@ import SearchResultsItem from "./SearchResultsItem";
 
 function SearchResults() {
   return (
-    <div className="columns-1 sm:columns-3 mx-auto">
+    <div className="columns-1 sm:columns-3 mx-auto mt-8">
       <SearchResultsItem />
       <SearchResultsItem />
       <SearchResultsItem />

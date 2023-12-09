@@ -7,7 +7,7 @@ function App() {
       <NavBar />
       <SearchResults />
       <footer className="relative w-full">
-        <div className="fixed inset-x-0 bottom-0 text-center">Footer</div>
+        <div className="sticky inset-x-0 bottom-0 text-center">Footer</div>
       </footer>
     </div>
   );

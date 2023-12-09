@@ -81,10 +81,12 @@ const getProducts = async (req: Request, res: Response) => {
     ])
       .skip(numToSkip)
       .limit(9);
+    const count = await Product.countDocuments(aggMatch.$match);
 
     return res.status(200).send({
       responseStatus: res.statusCode,
       responseMessage: sortedProducts,
+      resultsFound: count
     });
   }
 

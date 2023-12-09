@@ -6,10 +6,7 @@ import {
   validateId,
   validateQuery,
 } from "../models/model_validations.js";
-import {
-  AggregationMatch,
-  AggregationSort,
-} from "../types/types.js";
+import { AggregationMatch, AggregationSort } from "../types/types.js";
 
 /**
  * Retrieves list of products in groups of 9. Optional query, category, and price queries can be used to filter and sort results.
@@ -86,7 +83,7 @@ const getProducts = async (req: Request, res: Response) => {
     return res.status(200).send({
       responseStatus: res.statusCode,
       responseMessage: sortedProducts,
-      resultsFound: count
+      resultsFound: count,
     });
   }
 
@@ -97,10 +94,11 @@ const getProducts = async (req: Request, res: Response) => {
   ])
     .skip(numToSkip)
     .limit(9);
-
+  const count = await Product.countDocuments(aggMatch.$match);
   res.status(200).send({
     responseStatus: res.statusCode,
     responseMessage: filteredProducts,
+    resultsFound: count,
   });
 };
 

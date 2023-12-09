@@ -1,6 +1,6 @@
 ## Product List
 
-This is an API built for an evaluation for [Parsity Coding School](https://parsity.io/). The API is built for a mock e-commerce store that sells various "products" -- each product is randomly generated using [Faker](https://fakerjs.dev/), so that's why you will find products such as "Handcrafted Wooden Computer" in the "Jewelry" category.
+This is an API built for an evaluation for [Parsity Coding School](https://parsity.io/). The API is built for a mock e-commerce store that sells various "products" -- each product is randomly generated using [Faker](https://fakerjs.dev/).
 
 This project was built with TypeScript, Node.js, Express, and MongoDB.
 
@@ -15,5 +15,7 @@ This project was built with TypeScript, Node.js, Express, and MongoDB.
 4. `npm start` to launch the development server on `localhost:8000`.
 
 5. Copy and paste the contents of `swagger/swagger.yaml` into the [Swagger Editor](https://editor.swagger.io/). This is the documentation for the API routes.
+
+IMPORTANT: Before you are able to use any of the routes, you will need to generate fake data. You can do so by navigating first to `localhost:8000/generate-fake-data` then to `localhost:8000/generate-fake-reviews`.
 
 For testing `GET` routes, you can simply type the URL into your web browser -- for example, `localhost:8000/products`. For `POST` and `DELETE` routes, you will need to use a CLI tool like [curl](https://en.wikipedia.org/wiki/CURL) or [download the desktop agent for Postman](https://www.postman.com/downloads/).

@@ -1,8 +1,10 @@
 ## Product List
 
+This is full stack web app built for an evaluation for [Parsity Coding School](https://parsity.io/).
+
 ### About the Backend
 
-This is an API built for an evaluation for [Parsity Coding School](https://parsity.io/). The API is built for a mock e-commerce store that sells various "products" -- each product is randomly generated using [Faker](https://fakerjs.dev/).
+The API is built for a mock e-commerce store that sells various "products" -- each product is randomly generated using [Faker](https://fakerjs.dev/).
 
 This project was built with TypeScript, Node.js, Express, and MongoDB.
 
@@ -30,6 +32,6 @@ For testing `GET` routes, you can simply type the URL into your web browser -- f
 
 1. To run the frontend, first ensure that you have followed the previous steps to get the API working. Launch the API by `cd`ing into the `backend` folder and running `npm start`.
 
-2. Once the server is running, `cd` into the `frontend` folder and launch the frontend server by running `npm run dev`. 
+2. Once the server is running, `cd` into the `frontend` folder and launch the frontend server by running `npm run dev`.
 
 3. Navigate to `localhost:5173` in your browser. If everything was set up correctly, you should be able to interact with your product data with the UI.

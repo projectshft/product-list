@@ -47,6 +47,7 @@ function App() {
               setCategory={setCategory}
               setPrice={setPrice}
               setQuery={setQuery}
+              query={query}
             />
           }
         >

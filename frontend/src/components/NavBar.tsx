@@ -159,7 +159,6 @@ function NavBar({
                   setPage(0);
                   setCategory("");
                   setPrice("");
-                  setQuery("");
                 }}
               >
                 Clear Filters

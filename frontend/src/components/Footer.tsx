@@ -7,21 +7,44 @@ function Footer({
   setPage: React.Dispatch<React.SetStateAction<number>>;
   totalResults: number;
 }) {
-  const numPages = totalResults >= 9 ? Math.floor(totalResults / 9) : Math.ceil(totalResults / 9);
+  const numPages =
+    totalResults >= 9
+      ? Math.floor(totalResults / 9)
+      : Math.ceil(totalResults / 9);
 
   const resultPages = () => {
     const result = [];
 
-    const num = numPages - page <= 5 ? numPages : page + 5;
+    if (numPages < 5) {
+      const num = numPages;
 
-    const startPage = numPages - page <= 5 ? numPages - 5 : page;
+      const startPage = 0;
 
-    for (let i = startPage; i < num; i++) {
-      result.push(
-        <span className="mx-4 text-blue-500 hover:text-blue-700 hover:cursor-pointer" onClick={() => setPage(i)}>
-          {i + 1}
-        </span>
-      );
+      for (let i = startPage; i < num; i++) {
+        result.push(
+          <span
+            className="mx-4 text-blue-500 hover:text-blue-700 hover:cursor-pointer"
+            onClick={() => setPage(i)}
+          >
+            {i + 1}
+          </span>
+        );
+      }
+    } else {
+      const num = numPages - page <= 5 ? numPages : page + 5;
+
+      const startPage = numPages - page <= 5 ? numPages - 5 : page;
+
+      for (let i = startPage; i < num; i++) {
+        result.push(
+          <span
+            className="mx-4 text-blue-500 hover:text-blue-700 hover:cursor-pointer"
+            onClick={() => setPage(i)}
+          >
+            {i + 1}
+          </span>
+        );
+      }
     }
 
     return result;
@@ -55,7 +78,6 @@ function Footer({
             stroke-linecap="round"
             stroke-linejoin="round"
             d="M15.75 19.5L8.25 12l7.5-7.5"
-            
           />
         </svg>
         {resultPages()}

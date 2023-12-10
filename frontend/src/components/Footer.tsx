@@ -25,6 +25,18 @@ function Footer({
     return result;
   };
 
+  const showNextPage = (currentPage: typeof page) => {
+    if (currentPage < numPages - 1) {
+      setPage(page + 1);
+    }
+  };
+
+  const showPrevPage = (currentPage: typeof page) => {
+    if (currentPage > 0) {
+      setPage(page - 1);
+    }
+  };
+
   return (
     <footer className="absolute bottom-0 w-full  bg-orange-200 mt-8 py-4 border border-orange-400 ">
       <div className="inset-x-0 bottom-0 text-center overflow-hidden mx-10">
@@ -35,11 +47,13 @@ function Footer({
           stroke-width="1.5"
           stroke="currentColor"
           className="me-8 w-6 h-6 inline-block hover:cursor-pointer text-blue-900 hover:text-blue-700"
+          onClick={() => showPrevPage(page)}
         >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
             d="M15.75 19.5L8.25 12l7.5-7.5"
+            
           />
         </svg>
         {resultPages()}
@@ -50,6 +64,7 @@ function Footer({
           stroke-width="1.5"
           stroke="currentColor"
           className="ms-8 w-6 h-6 inline-block hover:cursor-pointer text-blue-900 hover:text-blue-700"
+          onClick={() => showNextPage(page)}
         >
           <path
             stroke-linecap="round"

@@ -70,6 +70,7 @@ function NavBar({
           if (event.key === "Enter") {
             setQuery(search);
             setSearch("");
+            setPage(0);
           }
         }}
         value={search}
@@ -78,7 +79,8 @@ function NavBar({
         className="rounded bg-blue-900 px-2 border-2 border-blue-900 text-white hover:bg-blue-700 hover:border-blue-700 ms-2"
         onClick={() => { 
           setQuery(search);
-          setSearch("")
+          setSearch("");
+          setPage(0);
         }}
       >
         Search

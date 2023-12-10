@@ -6,24 +6,25 @@ import { Product } from "../../types/types.ts";
 function SearchResults(props: {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  totalResults: number;
   setTotalResults: React.Dispatch<React.SetStateAction<number>>;
+  category: string;
+  searchString: string;
 }) {
   const page = props.page;
-
-  const fetchProducts = async (page = 0) => {
-    const res = await fetch(`http://localhost:8000/products?page=${page}`);
+  const searchString = props.searchString;
+  
+  const fetchProducts = async (search = "") => {
+    const res = await fetch(`http://localhost:8000/products?${search}`);
     const data = await res.json();
     props.setTotalResults(data.resultsFound);
     return data;
   };
 
-  const { isPending, isError, error, data, isFetching, isPlaceholderData } =
-    useQuery({
-      queryKey: ["responseMessage", page],
-      queryFn: () => fetchProducts(page),
-      placeholderData: keepPreviousData,
-    });
+  const { isPending, isError, error, data } = useQuery({
+    queryKey: ["responseMessage", searchString],
+    queryFn: () => fetchProducts(searchString),
+    placeholderData: keepPreviousData,
+  });
 
   return (
     <div className="columns-1 sm:columns-3 mx-auto mt-8 pb-24">

@@ -1,9 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function NavBar() {
+function NavBar( { setCategory, setPage }: { setCategory: React.Dispatch<React.SetStateAction<string>>; setPage: React.Dispatch<React.SetStateAction<number>>}) {
   const [hidden, setHidden] = useState("hidden");
   const [displayBlock, setDisplayBlock] = useState("hidden");
   const [priceDisplayBlock, setPriceDisplayBlock] = useState("hidden");
+  const [categories, setCategories] = useState([]);
+
+  // Populate categories on page load
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const resultCategories = () => {
+    const result: Array<JSX.Element> = [];
+
+    categories.forEach((category) => {
+      result.push(
+        <span className="text-black ps-3 pe-4 block hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
+          setPage(0);
+          setCategory(category);
+        }}>
+          {category}
+        </span>
+      );
+    });
+
+    return result;
+  };
+
+  const fetchCategories = async () => {
+    const res = await fetch(`http://localhost:8000/categories`);
+    const data = await res.json();
+    setCategories(data);
+  };
 
   const showNavItems = () => {
     if (hidden === "hidden") {
@@ -60,36 +89,7 @@ function NavBar() {
                 onMouseOver={() => setDisplayBlock("block")}
                 onMouseLeave={() => setDisplayBlock("hidden")}
               >
-                <a
-                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
-                  href="#"
-                >
-                  Music
-                </a>
-                <a
-                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
-                  href="#"
-                >
-                  Music2
-                </a>
-                <a
-                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
-                  href="#"
-                >
-                  Movies
-                </a>
-                <a
-                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
-                  href="#"
-                >
-                  Kids
-                </a>
-                <a
-                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
-                  href="#"
-                >
-                  Baby
-                </a>
+                {resultCategories()}
               </div>
             </div>
           </li>
@@ -107,18 +107,16 @@ function NavBar() {
                 onMouseOver={() => setPriceDisplayBlock("block")}
                 onMouseLeave={() => setPriceDisplayBlock("hidden")}
               >
-                <a
-                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
-                  href="#"
+                <span
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300 hover:cursor-pointer"
                 >
                   Lowest
-                </a>
-                <a
-                  className="text-black ps-3 pe-4 block hover:bg-slate-300"
-                  href="#"
+                </span>
+                <span
+                  className="text-black ps-3 pe-4 block hover:bg-slate-300 hover:cursor-pointer"
                 >
                   Highest
-                </a>
+                </span>
               </div>
             </div>
           </li>

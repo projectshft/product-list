@@ -7,7 +7,7 @@ function Footer({
   setPage: React.Dispatch<React.SetStateAction<number>>;
   totalResults: number;
 }) {
-  const numPages = Math.floor(totalResults / 9);
+  const numPages = totalResults >= 9 ? Math.floor(totalResults / 9) : Math.ceil(totalResults / 9);
 
   const resultPages = () => {
     const result = [];

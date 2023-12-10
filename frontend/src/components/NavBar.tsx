@@ -114,7 +114,7 @@ function NavBar({
                 Category
               </button>
               <div
-                className={`${displayBlock} absolute rounded bg-slate-200 min-w-min z-10`}
+                className={`${displayBlock} absolute rounded bg-slate-200 min-w-min z-10 overflow-scroll max-h-64`}
                 onMouseOver={() => setDisplayBlock("block")}
                 onMouseLeave={() => setDisplayBlock("hidden")}
               >

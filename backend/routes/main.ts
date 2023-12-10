@@ -47,4 +47,22 @@ router.get("/reviews", async (req, res) => {
   res.end();
 });
 
+// Get list of all categories
+router.get("/categories", async (req, res) => {
+  try {
+    const products = await Product.find();
+    const categories: Array<string> = [];
+    products.forEach((product) => {
+      if (!categories.includes(product.category)) {
+        categories.push(product.category);
+      }
+    });
+    res.send(categories);
+  } catch (err) {
+    throw err;
+  }
+
+  res.end();
+});
+
 export default router;

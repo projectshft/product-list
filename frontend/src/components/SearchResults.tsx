@@ -4,13 +4,10 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Product } from "../../types/types.ts";
 
 function SearchResults(props: {
-  page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
   setTotalResults: React.Dispatch<React.SetStateAction<number>>;
   category: string;
   searchString: string;
 }) {
-  const page = props.page;
   const searchString = props.searchString;
   
   const fetchProducts = async (search = "") => {
@@ -32,7 +29,10 @@ function SearchResults(props: {
         <div className="ms-4">Loading...</div>
       ) : isError ? (
         <div>Error: {error.message}</div>
-      ) : (
+      ) : data.resultsFound == 0 ? (
+        <div className="ms-4">No results found :(</div>
+      )
+      : (
         <>
           {data.responseMessage.map((product: Product) => {
             return <SearchResultsItem key={product._id} product={product} />;

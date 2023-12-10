@@ -8,6 +8,8 @@ function App() {
   const [page, setPage] = useState(0);
   const [totalResults, setTotalResults] = useState(0);
   const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [query, setQuery] = useState("");
   const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
@@ -18,11 +20,19 @@ function App() {
     }
 
     if (category.length > 0) {
-      searchArray.push(`category=${category}`)
+      searchArray.push(`category=${category}`);
+    }
+
+    if (price.length > 0) {
+      searchArray.push(`price=${price}`);
+    }
+
+    if (query.length > 0) {
+      searchArray.push(`query=${query}`);
     }
 
     setSearchString(searchArray.join("&"));
-  }, [page, category]);
+  }, [page, category, price, query]);
 
   return (
     <div className="mx-auto">
@@ -35,6 +45,8 @@ function App() {
               setPage={setPage}
               totalResults={totalResults}
               setCategory={setCategory}
+              setPrice={setPrice}
+              setQuery={setQuery}
             />
           }
         >
@@ -42,8 +54,6 @@ function App() {
             index
             element={
               <SearchResults
-                page={page}
-                setPage={setPage}
                 setTotalResults={setTotalResults}
                 category={category}
                 searchString={searchString}

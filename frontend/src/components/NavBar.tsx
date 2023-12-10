@@ -1,10 +1,21 @@
 import { useEffect, useState } from "react";
 
-function NavBar( { setCategory, setPage }: { setCategory: React.Dispatch<React.SetStateAction<string>>; setPage: React.Dispatch<React.SetStateAction<number>>}) {
+function NavBar({
+  setCategory,
+  setPage,
+  setPrice,
+  setQuery,
+}: {
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setPrice: React.Dispatch<React.SetStateAction<string>>;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
+}) {
   const [hidden, setHidden] = useState("hidden");
   const [displayBlock, setDisplayBlock] = useState("hidden");
   const [priceDisplayBlock, setPriceDisplayBlock] = useState("hidden");
   const [categories, setCategories] = useState([]);
+  const [search, setSearch] = useState("");
 
   // Populate categories on page load
   useEffect(() => {
@@ -16,10 +27,13 @@ function NavBar( { setCategory, setPage }: { setCategory: React.Dispatch<React.S
 
     categories.forEach((category) => {
       result.push(
-        <span className="text-black ps-3 pe-4 block hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
-          setPage(0);
-          setCategory(category);
-        }}>
+        <span
+          className="text-black ps-3 pe-4 block hover:bg-slate-300 hover:cursor-pointer"
+          onClick={() => {
+            setPage(0);
+            setCategory(category);
+          }}
+        >
           {category}
         </span>
       );
@@ -49,11 +63,24 @@ function NavBar( { setCategory, setPage }: { setCategory: React.Dispatch<React.S
         className="px-1 rounded border-2 border-slate-500 bg-slate-100 w-1/3 focus:outline-none focus:border-blue-900"
         placeholder="Search for a product"
         id="search"
-        onKeyDown={() => console.log("key press")}
-        onChange={() => console.log("change")}
-        value=""
+        onChange={(event) => {
+          setSearch(event.target.value);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            setQuery(search);
+            setSearch("");
+          }
+        }}
+        value={search}
       />
-      <button className="rounded bg-blue-900 px-2 border-2 border-blue-900 text-white hover:bg-blue-700 hover:border-blue-700 ms-2">
+      <button
+        className="rounded bg-blue-900 px-2 border-2 border-blue-900 text-white hover:bg-blue-700 hover:border-blue-700 ms-2"
+        onClick={() => { 
+          setQuery(search);
+          setSearch("")
+        }}
+      >
         Search
       </button>
 
@@ -109,15 +136,32 @@ function NavBar( { setCategory, setPage }: { setCategory: React.Dispatch<React.S
               >
                 <span
                   className="text-black ps-3 pe-4 block hover:bg-slate-300 hover:cursor-pointer"
+                  onClick={() => setPrice("lowest")}
                 >
                   Lowest
                 </span>
                 <span
                   className="text-black ps-3 pe-4 block hover:bg-slate-300 hover:cursor-pointer"
+                  onClick={() => setPrice("highest")}
                 >
                   Highest
                 </span>
               </div>
+            </div>
+          </li>
+          <li>
+            <div className="relative inline-block mt-3 sm:mt-0">
+              <button
+                className="rounded px-2 bg-red-500 hover:bg-red-600"
+                onClick={() => {
+                  setPage(0);
+                  setCategory("");
+                  setPrice("");
+                  setQuery("");
+                }}
+              >
+                Clear Filters
+              </button>
             </div>
           </li>
         </ul>

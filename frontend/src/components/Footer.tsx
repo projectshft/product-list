@@ -14,9 +14,11 @@ function Footer({
 
     const num = numPages - page <= 5 ? numPages : page + 5;
 
-    for (let i = page; i < num; i++) {
+    const startPage = numPages - page <= 5 ? numPages - 5 : page;
+
+    for (let i = startPage; i < num; i++) {
       result.push(
-        <span className="mx-4 text-blue-500 hover:text-blue-700 hover:cursor-pointer">
+        <span className="mx-4 text-blue-500 hover:text-blue-700 hover:cursor-pointer" onClick={() => setPage(i)}>
           {i + 1}
         </span>
       );

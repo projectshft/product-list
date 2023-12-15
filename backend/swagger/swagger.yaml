@@ -1,0 +1,249 @@
+swagger: "2.0"
+info:
+  description: Server for Product List API project built for Parsity Coding School.
+  version: 1.0.0
+  title: Product List API
+  contact:
+    email: jordan.c.cox.1@gmail.com
+host: localhost:8000
+basePath: /
+tags:
+- name: products
+  description: Retrieve product and product review data
+schemes:
+- http
+produces:
+- application/json
+security:
+- api_key: [] 
+paths:
+  /products:
+    get:
+      tags:
+      - products
+      summary: Retrieve list of products
+      description: The `/products` endpoint returns an array of products limited to 9 products per page.
+      parameters:
+      - name: page
+        description: Page to retrieve. Defaults to 0 if query is missing.
+        in: query
+        type: number
+        required: false
+      - name: category
+        description: Category of products to retrieve.
+        in: query
+        type: string
+        required: false
+      - name: price
+        description: Sort by highest-to-lowest or lowest-to-highest prices.
+        in: query
+        type: string
+        enum: [lowest, highest]
+        required: false
+      - name: query
+        description: Search for term in product name or category.
+        type: string
+        in: query
+        required: false
+      responses:
+        200: 
+          description: Array of products
+          schema: 
+            $ref: "#/definitions/Product"
+        400:
+          description: Bad request
+    post:
+      tags:
+      - products
+      summary: Create a new product in the database
+      parameters:
+      - name: product
+        description: Product data to add to database.
+        schema:
+          type: object
+          properties:
+            category:
+              type: string
+            name: 
+              type: string
+            price:
+              type: number
+              format: int32
+            image:
+              type: string
+              format: url
+        required: true
+        in: body
+      responses:
+        200:
+          description: Returns product just created.
+          schema:
+            $ref: "#/definitions/Product"
+        400:
+          description: Bad request
+  /products/{productId}:
+    get:
+      tags:
+      - products
+      summary: Return a product by its id
+      parameters:
+        - name: productId
+          in: path
+          type: string
+          format: hexadecimal
+          required: true
+          description: Product _id property
+      responses:
+        200:
+          description: Product matching id.
+          schema:
+            $ref: "#/definitions/Product"
+        400:
+          description: Bad request
+        404: 
+          description: Product not found
+    delete:
+      tags:
+      - products
+      summary: Delete a product by id
+      parameters:
+      - name: productId
+        in: path
+        type: string
+        format: hexadecimal
+        required: true
+        description: Product _id property
+      responses:
+        200:
+          description: Product deleted
+          schema:
+            $ref: "#/definitions/Product"
+        400:
+          description: Bad request
+        404: 
+          description: Product not found
+  /products/{productId}/reviews:
+    get:
+      tags:
+      - products
+      summary: Return all reviews associated with product id
+      description: Retrieves a list of product reviews limited to 4 reviews per page.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          format: hexadecimal
+          type: string
+          description: Product _id property
+        - name: page
+          in: query
+          required: false
+          type: number
+          format: int32
+          description: Page to retrieve. Defaults to 0 if query is missing.
+      responses:
+        200:
+          description: Array of reviews associated with productId.
+          schema:
+            $ref: "#/definitions/Review"
+    post:
+      tags:
+        - products
+      summary: Create a new review for a product in the database
+      description: Creates a new review and pushes it to the reviews array on the product matching the productId.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          format: hexadecimal
+          type: string
+          description: Product _id property
+        - name: review
+          description: Review to add to product.
+          schema:
+            type: object
+            properties:
+              userName:
+                type: string
+              text: 
+                type: string
+              product:
+                type: string
+                format: hexadecimal
+                description: Product _id to push review to
+          required: true
+          in: body
+      responses:
+        200:
+          description: Review just created.
+          schema:
+            $ref: "#/definitions/Review"
+        400: 
+          description: Bad request
+        404:
+          description: Product not found
+  /reviews/{reviewId}:
+    delete:
+      tags:
+      - products
+      summary: Delete a review by id
+      parameters:
+      - name: reviewId
+        description: Review _id property
+        type: string
+        format: hexadecimal
+        required: true
+        in: path
+      responses:
+        200:
+          description: Review deleted
+          schema:
+            $ref: "#/definitions/Review"
+        400:
+          description: Bad request
+        404: 
+          description: Review not found
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "X-Authentication"
+    in: "header"
+definitions:
+  Product:
+    type: object
+    properties:
+      _id: 
+        type: string
+        description: MongoDB ObjectId
+      category:
+        type: string
+      name:
+        type: string
+        description: Product name
+      price:
+        type: integer
+        format: int32
+      image:
+        type: string
+        description: Product image URL
+      reviews:
+        type: array
+        items: 
+          type: string
+          description: Review _id
+          format: hexadecimal
+  Review:
+    type: object
+    properties:
+      _id: 
+        type: string
+        description: MongoDB ObjectId
+      userName:
+        type: string
+        description: User who left the review
+      text:
+        type: string
+      product: 
+        type: string
+        format: hexadecimal
+        description: _id of product review is about

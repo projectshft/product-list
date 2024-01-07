@@ -34,7 +34,6 @@ const Pages = () => {
     let pageArray = []
     for (let i = 1; i <= pageCount(); i++) {
       if (i === parseInt(activePage)) {
-        console.log('match')
         const altPageStyle = {
           borderStyle: 'solid',
           borderWidth: '1px',

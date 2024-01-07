@@ -1,11 +1,10 @@
 import React from "react";
 import { setPrice } from "../reducer/slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPage } from "../reducer/slice";
 
 
 function SearchPrice (props) {
-  const stateQuery = useSelector(state => state.query)
 
   const dispatch = useDispatch();
   // const query = props.query;
@@ -13,7 +12,6 @@ function SearchPrice (props) {
   const handleChange = (event) => {
     dispatch(setPrice(event.target.value));
     dispatch(setPage(1));
-    console.log(stateQuery)
   }
   return (
     <select defaultValue = "" onChange = {handleChange} className="col form-select" aria-label="Default select example">

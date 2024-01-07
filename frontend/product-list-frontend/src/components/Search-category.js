@@ -7,10 +7,8 @@ import { fetchCategories, setCategories, setCategory, setPage } from "../reducer
  
 function SearchCategory (props) {
   const dispatch = useDispatch();
-  const stateQuery = useSelector(state => state.query)
   const handleChange = (event) => {
     dispatch(setCategory(event.target.value));
-    console.log(stateQuery)
     dispatch(setPage(1));
   }
   useEffect(() => {

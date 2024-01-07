@@ -72,7 +72,6 @@ router.get("/products", (req, res, next) => {
       .then(async (products, err) => {
         productResults.count = await count(queryObject);
         productResults.products = products;
-        console.log('price, category, highest')
         res.send(productResults);
         
           })
@@ -87,7 +86,6 @@ router.get("/products", (req, res, next) => {
       .then(async (products, err) => {
         productResults.count = await count(queryObject);
         productResults.products = products;
-        console.log('price, category, highest')
         res.send(productResults);
        })
     .catch(err => err);}
@@ -100,7 +98,6 @@ router.get("/products", (req, res, next) => {
       .then(async (products, err) => {
         productResults.count = await count(queryObject);
         productResults.products = products;
-        console.log('price, category, highest')
         res.send(productResults);
        });
       }
@@ -117,19 +114,18 @@ router.get("/products", (req, res, next) => {
       .then(async (products, err) => {
         productResults.count = await count(queryObject);
         productResults.products = products;
-        console.log('price, category, highest')
         res.send(productResults);
        });
       }
       else if(sortDirection === "highest" && !query) {
         queryObject = {}
         Product.find(queryObject)
+        .sort("-price")
         .skip(perPage * page - perPage)
         .limit(perPage)
         .then(async (products, err) => {
           productResults.count = await count(queryObject);
           productResults.products = products;
-          console.log('price, category, highest')
           res.send(productResults);
          })
             .catch(err => err);
@@ -143,7 +139,6 @@ router.get("/products", (req, res, next) => {
         .then(async (products, err) => {
           productResults.count = await count(queryObject);
           productResults.products = products;
-          console.log('price, category, highest')
           res.send(productResults);
          })
             .catch(err => err);
@@ -157,7 +152,6 @@ router.get("/products", (req, res, next) => {
         .then(async (products, err) => {
           productResults.count = await count(queryObject);
           productResults.products = products;
-          console.log('price, category, highest')
           res.send(productResults);
          })
             .catch(err => err);
@@ -175,7 +169,6 @@ router.get("/products", (req, res, next) => {
     .then(async (products, err) => {
       productResults.count = await count(queryObject);
       productResults.products = products;
-      console.log('price, category, highest')
       res.send(productResults);
      })
         .catch(err => err);
@@ -188,7 +181,6 @@ router.get("/products", (req, res, next) => {
         .then(async (products, err) => {
           productResults.count = await count(queryObject);
           productResults.products = products;
-          console.log('price, category, highest')
           res.send(productResults);
          })
             .catch(err => err);
@@ -249,7 +241,6 @@ router.get("/categories", (req, res, next) => {
       const category = product.category;
       if (!categories.includes(category)){categories.push(category)};
     })
-    console.log(categories);
     res.send(categories);
   })
 });
@@ -273,7 +264,6 @@ router.get("/categories", (req, res, next) => {
     if (req.query.page && req.query.page > 0){
       startingIndex = req.query.page * 4 
     }
-    console.log('reviews')
     Product.find({_id: id})
       .then((product, err) => {
         const reviews = product[0].reviews
@@ -295,7 +285,6 @@ router.post("/products", (req, res, next) => {
   product.price = price;
   product.image = image;
   product.reviews = reviews;
-  console.log(req.body);
   product.save();
   res.end();
 })

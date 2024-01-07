@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 const Results = () => {
   const products = useSelector(state => state.products);
-  const query = useSelector(state => state.query.query);
   const invalidSearch = useSelector(state => state.invalidSearch)
   const searchResults = () => {
     if(invalidSearch && products.length === 0){return <h2>No Search Results. Try a new Search</h2>}

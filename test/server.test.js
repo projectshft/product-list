@@ -19,22 +19,22 @@ describe('Products', () => {
     });
     it('should GET specific product by id', (done) => {
       chai.request(app)
-        .get('/api/products/65dfd1fa54d7d52a5c82e39b')
+        .get('/api/products/2')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('name').eql('Modern Metal Bike');
+          res.body.should.have.property('name').eql('Fantastic Cotton Gloves');
           done(err);
         });
     });
     it('should GET all the reviews for a product', (done) => { 
       chai.request(app)
-        .get('/api/products/65dfd1fa54d7d52a5c82e39b/reviews')
+        .get('/api/products/1/reviews')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('array');
           res.body.length.should.be.eql(5);
-          res.body[0].should.have.property('userName').eql('Addie_Rowe');
+          res.body[0].should.have.property('userName').eql('Peter_Kuhn');
           done(err);
         });
     });

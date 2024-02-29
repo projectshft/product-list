@@ -2,13 +2,20 @@ const router = require("express").Router();
 const { faker } = require("@faker-js/faker");
 const Product = require("../models/product");
 const Review = require("../models/review");
+const mongo = require('mongodb')
+const mongoose = require('mongoose')
+
+const ObjectId = mongoose.Types.ObjectId;
 
 router.get("/api/generate-fake-data", async (req, res, next) => {
   try {
+    let productCount = 1
+    let reviewCount = 1
     for (let i = 0; i < 90; i++) {
 
       let product = new Product();
 
+      product.id = productCount;
       product.category = faker.commerce.department();
       product.name = faker.commerce.productName();
       product.price = faker.commerce.price();
@@ -20,10 +27,13 @@ router.get("/api/generate-fake-data", async (req, res, next) => {
         review.userName = faker.internet.userName();
         review.text = faker.lorem.sentence();
         review.product = product._id;
+        review.id = reviewCount;
         product.reviews.push(review);
+        reviewCount++;
         await review.save();
       }
 
+      productCount++;
       await product.save();
     }
     res.end();
@@ -51,7 +61,10 @@ router.get("/api/products", async (req, res, next) => {
 
 router.get("/api/products/:id", async (req, res, next) => {
   try {
-
+    const id = req.params.id;
+    const o_id = new ObjectId(id)
+    const product = await Product.findById(o_id);
+    console.log(product)
   } catch (err) {
     console.log(err)
   }

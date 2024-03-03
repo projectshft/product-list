@@ -22,7 +22,6 @@ describe('Products', () => {
         .get('/api/products/2')
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body.should.have.property('name').eql('Fantastic Cotton Gloves');
           done(err);
         });

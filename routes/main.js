@@ -62,11 +62,29 @@ router.get("/api/products", async (req, res, next) => {
 router.get("/api/products/:id", async (req, res, next) => {
   try {
     const id = req.params.id;
-    const o_id = new ObjectId(id)
-    const product = await Product.findById(o_id);
-    console.log(product)
+    const product = await Product.find({ id: id}).populate('reviews', {strictPopulate: false})
+    
+    res.json(product[0])
+    next()
   } catch (err) {
     console.log(err)
   }
+})
+
+router.get("/api/products/:id/reviews", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.findOne({ id: id }).populate('reviews', { strictPopulate: false })
+    res.json(product.reviews)
+    next()
+    
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+router.post("/api/products", async (req, res, next) => {
+  const newProduct = req.body
+  console.log(newProduct)
 })
 module.exports = router;

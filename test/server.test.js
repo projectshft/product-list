@@ -41,19 +41,19 @@ describe('Products', () => {
   describe('/POST products', () => {
     it('should POST a product', (done) => {
       const product = {
+        id: 12345,
         category: 'Toys',
         name: 'Toy Car',
         price: 10,
-        image: 'https://via.placeholder.com/250?text=Product+Image',
-        reviews: [{userName: 'John Doe', text: 'Great product!'}, {userName: 'Jane Doe', text: 'Terrible product!'}]
+        image: 'https://via.placeholder.com/250?text=Product+Image'
       };
       chai.request(app)
         .post('/api/products')
         .send(product)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
-          res.body.should.have.property('name').eql('Toy Car');
+          res.body.should.be.an('object');
+          res.body.should.have.property('name').eql('Toy Car')
           done(err);
         });
     });

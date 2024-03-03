@@ -85,6 +85,8 @@ router.get("/api/products/:id/reviews", async (req, res, next) => {
 
 router.post("/api/products", async (req, res, next) => {
   const newProduct = req.body
-  console.log(newProduct)
+  await Product.create(newProduct)
+  const retProduct = await Product.findOne({id: newProduct.id})
+  res.json(retProduct)
 })
 module.exports = router;

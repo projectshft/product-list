@@ -4,7 +4,7 @@ const Product = require('./models/product')
 const Review = require('./models/reviews');
 
 mongoose.connect('mongodb://localhost:27017/products');
-
+//This was used to generate reviews for the products in the database
 const generateFakeReview = () => {
   return {
     userName: faker.person.fullName(),

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+//Creating slice for price filtering functionality
 export const priceFilterSlice = createSlice({
   name: 'priceFilter',
   initialState: '',

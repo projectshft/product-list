@@ -2,25 +2,27 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCategory } from "../slices/categoryFilterSlice";
 import axios from "axios";
-import { Dropdown } from "bootstrap";
-
 
 const CategoryDropdown = () => {
 
   const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
 
+  //Fetching category data
   useEffect(() => {
+
     axios.get('http://localhost:8000/categories')
       .then(response => {
         setCategories(response.data)
-        console.log(response.data)
       })
-      
-      .catch(error => console.error('Error fetching categories:', error))
-  }, [])
 
+      .catch(error => console.error('Error fetching categories:', error))
+  }, []);
+
+
+  //Handles category selection and dispatches action to Redux store with selected category
   const handleCategorySelect = (category) => {
+
     dispatch(setCategory(category))
   };
 
@@ -41,6 +43,6 @@ const CategoryDropdown = () => {
     </div>
 
   );
-}
+};
 
 export default CategoryDropdown;

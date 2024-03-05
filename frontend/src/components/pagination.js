@@ -1,13 +1,13 @@
 import React from "react";
 
 const PaginationComponent = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => {
-
+// Initializing an empty array to hold page numbers and calculating number of pages
   const pageNumbers = [];
   const totalPages = Math.ceil(totalItems / itemsPerPage)
-
+//Populate the pages array with all the possible page numbers
   for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
     pageNumbers.push(i)
-  }
+  };
 
   return (
 

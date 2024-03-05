@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+//Creating slice for pagination functionality
 export const paginationSlice = createSlice({
   name: 'pagination',
   initialState: {

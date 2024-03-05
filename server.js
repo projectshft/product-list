@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require('cors')
 
-mongoose.connect("mongodb://localhost/products", {
+mongoose.connect("mongodb://localhost:27017/products", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -20,7 +20,7 @@ app.use(
 
 
 app.get("/message", (req, res) => {
-  res.json({ message: "Hello from servers!" });
+  res.json({ message: "You are now connected" });
 });
 
 const mainRoutes = require("./routes/main");

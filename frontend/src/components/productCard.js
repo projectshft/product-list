@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import PaginationComponent from "./pagination";
 import axios from "axios";
 import { setCurrentPage } from "../slices/paginationSlice";
-
+//This component displays product cards based on searches and filtering
 const ProductsComponent = ({ searchTerm, category, price }) => {
+
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const { currentPage, itemsPerPage } = useSelector((state) => state.pagination);
   const dispatch = useDispatch();
-
+  //Fetching products when the dependencies change and constructing query parameters based on current state
   useEffect(() => {
 
     let fetchUrl = 'http://localhost:8000/products';
@@ -17,13 +18,13 @@ const ProductsComponent = ({ searchTerm, category, price }) => {
       page: currentPage,
       limit: itemsPerPage
     });
-
+    //Appending searchTerm, category and price to the query if they exist
     if (searchTerm) params.append('query', searchTerm);
     if (category) params.append('category', category);
     if (price) params.append('price', price);
 
     fetchUrl += `?${params.toString()}`
-
+    //Fetching products from the server and setting products and totat number of products based on response
     axios.get(fetchUrl)
 
       .then(response => {
@@ -41,8 +42,8 @@ const ProductsComponent = ({ searchTerm, category, price }) => {
     <div className="main-content container-lg my-5">
       <div className="row justify-content-center">
         {products.length > 0 ? (
-          products.map(product => (
-            <div key={product.id} className="col-md-4 mb-4">
+          products.map((product, index) => (
+            <div key={product.id || index} className="col-md-4 mb-4">
               <div className="card" style={{ width: '18rem' }}>
                 <div className="card-header d-flex justify-content-between align-items-center">
                   <h6>Category: <strong>{product.category}</strong></h6>

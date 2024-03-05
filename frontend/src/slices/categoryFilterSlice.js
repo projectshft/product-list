@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+//Creating slice for category filtering functionality 
 export const categoryFilterSlice = createSlice({
   name: 'categoryFilter',
   initialState: '',

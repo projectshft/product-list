@@ -5,17 +5,15 @@ import { setSearchTerm } from "../slices/searchSlice";
 const SearchBar = () => {
 
   const dispatch = useDispatch();
-
+//Handles input change on input change 
   const handleChange = (event) => {
 
     dispatch(setSearchTerm(event.target.value))
-    console.log(event.target.value)
   };
-
+//Handles form submission on submit
   const handleSubmit = (event) => {
 
     event.preventDefault();
-    console.log(event)
   };
 
   return (

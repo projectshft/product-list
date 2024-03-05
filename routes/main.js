@@ -80,7 +80,7 @@ router.get('/products', (req, res) => {
     })
 });
 
-
+//Endpoint used to directly get categories for all products in the database
 router.get('/categories', (req, res) => {
   Product.distinct("category")
     .then(categories => {
@@ -91,7 +91,7 @@ router.get('/categories', (req, res) => {
       res.status(500).send(error);
     })
 });
-
+// Endpoint used to directly get the prices for all products in the database
 router.get('/prices', (req, res) => {
   Product.distinct("price")
     .then(prices => {
@@ -119,7 +119,7 @@ router.get('/products/:product', (req, res) => {
       res.status(500).send(err.toString())
     });
 });
-
+//Endpoint to return reviews by product ID
 router.get('/products/:product/reviews', (req, res) => {
 
   Product.findById(req.params.product)
@@ -131,12 +131,10 @@ router.get('/products/:product/reviews', (req, res) => {
       res.json(product.reviews)
     })
 })
-
+//Endpoint to add new products
 router.post('/products', async (req, res) => {
 
   try {
-    // const { category, name, price } = req.body
-    // const addProduct = new Product(req.body);
     const newProduct = new Product({
       category: "Hiking",
       name: "Boots",
@@ -152,7 +150,7 @@ router.post('/products', async (req, res) => {
   }
 
 });
-
+// Endpoint to add a new review to a product 
 router.post('/products/:product/reviews', async (req, res) => {
 
   try {
@@ -172,7 +170,7 @@ router.post('/products/:product/reviews', async (req, res) => {
   }
 
 });
-
+// Endpoint to handle deletion of a specific product by ID
 router.delete('/products/:product', async (req, res) => {
 
   try {
@@ -190,7 +188,7 @@ router.delete('/products/:product', async (req, res) => {
   }
 
 });
-
+// Endpoint to handle deletion of a review by ID
 router.delete('/reviews/:review', async (req, res) => {
 
   try {

@@ -74,6 +74,7 @@ router.get("/api/products", async (req, res, next) => {
     const products = await Product.find({})
       .skip((perPage * page) - perPage)
       .limit(perPage)
+      .populate('reviews', {strictPopulate: false})
       .exec();
 
     res.send(products);

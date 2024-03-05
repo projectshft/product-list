@@ -3,13 +3,15 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { set } from 'mongoose';
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  const response = await axios.get('http://localhost:8000/api/products', {
+
+export const fetchProducts = createAsyncThunk('products/fetchProducts', async (page) => {
+  let url = `http://localhost:8000/api/products?page=${page}`;
+  const response = await axios.get(url, {
     headers: {
       'Access-Control-Allow-Origin': '*',
     }
   });
-  return response.data;
+  return response.data.products;
 });
 
 const productSlice = createSlice({

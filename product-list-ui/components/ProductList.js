@@ -9,6 +9,7 @@ import { set } from 'mongoose';
 const ProductList = () => {
   
   const dispatch = useDispatch();
+  const [pages, setPages] = useState(0);
 
   useEffect(() => {
 
@@ -18,12 +19,27 @@ const ProductList = () => {
       }
     })
     .then(response => {
-      dispatch(setProducts(response.data))
+      dispatch(setProducts(response.data.products))
+      
+      setPages(response.data.pages)
     });
   }
   , []);
 
+  const getNewPage = async (page) => {
+    const product = await dispatch(fetchProducts(page));
+    dispatch(setProducts(product.payload));
+  }
+
   const products = useSelector((state) => state.product.products);
+
+  const generatePageButtons = () => {
+    let buttons = [];
+    for(let i = 1; i <= pages; i++) {
+      buttons.push(<button key={i} onClick={() => getNewPage(i)}>{i}</button>)
+    }
+    return buttons;
+  }
 
   return (
     <div>
@@ -32,8 +48,8 @@ const ProductList = () => {
         <ProductListItem key={product.id} product={product} />
       ))}
     </div>
-    <div>
-      Pages <a>1</a>
+    <div className='text-center'>
+      Pages {generatePageButtons()}
     </div>
     </div>
   );

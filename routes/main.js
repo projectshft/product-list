@@ -70,14 +70,70 @@ router.get("/api/products", async (req, res, next) => {
   try {
     const perPage = 9;
     const page = req.query.page || 1;
+    const count = await Product.countDocuments();
+    const category = req.query.category;
+    const price = req.query.price;
+    let products;
+    let pages;
 
-    const products = await Product.find({})
+    if(!category && !price) {
+    products = await Product.find({})
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .populate('reviews', {strictPopulate: false})
       .exec();
+      pages = Math.ceil(count / perPage);
+    }
+    if(category && !price) {
+      products = await Product.find({category: category})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .populate('reviews', {strictPopulate: false})
+      .exec();
+      pages = Math.ceil(products.length / perPage);
+    }
+    if(!category && price) {
+      if(price == 'low-to-high') {
+      products = await Product.find({})
+      .sort({price: 1})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .populate('reviews', {strictPopulate: false})
+      .exec();
+      pages = Math.ceil(products.length / perPage);
+      }
+      if(price == 'high-to-low') {
+        products = await Product.find({})
+        .sort({price: -1})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .populate('reviews', {strictPopulate: false})
+        .exec();
+        pages = Math.ceil(products.length / perPage);
+      }
+    }
+    if(category && price) {
+      if(price == 'low-to-high') {
+      products = await Product.find({category: category})
+      .sort({price: 1})
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .populate('reviews', {strictPopulate: false})
+      .exec();
+      pages = Math.ceil(products.length / perPage);
+      }
+      if(price == 'high-to-low') {
+        products = await Product.find({category: category})
+        .sort({price: -1})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .populate('reviews', {strictPopulate: false})
+        .exec();
+        pages = Math.ceil(products.length / perPage);
+      }
+    }
 
-    res.send(products);
+    res.json({products, pages});
   } catch (err) {
     next(err);
   }

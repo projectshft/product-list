@@ -2,36 +2,39 @@ import React, { useEffect, useState } from 'react';
 import ProductListItem from './ProductListItem';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
+import { setProducts } from '../app/store/slices/productSlice';
 import { fetchProducts } from '../app/store/slices/productSlice';
+import { set } from 'mongoose';
 
 const ProductList = () => {
-  const dispatch = useDispatch();
   
+  const dispatch = useDispatch();
 
-  const loadProducts = async () => {
-    await axios.get('http://localhost:8000/api/products', {
+  useEffect(() => {
+
+    axios.get('http://localhost:8000/api/products', {
       headers: {
         'Access-Control-Allow-Origin': '*',
       }
-    
     })
     .then(response => {
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.log(error);
+      dispatch(setProducts(response.data))
     });
   }
+  , []);
 
-
-  const products = useSelector(state => state.product.products);
+  const products = useSelector((state) => state.product.products);
 
   return (
     <div>
+    <div className='d-flex flex-wrap justify-content-center'>
       {products.map(product => (
         <ProductListItem key={product.id} product={product} />
       ))}
-      <button onClick= {() => loadProducts()}>Load Products</button>
+    </div>
+    <div>
+      Pages <a>1</a>
+    </div>
     </div>
   );
 }

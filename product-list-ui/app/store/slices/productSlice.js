@@ -1,6 +1,7 @@
 'use client';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { set } from 'mongoose';
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
   const response = await axios.get('http://localhost:8000/api/products', {
@@ -18,7 +19,11 @@ const productSlice = createSlice({
     status: 'idle',
     error: null
   },
-  reducers: {},
+  reducers: {
+    setProducts: (state, action) => {
+      state.products = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
@@ -34,5 +39,7 @@ const productSlice = createSlice({
       });
   }
 });
+
+export const { setProducts } = productSlice.actions;
 
 export default productSlice.reducer;

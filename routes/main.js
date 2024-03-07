@@ -70,70 +70,40 @@ router.get("/api/products", async (req, res, next) => {
   try {
     const perPage = 9;
     const page = req.query.page || 1;
-    const count = await Product.countDocuments();
     const category = req.query.category;
     const price = req.query.price;
-    let products;
-    let pages;
+    const search = req.query.search;
+    
+    let query = {};
 
-    if(!category && !price) {
-    products = await Product.find({})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .populate('reviews', {strictPopulate: false})
-      .exec();
-      pages = Math.ceil(count / perPage);
-    }
-    if(category && !price) {
-      products = await Product.find({category: category})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .populate('reviews', {strictPopulate: false})
-      .exec();
-      pages = Math.ceil(products.length / perPage);
-    }
-    if(!category && price) {
-      if(price == 'low-to-high') {
-      products = await Product.find({})
-      .sort({price: 1})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .populate('reviews', {strictPopulate: false})
-      .exec();
-      pages = Math.ceil(products.length / perPage);
-      }
-      if(price == 'high-to-low') {
-        products = await Product.find({})
-        .sort({price: -1})
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
-        .populate('reviews', {strictPopulate: false})
-        .exec();
-        pages = Math.ceil(products.length / perPage);
-      }
-    }
-    if(category && price) {
-      if(price == 'low-to-high') {
-      products = await Product.find({category: category})
-      .sort({price: 1})
-      .skip((perPage * page) - perPage)
-      .limit(perPage)
-      .populate('reviews', {strictPopulate: false})
-      .exec();
-      pages = Math.ceil(products.length / perPage);
-      }
-      if(price == 'high-to-low') {
-        products = await Product.find({category: category})
-        .sort({price: -1})
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
-        .populate('reviews', {strictPopulate: false})
-        .exec();
-        pages = Math.ceil(products.length / perPage);
-      }
+    const regex = new RegExp(search, 'i');
+
+    if (search) {
+      query = {name: {$regex: regex }};
     }
 
-    res.json({products, pages});
+    if (category) {
+      query.category = category;
+    }
+
+    let sortQuery = {};
+    if (price === 'low-to-high') {
+      sortQuery.price = 1;
+    } else if (price === 'high-to-low') {
+      sortQuery.price = -1;
+    }
+
+    const count = await Product.countDocuments(query);
+    const products = await Product.find(query)
+      .sort(sortQuery)
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
+      .populate('reviews', {strictPopulate: false})
+      .exec();
+
+    const pages = Math.ceil(count / perPage);
+
+    res.json({ products, pages });
   } catch (err) {
     next(err);
   }
@@ -178,6 +148,17 @@ router.get("/api/products/:id/reviews", async (req, res, next) => {
     }
   } catch (err) {
     console.log(err)
+  }
+})
+
+router.get("/api/categories", async (req, res, next) => {
+  try {
+    const categories = await Product.distinct('category')
+    res.json(categories)
+    next()
+  } catch (err) {
+    console.log(err)
+    next(err)
   }
 })
 

@@ -10,6 +10,7 @@ const ProductList = () => {
   const [search, setSearch] = useState('');
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchProducts = async (page, category, price, search) => {
     let pageURL;
@@ -44,7 +45,6 @@ const ProductList = () => {
     return response;
   }
 
-
   const getInitialProducts = async () => {
 
     const products = await axios.get('http://localhost:8000/api/products', {
@@ -64,7 +64,6 @@ const ProductList = () => {
     setCategories(categories.data);
   }
 
-
   useEffect(() => {
     getInitialProducts();
   }
@@ -72,18 +71,24 @@ const ProductList = () => {
 
   useEffect(() => {
     setButtons(generatePageButtons());
-  }, [pages]);
+  }, [pages, currentPage]);
 
   const getNewPage = async (page) => {
-    const products = await fetchProducts(page, filter.category || null, filter.price || null, search || null);
+    const products = await fetchProducts(page, filter.category || null, filter.price || null, search);
     setProducts(products.data.products);
+    setCurrentPage(page);
+    setButtons(generatePageButtons());
   }
 
   const generatePageButtons = () => {
 
     let newButtons = []
     for(let i = 1; i <= pages; i++) {
-      newButtons.push(<button key={i} onClick={() => getNewPage(i)}>{i}</button>)
+      if(i === currentPage) {
+        newButtons.push(<button key={i} className='btn btn-secondary' onClick={() => getNewPage(i)}>{i}</button>)
+      } else {
+      newButtons.push(<button key={i} className='btn btn-primary' onClick={() => getNewPage(i)}>{i}</button>)
+      }
     }
     return newButtons;
   }
@@ -118,7 +123,7 @@ const ProductList = () => {
   const searchProducts = (e) => {
     setSearch(e.target.value);
   }
-  
+
   return (
     <div>
     <div className='form-group d-flex'>

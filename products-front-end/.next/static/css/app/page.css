@@ -1,0 +1,57 @@
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./app/styles.css ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+.container {
+  margin-top: 40px;
+}
+
+.product {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-border {
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  width: 300px;
+  margin: 0.5rem;
+}
+
+.pagination {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.pagination button.active {
+  background-color: #547faa;
+  color: #fff;
+  border-color: #547faa;
+}
+
+.sort-dropdown {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.search-sort-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 50px;
+  margin-left: 100px;
+}
+
+.sort-dropdowns {
+  display: flex;
+  gap: 10px;
+  margin-right: 100px;
+}
+
+.search-bar input {
+  width: 500px;
+}
+

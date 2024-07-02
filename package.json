@@ -1,0 +1,31 @@
+{
+  "name": "product-list",
+  "version": "0.1.0",
+  "description": "e-commerce site to practice express, mongo, and mongoose",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sswaringin/product-list.git"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "Stephen Swaringin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sswaringin/product-list/issues"
+  },
+  "homepage": "https://github.com/sswaringin/product-list#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "faker": "^5.5.3",
+    "mongoose": "^8.4.4"
+  }
+}

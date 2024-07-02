@@ -1,6 +1,7 @@
-## Product List
+# Product List
 
+## Description
+This project is intended to run on a Node.js server to provide a fictitious e-commerce site using Express and MongoDB.
 
-This project has been created by a student at Parsity, an online software engineering course. The work in this repository is wholly of the student based on a sample starter project that can be accessed by looking at the repository that this project forks.
-
-If you have any questions about this project or the program in general, visit [parsity.io](https://parsity.io/) or email hello@parsity.io.
+## Getting Started
+To manually run the server, use 'npm install' to get the required dependencies; and use 'npm run' or use F5 from vscode for debugging.

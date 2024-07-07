@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 const { Product } = require('../models/product');
 const mongoose = require('mongoose');
 
@@ -12,6 +12,7 @@ router.param('productId', (req, res, next, id) => {
 });
 
 router.get('/get-fake-data', async (req, res, next) => {
+  
   for (let i = 0; i < 100; i++) {
     let product = new Product();
     const numReviews = Math.floor(Math.random() * 8);
@@ -24,7 +25,7 @@ router.get('/get-fake-data', async (req, res, next) => {
     // Create fake reviews
     for (let j = 0; j < numReviews; j++) {
       const username = faker.internet.userName();
-      const text = faker.lorem.text();
+      const text = faker.lorem.sentence();
       
       product.reviews.push(
         {

@@ -31,20 +31,16 @@ async function addFakeData (req, res, next) {
 }
 
 function getProducts(req, res, next) {
-  // takes query for page number and defaults to 1 if no page included
-  let reqPage = req.query.page || 1;
+  const { page = 1, category } = req.query; // Defaults to page 1
+  const limit = 9; // Limits the returned reviews to 4 per page
+  const skip = page <= 0 ? undefined : (page - 1) * limit;
+  const query = {};
 
-  // prevent invalid page numbers
-  if (reqPage <= 0) {
-    reqPage = 1;
-  }
-
-  // sets page size to 9
-  const perPage = 9;
+  if (!!category) { query.category = category };
   
-  Product.find()
-    .skip((reqPage - 1) * perPage)
-    .limit(perPage)
+  Product.find(query)
+    .skip(skip)
+    .limit(limit)
     .then((products) => {
       res.send(products);
     })
@@ -86,16 +82,17 @@ async function paginateReviews (req, res, next) {
   const start = (page - 1) * limit;
   const stop = page * limit;
 
-  const reviewsWithoutId = await filterReviews(req.results);
+  // const reviewsWithoutId = await filterReviews(req.results);
 
   // Slices the array to return only 4 reviews per page
-  req.results = reviewsWithoutId.slice(start, stop);
+  const reviewsLimited = req.results.reviews.slice(start, stop);
 
-  const reviewCount = reviewsWithoutId.length;
+  const reviewCount = reviewsLimited.length;
   const pageCount = Math.ceil(reviewCount / limit);
-  console.log({reviewCount, pageCount});
+  console.log({reviewCount, pageCount, page});
 
-  next();
+  // Sends results to client
+  res.send(reviewsLimited);
 }
 
 async function addProduct(req, res) {
@@ -135,4 +132,34 @@ function addReview(req, res) {
     );
 }
 
-module.exports = { addFakeData, getProducts, getProduct, addProduct, paginateReviews, addReview };
+async function deleteProduct(req, res) {
+  // Pulls productId from url parameter
+  const { productId } = req.params;
+
+  await Product.findByIdAndDelete(productId);
+  
+  res.send('Product deleted');
+}
+
+async function deleteReview(req, res) {
+  // Pulls reviewId from url parameter
+  const { productId, reviewId } = req.params;
+
+  const product = await Product.findById(productId);
+  product.reviews.id(reviewId).deleteOne();
+  
+  await product.save();
+
+  res.send('Review deleted');
+}
+
+module.exports = { 
+  addFakeData, 
+  getProducts, 
+  getProduct, 
+  addProduct, 
+  paginateReviews, 
+  addReview,
+  deleteProduct,
+  deleteReview
+};

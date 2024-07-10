@@ -7,7 +7,7 @@ const productSchema = new Schema({
   name: String,
   price: Number,
   image: String,
-  reviews: [ reviewSchema ]
+  reviews: [ reviewSchema ] // Adding reviews as subdocuments
 });
 
 const Product = mongoose.model('Product', productSchema);

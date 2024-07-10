@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const { 
-  addFakeData, 
   getProducts, 
   getProduct, 
   addProduct, 
   paginateReviews, 
-  addReview 
+  addReview,
+  deleteProduct,
+  deleteReview 
 } = require('../util/helpers');
 
 //Checks that a valid productId is passed in the url
@@ -17,26 +18,27 @@ router.param('productId', (req, res, next, id) => {
   next();
 });
 
-// A route that adds fake data to the DB
-router.get('/get-fake-data', addFakeData);
-
 // A route to return all products (limit: 9 per page)
-router.get('/products', getProducts);
+router.get('/', getProducts);
 
 // A route to return a specific product by id
-router.get('/products/:productId', getProduct, (req, res) => {
+router.get('/:productId', getProduct, (req, res) => {
   res.send(req.results);
 });
 
 // A route that returns reviews for a specific product id (limit: 4 per page)
-router.get('/products/:productId/reviews', [getProduct, paginateReviews], (req, res) => { 
-  res.send(req.results);
-});
+router.get('/:productId/reviews', [getProduct, paginateReviews]);
 
 // A route to add a new product
-router.post('/products', addProduct);
+router.post('/', addProduct);
 
 // A route to add a new review to a product
-router.post('/products/:productId/reviews', addReview);
+router.post('/:productId/reviews', addReview);
+
+// A route to delete a product
+router.delete('/:productId', deleteProduct);
+
+// A route to delete a review
+router.delete('/:productId/reviews/:reviewId', deleteReview);
 
 module.exports = router;

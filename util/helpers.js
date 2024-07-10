@@ -31,22 +31,32 @@ async function addFakeData (req, res, next) {
 }
 
 async function getProducts(req, res, next) {
-  let { page = 1 } = req.query; 
-  const { category, price } = req.query;
+  let page = Number(req.query.page); 
+  const { category, price, query } = req.query;
   
   // Check that the value of page is correct and default to 1 if not
-  if (page <= 0 || typeof page !== 'number') { page = 1 }
+  if (page <= 0 || isNaN(page)) { page = 1 }
   
   const limit = 9; // Limits the returned reviews to 9 per page
   const start = (page - 1) * limit;
   const stop = page * limit;
-  const query = {};
+  const queryFilter = {};
 
   // If a category was included, add it to the query object.
-  if (!!category) { query.category = category };
+  if (!!category) { queryFilter.category = { category } };
+
+  // If a query parameter for 'query' was included, add it to the query object.
+  if (!!query) { 
+    queryFilter.$or = [
+      { name: { $regex: query, $options: 'i' } }, 
+      { category: { $regex: query, $options: 'i' } }
+    ]; 
+  }
 
   // Stores all results returned by MongoDB
-  const results = await Product.find(query);
+  const results = await Product.find(queryFilter);
+  const resultsCount = results.length;
+  const totalPages = Math.ceil(resultsCount / limit);
 
   // Sort the results if the price query value is included
   if (price === 'lowest') {
@@ -61,7 +71,7 @@ async function getProducts(req, res, next) {
   const resultsLimited = results.slice(start, stop);
 
   // Sends the paginated results to the client
-  res.send(resultsLimited);
+  res.send({ resultsCount, totalPages, page, resultsLimited });
 }
 
 // A callback function to find a specific product by ID

@@ -13,7 +13,15 @@ const {
 //Checks that a valid productId is passed in the url
 router.param('productId', (req, res, next, id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send('Invalid productId');
+    return res.status(404).send(JSON.stringify({error: 'Invalid productId'}));
+  }
+  next();
+});
+
+//Checks that a valid reviewId is passed in the url
+router.param('reviewId', (req, res, next, id) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).send(JSON.stringify({error: 'Invalid reviewId'}));
   }
   next();
 });

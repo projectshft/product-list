@@ -30,21 +30,24 @@ async function addFakeData (req, res, next) {
   res.status(200).send('Products saved');
 }
 
-function getProducts(req, res, next) {
+async function getProducts(req, res, next) {
   const { page = 1, category } = req.query; // Defaults to page 1
   const limit = 9; // Limits the returned reviews to 4 per page
-  const skip = page <= 0 ? undefined : (page - 1) * limit;
+  const start = page <= 0 ? undefined : (page - 1) * limit;
+  const stop = page * limit;
   const query = {};
 
+  // Checks if a category was included as a query
   if (!!category) { query.category = category };
-  
-  Product.find(query)
-    .skip(skip)
-    .limit(limit)
-    .then((products) => {
-      res.send(products);
-    })
-    .catch(err => console.error(err));
+
+  // Stores all results returned by MongoDB
+  const results = await Product.find(query);
+
+  // Slices the array to return only 9 results per page
+  const resultsLimited = results.slice(start, stop);
+
+  // Sends the paginated results to the client
+  res.send(resultsLimited);
 }
 
 // A callback function to find a specific product by ID
@@ -82,8 +85,6 @@ async function paginateReviews (req, res, next) {
   const start = (page - 1) * limit;
   const stop = page * limit;
 
-  // const reviewsWithoutId = await filterReviews(req.results);
-
   // Slices the array to return only 4 reviews per page
   const reviewsLimited = req.results.reviews.slice(start, stop);
 
@@ -102,12 +103,7 @@ async function addProduct(req, res) {
     return res.status(401).send('Please provide a name, price, category, and image.');
   }
   
-  let product = new Product();
-
-  product.name = name;
-  product.price = price;
-  product.category = category;
-  product.image = image;
+  let product = new Product({name, price, category, image});
 
   await product.save();
 

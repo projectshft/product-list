@@ -31,17 +31,31 @@ async function addFakeData (req, res, next) {
 }
 
 async function getProducts(req, res, next) {
-  const { page = 1, category } = req.query; // Defaults to page 1
-  const limit = 9; // Limits the returned reviews to 4 per page
-  const start = page <= 0 ? undefined : (page - 1) * limit;
+  let { page = 1 } = req.query; 
+  const { category, price } = req.query;
+  
+  // Check that the value of page is correct and default to 1 if not
+  if (page <= 0 || typeof page !== 'number') { page = 1 }
+  
+  const limit = 9; // Limits the returned reviews to 9 per page
+  const start = (page - 1) * limit;
   const stop = page * limit;
   const query = {};
 
-  // Checks if a category was included as a query
+  // If a category was included, add it to the query object.
   if (!!category) { query.category = category };
 
   // Stores all results returned by MongoDB
   const results = await Product.find(query);
+
+  // Sort the results if the price query value is included
+  if (price === 'lowest') {
+    results.sort((a, b) => a.price - b.price);
+  }
+
+  if (price === 'highest') {
+    results.sort((a, b) => b.price - a.price);
+  }
 
   // Slices the array to return only 9 results per page
   const resultsLimited = results.slice(start, stop);
@@ -61,11 +75,12 @@ async function getProduct(req, res, next) {
   next();
 }
 
+// A function to pull the reviews array from a product document and log review count
 function getReviews(productObj) {
-  const reviewsCount = productObj.reviews.length;
-  console.log({reviewsCount});
+  const reviews = productObj.reviews;
+  console.log({reviews: reviews.length});
   
-  return productObj.reviews;
+  return reviews;
 }
 
 // A function to remove the _id field from each review

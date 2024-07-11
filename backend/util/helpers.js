@@ -37,7 +37,7 @@ async function getProducts(req, res, next) {
   // Check that the value of page is correct and default to 1 if not
   if (page <= 0 || isNaN(page)) { page = 1 }
   
-  const limit = 9; // Limits the returned reviews to 9 per page
+  const limit = 9; // Limits the returned products to 9 per page
   const start = (page - 1) * limit;
   const stop = page * limit;
   const queryFilter = {};

@@ -115,10 +115,9 @@ async function paginateReviews (req, res, next) {
 
   const reviewCount = reviewsLimited.length;
   const pageCount = Math.ceil(reviewCount / limit);
-  console.log({reviewCount, pageCount, page});
 
   // Sends results to client
-  res.send(reviewsLimited);
+  res.send({reviewCount, pageCount, page, reviewsLimited});
 }
 
 async function addProduct(req, res) {
@@ -132,7 +131,7 @@ async function addProduct(req, res) {
 
   await product.save();
 
-  res.status(200).send('New product added');
+  res.status(201).send({product}); // New product added
 }
 
 function addReview(req, res) {
@@ -147,8 +146,9 @@ function addReview(req, res) {
     .then(
       product => {
         product.reviews.push({username, text});
+        const review = product.reviews.slice(-1);
         product.save();
-        res.status(200).send('New review added');
+        res.status(201).send(review[0]); // New review added
       }
     );
 }
@@ -159,7 +159,7 @@ async function deleteProduct(req, res) {
 
   await Product.findByIdAndDelete(productId);
   
-  res.send('Product deleted');
+  res.status(204).send('Successful operation');
 }
 
 async function deleteReview(req, res) {
@@ -171,7 +171,7 @@ async function deleteReview(req, res) {
   
   await product.save();
 
-  res.send('Review deleted');
+  res.status(204).send('Successful operation');
 }
 
 module.exports = { 

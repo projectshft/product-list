@@ -43,7 +43,7 @@ async function getProducts(req, res, next) {
   const queryFilter = {};
 
   // If a category was included, add it to the query object.
-  if (!!category) { queryFilter.category = { category } };
+  if (!!category) { queryFilter.category = category };
 
   // If a query parameter for 'query' was included, add it to the query object.
   if (!!query) { 
@@ -81,6 +81,8 @@ async function getProduct(req, res, next) {
   
   // Searches MongoDB for productId
   req.results = await Product.findById(productId);
+
+  if(!req.results) { return res.status(404).send({ error: 'Product not found'}) }
   
   next();
 }

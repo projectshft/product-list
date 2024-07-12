@@ -51,6 +51,22 @@ describe('Products', () => {
           done();
         });
     });
+    it('should return an error for an invalid productId', done => {
+      chai.request(server)
+        .get(`/products/badId`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
+    it('should return nothing for a nonexistent productId', done => {
+      chai.request(server)
+        .get(`/products/668d13b2a3d2614375b490df`)
+        .end((err, res) => {
+          res.should.have.status(404);
+          done();
+        });
+    });
   });
   describe('/GET product reviews', () => {
     /**Successfully get a product's reviews*/
@@ -70,9 +86,32 @@ describe('Products', () => {
         .post('/products')
         .send(testProduct)
         .end((err, res) => {
-          // console.log(res.body);
           res.should.have.status(201);
           productId = res.body.product._id;
+          done();
+        });
+    });
+  });
+  describe('/GET product by category', () => {
+    /**Successfully find a product by category*/
+    it('should find a product by category and return 200', done => {
+      chai.request(server)
+        .get('/products?category=' + testProduct.category)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.resultsCount.should.be.eq(1);
+          done();
+        });
+    });
+  });
+  describe('/GET product by query search', () => {
+    /**Successfully find a product by query*/
+    it('should find a product by query and return 200', done => {
+      chai.request(server)
+        .get('/products?query=coffe') // Purposefully misspelled
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.resultsCount.should.be.eq(1);
           done();
         });
     });

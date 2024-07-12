@@ -15,6 +15,8 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState: {
     results: {},
+    status: 'idle',
+    error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -32,7 +34,5 @@ export const productsSlice = createSlice({
       });
   },
 });
-
-// export const { setActiveProduct } = productsSlice.actions;
 
 export default productsSlice.reducer;

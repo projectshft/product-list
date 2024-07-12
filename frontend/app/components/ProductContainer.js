@@ -7,9 +7,7 @@ import { fetchProducts } from '../store/slices/products';
 
 export function ProductContainer() {
   const dispatch = useDispatch();
-  const products = useSelector(
-    (state) => state.products.results.resultsLimited,
-  );
+  const resultsLimited = useSelector((state) => state.products.resultsLimited);
   const productsStatus = useSelector((state) => state.products.status);
   const [prodArr, setProdArr] = useState([]);
 
@@ -20,12 +18,12 @@ export function ProductContainer() {
   }, [dispatch, productsStatus]);
 
   useEffect(() => {
-    if (products?.length > 0) {
-      setProdArr([...products]);
+    if (resultsLimited?.length > 0) {
+      setProdArr([...resultsLimited]);
     }
-  }, [products]);
+  }, [resultsLimited]);
 
-  // console.log({products});
+  // console.log({resultsLimited});
   // console.log({productsStatus});
   // console.log({ prodArr });
 

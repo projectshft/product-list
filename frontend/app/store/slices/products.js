@@ -3,9 +3,25 @@ import axios from 'axios';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async () => {
+  async (pageNum) => {
+    const requestUrl = 'http://localhost:8000/products';
+    let queryParams = '';
+
+    if (pageNum) {
+      queryParams += `?page=${pageNum}`;
+    }
+
+    // console.log('query params: ', !!queryParams, { queryParams });
+
+    if (queryParams) {
+      // Get all products
+      const response = await axios.get(requestUrl + queryParams);
+
+      return response.data;
+    }
+
     // Get all products
-    const response = await axios.get('http://localhost:8000/products');
+    const response = await axios.get(requestUrl);
 
     return response.data;
   },
@@ -14,7 +30,10 @@ export const fetchProducts = createAsyncThunk(
 export const productsSlice = createSlice({
   name: 'products',
   initialState: {
-    results: {},
+    resultsLimited: [],
+		resultsCount: null,
+		activePage: '1',
+		totalPages: null,
     status: 'idle',
     error: null,
   },
@@ -26,7 +45,10 @@ export const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.results = action.payload;
+        state.resultsLimited = action.payload.resultsLimited;
+        state.activePage = action.payload.page;
+        state.resultsCount = action.payload.resultsCount;
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed';

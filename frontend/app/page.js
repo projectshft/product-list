@@ -6,8 +6,8 @@ import { ProductPageNav } from './components/ProductPageNav';
 export default function Home() {
   return (
     <main>
-      <ProductPageNav />
       <ProductContainer />
+      <ProductPageNav />
     </main>
   );
 }

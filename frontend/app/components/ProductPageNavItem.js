@@ -1,30 +1,29 @@
 'use client';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../store/slices/products';
+/* eslint-disable react/prop-types */
 
 /**
  * A component to render a single item in the page nav
  * @returns Functional React Component
  */
+export function ProductPageNavItem({ page, isActive = false, onClick }) {
+  // Highlights active page in the nav
+  const classValues = isActive ? 'page-item active' : 'page-item';
 
-export function ProductPageNavItem({ page }) {
-  const dispatch = useDispatch();
-
-  function handleClick(pageNum) {
-    // Call dispatch to fetchProducts
-    dispatch(fetchProducts(pageNum));
+  // Disables click on the active page
+  if (isActive) {
+    return (
+      <li className={classValues}>
+        <span className="page-link">{page}</span>
+      </li>
+    );
   }
 
   return (
-    <li className="page-item">
-      <a
-        className="page-link"
-        href="#"
-        onClick={(event) => handleClick(event.target.innerHTML)}
-      >
+    <li className={classValues}>
+      <button type="button" className="page-link" onClick={() => onClick(page)}>
         {page}
-      </a>
+      </button>
     </li>
   );
 }

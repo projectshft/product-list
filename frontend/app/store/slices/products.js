@@ -3,12 +3,12 @@ import axios from 'axios';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async (pageNum) => {
+  async (page) => {
     const requestUrl = 'http://localhost:8000/products';
     let queryParams = '';
 
-    if (pageNum) {
-      queryParams += `?page=${pageNum}`;
+    if (page) {
+      queryParams += `?page=${page}`;
     }
 
     // console.log('query params: ', !!queryParams, { queryParams });
@@ -31,9 +31,9 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState: {
     resultsLimited: [],
-		resultsCount: null,
-		activePage: '1',
-		totalPages: null,
+    resultsCount: null,
+    activePage: '1',
+    totalPages: null,
     status: 'idle',
     error: null,
   },

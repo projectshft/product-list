@@ -1,56 +1,31 @@
 'use client';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../store/slices/products';
+import { useSelector } from 'react-redux';
+import { ProductPageNavItem } from './ProductPageNavItem';
+
+/**
+ * A component to render the entire page nav
+ * @returns Functional React Component
+ */
 
 export function ProductPageNav() {
-  const dispatch = useDispatch();
   const totalPages = useSelector((state) => state.products.totalPages);
 
-  // Create an array of page numbers
+  // Create an array of page numbers based on the totalPages returned by Mongo
   const pageNumbers = Array.from(
     { length: totalPages },
-    (_, index) => index + 1,
+    (_, index) => index + 1, // Starts from 1
   );
-
-  function handleClick(pageNum) {
-    // Call dispatch to fetchProducts
-    dispatch(fetchProducts(pageNum));
-  }
 
   return (
     <div className="d-flex justify-content-center">
       <nav aria-label="products pages">
         <ul className="pagination">
-          <li className="page-item">
-            <a
-              className="page-link"
-              href="#"
-              onClick={(event) => handleClick(event.target.innerHTML)}
-            >
-              Previous
-            </a>
-          </li>
-          {pageNumbers.map((page) => (
-            <li key={page} className="page-item">
-              <a
-                className="page-link"
-                href="#"
-                onClick={(event) => handleClick(event.target.innerHTML)}
-              >
-                {page}
-              </a>
-            </li>
+          <ProductPageNavItem page="Previous" />
+          {pageNumbers.map((page, index) => (
+            <ProductPageNavItem key={index} page={page} />
           ))}
-          <li className="page-item">
-            <a
-              className="page-link"
-              href="#"
-              onClick={(event) => handleClick(event.target.innerHTML)}
-            >
-              Next
-            </a>
-          </li>
+          <ProductPageNavItem page="Next" />
         </ul>
       </nav>
     </div>

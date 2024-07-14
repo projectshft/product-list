@@ -6,7 +6,7 @@ export function ProductCard({
 }) {
   return (
     <div className="col">
-      <div className="card">
+      <div className="card mb-4">
         <div className="card-body">
           <div className="d-flex justify-content-between">
             <div>
@@ -17,12 +17,11 @@ export function ProductCard({
             </div>
           </div>
           <div>
-            <div>
-              {/* className="d-flex justify-content-center" */} 
-              <img src={image} className="img-thumbnail" alt="..."/>
+            <div className="d-flex justify-content-center pt-2 pb-2">
+              <img src={image} alt="product" />
             </div>
             <div>
-              <h3>{name}</h3>
+              <h4>{name}</h4>
             </div>
           </div>
         </div>

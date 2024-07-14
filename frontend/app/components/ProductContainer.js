@@ -26,7 +26,7 @@ export function ProductContainer() {
   return (
     <div className="album">
       <div className="container">
-        <div className="row row-cols-md-3">
+        <div className="row row-cols-xl-3">
           {prodArr.map((product) => (
             <ProductCard
               key={product._id}

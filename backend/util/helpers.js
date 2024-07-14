@@ -53,10 +53,16 @@ async function getProducts(req, res, next) {
     ]; 
   }
 
+  // console.log({ queryFilter });
+
   // Stores all results returned by MongoDB
   const results = await Product.find(queryFilter);
   const resultsCount = results.length;
   const totalPages = Math.ceil(resultsCount / limit);
+  const categories = results.map(result => result.category);
+  const categoriesReduced = categories.reduce((acc, cur) => {
+    return acc.includes(cur) ? [...acc] : [...acc, cur];
+  }, []);
 
   // Sort the results if the price query value is included
   if (price === 'lowest') {
@@ -71,7 +77,7 @@ async function getProducts(req, res, next) {
   const resultsLimited = results.slice(start, stop);
 
   // Sends the paginated results to the client
-  res.send({ resultsCount, totalPages, page, resultsLimited, query });
+  res.send({ resultsCount, totalPages, page, resultsLimited, query, categoriesReduced });
 }
 
 // A callback function to find a specific product by ID

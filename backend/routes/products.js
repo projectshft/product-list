@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const { 
-  getProducts, 
+  getProducts,
+  getCategories, 
   getProduct, 
   addProduct, 
   paginateReviews, 
@@ -28,6 +29,9 @@ router.param('reviewId', (req, res, next, id) => {
 
 // A route to return all products (limit: 9 per page)
 router.get('/', getProducts);
+
+// A route that returns all unique categories
+router.get('/categories', getCategories);
 
 // A route to return a specific product by id
 router.get('/:productId', getProduct, (req, res) => {

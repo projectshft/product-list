@@ -35,6 +35,18 @@ describe('Products', () => {
         });
     });
   });
+  describe('/GET categories', () => {
+    /**Successful get all product categories*/
+    it('should return all categories', done => {
+      chai.request(server)
+        .get('/products/categories')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.length.should.be.eq(21);
+          done();
+        });
+    });
+  });
   describe('/GET single product', () => {
     /**Successfully get a single product*/
     it('should return one product', done => {

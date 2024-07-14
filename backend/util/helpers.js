@@ -74,6 +74,23 @@ async function getProducts(req, res, next) {
   res.send({ resultsCount, totalPages, page, resultsLimited, query });
 }
 
+// A callback function to pull all categories
+async function getCategories(req, res, next) {
+  // Query all products from MongoDB
+  const results = await Product.find({});
+  
+  // Map all categories
+  const categories = results.map(result => result.category);
+  
+  // Reduce to unique categories
+  const categoriesReduced = categories.reduce((acc, cur) => {
+    return acc.includes(cur) ? [...acc] : [...acc, cur];
+  }, []);
+  
+  // Sends categories array to client
+  res.send(categoriesReduced);
+}
+
 // A callback function to find a specific product by ID
 async function getProduct(req, res, next) {
   // Pulls productId from url parameter
@@ -178,7 +195,8 @@ async function deleteReview(req, res) {
 
 module.exports = { 
   addFakeData, 
-  getProducts, 
+  getProducts,
+  getCategories, 
   getProduct, 
   addProduct, 
   paginateReviews, 

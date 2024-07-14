@@ -23,10 +23,6 @@ export function ProductContainer() {
     }
   }, [resultsLimited]);
 
-  // console.log({resultsLimited});
-  // console.log({productsStatus});
-  // console.log({ prodArr });
-
   return (
     <div className="album">
       <div className="container">

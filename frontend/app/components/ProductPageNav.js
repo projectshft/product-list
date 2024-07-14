@@ -16,6 +16,7 @@ export function ProductPageNav() {
   const dispatch = useDispatch();
   const totalPages = useSelector((state) => state.products.totalPages);
   const currentPage = useSelector((state) => Number(state.products.activePage));
+  const searchValue = useSelector((state) => state.products.searchValue);
 
   // Create an array of page numbers based on the totalPages returned by Mongo
   const pageNumbers = Array.from(
@@ -28,7 +29,7 @@ export function ProductPageNav() {
 
   function handleClick(pageNum) {
     // Call dispatch to fetchProducts
-    dispatch(fetchProducts(pageNum));
+    dispatch(fetchProducts({ page: pageNum, search: searchValue }));
 
     // Change the active page nav item
     setActivePage(pageNum);

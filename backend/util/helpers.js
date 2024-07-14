@@ -71,7 +71,7 @@ async function getProducts(req, res, next) {
   const resultsLimited = results.slice(start, stop);
 
   // Sends the paginated results to the client
-  res.send({ resultsCount, totalPages, page, resultsLimited });
+  res.send({ resultsCount, totalPages, page, resultsLimited, query });
 }
 
 // A callback function to find a specific product by ID

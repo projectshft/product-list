@@ -1,5 +1,6 @@
 'use client';
 
+import { ProductCategories } from './ProductCategories';
 import { ProductSearch } from './ProductSearch';
 
 /**
@@ -11,6 +12,7 @@ export function ProductControls() {
     <div className="container">
       <div className="row">
         <ProductSearch />
+        <ProductCategories />
       </div>
     </div>
   );

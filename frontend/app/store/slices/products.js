@@ -5,13 +5,10 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (params = {}, { getState }) => {
     const state = await getState();
-    const {
-      page = '',
-      search = '',
-    } = params;
+    const { page = '' } = params;
     const requestUrl = 'http://localhost:8000/products';
     const queryParams = [];
-    const { category, price } = state.products;
+    const { category, price, searchValue } = state.products;
 
     if (category) {
       queryParams.push(`category=${category}`);
@@ -21,8 +18,8 @@ export const fetchProducts = createAsyncThunk(
       queryParams.push(`page=${page}`);
     }
 
-    if (search) {
-      queryParams.push(`query=${search}`);
+    if (searchValue) {
+      queryParams.push(`query=${searchValue}`);
     }
 
     if (price) {
@@ -73,6 +70,9 @@ export const productsSlice = createSlice({
     priceSelected(state, action) {
       state.price = action.payload;
     },
+    searchUpdated(state, action) {
+      state.searchValue = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -106,6 +106,6 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { categorySelected, priceSelected } = productsSlice.actions;
+export const { categorySelected, priceSelected, searchUpdated } = productsSlice.actions;
 
 export default productsSlice.reducer;

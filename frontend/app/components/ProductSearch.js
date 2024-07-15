@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchProducts } from '../store/slices/products';
+import { searchUpdated, fetchProducts } from '../store/slices/products';
 
 /**
  * A component to render a search/input
@@ -19,7 +19,8 @@ export function ProductSearch() {
   // Debounce the the search value to prevent a query for each keystroke
   useEffect(() => {
     const sendSearch = setTimeout(() => {
-      dispatch(fetchProducts({ search }));
+      dispatch(searchUpdated(search));
+      dispatch(fetchProducts());
     }, 1000);
 
     return () => clearTimeout(sendSearch);

@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { categorySelected, fetchCategories, fetchProducts } from '../store/slices/products';
+import {
+  categorySelected,
+  fetchCategories,
+  fetchProducts,
+} from '../store/slices/products';
 
 /**
  * A component to render a dropdown to filter by category
@@ -12,7 +16,6 @@ export function ProductCategories() {
   const dispatch = useDispatch();
   const [category, setCategory] = useState('');
   const categories = useSelector((state) => state.products.categories);
-  const search = useSelector((state) => state.products.searchValue);
 
   function handleCategoryChange(value) {
     setCategory(value);
@@ -28,8 +31,8 @@ export function ProductCategories() {
   // Fetch products filtered by category
   useEffect(() => {
     dispatch(categorySelected(category));
-    dispatch(fetchProducts({ search }));
-  }, [category, search, dispatch]);
+    dispatch(fetchProducts());
+  }, [category, dispatch]);
 
   return (
     <div className="col col-3">

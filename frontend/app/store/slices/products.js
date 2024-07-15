@@ -5,9 +5,13 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (params = {}, { getState }) => {
     const state = getState();
-    const { page = state.activePage, search = '' } = params;
+    const { page = state.activePage, search = '', category = '' } = params;
     const requestUrl = 'http://localhost:8000/products';
     const queryParams = [];
+
+    if (category) {
+      queryParams.push(`category=${category}`);
+    }
 
     if (page) {
       queryParams.push(`page=${page}`);
@@ -19,10 +23,22 @@ export const fetchProducts = createAsyncThunk(
 
     // Build queryString based on what parameters are dispatched to the asyncThunk
     const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-    // console.log({ queryString });
+    console.log({ queryString });
 
     // Get all products
     const response = await axios.get(requestUrl + queryString);
+
+    return response.data;
+  },
+);
+
+export const fetchCategories = createAsyncThunk(
+  'products/fetchCategories',
+  async () => {
+    const requestUrl = 'http://localhost:8000/products/categories';
+
+    // Get all categories
+    const response = await axios.get(requestUrl);
 
     return response.data;
   },
@@ -37,6 +53,7 @@ export const productsSlice = createSlice({
     totalPages: null,
     status: 'idle',
     searchValue: '',
+    categories: [],
     error: null,
   },
   reducers: {},
@@ -54,6 +71,17 @@ export const productsSlice = createSlice({
         state.searchValue = action.payload.query;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(fetchCategories.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.categories = action.payload;
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchProducts } from '../store/slices/products';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories, fetchProducts } from '../store/slices/products';
 
 /**
  * A component to render a dropdown to filter by category
@@ -10,20 +10,37 @@ import { fetchProducts } from '../store/slices/products';
  */
 export function ProductCategories() {
   const dispatch = useDispatch();
-  const [searchValue, setSearchValue] = useState('');
+  const [category, setCategory] = useState('');
+  const categories = useSelector((state) => state.products.categories);
 
-  // function handleSearchChange(value) {
-  //   setSearchValue(value);
-  // }
+  function handleCategoryChange(value) {
+    setCategory(value);
+  }
+
+  // Fetch categories on initial render
+  useEffect(() => {
+    if (categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [categories, dispatch]);
+
+  // Fetch products filtered by category
+  useEffect(() => {
+    dispatch(fetchProducts({ category }));
+  }, [category, dispatch]);
 
   return (
     <div className="col col-3">
       <div className="d-flex justify-content-center pb-4 pt-4">
-        <select className="form-select">
-          <option selected>Filter by Category</option>
-          <option>Toys</option>
-          <option>Electronics</option>
-          <option>Grocery</option>
+        <select
+          className="form-select"
+          value={category}
+          onChange={(e) => handleCategoryChange(e.target.value)}
+        >
+          <option value="">Filter by Category</option>
+          {categories.map((cat, i) => (
+            <option key={i}>{cat}</option>
+          ))}
         </select>
       </div>
     </div>

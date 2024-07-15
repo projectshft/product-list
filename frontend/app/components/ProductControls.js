@@ -1,6 +1,7 @@
 'use client';
 
 import { ProductCategories } from './ProductCategories';
+import { ProductPrice } from './ProductPrice';
 import { ProductSearch } from './ProductSearch';
 
 /**
@@ -13,6 +14,7 @@ export function ProductControls() {
       <div className="row">
         <ProductSearch />
         <ProductCategories />
+        <ProductPrice />
       </div>
     </div>
   );

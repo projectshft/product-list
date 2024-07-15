@@ -4,10 +4,15 @@ import axios from 'axios';
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (params = {}, { getState }) => {
-    const state = getState();
-    const { page = state.activePage, search = '', category = '' } = params;
+    const state = await getState();
+    const {
+      page = '',
+      search = '',
+      category = '',
+    } = params;
     const requestUrl = 'http://localhost:8000/products';
     const queryParams = [];
+    const { price } = state.products;
 
     if (category) {
       queryParams.push(`category=${category}`);
@@ -21,8 +26,13 @@ export const fetchProducts = createAsyncThunk(
       queryParams.push(`query=${search}`);
     }
 
+    if (price) {
+      queryParams.push(`price=${price}`);
+    }
+
     // Build queryString based on what parameters are dispatched to the asyncThunk
     const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+    console.log({ queryString });
 
     // Get all products
     const response = await axios.get(requestUrl + queryString);
@@ -54,9 +64,14 @@ export const productsSlice = createSlice({
     searchValue: '',
     categories: [],
     category: '',
+    price: '',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    priceSelected(state, action) {
+      state.price = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
@@ -88,5 +103,7 @@ export const productsSlice = createSlice({
       });
   },
 });
+
+export const { priceSelected } = productsSlice.actions;
 
 export default productsSlice.reducer;

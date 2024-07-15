@@ -3,19 +3,18 @@ import axios from 'axios';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async (params = {}, { getState }) => {
+  async (params, { getState }) => {
     const state = await getState();
-    const { page = '' } = params;
     const requestUrl = 'http://localhost:8000/products';
     const queryParams = [];
-    const { category, price, searchValue } = state.products;
+    const { category, activePage, price, searchValue } = state.products;
 
     if (category) {
       queryParams.push(`category=${category}`);
     }
 
-    if (page) {
-      queryParams.push(`page=${page}`);
+    if (activePage) {
+      queryParams.push(`page=${activePage}`);
     }
 
     if (searchValue) {
@@ -67,6 +66,9 @@ export const productsSlice = createSlice({
     categorySelected(state, action) {
       state.category = action.payload;
     },
+    pageSelected(state, action) {
+      state.activePage = action.payload;
+    },
     priceSelected(state, action) {
       state.price = action.payload;
     },
@@ -106,6 +108,7 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { categorySelected, priceSelected, searchUpdated } = productsSlice.actions;
+export const { categorySelected, pageSelected, priceSelected, searchUpdated } =
+  productsSlice.actions;
 
 export default productsSlice.reducer;

@@ -8,11 +8,10 @@ export const fetchProducts = createAsyncThunk(
     const {
       page = '',
       search = '',
-      category = '',
     } = params;
     const requestUrl = 'http://localhost:8000/products';
     const queryParams = [];
-    const { price } = state.products;
+    const { category, price } = state.products;
 
     if (category) {
       queryParams.push(`category=${category}`);
@@ -68,6 +67,9 @@ export const productsSlice = createSlice({
     error: null,
   },
   reducers: {
+    categorySelected(state, action) {
+      state.category = action.payload;
+    },
     priceSelected(state, action) {
       state.price = action.payload;
     },
@@ -104,6 +106,6 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { priceSelected } = productsSlice.actions;
+export const { categorySelected, priceSelected } = productsSlice.actions;
 
 export default productsSlice.reducer;

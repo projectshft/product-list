@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchProducts } from '../store/slices/products';
 
 /**
@@ -11,7 +11,6 @@ import { fetchProducts } from '../store/slices/products';
 export function ProductSearch() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
-  const category = useSelector((state) => state.products.category);
 
   function handleSearchChange(value) {
     setSearch(value);
@@ -20,11 +19,11 @@ export function ProductSearch() {
   // Debounce the the search value to prevent a query for each keystroke
   useEffect(() => {
     const sendSearch = setTimeout(() => {
-      dispatch(fetchProducts({ search, category }));
+      dispatch(fetchProducts({ search }));
     }, 1000);
 
     return () => clearTimeout(sendSearch);
-  }, [search, category, dispatch]);
+  }, [search, dispatch]);
 
   return (
     <div className="col col-6">

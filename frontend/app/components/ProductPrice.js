@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { priceSelected, fetchProducts } from '../store/slices/products';
 
 /**
@@ -11,8 +11,6 @@ import { priceSelected, fetchProducts } from '../store/slices/products';
 export function ProductPrice() {
   const dispatch = useDispatch();
   const [price, setPrice] = useState('');
-  const category = useSelector((state) => state.products.category);
-  const search = useSelector((state) => state.products.searchValue);
 
   function handlePriceChange(value) {
     setPrice(value);

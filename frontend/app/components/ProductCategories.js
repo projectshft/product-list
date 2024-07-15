@@ -12,6 +12,7 @@ export function ProductCategories() {
   const dispatch = useDispatch();
   const [category, setCategory] = useState('');
   const categories = useSelector((state) => state.products.categories);
+  const search = useSelector((state) => state.products.searchValue);
 
   function handleCategoryChange(value) {
     setCategory(value);
@@ -26,8 +27,8 @@ export function ProductCategories() {
 
   // Fetch products filtered by category
   useEffect(() => {
-    dispatch(fetchProducts({ category }));
-  }, [category, dispatch]);
+    dispatch(fetchProducts({ category, search }));
+  }, [category, search, dispatch]);
 
   return (
     <div className="col col-3">

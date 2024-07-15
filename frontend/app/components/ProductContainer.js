@@ -18,7 +18,7 @@ export function ProductContainer() {
   }, [dispatch, productsStatus]);
 
   useEffect(() => {
-    if (resultsLimited?.length > 0) {
+    if (resultsLimited) {
       setProdArr([...resultsLimited]);
     }
   }, [resultsLimited]);

@@ -11,12 +11,12 @@ import { ProductNextPage } from './ProductNextPage';
  * A component to render the entire page nav
  * @returns Functional React Component
  */
-
 export function ProductPageNav() {
   const dispatch = useDispatch();
   const totalPages = useSelector((state) => state.products.totalPages);
   const currentPage = useSelector((state) => Number(state.products.activePage));
-  const searchValue = useSelector((state) => state.products.searchValue);
+  const search = useSelector((state) => state.products.searchValue);
+  const category = useSelector((state) => state.products.category);
 
   // Create an array of page numbers based on the totalPages returned by Mongo
   const pageNumbers = Array.from(
@@ -27,12 +27,12 @@ export function ProductPageNav() {
   // Keeps track of if a page has been selected (with nothing being selected initially)
   const [activePage, setActivePage] = useState(currentPage);
 
-  function handleClick(pageNum) {
+  function handleClick(page) {
     // Call dispatch to fetchProducts
-    dispatch(fetchProducts({ page: pageNum, search: searchValue }));
+    dispatch(fetchProducts({ page, search, category }));
 
     // Change the active page nav item
-    setActivePage(pageNum);
+    setActivePage(page);
   }
 
   return (

@@ -23,7 +23,6 @@ export const fetchProducts = createAsyncThunk(
 
     // Build queryString based on what parameters are dispatched to the asyncThunk
     const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-    console.log({ queryString });
 
     // Get all products
     const response = await axios.get(requestUrl + queryString);
@@ -54,6 +53,7 @@ export const productsSlice = createSlice({
     status: 'idle',
     searchValue: '',
     categories: [],
+    category: '',
     error: null,
   },
   reducers: {},
@@ -69,6 +69,7 @@ export const productsSlice = createSlice({
         state.resultsCount = action.payload.resultsCount;
         state.totalPages = action.payload.totalPages;
         state.searchValue = action.payload.query;
+        state.category = action.payload.category;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed';

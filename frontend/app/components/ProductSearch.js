@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '../store/slices/products';
 
 /**
@@ -10,27 +10,28 @@ import { fetchProducts } from '../store/slices/products';
  */
 export function ProductSearch() {
   const dispatch = useDispatch();
-  const [searchValue, setSearchValue] = useState('');
+  const [search, setSearch] = useState('');
+  const category = useSelector((state) => state.products.category);
 
   function handleSearchChange(value) {
-    setSearchValue(value);
+    setSearch(value);
   }
 
   // Debounce the the search value to prevent a query for each keystroke
   useEffect(() => {
     const sendSearch = setTimeout(() => {
-      dispatch(fetchProducts({ search: searchValue }));
+      dispatch(fetchProducts({ search, category }));
     }, 1000);
 
     return () => clearTimeout(sendSearch);
-  }, [searchValue, dispatch]);
+  }, [search, category, dispatch]);
 
   return (
     <div className="col col-6">
       <div className="d-flex justify-content-center pb-4 pt-4">
         <input
           className="form-control"
-          value={searchValue}
+          value={search}
           placeholder="Search Products"
           onChange={(e) => {
             handleSearchChange(e.target.value);

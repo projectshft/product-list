@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { searchUpdated, fetchProducts } from '../store/slices/products';
+import { pageSelected, searchUpdated, fetchProducts } from '../store/slices/products';
 
 /**
  * A component to render a search/input
@@ -19,6 +19,7 @@ export function ProductSearch() {
   // Debounce the the search value to prevent a query for each keystroke
   useEffect(() => {
     const sendSearch = setTimeout(() => {
+      dispatch(pageSelected('1')); // Reset activePage to page 1
       dispatch(searchUpdated(search));
       dispatch(fetchProducts());
     }, 1000);

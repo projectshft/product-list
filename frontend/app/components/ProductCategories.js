@@ -6,6 +6,7 @@ import {
   categorySelected,
   fetchCategories,
   fetchProducts,
+  pageSelected,
 } from '../store/slices/products';
 
 /**
@@ -30,6 +31,7 @@ export function ProductCategories() {
 
   // Fetch products filtered by category
   useEffect(() => {
+    dispatch(pageSelected('1'));
     dispatch(categorySelected(category));
     dispatch(fetchProducts());
   }, [category, dispatch]);

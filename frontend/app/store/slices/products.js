@@ -27,7 +27,6 @@ export const fetchProducts = createAsyncThunk(
 
     // Build queryString based on what parameters are dispatched to the asyncThunk
     const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-    console.log({ queryString });
 
     // Get all products
     const response = await axios.get(requestUrl + queryString);

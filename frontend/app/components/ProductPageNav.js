@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { pageSelected, fetchProducts } from '../store/slices/products';
 import { ProductPageNavItem } from './ProductPageNavItem';
@@ -16,9 +15,6 @@ export function ProductPageNav() {
   const totalPages = useSelector((state) => state.products.totalPages);
   const currentPage = useSelector((state) => Number(state.products.activePage));
 
-  // Keeps track of if a page has been selected (with nothing being selected initially)
-  const [activePage, setActivePage] = useState(currentPage);
-
   // Create an array of page numbers based on the totalPages returned by Mongo
   const pageNumbers = Array.from(
     { length: totalPages },
@@ -26,9 +22,6 @@ export function ProductPageNav() {
   );
 
   function handleClick(page) {
-    // Change the active page nav item
-    setActivePage(page);
-
     // Call dispatch to update currentPage in state
     dispatch(pageSelected(page));
 
@@ -41,19 +34,19 @@ export function ProductPageNav() {
       <nav aria-label="products pages">
         <ul className="pagination">
           <ProductPreviousPage
-            previousPage={activePage - 1}
+            previousPage={currentPage - 1}
             onClick={handleClick}
           />
           {pageNumbers.map((page, index) => (
             <ProductPageNavItem
               key={index}
               page={page}
-              isActive={activePage === page}
+              isActive={currentPage === page}
               onClick={handleClick}
             />
           ))}
           <ProductNextPage
-            nextPage={activePage + 1}
+            nextPage={currentPage + 1}
             totalPages={totalPages}
             onClick={handleClick}
           />

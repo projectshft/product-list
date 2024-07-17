@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { pageSelected, searchUpdated, fetchProducts } from '../store/slices/products';
+import {
+  pageSelected,
+  searchUpdated,
+  fetchProducts,
+} from '../store/slices/products';
 
 /**
  * A component to render a search/input

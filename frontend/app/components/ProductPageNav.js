@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { pageSelected, fetchProducts } from '../store/slices/products';
 import { ProductPageNavItem } from './ProductPageNavItem';
@@ -21,13 +22,16 @@ export function ProductPageNav() {
     (_, index) => index + 1, // Starts from 1
   );
 
-  function handleClick(page) {
-    // Call dispatch to update currentPage in state
-    dispatch(pageSelected(page));
+  const handleClick = useCallback(
+    (page) => {
+      // Call dispatch to update currentPage in state
+      dispatch(pageSelected(page));
 
-    // Call dispatch to fetchProducts
-    dispatch(fetchProducts());
-  }
+      // Call dispatch to fetchProducts
+      dispatch(fetchProducts());
+    },
+    [dispatch],
+  );
 
   return (
     <div className="d-flex justify-content-center p-4">

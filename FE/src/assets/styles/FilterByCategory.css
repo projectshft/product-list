@@ -1,0 +1,49 @@
+.filter-by-category {
+  margin: 20px 0;
+}
+
+.filter-by-category h4 {
+  margin-bottom: 10px;
+}
+
+.filter-by-category .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.filter-by-category .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: center;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+}
+
+.filter-by-category .dropdown-item {
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.filter-by-category .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #16181b;
+}

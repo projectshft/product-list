@@ -1,0 +1,41 @@
+.sort-by-price {
+  margin: 20px 0;
+}
+
+.sort-by-price .dropdown {
+  position: relative;
+}
+
+.sort-by-price .btn {
+  width: 100%;
+  background-color: #6c757d;
+  color: white;
+  text-align: left;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.sort-by-price .btn:hover,
+.sort-by-price .btn:focus {
+  background-color: #5a6268;
+}
+.sort-by-price .dropdown-menu {
+  width: 100%;
+  padding: 0;
+}
+
+.sort-by-price .dropdown-item {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.sort-by-price .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+.sort-by-price .dropdown-item:active {
+  background-color: #e9ecef;
+  color: #000;
+}

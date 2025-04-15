@@ -1,6 +1,5 @@
-## Product List
+# Mongo Express
 
+I had a problem with Git where it separated the commit histories from my original forked repo and the projectshft master repo.
 
-This project has been created by a student at Parsity, an online software engineering course. The work in this repository is wholly of the student based on a sample starter project that can be accessed by looking at the repository that this project forks.
-
-If you have any questions about this project or the program in general, visit [parsity.io](https://parsity.io/) or email hello@parsity.io.
+I tried a few things to resolve it but ultimately decided to start over, so this is the finished eval all in one commit.

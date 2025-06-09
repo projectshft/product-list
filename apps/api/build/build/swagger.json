@@ -1,0 +1,559 @@
+{
+    "openapi": "3.0.0",
+    "components": {
+        "examples": {},
+        "headers": {},
+        "parameters": {},
+        "requestBodies": {},
+        "responses": {},
+        "schemas": {
+            "ReviewDto": {
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "rating": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "productId": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "_id",
+                    "text",
+                    "rating",
+                    "productId",
+                    "createdAt",
+                    "updatedAt"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ReviewListResponse": {
+                "properties": {
+                    "reviews": {
+                        "items": {
+                            "$ref": "#/components/schemas/ReviewDto"
+                        },
+                        "type": "array"
+                    },
+                    "totalPages": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "currentPage": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "required": [
+                    "reviews",
+                    "totalPages",
+                    "currentPage"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Error": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "stack": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "message"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ReviewQueryParams": {
+                "properties": {
+                    "page": {
+                        "type": "string"
+                    },
+                    "limit": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ValidateErrorJSON": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "enum": [
+                            "Validation failed"
+                        ],
+                        "nullable": false
+                    },
+                    "details": {
+                        "properties": {},
+                        "additionalProperties": {},
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "message",
+                    "details"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ReviewCreationParams": {
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "rating": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "productId": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "text",
+                    "rating",
+                    "productId"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ProductDto": {
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "image": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "_id",
+                    "category",
+                    "name",
+                    "price",
+                    "image",
+                    "createdAt",
+                    "updatedAt"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ProductListResponse": {
+                "properties": {
+                    "products": {
+                        "items": {
+                            "$ref": "#/components/schemas/ProductDto"
+                        },
+                        "type": "array"
+                    },
+                    "totalPages": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "currentPage": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "required": [
+                    "products",
+                    "totalPages",
+                    "currentPage"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ProductQueryParams": {
+                "properties": {
+                    "page": {
+                        "type": "string"
+                    },
+                    "limit": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "string",
+                        "enum": [
+                            "highest",
+                            "lowest"
+                        ]
+                    },
+                    "query": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ProductCreationParams": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "image": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "category",
+                    "price",
+                    "image"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {}
+    },
+    "info": {
+        "title": "api",
+        "version": "1.0.0",
+        "description": "A product list API",
+        "license": {
+            "name": "ISC"
+        },
+        "contact": {}
+    },
+    "paths": {
+        "/reviews/{productId}": {
+            "get": {
+                "operationId": "GetProductReviews",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ReviewListResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieves a an array of reviews for a specific product Id.\nOptional URL query params page and limit.\nIf no page or limit given, only first 10 results returned.",
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "productId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/reviews": {
+            "post": {
+                "operationId": "PostProduct",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "422": {
+                        "description": "Validation Failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateErrorJSON"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Creates a review. Pass review information using request body.",
+                "security": [],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewCreationParams"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reviews/{reviewId}": {
+            "delete": {
+                "operationId": "DeleteProduct",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "description": "Deletes a single review using review Id in URL path.",
+                "security": [],
+                "parameters": [
+                    {
+                        "description": "The unique review id.",
+                        "in": "path",
+                        "name": "reviewId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/products": {
+            "get": {
+                "operationId": "GetAllProducts",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ProductListResponse"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieves a an array of products. Requires URL query params page and limit.\nOptional URL query params page and limit.\nIf no page or limit given, only first 10 results returned.",
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "category",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "price",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "highest",
+                                "lowest"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "PostProduct",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "422": {
+                        "description": "Validation Failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidateErrorJSON"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Creates a product. Pass product information using request body.",
+                "security": [],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductCreationParams"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{productId}": {
+            "get": {
+                "operationId": "GetProductById",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ProductDto"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/Error"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieves a single product using product Id in URL path.",
+                "security": [],
+                "parameters": [
+                    {
+                        "description": "The unique product id.",
+                        "in": "path",
+                        "name": "productId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "DeleteProduct",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "description": "Deletes a single product using product Id in URL path.",
+                "security": [],
+                "parameters": [
+                    {
+                        "description": "The unique product id.",
+                        "in": "path",
+                        "name": "productId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/generate": {
+            "get": {
+                "operationId": "GenerateData",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "description": "Generates products and reviews then saves them to the database.",
+                "security": [],
+                "parameters": []
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ]
+}

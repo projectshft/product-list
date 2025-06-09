@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+    networks:
+      - backend
+    environment:
+      MONGO_URI: mongodb://admin:StrongPassword123%21@mongo:27017/products?authSource=admin
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - '8080:80'
+    depends_on:
+      - api
+    environment:
+      VITE_API_URL: http://localhost:3000
+
+  mongo:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: StrongPassword123!
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  mongo-data:

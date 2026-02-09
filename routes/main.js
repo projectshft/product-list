@@ -6,7 +6,14 @@ const Authentication = require('../controllers/authentication')
 const passport = require('passport');
 
 const requireAuth = passport.authenticate('jwt', { session: false });
-const requireSignin = passport.authenticate('local', { session: false, failWithError: false });
+const requireSignin = passport.authenticate('local', { session: false, failWithError: true });
+// Error handler middleware (must come after the passport middleware)
+const handleAuthError = (err, req, res, next) => {
+  if (err.status === 401) {
+    return res.status(401).send({ error: 'Incorrect username or password.' });
+  }
+  return next(err); 
+};
 
 /**
  *  function to initially populate database with 90 random products 
@@ -192,10 +199,6 @@ router.param("review", function(req, res, next){
 // })
 
 router.post('/signup', Authentication.signup)
-
-// need to figure out issue with middleware not executing properly
-router.post('/auth/login', requireSignin, Authentication.login )
-
 // using callback function and not multiple middleware like above route
 // router.post('/auth/login', (req, res, next) => {
 //   passport.authenticate('local', (err, user, info) => {
@@ -205,12 +208,22 @@ router.post('/auth/login', requireSignin, Authentication.login )
 //     return res.json({ token: Authentication.tokenForUser(user) });
 //   })(req, res, next);
 // });
-
+router.get('/')
+// need to figure out issue with middleware not executing properly --- tested again and seems to work-- need to figure out logout
+router.post('/auth/login', requireSignin, handleAuthError, Authentication.login )
 router.get('/auth/:user', requireAuth, Authentication.currentUser)
 router.get('/auth/:user/cart', requireAuth, Authentication.currentUser)
 router.get('/auth/:user/products', requireAuth, Authentication.currentUser)
 router.get('/auth/:user/products/:product', requireAuth, Authentication.currentUser)
 router.post('/auth/:user/products/:product/reviews/:review')
+
+// router.post('/auth/:user', Authentication.logout)
+router.post('/auth/:user', async function(req, res, next){
+  req.logout(function(err) {
+    if(err) return (next(err))
+    res.redirect('/')
+  })
+})
 
 
 // get route for all Products

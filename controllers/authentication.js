@@ -100,35 +100,6 @@ async function productsReturned(category, sortedPrice, searchQuery){
   }
 }
 
-exports.login = async function(req, res, next) {
-  // User has already had their email and password auth'd
-  // We just need to give them a token
-  if (!req.user) {
-      return res.status(401).send({ error: 'Authentication failed' });
-  }else{
-    res.send({
-      token: tokenForUser(req.user)
-    });
-  }
-};
-
-exports.currentUser = function(req, res) {
-
-  try{
-    const data = {
-      user : {
-      username: req.user.username,
-      token: tokenForUser(req.user),
-      cart: req.user.cart,
-      },
-      products: productsReturned(req.query.category, req.query.price, req.query.query),
-      productCategories: populateProductCategories(),
-    }
-    res.send(data);
-  } catch (err) {
-  }
-};
-
 exports.signup = async function(req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
@@ -156,3 +127,45 @@ exports.signup = async function(req, res, next) {
   }
   
 };
+
+exports.login = async function(req, res, next) {
+  // User has already had their email and password auth'd
+  // We just need to give them a token
+  if (!req.user) {
+      return res.status(401).send({ error: 'Authentication failed' });
+  }else{
+    res.send({
+      token: tokenForUser(req.user)
+    });
+  }
+};
+
+exports.currentUser = function(req, res) {
+
+  try{
+    const data = {
+      user : {
+      username: req.user.username,
+      token: tokenForUser(req.user),
+      cart: req.user.cart,
+      },
+      products: productsReturned(req.query.category, req.query.price, req.query.query),
+      productCategories: populateProductCategories(),
+    }
+    res.send(data);
+  } catch(err) {
+  }
+};
+
+exports.logout = async function(req, res, next){
+  // try{
+  //   req.logout((err) => {
+  //     if(err){
+  //       return next(err)
+  //     }
+      res.redirect('/login')
+  //   })
+  // } catch(err){
+
+  // }
+}

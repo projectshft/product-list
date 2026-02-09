@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+
 // initialState for pagination slice
 const initialState = {
   username: "",
@@ -21,6 +22,19 @@ export const fetchAuth = createAsyncThunk('reducers/fetchAuth', async (url, thun
       throw err;
     }
     return thunkApi.rejectWithValue({ err: 'Error with authorization' });
+  }
+})
+
+export const clearAuth = createAsyncThunk('reducers/clearAuth', async (url, thunkApi) => {
+  try{
+    let response = undefined;
+    // response = await axios.get(`${baseUrl}${url}`);
+    return response
+  } catch (err) {
+    if(!err?.response) {
+      throw err;
+    }
+    return thunkApi.rejectWithValue({ err: 'Error with clearing authorization token'})
   }
 })
 

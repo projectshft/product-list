@@ -1,18 +1,22 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../actions/index'
+import { login, logout } from '../actions/index'
 import { useEffect, useState } from 'react';
 import Header from './header';
 import ProductsIndex from './products-index';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import LogoutButton from './logout-btn';
 
 const UserPage = () => {
   
+  // const user = useSelector((state) => state.user.user)
   const navigate = useNavigate();
-  const handleUserCartClick = () => {
 
+  const handleUserCartClick = () => {
+  
   }
   const handleLogOut = () => {
-    navigate('/login')
   }
   
   return(
@@ -32,11 +36,12 @@ const UserPage = () => {
         Products placeholder text
       </div>
       <div class='col-md-8'>
-        <button
+        {/* <button
           id='user-page-logout-btn'
           onClick={handleLogOut}>
             Log Out
-        </button>
+        </button> */}
+        <LogoutButton />
       </div>
     </div>
   )

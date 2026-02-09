@@ -33,27 +33,42 @@ export const signup = (signupInput, callback) => {
     'http://localhost:8000/signup', 
     signupInput
   ).then(function (response){
-    //dispatch action and local storage token assignment
     localStorage.getItem('token', response.data.token)
-    // callback for page loading response after successful signup
     callback()
   })
 
 }
 
 export const login = (loginInput, callback) => {
-  try{
-    axios.post(
-    'http://localhost:8000/auth/login',
-    loginInput
-  ).then(function (response){
-    localStorage.setItem('token', response.data.token)
-    callback()
-  })
-  // needs error catch response 
- } catch(err){
- }
+  axios.post('http://localhost:8000/auth/login', loginInput)
+    .then((response) => {
+      localStorage.setItem('token', response.data.token)
+      callback()})
+    .catch((error) => {
+      if (error.response && error.response.status === 401) {
+        alert("Incorrect login");
+      }
+    });
 }
+
+// server side function for route
+// need to figure out in UserPage how to get username; useSelector? or store.get()...
+// Then use that info to pass into logout() funciton below
+// export const logout = (user, callback) => {
+//   try{
+//     axios.post(
+//       `http://localhost:8000/auth/${user}`
+      
+//     ).then(
+//       () => {
+//         localStorage.removeItem('token')
+//         callback()
+//       }
+//     )
+//   } catch(err) {
+
+//   }
+// }
 
   /**
    * 

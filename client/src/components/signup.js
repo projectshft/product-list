@@ -53,12 +53,11 @@ const Signup = () => {
       // cart: []
     }
     
-    signup(newUser)
+    signup(newUser, () => navigate('/'))
     setUsernameInput('')
     setPasswordInput('')
     setConfirmPasswordInput('')
-    navigate('/')
-
+  
   }
 
   const cancelClick = () => {

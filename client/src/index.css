@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+div#header{
+  background-color: lightgrey;
+  height: 50px;
+  width: 100%;
+  text-align: end;
+}
+div#header-btn-container{
+  background-color: lightgrey;
+  position: relative;
+  text-align: end;
+}
+button#products-page-logout-btn{
+  /* position:fixed; */
+}
+
+/* div#logout-alert-window{
+  display: block;
+  left: 50%;
+  top: 50%;
+} */
+
+div.reviews-nav-click {
+
+}
+
+div.reviews-nav-click:hover {
+  font-weight: bold;
+  color: blue;
+  cursor: pointer;
+}
+
+label.show-hide-reviews-label-toggle:hover {
+  font-weight: bold;
+  color: blue;
+  cursor: pointer;
+}
+
+div.review-input {
+  
+}
+
+div.reviews-nav-section {
+}
+
+div.editing-container {
+}
+
+ul.product-reviews-list {
+  list-style-type: none;
+}
+
+
+li.product-review-list-item {
+  border-radius: 2%;
+  border-color: black;
+  border-style: solid;
+  border-width: 3px;
+}
+
+label.product-review-id-label {
+  background-color: darkgray;
+}
+
+label.product-review-user-label {
+  background-color: lightblue;
+}
